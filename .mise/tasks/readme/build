@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+#MISE description="Build the project index in README.md"
+
+import json
+from collections import defaultdict
+from pathlib import Path
+
+
+root = Path(__file__).resolve().parents[3]
+projects = defaultdict(list)
+
+for metadata_path in sorted(root.glob("[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]/*/metadata.json")):
+    relative_dir = metadata_path.parent.relative_to(root)
+
+    try:
+        metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise SystemExit(f"{metadata_path}: {error}") from error
+
+    title = metadata.get("title")
+    tags = metadata.get("tags")
+    if not isinstance(title, str) or not title.strip():
+        raise SystemExit(f"{metadata_path}: title must be a non-empty string")
+    if not isinstance(tags, list) or not tags or not all(isinstance(tag, str) and tag.strip() for tag in tags):
+        raise SystemExit(f"{metadata_path}: tags must be a non-empty array of strings")
+    if not (metadata_path.parent / "README.md").is_file():
+        raise SystemExit(f"{metadata_path}: project README.md is missing")
+
+    for tag in tags:
+        projects[tag.strip()].append((title.strip(), relative_dir.as_posix()))
+
+lines = [
+    "# labs",
+    "",
+    "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)",
+    "",
+    "Small, independent projects for experiments, research, and investigations.",
+    "",
+    "## Check out a lab",
+    "",
+    "Use a shallow, partial clone with sparse checkout to fetch only one lab and",
+    "the shared tasks:",
+    "",
+    "```sh",
+    "git clone --depth 1 --filter=blob:none --sparse \\",
+    "  https://github.com/kiarina/labs.git",
+    "cd labs",
+    "git sparse-checkout set .gitignore .mise/tasks YYYY/MM/DD/{slug}",
+    "```",
+]
+
+for tag in sorted(projects, key=str.casefold):
+    lines.extend(("", f"## {tag}", ""))
+    for title, path in sorted(projects[tag], key=lambda project: (project[0].casefold(), project[1])):
+        lines.append(f"- [{title}]({path}/README.md)")
+
+(root / "README.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
