@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+#MISE description="Segment test audio and group speakers with ECAPA-TDNN embeddings"
+set -euo pipefail
+
+scd_model="scd.onnx"
+if [[ ! -f "$scd_model" ]]; then
+  curl --fail --location --output "$scd_model" \
+    https://huggingface.co/onnx-community/pyannote-segmentation-3.0/resolve/main/onnx/model.onnx
+fi
+
+ecapa_model="ecapa_tdnn.onnx"
+ecapa_url="https://huggingface.co/pranjal-pravesh/ecapa_tdnn_onnx/resolve/04c3ffe4fd00b3b7853fd57db44e2e531d4817f2/ecapa_tdnn.onnx"
+ecapa_sha256="245eb5995cfffd74494862dee33da2b00c1c2579eb0c6703847784e9901ed458"
+
+if [[ ! -f "$ecapa_model" ]]; then
+  curl --fail --location --output "$ecapa_model" "$ecapa_url"
+fi
+
+actual_sha256="$(shasum -a 256 "$ecapa_model" | awk '{print $1}')"
+if [[ "$actual_sha256" != "$ecapa_sha256" ]]; then
+  echo "ECAPA-TDNN model SHA-256 mismatch" >&2
+  echo "expected: $ecapa_sha256" >&2
+  echo "actual:   $actual_sha256" >&2
+  exit 1
+fi
+
+uv run python main.py
