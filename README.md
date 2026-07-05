@@ -13,5 +13,5 @@ the shared tasks:
 git clone --depth 1 --filter=blob:none --sparse \
   https://github.com/kiarina/labs.git
 cd labs
-git sparse-checkout set .gitignore .mise/tasks YYYY/MM/DD/{slug}
+git sparse-checkout set .gitignore .mise/tasks mise.toml Makefile YYYY/MM/DD/{slug}
 ```

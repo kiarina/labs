@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := run
 
-RELEASE_VERSION := v2026.06
+RELEASE_VERSION := v2026.07
 ASSETS_VERSION := v1.0.0
 
 .PHONY: run build-readme download-test-assets
