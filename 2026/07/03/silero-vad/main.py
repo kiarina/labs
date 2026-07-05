@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import shutil
 import subprocess
+import time
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -209,11 +210,20 @@ def main() -> None:
         raise SystemExit(f"model file not found: {args.model}")
 
     samples = decode_audio(args.audio)
-    probabilities = speech_probabilities(samples, SileroVAD(args.model))
-    segments = detect_segments(probabilities, len(samples) / SAMPLE_RATE)
+    if len(samples) == 0:
+        raise SystemExit(f"decoded audio is empty: {args.audio}")
+    audio_duration = len(samples) / SAMPLE_RATE
+    model = SileroVAD(args.model)
+    vad_started_at = time.perf_counter()
+    probabilities = speech_probabilities(samples, model)
+    segments = detect_segments(probabilities, audio_duration)
+    vad_elapsed = time.perf_counter() - vad_started_at
     extract_segments(args.audio, segments, args.output)
 
     print(f"audio: {args.audio}")
+    print(f"audio duration: {audio_duration:.3f}s")
+    print(f"VAD elapsed: {vad_elapsed:.3f}s")
+    print(f"VAD real-time factor: {vad_elapsed / audio_duration:.3f}x")
     print(f"speech segments: {len(segments)}")
     for index, segment in enumerate(segments, start=1):
         print(
