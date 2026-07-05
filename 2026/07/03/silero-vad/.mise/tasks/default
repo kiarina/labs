@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Detect and extract speech segments from the test audio"
+set -euo pipefail
+
+model="silero_vad.onnx"
+if [[ ! -f "$model" ]]; then
+  curl --fail --location --output "$model" \
+    https://raw.githubusercontent.com/snakers4/silero-vad/master/src/silero_vad/data/silero_vad.onnx
+fi
+
+uv run python main.py
