@@ -16,14 +16,7 @@ cd labs
 git sparse-checkout set .gitignore .mise/tasks YYYY/MM/DD/{slug}
 ```
 
-## audio
+## Labs
 
-- [Silero VAD speech segment extraction](2026/07/03/silero-vad/README.md)
-
-## onnx
-
-- [Silero VAD speech segment extraction](2026/07/03/silero-vad/README.md)
-
-## silero-vad
-
-- [Silero VAD speech segment extraction](2026/07/03/silero-vad/README.md)
+- 2026/07
+  - [Silero VAD speech segment extraction](2026/07/03/silero-vad/README.md) - [audio](tags/audio.md), [onnx](tags/onnx.md), [silero-vad](tags/silero-vad.md)

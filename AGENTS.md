@@ -31,7 +31,7 @@
   lab の `.gitignore` に追加する
 - 他の lab のコードを直接 import・参照しない。必要なら各 lab 内に閉じる
 - 既存の lab を変更するときは、その lab の規約と toolchain を優先する
-- ルートの `README.md` は生成物なので、プロジェクト一覧を直接編集しない
+- ルートの `README.md` と `tags/*.md` は生成物なので、直接編集しない
 - `metadata.json` を追加・変更したら `make build-readme` を実行する
 - `.mise/tasks/test-assets/download` は
   `kiarina/test-assets` からコピーしたファイルとして維持し、独自変更しない
