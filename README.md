@@ -19,6 +19,7 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 ## Labs
 
 - 2026/07
+  - [CLAP ONNX environmental sound grouping with ESC-50](2026/07/06/clap-onnx-esc50/README.md) - [audio](tags/audio.md), [clap](tags/clap.md), [onnx](tags/onnx.md), [embedding](tags/embedding.md), [esc-50](tags/esc-50.md)
   - [ECAPA-TDNN ONNX speaker grouping](2026/07/05/ecapa-tdnn-onnx/README.md) - [audio](tags/audio.md), [ecapa-tdnn](tags/ecapa-tdnn.md), [onnx](tags/onnx.md), [speaker-embedding](tags/speaker-embedding.md)
   - [Pyannote SCD speaker segmentation](2026/07/04/pyannote-scd/README.md) - [audio](tags/audio.md), [onnx](tags/onnx.md), [pyannote](tags/pyannote.md), [speaker-change-detection](tags/speaker-change-detection.md)
   - [Silero VAD speech segment extraction](2026/07/03/silero-vad/README.md) - [audio](tags/audio.md), [onnx](tags/onnx.md), [silero-vad](tags/silero-vad.md)
