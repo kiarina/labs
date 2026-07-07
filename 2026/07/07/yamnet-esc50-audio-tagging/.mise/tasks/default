@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Evaluate YAMNet audio tags on ESC-50"
+set -euo pipefail
+
+uv run python main.py

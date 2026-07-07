@@ -1,0 +1,13 @@
+[project]
+name = "yamnet-esc50-audio-tagging"
+version = "0.1.0"
+description = "Evaluate YAMNet TFLite audio tagging with ESC-50"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "ai-edge-litert==2.1.6",
+    "numpy==2.5.1",
+]
+
+[tool.uv]
+package = false

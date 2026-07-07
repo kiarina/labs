@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Detect speaker changes and extract segments from the test audio"
+set -euo pipefail
+
+model="model.onnx"
+if [[ ! -f "$model" ]]; then
+  curl --fail --location --output "$model" \
+    https://huggingface.co/onnx-community/pyannote-segmentation-3.0/resolve/main/onnx/model.onnx
+fi
+
+uv run python main.py

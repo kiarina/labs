@@ -1,0 +1,16 @@
+[project]
+name = "clap-onnx-esc50"
+version = "0.1.0"
+description = "Evaluate CLAP ONNX audio embeddings with ESC-50 nearest neighbors"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy==2.5.1",
+    "onnx==1.20.0",
+    "onnxruntime==1.27.0",
+    "torch==2.8.0",
+    "transformers==4.57.3",
+]
+
+[tool.uv]
+package = false

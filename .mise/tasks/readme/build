@@ -1,0 +1,107 @@
+#!/usr/bin/env python3
+#MISE description="Build the project index in README.md"
+
+import json
+import re
+from collections import defaultdict
+from pathlib import Path
+
+
+root = Path(__file__).resolve().parents[3]
+projects = []
+projects_by_tag = defaultdict(list)
+tag_pattern = re.compile(r"[a-z0-9][a-z0-9-]*")
+
+for metadata_path in sorted(root.glob("[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]/*/metadata.json")):
+    relative_dir = metadata_path.parent.relative_to(root)
+    year, month, day = map(int, relative_dir.parts[:3])
+
+    try:
+        metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise SystemExit(f"{metadata_path}: {error}") from error
+
+    title = metadata.get("title")
+    tags = metadata.get("tags")
+    if not isinstance(title, str) or not title.strip():
+        raise SystemExit(f"{metadata_path}: title must be a non-empty string")
+    if not isinstance(tags, list) or not tags or not all(isinstance(tag, str) and tag.strip() for tag in tags):
+        raise SystemExit(f"{metadata_path}: tags must be a non-empty array of strings")
+    tags = [tag.strip() for tag in tags]
+    invalid_tags = [tag for tag in tags if not tag_pattern.fullmatch(tag)]
+    if invalid_tags:
+        raise SystemExit(
+            f"{metadata_path}: tags must start with a lowercase letter or number and contain only "
+            "lowercase letters, numbers, and hyphens: "
+            f"{', '.join(invalid_tags)}"
+        )
+    duplicate_tags = sorted({tag for tag in tags if tags.count(tag) > 1})
+    if duplicate_tags:
+        raise SystemExit(f"{metadata_path}: duplicate tags: {', '.join(duplicate_tags)}")
+    if not (metadata_path.parent / "README.md").is_file():
+        raise SystemExit(f"{metadata_path}: project README.md is missing")
+
+    project = ((year, month, day), title.strip(), relative_dir.as_posix(), tags)
+    projects.append(project)
+    for tag in tags:
+        projects_by_tag[tag].append(project)
+
+
+def project_order(project):
+    (year, month, day), _, path, _ = project
+    return (-year, -month, -day, path)
+
+
+projects.sort(key=project_order)
+
+lines = [
+    "# labs",
+    "",
+    "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)",
+    "",
+    "Small, independent projects for experiments, research, and investigations.",
+    "",
+    "## Check out a lab",
+    "",
+    "Use a shallow, partial clone with sparse checkout to fetch only one lab and",
+    "the shared tasks:",
+    "",
+    "```sh",
+    "git clone --depth 1 --filter=blob:none --sparse \\",
+    "  https://github.com/kiarina/labs.git",
+    "cd labs",
+    "git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{slug}",
+    "```",
+    "",
+    "## Labs",
+    "",
+]
+
+current_month = None
+for (year, month, _), title, path, tags in projects:
+    project_month = (year, month)
+    if project_month != current_month:
+        if current_month is not None:
+            lines.append("")
+        lines.append(f"- {year:04d}/{month:02d}")
+        current_month = project_month
+    tag_links = ", ".join(f"[{tag}](tags/{tag}.md)" for tag in tags)
+    lines.append(f"  - [{title}]({path}/README.md) - {tag_links}")
+
+(root / "README.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+tags_dir = root / "tags"
+tags_dir.mkdir(exist_ok=True)
+expected_tag_files = set()
+
+for tag in sorted(projects_by_tag):
+    tag_path = tags_dir / f"{tag}.md"
+    expected_tag_files.add(tag_path)
+    tag_lines = [f"# {tag}", ""]
+    for (year, month, day), title, path, _ in sorted(projects_by_tag[tag], key=project_order):
+        tag_lines.append(f"- {year:04d}/{month:02d}/{day:02d} [{title}](../{path}/README.md)")
+    tag_path.write_text("\n".join(tag_lines) + "\n", encoding="utf-8")
+
+for tag_path in tags_dir.glob("*.md"):
+    if tag_path not in expected_tag_files:
+        tag_path.unlink()

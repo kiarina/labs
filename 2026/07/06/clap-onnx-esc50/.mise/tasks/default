@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#MISE description="Evaluate CLAP ONNX embeddings on a fixed ESC-50 subset"
+set -euo pipefail
+
+model="model.onnx"
+
+if [[ ! -f "$model" ]]; then
+  uv run python export_model.py "$model"
+else
+  uv run python export_model.py --verify-only "$model"
+fi
+
+uv run python main.py
