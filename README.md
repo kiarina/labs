@@ -19,6 +19,7 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 ## Labs
 
 - 2026/07
+  - [YuNet Face Detection](2026/07/08/yunet-face-detection/README.md) - [image](tags/image.md), [detection](tags/detection.md), [yunet](tags/yunet.md), [face](tags/face.md)
   - [YAMNet audio tagging on ESC-50](2026/07/07/yamnet-esc50-audio-tagging/README.md) - [audio](tags/audio.md), [yamnet](tags/yamnet.md), [tflite](tags/tflite.md), [audio-tagging](tags/audio-tagging.md), [esc-50](tags/esc-50.md)
   - [CLAP ONNX environmental sound grouping with ESC-50](2026/07/06/clap-onnx-esc50/README.md) - [audio](tags/audio.md), [clap](tags/clap.md), [onnx](tags/onnx.md), [embedding](tags/embedding.md), [esc-50](tags/esc-50.md)
   - [ECAPA-TDNN ONNX speaker grouping](2026/07/05/ecapa-tdnn-onnx/README.md) - [audio](tags/audio.md), [ecapa-tdnn](tags/ecapa-tdnn.md), [onnx](tags/onnx.md), [speaker-embedding](tags/speaker-embedding.md)
