@@ -1,0 +1,12 @@
+[project]
+name = "dfine-object-detection"
+version = "0.1.0"
+description = "D-FINE ONNX object detection experiment"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "httpx>=0.28.1",
+    "numpy>=2.3.1",
+    "onnxruntime>=1.22.0",
+    "opencv-python>=4.11.0.86",
+]

@@ -38,6 +38,8 @@
   `kiarina/test-assets` からコピーしたファイルとして維持し、独自変更しない
 - test assets のバージョンは Makefile 冒頭の `RELEASE_VERSION` と
   `ASSETS_VERSION` で固定する
+- test-assets に共有アセットを追加・更新する場合、または labs 側の
+  test assets バージョンを変更する場合は、`docs/test-assets.md` を確認する
 
 ## 検証の方針
 
