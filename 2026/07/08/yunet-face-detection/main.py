@@ -9,7 +9,7 @@ import statistics
 MODEL_URL = "https://media.githubusercontent.com/media/opencv/opencv_zoo/47534e27c9851bb1128ccc0102f1145e27f23f98/models/face_detection_yunet/face_detection_yunet_2023mar_int8bq.onnx"
 MODEL_FILENAME = "face_detection_yunet_2023mar_int8bq.onnx"
 MODEL_SHA256 = "49f000ec501fef24739071fc7e68267d32209045b6822c0c72dce1da25726f10"
-IMAGE_PATH = "../../../../tests/assets/jpg/many_face_1280x720_275kb.jpg"
+IMAGE_PATH = "../../../../assets/jpg/many_face_1280x720_275kb.jpg"
 
 def verify_file(filepath: Path, expected_sha256: str) -> bool:
     if not filepath.exists():
@@ -124,25 +124,25 @@ def visualize_faces(detector, image):
     height, width = image.shape[:2]
     detector.setInputSize((width, height))
     status, faces = detector.detect(image)
-    
+
     output_image = image.copy()
     if faces is not None:
         for face in faces:
             x, y, w, h = (int(v) for v in face[:4])
             score = float(face[14])
-            
+
             # Draw bounding box
             cv2.rectangle(output_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            
+
             # Draw landmarks (5 points)
             for i in range(5):
                 lx, ly = int(face[4 + i*2]), int(face[5 + i*2])
                 cv2.circle(output_image, (lx, ly), 2, (0, 0, 255), 2)
-                
+
             # Draw score
             text = f"{score:.2f}"
             cv2.putText(output_image, text, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 255, 0), 1)
-            
+
     output_path = Path(__file__).parent / "output_1.00.jpg"
     cv2.imwrite(str(output_path), output_image)
     print(f"Saved visualization to {output_path}")

@@ -1,8 +1,5 @@
 .DEFAULT_GOAL := run
 
-RELEASE_VERSION := v2026.07
-ASSETS_VERSION := v0.3.0
-
 .PHONY: run build-readme download-test-assets
 
 run:
@@ -21,5 +18,4 @@ build-readme:
 
 download-test-assets:
 	mise run test-assets:download -- \
-		--output-dir assets \
-		$(RELEASE_VERSION) labs $(ASSETS_VERSION)
+		--output-dir assets v2026.07 labs v1.1.0
