@@ -19,6 +19,7 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 ## Labs
 
 - 2026/07
+  - [SFace face embedding dataset comparison](2026/07/10/sface-face-embedding/README.md) - [image](tags/image.md), [embedding](tags/embedding.md), [face](tags/face.md), [sface](tags/sface.md), [opencv](tags/opencv.md)
   - [D-FINE Object Detection](2026/07/09/dfine-object-detection/README.md) - [image](tags/image.md), [detection](tags/detection.md), [onnx](tags/onnx.md), [dfine](tags/dfine.md), [object-detection](tags/object-detection.md)
   - [YuNet Face Detection](2026/07/08/yunet-face-detection/README.md) - [image](tags/image.md), [detection](tags/detection.md), [yunet](tags/yunet.md), [face](tags/face.md)
   - [YAMNet audio tagging on ESC-50](2026/07/07/yamnet-esc50-audio-tagging/README.md) - [audio](tags/audio.md), [yamnet](tags/yamnet.md), [tflite](tags/tflite.md), [audio-tagging](tags/audio-tagging.md), [esc-50](tags/esc-50.md)
