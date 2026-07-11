@@ -1,0 +1,26 @@
+diff --git a/anigen/representations/mesh/flexicubes/flexicubes.py b/anigen/representations/mesh/flexicubes/flexicubes.py
+index 4513557..fedcba9 100755
+--- a/anigen/representations/mesh/flexicubes/flexicubes.py
++++ b/anigen/representations/mesh/flexicubes/flexicubes.py
+@@ -235,5 +235,6 @@ class FlexiCubes:
+         mapping = torch.ones((unique_edges.shape[0]), dtype=torch.long, device=cube_idx.device) * -1
+-        mapping[mask_edges] = torch.arange(mask_edges.sum(), device=cube_idx.device)
++        valid_edges = torch.nonzero(mask_edges, as_tuple=False).flatten()
++        mapping[valid_edges] = torch.arange(valid_edges.shape[0], device=cube_idx.device)
+         # Shaped as [number of cubes x 12 edges per cube]. This is later used to map a cube edge to the unique index
+         # for a surface-intersecting edge. Non-surface-intersecting edges are marked with -1.
+         idx_map = mapping[_idx_map]
+diff --git a/extern/mtlgemm/flex_gemm/ops/spconv/submanifold_conv3d.py b/extern/mtlgemm/flex_gemm/ops/spconv/submanifold_conv3d.py
+index 4cbe782..abcdef0 100644
+--- a/extern/mtlgemm/flex_gemm/ops/spconv/submanifold_conv3d.py
++++ b/extern/mtlgemm/flex_gemm/ops/spconv/submanifold_conv3d.py
+@@ -147,6 +147,7 @@ class SubMConv3dFunction(torch.autograd.Function):
+             # "Promotion for uint32 types is not supported"). CUDA promotes silently.
+             nm = neighbor_map.view(-1).long()
+             im2col = torch.zeros((N * V, Ci), device=feats.device, dtype=feats.dtype)
+-            mask = nm != 0xffffffff
+-            im2col[mask] = feats[nm[mask]]
++            valid_positions = torch.nonzero((nm >= 0) & (nm < N), as_tuple=False).flatten()
++            valid_neighbors = nm[valid_positions]
++            im2col[valid_positions] = feats[valid_neighbors]
+             im2col = im2col.view(N, V * Ci)

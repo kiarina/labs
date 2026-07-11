@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# mise description="Render comparison images and turntable videos"
+
+set -euo pipefail
+npm install
+mkdir -p preview
+node scripts/render-preview.mjs
+"$(pwd)/.venv/bin/python" scripts/contact_sheet.py
+
+for name in miineko1 miineko2; do
+  if [[ ! -d "preview/frames/$name" ]]; then
+    continue
+  fi
+  ffmpeg -hide_banner -loglevel error -y \
+    -framerate 30 -i "preview/frames/$name/%03d.png" \
+    -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" \
+    -c:v libx264 -pix_fmt yuv420p -movflags +faststart \
+    "preview/$name-turntable.mp4"
+  ffprobe -v error -select_streams v:0 \
+    -show_entries stream=width,height,nb_frames,duration \
+    -of json "preview/$name-turntable.mp4" > "preview/$name-video.json"
+done

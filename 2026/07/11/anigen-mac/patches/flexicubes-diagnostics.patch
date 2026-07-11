@@ -1,0 +1,45 @@
+diff --git a/anigen/representations/mesh/cube2mesh_skeleton.py b/anigen/representations/mesh/cube2mesh_skeleton.py
+index 790e2fe..2345678 100755
+--- a/anigen/representations/mesh/cube2mesh_skeleton.py
++++ b/anigen/representations/mesh/cube2mesh_skeleton.py
+@@ -1,4 +1,6 @@
++import json
+ import math
++import os
+ import torch
+ from typing import Optional
+ from ...modules.sparse import SparseTensor
+@@ -303,5 +305,32 @@ class SparseFeatures2Mesh:
+             training=training,
+             no_sigmoid=True)
+-
++        diagnostics_path = os.environ.get("ANIGEN_FLEXICUBES_DIAGNOSTICS")
++        if diagnostics_path:
++            finite = torch.isfinite(sdf_d)
++            safe_sdf = torch.nan_to_num(sdf_d.float(), nan=0.0, posinf=0.0, neginf=0.0)
++            cube_signs = (sdf_d < 0)[self.reg_c.reshape(-1)].reshape(-1, 8)
++            cube_occ_sum = cube_signs.sum(dim=-1)
++            surface_cubes = (cube_occ_sum > 0) & (cube_occ_sum < 8)
++            edge_signs = cube_signs[:, self.mesh_extractor.cube_edges].reshape(-1, 12, 2)
++            surface_edge_refs = edge_signs.sum(dim=-1) == 1
++            diagnostics = {
++                "scalar_count": sdf_d.numel(),
++                "scalar_finite": int(finite.sum().item()),
++                "scalar_nan": int(torch.isnan(sdf_d).sum().item()),
++                "scalar_posinf": int(torch.isposinf(sdf_d).sum().item()),
++                "scalar_neginf": int(torch.isneginf(sdf_d).sum().item()),
++                "scalar_min_finite_or_zero": float(safe_sdf.min().item()),
++                "scalar_max_finite_or_zero": float(safe_sdf.max().item()),
++                "scalar_negative": int((sdf_d < 0).sum().item()),
++                "scalar_zero": int((sdf_d == 0).sum().item()),
++                "scalar_positive": int((sdf_d > 0).sum().item()),
++                "cube_count": int(self.reg_c.shape[0]),
++                "surface_cubes": int(surface_cubes.sum().item()),
++                "surface_edge_references": int(surface_edge_refs.sum().item()),
++                "output_vertices": int(vertices.shape[0]), "output_faces": int(faces.shape[0]),
++            }
++            with open(diagnostics_path, "a", encoding="utf-8") as f:
++                f.write(json.dumps(diagnostics, sort_keys=True) + "\n")
++
+         rgbnormal_colors = None
+         vertex_skin_feats = None

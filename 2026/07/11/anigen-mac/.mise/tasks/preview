@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# mise description="Open the interactive GLB preview"
+
+set -euo pipefail
+npm install
+root="$(pwd)"
+url="http://127.0.0.1:8000/2026/07/11/anigen-mac/viewer.html"
+open "$url"
+cd "$root/../../../.."
+python -m http.server 8000 --bind 127.0.0.1

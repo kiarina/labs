@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+# mise description="Install pinned AniGen and preview dependencies"
+
+set -euo pipefail
+
+root="$(pwd)"
+source_dir="$root/.cache/AniGen-mac"
+commit="${ANIGEN_COMMIT:?ANIGEN_COMMIT is not set}"
+patches=(
+  "$root/patches/mps-large-mask-indexing.patch"
+  "$root/patches/flexicubes-diagnostics.patch"
+)
+marker="$root/.cache/setup-${commit}-diagnostics-v1"
+previous_marker="$root/.cache/setup-${commit}-mps-mask-v1"
+
+xcrun -sdk macosx metal --version >/dev/null
+
+if [[ ! -d "$source_dir/.git" ]]; then
+  mkdir -p "$root/.cache"
+  git clone https://github.com/pawel-mazurkiewicz/AniGen-mac.git "$source_dir"
+fi
+git -C "$source_dir" fetch --depth 1 origin "$commit"
+git -C "$source_dir" checkout --detach "$commit"
+
+if [[ -f "$marker" ]] && [[ -x "$root/.venv/bin/python" ]] \
+  && [[ -f "$root/node_modules/@google/model-viewer/dist/model-viewer.min.js" ]] \
+  && "$root/.venv/bin/python" -c "import flex_gemm, mtldiffrast, cumesh, mtlbvh" 2>/dev/null; then
+  echo "Pinned AniGen environment is already installed"
+  exit 0
+fi
+
+for patch in "${patches[@]}"; do
+  if git -C "$source_dir" apply --check "$patch" 2>/dev/null; then
+    git -C "$source_dir" apply "$patch"
+  elif ! git -C "$source_dir" apply --reverse --check "$patch" 2>/dev/null; then
+    echo "Cannot apply or identify AniGen patch: $patch" >&2
+    exit 1
+  fi
+done
+
+if [[ -f "$previous_marker" ]] && [[ -x "$root/.venv/bin/python" ]] \
+  && "$root/.venv/bin/python" -c "import flex_gemm, mtldiffrast, cumesh, mtlbvh" 2>/dev/null; then
+  touch "$marker"
+fi
+
+if [[ -f "$marker" ]] && [[ -x "$root/.venv/bin/python" ]] \
+  && [[ -f "$root/node_modules/@google/model-viewer/dist/model-viewer.min.js" ]] \
+  && "$root/.venv/bin/python" -c "import flex_gemm, mtldiffrast, cumesh, mtlbvh" 2>/dev/null; then
+  echo "Pinned AniGen environment is already installed"
+  exit 0
+fi
+
+if [[ ! -x "$root/.venv/bin/python" ]]; then
+  python -m venv "$root/.venv"
+fi
+"$root/.venv/bin/python" -m pip install --upgrade pip
+"$root/.venv/bin/pip" install -r "$source_dir/requirements-mac.txt"
+"$root/.venv/bin/pip" install wheel
+# The Metal packages import torch while evaluating setup.py, so build them in
+# the already-populated inference environment instead of pip's isolated env.
+for package in mtlbvh mtlgemm mtldiffrast mtlmesh; do
+  "$root/.venv/bin/pip" install --no-build-isolation "$source_dir/extern/$package"
+done
+
+npm install
+"$root/.venv/bin/python" -c "import flex_gemm, mtldiffrast, cumesh, mtlbvh; print('Metal backends OK')"
+touch "$marker"

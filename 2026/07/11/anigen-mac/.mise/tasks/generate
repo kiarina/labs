@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# mise description="Generate rigged GLBs from both test images"
+
+set -euo pipefail
+
+root="$(pwd)"
+source_dir="$root/.cache/AniGen-mac"
+
+mise run //:test-assets:download
+mise run setup
+mkdir -p results
+
+status=0
+for spec in \
+  "miineko1:$root/../../../../tests/assets/jpg/miineko1_1254x1254_159kb.jpg" \
+  "miineko2:$root/../../../../tests/assets/jpg/miineko2_1086x1448_219kb.jpg"
+do
+  name="${spec%%:*}"
+  image="${spec#*:}"
+  mkdir -p "results/$name"
+  if [[ -s "results/$name/mesh.glb" ]] \
+    && [[ -s "results/$name/skeleton.glb" ]] \
+    && [[ -s "results/$name/processed_image.png" ]]; then
+    echo "Reusing complete results for $name"
+    continue
+  fi
+  if [[ "${ANIGEN_FORCE:-0}" != "1" ]] \
+    && [[ -f "results/$name/run.json" ]] \
+    && grep -Eq '"exit_code":[1-9][0-9]*' "results/$name/run.json"; then
+    echo "Reusing recorded failure for $name (set ANIGEN_FORCE=1 to retry)"
+    status=1
+    continue
+  fi
+  if [[ -f "results/$name/generate.log" ]]; then
+    retry="$(find "results/$name" -name 'generate-attempt-*.log' | wc -l | tr -d ' ')"
+    retry="$((retry + 1))"
+    cp "results/$name/generate.log" "results/$name/generate-attempt-$retry.log"
+  fi
+  start="$(date +%s)"
+  rm -f "results/$name/flexicubes-diagnostics.jsonl"
+  set +e
+  (
+    cd "$source_dir"
+    ANIGEN_FLEXICUBES_DIAGNOSTICS="$root/results/$name/flexicubes-diagnostics.jsonl" \
+      PYTHONUNBUFFERED=1 "$root/.venv/bin/python" example_mps.py \
+      --image_path "$image" \
+      --output_dir "$root/results" \
+      --output_name "$name" \
+      --seed 42
+  ) 2>&1 | tee "results/$name/generate.log"
+  run_status="${PIPESTATUS[0]}"
+  set -e
+  end="$(date +%s)"
+  printf '{"name":"%s","seed":42,"elapsed_seconds":%d,"exit_code":%d}\n' \
+    "$name" "$((end - start))" "$run_status" > "results/$name/run.json"
+  if [[ "$run_status" -ne 0 ]]; then
+    status=1
+  fi
+done
+
+"$root/.venv/bin/python" scripts/environment.py > results/environment.json
+exit "$status"

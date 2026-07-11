@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# mise description="Validate generated AniGen GLBs"
+
+set -euo pipefail
+"$(pwd)/.venv/bin/python" scripts/validate.py

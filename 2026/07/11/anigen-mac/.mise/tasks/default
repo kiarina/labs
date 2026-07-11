@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# mise description="Run the AniGen Apple Silicon lab"
+
+set -uo pipefail
+status=0
+mise run generate || status=1
+mise run validate || status=1
+mise run render-preview
+exit "$status"
