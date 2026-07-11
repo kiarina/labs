@@ -17,5 +17,4 @@ build-readme:
 	mise run readme:build
 
 download-test-assets:
-	mise run test-assets:download -- \
-		--output-dir tests/assets v2026.07 labs v1.1.0
+	mise run test-assets:download
