@@ -17,7 +17,7 @@ Use this metadata shape:
 
 Keep source code and configuration in this repository. Put large or reusable
 fixtures in [kiarina/test-assets](https://github.com/kiarina/test-assets), then
-download the required release asset into the shared root-level `assets/`
+download the required release asset into the shared root-level `tests/assets/`
 directory:
 
 ```sh

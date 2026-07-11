@@ -9,7 +9,7 @@ Silero VAD の ONNX モデルを使って、会話音声から発話区間を検
 共有 test asset の次の音声を使用します。
 
 ```text
-assets/mp3/conversation_2speaker_14s_16k.mp3
+tests/assets/mp3/conversation_2speaker_14s_16k.mp3
 ```
 
 ## Requirements
@@ -33,7 +33,7 @@ lab 内へダウンロードします。モデルと出力 WAV は Git の管理
 実行すると、検出した発話区間と出力先が表示されます。
 
 ```text
-audio: .../assets/mp3/conversation_2speaker_14s_16k.mp3
+audio: .../tests/assets/mp3/conversation_2speaker_14s_16k.mp3
 audio duration: 14.171s
 VAD elapsed: 0.028s
 VAD real-time factor: 0.002x

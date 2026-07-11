@@ -21,7 +21,7 @@ Pyannote Segmentation 3.0 の ONNX モデルを使い、会話音声をモデル
 共有 test asset の次の音声を使用します。
 
 ```text
-assets/mp3/conversation_2speaker_14s_16k.mp3
+tests/assets/mp3/conversation_2speaker_14s_16k.mp3
 ```
 
 音声のシナリオは、2 人が交互に発話する次の会話です。

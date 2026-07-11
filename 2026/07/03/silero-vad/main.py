@@ -192,7 +192,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--audio",
         type=Path,
-        default=root_dir / "assets/mp3/conversation_2speaker_14s_16k.mp3",
+        default=root_dir / "tests/assets/mp3/conversation_2speaker_14s_16k.mp3",
     )
     parser.add_argument("--model", type=Path, default=lab_dir / "silero_vad.onnx")
     parser.add_argument("--output", type=Path, default=lab_dir / "output")

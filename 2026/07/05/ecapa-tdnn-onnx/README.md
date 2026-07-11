@@ -22,7 +22,7 @@ L2 norm、推論時間と real-time factor (RTF) を確認します。
 共有 test asset の次の音声を使用します。
 
 ```text
-assets/mp3/conversation_2speaker_14s_16k.mp3
+tests/assets/mp3/conversation_2speaker_14s_16k.mp3
 ```
 
 2 人が交互に 3 回ずつ発話するため、期待するグループは `1, 3, 5` と

@@ -9,7 +9,7 @@ import statistics
 MODEL_URL = "https://media.githubusercontent.com/media/opencv/opencv_zoo/47534e27c9851bb1128ccc0102f1145e27f23f98/models/face_detection_yunet/face_detection_yunet_2023mar_int8bq.onnx"
 MODEL_FILENAME = "face_detection_yunet_2023mar_int8bq.onnx"
 MODEL_SHA256 = "49f000ec501fef24739071fc7e68267d32209045b6822c0c72dce1da25726f10"
-IMAGE_PATH = "../../../../assets/jpg/many_face_1280x720_275kb.jpg"
+IMAGE_PATH = "../../../../tests/assets/jpg/many_face_1280x720_275kb.jpg"
 
 def verify_file(filepath: Path, expected_sha256: str) -> bool:
     if not filepath.exists():

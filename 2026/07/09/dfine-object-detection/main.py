@@ -26,7 +26,7 @@ CONFIG_SHA256 = "9338ef3863d6e95627d4ab06009fa85b1dd523b346b5c3595de2b08862136e9
 INPUT_SIZE = 640
 SCORE_THRESHOLD = 0.5
 BENCHMARK_ITERATIONS = 20
-IMAGE_PATH = Path(__file__).resolve().parents[4] / "assets/jpg/object_detection_desk_scene.png"
+IMAGE_PATH = Path(__file__).resolve().parents[4] / "tests/assets/jpg/objects_1536x1024_358kb.jpg"
 OUTPUT_PATH = Path(__file__).parent / "output_detections.png"
 
 

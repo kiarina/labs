@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # mise description: Download and extract shared test assets
 # For detailed documentation, see: https://github.com/kiarina/test-assets
-# Usage: mise run test-assets:download [--output-dir <dir>] <release-version> <project-name> <assets-version>
-# Example: mise run test-assets:download v2025.09 kiarina-python v1.0.0
+# Usage: mise run test-assets:download [--output-dir <dir>] [<release-version> [<project-name> [<asset-version>]]]
+# Example: mise run test-assets:download
 
 set -e
 
@@ -11,9 +11,9 @@ set -e
 # -----------------------------------------------------------------------------
 # You can hardcode these values here so the script can be run without arguments.
 REPO="kiarina/test-assets"
-RELEASE_VERSION=""  # e.g. "v2026.06"
+RELEASE_VERSION=""  # e.g. "v1"
 PROJECT_NAME=""     # e.g. "my-project"
-ASSETS_VERSION=""   # e.g. "v1.0.0"
+ASSET_VERSION=""    # e.g. "v1"
 OUTPUT_DIR="tests/assets"
 # -----------------------------------------------------------------------------
 
@@ -21,7 +21,14 @@ OUTPUT_DIR="tests/assets"
 POSITIONAL_ARGS=()
 while [[ "$#" -gt 0 ]]; do
     case $1 in
-        --output-dir) OUTPUT_DIR="$2"; shift 2 ;;
+        --output-dir)
+            if [ "$#" -lt 2 ]; then
+                echo "Error: --output-dir requires a value."
+                exit 1
+            fi
+            OUTPUT_DIR="$2"
+            shift 2
+            ;;
         -*) echo "Unknown parameter: $1"; exit 1 ;;
         *) POSITIONAL_ARGS+=("$1"); shift ;;
     esac
@@ -29,21 +36,114 @@ done
 
 set -- "${POSITIONAL_ARGS[@]}"
 
-# Override with positional arguments if provided
-if [ "$#" -ge 1 ]; then RELEASE_VERSION=$1; fi
-if [ "$#" -ge 2 ]; then PROJECT_NAME=$2; fi
-if [ "$#" -ge 3 ]; then ASSETS_VERSION=$3; fi
-
-if [ -z "$RELEASE_VERSION" ] || [ -z "$PROJECT_NAME" ] || [ -z "$ASSETS_VERSION" ]; then
-    echo "Usage: mise run test-assets:download [--output-dir <dir>] <release-version> <project-name> <assets-version>"
-    echo "Example: mise run test-assets:download v2025.09 kiarina-python v1.0.0"
-    echo ""
-    echo "Alternatively, you can edit the variables at the top of this script to run without arguments."
+if [ "$#" -gt 3 ]; then
+    echo "Usage: mise run test-assets:download [--output-dir <dir>] [<release-version> [<project-name> [<asset-version>]]]"
     exit 1
 fi
 
-ASSET_FILENAME="${PROJECT_NAME}-assets-${ASSETS_VERSION}.tar.zst"
-DOWNLOAD_URL="https://github.com/${REPO}/releases/download/${RELEASE_VERSION}/${ASSET_FILENAME}"
+# Override with positional arguments if provided
+if [ "$#" -ge 1 ]; then RELEASE_VERSION=$1; fi
+if [ "$#" -ge 2 ]; then PROJECT_NAME=$2; fi
+if [ "$#" -ge 3 ]; then ASSET_VERSION=$3; fi
+
+if ! command -v jq &> /dev/null; then
+    echo "Error: jq is required to resolve and validate release assets."
+    exit 1
+fi
+
+if ! command -v curl &> /dev/null && ! command -v wget &> /dev/null; then
+    echo "Error: Neither curl nor wget is installed."
+    exit 1
+fi
+
+fetch_release() {
+    local api_url=$1
+
+    if command -v curl &> /dev/null; then
+        local curl_args=(-fsSL -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28")
+        if [ -n "${GITHUB_TOKEN:-}" ]; then
+            curl_args+=(-H "Authorization: Bearer ${GITHUB_TOKEN}")
+        fi
+        curl "${curl_args[@]}" "$api_url"
+    else
+        local wget_args=(-qO- --header="Accept: application/vnd.github+json" --header="X-GitHub-Api-Version: 2022-11-28")
+        if [ -n "${GITHUB_TOKEN:-}" ]; then
+            wget_args+=(--header="Authorization: Bearer ${GITHUB_TOKEN}")
+        fi
+        wget "${wget_args[@]}" "$api_url"
+    fi
+}
+
+if [ -z "$RELEASE_VERSION" ]; then
+    RELEASE_API_URL="https://api.github.com/repos/${REPO}/releases/latest"
+    echo "No release version specified. Resolving the latest release from $REPO..."
+else
+    if [[ ! "$RELEASE_VERSION" =~ ^v[1-9][0-9]*$ ]]; then
+        echo "Error: Release version must use the format v<positive-integer> (e.g. v1)."
+        exit 1
+    fi
+    RELEASE_API_URL="https://api.github.com/repos/${REPO}/releases/tags/${RELEASE_VERSION}"
+fi
+
+if ! RELEASE_JSON=$(fetch_release "$RELEASE_API_URL"); then
+    echo "Error: Failed to fetch release metadata from $RELEASE_API_URL"
+    exit 1
+fi
+
+RESOLVED_RELEASE_VERSION=$(jq -r '.tag_name // empty' <<< "$RELEASE_JSON")
+if [[ ! "$RESOLVED_RELEASE_VERSION" =~ ^v[1-9][0-9]*$ ]]; then
+    echo "Error: The resolved release tag '${RESOLVED_RELEASE_VERSION:-<empty>}' does not use the required v<positive-integer> format."
+    exit 1
+fi
+RELEASE_VERSION=$RESOLVED_RELEASE_VERSION
+
+if [ -z "$PROJECT_NAME" ]; then
+    if ! ORIGIN_URL=$(git config --get remote.origin.url 2>/dev/null) || [ -z "$ORIGIN_URL" ]; then
+        echo "Error: Project name was not specified and could not be inferred because Git remote 'origin' is unavailable."
+        exit 1
+    fi
+    PROJECT_NAME=${ORIGIN_URL%/}
+    PROJECT_NAME=${PROJECT_NAME##*/}
+    PROJECT_NAME=${PROJECT_NAME##*:}
+    PROJECT_NAME=${PROJECT_NAME%.git}
+    if [ -z "$PROJECT_NAME" ]; then
+        echo "Error: Project name could not be inferred from origin URL: $ORIGIN_URL"
+        exit 1
+    fi
+    echo "No project name specified. Using repository name: $PROJECT_NAME"
+fi
+
+MATCHING_VERSIONS=()
+while IFS= read -r asset_name; do
+    version=${asset_name#"${PROJECT_NAME}-assets-v"}
+    version=${version%.tar.zst}
+    if [[ "$version" =~ ^[1-9][0-9]*$ ]]; then
+        MATCHING_VERSIONS+=("$version")
+    fi
+done < <(jq -r --arg prefix "${PROJECT_NAME}-assets-v" '.assets[]?.name | select(startswith($prefix)) | select(endswith(".tar.zst"))' <<< "$RELEASE_JSON")
+
+if [ "${#MATCHING_VERSIONS[@]}" -eq 0 ]; then
+    echo "Error: No asset matching ${PROJECT_NAME}-assets-v<version>.tar.zst was found in release $RELEASE_VERSION."
+    exit 1
+fi
+
+if [ -z "$ASSET_VERSION" ]; then
+    HIGHEST_VERSION=$(printf '%s\n' "${MATCHING_VERSIONS[@]}" | sort -n | tail -n 1)
+    ASSET_VERSION="v${HIGHEST_VERSION}"
+    echo "No asset version specified. Using highest available version: $ASSET_VERSION"
+elif [[ ! "$ASSET_VERSION" =~ ^v[1-9][0-9]*$ ]]; then
+    echo "Error: Asset version must use the format v<positive-integer> (e.g. v1)."
+    exit 1
+fi
+
+ASSET_FILENAME="${PROJECT_NAME}-assets-${ASSET_VERSION}.tar.zst"
+if ! jq -e --arg name "$ASSET_FILENAME" 'any(.assets[]?; .name == $name)' <<< "$RELEASE_JSON" >/dev/null; then
+    echo "Error: Asset $ASSET_FILENAME was not found in release $RELEASE_VERSION."
+    exit 1
+fi
+
+CACHE_BUST="$(date +%s)-$$-${RANDOM}"
+DOWNLOAD_URL="https://github.com/${REPO}/releases/download/${RELEASE_VERSION}/${ASSET_FILENAME}?cachebust=${CACHE_BUST}"
 
 echo "======================================"
 echo "Downloading Assets"

@@ -14,7 +14,7 @@
 - 各 lab に `README.md`、`metadata.json`、`.gitignore` を置く
 - lab 固有の task は、その lab の `.mise/tasks/` に置く
 - 大きな画像、動画、データセット、バイナリは Git に追加しない
-- 共有アセットはルートの `assets/` にダウンロードして使用する
+- 共有アセットはルートの `tests/assets/` にダウンロードして使用する
 
 `metadata.json` は次の形式です。
 
@@ -70,7 +70,7 @@ make
 # metadata.json からルート README を再生成
 make build-readme
 
-# 固定バージョンの共有アセットを assets/ に取得
+# 固定バージョンの共有アセットを tests/assets/ に取得
 make download-test-assets
 
 # ひとつの lab だけを実行
@@ -85,4 +85,4 @@ mise -C YYYY/MM/DD/{slug} run
 - 変更対象の task・テストを実行する
 - `make build-readme` を実行し、生成差分を含める
 - `git diff --check` で whitespace error がないことを確認する
-- `assets/` やその他の重い生成物が Git の追跡対象に入っていないことを確認する
+- `tests/assets/` やその他の重い生成物が Git の追跡対象に入っていないことを確認する
