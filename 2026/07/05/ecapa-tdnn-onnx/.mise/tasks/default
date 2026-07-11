@@ -2,6 +2,8 @@
 #MISE description="Segment test audio and group speakers with ECAPA-TDNN embeddings"
 set -euo pipefail
 
+mise run //:test-assets:download
+
 scd_model="scd.onnx"
 if [[ ! -f "$scd_model" ]]; then
   curl --fail --location --output "$scd_model" \

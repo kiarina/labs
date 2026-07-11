@@ -2,6 +2,8 @@
 #MISE description="Detect speaker changes and extract segments from the test audio"
 set -euo pipefail
 
+mise run //:test-assets:download
+
 model="model.onnx"
 if [[ ! -f "$model" ]]; then
   curl --fail --location --output "$model" \

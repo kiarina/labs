@@ -2,6 +2,8 @@
 #MISE description="Detect and extract speech segments from the test audio"
 set -euo pipefail
 
+mise run //:test-assets:download
+
 model="silero_vad.onnx"
 if [[ ! -f "$model" ]]; then
   curl --fail --location --output "$model" \

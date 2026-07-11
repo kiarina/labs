@@ -3,4 +3,6 @@
 
 set -euo pipefail
 
+mise run //:test-assets:download
+
 uv run main.py
