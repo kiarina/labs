@@ -38,6 +38,8 @@
   `kiarina/test-assets` からコピーしたファイルとして維持し、独自変更しない
 - `tests/assets/` 以下のファイルを使う検証では、
   `mise run` 時に `mise run //:test-assets:download` を最初に実行する
+- ローカル環境のパスが漏洩しないように、README やスクリプト中では、
+  絶対パスを使わず、相対パスや環境変数を使う
 
 ## 検証の方針
 
