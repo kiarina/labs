@@ -19,6 +19,7 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 ## Labs
 
 - 2026/07
+  - [PP-OCRv6-small with RapidOCR](2026/07/12/pp-ocrv6-small-rapidocr/README.md) - [image](tags/image.md), [ocr](tags/ocr.md), [onnx](tags/onnx.md), [pp-ocrv6](tags/pp-ocrv6.md), [rapidocr](tags/rapidocr.md)
   - [AniGen on Apple Silicon](2026/07/11/anigen-mac/README.md) - [image](tags/image.md), [3d](tags/3d.md), [animation](tags/animation.md), [anigen](tags/anigen.md), [apple-silicon](tags/apple-silicon.md), [mps](tags/mps.md)
   - [SFace face embedding dataset comparison](2026/07/10/sface-face-embedding/README.md) - [image](tags/image.md), [embedding](tags/embedding.md), [face](tags/face.md), [sface](tags/sface.md), [opencv](tags/opencv.md)
   - [D-FINE Object Detection](2026/07/09/dfine-object-detection/README.md) - [image](tags/image.md), [detection](tags/detection.md), [onnx](tags/onnx.md), [dfine](tags/dfine.md), [object-detection](tags/object-detection.md)
