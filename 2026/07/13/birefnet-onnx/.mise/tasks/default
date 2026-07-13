@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# mise description="Run BiRefNet ONNX background removal"
+
+set -euo pipefail
+
+mise run //:test-assets:download
+
+uv run main.py

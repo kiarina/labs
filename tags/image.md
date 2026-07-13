@@ -1,5 +1,6 @@
 # image
 
+- 2026/07/13 [BiRefNet ONNX background removal](../2026/07/13/birefnet-onnx/README.md)
 - 2026/07/12 [PP-OCRv6-small with RapidOCR](../2026/07/12/pp-ocrv6-small-rapidocr/README.md)
 - 2026/07/11 [AniGen on Apple Silicon](../2026/07/11/anigen-mac/README.md)
 - 2026/07/10 [SFace face embedding dataset comparison](../2026/07/10/sface-face-embedding/README.md)
