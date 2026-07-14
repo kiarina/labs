@@ -1,4 +1,3 @@
-# onnx-runtime
+# semantic-segmentation
 
 - 2026/07/14 [YOLO26 semantic segmentation on Apple Silicon](../2026/07/14/yolo26-semantic-segmentation/README.md)
-- 2026/07/13 [BiRefNet ONNX background removal](../2026/07/13/birefnet-onnx/README.md)

@@ -1,5 +1,6 @@
 # onnx
 
+- 2026/07/14 [YOLO26 semantic segmentation on Apple Silicon](../2026/07/14/yolo26-semantic-segmentation/README.md)
 - 2026/07/13 [BiRefNet ONNX background removal](../2026/07/13/birefnet-onnx/README.md)
 - 2026/07/12 [PP-OCRv6-small with RapidOCR](../2026/07/12/pp-ocrv6-small-rapidocr/README.md)
 - 2026/07/09 [D-FINE Object Detection](../2026/07/09/dfine-object-detection/README.md)

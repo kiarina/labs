@@ -41,6 +41,16 @@
 - ローカル環境のパスが漏洩しないように、README やスクリプト中では、
   絶対パスを使わず、相対パスや環境変数を使う
 
+## 研究に生成したメディアを使う場合の手順
+
+画像・音声・動画などのメディアを生成して研究に使う場合、下記の手順でファイルを管理してください。
+
+jpg の例:
+- ファイル名を `{slug}_{w}x{h}_{size}kb.jpg` の形式にする
+- ~/src/github.com/kiarina/test-assets/src/v1/labs-assets-v1/jpg/ にファイルを配置する
+- `cd ~/src/github.com/kiarina/test-assets && mise run build v1 && mise run release v1` を実行する
+- このプロジェクトで `make download-test-assets` を実行し、`tests/assets/jpg/` にファイルがコピーされることを確認する
+
 ## 検証の方針
 
 この方針は、新しい lab と、検証内容を実質的に変更する既存の lab に適用します。
