@@ -19,6 +19,7 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 ## Labs
 
 - 2026/07
+  - [ZipDepth on Apple Silicon](2026/07/15/zipdepth-apple-silicon/README.md) - [image](tags/image.md), [depth-estimation](tags/depth-estimation.md), [zipdepth](tags/zipdepth.md), [onnx](tags/onnx.md), [apple-silicon](tags/apple-silicon.md)
   - [YOLO26 semantic segmentation on Apple Silicon](2026/07/14/yolo26-semantic-segmentation/README.md) - [image](tags/image.md), [semantic-segmentation](tags/semantic-segmentation.md), [yolo26](tags/yolo26.md), [onnx](tags/onnx.md), [onnx-runtime](tags/onnx-runtime.md)
   - [BiRefNet ONNX background removal](2026/07/13/birefnet-onnx/README.md) - [image](tags/image.md), [background-removal](tags/background-removal.md), [onnx](tags/onnx.md), [birefnet](tags/birefnet.md), [onnx-runtime](tags/onnx-runtime.md)
   - [PP-OCRv6-small with RapidOCR](2026/07/12/pp-ocrv6-small-rapidocr/README.md) - [image](tags/image.md), [ocr](tags/ocr.md), [onnx](tags/onnx.md), [pp-ocrv6](tags/pp-ocrv6.md), [rapidocr](tags/rapidocr.md)
