@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# mise description="Generate a textured MoGe mesh and render a Blender camera move"
+
+set -euo pipefail
+
+mise run //:test-assets:download
+
+input="../../../../tests/assets/jpg/street_scene_1774x887_287kb.jpg"
+scene_dir="output/3d/street_scene_1774x887_287kb"
+render_dir="output/blender"
+
+uv run moge infer \
+  --input "$input" \
+  --output output/3d \
+  --pretrained model.pt \
+  --version v2 \
+  --device mps \
+  --resize 768 \
+  --resolution_level 5 \
+  --threshold 0.04 \
+  --glb \
+  --maps
+
+rm -rf "$render_dir/frames"
+mkdir -p "$render_dir/frames"
+
+/Applications/Blender.app/Contents/MacOS/Blender \
+  --background \
+  --factory-startup \
+  --python-exit-code 1 \
+  --python render_blender.py \
+  -- \
+  --glb "$scene_dir/mesh.glb" \
+  --fov "$scene_dir/fov.json" \
+  --name moge2_street \
+  --output "$render_dir"
+
+/opt/homebrew/bin/ffmpeg -y \
+  -framerate 30 \
+  -i "$render_dir/frames/%04d.png" \
+  -c:v libx264 \
+  -preset slow \
+  -crf 18 \
+  -pix_fmt yuv420p \
+  -movflags +faststart \
+  "$render_dir/moge2_street_camera_move.mp4"

@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# mise description="Generate textured MoGe meshes and Blender videos for both miineko images"
+
+set -euo pipefail
+
+mise run //:test-assets:download
+
+for filename in \
+  miineko1-1448x1086-221kb.jpg \
+  miineko2-1448x1086-314kb.jpg
+do
+  slug="${filename%.jpg}"
+  scene_dir="output/3d/$slug"
+  render_dir="output/blender/$slug"
+
+  uv run moge infer \
+    --input "../../../../tests/assets/jpg/$filename" \
+    --output output/3d \
+    --pretrained model.pt \
+    --version v2 \
+    --device mps \
+    --resize 768 \
+    --resolution_level 5 \
+    --threshold 0.04 \
+    --glb \
+    --maps
+
+  rm -rf "$render_dir/frames"
+  mkdir -p "$render_dir/frames"
+
+  /Applications/Blender.app/Contents/MacOS/Blender \
+    --background \
+    --factory-startup \
+    --python-exit-code 1 \
+    --python render_blender.py \
+    -- \
+    --glb "$scene_dir/mesh.glb" \
+    --fov "$scene_dir/fov.json" \
+    --name "$slug" \
+    --target-distance 10 \
+    --camera-shift 0.5 \
+    --output "$render_dir"
+
+  /opt/homebrew/bin/ffmpeg -y \
+    -framerate 30 \
+    -i "$render_dir/frames/%04d.png" \
+    -c:v libx264 \
+    -preset slow \
+    -crf 18 \
+    -pix_fmt yuv420p \
+    -movflags +faststart \
+    "$render_dir/camera_move.mp4"
+done

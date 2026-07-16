@@ -1,0 +1,13 @@
+[project]
+name = "moge2-surface-normal-apple-silicon"
+version = "0.1.0"
+description = "MoGe-2 surface normal inference on Apple Silicon CPU and MPS"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "matplotlib>=3.11.0",
+    "moge @ git+https://github.com/microsoft/MoGe.git@07444410f1e33f402353b99d6ccd26bd31e469e8",
+    "numpy>=2.5.1",
+    "opencv-python-headless>=4.13.0.92",
+    "torch>=2.13.0",
+]

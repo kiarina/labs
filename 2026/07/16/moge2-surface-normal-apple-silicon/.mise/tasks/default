@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# mise description="Run MoGe-2 surface normal Apple Silicon comparison"
+
+set -euo pipefail
+
+mise run //:test-assets:download
+
+uv run main.py
