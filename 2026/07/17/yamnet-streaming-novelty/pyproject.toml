@@ -1,0 +1,13 @@
+[project]
+name = "yamnet-streaming-novelty"
+version = "0.1.0"
+description = "Compare streaming spectral and YAMNet novelty detectors"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "numpy==2.3.5",
+    "tensorflow==2.21.0",
+]
+
+[tool.uv]
+package = false

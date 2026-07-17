@@ -1,4 +1,3 @@
-# yamnet
+# tensorflow
 
 - 2026/07/17 [YAMNet streaming acoustic novelty detection](../2026/07/17/yamnet-streaming-novelty/README.md)
-- 2026/07/07 [YAMNet audio tagging on ESC-50](../2026/07/07/yamnet-esc50-audio-tagging/README.md)
