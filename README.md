@@ -19,6 +19,7 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 ## Labs
 
 - 2026/07
+  - [MediaPipe Holistic real-time VRM retargeting](2026/07/18/mediapipe-holistic-vrm/README.md) - [image](tags/image.md), [pose-estimation](tags/pose-estimation.md), [mediapipe](tags/mediapipe.md), [vrm](tags/vrm.md), [three-js](tags/three-js.md), [streaming](tags/streaming.md)
   - [YAMNet streaming acoustic novelty detection](2026/07/17/yamnet-streaming-novelty/README.md) - [audio](tags/audio.md), [yamnet](tags/yamnet.md), [anomaly-detection](tags/anomaly-detection.md), [streaming](tags/streaming.md), [tensorflow](tags/tensorflow.md), [esc-50](tags/esc-50.md)
   - [MoGe-2 surface normals on Apple Silicon](2026/07/16/moge2-surface-normal-apple-silicon/README.md) - [image](tags/image.md), [surface-normal](tags/surface-normal.md), [depth-estimation](tags/depth-estimation.md), [moge-2](tags/moge-2.md), [apple-silicon](tags/apple-silicon.md), [mps](tags/mps.md)
   - [ZipDepth on Apple Silicon](2026/07/15/zipdepth-apple-silicon/README.md) - [image](tags/image.md), [depth-estimation](tags/depth-estimation.md), [zipdepth](tags/zipdepth.md), [onnx](tags/onnx.md), [apple-silicon](tags/apple-silicon.md)

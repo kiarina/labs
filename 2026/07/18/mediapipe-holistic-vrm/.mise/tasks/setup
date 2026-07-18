@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# mise description="Install dependencies and download pinned runtime models"
+
+set -euo pipefail
+
+npm ci
+mkdir -p public/models
+mkdir -p public/wasm
+cp node_modules/@mediapipe/tasks-vision/wasm/* public/wasm/
+
+download_checked() {
+  local url="$1"
+  local output="$2"
+  local expected="$3"
+  if [[ ! -f "$output" ]] || [[ "$(shasum -a 256 "$output" | cut -d ' ' -f 1)" != "$expected" ]]; then
+    curl --fail --location --retry 3 "$url" --output "$output"
+  fi
+  echo "$expected  $output" | shasum -a 256 --check
+}
+
+download_checked \
+  "https://storage.googleapis.com/mediapipe-models/holistic_landmarker/holistic_landmarker/float16/latest/holistic_landmarker.task" \
+  "public/models/holistic_landmarker.task" \
+  "e2dab61191e2dcd0a15f943d8e3ed1dce13c82dfa597b9dd39f562975a50c3f8"
+
+download_checked \
+  "https://raw.githubusercontent.com/vrm-c/vrm-specification/3942748efbc803b258e288e0f6c993c6bb96cebf/samples/Seed-san/vrm/Seed-san.vrm" \
+  "public/models/Seed-san.vrm" \
+  "624d0d554bc205bbdc33e22a68a2c3c20edebb3e573011ead8878a65e5329b23"

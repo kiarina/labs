@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#090d14" />
+    <title>Holistic → VRM Motion Lab</title>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">2026.07.18 / MOTION LAB</p>
+          <h1>Holistic <span>→</span> VRM</h1>
+        </div>
+        <div class="status" id="status" data-state="loading">
+          <i></i><span>モデルを準備中</span>
+        </div>
+      </header>
+
+      <section class="stage-grid">
+        <article class="stage-card camera-card">
+          <div class="card-heading">
+            <div><span class="index">01</span><h2>CAMERA / LANDMARKS</h2></div>
+            <span class="metric"><b id="inference-fps">0.0</b> inference fps</span>
+          </div>
+          <div class="camera-stage">
+            <video id="camera" playsinline muted></video>
+            <canvas id="overlay"></canvas>
+            <span class="privacy-badge">CAMERA IMAGE HIDDEN · TRACKING ACTIVE</span>
+            <div class="camera-placeholder" id="camera-placeholder">
+              <span class="target"></span>
+              <p>カメラを開始すると<br />543点の身体特徴を追跡します</p>
+            </div>
+          </div>
+          <div class="tracking-strip">
+            <span id="track-pose"><i></i>BODY</span>
+            <span id="track-face"><i></i>FACE</span>
+            <span id="track-left-hand"><i></i>LEFT HAND</span>
+            <span id="track-right-hand"><i></i>RIGHT HAND</span>
+          </div>
+        </article>
+
+        <article class="stage-card avatar-card">
+          <div class="card-heading">
+            <div><span class="index">02</span><h2>VRM / RETARGET</h2></div>
+            <span class="metric"><b id="render-fps">0</b> render fps</span>
+          </div>
+          <div class="avatar-stage" id="avatar-stage">
+            <canvas id="avatar"></canvas>
+            <div class="drop-hint" id="drop-hint">VRMをここにドロップ</div>
+          </div>
+          <div class="avatar-meta">
+            <span id="avatar-name">Seed-san / VRM 1.0</span>
+            <span id="bone-count">0 bones driven</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="control-deck">
+        <div class="primary-actions">
+          <button id="camera-toggle" class="primary" disabled>カメラを開始</button>
+          <label class="file-button">
+            VRMを選択
+            <input id="vrm-file" type="file" accept=".vrm,model/gltf-binary" />
+          </label>
+        </div>
+        <label class="control">
+          <span>SMOOTHING <output id="smooth-value">0.55</output></span>
+          <input id="smoothing" type="range" min="0" max="0.92" value="0.55" step="0.01" />
+        </label>
+        <label class="toggle">
+          <input id="mirror" type="checkbox" checked />
+          <span></span>
+          MIRROR
+        </label>
+        <label class="toggle" title="推論を継続したまま、画面上のカメラ映像だけを隠します">
+          <input id="show-camera" type="checkbox" checked />
+          <span></span>
+          SHOW VIDEO
+        </label>
+        <label class="toggle" title="姿勢・顔・手のlandmark描画を切り替えます">
+          <input id="show-landmarks" type="checkbox" checked />
+          <span></span>
+          LANDMARKS
+        </label>
+        <div class="latency">
+          <span>LAST INFERENCE</span>
+          <strong><b id="latency">—</b> ms</strong>
+        </div>
+      </section>
+
+      <footer>
+        <p>MediaPipe Holistic Landmarker 0.10.35</p>
+        <p>33 pose · 468 face · 21 × 2 hands · 52 blendshapes</p>
+      </footer>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

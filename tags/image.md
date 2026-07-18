@@ -1,5 +1,6 @@
 # image
 
+- 2026/07/18 [MediaPipe Holistic real-time VRM retargeting](../2026/07/18/mediapipe-holistic-vrm/README.md)
 - 2026/07/16 [MoGe-2 surface normals on Apple Silicon](../2026/07/16/moge2-surface-normal-apple-silicon/README.md)
 - 2026/07/15 [ZipDepth on Apple Silicon](../2026/07/15/zipdepth-apple-silicon/README.md)
 - 2026/07/14 [YOLO26 semantic segmentation on Apple Silicon](../2026/07/14/yolo26-semantic-segmentation/README.md)

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# mise description="Open the interactive webcam and VRM demo"
+
+set -euo pipefail
+
+mise run setup
+npm run dev

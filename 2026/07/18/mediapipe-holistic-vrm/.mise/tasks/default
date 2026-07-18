@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# mise description="Test and build the MediaPipe Holistic VRM lab"
+
+set -euo pipefail
+
+mise run setup
+npm test
+npm run build
