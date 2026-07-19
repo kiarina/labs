@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Open the local MeanVC browser demo"
+set -euo pipefail
+
+repo_root=$(git rev-parse --show-toplevel)
+
+mise run //:test-assets:download v1 labs v1
+LABS_REPO_ROOT="$repo_root" uv run python demo_server.py "$@"

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#MISE description="Benchmark MeanVC streaming zero-shot voice conversion"
+set -euo pipefail
+
+repo_root=$(git rev-parse --show-toplevel)
+
+mise run //:test-assets:download v1 labs v1
+uv run python main.py \
+  --audio "$repo_root/tests/assets/mp3/conversation_2speaker_14s_16k.mp3"

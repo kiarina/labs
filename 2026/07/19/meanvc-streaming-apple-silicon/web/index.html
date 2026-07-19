@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MeanVC Voice Lab</title>
+  <style>
+    :root { color-scheme: dark; --ink:#f5f2e9; --muted:#aaa79f; --line:#393832; --orange:#ff7043; --lime:#d7ff5f; }
+    * { box-sizing: border-box; }
+    body { margin:0; min-height:100vh; color:var(--ink); background:#11120f; font:15px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace; }
+    body::before { content:""; position:fixed; inset:0; pointer-events:none; opacity:.16; background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px); background-size:32px 32px; }
+    main { position:relative; width:min(1080px,calc(100% - 32px)); margin:auto; padding:64px 0 48px; }
+    .eyebrow { color:var(--lime); letter-spacing:.16em; text-transform:uppercase; }
+    h1 { max-width:850px; margin:14px 0 16px; font:clamp(42px,8vw,92px)/.92 Arial Black,Impact,sans-serif; letter-spacing:-.06em; text-transform:uppercase; }
+    .lead { max-width:680px; color:var(--muted); font-size:16px; }
+    .panel { margin-top:40px; border:1px solid var(--line); background:rgba(21,22,18,.94); box-shadow:10px 10px 0 #080906; }
+    .panel-head { display:flex; justify-content:space-between; gap:16px; padding:14px 18px; border-bottom:1px solid var(--line); color:var(--muted); }
+    .status { display:flex; align-items:center; gap:8px; color:var(--lime); }
+    .dot { width:9px; height:9px; border-radius:50%; background:currentColor; box-shadow:0 0 12px currentColor; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; }
+    .slot { min-width:0; padding:24px; }
+    .slot + .slot { border-left:1px solid var(--line); }
+    .number { color:var(--orange); font-size:12px; }
+    h2 { margin:8px 0 6px; font:700 24px/1.1 Arial,sans-serif; }
+    .hint { min-height:48px; color:var(--muted); }
+    .drop { display:block; margin-top:18px; padding:28px 16px; border:1px dashed #57564e; text-align:center; cursor:pointer; transition:.2s; }
+    .drop:hover,.drop.drag { border-color:var(--lime); background:#1c2015; }
+    input[type=file] { position:absolute; opacity:0; pointer-events:none; }
+    audio { width:100%; margin-top:16px; height:42px; }
+    .actions { display:flex; flex-wrap:wrap; gap:12px; align-items:center; padding:22px 24px; border-top:1px solid var(--line); }
+    button { border:0; padding:14px 20px; font:700 14px/1 ui-monospace,monospace; cursor:pointer; }
+    .primary { background:var(--lime); color:#10110d; }
+    .secondary { color:var(--ink); background:#2b2c27; }
+    button:disabled { opacity:.4; cursor:not-allowed; }
+    #message { margin-left:auto; color:var(--muted); }
+    .result { display:none; padding:24px; border-top:1px solid var(--line); background:#171a11; }
+    .result.show { display:block; }
+    .result-top { display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:end; }
+    .live { padding:24px; border-top:1px solid var(--line); background:#131411; }
+    .live-row { display:flex; gap:24px; align-items:center; justify-content:space-between; }
+    .live-copy { max-width:650px; }
+    .live-copy h2 { margin-top:6px; }
+    .live-controls { display:flex; gap:12px; flex-shrink:0; }
+    .record { background:var(--orange); color:#160a06; }
+    .record.on { animation:pulse 1.2s infinite; }
+    .live-meter { height:5px; margin-top:18px; background:#292a25; overflow:hidden; }
+    .live-meter i { display:block; width:0; height:100%; background:var(--lime); transition:width .08s; }
+    .live-stats { display:flex; gap:24px; margin-top:12px; color:var(--muted); font-size:12px; }
+    @keyframes pulse { 50% { box-shadow:0 0 0 8px rgba(255,112,67,.15); } }
+    .metrics { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+    .metric { padding:15px; background:#171a11; }
+    .metric strong { display:block; color:var(--lime); font-size:20px; }
+    footer { margin-top:30px; color:#77766e; }
+    @media (max-width:720px) { main{padding-top:36px}.grid,.result-top{grid-template-columns:1fr}.slot+.slot{border-left:0;border-top:1px solid var(--line)}.actions{align-items:stretch}.actions button{flex:1}#message{width:100%;margin:0}.metrics{grid-template-columns:1fr}.live-row{display:block}.live-controls{margin-top:18px}.live-controls button{flex:1} }
+  </style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">Local inference / Apple Silicon</div>
+  <h1>Voice<br>Transfer Lab</h1>
+  <p class="lead">話す内容をsourceから、声の特徴をtargetから。MeanVCの200 msストリーミング変換をローカルで試します。音声は外部へ送信されません。</p>
+  <section class="panel">
+    <div class="panel-head"><span>MEANVC / 2 STEPS / 16 KHZ</span><span class="status"><i class="dot"></i><span id="state">COLD</span></span></div>
+    <div class="grid">
+      <div class="slot">
+        <span class="number">01 — CONTENT</span><h2>Source voice</h2>
+        <p class="hint">変換したい発話。30秒以内の音声を選択してください。</p>
+        <label class="drop" data-for="source"><b>音声を選択 / DROP</b><br><span id="source-name">WAV, MP3, M4A...</span></label>
+        <input id="source" type="file" accept="audio/*"><audio id="source-player" controls hidden></audio>
+      </div>
+      <div class="slot">
+        <span class="number">02 — IDENTITY</span><h2>Target voice</h2>
+        <p class="hint">真似したい声の参照。雑音の少ない1秒以上の音声を推奨します。</p>
+        <label class="drop" data-for="target"><b>音声を選択 / DROP</b><br><span id="target-name">WAV, MP3, M4A...</span></label>
+        <input id="target" type="file" accept="audio/*"><audio id="target-player" controls hidden></audio>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="primary" id="convert" disabled>VOICE CHANGE →</button>
+      <button class="secondary" id="sample">サンプルで試す</button>
+      <span id="message">音声を2つ選択してください</span>
+    </div>
+    <div class="live">
+      <div class="live-row">
+        <div class="live-copy"><span class="number">LIVE — MICROPHONE</span><h2>リアルタイム・マイク変換</h2><span class="hint">target音声を選び、ヘッドホンを装着して開始してください。200 msごとに変換音声を再生します。</span></div>
+        <div class="live-controls"><button class="record" id="live-start" disabled>● LIVE START</button><button class="secondary" id="live-stop" disabled>■ STOP</button></div>
+      </div>
+      <div class="live-meter"><i id="meter"></i></div>
+      <div class="live-stats"><span id="live-state">TARGETを選択してください</span><span id="live-chunks"></span><span id="live-latency"></span></div>
+    </div>
+    <div class="result" id="result">
+      <div class="result-top"><div><span class="number">03 — OUTPUT</span><h2>Converted voice</h2><audio id="output" controls></audio></div><div class="metrics"><div class="metric"><span>REALTIME FACTOR</span><strong id="rtf">—</strong></div><div class="metric"><span>CHUNK P50</span><strong id="p50">—</strong></div><div class="metric"><span>INFERENCE</span><strong id="elapsed">—</strong></div></div></div>
+    </div>
+  </section>
+  <footer>Use only voices you have permission to process. Generated speech can be mistaken for a real speaker.</footer>
+</main>
+<script>
+const $=s=>document.querySelector(s), files={source:null,target:null};
+const live={active:false,context:null,stream:null,input:null,processor:null,gain:null,pending:new Float32Array(0),queue:Promise.resolve(),nextTime:0,config:null,count:0,queued:0};
+for(const kind of ['source','target']){
+  const input=$('#'+kind), drop=$(`[data-for="${kind}"]`), player=$('#'+kind+'-player');
+  drop.onclick=()=>input.click(); input.onchange=()=>setFile(kind,input.files[0]);
+  for(const event of ['dragenter','dragover']) drop.addEventListener(event,e=>{e.preventDefault();drop.classList.add('drag')});
+  for(const event of ['dragleave','drop']) drop.addEventListener(event,e=>{e.preventDefault();drop.classList.remove('drag')});
+  drop.addEventListener('drop',e=>setFile(kind,e.dataTransfer.files[0]));
+  function setFile(k,file){ if(!file)return; if(!file.type.startsWith('audio/'))return setMessage('音声ファイルを選択してください',true); files[k]=file; $('#'+k+'-name').textContent=file.name; player.src=URL.createObjectURL(file); player.hidden=false; $('#convert').disabled=!(files.source&&files.target); if(k==='target'){ $('#live-start').disabled=false; $('#live-state').textContent='マイク変換を開始できます'; } setMessage(files.source&&files.target?'変換できます':'もう一方の音声を選択してください'); }
+}
+function setMessage(text,error=false){const m=$('#message');m.textContent=text;m.style.color=error?'#ff7043':''}
+function asDataURL(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)})}
+async function run(sample){
+  $('#convert').disabled=true;$('#sample').disabled=true;$('#result').classList.remove('show');setMessage('変換中… 初回はモデル読込に時間がかかります');$('#state').textContent='WORKING';
+  try{const body=sample?{sample:true}:{source:await asDataURL(files.source),target:await asDataURL(files.target)};const response=await fetch('/api/convert',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const data=await response.json();if(!response.ok)throw new Error(data.error||'変換に失敗しました');$('#output').src=data.audio;$('#rtf').textContent=data.metrics.realtime_factor.toFixed(3)+'×';$('#p50').textContent=data.metrics.chunk_p50_ms.toFixed(1)+' ms';$('#elapsed').textContent=data.metrics.inference_seconds.toFixed(2)+' s';$('#result').classList.add('show');setMessage(data.metrics.model_load_seconds?'モデルを読み込み、変換しました':'変換しました');$('#state').textContent='READY';}
+  catch(error){setMessage(error.message,true);$('#state').textContent='ERROR'}finally{$('#convert').disabled=!(files.source&&files.target);$('#sample').disabled=false}
+}
+$('#convert').onclick=()=>run(false);$('#sample').onclick=()=>run(true);
+fetch('/api/status').then(r=>r.json()).then(s=>$('#state').textContent=s.state.toUpperCase());
+
+function resample(input,fromRate,toRate){
+  if(fromRate===toRate)return new Float32Array(input);
+  const length=Math.round(input.length*toRate/fromRate), output=new Float32Array(length), ratio=fromRate/toRate;
+  for(let i=0;i<length;i++){const position=i*ratio,left=Math.floor(position),right=Math.min(left+1,input.length-1),mix=position-left;output[i]=input[left]*(1-mix)+input[right]*mix}
+  return output;
+}
+function appendSamples(next){const joined=new Float32Array(live.pending.length+next.length);joined.set(live.pending);joined.set(next,live.pending.length);live.pending=joined}
+function pcmToBase64(samples){const bytes=new Uint8Array(samples.buffer,samples.byteOffset,samples.byteLength);let text='';for(let i=0;i<bytes.length;i+=8192)text+=String.fromCharCode(...bytes.subarray(i,i+8192));return btoa(text)}
+function base64ToPcm(value){const text=atob(value),bytes=new Uint8Array(text.length);for(let i=0;i<text.length;i++)bytes[i]=text.charCodeAt(i);return new Float32Array(bytes.buffer)}
+async function sendLiveChunk(chunk){
+  const response=await fetch('/api/live/chunk',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({samples:pcmToBase64(chunk)})});const data=await response.json();if(!response.ok)throw new Error(data.error||'ライブ変換に失敗しました');
+  const pcm=base64ToPcm(data.samples),buffer=live.context.createBuffer(1,pcm.length,16000);buffer.copyToChannel(pcm,0);const node=live.context.createBufferSource();node.buffer=buffer;node.connect(live.context.destination);const start=Math.max(live.context.currentTime+.06,live.nextTime);node.start(start);live.nextTime=start+buffer.duration;live.count=data.metrics.index;$('#live-chunks').textContent=`${live.count} chunks`;$('#live-latency').textContent=`inference ${data.metrics.elapsed_ms.toFixed(1)} ms`;
+}
+function consumeLiveInput(input){
+  const samples=resample(input,live.context.sampleRate,16000);appendSamples(samples);let needed=live.queued===0?live.config.first_chunk_samples:live.config.steady_chunk_samples;
+  while(live.pending.length>=needed){const chunk=live.pending.slice(0,needed);live.pending=live.pending.slice(needed);live.queued++;live.queue=live.queue.then(()=>sendLiveChunk(chunk)).catch(error=>{setMessage(error.message,true);live.active=false;setTimeout(stopLive,0)});needed=live.config.steady_chunk_samples}
+}
+async function startLive(){
+  if(!files.target)return setMessage('先にtarget音声を選択してください',true);$('#live-start').disabled=true;$('#convert').disabled=true;$('#sample').disabled=true;$('#live-state').textContent='モデルを準備中…';$('#state').textContent='LOADING';
+  try{const response=await fetch('/api/live/start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({target:await asDataURL(files.target)})});const data=await response.json();if(!response.ok)throw new Error(data.error||'ライブ開始に失敗しました');live.config=data;live.context=new AudioContext();await live.context.resume();live.stream=await navigator.mediaDevices.getUserMedia({audio:{channelCount:1,echoCancellation:false,noiseSuppression:false,autoGainControl:false}});live.input=live.context.createMediaStreamSource(live.stream);live.processor=live.context.createScriptProcessor(2048,1,1);live.gain=live.context.createGain();live.gain.gain.value=0;live.processor.onaudioprocess=event=>{if(!live.active)return;const samples=new Float32Array(event.inputBuffer.getChannelData(0));let peak=0;for(const value of samples)peak=Math.max(peak,Math.abs(value));$('#meter').style.width=Math.min(100,peak*180)+'%';consumeLiveInput(samples)};live.input.connect(live.processor);live.processor.connect(live.gain);live.gain.connect(live.context.destination);live.pending=new Float32Array(0);live.count=0;live.queued=0;live.queue=Promise.resolve();live.nextTime=0;live.active=true;$('#live-start').classList.add('on');$('#live-stop').disabled=false;$('#live-state').textContent='● LISTENING — 話してください';$('#state').textContent='LIVE';setMessage(data.model_load_seconds?'モデル準備完了。マイク入力を変換中':'マイク入力を変換中');}
+  catch(error){live.stream?.getTracks().forEach(track=>track.stop());await live.context?.close();live.context=null;await fetch('/api/live/stop',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'}).catch(()=>{});setMessage(error.message,true);$('#live-state').textContent='開始できませんでした';$('#live-start').disabled=false;$('#convert').disabled=!(files.source&&files.target);$('#sample').disabled=false;$('#state').textContent='ERROR'}
+}
+async function stopLive(){
+  if(!live.context)return;live.active=false;live.processor?.disconnect();live.input?.disconnect();live.gain?.disconnect();live.stream?.getTracks().forEach(track=>track.stop());$('#live-start').classList.remove('on');$('#live-stop').disabled=true;$('#live-state').textContent='残りの変換を待っています…';await live.queue;await fetch('/api/live/stop',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'}).catch(()=>{});await live.context?.close();live.context=null;live.pending=new Float32Array(0);$('#meter').style.width='0';$('#live-state').textContent='停止しました';$('#live-start').disabled=!files.target;$('#convert').disabled=!(files.source&&files.target);$('#sample').disabled=false;$('#state').textContent='READY';setMessage('ライブ変換を停止しました');
+}
+$('#live-start').onclick=startLive;$('#live-stop').onclick=stopLive;
+</script>
+</body>
+</html>
