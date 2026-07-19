@@ -166,6 +166,41 @@ end-to-end latencyは今回の値より大きくなります。
 していません。「リアルタイムに計算でき、targetらしいembeddingになった」範囲を超えて、
 高品質なvoice conversionであるとは結論できません。
 
+### Applicability to Japanese and reference duration
+
+日本語での利用は、今回の結果に影響した可能性があります。[MeanVC論文の実験条件](https://arxiv.org/html/2510.08392v3)
+では、VC本体をEmiliaから抽出した10,000時間のMandarin音声で学習し、zero-shot評価にも
+Seed-TTSのMandarin subsetを使用しています。sourceの内容特徴を抽出するFast-U2++も、
+Mandarin中心のWenetSpeechで学習されています。したがって、日本語は論文で性能を確認した
+言語分布の外です。
+
+特に、Fast-U2++が日本語のモーラ、促音、長音、母音の無声化、pitch accentなどを十分に
+表現できない場合、内容特徴にsource話者の発音・声質が残る、または必要な音響情報が失われる
+可能性があります。その結果、global speaker embeddingがtargetを捉えていても、変換音声が
+target本人に完全には似ないことが考えられます。ただし、本検証は日本語1入力と1話者pairだけ
+なので、言語差による劣化を直接観測したとは結論できません。
+
+referenceの長さも影響し得ます。短すぎるreferenceでは声域、母音・子音、抑揚を十分に観測
+できません。一方で、長くても無音、noise、reverb、複数話者、異なる発話styleが混ざると、
+speaker embeddingとreference melが不安定になる可能性があります。MeanVCの後継論文は、初代が
+reference melへ直接依存するためreference品質に敏感であることを既知の制約として挙げています
+（[MeanVC 2](https://arxiv.org/abs/2606.09050)）。実用上は、まず5–15秒程度のcleanな単一話者音声を
+試すのが妥当ですが、この長さは本検証で確定した最適値ではありません。
+
+言語とreference長の影響を分離するには、同一target話者・同一録音条件で次を比較する必要が
+あります。
+
+| Factor | Controlled comparison |
+|---|---|
+| reference duration | 同じ発話から1、3、5、10、20秒を切り出す |
+| reference language | 同じbilingual話者の日本語とMandarinまたは英語を同じ長さで比較する |
+| source language | 同じtarget referenceに対して日本語とMandarin sourceを変換する |
+| streaming constraint | 同じpairを200 ms streamingとofflineで比較する |
+
+ECAPA/WavLM similarityに加え、日本語ASRの文字誤り率とblind listeningによるspeaker similarityを
+記録すれば、「referenceが短い」「日本語が学習分布外」「streaming model自体の上限」を
+切り分けられます。
+
 ## Reproducibility notes and failed setup
 
 最初の実行では、MeanVC runtimeがrepository rootからの起動を前提とするため `src` module
