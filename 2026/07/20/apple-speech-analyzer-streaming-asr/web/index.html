@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apple SpeechAnalyzer Live ASR</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div class="eyebrow"><span class="live-dot"></span> ON-DEVICE / JA-JP</div>
+      <h1>Apple SpeechAnalyzer Live ASR</h1>
+      <p class="lede">音声はこのMacの外へ出ません。Apple SpeechAnalyzerが、マイク入力を端末上で文字に変換します。</p>
+    </header>
+
+    <section class="console" aria-label="ライブ文字起こし">
+      <div class="console-bar">
+        <div>
+          <span id="stateMark" class="state-mark"></span>
+          <span id="status">待機中</span>
+        </div>
+        <div id="timer" class="timer">00:00</div>
+      </div>
+
+      <div id="transcript" class="transcript" aria-live="polite">
+        <span class="placeholder">マイクを開始して、日本語で話してください。</span>
+      </div>
+
+      <div class="meter" aria-hidden="true">
+        <div id="meterFill" class="meter-fill"></div>
+      </div>
+
+      <div class="device-row">
+        <label for="microphoneSelect">入力デバイス</label>
+        <select id="microphoneSelect">
+          <option value="">システム既定のマイク</option>
+        </select>
+        <span id="deviceState">未接続</span>
+      </div>
+
+      <div class="controls">
+        <button id="startButton" class="primary">
+          <span class="mic-icon">●</span>
+          マイクを開始
+        </button>
+        <button id="stopButton" class="secondary" disabled>停止して確定</button>
+        <button id="clearButton" class="ghost">消去</button>
+      </div>
+    </section>
+
+    <footer>
+      <div><strong>ENGINE</strong><span>SpeechTranscriber / progressive</span></div>
+      <div><strong>TRANSPORT</strong><span>Native rate → 16 kHz PCM / localhost</span></div>
+      <div><strong>PRIVACY</strong><span>On-device processing</span></div>
+    </footer>
+  </main>
+  <script type="module" src="app.js?v=3"></script>
+</body>
+</html>

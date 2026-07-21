@@ -1,5 +1,6 @@
 # audio
 
+- 2026/07/20 [Apple SpeechAnalyzer Japanese streaming ASR](../2026/07/20/apple-speech-analyzer-streaming-asr/README.md)
 - 2026/07/19 [MeanVC streaming zero-shot voice conversion on Apple Silicon](../2026/07/19/meanvc-streaming-apple-silicon/README.md)
 - 2026/07/17 [YAMNet streaming acoustic novelty detection](../2026/07/17/yamnet-streaming-novelty/README.md)
 - 2026/07/07 [YAMNet audio tagging on ESC-50](../2026/07/07/yamnet-esc50-audio-tagging/README.md)

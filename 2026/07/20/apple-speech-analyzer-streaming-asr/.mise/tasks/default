@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+#MISE description="Benchmark Apple SpeechAnalyzer Japanese streaming ASR"
+set -euo pipefail
+
+repo_root=$(git rev-parse --show-toplevel)
+
+mise run //:test-assets:download v1 labs v1
+uv run python -m unittest test_demo_server.py
+swift test
+swift build -c release
+mkdir -p output
+ffmpeg -nostdin -loglevel error -y \
+  -i "$repo_root/tests/assets/mp3/conversation_2speaker_14s_16k.mp3" \
+  -ac 1 -ar 16000 -c:a pcm_s16le output/input.wav
+.build/release/speech-analyzer benchmark \
+  --audio output/input.wav \
+  --reference reference.txt \
+  --output output/report.json \
+  --trials 3

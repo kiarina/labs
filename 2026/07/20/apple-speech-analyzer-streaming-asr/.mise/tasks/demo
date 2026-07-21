@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Open the local SpeechAnalyzer microphone demo"
+set -euo pipefail
+
+swift build -c release
+uv run python demo_server.py "$@"

@@ -1,0 +1,182 @@
+:root {
+  color-scheme: dark;
+  --paper: #f2efe6;
+  --ink: #10110e;
+  --lime: #c8ff39;
+  --muted: #999b91;
+  --line: rgba(242, 239, 230, 0.16);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--paper);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(200, 255, 57, 0.09), transparent 26rem),
+    #10110e;
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px);
+  background-size: 100% 4px;
+}
+
+.shell {
+  width: min(1100px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 72px 0 36px;
+}
+
+header { margin-bottom: 48px; }
+
+.eyebrow {
+  color: var(--lime);
+  font: 700 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .16em;
+}
+
+.live-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 16px var(--lime);
+}
+
+h1 {
+  margin: 17px 0 14px;
+  font-size: clamp(40px, 6vw, 58px);
+  line-height: .98;
+  letter-spacing: -.06em;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.lede {
+  color: #b8baaf;
+  font-size: 16px;
+  line-height: 1.8;
+  white-space: nowrap;
+}
+
+.console {
+  position: relative;
+  border: 1px solid var(--line);
+  background: rgba(26, 27, 23, .88);
+  box-shadow: 0 30px 90px rgba(0,0,0,.28);
+}
+
+.console-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font: 650 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .08em;
+}
+
+.state-mark {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: #5b5d56;
+}
+
+.recording .state-mark { background: #ff5b45; box-shadow: 0 0 12px #ff5b45; }
+.timer { color: var(--paper); font-variant-numeric: tabular-nums; }
+
+.transcript {
+  min-height: 300px;
+  padding: clamp(28px, 5vw, 58px);
+  font-size: clamp(24px, 3.6vw, 44px);
+  line-height: 1.65;
+  letter-spacing: .015em;
+}
+
+.placeholder { color: #55574f; }
+.final-text { color: var(--paper); }
+.partial-text { color: var(--lime); }
+
+.meter { height: 2px; margin: 0 20px; background: rgba(255,255,255,.09); overflow: hidden; }
+.meter-fill { width: 0; height: 100%; background: var(--lime); transition: width 80ms linear; }
+
+.device-row {
+  display: grid;
+  grid-template-columns: auto minmax(180px, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 20px 0;
+  color: var(--muted);
+  font: 650 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+select {
+  min-width: 0;
+  padding: 10px 12px;
+  color: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: #10110e;
+  font: inherit;
+}
+
+select:disabled { opacity: .5; }
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 24px 20px;
+}
+
+button {
+  min-height: 50px;
+  padding: 0 22px;
+  border: 1px solid transparent;
+  border-radius: 0;
+  font: 700 14px/1 -apple-system, BlinkMacSystemFont, sans-serif;
+  cursor: pointer;
+}
+
+button:disabled { cursor: not-allowed; opacity: .35; }
+.primary { color: var(--ink); background: var(--lime); }
+.secondary { color: var(--paper); background: transparent; border-color: rgba(242,239,230,.35); }
+.ghost { color: var(--muted); background: transparent; margin-left: auto; }
+.mic-icon { margin-right: 9px; color: #111; font-size: 9px; }
+
+footer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+
+footer div { display: grid; gap: 7px; padding: 15px 18px; background: #10110e; }
+footer strong { color: var(--lime); font: 700 10px/1 ui-monospace, monospace; letter-spacing: .12em; }
+footer span { color: var(--muted); font-size: 12px; }
+
+@media (max-width: 700px) {
+  .shell { width: min(100% - 24px, 1100px); padding-top: 38px; }
+  h1 { font-size: clamp(38px, 11vw, 58px); white-space: normal; }
+  .lede { white-space: normal; }
+  footer { grid-template-columns: 1fr; }
+  .ghost { margin-left: 0; }
+  .transcript { min-height: 260px; }
+  .device-row { grid-template-columns: 1fr; }
+}
