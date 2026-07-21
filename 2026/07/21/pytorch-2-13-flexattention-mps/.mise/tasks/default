@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Benchmark PyTorch 2.13 FlexAttention on MPS"
+set -euo pipefail
+export PYTORCH_ENABLE_MPS_FALLBACK=0
+
+uv run python -m unittest -v test_benchmark.py
+uv run python benchmark.py
