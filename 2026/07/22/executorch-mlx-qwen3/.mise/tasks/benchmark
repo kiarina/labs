@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Benchmark existing Qwen3 PTE models and PyTorch MPS"
+set -euo pipefail
+
+uv run python benchmark.py "$@"

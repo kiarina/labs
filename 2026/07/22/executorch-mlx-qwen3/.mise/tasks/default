@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Export and benchmark Qwen3 with the ExecuTorch MLX delegate"
+set -euo pipefail
+
+uv run python -m unittest -v test_benchmark.py
+uv run python export_models.py
+uv run python benchmark.py

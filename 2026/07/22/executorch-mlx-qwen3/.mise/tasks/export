@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Export BF16 and INT4 Qwen3 PTE models for MLX"
+set -euo pipefail
+
+uv run python export_models.py "$@"
