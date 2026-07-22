@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Test and benchmark Laguna S 2.1 oQ2e on this Mac"
+set -euo pipefail
+
+uv run python -m unittest -v test_benchmark.py
+uv run python benchmark.py

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Run unit tests without downloading the model"
+set -euo pipefail
+
+uv run python -m unittest -v test_benchmark.py

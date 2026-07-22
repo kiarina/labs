@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "started_at": "2026-07-22T09:04:04.407824+00:00",
+  "finished_at": "2026-07-22T09:22:32.760489+00:00",
+  "purpose": "performance-only; no agent tasks or generated-code execution",
+  "source_harness": {
+    "url": "https://github.com/tanishq-dubey/macos-laguna-s2.1",
+    "revision": "2c2e55dda49fb28f8901bb993f6318e09c2b0aa2"
+  },
+  "model": {
+    "id": "mlx-community/Laguna-S-2.1-oQ2e",
+    "revision": "d3c0a22416617c6ccff1ff1c7bcd896d1ec92e8f",
+    "safetensor_bytes": 36221416954
+  },
+  "machine": {
+    "machine_model": "MacBookPro18,2",
+    "chip": "Apple M1 Max",
+    "memory_bytes": 68719476736,
+    "macos": "26.5.2",
+    "macos_build": "25F84",
+    "architecture": "arm64",
+    "python": "3.13.7",
+    "power": "AC attached; battery 80%; not charging",
+    "packages": {
+      "huggingface-hub": "1.24.0",
+      "mlx": "0.32.0",
+      "mlx-vlm": "0.6.6",
+      "psutil": "7.2.2",
+      "transformers": "5.14.1"
+    }
+  },
+  "baseline": {
+    "available_bytes_before_download": 34354364416,
+    "available_bytes_before_load": 32271204352,
+    "swap_used_bytes_before_download": 0,
+    "swap_used_bytes_before_load": 0,
+    "memory_pressure_free_percent_before_download": 91,
+    "memory_pressure_free_percent_before_load": 90,
+    "other_load_control": "No processes were stopped; baseline memory and swap were recorded instead."
+  },
+  "load": {
+    "seconds": 14.297000667007524,
+    "mlx_peak_memory_gb": 36.221461432,
+    "available_bytes_after": 12190089216,
+    "swap_used_bytes_after": 6494816829,
+    "memory_pressure_free_percent_after": 33
+  },
+  "ttft_definition": "Wall time around mlx_vlm.generate(max_tokens=1) for the standardized 1K decode prompt; timer begins immediately before generate and ends when the call returns one token. The first trial is the first inference request after lazy=False load. Five warm trials follow; each rebuilds KV state and uses no prompt-cache reuse.",
+  "ttft": {
+    "actual_prompt_tokens": 1009,
+    "first_request_seconds": 31.663697083000443,
+    "first_request_prompt_tps": 31.915823749640246,
+    "warm_elapsed_seconds": [
+      10.865349333005724,
+      10.463680250002653,
+      10.392803082999308,
+      10.685377957997844,
+      9.74320241699752
+    ],
+    "warm_elapsed_median_seconds": 10.463680250002653,
+    "output_sha256_all_trials": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+  },
+  "profile": {
+    "description": "Upstream quant profile, repeated three times after TTFT warm-up",
+    "runs": [
+      {
+        "trial": 1,
+        "context_16384": {
+          "actual_context_tokens": 16376,
+          "prompt_tps": 77.97321420481705,
+          "generation_tps": 18.603218307067127,
+          "elapsed_seconds": 210.79828333300247,
+          "peak_memory_gb": 38.467120176,
+          "swap_used_bytes_before": 3445819965,
+          "swap_used_bytes_after": 3034578944
+        },
+        "decode_256": {
+          "actual_context_tokens": 1009,
+          "prompt_tps": 80.76979834777994,
+          "generation_tps": 18.094545307263324,
+          "elapsed_seconds": 26.6492044589977,
+          "peak_memory_gb": 37.222723472
+        }
+      },
+      {
+        "trial": 2,
+        "context_16384": {
+          "actual_context_tokens": 16376,
+          "prompt_tps": 100.23117124720943,
+          "generation_tps": 19.036413023443867,
+          "elapsed_seconds": 164.14362233300926,
+          "peak_memory_gb": 38.467120176,
+          "swap_used_bytes_before": 3017801728,
+          "swap_used_bytes_after": 3009413120
+        },
+        "decode_256": {
+          "actual_context_tokens": 1009,
+          "prompt_tps": 94.9994600377474,
+          "generation_tps": 20.51675707023347,
+          "elapsed_seconds": 23.108363375009503,
+          "peak_memory_gb": 37.222723472
+        }
+      },
+      {
+        "trial": 3,
+        "context_16384": {
+          "actual_context_tokens": 16376,
+          "prompt_tps": 112.26323460765676,
+          "generation_tps": 22.670593189799078,
+          "elapsed_seconds": 146.51571070800128,
+          "peak_memory_gb": 38.467120176,
+          "swap_used_bytes_before": 3009413120,
+          "swap_used_bytes_after": 2240681083
+        },
+        "decode_256": {
+          "actual_context_tokens": 1009,
+          "prompt_tps": 121.22716795875722,
+          "generation_tps": 24.51693233561002,
+          "elapsed_seconds": 18.772632125008386,
+          "peak_memory_gb": 37.222723472
+        }
+      }
+    ],
+    "summary": {
+      "prefill_prompt_tps_median": 100.23117124720943,
+      "decode_generation_tps_median": 20.51675707023347,
+      "peak_memory_gb_max": 38.467120176,
+      "swap_used_bytes_after_benchmark": 2240681083,
+      "memory_pressure_free_percent_after_benchmark": 34
+    }
+  }
+}

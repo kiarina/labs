@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "run_label": "clean-after-reboot-docker-quit",
+  "started_at": "2026-07-22T09:51:03.119282+00:00",
+  "finished_at": "2026-07-22T09:58:48.382156+00:00",
+  "purpose": "performance-only; no agent tasks or generated-code execution",
+  "source_harness": {
+    "url": "https://github.com/tanishq-dubey/macos-laguna-s2.1",
+    "revision": "2c2e55dda49fb28f8901bb993f6318e09c2b0aa2"
+  },
+  "model": {
+    "id": "mlx-community/Laguna-S-2.1-oQ2e",
+    "revision": "d3c0a22416617c6ccff1ff1c7bcd896d1ec92e8f",
+    "snapshot_path_redacted": true,
+    "safetensor_bytes": 36221416954
+  },
+  "machine": {
+    "machine_model": "MacBookPro18,2",
+    "chip": "Apple M1 Max",
+    "memory_bytes": 68719476736,
+    "macos": "26.5.2",
+    "macos_build": "25F84",
+    "architecture": "arm64",
+    "python": "3.13.7",
+    "packages": {
+      "huggingface-hub": "1.24.0",
+      "mlx": "0.32.0",
+      "mlx-vlm": "0.6.6",
+      "psutil": "7.2.2",
+      "transformers": "5.14.1"
+    }
+  },
+  "baseline": {
+    "condition": "macOS restarted and Docker quit by the user",
+    "before_download": {
+      "available_bytes": 56347131904,
+      "used_bytes": 11442552832,
+      "percent": 18.0,
+      "swap_used_bytes": 0,
+      "memory_pressure_free_percent": 95
+    },
+    "before_load": {
+      "available_bytes": 56360501248,
+      "used_bytes": 11428003840,
+      "percent": 18.0,
+      "swap_used_bytes": 0,
+      "memory_pressure_free_percent": 95
+    }
+  },
+  "load": {
+    "seconds": 6.979196416000036,
+    "mlx_peak_memory_gb": 36.221461432,
+    "after_load": {
+      "available_bytes": 25900253184,
+      "used_bytes": 28621914112,
+      "swap_used_bytes": 0,
+      "memory_pressure_free_percent": 76
+    }
+  },
+  "ttft_definition": "Wall time around mlx_vlm.generate(max_tokens=1) for the standardized 1K decode prompt; the timer begins immediately before generate and ends when the call returns one token. The first trial is the first inference request after lazy=False load. Five warm trials follow; each rebuilds KV state and uses no prompt-cache reuse.",
+  "ttft": {
+    "actual_prompt_tokens": 1009,
+    "first_request_elapsed_seconds": 8.982080083000028,
+    "warm_elapsed_seconds": [
+      7.0707049170000005,
+      7.070456000000036,
+      7.074324000000047,
+      7.065239167000016,
+      7.067043791999993
+    ],
+    "warm_elapsed_median_seconds": 7.070456000000036,
+    "output_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+  },
+  "profile": {
+    "description": "Upstream quant profile, repeated three times after TTFT warm-up",
+    "context_16384_prompt_tps": [
+      153.39346019449894,
+      143.15147225319836,
+      124.22782160984512
+    ],
+    "decode_256_generation_tps": [
+      24.160448121075895,
+      25.877760233352642,
+      22.975577858220092
+    ],
+    "summary": {
+      "prefill_prompt_tps_median": 143.15147225319836,
+      "decode_generation_tps_median": 24.160448121075895,
+      "peak_memory_gb_max": 38.467120176,
+      "swap_used_bytes_after_benchmark": 0,
+      "memory_pressure_free_percent_after_benchmark": 40
+    },
+    "output_sha256": {
+      "context_16384": "e75cdfad6fa2329e3fcfb898f9c85be44dbf1162996e2e28888db85067c6ce71",
+      "decode_256": "97cde5d7709d9c582433982ddbb3947789cb83e45617b9ee4ae3598956c4c707"
+    }
+  }
+}
