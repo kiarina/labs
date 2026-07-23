@@ -1,0 +1,14 @@
+--- a/Config/DefaultEngine.ini
++++ b/Config/DefaultEngine.ini
+@@ -74,6 +74,11 @@
+ [/Script/MacTargetPlatform.MacTargetSettings]
+ -TargetedRHIs=SF_METAL_SM5
+ +TargetedRHIs=SF_METAL_SM6
++SpatializationPlugin=Resonance Audio
++ReverbPlugin=Resonance Audio
++
++[/Script/ResonanceAudio.ResonanceAudioSettings]
++QualityMode=BINAURAL_HIGH
+ 
+ [/Script/HardwareTargeting.HardwareTargetingSettings]
+ TargetedHardwareClass=Desktop

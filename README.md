@@ -19,6 +19,7 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 ## Labs
 
 - 2026/07
+  - [Unreal Engine virtual-ear audio localization](2026/07/23/unreal-audio-localization/README.md) - [audio](tags/audio.md), [audio-mixer](tags/audio-mixer.md), [submix](tags/submix.md), [unreal-engine](tags/unreal-engine.md), [sound-localization](tags/sound-localization.md), [binaural](tags/binaural.md), [hrtf](tags/hrtf.md), [resonance-audio](tags/resonance-audio.md), [gcc](tags/gcc.md), [mcp](tags/mcp.md)
   - [ExecuTorch MLX Delegate with Qwen3 on Apple Silicon](2026/07/22/executorch-mlx-qwen3/README.md) - [llm](tags/llm.md), [executorch](tags/executorch.md), [mlx](tags/mlx.md), [qwen3](tags/qwen3.md), [apple-silicon](tags/apple-silicon.md), [quantization](tags/quantization.md), [benchmark](tags/benchmark.md)
   - [Laguna S 2.1 oQ2e on a 64 GB M1 Max](2026/07/22/laguna-s2-1-oQ2e-m1-max/README.md) - [llm](tags/llm.md), [mlx](tags/mlx.md), [laguna-s2-1](tags/laguna-s2-1.md), [apple-silicon](tags/apple-silicon.md), [quantization](tags/quantization.md), [benchmark](tags/benchmark.md)
   - [PyTorch 2.13 FlexAttention on MPS](2026/07/21/pytorch-2-13-flexattention-mps/README.md) - [pytorch](tags/pytorch.md), [flex-attention](tags/flex-attention.md), [mps](tags/mps.md), [apple-silicon](tags/apple-silicon.md), [benchmark](tags/benchmark.md)

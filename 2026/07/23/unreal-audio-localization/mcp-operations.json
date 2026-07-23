@@ -1,0 +1,82 @@
+{
+  "protocol_version": "2025-11-25",
+  "server": "Unreal Engine ModelContextProtocol plugin",
+  "level": "/Game/ThirdPerson/Lvl_ThirdPerson",
+  "operations": [
+    {
+      "toolset": "editor_toolset.toolsets.scene.SceneTools",
+      "tool": "find_actors",
+      "purpose": "PlayerStart を取得"
+    },
+    {
+      "toolset": "editor_toolset.toolsets.actor.ActorTools",
+      "tool": "get_actor_transform",
+      "observed": {
+        "location": {"x": 0, "y": 0, "z": 302.012643},
+        "rotation": {"pitch": 0, "yaw": 0, "roll": 0}
+      }
+    },
+    {
+      "toolset": "editor_toolset.toolsets.scene.SceneTools",
+      "tool": "add_to_scene_from_class",
+      "actor_type": "/Script/AudioLocalization.AudioLocalizationExperiment",
+      "name": "AudioLocalizationExperiment",
+      "location_cm": [0, 0, 350]
+    },
+    {
+      "toolset": "editor_toolset.toolsets.scene.SceneTools",
+      "tool": "add_to_scene_from_class",
+      "actor_type": "/Script/AudioLocalization.AudioLocalizationPulseSource",
+      "instances": [
+        {"name": "AL_Source_M150", "azimuth_degrees": -150, "location_cm": [-433.013, -250, 350]},
+        {"name": "AL_Source_M120", "azimuth_degrees": -120, "location_cm": [-250, -433.013, 350]},
+        {"name": "AL_Source_M090", "azimuth_degrees": -90, "location_cm": [0, -500, 350]},
+        {"name": "AL_Source_M060", "azimuth_degrees": -60, "location_cm": [250, -433.013, 350]},
+        {"name": "AL_Source_M030", "azimuth_degrees": -30, "location_cm": [433.013, -250, 350]},
+        {"name": "AL_Source_P030", "azimuth_degrees": 30, "location_cm": [433.013, 250, 350]},
+        {"name": "AL_Source_P060", "azimuth_degrees": 60, "location_cm": [250, 433.013, 350]},
+        {"name": "AL_Source_P090", "azimuth_degrees": 90, "location_cm": [0, 500, 350]},
+        {"name": "AL_Source_P120", "azimuth_degrees": 120, "location_cm": [-250, 433.013, 350]},
+        {"name": "AL_Source_P150", "azimuth_degrees": 150, "location_cm": [-433.013, 250, 350]}
+      ]
+    },
+    {
+      "toolset": "SlateInspectorToolset.SlateInspectorToolset",
+      "tool": "PressKey",
+      "arguments": {"key": "Ctrl+Shift+S"},
+      "purpose": "World Partition の外部 Actor を Save All"
+    },
+    {
+      "toolset": "AutomationTestToolset.AutomationTestToolset",
+      "tools": ["DiscoverTests", "ListTests", "RunTests", "GetTestResults"],
+      "test": "AudioLocalization.Signal.VirtualMicrophoneSide"
+    },
+    {
+      "toolset": "EditorToolset.EditorAppToolset",
+      "tool": "StartPIE",
+      "arguments": {
+        "options": {
+          "bSimulate": false,
+          "playMode": "PlayMode_InViewPort",
+          "warmupSeconds": 0
+        }
+      }
+    },
+    {
+      "toolset": "EditorToolset.EditorAppToolset",
+      "tool": "StopPIE"
+    }
+  ],
+  "rendered_submix_runs": [
+    {
+      "result": "results/rendered-unfocused-failure.json",
+      "observed": "50 captures contained stereo 48 kHz buffers but all samples were zero",
+      "cause": "Audio.UnfocusedVolumeMultiplier defaults to 0 while MCP drives an unfocused Editor"
+    },
+    {
+      "result": "results/rendered-results.json",
+      "runtime_adjustment": "temporarily set FApp volume multiplier to 1 during PIE and restore it in EndPlay",
+      "observed": "50/50 correct from rendered Main Output Submix PCM"
+    }
+  ]
+}

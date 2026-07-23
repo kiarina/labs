@@ -1,0 +1,25 @@
+{
+  "engine": "5.8.0-55116800+++UE5+Release-5.8",
+  "experiment_mode": "continuous_hrtf_stream",
+  "listener_placement": "avatar_pawn_view_location",
+  "virtual_ear_spacing_cm": 18,
+  "validation_avatar_motion_enabled": true,
+  "validation_avatar_motion_applied": true,
+  "motion_after_source_index": 4,
+  "motion_offset_cm": {"x": 100, "y": 0, "z": 0},
+  "before_motion_listener_cm": {"x": 0, "y": 0, "z": 366.0126},
+  "after_motion_listener_cm": {"x": 100, "y": 0, "z": 366.0126},
+  "expected_events": 10,
+  "matched_events": 10,
+  "false_positives": 0,
+  "event_recall": 1.0,
+  "event_precision": 1.0,
+  "side_accuracy": 0.8,
+  "azimuth_changes": [
+    {"nominal_degrees": 30, "after_motion_degrees": 36.8963},
+    {"nominal_degrees": 60, "after_motion_degrees": 70.8934},
+    {"nominal_degrees": 90, "after_motion_degrees": 101.3099},
+    {"nominal_degrees": 120, "after_motion_degrees": 128.9483},
+    {"nominal_degrees": 150, "after_motion_degrees": 154.8719}
+  ]
+}

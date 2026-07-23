@@ -1,0 +1,26 @@
+{
+  "engine": "5.8.0-55116800+++UE5+Release-5.8",
+  "experiment_mode": "hrtf_main_output_submix",
+  "spatialization": "resonance_audio_hrtf",
+  "active_spatialization_plugin": "Resonance Audio",
+  "quality_mode": "BINAURAL_HIGH",
+  "app_had_focus_at_begin": false,
+  "app_has_focus_after_override": true,
+  "evaluated_trials": 50,
+  "correct_trials": 50,
+  "unknown_trials": 0,
+  "accuracy": 1.0,
+  "repeatability_note": "The preceding run was 49/50 because one -30 degree trial contained only near-zero residual samples; the immediate repeat was 50/50.",
+  "by_azimuth": [
+    {"azimuth_degrees": -150, "ground_truth": "Left", "prediction": "Left", "lag_samples": 1, "ild_db_mean": 8.6734, "correlation_mean": 0.8454},
+    {"azimuth_degrees": -120, "ground_truth": "Left", "prediction": "Left", "lag_samples": 1, "ild_db_mean": 10.1209, "correlation_mean": 0.7638},
+    {"azimuth_degrees": -90, "ground_truth": "Left", "prediction": "Left", "lag_samples": 19, "ild_db_mean": 12.7753, "correlation_mean": 0.9038},
+    {"azimuth_degrees": -60, "ground_truth": "Left", "prediction": "Left", "lag_samples": 8, "ild_db_mean": 8.9949, "correlation_mean": 0.5511},
+    {"azimuth_degrees": -30, "ground_truth": "Left", "prediction": "Left", "lag_samples": 4, "ild_db_mean": 2.8778, "correlation_mean": 0.7881},
+    {"azimuth_degrees": 30, "ground_truth": "Right", "prediction": "Right", "lag_samples": -4, "ild_db_mean": -2.8778, "correlation_mean": 0.7881},
+    {"azimuth_degrees": 60, "ground_truth": "Right", "prediction": "Right", "lag_samples": -8, "ild_db_mean": -8.9949, "correlation_mean": 0.5511},
+    {"azimuth_degrees": 90, "ground_truth": "Right", "prediction": "Right", "lag_samples": -19, "ild_db_mean": -12.7753, "correlation_mean": 0.9038},
+    {"azimuth_degrees": 120, "ground_truth": "Right", "prediction": "Right", "lag_samples": -1, "ild_db_mean": -10.1209, "correlation_mean": 0.7638},
+    {"azimuth_degrees": 150, "ground_truth": "Right", "prediction": "Right", "lag_samples": -1, "ild_db_mean": -8.6734, "correlation_mean": 0.8454}
+  ]
+}

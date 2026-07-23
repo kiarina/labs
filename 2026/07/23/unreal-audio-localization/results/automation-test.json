@@ -1,0 +1,20 @@
+{
+  "tests": [
+    {
+      "name": "AudioLocalization.Signal.VirtualMicrophoneSide",
+      "state": "Success",
+      "duration_seconds": 0.026307165622711182,
+	  "checks": [
+		"synthetic direct-path left/right TDOA",
+		"rendered stereo ILD with both channels active",
+		"rendered stereo ILD fallback with one silent channel"
+	  ],
+      "errors": [],
+      "warnings": []
+    }
+  ],
+  "passed": 1,
+  "failed": 0,
+  "skipped": 0,
+  "total": 1
+}

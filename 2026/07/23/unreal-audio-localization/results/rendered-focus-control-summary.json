@@ -1,0 +1,25 @@
+{
+  "engine": "5.8.0-55116800+++UE5+Release-5.8",
+  "experiment_mode": "rendered_main_output_submix",
+  "control": "force_audio_when_unfocused_disabled",
+  "attempts": [
+    "macOS activate then EditorAppToolset.StartPIE",
+    "macOS frontmost verified then EditorAppToolset.StartPIE",
+    "Slate window selected then PressKey Alt+P"
+  ],
+  "last_attempt": {
+    "app_had_focus_at_begin": false,
+    "app_volume_multiplier_before_override": 0,
+    "force_audio_when_unfocused": false,
+    "source_count": 10,
+    "trials_per_source": 5,
+    "evaluated_trials": 50,
+    "correct_trials": 0,
+    "unknown_trials": 50,
+    "accuracy": 0,
+    "captured_trials": 50,
+    "nonzero_active_trials": 0,
+    "rendered_sample_rates": [48000],
+    "rendered_channels": [2]
+  }
+}

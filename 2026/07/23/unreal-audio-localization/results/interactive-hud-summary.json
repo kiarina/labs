@@ -1,0 +1,50 @@
+{
+  "engine": "5.8.0-55116800+++UE5+Release-5.8",
+  "experiment_mode": "interactive_hrtf_stream",
+  "listener_placement": "avatar_pawn_view_location",
+  "source_count": 10,
+  "source_interaction": {
+    "method": "pawn_capsule_begin_overlap_toggle",
+    "trigger_radius_cm": 100,
+    "trigger_half_height_cm": 300,
+    "trigger_relative_z_cm": -200,
+    "repeat_interval_seconds": 0.75,
+    "toggle_cooldown_seconds": 0.5,
+    "material_base": "/Engine/BasicShapes/BasicShapeMaterial",
+    "material_instance": "per_source_dynamic",
+    "visual_off_color_rgb": [0.02, 0.18, 1.0],
+    "visual_on_color_rgb": [1.0, 0.02, 0.12],
+    "visual_off_scale": 0.35,
+    "visual_on_scale": 0.45
+  },
+  "hud": {
+    "implementation": "AHUD_canvas",
+    "history_seconds": 0.2,
+    "refresh_seconds": 0.05,
+    "sample_rate": 48000,
+    "samples_per_channel": 9600,
+    "shared_full_scale_amplitude": 0.05,
+    "left_panel": "bottom_left",
+    "right_panel": "bottom_right",
+    "metrics": ["left_rms", "right_rms", "active_sources", "prediction", "lag_samples", "ild_db", "correlation"]
+  },
+  "validation": {
+    "contact_on_observed": true,
+    "repeating_on_observed": true,
+    "leave_observed": true,
+    "contact_off_observed": true,
+    "repeating_off_observed": true,
+    "material_parameter_transition_observed": true,
+    "observed_material_instance": "MID_BasicShapeMaterial_0",
+    "hud_received_nonzero_pcm": true,
+    "hud_left_samples": 9600,
+    "hud_right_samples": 9600,
+    "hud_left_rms_at_ready": 0.002544,
+    "hud_right_rms_at_ready": 0.002544,
+    "hud_active_sources_at_ready": 1,
+    "post_leave_prediction": "Left",
+    "post_leave_lag_samples": 10,
+    "post_leave_ild_db": 10.033
+  },
+  "default_validation_contact_enabled": false
+}
