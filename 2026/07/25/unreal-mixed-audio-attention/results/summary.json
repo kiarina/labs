@@ -1,0 +1,26 @@
+{
+  "run": "2026-07-25-mcp-demo",
+  "engine": "5.8",
+  "mode": "demo",
+  "listener_mode": "fixed_before_block_pawn",
+  "sample_rate": 48000,
+  "fft_size": 1024,
+  "hop_size": 480,
+  "observed_events": 35,
+  "matched_detections": 35,
+  "correct_side_predictions": 34,
+  "side_accuracy": 0.9714,
+  "median_latency_ms": 20.0,
+  "minimum_latency_ms": 20.0,
+  "maximum_latency_ms": 60.0,
+  "unmatched_detections": 0,
+  "queue_overruns": 0,
+  "full_negative_run_completed": false,
+  "si_sdr_measured": false,
+  "notes": [
+    "This is an interactive demo observation, not the planned 60 s calibration plus 300 s held-out negative evaluation.",
+    "Raw and soft-masked event WAV files were generated under Saved and are intentionally not tracked.",
+    "Post-HRTF solo references are not captured yet, so extraction SI-SDR is not reported.",
+    "The aggregate predates the movable block pawn and must not be treated as its evaluation."
+  ]
+}

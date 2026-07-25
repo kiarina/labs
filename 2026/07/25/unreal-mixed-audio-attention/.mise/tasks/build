@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#MISE description="Build the Unreal Editor target"
+
+set -euo pipefail
+
+: "${UE_ROOT:?Set UE_ROOT to the Unreal Engine 5.8 installation directory}"
+LAB_UNREAL_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+LAB_UNREAL_PROJECT="${LAB_UNREAL_ROOT}/UnrealProject/MixedAudioAttention.uproject"
+LAB_UNREAL_BUILD="${UE_BUILD:-${UE_ROOT}/Engine/Build/BatchFiles/Mac/Build.sh}"
+
+if pgrep -f "UnrealEditor.*${LAB_UNREAL_PROJECT}" >/dev/null; then
+    echo "Error: close the Editor for this project before building." >&2
+    exit 1
+fi
+
+"${LAB_UNREAL_BUILD}" MixedAudioAttentionEditor Mac Development           -Project="${LAB_UNREAL_PROJECT}"

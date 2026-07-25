@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Open the Unreal project in the Editor"
+
+set -euo pipefail
+
+: "${UE_ROOT:?Set UE_ROOT to the Unreal Engine 5.8 installation directory}"
+LAB_UNREAL_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+LAB_UNREAL_PROJECT="${LAB_UNREAL_ROOT}/UnrealProject/MixedAudioAttention.uproject"
+LAB_UNREAL_EDITOR="${UE_EDITOR:-${UE_ROOT}/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor}"
+
+exec "${LAB_UNREAL_EDITOR}" "${LAB_UNREAL_PROJECT}" -log

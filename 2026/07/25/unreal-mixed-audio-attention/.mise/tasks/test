@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#MISE description="Run MixedAudioAttention signal Automation Tests"
+
+set -euo pipefail
+: "${UE_ROOT:?Set UE_ROOT to the Unreal Engine 5.8 installation directory}"
+LAB_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+PROJECT="${LAB_ROOT}/UnrealProject/MixedAudioAttention.uproject"
+EDITOR_CMD="${UE_ROOT}/Engine/Binaries/Mac/UnrealEditor-Cmd"
+
+"${EDITOR_CMD}" "${PROJECT}" -unattended -nullrhi -nosplash \
+  -ExecCmds="Automation RunTests MixedAudioAttention.Signal;Quit" \
+  -TestExit="Automation Test Queue Empty" -log

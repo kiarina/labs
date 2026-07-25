@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Open the full 60 s calibration + 300 s negative experiment"
+
+set -euo pipefail
+: "${UE_ROOT:?Set UE_ROOT to the Unreal Engine 5.8 installation directory}"
+LAB_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+PROJECT="${LAB_ROOT}/UnrealProject/MixedAudioAttention.uproject"
+EDITOR="${UE_EDITOR:-${UE_ROOT}/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor}"
+
+exec "${EDITOR}" "${PROJECT}" -MixedAudioFull -log
