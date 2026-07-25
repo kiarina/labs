@@ -41,6 +41,13 @@
 - ローカル環境のパスが漏洩しないように、README やスクリプト中では、
   絶対パスを使わず、相対パスや環境変数を使う
 
+## Unreal Engine を使う lab
+
+- 新しい Unreal Engine lab を作るとき、または既存 lab の Unreal project、C++、
+  Config、Content、build・検証手順を変更するときは、着手前に
+  [`docs/unreal-engine.md`](docs/unreal-engine.md)を全文読む
+- README の誤字修正など、Unreal project と検証内容に影響しない変更では必須としない
+
 ## 研究に生成したメディアを使う場合の手順
 
 画像・音声・動画などのメディアを生成して研究に使う場合、下記の手順でファイルを管理してください。
