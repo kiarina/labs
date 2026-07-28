@@ -40,6 +40,7 @@
   `mise run` 時に `mise run //:test-assets:download` を最初に実行する
 - ローカル環境のパスが漏洩しないように、README やスクリプト中では、
   絶対パスを使わず、相対パスや環境変数を使う
+- コミットしたら、直ちに現在のブランチを push する
 
 ## Unreal Engine を使う lab
 
@@ -51,6 +52,8 @@
 ## 研究に生成したメディアを使う場合の手順
 
 画像・音声・動画などのメディアを生成して研究に使う場合、下記の手順でファイルを管理してください。
+生成方法と、再現のために記録する項目は
+[`docs/research-assets.md`](docs/research-assets.md)を確認してください。
 
 jpg の例:
 - ファイル名を `{slug}_{w}x{h}_{size}kb.jpg` の形式にする
