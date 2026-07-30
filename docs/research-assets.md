@@ -279,6 +279,8 @@ curl -fsS -X POST \
 ## 動画
 
 動画は LTX-2 で作成する。利用可能なモデルは生成時に確認する。
+会話動画の A2V、prompt、検証方法については
+[`ltx-2-video-generation.md`](ltx-2-video-generation.md)も参照する。
 
 ```sh
 curl -fsS http://localhost:8500/v1/video/ltx2/models | jq
