@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Verify the published LTX-2 dialogue video asset"
+set -euo pipefail
+
+repo_root=$(git rev-parse --show-toplevel)
+
+mise run //:test-assets:download v1 labs v1
+python3 "$repo_root/2026/07/30/ltx2-dialogue-video/verify.py"

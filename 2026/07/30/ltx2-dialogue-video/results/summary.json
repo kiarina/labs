@@ -1,0 +1,51 @@
+{
+  "date": "2026-07-30",
+  "kiapi": {
+    "version": "0.5.2",
+    "commit": "53b4abf894caa44be2a1b6256eb4030a94172259",
+    "model": "distilled",
+    "model_repo": "prince-canuma/LTX-2-distilled",
+    "mlx_video": {
+      "version": "0.0.1",
+      "commit": "87db56a51758fefb748a359b90a5283bb8ba4837"
+    }
+  },
+  "conditions": {
+    "width": 512,
+    "height": 512,
+    "num_frames": 161,
+    "fps": 24,
+    "duration_s": 6.708333,
+    "trials": 2
+  },
+  "trials": [
+    {
+      "mode": "T2V+Audio",
+      "seed": 7302026,
+      "generation_s": 90.38,
+      "job_reported_has_audio": true,
+      "actual_audio_stream": false,
+      "raw_video_bytes": 363726,
+      "raw_video_sha256": "ec137cb0ee0c18ae1c00de32a67e9e645fe4d81c2c23e0838074353111f3f28d",
+      "visual_observation": "Two people appeared in a bookstore. The woman showed speaking-like mouth motion, the man was mostly seen from behind, and garbled captions appeared."
+    },
+    {
+      "mode": "A2V",
+      "seed": 7302027,
+      "generation_s": 94.11,
+      "job_reported_has_audio": true,
+      "actual_audio_stream": false,
+      "raw_video_bytes": 293092,
+      "raw_video_sha256": "eabbafcfc3f14136043de48ef65a3dc32012ccaac4295dc9a68650ce0a1ce9df",
+      "driving_audio_sha256": "2a18348883dce688c630402e36fad1754aeafd847f6e795d3e62349dfd4b5e90",
+      "visual_observation": "Two people appeared in a bookstore and their mouth shapes changed at different times. Alternating speech was plausible but frame inspection did not establish precise lip sync."
+    }
+  ],
+  "published_asset": {
+    "path": "tests/assets/mp4/ltx2_dialogue_512x512_24fps_7s_355kb.mp4",
+    "sha256": "20e1c86950574d95ad72ed2d324407aa7e48d6013a5d556cdd9517fb71e412ff",
+    "video_codec": "h264",
+    "audio_codec": "aac",
+    "audio_source": "The original A2V driving WAV, muxed with FFmpeg after LTX-2 generation."
+  }
+}

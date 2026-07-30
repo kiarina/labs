@@ -1,5 +1,6 @@
 # audio
 
+- 2026/07/30 [LTX-2 dialogue video generation](../2026/07/30/ltx2-dialogue-video/README.md)
 - 2026/07/25 [Unreal mixed-audio auditory attention](../2026/07/25/unreal-mixed-audio-attention/README.md)
 - 2026/07/23 [Unreal Engine virtual-ear audio localization](../2026/07/23/unreal-audio-localization/README.md)
 - 2026/07/20 [Apple SpeechAnalyzer Japanese streaming ASR](../2026/07/20/apple-speech-analyzer-streaming-asr/README.md)

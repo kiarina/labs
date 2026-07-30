@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+#MISE description="Generate an A2V dialogue video and mux its source audio"
+set -euo pipefail
+
+lab_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
+output_dir="$lab_root/output"
+api_base_url=${KIAPI_BASE_URL:-http://localhost:8500}
+mkdir -p "$output_dir"
+
+for command_name in curl ffmpeg ffprobe jq say; do
+  command -v "$command_name" >/dev/null || {
+    echo "missing command: $command_name" >&2
+    exit 1
+  }
+done
+
+curl -fsS "$api_base_url/health" | jq -e '.status == "ok"' >/dev/null
+
+say -v Samantha -r 185 \
+  -o "$output_dir/woman.wav" \
+  --file-format=WAVE --data-format=LEI16 \
+  'Did you bring the map?'
+say -v Daniel -r 185 \
+  -o "$output_dir/man.wav" \
+  --file-format=WAVE --data-format=LEI16 \
+  'Yes, it is right here.'
+
+ffmpeg -nostdin -loglevel error -y \
+  -i "$output_dir/woman.wav" \
+  -i "$output_dir/man.wav" \
+  -filter_complex \
+  '[0:a]aresample=48000,apad=pad_dur=0.5[first];[1:a]aresample=48000[second];[first][second]concat=n=2:v=0:a=1,apad=whole_dur=6.708333[out]' \
+  -map '[out]' -t 6.708333 -ac 1 -c:a pcm_s16le \
+  "$output_dir/driving-dialogue.wav"
+
+audio_id=$(
+  curl -fsS -X POST "$api_base_url/v1/files" \
+    -F "file=@$output_dir/driving-dialogue.wav;type=audio/wav" |
+    jq -er '.file_id'
+)
+
+request=$(
+  jq -n \
+    --arg audio_id "$audio_id" \
+    --arg prompt 'A cozy independent bookstore, medium two-shot of a young adult woman in a green sweater and a young adult man in a blue shirt facing each other. Natural cinematic live-action, static camera, clean frame. The woman speaks first, then after a brief pause the man replies. Their natural mouth movements follow the supplied dialogue audio, with clear alternating speaker turns and attentive facial reactions.' \
+    '{
+      model: "distilled",
+      mode: "async",
+      prompt: $prompt,
+      audio: {type: "file_id", file_id: $audio_id},
+      width: 512,
+      height: 512,
+      num_frames: 161,
+      fps: 24,
+      seed: 7302027,
+      generate_audio: false
+    }'
+)
+printf '%s\n' "$request" > "$output_dir/request.json"
+
+job_id=$(
+  curl -fsS -X POST "$api_base_url/v1/video/ltx2/generate" \
+    -H 'Accept: application/json' \
+    -H 'Content-Type: application/json' \
+    --data-binary "$request" |
+    jq -er '.job_id'
+)
+
+while true; do
+  job=$(curl -fsS "$api_base_url/v1/jobs/$job_id")
+  status=$(jq -r '.status' <<< "$job")
+  progress=$(jq -r '.progress // 0' <<< "$job")
+  echo "$status $progress"
+  case "$status" in
+    succeeded)
+      printf '%s\n' "$job" > "$output_dir/job.json"
+      file_id=$(jq -er '.artifacts[0]' <<< "$job")
+      break
+      ;;
+    failed|canceled)
+      jq . <<< "$job" >&2
+      exit 1
+      ;;
+  esac
+  sleep 5
+done
+
+curl -fsS "$api_base_url/v1/files/$file_id/download" \
+  -o "$output_dir/raw-a2v.mp4"
+
+# kiapi 0.5.2 reports has_audio=true but the raw MP4 has no audio stream.
+# Preserve the exact A2V input by muxing it into the generated video.
+ffmpeg -nostdin -loglevel error -y \
+  -i "$output_dir/raw-a2v.mp4" \
+  -i "$output_dir/driving-dialogue.wav" \
+  -map 0:v:0 -map 1:a:0 \
+  -c:v copy -c:a aac -b:a 192k -shortest \
+  "$output_dir/ltx2_dialogue_512x512_24fps_7s.mp4"
+
+ffprobe -v error -show_format -show_streams -of json \
+  "$output_dir/ltx2_dialogue_512x512_24fps_7s.mp4" |
+  jq .
