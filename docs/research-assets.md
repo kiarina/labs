@@ -1,6 +1,6 @@
 # 研究用アセットの作成
 
-研究で使用する画像とボイス音声は、次の方法で作成する。
+研究で使用する画像、音声、動画は、次の方法で作成する。
 生成物だけでなく、追試に必要な入力、設定、実行環境、失敗した試行も記録する。
 
 ## 共通方針
@@ -163,9 +163,194 @@ curl -s \
 VOICEVOX を再現可能な条件に固定するときは、`cpu-latest` のままにせず、検証時に
 使用したイメージのバージョンまたは digest を記録する。
 
+## 音楽、効果音、動画に共通する準備
+
+音楽、効果音、動画は、ローカルで動作する kiapi を使用して作成する。生成前に
+サービスが利用可能であることを確認する。
+
+```sh
+curl -fsS http://localhost:8500/health | jq
+```
+
+リクエストやモデルの仕様は、生成時点の OpenAPI を正とする。共通仕様から各機能の
+OpenAPI URL を確認し、lab の README には `info.version` も記録する。
+
+```sh
+curl -fsS http://localhost:8500/openapi.json | jq '.info, .paths'
+
+curl -fsS http://localhost:8500/v1/audio/acestep/openapi.json | jq '.info, .paths'
+curl -fsS http://localhost:8500/v1/audio/audiogen/openapi.json | jq '.info, .paths'
+curl -fsS http://localhost:8500/v1/video/ltx2/openapi.json | jq '.info, .paths'
+```
+
+各生成 API は `mode` に `sync` または `async` を指定できる。以下では、生成物を
+直接ファイルへ保存できる `sync` を使用する。長い生成でタイムアウトする場合は
+`async` を指定し、返された `job_id` を使って状態を確認する。
+
+```sh
+curl -fsS "http://localhost:8500/v1/jobs/{job_id}" | jq
+```
+
+完了した job の `artifacts` に含まれる `file_id` から生成物を取得できる。
+
+```sh
+curl -fsS \
+  "http://localhost:8500/v1/files/{file_id}/download" \
+  -o asset.bin
+```
+
+## 音楽
+
+音楽は ACE-Step で作成する。利用可能なモデルは生成時に確認する。
+
+```sh
+curl -fsS http://localhost:8500/v1/audio/acestep/models | jq
+```
+
+`turbo` は試作向け、`xl-base` は品質を優先する生成向けに使う。プロンプトには
+ジャンル、テンポ、楽器、雰囲気、制作上の特徴など、求める音を文章で記述する。
+歌詞なしの場合は `lyrics` に `[Instrumental]` を指定する。
+
+```sh
+curl -fsS -X POST \
+  http://localhost:8500/v1/audio/acestep/generate \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "turbo",
+    "mode": "sync",
+    "seed": 1234,
+    "prompt": "Warm ambient electronica, 90 BPM, soft synthesizer pads, restrained percussion, seamless loop-like ending",
+    "lyrics": "[Instrumental]",
+    "duration": 30,
+    "lang": "ja"
+  }' \
+  -o music.wav
+```
+
+ボーカル曲では、`[Verse 1]`、`[Chorus]`、`[Bridge]` などのセクションタグを
+各行の先頭に付け、`lang` に歌唱言語の ISO 639-1 コードを指定する。歌詞の量は
+`duration` に合わせる。
+
+少なくとも次を記録する。
+
+- kiapi のバージョンと ACE-Step のモデル名
+- プロンプトと歌詞の全文
+- `duration`、`lang`、seed
+- `inference_steps`、`guidance_scale`、`shift` を変更した場合はその値
+- 採用した候補と選定基準、編集やループ加工などの後処理
+
+## 効果音
+
+短い非音楽音声は AudioGen で作成する。雨、足音、衝撃音、機械音、環境音などに
+使用し、音楽には ACE-Step を使用する。利用可能なモデルを生成時に確認する。
+
+```sh
+curl -fsS http://localhost:8500/v1/audio/audiogen/models | jq
+```
+
+プロンプトには、音源、接触する材質、距離、空間、強さ、環境音など、聞こえる特徴を
+具体的に記述する。
+
+```sh
+curl -fsS -X POST \
+  http://localhost:8500/v1/audio/audiogen/generate \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "medium",
+    "mode": "sync",
+    "prompt": "A single heavy wooden door closing in a small stone room, close microphone, short natural reverberation",
+    "duration": 5,
+    "seed": 1234,
+    "top_k": 250,
+    "top_p": 0,
+    "temperature": 1,
+    "cfg_coef": 3
+  }' \
+  -o sound-effect.wav
+```
+
+少なくとも次を記録する。
+
+- kiapi のバージョンと AudioGen のモデル名
+- プロンプト全文
+- `duration`、seed、`top_k`、`top_p`、`temperature`、`cfg_coef`
+- 生成した候補数、採用基準、音量調整や切り出しなどの後処理
+
+## 動画
+
+動画は LTX-2 で作成する。利用可能なモデルは生成時に確認する。
+
+```sh
+curl -fsS http://localhost:8500/v1/video/ltx2/models | jq
+```
+
+プロンプトには、被写体だけでなく、動き、カメラワーク、構図、照明、画質を肯定形で
+記述する。次の例は、テキストだけから 512 x 512、24 fps、97 フレームの MP4 を
+生成する。
+
+```sh
+curl -fsS -X POST \
+  http://localhost:8500/v1/video/ltx2/generate \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "distilled",
+    "mode": "sync",
+    "prompt": "A paper pinwheel turning slowly in a gentle breeze, static close-up camera, soft daylight, natural motion",
+    "width": 512,
+    "height": 512,
+    "num_frames": 97,
+    "fps": 24,
+    "seed": 1234,
+    "generate_audio": false
+  }' \
+  -o video.mp4
+```
+
+`width` と `height` は 64 の倍数にする。`num_frames` は `1 + 8 * k` を満たす値に
+し、動画の長さは `num_frames / fps` 秒になる。
+
+最初のフレームや動画を駆動する音声を指定する場合は、先に Files API へアップロード
+する。
+
+```sh
+curl -fsS -X POST \
+  http://localhost:8500/v1/files \
+  -F 'file=@first-frame.png' | jq
+
+curl -fsS -X POST \
+  http://localhost:8500/v1/files \
+  -F 'file=@driving-audio.wav' | jq
+```
+
+返された ID を `image` または `audio` の FileRef として生成リクエストへ追加する。
+終端フレームには `end_image` を使う。`audio` と `generate_audio=true` は同時に
+指定できない。
+
+```json
+{
+  "image": {
+    "type": "file_id",
+    "file_id": "file_0123456789abcdef"
+  },
+  "audio": {
+    "type": "file_id",
+    "file_id": "file_fedcba9876543210"
+  }
+}
+```
+
+少なくとも次を記録する。
+
+- kiapi のバージョンと LTX-2 のモデル名
+- プロンプト全文
+- 生成モードと、入力に使用した画像または音声
+- `width`、`height`、`num_frames`、`fps`、seed
+- `image_strength`、`end_image_strength`、`generate_audio`
+- 生成した候補数、採用基準、編集、音声差し替え、再エンコードなどの後処理
+
 ## 共有アセットとして登録する
 
-大きな画像や音声をこのリポジトリへ直接追加しない。生成物は
+大きな画像、音声、動画をこのリポジトリへ直接追加しない。生成物は
 `kiarina/test-assets` で管理し、リリース後にこのリポジトリへ取得する。
 
 JPEG 画像の場合は、ファイル名を `{slug}_{w}x{h}_{size}kb.jpg` とし、
