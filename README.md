@@ -18,6 +18,9 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 
 ## Labs
 
+- 2026/08
+  - [Mage-VL on MLX and Apple Silicon](2026/08/05/mage-vl-mlx-mac/README.md) - [vlm](tags/vlm.md), [mage-vl](tags/mage-vl.md), [mlx](tags/mlx.md), [apple-silicon](tags/apple-silicon.md), [video](tags/video.md), [streaming](tags/streaming.md), [quantization](tags/quantization.md)
+
 - 2026/07
   - [LTX-2 dialogue video generation](2026/07/30/ltx2-dialogue-video/README.md) - [video](tags/video.md), [audio](tags/audio.md), [ltx-2](tags/ltx-2.md), [mlx](tags/mlx.md), [apple-silicon](tags/apple-silicon.md), [speech](tags/speech.md)
   - [Unreal mixed-audio auditory attention](2026/07/25/unreal-mixed-audio-attention/README.md) - [unreal-engine](tags/unreal-engine.md), [audio](tags/audio.md), [binaural](tags/binaural.md), [hrtf](tags/hrtf.md), [sound-localization](tags/sound-localization.md), [stft](tags/stft.md), [onset-detection](tags/onset-detection.md), [mcp](tags/mcp.md)

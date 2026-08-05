@@ -1,5 +1,6 @@
 # mlx
 
+- 2026/08/05 [Mage-VL on MLX and Apple Silicon](../2026/08/05/mage-vl-mlx-mac/README.md)
 - 2026/07/30 [LTX-2 dialogue video generation](../2026/07/30/ltx2-dialogue-video/README.md)
 - 2026/07/22 [ExecuTorch MLX Delegate with Qwen3 on Apple Silicon](../2026/07/22/executorch-mlx-qwen3/README.md)
 - 2026/07/22 [Laguna S 2.1 oQ2e on a 64 GB M1 Max](../2026/07/22/laguna-s2-1-oQ2e-m1-max/README.md)
