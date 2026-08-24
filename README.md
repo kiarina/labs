@@ -19,6 +19,7 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 ## Labs
 
 - 2026/08
+  - [Mage-VL codec-native preprocessing portability on macOS](2026/08/05/mage-vl-codec-prep-portability/README.md) - [mage-vl](tags/mage-vl.md), [mlx](tags/mlx.md), [apple-silicon](tags/apple-silicon.md), [video](tags/video.md)
   - [Mage-VL on MLX and Apple Silicon](2026/08/05/mage-vl-mlx-mac/README.md) - [vlm](tags/vlm.md), [mage-vl](tags/mage-vl.md), [mlx](tags/mlx.md), [apple-silicon](tags/apple-silicon.md), [video](tags/video.md), [streaming](tags/streaming.md), [quantization](tags/quantization.md)
 
 - 2026/07
