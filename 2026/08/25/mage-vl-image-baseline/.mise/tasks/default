@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+#MISE description="Measure Mage-VL image inference: official PyTorch (MPS) and mlx-vlm 8bit"
+#MISE depends=["setup"]
+set -euo pipefail
+
+IMAGE=../../../../tests/assets/jpg/objects_1536x1024_358kb.jpg
+
+mkdir -p output
+sw_vers > output/sw-vers.txt
+system_profiler SPHardwareDataType > output/hardware.txt
+VIRTUAL_ENV=$PWD/output/venv-torch uv pip freeze > output/pip-freeze-torch.txt
+VIRTUAL_ENV=$PWD/output/venv-mlx uv pip freeze > output/pip-freeze-mlx.txt
+
+# Official PyTorch implementation, pinned revision, greedy 64 tokens x3.
+output/venv-torch/bin/python measure_torch.py --image "$IMAGE" \
+  2> output/torch-stderr.log | tee output/torch-measure.json
+
+# mlx-vlm 8bit, same image and prompt, greedy 64 tokens x3.
+for i in 1 2 3; do
+  output/venv-mlx/bin/python -m mlx_vlm.generate \
+    --model mlx-community/Mage-VL-8bit \
+    --max-tokens 64 --temperature 0.0 \
+    --image "$IMAGE" --prompt "Describe this image." \
+    --verbose 2>&1 | grep -Ei "tokens-per-sec|peak memory"
+  echo "--- mlx run $i done"
+done | tee output/mlx-measure.log
+
+# mlx-vlm video frames fallback on a synthetic clip regenerated per run.
+ffmpeg -loglevel error -y -f lavfi \
+  -i "testsrc2=duration=4:size=640x360:rate=30" \
+  -c:v libx264 -pix_fmt yuv420p -g 30 output/input.mp4
+output/venv-mlx/bin/python -m mlx_vlm.generate \
+  --model mlx-community/Mage-VL-8bit \
+  --max-tokens 64 --temperature 0.0 \
+  --video output/input.mp4 --video-max-frames 16 \
+  --prompt "Describe this video." --verbose 2>&1 | tee output/mlx-video.log

@@ -85,6 +85,12 @@ codec asset(canvas、meta.json、npy)を出力することを確認した。
 - 量子化(8 bit / 4 bit)checkpoint は完全一致を要求せず、同一 prompt での
   token 一致率と出力差を記録する
 
+2026-08-25 の実測
+([`mage-vl-image-baseline`](../2026/08/25/mage-vl-image-baseline/README.md))で、
+公式実装の静止画推論が macOS(MPS、bfloat16)で完走することを確認した。
+fixture 生成は Mac 単体で成立する見込みだが、MPS と CUDA / CPU の数値一致は
+未検証のため、fixture 生成時に dtype と device の方針を決めて記録する。
+
 ### Stage 2: torch-free frame-sampled video
 
 - 内容: PyTorch に依存しない frame sampling と動画前処理を実装する

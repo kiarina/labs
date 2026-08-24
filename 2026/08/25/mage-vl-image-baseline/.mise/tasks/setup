@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+#MISE description="Set up venvs and clone microsoft/Mage at the pinned commit"
+set -euo pipefail
+
+mise run //:test-assets:download
+mkdir -p output
+
+if [ ! -d output/Mage ]; then
+  git clone https://github.com/microsoft/Mage.git output/Mage
+fi
+git -C output/Mage checkout --quiet 76bec2bb3818863f470de7e867c2dc7f1d0bfd83
+
+uv venv output/venv-torch --python 3.12
+VIRTUAL_ENV=$PWD/output/venv-torch uv pip install \
+  torch==2.13.0 torchvision==0.28.0 transformers==5.15.1 \
+  accelerate==1.14.0 safetensors huggingface_hub numpy pillow opencv-python
+
+# The checkpoint's remote code statically references streammind_gate.py,
+# whose top-level `import mamba_ssm` fails transformers' check_imports on
+# macOS (mamba-ssm has no macOS build). The gate is lazily imported at
+# runtime and unused for the image path, so an empty stub is enough.
+SITE=$(output/venv-torch/bin/python -c 'import site; print(site.getsitepackages()[0])')
+mkdir -p "$SITE/mamba_ssm/models"
+echo '# stub for transformers check_imports; streaming gate unused for images' \
+  > "$SITE/mamba_ssm/__init__.py"
+touch "$SITE/mamba_ssm/models/__init__.py"
+printf 'def create_block(*args, **kwargs):\n    raise ImportError("mamba_ssm stub")\n' \
+  > "$SITE/mamba_ssm/models/mixer_seq_simple.py"
+
+# jinja2 is required by apply_chat_template but is not pulled in by
+# mlx-vlm 0.6.15's dependency tree.
+uv venv output/venv-mlx --python 3.12
+VIRTUAL_ENV=$PWD/output/venv-mlx uv pip install mlx-vlm==0.6.15 jinja2
