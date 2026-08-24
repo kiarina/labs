@@ -20,6 +20,7 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 
 - 2026/08
   - [codec-video-prep aarch64 wheel on an ARM64 Linux container](2026/08/25/codec-video-prep-container/README.md) - [mage-vl](tags/mage-vl.md), [apple-silicon](tags/apple-silicon.md), [video](tags/video.md), [docker](tags/docker.md)
+  - [Mage-VL parity fixture device comparison (CPU vs MPS)](2026/08/25/mage-vl-fixture-device/README.md) - [mage-vl](tags/mage-vl.md), [mlx](tags/mlx.md), [apple-silicon](tags/apple-silicon.md), [vlm](tags/vlm.md)
   - [Mage-VL image inference baseline on Mac: official PyTorch vs mlx-vlm](2026/08/25/mage-vl-image-baseline/README.md) - [mage-vl](tags/mage-vl.md), [mlx](tags/mlx.md), [apple-silicon](tags/apple-silicon.md), [vlm](tags/vlm.md), [quantization](tags/quantization.md)
   - [Mage-VL and MLX support status update (2026-08-24)](2026/08/24/mage-vl-mlx-update/README.md) - [mage-vl](tags/mage-vl.md), [mlx](tags/mlx.md), [apple-silicon](tags/apple-silicon.md), [video](tags/video.md), [streaming](tags/streaming.md)
   - [Mage-VL codec-native preprocessing portability on macOS](2026/08/05/mage-vl-codec-prep-portability/README.md) - [mage-vl](tags/mage-vl.md), [mlx](tags/mlx.md), [apple-silicon](tags/apple-silicon.md), [video](tags/video.md)

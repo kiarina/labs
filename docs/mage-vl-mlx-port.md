@@ -88,8 +88,13 @@ codec asset(canvas、meta.json、npy)を出力することを確認した。
 2026-08-25 の実測
 ([`mage-vl-image-baseline`](../2026/08/25/mage-vl-image-baseline/README.md))で、
 公式実装の静止画推論が macOS(MPS、bfloat16)で完走することを確認した。
-fixture 生成は Mac 単体で成立する見込みだが、MPS と CUDA / CPU の数値一致は
-未検証のため、fixture 生成時に dtype と device の方針を決めて記録する。
+続く device 比較
+([`mage-vl-fixture-device`](../2026/08/25/mage-vl-fixture-device/README.md))で、
+fixture は MPS bf16 で生成することに決定した。公式実装自身の CPU / MPS 間で
+vision tower の cosine は 0.99953 であり、上記の cosine 0.9999 gate は
+「MPS 生成 fixture に対して」評価する。greedy 一致は device 間で頑健だった。
+移植本体は [kiarina/mage-vl-mlx](https://github.com/kiarina/mage-vl-mlx)
+で開発する。
 
 ### Stage 2: torch-free frame-sampled video
 
