@@ -1,5 +1,6 @@
 # streaming
 
+- 2026/08/24 [Mage-VL and MLX support status update (2026-08-24)](../2026/08/24/mage-vl-mlx-update/README.md)
 - 2026/08/05 [Mage-VL on MLX and Apple Silicon](../2026/08/05/mage-vl-mlx-mac/README.md)
 - 2026/07/20 [Apple SpeechAnalyzer Japanese streaming ASR](../2026/07/20/apple-speech-analyzer-streaming-asr/README.md)
 - 2026/07/19 [MeanVC streaming zero-shot voice conversion on Apple Silicon](../2026/07/19/meanvc-streaming-apple-silicon/README.md)
