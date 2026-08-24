@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+#MISE description="Run codec-video-prep cv-preinfer inside an ARM64 Linux container"
+set -euo pipefail
+
+mkdir -p output
+
+docker version --format 'docker {{.Server.Version}} {{.Server.Os}}/{{.Server.Arch}}' \
+  > output/docker-version.txt
+sw_vers > output/sw-vers.txt
+
+docker run --rm --platform linux/arm64 \
+  -v "$PWD/output:/work/output" \
+  -w /work \
+  python:3.12-slim-bookworm bash -c '
+set -euxo pipefail
+ldd --version | awk "NR==1"
+python --version
+
+apt-get update -qq
+apt-get install -y --no-install-recommends ffmpeg > /dev/null
+ffmpeg -version | awk "NR==1"
+
+pip install --quiet --root-user-action=ignore codec-video-prep==0.2.5
+
+ffmpeg -loglevel error -y \
+  -f lavfi -i "testsrc2=duration=4:size=640x360:rate=30" \
+  -c:v libx264 -pix_fmt yuv420p -g 30 /work/input.mp4
+ffprobe -v error -select_streams v:0 \
+  -show_entries stream=codec_name,width,height,r_frame_rate,nb_frames \
+  -of default=noprint_wrappers=1 /work/input.mp4
+
+rm -rf /work/output/preinfer
+time cv-preinfer --video /work/input.mp4 --out_dir /work/output/preinfer
+
+ls -laR /work/output/preinfer
+' 2>&1 | tee output/run-log.txt

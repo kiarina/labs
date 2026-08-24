@@ -66,8 +66,13 @@
 で、gate は条件付き通過とした。`codec-video-prep` は sdist と source repository が
 なく macOS native build は不可のため、Stage 4 の目標を「macOS 単体で完結」から
 「単一の Mac 上で完結(canvas 生成は ARM64 Linux container の公式 wheel、
-下流は macOS の MLX 実装)」へ再定義する。aarch64 wheel が container で動作するかの
-実機確認を Stage 4 着手時の最初の確認事項とする。
+下流は macOS の MLX 実装)」へ再定義する。
+
+2026-08-25 の実機検証
+([`codec-video-prep-container`](../2026/08/25/codec-video-prep-container/README.md))
+で、aarch64 wheel が ARM64 Linux container 上で GPU なしに動作し、
+codec asset(canvas、meta.json、npy)を出力することを確認した。
+出力の公式環境との一致検証は Stage 4 で行う。
 
 ### Stage 1: 静止画 parity
 
