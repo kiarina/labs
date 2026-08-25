@@ -18,6 +18,18 @@ MLX 移植一般の parity 検証手法は
 - 動画・streaming 経路について、PyTorch 参照実装との end-to-end 一致を
   定量的に確認できるか。これは 2026-08-05 時点で誰も報告していない
 
+2026-08-26 時点の回答。
+
+- **再現できた。** 静止画、frame-sampled video、streaming gate、codec-native の
+  4 経路すべてで float32 の一致を確認した。ただし streaming gate の SSM は
+  参照が自前の再実装である(Stage 3 の節を参照)
+- **token 削減は成立するが、比較条件に強く依存する。** カバレッジを揃えれば
+  95% 削減、固定 32 frame 予算比で 71% 削減。一方、短いクリップを 8 frame で
+  見る既定設定と比べると codec のほうが token は多い。速度も本測定の条件では
+  codec が遅い
+- **定量的に確認できた。** 動画は前処理が bit 一致し greedy も一致、
+  codec は patch 選択が bit 一致した
+
 ## 現在の状況(2026-08-26)
 
 移植本体は [kiarina/mage-vl-mlx](https://github.com/kiarina/mage-vl-mlx)。
@@ -29,6 +41,27 @@ MLX 移植一般の parity 検証手法は
 | 2 | torch-free frame-sampled video | float32 で通過 |
 | 3 | proactive streaming gate | 数値一致は float32 で条件付き通過。機能は codec 経路が前提 |
 | 4 | codec-native sparse video | float32 で通過 |
+
+主要な結果。
+
+| 項目 | 結果 |
+|---|---|
+| 重み key(本体 696 / gate 64) | missing・unused ともに 0 |
+| 静止画 vision tower(float32) | 相対誤差 8.9e-06〜1.6e-05、cosine 1.000000 |
+| 静止画 greedy 64 token | 3 枚とも完全一致 |
+| 動画 前処理 | frame index・grid・patch_positions・pixel values が bit 一致 |
+| 動画 greedy 64 token | 3 本とも完全一致 |
+| streaming gate mixer | 最大絶対誤差 2.7e-07〜4.4e-07(基準 1.0e-5) |
+| codec 前処理 | patch_positions・pixel values が bit 一致 |
+| codec greedy 64 token | 2 本とも完全一致 |
+
+実測(M4 Max、bfloat16、greedy 64 token)。
+
+| 経路 | prompt | decode | MLX peak memory |
+|---|---:|---:|---:|
+| 静止画 | 1,561 token | 21.9 token/s | 9.88 GB |
+| 動画 8 frame | 3,159 token | 14.4 token/s | 10.66 GB |
+| codec 28 canvas | 5,279 token | 9.6 token/s | 11.81 GB |
 
 ## 構成
 
@@ -104,6 +137,21 @@ dispatch)で進捗なく滞留する。73 分間 swap もメモリ逼迫もな�
   pure PyTorch で再実装して参照とした(Stage 3 の節を参照)
 - checkpoint の revision を固定する。固定しないと `streammind_gate.py` の
   新版が実行時に再ダウンロードされる
+
+codec 経路を使う場合は、さらに次を用意する。`codec-video-prep` は
+manylinux wheel のみで macOS に install できないが、公式実装は外部バイナリを
+`CV_PREINFER_BIN` で差し替えられる。ARM64 Linux container 内の `cv-preinfer` を
+呼ぶラッパーを用意し、`--video` と `--out_dir` の絶対パスを container 内の
+同じパスに bind mount すれば、**公式実装を無改変のまま macOS で codec 推論できる**。
+
+```sh
+docker build --platform linux/arm64 -t mage-cvprep:0.2.5 \
+  -f docker/Dockerfile.cvprep docker/
+export CV_PREINFER_BIN=$PWD/docker/cv-preinfer
+```
+
+生成された codec asset は `ONLINE_CODEC_CACHE_DIR`(既定は
+`$HF_HOME/online_codec`)にキャッシュされ、次回以降は再生成されない。
 
 ## Stage と gate
 
@@ -277,11 +325,37 @@ python -c 'import mlx; print(mlx.__version__)' > output/mlx-version.txt
 - 公式 streaming 経路は `mamba-ssm` を要求し、macOS では動かない。
   Stage 3 は SSM ブロックの pure PyTorch 再実装を参照として通過させたため、
   公式 CUDA kernel との一致は未検証のまま残る
-- `flash-attn` は静止画・動画経路では不要だった。streaming・codec 経路で
-  必要になるかは未確認
+- `flash-attn` は 4 経路すべてで不要だった
 - upstream の実装と checkpoint は公開直後であり、tag、実装、対応範囲が変わり得る。
   すべての参照を commit hash と revision で固定する
 - 静止画の一致から動画、streaming、codec 経路の一致は推論できない。
   各 stage で独立に検証する
 - bfloat16 での実行時挙動は公式と一致しない。実用上は動作するが、
-  「公式と同一の token 列を出す」ことは bfloat16 では保証されない
+  「公式と同一の token 列を出す」ことは bfloat16 では保証されない。
+  streaming gate の 2 値判定は特に脆く、`p_speak` が 0.5 付近だと反転する
+- **数値一致は機能の正しさを保証しない。** streaming gate は Stage 3 で
+  数値一致したにもかかわらず、frames 入力では実イベントに反応しなかった。
+  原因は入力表現の不一致で、codec 入力にして初めて発火した。
+  経路ごとに、数値だけでなく機能そのものを確認する
+- **効率の主張は baseline を明示しないと逆の結論になる。** codec の token 削減は
+  カバレッジを揃えれば 95%、固定 32 frame 予算比で 71% だが、
+  8 frame 既定との比較では codec のほうが多い
+
+## 残る未解決事項
+
+Stage 0〜4 は完了したが、次は未確認のまま残っている。
+
+- **streaming gate の発火とイベント時刻の対応。** codec 入力で発火はするが、
+  発火位置は codec グループ末尾という構造的な位置に集中しており、
+  ゴールやドアの開閉といったイベント時刻との相関は確認できていない。
+  「一定間隔での発話判定」と区別できていない
+- **`mamba-ssm` の CUDA kernel との一致。** Stage 3 の参照は自前の
+  pure PyTorch 再実装であり、公式が実行する kernel との一致は未検証。
+  CUDA 環境が使えるようになった時点で確認する
+- **実写動画での挙動。** 検証に使った動画はすべて合成または LTX-2 生成である
+- **公式 segment 分割 protocol と codec 経路の組み合わせ。**
+  `inference_streaming.py` の segment 分割は frames 入力でのみ試している
+- **codec 経路の prompt 生成**(`rewrite_text_with_codec_positions`)は未移植。
+  parity 検証では公式の `input_ids` を使用した
+- **neural engine(DCVC-RT)** は CUDA 前提のため対象外のまま
+- **量子化(8 bit / 4 bit)** は未実装・未検証
