@@ -52,6 +52,13 @@
   [`docs/unreal-engine.md`](docs/unreal-engine.md)を全文読む
 - README の誤字修正など、Unreal project と検証内容に影響しない変更では必須としない
 
+## モデルを MLX へ移植する lab
+
+- PyTorch 実装の MLX 移植と、参照実装との一致検証を行うときは、着手前に
+  [`docs/mlx-port-parity.md`](docs/mlx-port-parity.md)を読む。
+  fixture の設計、float32 で一致検証を行う理由、macOS 固有の落とし穴をまとめている
+- 検証で反証が出た場合は、その lab に観測値を記録したうえで同文書を更新する
+
 ## 研究に生成したメディアを使う場合の手順
 
 画像・音声・動画などのメディアを生成して研究に使う場合、下記の手順でファイルを管理してください。

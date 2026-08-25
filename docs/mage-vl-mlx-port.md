@@ -3,6 +3,8 @@
 この文書は、mlx-vlm に依存しない Mage-VL の独自 MLX 移植を段階的に進めるための
 検証方針を定める。調査の前提と用語は
 [`2026/08/05/mage-vl-mlx-mac`](../2026/08/05/mage-vl-mlx-mac/README.md) を参照する。
+MLX 移植一般の parity 検証手法は
+[`mlx-port-parity.md`](mlx-port-parity.md) に分離した。
 
 ## 目的と問い
 
@@ -15,6 +17,21 @@
   Apple Silicon の unified memory 環境でも成立するか
 - 動画・streaming 経路について、PyTorch 参照実装との end-to-end 一致を
   定量的に確認できるか。これは 2026-08-05 時点で誰も報告していない
+
+## 現在の状況(2026-08-25)
+
+移植本体は [kiarina/mage-vl-mlx](https://github.com/kiarina/mage-vl-mlx)。
+
+| Stage | 内容 | 状況 |
+|---|---|---|
+| 0 | codec-native 前処理の移植性 | 条件付き通過。container 経路を実機確認済み |
+| 1 | 静止画 parity | float32 で通過 |
+| 2 | torch-free frame-sampled video | float32 で通過 |
+| 3 | proactive streaming gate | 未着手 |
+| 4 | codec-native sparse video | 未着手 |
+
+Stage 3 の着手前に、`mamba-ssm` を要求する公式 streaming gate の fixture を
+macOS で生成できるかを見極める必要がある(後述の「環境の準備」を参照)。
 
 ## 構成
 
@@ -40,6 +57,8 @@
 - parity は fixture で確認する。公式 PyTorch 実装を固定入力で実行し、
   中間出力(vision tower、projector、decoder logits)と greedy token 列を
   fixture 化する。fixture の生成環境、commit、入力、生成手順を記録する
+- **一致検証は float32 で行う**。bfloat16 は実行時精度として扱い、
+  gate の判定には使わない。理由は下記「fixture の生成方針」
 - 生成の比較は temperature 0 の greedy で行う
 - 数値 gate を stage ごとに事前に定め、満たさない場合は次の stage に進まない。
   gate を変更する場合は、変更理由を lab に記録する
@@ -47,66 +66,84 @@
   fallback、crash、swap 発生も省略しない
 - 性能測定は同一入力で最低 3 回行い、中央値とばらつきを記録する
 
+## fixture の生成方針
+
+parity fixture は **CPU float32** で生成する。当初は BF16 変換重みで評価する
+計画だったが、2026-08-25 の実測で次が判明したため改めた。
+
+- 異なる backend の bfloat16 同士では一致検証が成立しない。同一実装でも
+  MLX と PyTorch-MPS では丸めの累積が異なり、vision tower の cosine は
+  0.9988〜0.9992、greedy は 64 token 中 7〜61 しか一致しない
+  ([Stage 1](../2026/08/25/mage-vl-mlx-stage1-image-parity/README.md))
+- そもそも gate の cosine 0.9999 は、公式実装自身の CPU / MPS 間ですら 0.99953 で
+  到達しない([device 比較](../2026/08/25/mage-vl-fixture-device/README.md))
+- float32 では同じ実装が相対誤差 `8.9e-06`〜`1.6e-05`、cosine 1.000000、
+  greedy 完全一致となる
+
+device と dtype ごとの実測コスト(M4 Max、静止画 1 枚、forward + greedy 64 token)。
+
+| device / dtype | 所要 | 用途 |
+|---|---:|---|
+| CPU float32 | 約 35 秒 | **parity fixture の生成**(標準) |
+| MPS bfloat16 | 約 6 秒 | bfloat16 の参照値が要るときのみ |
+| CPU bfloat16 | 約 245 秒 | 使わない(CPU の bf16 は遅い) |
+| MPS float32 | ハング | **使わない**(下記) |
+
+MPS float32 は、bf16 → fp32 キャスト(`copy_cast_kernel_mps` 内の Metal shader
+dispatch)で進捗なく滞留する。73 分間 swap もメモリ逼迫もない状態で同一スタックに
+留まることを確認しているため、待たずに CPU へ切り替える。
+
+## 環境の準備
+
+公式実装を macOS で動かすために必要な対処。いずれも
+[Mac ベースライン](../2026/08/25/mage-vl-image-baseline/README.md)で確認した。
+
+- `opencv-python` を install する。checkpoint の remote code は静止画経路でも
+  `cv2` を import する
+- `mamba_ssm` の stub package を venv に置く。transformers の静的 import 検査
+  (`check_imports`)が `streammind_gate.py` の top-level import を見て失敗するため。
+  実行時は遅延 import で、静止画・動画経路では呼ばれない。
+  **この stub がある限り streaming gate は動かない**ので、Stage 3 では
+  macOS で gate 本体を動かす手段の確保が最初の課題になる
+- checkpoint の revision を固定する。固定しないと `streammind_gate.py` の
+  新版が実行時に再ダウンロードされる
+
 ## Stage と gate
 
 ### Stage 0: codec-native 前処理の移植性調査
 
 - 内容: `codec-video-prep` と公式 video 前処理のソースを読み、macOS で
   I frame patch、motion vector、residual energy、patch 選択を同等に再現できるか
-  机上評価する。FFmpeg `export_mvs`、PyAV、VideoToolbox など抽出手段ごとに
-  可否を整理する
-- 成果物: 調査 lab(コード実行なし)
+  机上評価する
 - gate: macOS 上での再現経路を具体的に特定できること。特定できない場合は
   Stage 4 を計画から外すか、目標を再定義してこの文書を更新する
 
-最大の不確実性を最初に潰すため、実装より先にこの stage を行う。
+最大の不確実性を最初に潰すため、実装より先にこの stage を行った。
 
-2026-08-05 の調査
-([`mage-vl-codec-prep-portability`](../2026/08/05/mage-vl-codec-prep-portability/README.md))
-で、gate は条件付き通過とした。`codec-video-prep` は sdist と source repository が
-なく macOS native build は不可のため、Stage 4 の目標を「macOS 単体で完結」から
+**結果: 条件付き通過。** `codec-video-prep` は sdist と source repository がなく
+macOS native build は不可
+([机上調査](../2026/08/05/mage-vl-codec-prep-portability/README.md))。
+そのため Stage 4 の目標を「macOS 単体で完結」から
 「単一の Mac 上で完結(canvas 生成は ARM64 Linux container の公式 wheel、
-下流は macOS の MLX 実装)」へ再定義する。
-
-2026-08-25 の実機検証
-([`codec-video-prep-container`](../2026/08/25/codec-video-prep-container/README.md))
-で、aarch64 wheel が ARM64 Linux container 上で GPU なしに動作し、
-codec asset(canvas、meta.json、npy)を出力することを確認した。
-出力の公式環境との一致検証は Stage 4 で行う。
+下流は macOS の MLX 実装)」へ再定義した。
+[実機検証](../2026/08/25/codec-video-prep-container/README.md)で、aarch64 wheel が
+ARM64 Linux container 上で GPU なしに動作し、codec asset(canvas、meta.json、npy)を
+出力することを確認済み。出力の公式環境との一致検証は Stage 4 で行う。
 
 ### Stage 1: 静止画 parity
 
 - 内容: 独自実装で Mage-ViT、projector、Qwen3 decoder、画像前処理、重みロード、
   生成ループを構成する
-- gate:
+- gate(float32 で評価する):
   - 重み key の missing / unused がともに 0
   - vision tower の PyTorch 参照に対する相対誤差 `1.0e-4` 以下、cosine 0.9999 以上
   - 参照画像 3 枚以上 × greedy 64 token が fixture と完全一致
-- 数値 gate と greedy 一致は **float32 で評価する**。当初は BF16 変換重みで
-  評価する計画だったが、2026-08-25 の実測で、異なる backend の bfloat16 同士では
-  到達不能と判明したため改めた(下記)
 - 量子化(8 bit / 4 bit)checkpoint は完全一致を要求せず、同一 prompt での
   token 一致率と出力差を記録する
 
-2026-08-25 に Stage 1 を float32 で通過した
-([`mage-vl-mlx-stage1-image-parity`](../2026/08/25/mage-vl-mlx-stage1-image-parity/README.md))。
-重み key 696 は missing / unused ともに 0、vision tower の相対誤差は
+**結果: 通過**([記録](../2026/08/25/mage-vl-mlx-stage1-image-parity/README.md))。
+重み key 696 は missing / unused ともに 0、vision tower の相対誤差
 `8.9e-06`〜`1.6e-05`、cosine 1.000000、greedy 64 token は 3 枚とも完全一致。
-同じ実装を bfloat16 で比較すると cosine 0.9988〜0.9992、greedy は 7〜61/64 に
-とどまる。実装は同一で float32 では一致するため、原因は MLX と PyTorch-MPS の
-bfloat16 丸めの累積差と判断した。bfloat16 は実行時精度として扱い、
-一致検証には使わない。
-
-2026-08-25 の実測
-([`mage-vl-image-baseline`](../2026/08/25/mage-vl-image-baseline/README.md))で、
-公式実装の静止画推論が macOS(MPS、bfloat16)で完走することを確認した。
-続く device 比較
-([`mage-vl-fixture-device`](../2026/08/25/mage-vl-fixture-device/README.md))で、
-fixture は MPS bf16 で生成することに決定した。公式実装自身の CPU / MPS 間で
-vision tower の cosine は 0.99953 であり、上記の cosine 0.9999 gate は
-「MPS 生成 fixture に対して」評価する。greedy 一致は device 間で頑健だった。
-移植本体は [kiarina/mage-vl-mlx](https://github.com/kiarina/mage-vl-mlx)
-で開発する。
 
 ### Stage 2: torch-free frame-sampled video
 
@@ -117,13 +154,20 @@ vision tower の cosine は 0.99953 であり、上記の cosine 0.9999 gate は
 - 実測: model load time、time to first token、decode token/s、
   MLX allocator peak memory、process peak RSS
 
-2026-08-25 に Stage 2 を float32 で通過した
-([`mage-vl-mlx-stage2-video-parity`](../2026/08/25/mage-vl-mlx-stage2-video-parity/README.md))。
+**結果: 通過**([記録](../2026/08/25/mage-vl-mlx-stage2-video-parity/README.md))。
 8 frame のクリップ 3 本で、選択 frame index・grid・patch_positions・pixel values が
-公式実装と bit 単位で一致し、greedy 64 token も 3 本とも完全一致した。
-移植で誤りやすい点として、`patch_positions` の t 軸が実 frame 番号であること、
-`MageVLProcessor` が動画を image 経路に流して `image_grid_thw` を frame ごとに
-1 行返す(結果として vision tower の attention 窓が frame 内で閉じる)ことを確認した。
+bit 単位で一致し、greedy 64 token も 3 本とも完全一致した。
+
+移植で誤りやすい点として次を確認した。Stage 3・4 でも同じ前処理系を使うため、
+実装前に確認する。
+
+- `patch_positions` の t 軸は **実 frame 番号**(例 0, 17, 34, …, 119)であり、
+  0..T-1 の連番ではない
+- `MageVLProcessor` は動画を image 経路に流し、`image_grid_thw` を frame ごとに
+  1 行返す。単体の `MageVLVideoProcessor` は merged な `[T, h, w]` を返す。
+  pixel values と patch_positions は同一だが、vision tower の `cu_seqlens` が
+  変わるため attention 窓が変わる(frame 内で閉じる / 4 frame をまたぐ)。
+  移植は公式の推論経路である前者に合わせた
 
 ### Stage 3: proactive streaming gate
 
@@ -132,6 +176,11 @@ vision tower の cosine は 0.99953 であり、上記の cosine 0.9999 gate は
   - Mamba mixer の最大絶対誤差 `1.0e-5` 以下
   - 参照動画に対する speak / silent timeline が fixture と一致
 - 実測: event 発生から speak 判定までの遅延
+
+着手前の確認事項: 公式 gate は `mamba-ssm`(macOS build なし)を要求する。
+fixture を生成する手段を先に決める。ARM64 Linux container、CPU 専用実装への
+差し替え、gate 重みからの独立再実装などが候補になる。手段が確保できない場合は
+Stage 3 の gate を再定義してこの文書を更新する。
 
 ### Stage 4: codec-native sparse video
 
@@ -152,6 +201,17 @@ vision tower の cosine は 0.99953 であり、上記の cosine 0.9999 gate は
 - MLX allocator peak memory、process peak RSS、swap 使用量
 - 入力、prompt、max tokens、量子化方式を固定し、同一入力で 3 回測定する
 
+参考値(M4 Max、bfloat16、greedy 64 token、3 回の中央値)。
+
+| 経路 | prompt | decode | MLX peak memory |
+|---|---:|---:|---:|
+| 静止画 | 1561 token | 21.9 token/s | 9.88 GB |
+| 動画 8 frame | 3159 token | 14.4 token/s | 10.66 GB |
+
+比較対象として、公式 PyTorch の MPS bfloat16 は 16.7 token/s(RSS 9.44 GB)、
+mlx-vlm 0.6.15 の 8bit は 91.5 token/s(6.83 GB)。8bit は量子化しており
+条件が異なるため直接比較しない。
+
 ## 環境の記録
 
 各 lab の実行前に次を `output/` に保存する。生成物は Git に追加しない。
@@ -166,12 +226,14 @@ python -c 'import mlx; print(mlx.__version__)' > output/mlx-version.txt
 
 ## リスクと制約
 
-- `codec-video-prep` が native extension のみで配布され、アルゴリズムを
-  ソースから追えない場合、Stage 4 は成立しない。これは Stage 0 で判定する
-- 公式の動画・streaming 経路が `mamba-ssm` や `flash-attn` など CUDA 前提の
-  依存を持つ場合、fixture 生成に CUDA 環境が必要になる。CPU で代替できるかは
-  Stage 0 で確認する
+- 公式 streaming 経路は `mamba-ssm` を要求し、macOS では動かない。
+  静止画・動画経路は stub で回避できることを確認済みだが、
+  Stage 3 は fixture 生成手段の確保が前提になる
+- `flash-attn` は静止画・動画経路では不要だった。streaming・codec 経路で
+  必要になるかは未確認
 - upstream の実装と checkpoint は公開直後であり、tag、実装、対応範囲が変わり得る。
   すべての参照を commit hash と revision で固定する
 - 静止画の一致から動画、streaming、codec 経路の一致は推論できない。
   各 stage で独立に検証する
+- bfloat16 での実行時挙動は公式と一致しない。実用上は動作するが、
+  「公式と同一の token 列を出す」ことは bfloat16 では保証されない
