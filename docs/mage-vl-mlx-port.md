@@ -117,6 +117,14 @@ vision tower の cosine は 0.99953 であり、上記の cosine 0.9999 gate は
 - 実測: model load time、time to first token、decode token/s、
   MLX allocator peak memory、process peak RSS
 
+2026-08-25 に Stage 2 を float32 で通過した
+([`mage-vl-mlx-stage2-video-parity`](../2026/08/25/mage-vl-mlx-stage2-video-parity/README.md))。
+8 frame のクリップ 3 本で、選択 frame index・grid・patch_positions・pixel values が
+公式実装と bit 単位で一致し、greedy 64 token も 3 本とも完全一致した。
+移植で誤りやすい点として、`patch_positions` の t 軸が実 frame 番号であること、
+`MageVLProcessor` が動画を image 経路に流して `image_grid_thw` を frame ごとに
+1 行返す(結果として vision tower の attention 窓が frame 内で閉じる)ことを確認した。
+
 ### Stage 3: proactive streaming gate
 
 - 内容: streaming Mamba mixer と speak / silent 判定を実装する

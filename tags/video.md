@@ -1,6 +1,7 @@
 # video
 
 - 2026/08/25 [codec-video-prep aarch64 wheel on an ARM64 Linux container](../2026/08/25/codec-video-prep-container/README.md)
+- 2026/08/25 [Mage-VL independent MLX port Stage 2: torch-free video parity](../2026/08/25/mage-vl-mlx-stage2-video-parity/README.md)
 - 2026/08/24 [Mage-VL and MLX support status update (2026-08-24)](../2026/08/24/mage-vl-mlx-update/README.md)
 - 2026/08/05 [Mage-VL codec-native preprocessing portability on macOS](../2026/08/05/mage-vl-codec-prep-portability/README.md)
 - 2026/08/05 [Mage-VL on MLX and Apple Silicon](../2026/08/05/mage-vl-mlx-mac/README.md)
