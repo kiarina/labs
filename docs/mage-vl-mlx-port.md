@@ -27,8 +27,8 @@ MLX 移植一般の parity 検証手法は
 | 0 | codec-native 前処理の移植性 | 条件付き通過。container 経路を実機確認済み |
 | 1 | 静止画 parity | float32 で通過 |
 | 2 | torch-free frame-sampled video | float32 で通過 |
-| 3 | proactive streaming gate | float32 で条件付き通過(参照が自前の再実装) |
-| 4 | codec-native sparse video | 未着手 |
+| 3 | proactive streaming gate | 数値一致は float32 で条件付き通過。**実イベントは未検出** |
+| 4 | codec-native sparse video | 未着手。streaming の機能実現にも必要と判明 |
 
 ## 構成
 
@@ -195,8 +195,23 @@ CUDA 環境が使えるようになった時点で確認する。
   bfloat16 で 0.4977)。判定の再現性が要る用途では float32 で動かす
 - ClsNet の rope_theta は Qwen3Config の既定値 10000 で、本体 decoder の 5e6 と異なる
 
-「event 発生から speak 判定までの遅延」は未測定。合成クリップでは event 時刻を
-定義できないため、実映像を用意する段で測る。
+2026-08-25 に実動画で機能面を確認した
+([`mage-vl-streaming-event-detection`](../2026/08/25/mage-vl-streaming-event-detection/README.md))。
+**frames backend では実イベントを検出しなかった。** ドアが開く、グラスが落ちる、
+サッカーのゴールのいずれでも p_speak は 0.0002〜0.0135 にとどまり、
+学習ドメインであるはずのサッカーが最も低かった。発火するのは黒画面のみで、
+SSM を迂回しても同一値になることから、時間的なイベント検出ではなく
+静的な見た目に対する反応と切り分けた。
+
+あわせて評価方法を訂正した。gate は frame ごとではなく、
+**セグメント単位**で読む。公式 `inference_streaming.py` は動画を
+`segment_sec`(既定 8 秒)で分割し、各セグメントの vision token を連結して
+`response_positions` に境界を与え、**境界位置の logits だけ**を softmax する。
+公式既定の backend は `codec` である。
+
+「event 発生から speak 判定までの遅延」は未測定のまま。発火しないため測れない。
+最有力の仮説は入力表現の不一致(gate は codec canvas の token で学習された)であり、
+検証には Stage 4 が必要になる。
 
 ### Stage 4: codec-native sparse video
 
