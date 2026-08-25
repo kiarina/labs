@@ -1,5 +1,6 @@
 # video
 
+- 2026/08/26 [Mage-VL independent MLX port Stage 4: codec-native sparse video](../2026/08/26/mage-vl-mlx-stage4-codec-native/README.md)
 - 2026/08/25 [codec-video-prep aarch64 wheel on an ARM64 Linux container](../2026/08/25/codec-video-prep-container/README.md)
 - 2026/08/25 [Mage-VL independent MLX port Stage 2: torch-free video parity](../2026/08/25/mage-vl-mlx-stage2-video-parity/README.md)
 - 2026/08/25 [Mage-VL independent MLX port Stage 3: proactive streaming gate](../2026/08/25/mage-vl-mlx-stage3-streaming-gate/README.md)

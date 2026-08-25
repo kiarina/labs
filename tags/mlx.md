@@ -1,5 +1,6 @@
 # mlx
 
+- 2026/08/26 [Mage-VL independent MLX port Stage 4: codec-native sparse video](../2026/08/26/mage-vl-mlx-stage4-codec-native/README.md)
 - 2026/08/25 [Mage-VL parity fixture device comparison (CPU vs MPS)](../2026/08/25/mage-vl-fixture-device/README.md)
 - 2026/08/25 [Mage-VL image inference baseline on Mac: official PyTorch vs mlx-vlm](../2026/08/25/mage-vl-image-baseline/README.md)
 - 2026/08/25 [Mage-VL independent MLX port Stage 1: static image parity](../2026/08/25/mage-vl-mlx-stage1-image-parity/README.md)

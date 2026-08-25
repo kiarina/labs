@@ -18,7 +18,7 @@ MLX 移植一般の parity 検証手法は
 - 動画・streaming 経路について、PyTorch 参照実装との end-to-end 一致を
   定量的に確認できるか。これは 2026-08-05 時点で誰も報告していない
 
-## 現在の状況(2026-08-25)
+## 現在の状況(2026-08-26)
 
 移植本体は [kiarina/mage-vl-mlx](https://github.com/kiarina/mage-vl-mlx)。
 
@@ -27,8 +27,8 @@ MLX 移植一般の parity 検証手法は
 | 0 | codec-native 前処理の移植性 | 条件付き通過。container 経路を実機確認済み |
 | 1 | 静止画 parity | float32 で通過 |
 | 2 | torch-free frame-sampled video | float32 で通過 |
-| 3 | proactive streaming gate | 数値一致は float32 で条件付き通過。**実イベントは未検出** |
-| 4 | codec-native sparse video | 未着手。streaming の機能実現にも必要と判明 |
+| 3 | proactive streaming gate | 数値一致は float32 で条件付き通過。機能は codec 経路が前提 |
+| 4 | codec-native sparse video | float32 で通過 |
 
 ## 構成
 
@@ -211,7 +211,9 @@ SSM を迂回しても同一値になることから、時間的なイベント�
 
 「event 発生から speak 判定までの遅延」は未測定のまま。発火しないため測れない。
 最有力の仮説は入力表現の不一致(gate は codec canvas の token で学習された)であり、
-検証には Stage 4 が必要になる。
+これは [Stage 4](../2026/08/26/mage-vl-mlx-stage4-codec-native/README.md) で裏付けられた。
+codec 入力にすると同じ動画で `p_speak` の最大値が 0.0009 → 0.8139(サッカー)に変わる。
+**gate は codec 経路を前提としている。**
 
 ### Stage 4: codec-native sparse video
 
@@ -223,6 +225,21 @@ SSM を迂回しても同一値になることから、時間的なイベント�
 - 実測: 同一動画に対する frame-sampled 経路と codec-native 経路の
   visual token 数、decode 速度、peak memory の比較。Microsoft 報告の
   75% 削減・最大 3.5 倍は環境が異なるため、並記するが直接比較しない
+
+**結果: 通過**([記録](../2026/08/26/mage-vl-mlx-stage4-codec-native/README.md))。
+patch_positions と pixel values が公式と bit 一致し、greedy 64 token も一致した。
+
+macOS で codec 経路を動かす方法も確立した。公式実装は外部バイナリを
+`CV_PREINFER_BIN` で差し替えられるため、ARM64 Linux container 内の
+`cv-preinfer` を呼ぶラッパーを用意すれば、**公式実装を無改変のまま
+macOS で codec 推論できる**。Stage 0 で構想した経路が、参照側も
+Mac ネイティブのまま成立した。
+
+token 効率は**比較条件を明示しないと逆の結論になる**。均等サンプリングは
+frame 数によらず 1 frame あたり 384 visual token で一定なのに対し、
+codec は 193 frame 中 192 frame を 3,528 token(1 frame あたり 18.4)でカバーする。
+カバレッジを揃えれば 95% 削減、固定 32 frame 予算比では 71% 削減。
+一方、8 秒クリップを 8 frame で見る既定設定と比べると codec のほうが token は多い。
 
 ## 測定項目と方法
 
