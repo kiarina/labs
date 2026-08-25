@@ -1,5 +1,6 @@
 # streaming
 
+- 2026/08/26 [Does the Mage-VL streaming gate track event times, or content type?](../2026/08/26/mage-vl-gate-event-correlation/README.md)
 - 2026/08/26 [Mage-VL independent MLX port Stage 4: codec-native sparse video](../2026/08/26/mage-vl-mlx-stage4-codec-native/README.md)
 - 2026/08/25 [Mage-VL independent MLX port Stage 3: proactive streaming gate](../2026/08/25/mage-vl-mlx-stage3-streaming-gate/README.md)
 - 2026/08/25 [Does the Mage-VL streaming gate detect events in real video?](../2026/08/25/mage-vl-streaming-event-detection/README.md)

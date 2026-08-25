@@ -19,6 +19,7 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 ## Labs
 
 - 2026/08
+  - [Does the Mage-VL streaming gate track event times, or content type?](2026/08/26/mage-vl-gate-event-correlation/README.md) - [mage-vl](tags/mage-vl.md), [mlx](tags/mlx.md), [streaming](tags/streaming.md), [video](tags/video.md), [apple-silicon](tags/apple-silicon.md)
   - [Mage-VL independent MLX port Stage 4: codec-native sparse video](2026/08/26/mage-vl-mlx-stage4-codec-native/README.md) - [mage-vl](tags/mage-vl.md), [mlx](tags/mlx.md), [apple-silicon](tags/apple-silicon.md), [video](tags/video.md), [streaming](tags/streaming.md), [docker](tags/docker.md)
   - [codec-video-prep aarch64 wheel on an ARM64 Linux container](2026/08/25/codec-video-prep-container/README.md) - [mage-vl](tags/mage-vl.md), [apple-silicon](tags/apple-silicon.md), [video](tags/video.md), [docker](tags/docker.md)
   - [Mage-VL parity fixture device comparison (CPU vs MPS)](2026/08/25/mage-vl-fixture-device/README.md) - [mage-vl](tags/mage-vl.md), [mlx](tags/mlx.md), [apple-silicon](tags/apple-silicon.md), [vlm](tags/vlm.md)

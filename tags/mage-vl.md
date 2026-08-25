@@ -1,5 +1,6 @@
 # mage-vl
 
+- 2026/08/26 [Does the Mage-VL streaming gate track event times, or content type?](../2026/08/26/mage-vl-gate-event-correlation/README.md)
 - 2026/08/26 [Mage-VL independent MLX port Stage 4: codec-native sparse video](../2026/08/26/mage-vl-mlx-stage4-codec-native/README.md)
 - 2026/08/25 [codec-video-prep aarch64 wheel on an ARM64 Linux container](../2026/08/25/codec-video-prep-container/README.md)
 - 2026/08/25 [Mage-VL parity fixture device comparison (CPU vs MPS)](../2026/08/25/mage-vl-fixture-device/README.md)

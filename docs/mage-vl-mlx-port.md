@@ -345,16 +345,24 @@ python -c 'import mlx; print(mlx.__version__)' > output/mlx-version.txt
 
 Stage 0〜4 は完了したが、次は未確認のまま残っている。
 
-- **streaming gate の発火とイベント時刻の対応。** codec 入力で発火はするが、
-  発火位置は codec グループ末尾という構造的な位置に集中しており、
-  ゴールやドアの開閉といったイベント時刻との相関は確認できていない。
-  「一定間隔での発話判定」と区別できていない
+- ~~streaming gate の発火とイベント時刻の対応~~ →
+  **決着した**([記録](../2026/08/26/mage-vl-gate-event-correlation/README.md))。
+  対照実験の結果、**発火はイベント時刻に追随しない**。gate はコンテンツ種別
+  (サッカー中継 0.69〜0.79 対 静かな廊下 0.04〜0.11)を明確に分けるが、
+  同じ種別内でイベントの有無は区別しない。シュートを含むセグメントのほうが
+  対照より低い値になる例も観測した。
+  gate が答えるのは「このストリームは実況に値するか」であり、
+  「いま何かが起きたか」ではない
 - **`mamba-ssm` の CUDA kernel との一致。** Stage 3 の参照は自前の
   pure PyTorch 再実装であり、公式が実行する kernel との一致は未検証。
   CUDA 環境が使えるようになった時点で確認する
-- **実写動画での挙動。** 検証に使った動画はすべて合成または LTX-2 生成である
-- **公式 segment 分割 protocol と codec 経路の組み合わせ。**
-  `inference_streaming.py` の segment 分割は frames 入力でのみ試している
+- **実写動画での挙動。** 検証に使った動画はすべて合成または LTX-2 生成である。
+  gate の結論(種別には反応、イベント時刻には反応しない)が実写でも成り立つかは未確認
+- ~~公式 segment 分割 protocol と codec 経路の組み合わせ~~ →
+  **検証した**(上記 lab)。既定構成で動作する。実行上の注意が 2 件あり、
+  末尾の極端に短いセグメントは codec が group を構成できず落ちるため skip する、
+  subclip を macOS のシステム temp(`/var/folders`)に置くと Docker から
+  見えないためソースと同じ場所に置く
 - **codec 経路の prompt 生成**(`rewrite_text_with_codec_positions`)は未移植。
   parity 検証では公式の `input_ids` を使用した
 - **neural engine(DCVC-RT)** は CUDA 前提のため対象外のまま
