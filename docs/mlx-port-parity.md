@@ -47,6 +47,27 @@ bfloat16 で一致しないとき、原因が実装か丸めかは次の順で�
 同じ絶対誤差でも相対誤差が大きく出る。層をまたいで比較するときは
 絶対誤差と相対誤差の両方を見る。
 
+## gate は指定された module に同一入力を与えて測る
+
+「ある module の誤差が X 以下」という条件は、その module に**参照側と同じ入力**を
+与えて測る。end-to-end で測ると上流の誤差を含み、条件の意味が変わる。
+
+Mage-VL の SSM ブロックでは、end-to-end の出力誤差が 1.2e-05〜1.4e-05 で
+基準の 1.0e-5 を超えたが、切り分けると差は SSM ではなく上流の平均プールと
+Linear で生じており、SSM 単体に同一入力を与えると 2.7e-07〜4.4e-07 だった。
+条件を満たすか否かの結論が逆になる。
+
+## 閾値のある出力は bfloat16 で反転しうる
+
+確率を閾値と比較して 2 値を出す設計では、bfloat16 の丸めだけで判定が反転する。
+Mage-VL の streaming gate では、float32 で `p_speak` 0.5022 の時刻が
+bfloat16 では 0.4977 になり、speak が silent に変わった。
+閾値から離れた値しか出ない入力では反転しない。
+
+検証時は、**閾値付近の値を含む入力を意図的に用意する**。すべての値が閾値から
+遠い入力しか使わないと、実装が壊れていても一致してしまう。
+判定の再現性が要る用途では float32 で動かす。
+
 ## fixture に何を含めるか
 
 最低限、次を固定入力ごとに保存する。
@@ -102,6 +123,14 @@ Mage-VL では 696 key で missing / unused / shape 不一致がいずれも 0 �
   `copy_cast_kernel_mps` 内の Metal shader dispatch で進捗なく滞留する。
   73 分間 swap もメモリ逼迫もない状態を確認しているため、待たずに CPU へ切り替える。
   長時間終わらないときは `sample <pid>` でスタックを見ると早い
+- **CUDA 専用パッケージは install 自体ができないことがある。**
+  `mamba-ssm` は setup.py が `torch.version.cuda` を parse するため、
+  それが None の macOS では `InvalidVersion` で失敗する
+  (`MAMBA_SKIP_CUDA_BUILD=TRUE` でも同じ)。
+  参照が作れない場合、その module だけを公開されている参照アルゴリズムから
+  pure PyTorch で再実装して参照とする方法がある。ただし
+  「公開アルゴリズムとの一致」であって「公式が実行する kernel との一致」ではない。
+  何を検証し、何を検証していないかを lab に明記する
 - **CUDA 前提の依存を持つ checkpoint は、import 検査で止まる。**
   transformers の `check_imports` は remote code の top-level import を静的に見るため、
   実行時に使わない module でも install されていないと失敗する。

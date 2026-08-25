@@ -27,11 +27,8 @@ MLX 移植一般の parity 検証手法は
 | 0 | codec-native 前処理の移植性 | 条件付き通過。container 経路を実機確認済み |
 | 1 | 静止画 parity | float32 で通過 |
 | 2 | torch-free frame-sampled video | float32 で通過 |
-| 3 | proactive streaming gate | 未着手 |
+| 3 | proactive streaming gate | float32 で条件付き通過(参照が自前の再実装) |
 | 4 | codec-native sparse video | 未着手 |
-
-Stage 3 の着手前に、`mamba-ssm` を要求する公式 streaming gate の fixture を
-macOS で生成できるかを見極める必要がある(後述の「環境の準備」を参照)。
 
 ## 構成
 
@@ -103,8 +100,8 @@ dispatch)で進捗なく滞留する。73 分間 swap もメモリ逼迫もな�
 - `mamba_ssm` の stub package を venv に置く。transformers の静的 import 検査
   (`check_imports`)が `streammind_gate.py` の top-level import を見て失敗するため。
   実行時は遅延 import で、静止画・動画経路では呼ばれない。
-  **この stub がある限り streaming gate は動かない**ので、Stage 3 では
-  macOS で gate 本体を動かす手段の確保が最初の課題になる
+  stub があると公式 gate は動かないが、Stage 3 では SSM ブロックを
+  pure PyTorch で再実装して参照とした(Stage 3 の節を参照)
 - checkpoint の revision を固定する。固定しないと `streammind_gate.py` の
   新版が実行時に再ダウンロードされる
 
@@ -177,10 +174,29 @@ bit 単位で一致し、greedy 64 token も 3 本とも完全一致した。
   - 参照動画に対する speak / silent timeline が fixture と一致
 - 実測: event 発生から speak 判定までの遅延
 
-着手前の確認事項: 公式 gate は `mamba-ssm`(macOS build なし)を要求する。
-fixture を生成する手段を先に決める。ARM64 Linux container、CPU 専用実装への
-差し替え、gate 重みからの独立再実装などが候補になる。手段が確保できない場合は
-Stage 3 の gate を再定義してこの文書を更新する。
+**結果: 条件付き通過**([記録](../2026/08/25/mage-vl-mlx-stage3-streaming-gate/README.md))。
+mixer に同一入力を与えた最大絶対誤差は `2.7e-07`〜`4.4e-07` で gate を満たし、
+speak / silent timeline も 4 本すべてで一致した。
+
+条件は参照の出所である。`mamba-ssm` は macOS に install できない
+(setup.py が `torch.version.cuda` を parse し、None で失敗する)ため、
+SSM ブロックのみを pure PyTorch で再実装したものを参照とした。
+**mamba-ssm の CUDA kernel との一致は未検証**であり、
+CUDA 環境が使えるようになった時点で確認する。
+
+あわせて次を確認した。
+
+- 数値 gate が特定の module を指す場合、その module に同一入力を与えて測る。
+  end-to-end で測ると上流の誤差を含み、条件の意味が変わる
+  (VideoMamba の end-to-end 誤差は `1.2e-05`〜`1.4e-05` で gate を超えるが、
+  差は mixer ではなく平均プールと PreNet に由来する)
+- **gate の判定は bfloat16 に対して頑健でない。** `p_speak` が 0.5 付近にあるとき、
+  bfloat16 の丸めだけで speak / silent が反転する(float32 で 0.5022 の時刻が
+  bfloat16 で 0.4977)。判定の再現性が要る用途では float32 で動かす
+- ClsNet の rope_theta は Qwen3Config の既定値 10000 で、本体 decoder の 5e6 と異なる
+
+「event 発生から speak 判定までの遅延」は未測定。合成クリップでは event 時刻を
+定義できないため、実映像を用意する段で測る。
 
 ### Stage 4: codec-native sparse video
 
@@ -227,8 +243,8 @@ python -c 'import mlx; print(mlx.__version__)' > output/mlx-version.txt
 ## リスクと制約
 
 - 公式 streaming 経路は `mamba-ssm` を要求し、macOS では動かない。
-  静止画・動画経路は stub で回避できることを確認済みだが、
-  Stage 3 は fixture 生成手段の確保が前提になる
+  Stage 3 は SSM ブロックの pure PyTorch 再実装を参照として通過させたため、
+  公式 CUDA kernel との一致は未検証のまま残る
 - `flash-attn` は静止画・動画経路では不要だった。streaming・codec 経路で
   必要になるかは未確認
 - upstream の実装と checkpoint は公開直後であり、tag、実装、対応範囲が変わり得る。
