@@ -67,6 +67,28 @@ PYTHONPATH=$M .venv/bin/python scripts/check_codec_parity.py --video V.mp4
 - 参照: `microsoft/Mage-VL` revision `d88b153`、float32、CPU
 - 環境: Apple M4 Max、128 GB、macOS 26.5.2、Docker 29.7.2、mlx 0.32.1
 
+## 検証用動画の入手
+
+LTX-2 で生成した動画は共有アセットに登録済みです。
+生成スクリプトは残していますが、LTX-2 の出力は環境やモデル版で変わりうるため、
+**追試には共有アセットを使ってください。**
+
+```sh
+make download-test-assets   # または mise run //:test-assets:download
+```
+
+| 本文中の呼称 | 取得後のパス |
+|---|---|
+| `door_open` | `tests/assets/mp4/door_open_768x512_24fps_8s_302kb.mp4` |
+| `door_static` | `tests/assets/mp4/door_static_768x512_24fps_8s_397kb.mp4` |
+| `glass_fall` | `tests/assets/mp4/glass_fall_768x512_24fps_8s_490kb.mp4` |
+| `soccer_goal` | `tests/assets/mp4/soccer_goal_768x512_24fps_8s_1469kb.mp4` |
+| `soccer_idle` | `tests/assets/mp4/soccer_idle_768x512_24fps_8s_1422kb.mp4` |
+
+生成時のプロンプト全文と設定は
+[`mage-vl-streaming-event-detection`](../../25/mage-vl-streaming-event-detection/README.md)の
+「検証条件」に記録しています。
+
 ## 観測した事実
 
 ### 前処理は bit 完全一致(gate)

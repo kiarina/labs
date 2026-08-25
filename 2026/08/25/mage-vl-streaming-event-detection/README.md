@@ -52,6 +52,26 @@ cd mage-vl-mlx
 .venv/bin/python scripts/gate_stream.py --video path/to/door_open.mp4 --segment-sec 2
 ```
 
+## 検証用動画の入手
+
+LTX-2 で生成した動画は共有アセットに登録済みです。
+生成スクリプトは残していますが、LTX-2 の出力は環境やモデル版で変わりうるため、
+**追試には共有アセットを使ってください。**
+
+```sh
+make download-test-assets   # または mise run //:test-assets:download
+```
+
+| 本文中の呼称 | 取得後のパス |
+|---|---|
+| `door_open` | `tests/assets/mp4/door_open_768x512_24fps_8s_302kb.mp4` |
+| `door_static` | `tests/assets/mp4/door_static_768x512_24fps_8s_397kb.mp4` |
+| `glass_fall` | `tests/assets/mp4/glass_fall_768x512_24fps_8s_490kb.mp4` |
+| `soccer_goal` | `tests/assets/mp4/soccer_goal_768x512_24fps_8s_1469kb.mp4` |
+| `soccer_idle` | `tests/assets/mp4/soccer_idle_768x512_24fps_8s_1422kb.mp4` |
+
+生成時のプロンプト全文と設定は上記「検証条件」に記録しています。
+
 ## 観測した事実
 
 ### 評価方法の訂正: gate はセグメント単位で読む
@@ -158,8 +178,9 @@ codec 経路が必要だからです。目的は変わらず streaming の実現
 - 閾値は公式既定の 0.5 を使用。別の τ を使えば低いスコアでも発火しうるが、
   0.001 と 0.0002 の差にイベントとの相関が見えないため、
   閾値調整で解決する見込みは薄いと考える
-- 生成動画は共有アセットに未登録。現状は生成スクリプトのみ記録しており、
-  LTX-2 の出力が環境をまたいで再現する保証はない
+- 生成動画は共有アセットに登録済み(上記「検証用動画の入手」)。
+  LTX-2 の出力は環境をまたいで再現する保証がないため、追試では
+  生成スクリプトではなく共有アセットを使うこと
 - gate の学習データと想定運用は公開情報からは詳細不明
 
 ## 参照
