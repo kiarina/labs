@@ -77,13 +77,25 @@ codec asset(canvas、meta.json、npy)を出力することを確認した。
 ### Stage 1: 静止画 parity
 
 - 内容: 独自実装で Mage-ViT、projector、Qwen3 decoder、画像前処理、重みロード、
-  生成ループを構成し、BF16 変換重みで検証する
+  生成ループを構成する
 - gate:
   - 重み key の missing / unused がともに 0
   - vision tower の PyTorch 参照に対する相対誤差 `1.0e-4` 以下、cosine 0.9999 以上
   - 参照画像 3 枚以上 × greedy 64 token が fixture と完全一致
+- 数値 gate と greedy 一致は **float32 で評価する**。当初は BF16 変換重みで
+  評価する計画だったが、2026-08-25 の実測で、異なる backend の bfloat16 同士では
+  到達不能と判明したため改めた(下記)
 - 量子化(8 bit / 4 bit)checkpoint は完全一致を要求せず、同一 prompt での
   token 一致率と出力差を記録する
+
+2026-08-25 に Stage 1 を float32 で通過した
+([`mage-vl-mlx-stage1-image-parity`](../2026/08/25/mage-vl-mlx-stage1-image-parity/README.md))。
+重み key 696 は missing / unused ともに 0、vision tower の相対誤差は
+`8.9e-06`〜`1.6e-05`、cosine 1.000000、greedy 64 token は 3 枚とも完全一致。
+同じ実装を bfloat16 で比較すると cosine 0.9988〜0.9992、greedy は 7〜61/64 に
+とどまる。実装は同一で float32 では一致するため、原因は MLX と PyTorch-MPS の
+bfloat16 丸めの累積差と判断した。bfloat16 は実行時精度として扱い、
+一致検証には使わない。
 
 2026-08-25 の実測
 ([`mage-vl-image-baseline`](../2026/08/25/mage-vl-image-baseline/README.md))で、
