@@ -97,21 +97,21 @@ MacBook Pro、Apple M1 Max の CPU 1 thread での結果です。
 
 | Measurement | p50 | p95 | p99 |
 |---|---:|---:|---:|
-| all chunk inference | 35.1 ms | 37.8 ms | 40.1 ms |
-| steady 200 ms chunk inference | **35.1 ms** | **37.7 ms** | **38.0 ms** |
+| all chunk inference | 38.2 ms | 40.3 ms | 60.2 ms |
+| steady 200 ms chunk inference | **38.2 ms** | **40.2 ms** | **48.2 ms** |
 
 ```text
 deadline misses:       0 / 99
 deadline miss rate:    0.0%
-steady maximum:        38.4 ms
-peak resident memory:  2,849 MB
+steady maximum:        58.7 ms
+peak resident memory:  2,933 MB
 ```
 
-steady p95 は 200 ms deadline の18.8%でした。この入力と実行中の負荷では、CPU 1 thread
+steady p95 は 200 ms deadline の20.1%でした。この入力と実行中の負荷では、CPU 1 thread
 だけで連続処理する計算余裕がありました。
 
-3試行の first chunk inference は約32、32、122 msとばらつきました。推定
-first-output latency は p50 約277 ms、p95 約359 ms、最大約368 msです。steady processingが速いことは、
+3試行の first chunk inference は約135、35、35 msとばらつきました。推定
+first-output latency は p50 約280 ms、p95 約370 ms、最大約380 msです。steady processingが速いことは、
 発話開始直後の遅延が小さいことを意味しません。
 
 source 6.588 秒から 6.570 秒の変換音声を生成しました。18 ms の差は最後のpaddingと
@@ -143,8 +143,8 @@ convertedとtargetはいずれも複数発話を連結しているため、短�
 | converted RMS | -19.98 dBFS |
 | clipped samples | 0.0% |
 | boundary jump p50 | 0.00781 |
-| boundary jump p95 | 0.04618 |
-| all adjacent sample jump p95 | 0.05674 |
+| boundary jump p95 | 0.04612 |
+| all adjacent sample jump p95 | 0.05675 |
 | maximum boundary / overall jump | 0.134 / 0.532 |
 
 32個のchunk境界について、境界差のp95は音声全体の隣接sample差p95より小さく、最大値も
@@ -155,7 +155,7 @@ convertedとtargetはいずれも複数発話を連結しているため、短�
 
 この条件では「MeanVC 200 ms runtimeをApple M1 MaxのCPU 1 threadでdeadline内に処理
 できる」という仮説は支持されました。99 chunkすべてがdeadline内で、steady p95には
-約162 msの余裕があります。target話者への変換も独立したspeaker embeddingで確認できました。
+約160 msの余裕があります。target話者への変換も独立したspeaker embeddingで確認できました。
 
 一方、推定first-output latencyは約0.28–0.37秒であり、20–100 ms級の低遅延voice
 changerではありません。オンライン会議や配信では利用可能な範囲になり得ますが、自己音声を
@@ -292,6 +292,6 @@ output/
 - memory: 64 GB
 - OS: macOS 26.5.2, arm64
 - Python: 3.11.15
-- PyTorch: 2.5.1, CPU, 1 thread
+- PyTorch: 2.11.0, CPU, 1 thread
 - NumPy: 1.26.4
 - ONNX Runtime: 1.27.0, CPUExecutionProvider
