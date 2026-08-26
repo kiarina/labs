@@ -97,21 +97,21 @@ MacBook Pro、Apple M1 Max の CPU 1 thread での結果です。
 
 | Measurement | p50 | p95 | p99 |
 |---|---:|---:|---:|
-| all chunk inference | 38.2 ms | 40.3 ms | 60.2 ms |
-| steady 200 ms chunk inference | **38.2 ms** | **40.2 ms** | **48.2 ms** |
+| all chunk inference | 38.3 ms | 46.2 ms | 55.7 ms |
+| steady 200 ms chunk inference | **38.3 ms** | **46.1 ms** | **48.8 ms** |
 
 ```text
 deadline misses:       0 / 99
 deadline miss rate:    0.0%
-steady maximum:        58.7 ms
-peak resident memory:  2,933 MB
+steady maximum:        54.1 ms
+peak resident memory:  2,930 MB
 ```
 
-steady p95 は 200 ms deadline の20.1%でした。この入力と実行中の負荷では、CPU 1 thread
+steady p95 は 200 ms deadline の23.1%でした。この入力と実行中の負荷では、CPU 1 thread
 だけで連続処理する計算余裕がありました。
 
-3試行の first chunk inference は約135、35、35 msとばらつきました。推定
-first-output latency は p50 約280 ms、p95 約370 ms、最大約380 msです。steady processingが速いことは、
+3試行の first chunk inference は約134、36、36 msとばらつきました。推定
+first-output latency は p50 約281 ms、p95 約369 ms、最大約379 msです。steady processingが速いことは、
 発話開始直後の遅延が小さいことを意味しません。
 
 source 6.588 秒から 6.570 秒の変換音声を生成しました。18 ms の差は最後のpaddingと
@@ -155,7 +155,7 @@ convertedとtargetはいずれも複数発話を連結しているため、短�
 
 この条件では「MeanVC 200 ms runtimeをApple M1 MaxのCPU 1 threadでdeadline内に処理
 できる」という仮説は支持されました。99 chunkすべてがdeadline内で、steady p95には
-約160 msの余裕があります。target話者への変換も独立したspeaker embeddingで確認できました。
+約154 msの余裕があります。target話者への変換も独立したspeaker embeddingで確認できました。
 
 一方、推定first-output latencyは約0.28–0.37秒であり、20–100 ms級の低遅延voice
 changerではありません。オンライン会議や配信では利用可能な範囲になり得ますが、自己音声を
@@ -292,6 +292,6 @@ output/
 - memory: 64 GB
 - OS: macOS 26.5.2, arm64
 - Python: 3.11.15
-- PyTorch: 2.11.0, CPU, 1 thread
+- PyTorch: 2.13.0, CPU, 1 thread
 - NumPy: 1.26.4
 - ONNX Runtime: 1.27.0, CPUExecutionProvider
