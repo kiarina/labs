@@ -34,20 +34,36 @@
       shadow-intensity="1" exposure="1" environment-image="neutral"></model-viewer>
   </main>
   <script>
-    const inputs = {
-      miineko1: "../../../../tests/assets/jpg/miineko1_1254x1254_159kb.jpg",
-      miineko2: "../../../../tests/assets/jpg/miineko2_1086x1448_219kb.jpg",
+    const cases = {
+      miineko1: {
+        input: "../../../../tests/assets/jpg/miineko1_1254x1254_159kb.jpg",
+        processed: "results/miineko1/processed_image.png",
+        models: {
+          mesh: "results/miineko1/mesh.glb",
+          skeleton: "results/miineko1/skeleton.glb",
+        },
+      },
+      miineko2: {
+        input: "../../../../tests/assets/jpg/miineko2_1086x1448_219kb.jpg",
+        processed: "results/miineko2/processed_image.png",
+        models: {
+          mesh: "results/miineko2/mesh.glb",
+          skeleton: "results/miineko2/skeleton.glb",
+        },
+      },
     };
     const params = new URLSearchParams(location.search);
     const caseSelect = document.querySelector("#case");
     const kindSelect = document.querySelector("#kind");
-    caseSelect.value = params.get("case") || "miineko1";
-    kindSelect.value = params.get("kind") || "mesh";
+    const requestedCase = params.get("case");
+    const requestedKind = params.get("kind");
+    caseSelect.value = Object.hasOwn(cases, requestedCase) ? requestedCase : "miineko1";
+    kindSelect.value = Object.hasOwn(cases.miineko1.models, requestedKind) ? requestedKind : "mesh";
     async function update() {
-      const name = caseSelect.value;
-      document.querySelector("#input").src = inputs[name];
-      document.querySelector("#processed").src = `results/${name}/processed_image.png`;
-      const model = `results/${name}/${kindSelect.value}.glb`;
+      const selectedCase = cases[caseSelect.value] || cases.miineko1;
+      const model = selectedCase.models[kindSelect.value] || selectedCase.models.mesh;
+      document.querySelector("#input").src = selectedCase.input;
+      document.querySelector("#processed").src = selectedCase.processed;
       const response = await fetch(model, { method: "HEAD" });
       document.querySelector("#status").textContent = response.ok ? "" : "Generation failed: no GLB";
       document.querySelector("#viewer").src = response.ok ? model : "";
