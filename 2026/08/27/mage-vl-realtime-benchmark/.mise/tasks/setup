@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+#MISE description="Clone the pinned Mage-VL MLX port and prepare converted weights"
+set -euo pipefail
+
+PORT_COMMIT=2948a53f677b36c7201bbe0246ddaf17a4edfe9d
+PORT_DIR=output/mage-vl-mlx
+WEIGHTS_DIR=${MAGE_VL_WEIGHTS:-$PORT_DIR/weights/mage-vl-bf16}
+
+mise run //:test-assets:download
+mkdir -p output
+if [ ! -d "$PORT_DIR/.git" ]; then
+  git clone https://github.com/kiarina/mage-vl-mlx.git "$PORT_DIR"
+fi
+git -C "$PORT_DIR" fetch origin
+git -C "$PORT_DIR" checkout --quiet "$PORT_COMMIT"
+uv sync --project "$PORT_DIR" --group fixtures
+
+if [ ! -f "$WEIGHTS_DIR/model.safetensors" ]; then
+  uv run --project "$PORT_DIR" --group fixtures \
+    python "$PORT_DIR/scripts/convert_weights.py" --out "$WEIGHTS_DIR"
+fi
+if [ ! -f "$WEIGHTS_DIR/streammind_gate.safetensors" ]; then
+  uv run --project "$PORT_DIR" --group fixtures \
+    python "$PORT_DIR/scripts/convert_gate_weights.py" --out "$WEIGHTS_DIR"
+fi

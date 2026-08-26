@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#MISE description="Benchmark codec streaming at 1, 2, 4, and 8 second segments"
+#MISE depends=["setup"]
+set -euo pipefail
+
+PORT_DIR=output/mage-vl-mlx
+WEIGHTS_DIR=${MAGE_VL_WEIGHTS:-$PORT_DIR/weights/mage-vl-bf16}
+VIDEO=../../../../tests/assets/mp4/glass_fall_768x512_24fps_8s_490kb.mp4
+
+docker build --platform linux/arm64 -t mage-cvprep:0.2.5 \
+  -f "$PORT_DIR/docker/Dockerfile.cvprep" "$PORT_DIR/docker"
+
+CV_PREINFER_BIN=$PWD/$PORT_DIR/docker/cv-preinfer \
+  "$PORT_DIR/.venv/bin/python" run_matrix.py \
+    --repo "$PORT_DIR" \
+    --weights "$WEIGHTS_DIR" \
+    --video "$VIDEO" \
+    --backends codec \
+    --segments 1 2 4 8 \
+    --runs 3 \
+    --max-new-tokens 16 \
+    --output output/codec-summary.json
