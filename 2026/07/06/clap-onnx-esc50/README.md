@@ -32,11 +32,11 @@ ESC-50 全体は CC BY-NC、ESC-10 subset は CC BY です。本検証は ESC-50
 [Hugging Face の `laion/clap-htsat-unfused`](https://huggingface.co/laion/clap-htsat-unfused)
 から checkpoint をダウンロードし、audio encoder、projection layer、
 L2 normalization を含む `model.onnx` を生成します。checkpoint revision は
-`84bcbbd1d619e407a8216371ddef36e458d95d93`、export は PyTorch 2.8.0、
-Transformers 4.57.3、ONNX opset 18 に固定しています。
+`84bcbbd1d619e407a8216371ddef36e458d95d93`、export は PyTorch 2.13.0、
+Transformers 5.16.1、ONNX opset 18 に固定しています。
 
 ```text
-SHA-256: b23099962830b1afa5398efbb6f5321ef8f63f8fcf93f5019837c47118a8a1c5
+SHA-256: b074085a580e914a471bc0df4dfe6f3251357acfb45738ab06593cab8bd8d866
 inputs: input_features [batch, 1, 1001, 64], is_longer [batch, 1]
 output: embeddings [batch, 512]
 ```

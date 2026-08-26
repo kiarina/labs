@@ -12,7 +12,7 @@ from transformers import ClapModel
 
 MODEL_ID = "laion/clap-htsat-unfused"
 MODEL_REVISION = "84bcbbd1d619e407a8216371ddef36e458d95d93"
-MODEL_SHA256 = "b23099962830b1afa5398efbb6f5321ef8f63f8fcf93f5019837c47118a8a1c5"
+MODEL_SHA256 = "b074085a580e914a471bc0df4dfe6f3251357acfb45738ab06593cab8bd8d866"
 FRAMES = 1001
 MEL_BINS = 64
 EMBEDDING_DIMENSION = 512
@@ -26,9 +26,10 @@ class ClapAudioEncoder(torch.nn.Module):
     def forward(
         self, input_features: torch.Tensor, is_longer: torch.Tensor
     ) -> torch.Tensor:
-        embeddings = self.model.get_audio_features(
+        audio_outputs = self.model.get_audio_features(
             input_features=input_features, is_longer=is_longer
         )
+        embeddings = audio_outputs.pooler_output
         return embeddings + is_longer.to(embeddings.dtype) * 0
 
 
