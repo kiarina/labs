@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+#MISE description="Measure camera lag and frame loss when the model cannot keep up"
+#MISE depends=["setup"]
+set -euo pipefail
+
+PORT_DIR=output/mage-vl-mlx
+WEIGHTS_DIR=${MAGE_VL_WEIGHTS:-$PORT_DIR/weights/mage-vl-bf16}
+PORT=${SATURATION_PORT:-8123}
+HOST=$(hostname -s)
+
+# The Web UI is the thing under test here, so its optional dependencies are
+# needed on top of what the matrix uses.
+uv sync --project "$PORT_DIR" --group webui
+
+"$PORT_DIR/.venv/bin/python" "$PORT_DIR/examples/realtime_web_ui/app.py" \
+  --weights "$WEIGHTS_DIR" --port "$PORT" > "output/$HOST-saturation-server.log" 2>&1 &
+SERVER_PID=$!
+trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+
+for _ in $(seq 60); do
+  curl -sf "http://127.0.0.1:$PORT/api/memory" > /dev/null && break
+  sleep 1
+done
+
+# A 1-second stride on the frames backend is well past what any Apple Silicon
+# machine measured here can sustain, which is the point: the run has to be
+# saturated for the lag and loss figures to mean anything.
+"$PORT_DIR/.venv/bin/python" camera_saturation.py \
+  --url "ws://127.0.0.1:$PORT/ws" \
+  --backend frames \
+  --segment-sec 1 \
+  --window-sec 4 \
+  --target-fps 2 \
+  --max-new-tokens 2 \
+  --duration 120 \
+  --output "output/$HOST-saturation.json"

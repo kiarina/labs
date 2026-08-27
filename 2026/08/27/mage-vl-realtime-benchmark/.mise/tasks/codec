@@ -10,6 +10,14 @@ VIDEO=../../../../tests/assets/mp4/glass_fall_768x512_24fps_8s_490kb.mp4
 docker build --platform linux/arm64 -t mage-cvprep:0.2.5 \
   -f "$PORT_DIR/docker/Dockerfile.cvprep" "$PORT_DIR/docker"
 
+# Two passes over the same video, differing in one thing: whether file segments
+# are cut at the capture rate before cv-preinfer sees them. The Web UI always
+# resamples, so the second pass is the one that matches live behavior; the first
+# is kept as the baseline the improvement is measured against.
+#
+# 8 fps rather than the 2 fps the frames backend uses, because cv-preinfer runs
+# with --min_group_frames 8 and a 1-second segment at 2 fps gives it two frames
+# to work with. It fails outright with "no canvases produced".
 CV_PREINFER_BIN=$PWD/$PORT_DIR/docker/cv-preinfer \
   "$PORT_DIR/.venv/bin/python" run_matrix.py \
     --repo "$PORT_DIR" \
@@ -19,5 +27,17 @@ CV_PREINFER_BIN=$PWD/$PORT_DIR/docker/cv-preinfer \
     --segments 1 2 4 8 \
     --runs 3 \
     --max-new-tokens 16 \
-    --resample-codec-input \
     --output output/codec-summary.json
+
+CV_PREINFER_BIN=$PWD/$PORT_DIR/docker/cv-preinfer \
+  "$PORT_DIR/.venv/bin/python" run_matrix.py \
+    --repo "$PORT_DIR" \
+    --weights "$WEIGHTS_DIR" \
+    --video "$VIDEO" \
+    --backends codec \
+    --segments 1 2 4 8 \
+    --runs 3 \
+    --max-new-tokens 16 \
+    --target-fps 8 \
+    --resample-codec-input \
+    --output output/codec-resampled-summary.json
