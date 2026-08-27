@@ -63,24 +63,133 @@ MLX 移植一般の parity 検証手法は
 | 動画 8 frame | 3,159 token | 14.4 token/s | 10.66 GB |
 | codec 28 canvas | 5,279 token | 9.6 token/s | 11.81 GB |
 
-### リアルタイム運用の到達点(2026-08-27)
+### リアルタイム運用の到達点(2026-08-28)
 
 parity とは別に、区間到着ごとに処理する実装で応答遅延と持続性能を測った
 ([記録](../2026/08/27/mage-vl-realtime-benchmark/README.md))。real-time factor は
 media 長に対する処理時間の比で、1 未満でなければ継続入力で遅れが溜まり続ける。
 
-| 機種 | 入力 | 構成 | RTF |
-|---|---|---|---:|
-| M4 Max | 固定動画(24 fps のまま) | codec・8 秒 | **0.744** |
-| M4 Max | 固定動画(24 fps のまま) | codec・4 秒 | **0.898** |
-| M1 Max | 固定動画(24 fps のまま) | codec・8 秒 | 1.425 |
-| M1 Max | 固定動画(8 fps で切り出し) | codec・4 秒 | **0.808** |
-| M1 Max | ライブカメラ | codec・4 秒 | **0.62** |
-| M1 Max | ライブカメラ | frames・4 秒 | 約 2.1 |
+固定動画(`glass_fall`)、移植 commit `2d7ce22`、bfloat16 model + float32 gate、16 token、
+3 回の中央値。codec へ渡す区間を元の 24 fps のままにするか、8 fps へ間引くかで分けている。
 
-両機の RTF 比は全 8 条件で 1.67〜1.92 倍に収まり、機種差は条件によらずほぼ一定だった。
-律速は decode ではなく visual token に対する生成 prefill で、M1 Max の frames では
-1 区間 8〜9 秒のうち 6〜7 秒を占める。codec の token 削減はここに直接効く。
+| 機種 | 構成 | RTF | first text | 最悪 event -> 全文 |
+|---|---|---:|---:|---:|
+| M4 Max | codec (8 fps)・2 秒 | **0.734** | 1.263 秒 | **3.48 秒** |
+| M4 Max | codec (8 fps)・4 秒 | **0.400** | 1.366 秒 | 5.62 秒 |
+| M4 Max | codec (24 fps)・4 秒 | **0.862** | 3.180 秒 | 7.51 秒 |
+| M1 Max | codec (8 fps)・4 秒 | **0.644** | 2.205 秒 | **6.59 秒** |
+| M1 Max | codec (24 fps)・4 秒 | 1.542 | 7.166 秒 | — |
+| M4 Max | frames・2 秒(最良) | 1.047 | 2.130 秒 | — |
+| M1 Max | frames・2 秒(最良) | 1.991 | 6.766 秒 | — |
+
+**区間を capture rate で間引いてから codec へ渡すかどうかが、成立範囲を決める。**
+間引かないと M1 Max はどの条件でも追いつけず、M4 Max も 4 秒以上を要した。間引くと
+M4 Max は 2 秒で追いつき、最悪遅延は `7.51` 秒から `3.48` 秒へ半分以下になる。
+M1 Max も 4 秒以上で初めて追いつく。frames はどちらの機種でも成立しない。
+
+**sweet spot は機種ごとに違う。**M4 Max の 2 秒設定は M1 Max では RTF `1.157` で破綻する。
+同一設定・同一入力で流した飽和 run の段別中央値では、M1 Max は M4 Max のちょうど
+約 2.0 倍遅かった(1 区間 6.183 秒 対 3.130 秒)。
+
+律速は decode ではなく visual token に対する生成 prefill である。codec の token 削減は
+ここに直接効く。M4 Max・4 秒で比べると、24 fps 経路の生成 `2.230` 秒に対し
+8 fps 経路は `0.828` 秒だった。
+
+処理が入力に追いつかないとき、ライブカメラ経路の遅延は発散せず
+「queue 待ち + 1 区間の処理時間」で定常になる。代わりに入力の 58〜75% を捨てている。
+
+## 構成## 記事に載せる主要数値と出典(2026-08-28 監査)
+
+記事の 4 つの主張ごとに、掲載候補の数値と、その値が最初に記録された lab を対応させた。
+**この表に無い数値は記事に載せない。**転記ミスの確認と、条件の取り違えを防ぐための表である。
+
+### 主張 1: 4 経路を独立 MLX 実装で再現し、float32 parity を示した
+
+| 数値 | 値 | 出典 |
+|---|---|---|
+| 重み key 写像 | 本体 696 / gate 64、missing・unused・shape 不一致すべて 0 | [Stage 1](../2026/08/25/mage-vl-mlx-stage1-image-parity/README.md) / [Stage 3](../2026/08/25/mage-vl-mlx-stage3-streaming-gate/README.md) |
+| 静止画 vision 相対誤差 | 8.9e-06〜1.6e-05、cosine 1.00000000 | Stage 1 |
+| 静止画 greedy 64 token | 3 枚とも完全一致 | Stage 1 |
+| 動画 前処理 | frame index・grid・patch_positions・pixel values が bit 一致 | [Stage 2](../2026/08/25/mage-vl-mlx-stage2-video-parity/README.md) |
+| 動画 vision 相対誤差 | 8.892e-06〜3.606e-04、cosine 1.000000 | Stage 2 |
+| 動画 greedy 64 token | 3 本とも完全一致 | Stage 2 |
+| gate mixer 最大絶対誤差 | 2.682e-07〜4.396e-07(事前に定めた基準 1.0e-5) | Stage 3 |
+| codec 前処理 | patch_positions・pixel values が bit 一致(max_abs 0.0) | [Stage 4](../2026/08/26/mage-vl-mlx-stage4-codec-native/README.md) |
+| codec greedy 64 token | 2 本とも完全一致、logits cosine 1.000000 | Stage 4 |
+
+**併記する制約。**
+
+- parity の主張は float32 に限る。bfloat16 では閾値付近で判定が反転する。実例は
+  `cut_event` の時刻 0 で、float32 `0.5022` に対し bfloat16 `0.4977` となり speak が
+  silent へ反転した(Stage 3)
+- gate の参照は `mamba-ssm` の CUDA kernel ではなく pure PyTorch 再実装である
+- codec 前処理は ARM64 Linux container を必要とし、macOS native だけでは完結しない
+
+### 主張 2: codec-native の効率は比較条件で結論が変わる
+
+すべて Stage 4、`soccer_goal`(193 frame)。均等サンプリングは frame 数によらず
+1 frame あたり 384 token で一定である。
+
+| 比較のしかた | 結果 |
+|---|---|
+| カバレッジを揃える | 1 frame あたり 384 -> **18.4 token(95% 削減)** |
+| 固定 32 frame 予算(12,288 token)と比べる | **71% 削減**しつつ、見る source frame は 6 倍 |
+| 既定の 8 frame(3,072 token)と比べる | **codec のほうが多い**(3,528 token) |
+| 同条件の速度(8 frame 比) | 12.6〜14.3 -> 9.6〜11.0 token/s で **codec が遅い** |
+
+Microsoft が報告する最大 3.5 倍の高速化は、同等の理解に必要な frame 数どうしの比較と
+解釈され、上の「8 frame との比較」とは条件が異なる。
+
+区間処理では削減が素直に効く。M4 Max・4 秒で、24 fps のまま渡すと生成 `2.230` 秒、
+8 fps へ間引くと `0.828` 秒だった([realtime lab](../2026/08/27/mage-vl-realtime-benchmark/README.md))。
+
+### 主張 3: gate の確率はイベント時刻の検出器にならない
+
+| 数値 | 値 | 出典 |
+|---|---|---|
+| コンテンツ種別の分離 | サッカー中継 0.69〜0.79 対 静かな廊下 0.04〜0.11 | [gate-event-correlation](../2026/08/26/mage-vl-gate-event-correlation/README.md) |
+| イベント時刻 | 指さない。シュートを含む区間が対照より低い例もある | 同 |
+| frames 入力での発火 | 0.0009〜0.0062。閾値を下げても filter にならない | Stage 3 / realtime lab |
+| 静止画を再エンコードしても残る | スポーツ 0.79〜0.82 対 静止シーン 0.12〜0.14 | realtime lab |
+| 実用上の結論 | 低い閾値の pre-filter に使い、判定は生成文で行う | 両方 |
+| soccer goal preset | codec backend・gate 0.3 へ校正 | realtime lab |
+
+**併記する制約。**preset の校正は正例 1 本・対照 1 本のみで、precision / recall を
+主張できる規模ではない。対照の `soccer_idle` も生成指示どおりの映像になっておらず、
+クリーンな negative ではない。
+
+### 主張 4: Apple Silicon でどこまでリアルタイムに使えるか
+
+RTF と遅延は上の「リアルタイム運用の到達点」の表を正とする。メモリと飽和時の挙動は
+次を使う(すべて realtime lab)。
+
+| 数値 | 値 |
+|---|---|
+| 区間処理の MLX peak | frames 11.96〜14.27 GB、codec 11.96〜13.08 GB |
+| 軽い設定の長時間 footprint | 22 GB で安定。5 分連続でも 2 回目 run でも動かない |
+| 重い設定の footprint | 50 GB、swap 17.2 GB(64 GB 機)。MLX peak は同時点で 22.04 GB |
+| `mx.clear_cache()` | 34 GB 前後を解放。停止後のアイドルは 12 GB まで落ちる |
+| 飽和時の定常 lag | M1 Max 13.400 秒、M4 Max 10.415 秒。発散しない |
+| 飽和時の drop 率 | M1 Max 75.1%、M4 Max 58.3% |
+
+**併記する制約。**
+
+- **MLX peak を必要 unified memory の見積もりに使わない。**実際に使う最大設定での
+  footprint で見積もる。測定方法は `mise run memory`
+- codec の測定値は同時に走る cv-preinfer container の数に影響される。24 fps 経路は
+  単独実行と連続実行で RTF が 1.7 倍変わった。**掲載値はすべて単独実行**で、
+  8 fps 経路は連続実行でも小数第 3 位まで再現した
+- 実写と長尺 stream は未測定。検証に使った動画はすべて合成または LTX-2 生成である
+- 飽和時の計測は 1 セッションずつで、3 回の中央値ではない
+
+### 記事で混同してはいけない区別
+
+- **parity の記録と現在のコードは別物である。**Stage 4 時点で未移植だった codec の
+  prompt 生成は、現在の `mage-vl-mlx` では実装済みである。各 lab はその時点の記録として読む
+- **固定動画 matrix とカメラの結果は同じ入力ではない。**同じ機種の matrix とも直接比較しない
+- **codec を 24 fps のまま渡すか 8 fps へ間引くかで結論が変わる。**どちらの条件かを必ず書く
+- **Mage-VL 系の lab は realtime を含めて 12 本ある。**parity を扱う 11 本と、
+  リアルタイム性能を扱う 1 本で結論の性質が違うので混ぜない
 
 ## 構成
 
@@ -322,6 +431,17 @@ codec は 193 frame 中 192 frame を 3,528 token(1 frame あたり 18.4)でカ�
 |---|---:|---:|---:|
 | 静止画 | 1561 token | 21.9 token/s | 9.88 GB |
 | 動画 8 frame | 3159 token | 14.4 token/s | 10.66 GB |
+| codec 28 canvas | 5279 token | 9.6〜9.8 token/s | 11.81 GB |
+
+codec の行は Stage 4 の lab に記録が無かったため、2026-08-28 に M4 Max で 3 回測り直した。
+3 回とも prompt 5279 token、peak 11.81 GB、9.8 token/s で一致した。再現コマンド:
+
+```sh
+CV_PREINFER_BIN=$PWD/docker/cv-preinfer uv run python inference_base.py \
+  --mode offline --video soccer_goal_768x512_24fps_8s_1469kb.mp4 \
+  --video-backend codec --question "Describe this media." \
+  --max-new-tokens 64 --verbose
+```
 
 比較対象として、公式 PyTorch の MPS bfloat16 は 16.7 token/s(RSS 9.44 GB)、
 mlx-vlm 0.6.15 の 8bit は 91.5 token/s(6.83 GB)。8bit は量子化しており
@@ -459,7 +579,8 @@ Stage 0〜4 は完了したが、次は未確認のまま残っている。
   見えないためソースと同じ場所に置く。
   なお `--segment-sec` は 1 秒でも動作する(当初「2 秒は不可」としたのは誤りで、
   失敗していたのは末尾の端切れセグメントだけだった)
-- **codec 経路の prompt 生成**(`rewrite_text_with_codec_positions`)は未移植。
-  parity 検証では公式の `input_ids` を使用した
+- ~~codec 経路の prompt 生成~~ → **移植済み**。`PromptBuilder.expand_codec` と
+  `for_video_codec` が codec timestamp run ごとに video block を展開する。
+  Stage 4 の parity 検証は公式の `input_ids` を使った時点の記録である
 - **neural engine(DCVC-RT)** は CUDA 前提のため対象外のまま
 - **量子化(8 bit / 4 bit)** は未実装・未検証

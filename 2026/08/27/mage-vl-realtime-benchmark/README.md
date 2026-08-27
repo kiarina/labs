@@ -79,10 +79,27 @@ Apple Silicon Mac、[mise](https://mise.jdx.dev/)、uv、FFmpeg、Git が必要�
 git clone --depth 1 --filter=blob:none --sparse \
   https://github.com/kiarina/labs.git
 cd labs
-git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml \
-  2026/08/27/mage-vl-realtime-benchmark
+git sparse-checkout set .mise/tasks 2026/08/27/mage-vl-realtime-benchmark
+mise trust . && mise trust 2026/08/27/mage-vl-realtime-benchmark
 mise -C 2026/08/27/mage-vl-realtime-benchmark run
 ```
+
+`sparse-checkout` に渡すのは directory だけです。cone mode は repository 直下の
+ファイルを常に含むため、`Makefile` や `mise.toml` を並べる必要はありません。並べると
+git 2.42 以降は `fatal: '.gitignore' is not a directory` で失敗します(2.55.0 で確認)。
+clone 直後の config は untrusted なので、`mise trust` を通してから task を実行します。
+
+`mise run` は frames の matrix だけを実行します。他は個別に呼びます。
+
+| task | 内容 | 追加要件 |
+|:---|:---|:---|
+| `run`(既定) | frames の matrix | — |
+| `run codec` | codec の matrix(24 fps と 8 fps の 2 パス) | Docker |
+| `run saturation` | カメラ経路を飽和させて遅延と欠落を測る | — |
+| `run memory` | 稼働中の Web UI のメモリを sampling | UI を別途起動 |
+
+初回は Mage-VL checkpoint(約 10 GB)の取得と MLX 変換が走ります。変換済みの重みが
+あるときは `MAGE_VL_WEIGHTS` にその directory を指定すると省略できます。
 
 codec 条件は Docker も必要です。
 
@@ -356,8 +373,26 @@ Mac Studio の matrix は動画ファイルを固定入力にしていますが�
 
 stride 1 秒に対して 1 segment 9.5 秒なので real-time factor は約 9.5 です。2 token しか
 生成していないのに生成が 7.5 秒を占めており、律速は decode ではなく visual token に対する
-prefill でした。Mac Studio M4 Max の同条件 (vision 0.841 秒、first text 4.819 秒) と比べると、
-M1 Max はおよそ 1.8 倍遅く、M4 Max で見つけた codec・4 秒の折衷はそのままでは移りません。
+prefill でした。
+
+機種差は、同じ設定を両機で流した飽和 run(`mise run saturation`、640x480)の定常区間で
+直接比べられます。段ごとの中央値です。
+
+| 段階 | M1 Max | M4 Max | 比 |
+|:---|---:|---:|---:|
+| frame の mp4 化 | 0.046 秒 | 0.028 秒 | 1.64 |
+| frames 前処理 | 0.065 秒 | 0.034 秒 | 1.91 |
+| vision tower | 1.163 秒 | 0.620 秒 | 1.88 |
+| streaming gate | 0.096 秒 | 0.014 秒 | — |
+| 生成 (2 token) | 4.869 秒 | 2.462 秒 | 1.98 |
+| **1 区間合計** | **6.183 秒** | **3.130 秒** | **1.98** |
+
+**M1 Max は同条件でおよそ 2.0 倍遅い**という、素直な結果でした。gate は両機とも
+0.1 秒未満で、比を論じる意味がありません。上の 9.484 秒は 1280x720 のカメラ入力、
+この表は 640x480 の合成入力なので、絶対値は直接比較できません。
+
+機種差が一定である以上、**M4 Max の最良設定はそのまま M1 Max へは移りません。**
+固定動画 matrix では M4 Max が codec (8 fps)・2 秒、M1 Max が同・4 秒でした。
 
 ### メモリ: MLX peak は必要量の指標にならない
 
