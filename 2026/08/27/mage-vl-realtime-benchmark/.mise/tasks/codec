@@ -7,8 +7,14 @@ PORT_DIR=output/mage-vl-mlx
 WEIGHTS_DIR=${MAGE_VL_WEIGHTS:-$PORT_DIR/weights/mage-vl-bf16}
 VIDEO=../../../../tests/assets/mp4/glass_fall_768x512_24fps_8s_490kb.mp4
 
-docker build --platform linux/arm64 -t mage-cvprep:0.2.5 \
-  -f "$PORT_DIR/docker/Dockerfile.cvprep" "$PORT_DIR/docker"
+# Build only when the image is missing. The build resolves its base image
+# against Docker Hub every time, and a slow registry fails the whole run with
+# "DeadlineExceeded" even though nothing needs rebuilding. Drop the tag with
+# `docker rmi mage-cvprep:0.2.5` to force a rebuild after editing the Dockerfile.
+if ! docker image inspect mage-cvprep:0.2.5 > /dev/null 2>&1; then
+  docker build --platform linux/arm64 -t mage-cvprep:0.2.5 \
+    -f "$PORT_DIR/docker/Dockerfile.cvprep" "$PORT_DIR/docker"
+fi
 
 # Two passes over the same video, differing in one thing: whether file segments
 # are cut at the capture rate before cv-preinfer sees them. The Web UI always
