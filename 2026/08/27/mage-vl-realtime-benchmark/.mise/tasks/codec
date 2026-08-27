@@ -19,4 +19,5 @@ CV_PREINFER_BIN=$PWD/$PORT_DIR/docker/cv-preinfer \
     --segments 1 2 4 8 \
     --runs 3 \
     --max-new-tokens 16 \
+    --resample-codec-input \
     --output output/codec-summary.json
