@@ -69,11 +69,12 @@ parity とは別に、区間到着ごとに処理する実装で応答遅延と�
 ([記録](../2026/08/27/mage-vl-realtime-benchmark/README.md))。real-time factor は
 media 長に対する処理時間の比で、1 未満でなければ継続入力で遅れが溜まり続ける。
 
-| 機種 | 入力 | 最良の構成 | RTF |
+| 機種 | 入力 | 構成 | RTF |
 |---|---|---|---:|
-| M4 Max | 固定動画 | codec・8 秒 | **0.744** |
-| M4 Max | 固定動画 | codec・4 秒 | **0.898** |
-| M1 Max | 固定動画 | codec・8 秒 | 1.425 |
+| M4 Max | 固定動画(24 fps のまま) | codec・8 秒 | **0.744** |
+| M4 Max | 固定動画(24 fps のまま) | codec・4 秒 | **0.898** |
+| M1 Max | 固定動画(24 fps のまま) | codec・8 秒 | 1.425 |
+| M1 Max | 固定動画(8 fps で切り出し) | codec・4 秒 | **0.808** |
 | M1 Max | ライブカメラ | codec・4 秒 | **0.62** |
 | M1 Max | ライブカメラ | frames・4 秒 | 約 2.1 |
 
@@ -365,6 +366,11 @@ python -c 'import mlx; print(mlx.__version__)' > output/mlx-version.txt
   **さらに 1 window あたり 8 フレーム以上が必要**で(`--min_group_frames 8`)、
   下回ると `RuntimeError: no canvases produced` になる。ライブ入力では
   `window 秒数 × capture fps` がこれを満たすかを、実行前に検証する
+- **codec へ渡す動画は、必要な capture rate まで間引いてから渡す。** 元のフレームレートの
+  まま渡すと、24 fps の動画では 4 秒 window が 96 frame になり、canvas 16 枚・2,016 token に
+  膨らむ。8 fps で切り出せば 34 frame・canvas 4 枚・504 token で済み、M1 Max の 4 秒条件で
+  RTF が `2.024` から `0.830` へ、1 区間が 8.52 秒から 3.11 秒へ改善した。
+  ただし区間が短いと前処理の固定費が相対的に重くなり、1 秒条件では逆に悪化する
 - **codec のコストはフレーム数に段階的にしか反応しない。** `--group_size 32` /
   `--images_per_group 4` の既定では、32 フレームまでは 1 グループ = canvas 4 枚 = 576 token で
   一定であり、2 fps を 8 fps にしても**モデルの負荷は増えない**(前処理が 0.06 秒増えるだけ)。

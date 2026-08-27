@@ -116,6 +116,8 @@ def main() -> None:
     parser.add_argument("--max-new-tokens", type=int, default=16)
     parser.add_argument("--model-dtype", choices=("bfloat16", "float32"), default="bfloat16")
     parser.add_argument("--gate-dtype", choices=("bfloat16", "float32"), default="float32")
+    parser.add_argument("--target-fps", type=float, default=2.0)
+    parser.add_argument("--resample-codec-input", action="store_true")
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
 
@@ -130,7 +132,8 @@ def main() -> None:
         for segment_s in args.segments:
             label = str(segment_s).replace(".", "p")
             dtypes = f"{args.model_dtype}-gate{args.gate_dtype}"
-            raw = raw_dir / f"{backend}-{label}s-{dtypes}.json"
+            suffix = "-resampled" if args.resample_codec_input else ""
+            raw = raw_dir / f"{backend}-{label}s-{dtypes}{suffix}.json"
             command = [
                 str(repo / ".venv/bin/python"),
                 str(repo / "scripts/benchmark_realtime.py"),
@@ -138,7 +141,7 @@ def main() -> None:
                 "--weights", str(weights),
                 "--backend", backend,
                 "--segment-sec", str(segment_s),
-                "--target-fps", "2",
+                "--target-fps", str(args.target_fps),
                 "--num-frames", "16",
                 "--gate-threshold", "0",
                 "--max-new-tokens", str(args.max_new_tokens),
@@ -147,6 +150,8 @@ def main() -> None:
                 "--runs", str(args.runs),
                 "--output", str(raw),
             ]
+            if args.resample_codec_input:
+                command.append("--resample-codec-input")
             environment = os.environ.copy()
             subprocess.run(command, cwd=repo, env=environment, check=True)
             rows.append(summarize(json.loads(raw.read_text())))
