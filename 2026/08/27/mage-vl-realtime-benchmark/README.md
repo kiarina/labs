@@ -357,6 +357,66 @@ M1 Max はおよそ 1.8 倍遅く、M4 Max で見つけた codec・4 秒の折�
   実時刻から乖離した。実測では 6 分間の運用で表示上の stream 時刻が 53 秒までしか進まなかった。
   内容は最新 frame なので live に近いが、ラベルが誤解を招く
 
+## Web UI のサッカー goal preset の校正
+
+`mage-vl-mlx` の Web UI には、用途特化 event filter の実例として goal preset があります。
+出荷時の gate threshold は未校正の初期値だったため、正例と対照で実測しました(2026-08-27)。
+
+- 正例: `soccer_goal`(ゴールは t = 6.0-8.0 秒)、対照: `soccer_idle`
+- UI と同じ rolling window: stride 1 秒、window 4 秒、2 fps、最大 16 frame、2 token、cooldown 8 秒
+- gate を 0 に開いて 1 回だけ流し、window ごとの `p_speak` と label を記録して、
+  閾値は事後にスイープした(`calibrate_soccer.py`)
+
+### frames backend では、どの閾値でも成立しない
+
+| window | `soccer_goal` の p | label | `soccer_idle` の p | label |
+|:---|---:|:---|---:|:---|
+| 0-4 秒 | 0.0010 | none | 0.0002 | none |
+| 1-5 秒 | 0.0001 | none | 0.0003 | none |
+| 2-6 秒 | 0.0001 | none | 0.0005 | none |
+| 3-7 秒 | 0.0003 | none | 0.0018 | none |
+| 4-8 秒 | 0.0004 | **goal** | 0.0007 | none |
+
+frames backend の `p_speak` は最大でも `0.0018` でした。**出荷時の閾値 `0.1` では
+全 window が gate で落ち、検出は 1 件も出ません。** 閾値 0 にして初めて 1 件出ますが、
+それも t = 8.0 秒で、event 開始から 2 秒遅れます。
+
+### codec backend では発生と同時に検出する
+
+| window | `soccer_goal` の p | label | `soccer_idle` の p | label |
+|:---|---:|:---|---:|:---|
+| 0-4 秒 | 0.7994 | none | 0.7814 | none |
+| 1-5 秒 | 0.8834 | none | 0.8605 | none |
+| 2-6 秒 | 0.7203 | **goal** | 0.8497 | none |
+| 3-7 秒 | 0.7511 | **goal** | 0.7963 | **goal** |
+| 4-8 秒 | 0.6924 | **goal** | 0.7724 | **goal** |
+
+codec では最初の `goal` が window 2-6 秒、つまり **event 開始と同じ t = 6.0 秒**に出ました。
+閾値スイープでは 0 から 0.7 までどこでも同じ結果で、0.8 以上にすると検出が消えます。
+
+| 閾値 | `soccer_goal` | `soccer_idle` |
+|---:|:---|:---|
+| 0.00 - 0.70 | 検出 1 件、t = 6.0 秒 | 誤検出 1 件、t = 7.0 秒 |
+| 0.80 - 0.90 | 検出 0 件 | 誤検出 0 件 |
+
+### 解釈と preset の修正
+
+- gate は学習ドメインが codec 入力であり、frames 入力では確率がほぼ 0 に張り付く。
+  **frames backend と非ゼロの gate threshold の組み合わせは、設定として成立しない**
+- codec でも gate はゴールと通常のプレーを区別しない(0.69-0.88 と 0.77-0.86 で重なる)。
+  判定しているのは生成された label であり、gate は content type の pre-filter でしかない。
+  これは既存 lab の結論と一致する
+- `soccer_idle` は対照として不完全で、`goal` label を 1 件出した。生成時に「シュートなし」と
+  指示したにもかかわらずシュート様の映像になっている問題は
+  [`mage-vl-gate-event-correlation`](../../26/mage-vl-gate-event-correlation/README.md)で
+  既に記録されている。したがってこの 1 件を確定的な false positive とは扱わない
+- この結果を受けて OSS の preset を codec backend・threshold `0.3` に変更した。カメラモードは
+  frames しか使えないため、frames に切り替わったときは threshold を 0 に落とす
+
+正例 1 本・対照 1 本での測定なので、precision / recall を数値として主張できる規模ではありません。
+成立するのは「frames + 非ゼロ閾値は動作しない」「codec なら event 時刻に一致して検出できた」
+という 2 点だけです。
+
 ## 未確認事項と制約
 
 - 実写と長尺 stream は未測定
@@ -367,6 +427,9 @@ M1 Max はおよそ 1.8 倍遅く、M4 Max で見つけた codec・4 秒の折�
 - この動画の gate 確率は閾値から離れているため、dtype による speak / silent の反転は
   この lab では検証していない
 - 量子化、より長い segment、より少ない生成 token で M1 Max が RTF 1 を切れるかは未測定
+- goal preset の校正は正例 1 本・対照 1 本のみで、precision / recall を主張できる規模ではない
+- 対照の `soccer_idle` は生成指示どおりの「シュートなし」映像になっておらず、
+  クリーンな negative ではない
 - `mx.clear_cache()` の実行コストは未測定。解放後に cache が戻る速さだけを測った
 - cold start の原因は page cache と解釈したが、`purge` による直接の反証実験はしていない
 - UI 描画とブラウザ capture の overhead は本 runner に含まない。UI は同じ計測点を表示する
