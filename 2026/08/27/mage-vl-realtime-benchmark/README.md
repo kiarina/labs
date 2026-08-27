@@ -33,6 +33,10 @@ Apple Silicon 上の応答遅延と backlog を測ります(2026-08-27)。
 
 - 移植: `kiarina/mage-vl-mlx` commit
   `2948a53f677b36c7201bbe0246ddaf17a4edfe9d`
+
+  `mise run setup` の既定は、カメラ計測にも使える `6b1438e` を取得します。上の表を
+  そのまま追試する場合は `PORT_COMMIT=2948a53 mise run` を使ってください。二つの commit
+  の間で `run_matrix.py` が呼ぶ経路の変更は、codec の binary 検出とエラーメッセージだけです
 - model: bfloat16
 - streaming gate: float32
 - gate threshold: `0`(すべての segment で生成し、worst-case の負荷を見る)
@@ -84,6 +88,14 @@ mise -C 2026/08/27/mage-vl-realtime-benchmark run codec
 
 すでに変換済みの重みがある場合だけ、`MAGE_VL_WEIGHTS` にその directory を指定できます。
 
+長時間セッションの memory を測るときは、固定した checkout から Web UI を起動しておき、
+別の shell で sampler を回します。区切りごとに `output/{host}-marks.txt` へラベルを
+追記すると、次の sample にそのラベルが付きます。
+
+```sh
+mise -C 2026/08/27/mage-vl-realtime-benchmark run memory
+```
+
 ## 現在の結果
 
 Mac Studio (Apple M4 Max、128 GB、macOS 26.5.2) で測定しました。
@@ -133,11 +145,113 @@ backlog の集計も歪めました。そこで 0.5 秒未満の末尾端数を�
   codec と異なる挙動をするため、単純な負荷削減値として一般化しない
 - codec は入力 coverage を保ちやすい一方、container 起動と前処理が live latency に加わる
 
+## MacBook Pro M1 Max の実カメラ継続運用
+
+Mac Studio の matrix は動画ファイルを固定入力にしていますが、実際のカメラ入力と
+長時間プロセスの挙動は別の問いです。MacBook Pro (Apple M1 Max、64 GB、macOS 26.5.2) の
+内蔵 FaceTime HD カメラで、Web UI をそのまま連続運用して測りました(2026-08-27)。
+
+- 移植: `kiarina/mage-vl-mlx` commit `d4ad9e1`
+- 入力: ブラウザが camera stream を最大幅 768 px の JPEG へ縮小して送信する
+- model bfloat16 / gate float32、gate threshold `0`、Event filter mode
+- 軽い設定: stride 1 秒、window 4 秒、2 fps、最大 16 frame、2 token
+- 重い設定: stride 8 秒、window 16 秒、4 fps、最大 64 frame、32 token
+- 計測: `sample_memory.py` が UI の `/api/memory` と macOS の `footprint` を同一時点で読む
+
+### 応答速度: 1 秒 stride には追いつけない
+
+軽い設定を 5 分続けたときの、53 segment の中央値です。
+
+| 段階 | 中央値 |
+|:---|---:|
+| frame の mp4 化 | 0.020 秒 |
+| frames 前処理 | 0.067 秒 |
+| vision tower | 1.814 秒 |
+| streaming gate | 0.159 秒 |
+| 生成 prefill (first token まで) | 7.335 秒 |
+| 生成完了 (2 token) | 7.457 秒 |
+| **1 segment 合計** | **9.484 秒** (最小 8.017、最大 11.174) |
+
+stride 1 秒に対して 1 segment 9.5 秒なので real-time factor は約 9.5 です。2 token しか
+生成していないのに生成が 7.5 秒を占めており、律速は decode ではなく visual token に対する
+prefill でした。Mac Studio M4 Max の同条件 (vision 0.841 秒、first text 4.819 秒) と比べると、
+M1 Max はおよそ 1.8 倍遅く、M4 Max で見つけた codec・4 秒の折衷はそのままでは移りません。
+
+### メモリ: MLX peak は必要量の指標にならない
+
+各時点で、UI process の MLX allocator と macOS の `footprint` を同時に読みました。
+
+| 時点 | MLX active | MLX cache | MLX peak | footprint | swap 使用 |
+|:---|---:|---:|---:|---:|---:|
+| model load 直後 | 12.02 GB | 1.05 GB | 12.01 GB | 15 GB | 0 |
+| 軽い設定 +1 分 | 11.70 GB | 9.74 GB | 12.465 GB | 22 GB | 0 |
+| 軽い設定 +5 分 | 10.91 GB | 10.53 GB | 12.465 GB | 22 GB | 0 |
+| Stop 後 +45 秒 | 10.83 GB | 10.61 GB | 12.465 GB | 22 GB | 0 |
+| 同一プロセスの 2 回目 run | 11.68 GB | 9.77 GB | 12.465 GB | 22 GB | 0 |
+| 重い設定 +3 分 | 16.83 GB | 27.30 GB | 16.91 GB | 45 GB | 8.6 GB |
+| 重い設定 Stop 時 | 14.74 GB | 34.51 GB | 22.04 GB | 49 GB | 17.2 GB |
+| 重い設定 Stop +60 秒 | 10.83 GB | 38.41 GB | 22.04 GB | 50 GB | 12.6 GB |
+
+観測できた事実は次の通りです。
+
+- `footprint` の `IOAccelerator (graphics)` は、全条件で MLX の active + cache とほぼ一致した。
+  footprint が MLX peak より大きいのは Metal の予約分ではなく、MLX 自身の buffer cache である
+- 同じ設定を続ける限り増えない。5 分の連続運用でも、同一プロセスの 2 回目 run でも、
+  MLX peak は `12.465` GB から動かず footprint も 22 GB のままだった
+- 一度でも重い設定を実行すると cache がその高水位まで伸び、**Stop してもアイドルでも返らない**。
+  停止して 60 秒経っても cache 38.41 GB、footprint 50 GB を保持し続けた
+- 64 GB の機体でも、重い設定では swap が 17.2 GB まで増えた。MLX peak は同時点で 22.04 GB
+  であり、**MLX peak を必要 unified memory の見積もりに使うと危険である**
+- `mx.clear_cache()` は有効だった。プロセスの再起動は不要である
+
+  | 呼び出し時点 | 解放量 | 呼び出し後の footprint |
+  |:---|---:|---:|
+  | 重い設定で稼働中 | 34.25 GB | 50 GB -> 16 GB |
+  | 重い設定を Stop した直後のアイドル | 34.06 GB | 46 GB -> **12 GB** |
+
+  ただし稼働中に解放しても、同じ設定を続ける限り working set は再確保されます。実測では
+  150 秒後に cache 28.68 GB、footprint 46 GB へ戻りました。解放が意味を持つのは、
+  重い設定から軽い設定へ移るときと、run を止めたときです。停止後に解放すると、
+  アイドルのプロセスはモデル重みぶんの 12 GB まで落ちます
+
+したがって必要メモリは、短時間の MLX peak ではなく、**実際に使う最大設定での footprint**
+で見積もるべきです。長時間運用では、run の終了時に cache を解放する必要があります。
+この結果を受けて、`mage-vl-mlx` の Web UI は run が停止したときに `mx.clear_cache()` を
+呼ぶようにしました。
+
+`RSS` はこの用途では指標になりません。重い設定に移ると、モデルの常駐分が GPU 側の
+確保へ移るため RSS は 10.9 GB から 0.45 GB へ落ち、実使用量とは逆方向に動きました。
+
+### カメラ経路で確認できたこと
+
+- Chrome では permission dialog を許可すると preview が出て、`enumerateDevices` の
+  device 名 (`FaceTime HDカメラ`) が表示された。Stop 後の再開と、UI を reload してからの
+  再有効化では、再度の許可を求められない
+- permission を拒否された場合、UI は `Permission denied` を表示して停止し、
+  console error を出さない。Claude の in-app browser は capture を禁止しているため、
+  この経路の確認に使えた
+- 5 分の連続運用と、同一プロセスでの 2 回目 run は、いずれもエラーなく完了した
+
+### カメラモードで見つかった 2 つの表示上の問題
+
+処理が入力に追いつかない条件では、UI の表示が実態とずれます。どちらも計測ではなく
+表示側の定義の問題です。
+
+- `STREAM LAG` は frame queue の長さから計算していたため、queue の上限
+  (`max(16, fps * stride * 4)`) で頭打ちになり、実際には 66 秒遅れている状況でも
+  `8.00s` を表示し続けた
+- segment の時刻は処理した segment 数から数えていたため、drop された frame の分だけ
+  実時刻から乖離した。実測では 6 分間の運用で表示上の stream 時刻が 53 秒までしか進まなかった。
+  内容は最新 frame なので live に近いが、ラベルが誤解を招く
+
 ## 未確認事項と制約
 
 - 実写と長尺 stream は未測定
-- カメラは Web UI の動作確認を行ったが、本 lab の固定入力 matrix は動画ファイルを使う
-- MacBook Pro M1 Max は未測定
+- 本 lab の固定入力 matrix は動画ファイルを使う。カメラの結果は同じ入力ではないため、
+  Mac Studio の表と直接比較しない
+- MacBook Pro M1 Max の固定動画 matrix は未測定で、カメラ入力の結果だけがある
+- カメラの結果は 1 回のセッションであり、3 回の中央値をとっていない
+- `mx.clear_cache()` の実行コストと、解放後に cache が再び伸びるまでの速度は未測定
 - UI 描画とブラウザ capture の overhead は本 runner に含まない。UI は同じ計測点を表示する
 - gate の履歴再評価は stream が長くなるほど高コストになる可能性がある
 

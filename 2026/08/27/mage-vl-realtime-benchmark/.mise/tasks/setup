@@ -2,7 +2,7 @@
 #MISE description="Clone the pinned Mage-VL MLX port and prepare converted weights"
 set -euo pipefail
 
-PORT_COMMIT=2948a53f677b36c7201bbe0246ddaf17a4edfe9d
+PORT_COMMIT=${PORT_COMMIT:-6b1438e}
 PORT_DIR=output/mage-vl-mlx
 WEIGHTS_DIR=${MAGE_VL_WEIGHTS:-$PORT_DIR/weights/mage-vl-bf16}
 

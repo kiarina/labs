@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#MISE description="Sample MLX and macOS memory of a running live Web UI session"
+#MISE depends=["setup"]
+set -euo pipefail
+
+# The UI must already be running from the pinned checkout, for example:
+#   uv run --project output/mage-vl-mlx --group webui \
+#     python output/mage-vl-mlx/examples/realtime_web_ui/app.py \
+#       --weights "$MAGE_VL_WEIGHTS"
+#
+# Append a label to output/marks.txt at each step of the session; the sampler
+# attaches it to the next sample so the timeline stays aligned.
+
+HOST_TAG=${HOST_TAG:-$(scutil --get LocalHostName | tr '[:upper:]' '[:lower:]')}
+
+mkdir -p output
+python3 sample_memory.py \
+  --url "${MAGE_VL_UI_URL:-http://127.0.0.1:8000}" \
+  --interval "${INTERVAL:-5}" \
+  --marks "output/${HOST_TAG}-marks.txt" \
+  --output "output/${HOST_TAG}-memory.jsonl" \
+  "$@"
