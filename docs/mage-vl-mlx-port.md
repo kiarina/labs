@@ -30,7 +30,7 @@ MLX 移植一般の parity 検証手法は
 - **定量的に確認できた。** 動画は前処理が bit 一致し greedy も一致、
   codec は patch 選択が bit 一致した
 
-## 現在の状況(2026-08-26)
+## 現在の状況(2026-08-27)
 
 移植本体は [kiarina/mage-vl-mlx](https://github.com/kiarina/mage-vl-mlx)。
 
@@ -62,6 +62,24 @@ MLX 移植一般の parity 検証手法は
 | 静止画 | 1,561 token | 21.9 token/s | 9.88 GB |
 | 動画 8 frame | 3,159 token | 14.4 token/s | 10.66 GB |
 | codec 28 canvas | 5,279 token | 9.6 token/s | 11.81 GB |
+
+### リアルタイム運用の到達点(2026-08-27)
+
+parity とは別に、区間到着ごとに処理する実装で応答遅延と持続性能を測った
+([記録](../2026/08/27/mage-vl-realtime-benchmark/README.md))。real-time factor は
+media 長に対する処理時間の比で、1 未満でなければ継続入力で遅れが溜まり続ける。
+
+| 機種 | 入力 | 最良の構成 | RTF |
+|---|---|---|---:|
+| M4 Max | 固定動画 | codec・8 秒 | **0.744** |
+| M4 Max | 固定動画 | codec・4 秒 | **0.898** |
+| M1 Max | 固定動画 | codec・8 秒 | 1.425 |
+| M1 Max | ライブカメラ | codec・4 秒 | **0.62** |
+| M1 Max | ライブカメラ | frames・4 秒 | 約 2.1 |
+
+両機の RTF 比は全 8 条件で 1.67〜1.92 倍に収まり、機種差は条件によらずほぼ一定だった。
+律速は decode ではなく visual token に対する生成 prefill で、M1 Max の frames では
+1 区間 8〜9 秒のうち 6〜7 秒を占める。codec の token 削減はここに直接効く。
 
 ## 構成
 
@@ -340,6 +358,29 @@ python -c 'import mlx; print(mlx.__version__)' > output/mlx-version.txt
 - **効率の主張は baseline を明示しないと逆の結論になる。** codec の token 削減は
   カバレッジを揃えれば 95%、固定 32 frame 予算比で 71% だが、
   8 frame 既定との比較では codec のほうが多い
+- **codec 経路が受け付けるのは H.264 / HEVC のビットストリームだけ。** 公式
+  `cv-preinfer` は bit cost を圧縮ストリームから読むため、MPEG-4 Part 2(OpenCV の
+  `mp4v` writer の既定)と VP9 は `KeyError: 'pixels'` で落ちる。動画を自前で書き出して
+  codec へ渡す経路を作るときは、必ず H.264 か HEVC で書く。
+  **さらに 1 window あたり 8 フレーム以上が必要**で(`--min_group_frames 8`)、
+  下回ると `RuntimeError: no canvases produced` になる。ライブ入力では
+  `window 秒数 × capture fps` がこれを満たすかを、実行前に検証する
+- **gate を frames 入力で使ってはいけない。** frames 経路の `p_speak` は
+  スポーツでも静止シーンでも 0.0001〜0.013 に張り付く。非ゼロの閾値を設定すると
+  全 window が無言で落ちる。gate を pre-filter として使うなら codec 入力が前提であり、
+  frames を使うなら閾値は 0 にして生成文だけで判定する
+- **MLX peak memory を必要メモリの見積もりに使わない。** 長時間プロセスの macOS
+  `footprint` は MLX の buffer cache を含み、peak の 2 倍以上になる。cache は全確保の
+  高水位を保持し、処理を止めても解放されない。64 GB 機でも重い設定では swap が
+  17 GB まで増えた一方、同時点の MLX peak は 22 GB だった。必要量は
+  **実際に使う最大設定での footprint** で見積もり、run の終了時に `mx.clear_cache()` を呼ぶ
+- **cold start はマシンにつき 1 回で、プロセスごとではない。** 初回の 1 区間だけ
+  約 17 秒の上乗せが出るが、これは 8.8 GB の重みの初回 page-in であり、
+  以降は別プロセスでも OS の page cache が効く。プロセス起動ごとの固定費として
+  一般化しない
+- **ストリームでは codec アセットのキャッシュを使い捨てにする。** `run_cv_preinfer` は
+  動画のパス単位でキャッシュし削除しない。ライブ入力は同じ区間を二度処理しないため、
+  1 秒 stride なら 1 アセット約 574 KB × 3,600 個/時 = 約 2 GB/時 が溜まるだけになる
 
 ## 残る未解決事項
 
@@ -363,6 +404,16 @@ Stage 0〜4 は完了したが、次は未確認のまま残っている。
   CUDA 環境が使えるようになった時点で確認する
 - **実写動画での挙動。** 検証に使った動画はすべて合成または LTX-2 生成である。
   gate の結論(種別には反応、イベント時刻には反応しない)が実写でも成り立つかは未確認
+- ~~カメラ入力で gate が使えるか~~ →
+  **決着した**([記録](../2026/08/27/mage-vl-realtime-benchmark/README.md))。
+  ブラウザが送る 2〜8 fps の JPEG 静止画を H.264 で再エンコードするだけで、
+  gate はコンテンツ種別を判別する(スポーツ 0.79〜0.82 対 静止シーン 0.12〜0.14)。
+  codec-native の信号は元の 24 fps エンコード固有の性質ではなかった。
+  同時に visual token が 79% 減り、M1 Max のライブカメラが RTF 0.62 で
+  継続入力に追いつくようになった
+- **本物のカメラ圧縮ストリームでの挙動。** 上記の bit cost は、我々が静止画から
+  再エンコードした結果であってカメラ本来の圧縮ではない。ブラウザの `MediaRecorder` で
+  実際の圧縮ストリームを送った場合に、gate と token 削減がどう変わるかは未検証
 - ~~公式 segment 分割 protocol と codec 経路の組み合わせ~~ →
   **検証した**(上記 lab)。既定構成で動作する。実行上の注意が 2 件あり、
   末尾の極端に短いセグメントは codec が group を構成できず落ちるため skip する、

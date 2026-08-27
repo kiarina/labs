@@ -378,8 +378,13 @@ Web UI のカメラモードは frames backend 固定で、そこでは gate の
 | HEVC | 成功 | 0.69 秒 |
 | VP9(webm / mp4) | 失敗 `KeyError: 'pixels'` | — |
 
-フレーム数は制約ではありません(8 フレームで通る)。bitcost リーダーが解析できるのは
-H.264 / HEVC 系のブロック構造だけ、と読めます。
+bitcost リーダーが解析できるのは H.264 / HEVC 系のブロック構造だけ、と読めます。
+
+フレーム数には下限があります。`cv-preinfer` は `--min_group_frames 8` で実行しているため、
+**1 window あたり 8 フレーム以上**が必要で、4 フレームでは
+`RuntimeError: no canvases produced` になります。ライブ入力では
+`window 秒数 × capture fps` がこれを満たす必要があり、たとえば window 2 秒・2 fps では
+足りません。
 
 ### 2-8 fps の静止画を再エンコードしても gate 信号は残る
 
