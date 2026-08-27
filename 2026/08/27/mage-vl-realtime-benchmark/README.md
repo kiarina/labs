@@ -741,6 +741,9 @@ codec では最初の `goal` が window 2-6 秒、つまり **event 開始と同
 - 本 lab の固定入力 matrix は動画ファイルを使う。カメラの結果は同じ入力ではないため、
   同じ機種の固定動画 matrix とも直接比較しない
 - カメラの結果は 1 回のセッションであり、3 回の中央値をとっていない
+- **カメラで測ったのは MacBook Pro M1 Max の内蔵カメラだけである。**Mac Studio M4 Max に
+  スマートフォンのカメラを繋いだ構成は未測定。固定動画 matrix の sweet spot
+  (M4 Max・codec・2 秒) がそのまま移る保証は無く、入力解像度も違う
 - dtype 比較は 4 秒 segment だけで、他の segment 長では未測定
 - この動画の gate 確率は閾値から離れているため、dtype による speak / silent の反転は
   この lab では検証していない
