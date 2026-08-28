@@ -207,6 +207,105 @@ backlog の集計も歪めました。そこで 0.5 秒未満の末尾端数を�
 実務上の含意は明確で、**間引きは速くするだけでなく、測定を再現可能にします。**
 上の表はすべて単独実行の値です。
 
+### 他プロセスの GPU 負荷は 8 fps 経路も汚染する
+
+上の「8 fps へ間引いた条件は小数第 3 位まで再現した」は、**マシンが idle であることが
+前提です。**下の `max_new_tokens` 掃引を測るとき、同じ Mac Studio で UnrealEditor が
+CPU 144%・RSS 41 GB で動いており、8 fps 経路が同一条件で 25% ずれました。
+
+| `glass_fall`・codec (8 fps)・2 秒・16 token | warm RTF | generation |
+|:---|---:|---:|
+| UnrealEditor 起動中 | 0.938 | 1.105 s |
+| 終了後 | **0.723** | **0.773 s** |
+
+生成 token 数と生成テキストは両者で完全に同一でした。計算内容は変わっていません。
+**benchmark を回す前に、他の GPU / Metal 負荷を落としてください。**
+
+## 生成長が成立範囲を決める(`mise run tokens`)
+
+固定動画 matrix は `max_new_tokens` を 16 に固定しています。一方 Web UI の
+`VLM max output` は同じつまみで、既定はもっと大きい値です。**matrix が測っていない領域を
+読者が最初に踏む**ため、この軸だけを振って測りました。
+
+Mac Studio (Apple M4 Max、128 GB、macOS 26.5.2)、移植 commit `2d7ce22`、codec backend、
+8 fps へ間引き、gate threshold 0、各条件 3 回の warm 中央値です。question はすべて
+`Describe what is happening. Focus on changes and motion.` で固定しています。
+
+### 観測結果
+
+`glass_fall`(490 kB、対象 1 つ、事象 1 つ):
+
+| max tokens | 2 秒 RTF | 4 秒 RTF | generation (2 秒) | 実際の生成 token |
+|---:|---:|---:|---:|:---|
+| 16 | 0.723 | 0.394 | 0.773 s | 9, 12, 12, 15 |
+| 32 | 0.726 | 0.406 | 0.768 s | 9, 12, 12, 15 |
+| 64 | 0.727 | 0.409 | 0.774 s | 9, 12, 12, 15 |
+
+`soccer_goal`(1469 kB、選手が多く記述量が多い):
+
+| max tokens | 2 秒 RTF | 4 秒 RTF | generation (2 秒) | 実際の生成 token |
+|---:|---:|---:|---:|:---|
+| 16 | 0.779 | 0.431 | 0.851 s | 16, 16, 16, 16 |
+| 32 | 0.936 | 0.512 | 1.163 s | 32, 31, 32, 32 |
+| 64 | **1.126** | 0.667 | 1.626 s | 61, 31, 64, 50 |
+
+前処理・vision・gate は上限を変えても動きません(`glass_fall` の 2 秒で prepare `0.080`〜
+`0.082`、vision `0.118`、gate `0.037`〜`0.042`)。**動くのは生成だけです。**
+peak memory は 12 条件すべてで `11.96` GB でした。
+
+### 上限は、モデルが先に言い終わるなら無料である
+
+`glass_fall` では 3 つの上限で **生成テキストが 1 文字も違いませんでした。**
+トークン数も `9, 12, 12, 15` で一致します。モデルが EOS に達しており、上限に触れていません。
+
+```text
+cap=16: 'A glass is placed on a table and then falls off the table.'  (15 token)
+cap=64: 'A glass is placed on a table and then falls off the table.'  (15 token)
+```
+
+`max_new_tokens` は decode ループの打ち切り上限であって目標長ではないため、
+**binding しない限りコストはゼロ**です。「上限を上げると遅くなる」は成り立ちません。
+
+### 上限が binding すると、そこで文が切れる
+
+`soccer_goal` では 16 も 32 も全 segment で上限に張り付き、文が途中で切れます。
+
+```text
+cap=16: 'A soccer player in a gray uniform is dribbling the ball, while a player'
+cap=64: 'A soccer player in a gray uniform is dribbling the ball, while a player in a
+         red uniform is chasing him. The gray player passes t...'  (61 token)
+```
+
+**速さと文の完結はここで交換されます。**上限を下げれば必ず速くなりますが、得られるのは
+途中で切れた文です。
+
+### 追いつかなくなると first text も悪化する
+
+`soccer_goal`・2 秒の first text は上限 16 / 32 で `1.273` / `1.277` 秒とほぼ同じですが、
+上限 64 では `1.669` 秒へ伸びます。生成の遅延が直接効いたのではなく、RTF が 1 を超えて
+backlog が溜まり、次の区間の開始が遅れるためです(この行だけ
+`warm_segments_fit_interval` が false)。**成立範囲を割ると、最初の 1 文字までの遅延という
+別の指標も道連れになります。**
+
+### 同じ質問文でも、映像の内容量で生成長は変わる
+
+上の 2 つの表は question が同一です。それでも `glass_fall` は 9〜15 token で終わり、
+`soccer_goal` は 16 / 32 に張り付き 64 でも 3/4 の区間が 50 token を超えます。
+**生成長は質問文だけで決まらず、映像に記述すべきものがどれだけあるかで決まります。**
+
+### この結果の範囲
+
+- **既存の matrix は、上限が binding しない領域で測られています。**`glass_fall` は
+  9〜15 token で終わるため、16 token 固定の matrix は長い生成のコストを測っていません。
+  記述量の多い映像では、matrix より遅くなります
+- 2 つの表は動画が違い、bitrate も違います(490 kB と 1469 kB)。codec-native 前処理は
+  bitrate に反応するため、**表をまたいだ行同士の比較はできません。**各表の中でだけ比較します
+- 上限を変えても生成 token 数は run 間で完全に一致しました(greedy decode)。ばらつきは
+  実行時間側にのみ出ます
+- 質問文を変えて生成長を短くする経路は、この掃引では測っていません。上限で切るのとは
+  結果の質が違う(切れない)ため、別の軸として扱う必要があります
+- 測定中、同じマシンで他の GPU 負荷が動いていないことを確認しています(上記の注意を参照)
+
 ## 解釈の基準
 
 - real-time factor が 1 未満でも、first text が用途上遅ければ「リアルタイムに使える」とはしない
@@ -753,6 +852,12 @@ codec では最初の `goal` が window 2-6 秒、つまり **event 開始と同
 - codec の測定は同時に走る cv-preinfer container の数に影響される。24 fps 経路は単独実行と
   連続実行で RTF が 1.7 倍変わった。メモリ帯域が原因という解釈は直接検証していない。
   掲載値はすべて単独実行で、8 fps 経路は連続実行でも再現した
+- **8 fps 経路が再現するのは、マシンに他の GPU 負荷が無い場合に限る。**UnrealEditor が
+  同居していると同一条件で 25% ずれた。掲載値はすべて idle な状態で測り直したもの
+- `max_new_tokens` 掃引は 2 本の動画・codec (8 fps)・2 / 4 秒だけで測った。frames backend、
+  他の segment 長、M1 Max では未測定
+- 生成長を短くする経路のうち、**質問文を変える方法は掃引していない。**上限で切る方法とは
+  結果の質が違う(文が切れない)ため、同じ軸として扱えない。デモ動画で 1 例を観測したのみ
 - 飽和時の計測は 1 セッションずつで、3 回の中央値ではない。drop 率と window の伸びは
   その機種の処理速度と queue 上限に依存するため、設定を変えれば変わる
 - goal preset の校正は正例 1 本・対照 1 本のみで、precision / recall を主張できる規模ではない
