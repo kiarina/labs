@@ -167,10 +167,12 @@ RTF と遅延は上の「リアルタイム運用の到達点」の表を正と�
 |---|---|
 | 区間処理の MLX peak | frames 11.96〜14.27 GB、codec 11.96〜13.08 GB |
 | 軽い設定の長時間 footprint | 22 GB で安定。5 分連続でも 2 回目 run でも動かない |
-| 重い設定の footprint | 50 GB、swap 17.2 GB(64 GB 機)。MLX peak は同時点で 22.04 GB |
+| 重い設定の footprint | 最大 50 GB。Stop 時点で footprint 49 GB・swap 17.2 GB・MLX peak 22.04 GB(64 GB 機) |
 | `mx.clear_cache()` | 34 GB 前後を解放。停止後のアイドルは 12 GB まで落ちる |
+| 稼働中の解放は続かない | 同じ設定なら 150 秒後に cache 28.68 GB、footprint 46 GB へ戻る |
 | 飽和時の定常 lag | M1 Max 13.400 秒、M4 Max 10.415 秒。発散しない |
 | 飽和時の drop 率 | M1 Max 75.1%、M4 Max 58.3% |
+| 飽和時の window 実カバー | 公称 4 秒が M1 Max 18.99 秒、M4 Max 10.00 秒 |
 
 **遅延の内訳(記事の図に使う)。**M4 Max・4 秒 stride、3 回の中央値、16 token
 (realtime lab「現在の結果」)。subclip 切り出しは frames 側だけ記録があるため、
@@ -198,6 +200,22 @@ vision と生成を短くする。frames は subclip を除いた 4 段だけで
 
 同条件の `glass_fall` は 3 つの上限すべてで生成テキストが一致し(9〜15 token で EOS)、
 RTF は 0.723 / 0.726 / 0.727 で動かない。**上限は binding しない限りコストがゼロである。**
+
+first text も同じ run から引ける。`soccer_goal`・2 秒で上限 16 / 32 が `1.273` / `1.277` 秒、
+上限 64 が `1.669` 秒。生成が遅いのではなく、RTF が 1 を超えて次の区間の開始が遅れる。
+
+**canvas 数はフレーム数へ段階的にしか反応しない。**カメラ相当クリップの実測
+(realtime lab「canvas 数はフレーム数に段階的にしか反応しない」)。`--group_size 32` と
+`--images_per_group 4` の設定による。
+
+| window のフレーム数 | canvas 数 | visual token |
+|---:|---:|---:|
+| 8 / 16 / 32 | 4 | 576 |
+| 64 | 12 | 1,728 |
+| 120 | 20 | 2,880 |
+
+2 fps から 8 fps への引き上げは、4 秒窓ならモデルの負荷を増やさずに時間解像度だけを
+4 倍にする。運用上は `window 秒数 × capture rate` を 32 に寄せるのが最適である。
 
 **併記する制約。**
 
