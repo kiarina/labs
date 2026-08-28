@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+#MISE description="Sweep max_new_tokens (16/32/64) for codec streaming at 2 and 4 second segments"
+#MISE depends=["setup"]
+set -euo pipefail
+
+# The fixed-video matrix pins max_new_tokens at 16, so it cannot answer "what
+# happens when the model is allowed to talk longer". The Web UI ships a much
+# higher ceiling (its `VLM max output` control is this same knob), so a reader
+# following the article hits a slower configuration than the matrix reports.
+#
+# This sweep varies only max_new_tokens. Everything else matches the resampled
+# codec pass in `codec`, which is the configuration the Web UI actually uses.
+#
+# max_new_tokens is a ceiling, not a target: generation also stops at EOS. So a
+# higher value costs nothing when the model finishes early, and truncates the
+# sentence when it does not.
+
+PORT_DIR=output/mage-vl-mlx
+WEIGHTS_DIR=${MAGE_VL_WEIGHTS:-$PORT_DIR/weights/mage-vl-bf16}
+VIDEO=../../../../tests/assets/mp4/glass_fall_768x512_24fps_8s_490kb.mp4
+
+if ! docker image inspect mage-cvprep:0.2.5 > /dev/null 2>&1; then
+  docker build --platform linux/arm64 -t mage-cvprep:0.2.5 \
+    -f "$PORT_DIR/docker/Dockerfile.cvprep" "$PORT_DIR/docker"
+fi
+
+# Run the token values one after another. Codec timings degrade in proportion to
+# how many cv-preinfer containers are alive at once, so nothing here may overlap.
+#
+# Each value gets its own output directory: run_matrix.py names raw files after
+# backend, segment and dtype only, so a shared directory would have the three
+# sweeps overwrite each other's raw output.
+for tokens in 16 32 64; do
+  CV_PREINFER_BIN=$PWD/$PORT_DIR/docker/cv-preinfer \
+    "$PORT_DIR/.venv/bin/python" run_matrix.py \
+      --repo "$PORT_DIR" \
+      --weights "$WEIGHTS_DIR" \
+      --video "$VIDEO" \
+      --backends codec \
+      --segments 2 4 \
+      --runs 3 \
+      --max-new-tokens "$tokens" \
+      --target-fps 8 \
+      --resample-codec-input \
+      --output "output/tokens-${tokens}/summary.json"
+done
