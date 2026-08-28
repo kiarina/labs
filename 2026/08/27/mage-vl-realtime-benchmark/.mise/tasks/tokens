@@ -6,18 +6,25 @@ set -euo pipefail
 # The fixed-video matrix pins max_new_tokens at 16, so it cannot answer "what
 # happens when the model is allowed to talk longer". The Web UI ships a much
 # higher ceiling (its `VLM max output` control is this same knob), so a reader
-# following the article hits a slower configuration than the matrix reports.
+# following the article hits a configuration the matrix never measured.
 #
-# This sweep varies only max_new_tokens. Everything else matches the resampled
-# codec pass in `codec`, which is the configuration the Web UI actually uses.
+# max_new_tokens is a ceiling, not a target: generation also stops at EOS. Raising
+# it therefore costs nothing unless the model would actually keep going. Whether
+# it keeps going depends on the content, so the sweep runs over two videos that
+# differ in how much there is to say:
 #
-# max_new_tokens is a ceiling, not a target: generation also stops at EOS. So a
-# higher value costs nothing when the model finishes early, and truncates the
-# sentence when it does not.
+#   glass_fall  - one object, one event. The model stops at 9-15 tokens and the
+#                 ceiling never binds.
+#   soccer_goal - many players in motion. The model has more to describe.
+#
+# Everything else matches the resampled codec pass in `codec`, which is the
+# configuration the Web UI actually uses. Bitrate differs between the two videos
+# (490 kB vs 1469 kB) and codec-native preprocessing is sensitive to it, so the
+# two videos are separate tables and their rows are not compared to each other.
 
 PORT_DIR=output/mage-vl-mlx
 WEIGHTS_DIR=${MAGE_VL_WEIGHTS:-$PORT_DIR/weights/mage-vl-bf16}
-VIDEO=../../../../tests/assets/mp4/glass_fall_768x512_24fps_8s_490kb.mp4
+ASSETS=../../../../tests/assets/mp4
 
 if ! docker image inspect mage-cvprep:0.2.5 > /dev/null 2>&1; then
   docker build --platform linux/arm64 -t mage-cvprep:0.2.5 \
@@ -30,17 +37,19 @@ fi
 # Each value gets its own output directory: run_matrix.py names raw files after
 # backend, segment and dtype only, so a shared directory would have the three
 # sweeps overwrite each other's raw output.
-for tokens in 16 32 64; do
-  CV_PREINFER_BIN=$PWD/$PORT_DIR/docker/cv-preinfer \
-    "$PORT_DIR/.venv/bin/python" run_matrix.py \
-      --repo "$PORT_DIR" \
-      --weights "$WEIGHTS_DIR" \
-      --video "$VIDEO" \
-      --backends codec \
-      --segments 2 4 \
-      --runs 3 \
-      --max-new-tokens "$tokens" \
-      --target-fps 8 \
-      --resample-codec-input \
-      --output "output/tokens-${tokens}/summary.json"
+for name in glass_fall_768x512_24fps_8s_490kb soccer_goal_768x512_24fps_8s_1469kb; do
+  for tokens in 16 32 64; do
+    CV_PREINFER_BIN=$PWD/$PORT_DIR/docker/cv-preinfer \
+      "$PORT_DIR/.venv/bin/python" run_matrix.py \
+        --repo "$PORT_DIR" \
+        --weights "$WEIGHTS_DIR" \
+        --video "$ASSETS/${name}.mp4" \
+        --backends codec \
+        --segments 2 4 \
+        --runs 3 \
+        --max-new-tokens "$tokens" \
+        --target-fps 8 \
+        --resample-codec-input \
+        --output "output/tokens-${name%%_*}-${tokens}/summary.json"
+  done
 done

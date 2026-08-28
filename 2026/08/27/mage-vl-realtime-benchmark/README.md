@@ -95,6 +95,7 @@ clone 直後の config は untrusted なので、`mise trust` を通してから
 |:---|:---|:---|
 | `run`(既定) | frames の matrix | — |
 | `run codec` | codec の matrix(24 fps と 8 fps の 2 パス) | Docker |
+| `run tokens` | `max_new_tokens` を 16 / 32 / 64 で振る(codec・8 fps) | Docker |
 | `run saturation` | カメラ経路を飽和させて遅延と欠落を測る | — |
 | `run memory` | 稼働中の Web UI のメモリを sampling | UI を別途起動 |
 
