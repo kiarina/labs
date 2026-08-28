@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Redraw the three figures the article uses, into output/figures"
+set -euo pipefail
+
+# The saturation figure reads the raw trace of a saturation run, so that has to
+# exist first. The other two carry the numbers this lab's README publishes and
+# need nothing but Chrome.
+python3 figures.py

@@ -98,6 +98,7 @@ clone 直後の config は untrusted なので、`mise trust` を通してから
 | `run tokens` | `max_new_tokens` を 16 / 32 / 64 で振る(codec・8 fps) | Docker |
 | `run saturation` | カメラ経路を飽和させて遅延と欠落を測る | — |
 | `run memory` | 稼働中の Web UI のメモリを sampling | UI を別途起動 |
+| `run figures` | 記事に使った図を `output/figures/` へ描き直す | Chrome、飽和図は `run saturation` の出力 |
 
 初回は Mage-VL checkpoint(約 10 GB)の取得と MLX 変換が走ります。変換済みの重みが
 あるときは `MAGE_VL_WEIGHTS` にその directory を指定すると省略できます。
@@ -126,6 +127,15 @@ mise -C 2026/08/27/mage-vl-realtime-benchmark run memory
 
 ```sh
 mise -C 2026/08/27/mage-vl-realtime-benchmark run saturation
+```
+
+記事に使った図を描き直すときは次を実行します。`figures.py` は数値を計算し直しません。
+段別内訳と間引き前後の図は、この README が公開している値をそのまま持っているので、
+図が記録と食い違うことがありません。飽和の図だけが実データ由来で、
+`run saturation` が書いた raw trace を読みます。
+
+```sh
+mise -C 2026/08/27/mage-vl-realtime-benchmark run figures
 ```
 
 ## 現在の結果
