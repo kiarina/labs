@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Probe how MLX cache buffer layout affects clear latency"
+#MISE depends=["setup"]
+set -euo pipefail
+
+PORT_DIR=output/mage-vl-mlx
+HOST_TAG=${HOST_TAG:-$(scutil --get LocalHostName)}
+
+"$PORT_DIR/.venv/bin/python" benchmark_clear_cache.py \
+  --output "output/${HOST_TAG}-clear-cache-synthetic.json" \
+  "$@"

@@ -1,0 +1,41 @@
+{
+  "video": "glass_fall_768x512_24fps_8s_490kb.mp4",
+  "weights": "mage-vl-bf16",
+  "video_duration_s": 8.041667,
+  "num_frames": 64,
+  "target_fps": 4.0,
+  "max_new_tokens": 2,
+  "repeats": 3,
+  "summary": {
+    "cache_before_clear_gib_median": 11.203117160126567,
+    "elapsed_ms_median": 33.920834,
+    "elapsed_ms_min": 31.790084,
+    "elapsed_ms_max": 43.601
+  },
+  "trials": [
+    {
+      "repeat": 1,
+      "processing_s": 51.974012625003525,
+      "active_before_clear_gib": 10.831861641258001,
+      "cache_before_clear_gib": 12.085519341751933,
+      "elapsed_us": 43601.0,
+      "cache_after_clear_gib": 0.0
+    },
+    {
+      "repeat": 2,
+      "processing_s": 52.35934020899731,
+      "active_before_clear_gib": 10.831861641258001,
+      "cache_before_clear_gib": 11.203117160126567,
+      "elapsed_us": 33920.834,
+      "cache_after_clear_gib": 0.0
+    },
+    {
+      "repeat": 3,
+      "processing_s": 52.04150583300361,
+      "active_before_clear_gib": 10.831861641258001,
+      "cache_before_clear_gib": 10.921867160126567,
+      "elapsed_us": 31790.084,
+      "cache_after_clear_gib": 0.0
+    }
+  ]
+}

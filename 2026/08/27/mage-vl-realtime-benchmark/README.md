@@ -98,6 +98,7 @@ clone 直後の config は untrusted なので、`mise trust` を通してから
 | `run tokens` | `max_new_tokens` を 16 / 32 / 64 で振る(codec・8 fps) | Docker |
 | `run saturation` | カメラ経路を飽和させて遅延と欠落を測る | — |
 | `run memory` | 稼働中の Web UI のメモリを sampling | UI を別途起動 |
+| `run clear-cache` | 実モデルの高メモリ workload 後に cache 解放時間を測る | — |
 | `run figures` | 記事に使った図を `output/figures/` へ描き直す | Chrome、飽和図は `run saturation` の出力 |
 
 初回は Mage-VL checkpoint(約 10 GB)の取得と MLX 変換が走ります。変換済みの重みが
@@ -541,6 +542,33 @@ prefill でした。
   重い設定から軽い設定へ移るときと、run を止めたときです。停止後に解放すると、
   アイドルのプロセスはモデル重みぶんの 12 GB まで落ちます
 
+#### `mx.clear_cache()` の同期呼び出しコスト
+
+解放量だけでなく、Stop 処理が何秒止まるかを実モデルで測りました。MacBook Pro M1 Max
+(64 GB、macOS 26.6.2)、MLX 0.32.2、移植 commit `2d7ce22`、bfloat16 model + float32 gate、
+frames 64 枚、生成上限 2 token です。固定動画を処理した後、モデル重みを常駐させたまま
+`time.perf_counter_ns()` で `mx.clear_cache()` の呼び出しだけを囲みました。
+
+| 試行 | 解放前 active | 解放前 cache | 呼び出し時間 | 解放後 cache |
+|---:|---:|---:|---:|---:|
+| 1 | 10.83 GB | 12.09 GB | 43.6 ms | 0 GB |
+| 2 | 10.83 GB | 11.20 GB | 33.9 ms | 0 GB |
+| 3 | 10.83 GB | 10.92 GB | 31.8 ms | 0 GB |
+| **中央値** | **10.83 GB** | **11.20 GB** | **33.9 ms** | **0 GB** |
+
+**Stop 時に 1 回呼ぶ直接コストとしては小さい。** 現在の Web UI の配置を変える理由はなく、
+segment ごとに解放する必要もありません。次の run が working set を再確保するコストは
+この値に含まれず、別の問いです。
+
+cache の GB 数だけから所要時間は推定できません。合成した float16 buffer で切り分けると、
+同じ 34 GB でも 512 MiB 単位では中央値 112.9 ms、1 GiB 単位では 30.1 ms でした。
+実モデルの allocation 形状と異なる合成値を結論に使わず、上の実 workload を代表値としました。
+この検証は次で再実行できます。
+
+```sh
+mise -C 2026/08/27/mage-vl-realtime-benchmark run clear-cache
+```
+
 したがって必要メモリは、短時間の MLX peak ではなく、**実際に使う最大設定での footprint**
 で見積もるべきです。長時間運用では、run の終了時に cache を解放する必要があります。
 この結果を受けて、`mage-vl-mlx` の Web UI は run が停止したときに `mx.clear_cache()` を
@@ -873,7 +901,8 @@ codec では最初の `goal` が window 2-6 秒、つまり **event 開始と同
 - goal preset の校正は正例 1 本・対照 1 本のみで、precision / recall を主張できる規模ではない
 - 対照の `soccer_idle` は生成指示どおりの「シュートなし」映像になっておらず、
   クリーンな negative ではない
-- `mx.clear_cache()` の実行コストは未測定。解放後に cache が戻る速さだけを測った
+- `mx.clear_cache()` の同期呼び出しは実 workload の約 11 GB cache で測った。過去に観測した
+  34 GB cache と同じ実モデル allocation の再現、および次の run の再確保コストは未測定
 - cold start の原因は page cache と解釈したが、`purge` による直接の反証実験はしていない
 - UI 描画とブラウザ capture の overhead は本 runner に含まない。UI は同じ計測点を表示する
 - gate の履歴再評価は stream が長くなるほど高コストになる可能性がある

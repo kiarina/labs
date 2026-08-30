@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#MISE description="Measure mx.clear_cache() after a high-memory Mage-VL workload"
+#MISE depends=["setup"]
+set -euo pipefail
+
+PORT_DIR=output/mage-vl-mlx
+WEIGHTS_DIR=${MAGE_VL_WEIGHTS:-$PORT_DIR/weights/mage-vl-bf16}
+VIDEO=../../../../tests/assets/mp4/glass_fall_768x512_24fps_8s_490kb.mp4
+HOST_TAG=${HOST_TAG:-$(scutil --get LocalHostName)}
+
+"$PORT_DIR/.venv/bin/python" benchmark_clear_cache_workload.py \
+  --video "$VIDEO" \
+  --weights "$WEIGHTS_DIR" \
+  --output "output/${HOST_TAG}-clear-cache-workload.json" \
+  "$@"
