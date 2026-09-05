@@ -120,6 +120,25 @@ mise -C 2026/07/22/executorch-mlx-qwen3 run probe-torch-2-13
 またExecuTorch付属のPTE inspectorは、同梱された`flatc`が`--json` optionを認識せず実行できません
 でした。delegation範囲はinspectorではなくexport時のpartitioner logで確認しています。
 
+### 依存を固定したまま維持する理由（2026-09-05時点）
+
+上のversion pinは、results節の測定値を出した環境をそのまま再現するためのもので、
+依存の更新を目的に上げていません。2026-09-05に上流の状況を確認した観測は次のとおりです。
+
+- `executorch==1.4.1`（2026-08-14公開）はmetadataが`torch>=2.13.0a0`へ変わり、
+  torch 2.13.0と組み合わせても`portable_lib`のimportは成功しました。上記の
+  `materialize_cow_storage`失敗はExecuTorch 1.3.1に固有で、1.4系では再現しません
+- 同日、`probe-torch-2-13`は`executorch==1.3.1`で従来どおり同じimport errorになることも
+  確認しました。このlabの記録は現在も再現できます
+- `optimum-executorch`は最新の1.1.0（2026-02-10公開）でも`transformers==5.0.0rc1`を
+  完全一致でpinします。そのため`optimum-executorch`を使う限り、transformersを
+  それより新しいversionへ上げられません
+- `torch==2.12.1`は`setuptools<82`を要求するため、torchを2.12系に固定する限り
+  setuptoolsも82未満に留まります。torch 2.13.0の要求は`setuptools>=77.0.3`で上限がありません
+
+ExecuTorch 1.4系へ移す場合、export、PTE、性能値をすべて測り直す必要があります。
+このlabは1.3.1時点の観測記録として維持し、新しいversionの評価は別のlabで行います。
+
 ## Verification environment
 
 - machine: MacBook Pro (MacBookPro18,2)
