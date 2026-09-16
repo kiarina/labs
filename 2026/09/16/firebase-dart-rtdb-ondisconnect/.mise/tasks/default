@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#MISE description="Run the presence scenarios on this machine against the Firebase emulators"
+set -euo pipefail
+
+mkdir -p build results
+dart pub get
+dart compile exe bin/client.dart -o build/client
+dart compile exe bin/scenarios.dart -o build/scenarios
+
+OUT=${OUT:-results/$(uname -s | tr '[:upper:]' '[:lower:]')-$(uname -m).json}
+firebase emulators:exec --only auth,database --project demo-lab \
+  "build/scenarios > $OUT 2> build/scenarios.log"
+cat "$OUT"

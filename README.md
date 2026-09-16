@@ -19,6 +19,7 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 ## Labs
 
 - 2026/09
+  - [firebase_dart RTDB onDisconnect presence on macOS and Linux](2026/09/16/firebase-dart-rtdb-ondisconnect/README.md) - [dart](tags/dart.md), [firebase](tags/firebase.md), [realtime-database](tags/realtime-database.md), [presence](tags/presence.md), [linux](tags/linux.md)
   - [ONNX Runtime Web from Flutter Web (D-FINE)](2026/09/16/flutter-web-onnx-runtime/README.md) - [flutter](tags/flutter.md), [onnx](tags/onnx.md), [onnx-runtime](tags/onnx-runtime.md), [webgpu](tags/webgpu.md), [wasm](tags/wasm.md), [dfine](tags/dfine.md), [object-detection](tags/object-detection.md), [image](tags/image.md)
 
 - 2026/08

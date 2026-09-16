@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#MISE description="Run the scenarios in a Linux container against emulators already running on the host"
+# Start the emulators first in another terminal:
+#   firebase emulators:start --only auth,database --project demo-lab
+set -euo pipefail
+
+mkdir -p build results
+docker build -t firebase-dart-lab .
+OUT=${OUT:-results/linux-$(docker version -f '{{.Server.Arch}}')-docker.json}
+docker run --rm --tmpfs /tmp \
+  -e DB_HOST=host.docker.internal \
+  -e AUTH_EMULATOR=host.docker.internal:9099 \
+  -e EMAIL=linux@example.com \
+  firebase-dart-lab > "$OUT" 2> build/scenarios-linux.log
+cat "$OUT"

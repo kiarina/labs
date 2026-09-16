@@ -1,0 +1,54 @@
+{
+  "dart": "3.11.0 (stable) (Mon Feb 9 00:38:07 2026 -0800) on \"linux_arm64\"",
+  "os": "linux Linux 7.0.12-linuxkit #1 SMP PREEMPT Thu Aug 27 14:02:21 UTC 2026",
+  "results": {
+    "S1_graceful": {
+      "signed_in": true,
+      "online_seen": true,
+      "rules_denied_other_uid": true,
+      "graceful_done_ms": 11,
+      "offline_after_ms": 15,
+      "exit_code": 0
+    },
+    "S2_sigkill": {
+      "session_restored_from_storage": true,
+      "network_signin_calls": 0,
+      "refresh_then_write_ok": true,
+      "offline_after_kill_ms": 8
+    },
+    "S3_reset": {
+      "server_offline_after_ms": 2,
+      "client_noticed_within_ms": 2,
+      "online_again_after_restore_ms": 186
+    },
+    "S4a_blackhole": {
+      "blackhole_seconds": 90,
+      "server_offline_after_ms": null,
+      "client_noticed_after_ms": null,
+      "reregistered_and_online_after_release_ms": 34
+    },
+    "S4b_blackhole_watchdog": {
+      "watchdog_detected_after_ms": 9002,
+      "watchdog_event": "TimeoutException after 0:00:05.000000: Future not completed",
+      "reregistered_after_ms": 9064,
+      "online_on_new_connection": true,
+      "stale_connections_open_at_release": 1,
+      "stale_ondisconnect_overwrote_online_after_ms": null,
+      "final_online_after_release": true
+    },
+    "S5_flaps": {
+      "flaps": 10,
+      "offline_seen": 10,
+      "online_seen": 10,
+      "registrations_during_flaps": 10,
+      "register_errors": 0,
+      "final_online": true,
+      "accepted_connections_total": 17,
+      "handshake_host_rewrites": 17
+    },
+    "S6_graceful_offline_link": {
+      "graceful_done_ms": "timeout",
+      "server_online": false
+    }
+  }
+}
