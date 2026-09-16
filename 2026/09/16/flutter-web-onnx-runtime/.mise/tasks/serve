@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# mise description="Serve build/web on 127.0.0.1 (pass --isolate for multi-threaded wasm)"
+
+set -euo pipefail
+
+python3 serve.py "$@"

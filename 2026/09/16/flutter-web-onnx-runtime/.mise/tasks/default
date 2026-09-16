@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# mise description="Test and build the Flutter Web ONNX Runtime lab"
+
+set -euo pipefail
+
+mise run setup
+flutter analyze
+flutter test
+flutter build web --release
+echo "Built build/web. Open it with: mise run serve"

@@ -18,6 +18,9 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 
 ## Labs
 
+- 2026/09
+  - [ONNX Runtime Web from Flutter Web (D-FINE)](2026/09/16/flutter-web-onnx-runtime/README.md) - [flutter](tags/flutter.md), [onnx](tags/onnx.md), [onnx-runtime](tags/onnx-runtime.md), [webgpu](tags/webgpu.md), [wasm](tags/wasm.md), [dfine](tags/dfine.md), [object-detection](tags/object-detection.md), [image](tags/image.md)
+
 - 2026/08
   - [Mage-VL real-time segment latency on Apple Silicon](2026/08/27/mage-vl-realtime-benchmark/README.md) - [mage-vl](tags/mage-vl.md), [mlx](tags/mlx.md), [apple-silicon](tags/apple-silicon.md), [streaming](tags/streaming.md), [video](tags/video.md), [benchmark](tags/benchmark.md)
   - [Does the Mage-VL streaming gate track event times, or content type?](2026/08/26/mage-vl-gate-event-correlation/README.md) - [mage-vl](tags/mage-vl.md), [mlx](tags/mlx.md), [streaming](tags/streaming.md), [video](tags/video.md), [apple-silicon](tags/apple-silicon.md)

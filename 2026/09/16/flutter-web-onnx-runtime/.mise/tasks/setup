@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# mise description="Download the model and write the native ONNX Runtime reference"
+
+set -euo pipefail
+
+mise run //:test-assets:download
+flutter pub get
+uv run reference.py
