@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#MISE description="Evaluate TypeSafe Jev on moderation and command risk checks"
+set -euo pipefail
+
+for name in TYPESAFE_AI_API_KEY OPENAI_API_KEY; do
+  if [[ -z "${!name:-}" ]]; then
+    echo "Set ${name} first." >&2
+    exit 1
+  fi
+done
+
+uv run python datasets.py
+uv run python -m unittest -v test_metrics.py
+uv run python run_moderation.py
+uv run python run_commands.py
+uv run python report.py
