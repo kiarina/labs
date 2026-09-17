@@ -235,37 +235,29 @@ pre .k { color: #86b6ef; } pre .s { color: #f0a47e; } pre .n { color: #9be0bf; }
 <!-- 8 takeaways -->
 <section class="slide">
   <p class="eyebrow">Takeaways</p>
-  <h2>使いどころと、まだ分からないこと</h2>
-  <div class="body">
-    <div class="col">
-      <h3 style="margin:0 0 6px; font-size:28px">分かったこと</h3>
-      <ul class="list">
-        <li><b>見逃しを最重視するなら候補になる。</b>危険の自動実行ゼロ、モデレーション再現率 0.956</li>
-        <li><b>日本語のモデレーションは Jev が明確に有利。</b>OpenAI は日本語で見逃しが多い</li>
-        <li><b>英語のモデレーションと校正は OpenAI が優勢。</b>確率をそのまま閾値にするなら OpenAI</li>
-        <li>拾いすぎる分は、confidence で<b>「人間へ回す」</b>設計で吸収する前提</li>
-      </ul>
-    </div>
-    <div class="col">
-      <h3 style="margin:0 0 6px; font-size:28px">未検証・限界</h3>
-      <ul class="list o">
-        <li>コマンドは 134 件・筆者ラベルで、主観を含む</li>
-        <li>モデレーションの正解はデータセット作成者の基準</li>
-        <li>LLM（Claude 等）との精度・コスト比較（コスト方針で見送り）</li>
-        <li>database・cloud の判定は保守的すぎる傾向</li>
-      </ul>
-    </div>
+  <h2>使いどころ</h2>
+  <p class="lead">見逃し（危険を安全と間違える）を最も嫌う用途で、Jev は候補になります。</p>
+  <div class="body" style="flex-direction:column; justify-content:center; gap:26px; margin-top:32px">
+    <ul class="list" style="gap:26px">
+      <li><b>見逃しを最重視するなら候補になる。</b>コマンドで危険の自動実行ゼロ、モデレーションで再現率 0.956</li>
+      <li><b>日本語のモデレーションは Jev が明確に有利。</b>OpenAI は日本語で見逃しが多い</li>
+      <li><b>英語のモデレーションと確率の校正は OpenAI が優勢。</b>確率をそのまま閾値に使うなら OpenAI</li>
+      <li>拾いすぎる分は、confidence で<b>「自信のない判定は人間へ回す」</b>設計で吸収する前提</li>
+    </ul>
   </div>
 </section>
 
-<!-- 9 reproduce -->
-<section class="slide cover" style="justify-content:center; gap:40px">
-  <p class="eyebrow">Reproduce</p>
-  <h1 style="font-size:80px">費用は $0。<br><span class="thin">コードも数値も公開しています。</span></h1>
-  <div class="card" style="max-width:1140px"><pre><span class="c"># Jev も OpenAI Moderation も無料。キーは環境変数から読むだけ</span>
-<span class="k">export</span> TYPESAFE_AI_API_KEY=...  OPENAI_API_KEY=...
-<span class="k">mise</span> -C 2026/09/17/typesafe-jev-safety-judgment run</pre></div>
-  <p class="note">github.com/kiarina/labs · <span class="mono">2026/09/17/typesafe-jev-safety-judgment</span> · 指標は単体テスト付き</p>
+<!-- 9 the actual data -->
+<section class="slide cover" style="justify-content:center; gap:44px">
+  <p class="eyebrow">The actual data</p>
+  <h1 style="font-size:72px">実際にどんな文章や<br><span class="thin">コマンドで試したかは、こちら。</span></h1>
+  <div class="body" style="flex:none; gap:24px; margin-top:8px">
+    <div class="card" style="flex:1"><span class="tag">COMMANDS</span>
+      <p><span class="mono">commands.py</span> に 134 件のコマンド、ラベル、理由。判定基準は <span class="mono">RUBRIC.md</span>。</p></div>
+    <div class="card" style="flex:1"><span class="tag">MODERATION</span>
+      <p>英語・日本語のデータは <span class="mono">datasets.py</span> が原典から取得。指標は単体テスト付き。</p></div>
+  </div>
+  <p class="note" style="font-size:24px">github.com/kiarina/labs · <span class="mono">2026/09/17/typesafe-jev-safety-judgment</span></p>
 </section>
 
 </div></div>
