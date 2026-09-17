@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jev 評価レポート</title>
+<meta name="description" content="TypeSafe AI の System One モデル jev-1.13.0 を、API の挙動・入力上限・8 言語で評価した結果">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* This deck is designed dark-only: it is meant to be presented and captured as images. */
+:root {
+  color-scheme: dark;
+  --page: #0b0b0a;
+  --slide: #121211;
+  --surface-1: #1a1a19;
+  --surface-2: #232321;
+  --line: #2e2e2b;
+  --grid: #2a2a28;
+  --text-primary: #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted: #8f8e86;
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --accent: #3987e5;
+  --accent-soft: rgba(57, 135, 229, 0.14);
+  --good: #3fae6a;
+  --bad: #e66767;
+  --sans: "Inter", "Noto Sans JP", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+  --w: 1600px;
+  --h: 900px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--page);
+  color: var(--text-primary);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+.stage { position: fixed; inset: 0; }
+.deck { width: var(--w); height: var(--h); position: absolute; left: 50%; top: calc(50% - 12px); transform-origin: center center; }
+.slide {
+  position: absolute; inset: 0;
+  background: var(--slide);
+  border-radius: 20px;
+  padding: 72px 88px 104px;
+  display: flex; flex-direction: column;
+  opacity: 0; pointer-events: none;
+  transition: opacity .35s ease, transform .35s ease;
+  transform: translateY(8px);
+  overflow: hidden;
+}
+.slide.active { opacity: 1; pointer-events: auto; transform: none; }
+.slide::after {
+  content: attr(data-page);
+  position: absolute; right: 88px; bottom: 36px;
+  font: 500 15px var(--mono); color: var(--text-muted); letter-spacing: .08em;
+}
+.slide::before {
+  content: "TYPESAFE · JEV-1.13.0 · 2026-09-17";
+  position: absolute; left: 88px; bottom: 36px;
+  font: 500 13px var(--mono); color: var(--text-muted); letter-spacing: .14em;
+}
+.cover::before, .cover::after { content: none; }
+
+.eyebrow { font: 600 16px var(--mono); letter-spacing: .18em; color: var(--accent); text-transform: uppercase; margin: 0 0 18px; }
+h1 { font-size: 92px; line-height: 1.02; font-weight: 900; letter-spacing: -.035em; margin: 0; }
+h2 { font-size: 52px; line-height: 1.12; font-weight: 800; letter-spacing: -.025em; margin: 0 0 14px; }
+.lead { font-size: 25px; line-height: 1.6; color: var(--text-secondary); margin: 0; max-width: 1180px; }
+.lead b, .note b { color: var(--text-primary); font-weight: 700; }
+.body { flex: 1; display: flex; gap: 48px; margin-top: 40px; min-height: 0; }
+.col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+.note { font-size: 20px; line-height: 1.65; color: var(--text-secondary); margin: 0; }
+.muted { color: var(--text-muted); }
+code, .mono { font-family: var(--mono); }
+.chip { display: inline-block; font: 500 15px var(--mono); padding: 5px 12px; border-radius: 999px; background: var(--surface-2); color: var(--text-secondary); border: 1px solid var(--line); }
+
+/* Cover */
+.cover { justify-content: space-between; padding: 88px; background:
+  radial-gradient(900px 520px at 88% 8%, rgba(57,135,229,.22), transparent 60%),
+  radial-gradient(700px 420px at 4% 110%, rgba(217,89,38,.14), transparent 60%),
+  var(--slide); }
+.cover h1 { font-size: 118px; }
+.cover h1 .thin { font-weight: 400; color: var(--text-secondary); }
+.cover .sub { font-size: 30px; color: var(--text-secondary); margin-top: 26px; line-height: 1.5; }
+.tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.tile { background: rgba(26,26,25,.78); border: 1px solid var(--line); border-radius: 16px; padding: 26px 28px; backdrop-filter: blur(6px); }
+.tile .num { font-size: 60px; font-weight: 800; letter-spacing: -.03em; line-height: 1; }
+.tile .num small { font-size: 26px; font-weight: 600; color: var(--text-secondary); margin-left: 4px; }
+.tile .lbl { font-size: 18px; color: var(--text-secondary); margin-top: 12px; line-height: 1.45; }
+.byline { display: flex; justify-content: space-between; align-items: end; font: 500 16px var(--mono); color: var(--text-muted); letter-spacing: .08em; }
+
+/* Cards */
+.card { background: var(--surface-1); border: 1px solid var(--line); border-radius: 16px; padding: 26px 28px; }
+.card h3 { margin: 0 0 8px; font-size: 26px; font-weight: 700; letter-spacing: -.01em; }
+.card p { margin: 0; font-size: 19px; line-height: 1.6; color: var(--text-secondary); }
+.card .tag { font: 600 14px var(--mono); color: var(--accent); letter-spacing: .12em; margin-bottom: 10px; display: block; }
+
+/* Flow diagram */
+.flow { display: grid; grid-template-columns: 1fr 64px 280px 64px 1fr; align-items: center; }
+.flow .arrow { height: 2px; background: var(--text-muted); position: relative; }
+.flow .arrow::after { content: ""; position: absolute; right: -2px; top: -6px; border: 7px solid transparent; border-left: 10px solid var(--text-muted); }
+.model { height: 220px; border-radius: 22px; display: grid; place-items: center; text-align: center;
+  background: linear-gradient(160deg, #2a78d6, #184f95); box-shadow: 0 20px 60px rgba(57,135,229,.25); }
+.model b { display: block; font-size: 48px; font-weight: 900; letter-spacing: -.02em; }
+.model span { font: 500 15px var(--mono); opacity: .85; letter-spacing: .1em; }
+pre { margin: 0; font: 400 17px/1.6 var(--mono); color: var(--text-secondary); white-space: pre; }
+pre .k { color: #86b6ef; } pre .s { color: #f0a47e; } pre .n { color: #9be0bf; } pre .c { color: var(--text-muted); }
+pre .hl { background: var(--accent-soft); border-radius: 4px; box-shadow: 0 0 0 3px var(--accent-soft); }
+
+/* Charts */
+.chart { width: 100%; height: 100%; display: block; overflow: visible; }
+.chart text { font-family: var(--sans); }
+.chart .axis { fill: var(--text-muted); font-size: 16px; }
+.chart .cat { fill: var(--text-primary); font-size: 21px; font-weight: 600; }
+.chart .val { fill: var(--text-primary); font-size: 20px; font-weight: 700; }
+.chart .sub { fill: var(--text-muted); font-size: 16px; font-family: var(--mono); }
+.chart .gridline { stroke: var(--grid); stroke-width: 1; }
+.chart .mark { transition: opacity .15s; }
+.chart .hit { fill: transparent; cursor: default; }
+.chart g.row:hover .mark { opacity: .8; }
+.legend { display: flex; gap: 28px; font-size: 18px; color: var(--text-secondary); }
+.legend i { display: inline-block; width: 14px; height: 14px; border-radius: 4px; margin-right: 10px; vertical-align: -1px; }
+#tip { position: fixed; z-index: 10; pointer-events: none; background: #000; color: #fff; border: 1px solid var(--line);
+  border-radius: 10px; padding: 10px 14px; font: 500 14px/1.5 var(--sans); opacity: 0; transition: opacity .1s; max-width: 320px; }
+#tip b { font-weight: 700; }
+
+/* Table */
+table { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 20px; }
+th { text-align: right; font: 600 14px var(--mono); letter-spacing: .1em; color: var(--text-muted); padding: 0 16px 14px; text-transform: uppercase; }
+th:first-child, td:first-child { text-align: left; }
+td { text-align: right; padding: 13px 16px; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+td:first-child { font-weight: 700; }
+td.full { color: var(--text-primary); }
+td.part { color: #f0a47e; font-weight: 700; }
+td.dim { color: var(--text-secondary); }
+
+/* Two-tier limit diagram */
+.tier { position: relative; border-radius: 20px; border: 2px dashed #3a3a37; padding: 24px; }
+.tier > .cap { position: absolute; top: -15px; left: 22px; background: var(--slide); padding: 0 10px; font: 600 16px var(--mono); color: var(--text-secondary); letter-spacing: .06em; }
+.pairs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 10px; }
+.pair { border-radius: 14px; background: var(--surface-1); border: 1px solid var(--line); padding: 16px; }
+.pair .st { height: 70px; border-radius: 8px; background: linear-gradient(135deg, rgba(57,135,229,.5), rgba(57,135,229,.25)); display: grid; place-items: center; font: 600 15px var(--mono); }
+.pair .q { height: 30px; margin-top: 8px; border-radius: 8px; background: rgba(217,89,38,.45); display: grid; place-items: center; font: 600 14px var(--mono); }
+.pair .lim { margin-top: 10px; font: 600 15px var(--mono); color: var(--text-secondary); text-align: center; }
+.evi { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.evi li { display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; font-size: 20px; color: var(--text-secondary);
+  background: var(--surface-1); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; }
+.evi .ok { color: var(--good); font-weight: 900; font-size: 22px; }
+.evi .ng { color: var(--bad); font-weight: 900; font-size: 22px; }
+.evi .t { font: 500 16px var(--mono); color: var(--text-muted); }
+
+.big { font-size: 128px; font-weight: 900; letter-spacing: -.04em; line-height: 1; }
+.big small { font-size: 40px; font-weight: 700; color: var(--text-secondary); margin-left: 6px; }
+.callout { border-left: 4px solid var(--accent); padding: 6px 0 6px 22px; }
+.callout p { margin: 0; font-size: 21px; line-height: 1.6; color: var(--text-secondary); }
+.callout.warn { border-color: var(--series-2); }
+.list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 16px; }
+.list li { font-size: 24px; line-height: 1.55; color: var(--text-secondary); padding-left: 30px; position: relative; }
+.list li::before { content: ""; position: absolute; left: 4px; top: 13px; width: 10px; height: 10px; border-radius: 3px; background: var(--accent); }
+.list.o li::before { background: var(--series-2); }
+.list li b { color: var(--text-primary); }
+
+/* Controls */
+.nav { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 5; }
+.nav button { width: 10px; height: 10px; border-radius: 50%; border: 0; padding: 0; background: #3a3a37; cursor: pointer; }
+.nav button.on { background: var(--accent); width: 26px; border-radius: 6px; }
+.hint { position: fixed; right: 16px; bottom: 10px; font: 500 12px var(--mono); color: var(--text-muted); }
+@media (max-width: 700px) { .hint { display: none; } }
+/* ?capture renders one slide at exactly 1600x900 for image export. */
+.capture .nav, .capture .hint { display: none; }
+.capture .slide { border-radius: 0; transition: none; }
+
+@media print {
+  @page { size: 1600px 900px; margin: 0; }
+  body { overflow: visible; background: var(--slide); }
+  .stage { position: static; display: block; }
+  .deck { transform: none !important; position: static; width: auto; height: auto; }
+  .slide { position: relative; opacity: 1; transform: none; width: 1600px; height: 900px; border-radius: 0; page-break-after: always; break-after: page; transition: none; }
+  .nav, .hint, #tip { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="stage"><div class="deck" id="deck">
+
+<!-- 1. Cover -->
+<section class="slide cover">
+  <div>
+    <p class="eyebrow">labs · TypeSafe AI System One</p>
+    <h1>Jev を<br>8 言語で<span class="thin">測る。</span></h1>
+    <p class="sub">文章を生成しない「判断専用」モデル <span class="mono">jev-1.13.0</span> の<br>API の挙動・入力上限・多言語での精度を実測しました。</p>
+  </div>
+  <div class="tiles">
+    <div class="tile"><div class="num">33k<small>tokens</small></div><div class="lbl">state＋質問 1 つあたりの上限<br>超えると 400 で明示的に失敗</div></div>
+    <div class="tile"><div class="num">0.2<small>秒</small></div><div class="lbl">短文の応答時間（中央値）<br>上限近くでも 0.3〜0.45 秒</div></div>
+    <div class="tile"><div class="num">8<small>/ 8</small></div><div class="lbl">日・英・中（繁簡）・韓・独・仏・西<br>すべてで分類できた</div></div>
+    <div class="tile"><div class="num">320<small>/ 320</small></div><div class="lbl">上限近くまでの長文で<br>埋め込んだ事実を正しく抽出</div></div>
+  </div>
+  <div class="byline"><span>kiarina / labs · 2026-09-17</span><span>← → で移動</span></div>
+</section>
+
+<!-- 2. What is Jev -->
+<section class="slide">
+  <p class="eyebrow">What is Jev</p>
+  <h2>文章ではなく、型付きの「判断」を返す</h2>
+  <p class="lead">評価したい内容（<b>state</b>）と、型を決めた質問を送ると、確率つきの答えが返ります。<br>チャットはできませんが、そのぶんコードの <b>if 文</b>にそのまま使えます。</p>
+  <div class="body" style="flex-direction:column; gap:40px; justify-content:center">
+    <div class="flow">
+      <div class="card"><span class="tag">STATE</span><h3>文字列 / JSON / 配列</h3><p>問い合わせ、記事、アプリの状態など。テキストのみ</p></div>
+      <div class="arrow"></div>
+      <div class="model"><div><b>Jev</b><span>POST /v1/systemone</span></div></div>
+      <div class="arrow"></div>
+      <div class="card"><span class="tag">ANSWERS</span><h3>確率・選択・スコア</h3><p>質問ごとに型どおりの値。出力トークンは無料</p></div>
+    </div>
+    <div class="tiles" style="grid-template-columns:repeat(3,1fr)">
+      <div class="card"><span class="tag">NOUL</span><h3>Yes / No</h3><p>「急ぎか？」→ yes である確率 <span class="mono">0.95</span></p></div>
+      <div class="card"><span class="tag">CHOICE</span><h3>選択肢から 1 つ</h3><p>「担当部署は？」→ <span class="mono">billing</span> と各選択肢の確率・確信度</p></div>
+      <div class="card"><span class="tag">SCORE</span><h3>段階評価</h3><p>「苛立ちの度合いは？」→ <span class="mono">1.03</span>（Calm / Frustrated / Very angry）</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. Response -->
+<section class="slide">
+  <p class="eyebrow">Response</p>
+  <h2>レスポンスは小さく、そのまま使える</h2>
+  <div class="body">
+    <div class="col" style="flex:1.25; justify-content:center">
+      <div class="card" style="padding:30px 34px">
+<pre>{
+  <span class="k">"model"</span>: <span class="s">"jev-1.13.0"</span>,
+  <span class="k">"answers"</span>: {
+    <span class="k">"is_urgent"</span>: { <span class="k">"type"</span>: <span class="s">"noul"</span>, <span class="hl"><span class="k">"noul"</span>: <span class="n">0.95</span></span> },
+    <span class="k">"department"</span>: {
+      <span class="k">"type"</span>: <span class="s">"choice"</span>, <span class="k">"choice"</span>: <span class="s">"billing"</span>, <span class="hl"><span class="k">"confidence"</span>: <span class="n">0.83</span></span>,
+      <span class="k">"probabilities"</span>: {
+        <span class="k">"billing"</span>: <span class="n">0.89</span>, <span class="k">"technical"</span>: <span class="n">0.11</span>, <span class="k">"sales"</span>: <span class="n">0.0</span>
+      }
+    },
+    <span class="k">"frustration"</span>: {
+      <span class="k">"type"</span>: <span class="s">"score"</span>, <span class="k">"score"</span>: <span class="n">1.03</span>, <span class="k">"confidence"</span>: <span class="n">0.95</span>,
+      <span class="k">"probabilities"</span>: { <span class="k">"0"</span>: <span class="n">0.0</span>, <span class="k">"1"</span>: <span class="n">0.96</span>, <span class="k">"2"</span>: <span class="n">0.04</span> }
+    }
+  },
+  <span class="hl"><span class="k">"usage"</span>: { <span class="k">"input_tokens"</span>: <span class="n">426</span>, <span class="k">"output_tokens"</span>: <span class="n">73</span> }</span>
+}</pre>
+      </div>
+    </div>
+    <div class="col" style="justify-content:center; gap:30px">
+      <div class="callout"><p><b>Noul には confidence が付かない。</b><br>確信度が返るのは Choice と Score だけ。</p></div>
+      <div class="callout"><p><b>課金は入力トークンだけ。</b><br>$0.042 / 100 万 token。1 文字の state でも約 273 token かかる。</p></div>
+      <div class="callout"><p><b>models には alias しか出ない。</b><br><span class="mono">jev-latest</span> と <span class="mono">jev-preview</span>。応答の <span class="mono">model</span> で実際の版が分かる。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. Latency -->
+<section class="slide">
+  <p class="eyebrow">Latency</p>
+  <h2>長くしても、ほとんど遅くならない</h2>
+  <p class="lead">入力を 1.4k → 32k token に増やしても、応答は約 0.2 秒から 0.3〜0.45 秒へ伸びるだけ。<br>国内の開発機からの往復時間（ネットワーク込み）です。</p>
+  <div class="body"><svg class="chart" id="latency" viewBox="0 0 1424 440" role="img" aria-label="条件別の応答時間"></svg></div>
+</section>
+
+<!-- 5. Two-tier limit -->
+<section class="slide">
+  <p class="eyebrow">Input limit</p>
+  <h2>上限は「組ごと 33k」と「全体 66k」の 2 段</h2>
+  <p class="lead">docs には「state と質問で共有する約 32,000 token」とありますが、実測は違いました。</p>
+  <div class="body">
+    <div class="col" style="flex:1.1; justify-content:center">
+      <div class="tier">
+        <span class="cap">リクエスト全体 ≈ 66k tokens</span>
+        <div class="pairs">
+          <div class="pair"><div class="st">state</div><div class="q">質問 1</div><div class="lim">≤ 33k</div></div>
+          <div class="pair"><div class="st">state</div><div class="q">質問 2</div><div class="lim">≤ 33k</div></div>
+          <div class="pair"><div class="st">state</div><div class="q">質問 N</div><div class="lim">≤ 33k</div></div>
+        </div>
+      </div>
+      <p class="note">各質問は同じ state を見て独立に判断されます。<br><span class="mono">usage.input_tokens</span> は state を 1 回だけ数えます。</p>
+    </div>
+    <div class="col" style="justify-content:center">
+      <ul class="evi">
+        <li><span class="ok">✓</span><span>state 33k ＋ 質問 1 問</span><span class="t">32,823</span></li>
+        <li><span class="ok">✓</span><span>state 33k ＋ 質問 500 問</span><span class="t">46,188</span></li>
+        <li><span class="ok">✓</span><span>state 1 文字 ＋ 質問 2,375 問</span><span class="t">65,650</span></li>
+        <li><span class="ng">✕</span><span>state 1 文字 ＋ 質問 2,382 問</span><span class="t">≈ 65.8k</span></li>
+        <li><span class="ng">✕</span><span>state 20k ＋ 15k の質問文 1 問</span><span class="t">≈ 35k</span></li>
+      </ul>
+      <div class="card" style="padding:18px 22px"><pre><span class="c"># 超えたとき（5,000,000 文字でも同じ）</span>
+<span class="n">400</span> {<span class="k">"detail"</span>: {<span class="k">"error_type"</span>: <span class="s">"max_tokens_exceeded"</span>}}</pre></div>
+      <p class="note"><b>黙って切り詰められることはない</b>ので、失敗を検知して分割すればよい。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6. Chars per language -->
+<section class="slide">
+  <p class="eyebrow">Characters that fit</p>
+  <h2>日本語で入るのは、約 3 万文字</h2>
+  <p class="lead">上限はトークン数で決まるので、何文字入るかは言語しだい。<b>日本語と中国語は 1 文字 ≈ 1 token</b>、英語は 1 token ≈ 5 文字。</p>
+  <div class="body"><svg class="chart" id="chars" viewBox="0 0 1424 470" role="img" aria-label="言語別の最大文字数"></svg></div>
+</section>
+
+<!-- 7. Classification -->
+<section class="slide">
+  <p class="eyebrow">Languages · classification</p>
+  <h2>質問を英語にすれば、8 言語とも英語と同じ判断</h2>
+  <div class="body">
+    <div class="col" style="flex:1.35">
+      <table>
+        <thead><tr><th>言語</th><th>部署 · 英語の質問</th><th>部署 · 各言語の質問</th><th>英語との差</th><th>言語判定</th></tr></thead>
+        <tbody id="cls"></tbody>
+      </table>
+    </div>
+    <div class="col" style="justify-content:center; gap:28px">
+      <p class="note">SaaS への問い合わせ 16 件を 8 言語に翻訳し、担当部署（4 択）・急ぎか・苛立ちを判定。</p>
+      <div class="callout"><p><b>英語の質問なら 16/16 × 8 言語。</b>確率も英語版と平均 0.02 未満の差。</p></div>
+      <div class="callout warn"><p><b>質問も翻訳すると差が 0.02〜0.04 に。</b>「チーム全員がログインできない」を 5 言語で account と判定。選択肢の説明に「ログイン」を入れた<b>設問側の曖昧さ</b>が境界を越えさせた。</p></div>
+      <div class="callout warn"><p><b>繁体字の短文は簡体字と取り違えることがある</b>（16 件中 2 件）。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. Long context -->
+<section class="slide">
+  <p class="eyebrow">Languages · long context</p>
+  <h2>上限近くの長文でも、事実を取りこぼさない</h2>
+  <p class="lead">業務日誌に「北側倉庫室のコードは 4817」を埋め、方角だけ違う「南側…9352」も混ぜました。<br>長さ 4 通り（上限の 3〜97%）× 位置 5 通り × 有無 2 通り ＝ 各言語 40 ケース。</p>
+  <div class="body" style="gap:40px">
+    <div class="col" style="flex:2.3">
+      <div class="legend"><span><i style="background:var(--series-1)"></i>埋め込みあり（positive）</span><span><i style="background:var(--series-2)"></i>なし・南側だけ（negative）</span><span class="muted">線 = 40 ケース中の最小〜最大の範囲、点 = 平均</span></div>
+      <svg class="chart" id="needle" viewBox="0 0 1000 400" role="img" aria-label="言語別の needle 判定確率"></svg>
+    </div>
+    <div class="col" style="justify-content:center">
+      <div class="big">320<small>/ 320</small></div>
+      <p class="note">コードを答える Choice の正解数。needle がなければ <span class="mono">not_stated</span> を選び、南側のコードに引きずられなかった。</p>
+      <div class="callout warn"><p>ただし題材は易しめ。10 文の繰り返しの中の目立つ一文で、自然な長文や複数箇所の推論は未検証。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. Repeatability -->
+<section class="slide">
+  <p class="eyebrow">Repeatability</p>
+  <h2>ほぼ安定。ただし完全に決定的ではない</h2>
+  <div class="body" style="flex-direction:column; justify-content:center; gap:44px">
+    <div class="tiles" style="grid-template-columns:repeat(3,1fr)">
+      <div class="card"><div class="big" style="font-size:96px">±0.004</div><p style="margin-top:14px">同じリクエストを 10 回送ったときの確率の標準偏差（平均）。最大でも 0.056。</p></div>
+      <div class="card"><div class="big" style="font-size:96px">1<small>/ 80</small></div><p style="margin-top:14px">10 回の中で選択が入れ替わった系列。de の「ログインできない」で 1 回だけ account。</p></div>
+      <div class="card"><div class="big" style="font-size:96px">10<small>/ 10</small></div><p style="margin-top:14px">上限 97% の長文で同じ答え。Noul の標準偏差は 0〜0.0075。</p></div>
+    </div>
+    <div class="callout"><p><b>確率 0.4〜0.6 の判定は、同じ入力でも入れ替わりうる。</b> confidence や確率の差で「保留」に回す設計を前提にする。</p></div>
+  </div>
+</section>
+
+<!-- 10. Docs vs observed -->
+<section class="slide">
+  <p class="eyebrow">Docs vs observed</p>
+  <h2>docs と挙動が違った 3 点</h2>
+  <div class="body" style="align-items:center">
+    <table style="font-size:23px">
+      <thead><tr><th style="width:24%">項目</th><th style="text-align:left">docs の記述</th><th style="text-align:left">実測</th></tr></thead>
+      <tbody>
+        <tr><td>上限のかかり方</td><td class="dim" style="text-align:left">state と質問で共有する約 32,000 token</td><td style="text-align:left">組ごと約 33k・全体約 66k の 2 段と推定</td></tr>
+        <tr><td>英語で入る文字数</td><td class="dim" style="text-align:left">約 150,000 文字</td><td style="text-align:left">約 167,000〜212,500 文字（文章による）</td></tr>
+        <tr><td>Score の段階数</td><td class="dim" style="text-align:left">2 段階以上が必須</td><td style="text-align:left">1 段階でも <span class="mono">200</span> が返る</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 11. Takeaways -->
+<section class="slide">
+  <p class="eyebrow">Takeaways</p>
+  <h2>使いどころと、まだ分からないこと</h2>
+  <div class="body">
+    <div class="col">
+      <h3 style="margin:0 0 6px; font-size:28px">分かったこと</h3>
+      <ul class="list">
+        <li><b>多言語の入力は英語の質問で扱う</b>のが安定。state の言語差はほぼ出ない</li>
+        <li>日本語は <b>約 3 万文字</b>で上限。超えたら 400 を見て分割する</li>
+        <li>1 回に <b>数百〜2,000 問</b>を投げても 1 秒前後。質問はまとめて送る</li>
+        <li>0.2 秒・$0.042 / Mtok なので、<b>全件・常時の判定</b>に向く</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h3 style="margin:0 0 6px; font-size:28px">未検証</h3>
+      <ul class="list o">
+        <li>自然な長文に紛れた事実、複数箇所を組み合わせる推論</li>
+        <li>LLM（Claude Haiku など）との精度・コスト比較</li>
+        <li>レート制限（429）の挙動。負荷をかける試験は避けた</li>
+        <li>翻訳データはネイティブ校正なし。ラベルには筆者の主観を含む</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 12. Reproduce -->
+<section class="slide cover" style="justify-content:center; gap:40px">
+  <p class="eyebrow">Reproduce</p>
+  <h1 style="font-size:84px">約 2,400 リクエスト、<br><span class="thin">費用はおよそ $0.6。</span></h1>
+  <div class="card" style="max-width:1100px"><pre><span class="c"># console.typesafe.ai で発行したキー（リポジトリには含めない）</span>
+<span class="k">export</span> TYPESAFE_AI_API_KEY=...
+<span class="k">mise</span> -C 2026/09/17/typesafe-jev-evaluation run</pre></div>
+  <p class="note">github.com/kiarina/labs · <span class="mono">2026/09/17/typesafe-jev-evaluation</span> · 詳細な数値は README と <span class="mono">output/*.json</span></p>
+</section>
+
+</div></div>
+<nav class="nav" id="nav" aria-label="スライド"></nav>
+<div class="hint">← → / クリックで移動</div>
+<div id="tip" role="tooltip"></div>
+
+<script>
+const LANGS = [
+  // code, name, max chars, chars/token, dept(en q), dept(native q), diff(en q), diff(native q), lang-id, pos min, pos mean, neg max, neg mean
+  ["en", "英語", 167345, 5.12, 16, 16, 0.000, 0.005, 16, 0.97, 0.980, 0.02, 0.015],
+  ["ja", "日本語", 31796, 0.97, 16, 15, 0.012, 0.033, 16, 0.94, 0.967, 0.03, 0.024],
+  ["zh-TW", "繁体字中国語", 30086, 0.92, 16, 15, 0.016, 0.034, 14, 0.95, 0.972, 0.02, 0.020],
+  ["ko", "韓国語", 42659, 1.30, 16, 15, 0.009, 0.040, 16, 0.90, 0.963, 0.03, 0.022],
+  ["zh-CN", "簡体字中国語", 32558, 1.00, 16, 15, 0.012, 0.039, 16, 0.88, 0.950, 0.03, 0.021],
+  ["de", "ドイツ語", 122581, 3.75, 16, 16, 0.007, 0.016, 16, 0.94, 0.962, 0.02, 0.020],
+  ["fr", "フランス語", 121145, 3.70, 16, 16, 0.014, 0.029, 16, 0.96, 0.974, 0.03, 0.021],
+  ["es", "スペイン語", 129311, 3.95, 16, 15, 0.011, 0.032, 16, 0.97, 0.975, 0.03, 0.024],
+];
+const NS = "http://www.w3.org/2000/svg";
+const el = (tag, attrs = {}, parent, text) => {
+  const node = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
+  if (text !== undefined) node.textContent = text;
+  if (parent) parent.appendChild(node);
+  return node;
+};
+const tip = document.getElementById("tip");
+function hover(target, html) {
+  target.addEventListener("mousemove", (e) => {
+    tip.innerHTML = html; tip.style.opacity = 1;
+    tip.style.left = Math.min(e.clientX + 16, innerWidth - 340) + "px";
+    tip.style.top = e.clientY + 16 + "px";
+  });
+  target.addEventListener("mouseleave", () => (tip.style.opacity = 0));
+}
+// A horizontal bar with a 4px rounded data end and a square baseline end.
+function hbar(parent, x, y, w, h, fill) {
+  const r = Math.min(4, w);
+  el("path", { d: `M${x},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h - r}Q${x + w},${y + h} ${x + w - r},${y + h}H${x}Z`, fill, class: "mark" }, parent);
+}
+
+// Latency
+(() => {
+  const svg = document.getElementById("latency");
+  const rows = [
+    ["短文 · 質問 1〜3 問", 210, "median 205〜215 ms", "範囲 180〜300 ms"],
+    ["約 16.7k tokens · 1 問", 330, "median 255〜410 ms", "言語による"],
+    ["約 32k tokens（上限近く）· 1 問", 390, "median 325〜450 ms", "言語による"],
+    ["1 文字 · 質問 1,000〜2,000 問", 900, "0.8〜1.0 s", "input 27k〜55k tokens"],
+  ];
+  const x0 = 470, W = 820, max = 1000, bh = 44, gap = 44, top = 30;
+  [0, 250, 500, 750, 1000].forEach((t) => {
+    const x = x0 + (t / max) * W;
+    el("line", { x1: x, x2: x, y1: top - 10, y2: top + rows.length * (bh + gap) - gap + 10, class: "gridline" }, svg);
+    el("text", { x, y: top + rows.length * (bh + gap) - gap + 40, class: "axis", "text-anchor": "middle" }, svg, t === 1000 ? "1,000 ms" : t);
+  });
+  rows.forEach(([label, v, value, sub], i) => {
+    const y = top + i * (bh + gap);
+    const g = el("g", { class: "row" }, svg);
+    el("text", { x: x0 - 24, y: y + bh / 2 + 7, class: "cat", "text-anchor": "end" }, g, label);
+    hbar(g, x0, y, (v / max) * W, bh, "var(--series-1)");
+    el("text", { x: x0 + (v / max) * W + 16, y: y + bh / 2 - 2, class: "val" }, g, value);
+    el("text", { x: x0 + (v / max) * W + 16, y: y + bh / 2 + 20, class: "sub" }, g, sub);
+    const hit = el("rect", { x: 0, y: y - gap / 2, width: 1424, height: bh + gap, class: "hit" }, g);
+    hover(hit, `<b>${label}</b><br>${value}<br>${sub}`);
+  });
+})();
+
+// Max characters per language
+(() => {
+  const svg = document.getElementById("chars");
+  const rows = [...LANGS].sort((a, b) => b[2] - a[2]);
+  const x0 = 250, W = 900, max = 180000, bh = 36, gap = 18, top = 10;
+  [0, 50000, 100000, 150000].forEach((t) => {
+    const x = x0 + (t / max) * W;
+    el("line", { x1: x, x2: x, y1: top - 6, y2: top + rows.length * (bh + gap) - gap + 6, class: "gridline" }, svg);
+    el("text", { x, y: top + rows.length * (bh + gap) + 24, class: "axis", "text-anchor": "middle" }, svg, t ? `${t / 10000} 万文字` : "0");
+  });
+  rows.forEach(([code, name, chars, cpt], i) => {
+    const y = top + i * (bh + gap);
+    const cjk = cpt < 1.5;
+    const g = el("g", { class: "row" }, svg);
+    el("text", { x: x0 - 20, y: y + bh / 2 + 7, class: "cat", "text-anchor": "end" }, g, name);
+    hbar(g, x0, y, (chars / max) * W, bh, cjk ? "var(--series-2)" : "var(--series-1)");
+    const vx = x0 + (chars / max) * W + 14;
+    el("text", { x: vx, y: y + bh / 2 + 7, class: "val" }, g, `${chars.toLocaleString()} 文字`);
+    el("text", { x: vx + (cjk ? 150 : 170), y: y + bh / 2 + 6, class: "sub" }, g, `${cpt.toFixed(2)} 文字/token`);
+    const hit = el("rect", { x: 0, y: y - gap / 2, width: 1424, height: bh + gap, class: "hit" }, g);
+    hover(hit, `<b>${name}（${code}）</b><br>最大 ${chars.toLocaleString()} 文字<br>${cpt.toFixed(2)} 文字 / token`);
+  });
+  const lx = 1180, ly = 250;
+  el("rect", { x: lx, y: ly, width: 14, height: 14, rx: 4, fill: "var(--series-1)" }, svg);
+  el("text", { x: lx + 24, y: ly + 13, class: "axis" }, svg, "アルファベット系");
+  el("rect", { x: lx, y: ly + 30, width: 14, height: 14, rx: 4, fill: "var(--series-2)" }, svg);
+  el("text", { x: lx + 24, y: ly + 43, class: "axis" }, svg, "CJK（1 文字 ≈ 1 token）");
+  el("text", { x: lx, y: ly + 96, class: "sub" }, svg, "どの言語も ≈ 33,000 token で頭打ち");
+})();
+
+// Classification table
+(() => {
+  const body = document.getElementById("cls");
+  for (const [code, name, , , den, dnat, fen, fnat, lid] of LANGS) {
+    const tr = document.createElement("tr");
+    const cell = (text, cls) => { const td = document.createElement("td"); td.textContent = text; if (cls) td.className = cls; tr.appendChild(td); };
+    cell(`${name}`);
+    cell(`${den}/16`, den === 16 ? "full" : "part");
+    cell(`${dnat}/16`, dnat === 16 ? "full" : "part");
+    cell(`${fen.toFixed(3)} / ${fnat.toFixed(3)}`, "dim");
+    cell(`${lid}/16`, lid === 16 ? "full" : "part");
+    body.appendChild(tr);
+  }
+})();
+
+// Needle ranges
+(() => {
+  const svg = document.getElementById("needle");
+  const x0 = 170, W = 790, rowH = 44, top = 30;
+  const X = (p) => x0 + p * W;
+  [0, 0.25, 0.5, 0.75, 1].forEach((t) => {
+    el("line", { x1: X(t), x2: X(t), y1: top - 16, y2: top + LANGS.length * rowH - 20, class: "gridline" }, svg);
+    el("text", { x: X(t), y: top + LANGS.length * rowH + 8, class: "axis", "text-anchor": "middle" }, svg, t.toFixed(2));
+  });
+  el("text", { x: X(0.5), y: top + LANGS.length * rowH + 36, class: "sub", "text-anchor": "middle" }, svg, "「北側のコードが書かれているか」の Noul 確率");
+  LANGS.forEach(([code, name, , , , , , , , pmin, pmean, nmax, nmean], i) => {
+    const y = top + i * rowH;
+    const g = el("g", { class: "row" }, svg);
+    el("text", { x: x0 - 22, y: y + 6, class: "cat", "text-anchor": "end", style: "font-size:19px" }, g, name);
+    el("line", { x1: X(0), x2: X(nmax), y1: y, y2: y, stroke: "var(--series-2)", "stroke-width": 2, "stroke-linecap": "round", class: "mark" }, g);
+    el("circle", { cx: X(nmean), cy: y, r: 7, fill: "var(--series-2)", stroke: "var(--slide)", "stroke-width": 2, class: "mark" }, g);
+    el("line", { x1: X(pmin), x2: X(1), y1: y, y2: y, stroke: "var(--series-1)", "stroke-width": 2, "stroke-linecap": "round", class: "mark" }, g);
+    el("circle", { cx: X(pmean), cy: y, r: 7, fill: "var(--series-1)", stroke: "var(--slide)", "stroke-width": 2, class: "mark" }, g);
+    el("text", { x: X(0.625), y: y + 6, class: "sub", "text-anchor": "middle" }, g, `分離幅 ${(pmin - nmax).toFixed(2)}`);
+    const hit = el("rect", { x: 0, y: y - rowH / 2, width: 1000, height: rowH, class: "hit" }, g);
+    hover(hit, `<b>${name}</b><br>positive: 平均 ${pmean.toFixed(3)}（最小 ${pmin}）<br>negative: 平均 ${nmean.toFixed(3)}（最大 ${nmax}）`);
+  });
+})();
+
+// Navigation and scaling
+const capture = new URLSearchParams(location.search).has("capture");
+if (capture) document.body.classList.add("capture");
+const slides = [...document.querySelectorAll(".slide")];
+const nav = document.getElementById("nav");
+slides.forEach((s, i) => {
+  s.dataset.page = `${String(i + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
+  const b = document.createElement("button");
+  b.setAttribute("aria-label", `スライド ${i + 1}`);
+  b.onclick = () => go(i);
+  nav.appendChild(b);
+});
+let current = 0;
+function go(i) {
+  current = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach((s, j) => s.classList.toggle("active", j === current));
+  [...nav.children].forEach((b, j) => b.classList.toggle("on", j === current));
+  tip.style.opacity = 0;
+  if (!capture) history.replaceState(null, "", `#${current + 1}`);
+}
+function fit() {
+  if (capture) { document.getElementById("deck").style.transform = "none"; document.getElementById("deck").style.left = "0"; document.getElementById("deck").style.top = "0"; return; }
+  const s = Math.min(innerWidth / 1600, (innerHeight - 30) / 900) * 0.98;
+  document.getElementById("deck").style.transform = `translate(-50%, -50%) scale(${s})`;
+}
+addEventListener("resize", fit);
+addEventListener("keydown", (e) => {
+  if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); go(current + 1); }
+  if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); go(current - 1); }
+  if (e.key === "Home") go(0);
+  if (e.key === "End") go(slides.length - 1);
+});
+document.getElementById("deck").addEventListener("click", (e) => {
+  if (e.target.closest("button")) return;
+  const r = e.currentTarget.getBoundingClientRect();
+  go(current + (e.clientX < r.left + r.width / 3 ? -1 : 1));
+});
+let touchX = null;
+addEventListener("touchstart", (e) => (touchX = e.touches[0].clientX), { passive: true });
+addEventListener("touchend", (e) => {
+  if (touchX === null) return;
+  const dx = e.changedTouches[0].clientX - touchX;
+  if (Math.abs(dx) > 40) go(current + (dx < 0 ? 1 : -1));
+  touchX = null;
+});
+fit();
+go((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>

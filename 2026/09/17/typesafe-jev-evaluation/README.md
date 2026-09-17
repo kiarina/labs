@@ -1,5 +1,7 @@
 # TypeSafe AI Jev: API behavior, input limits, and eight languages
 
+[![Jev を 8 言語で測る](slides/cover.jpg)](slides/index.html)
+
 TypeSafe AIのSystem Oneモデル`jev-1.13.0`を、HTTP APIから直接評価します。
 Jevは文章を生成せず、`state`と型付きの質問（Noul / Choice / Score）に確率で答えます。
 
@@ -61,6 +63,19 @@ mise -C 2026/09/17/typesafe-jev-evaluation run
 `probe_api.py`はフェーズ1（英語での挙動と上限）、`languages.py`は8言語の評価です。
 結果はGit管理外の`output/probe_api.json`と`output/languages.json`へ保存します。
 全体で約2,400リクエスト・約1,500万input tokenを使い、公表価格（$0.042 / Mtok）では約$0.6です。
+
+## Slides
+
+検証結果を12枚のスライドにまとめています（[`slides/index.html`](slides/index.html)）。
+依存のない1ファイルのHTMLで、ブラウザで開いて←→キー、クリック、スワイプで移動します。
+`#8`のように末尾に番号を付けると、そのスライドから開きます。
+
+```sh
+open 2026/09/17/typesafe-jev-evaluation/slides/index.html
+```
+
+ブラウザの印刷でPDFにすると、1ページに1枚ずつ出力されます。表紙画像`slides/cover.jpg`は、
+`?capture#1`を付けて1600×900で描画したものです。
 
 ## Observed results
 
