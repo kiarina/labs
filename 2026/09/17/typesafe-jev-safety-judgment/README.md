@@ -1,5 +1,7 @@
 # TypeSafe Jev: モデレーションとコマンド危険性チェックの判断品質
 
+[![Jev に安全判断を任せる](slides/cover.jpg)](slides/index.html)
+
 TypeSafe AI の System One モデル `jev-1.13.0` を、実用に近い 2 つの安全判断で評価します。
 
 - **モデレーション**: 文章が有害カテゴリに該当するかを判定し、OpenAI Moderation API と比べる
@@ -85,6 +87,12 @@ mise -C 2026/09/17/typesafe-jev-safety-judgment run
 結果は Git 管理外の `output/*.json` に保存します。OpenAI の無料枠はレート制限が厳しいため、
 `run_moderation.py` は結果を `output/openai_*.json` にキャッシュし、直列・小刻みな待機で再開可能にして
 います。Jev はどちらの評価でも中央値 約 210〜220ms でした。
+
+## Slides
+
+結果を 9 枚のスライドにまとめています（[`slides/index.html`](slides/index.html)）。依存のない 1 ファイルの
+HTML で、ブラウザで開いて ← → キー・クリック・スワイプで移動します。`?capture#1` を付けて 1600×900 で
+描画したものが表紙画像 `slides/cover.jpg` です。
 
 ## Observed results
 

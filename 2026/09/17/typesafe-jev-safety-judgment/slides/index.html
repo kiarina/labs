@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jev 安全判断レポート</title>
+<meta name="description" content="TypeSafe AI の Jev を、モデレーションと AI 生成コマンドの実行前チェックで評価した結果">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: dark;
+  --page: #0b0b0a; --slide: #121211; --surface-1: #1a1a19; --surface-2: #232321;
+  --line: #2e2e2b; --grid: #2a2a28;
+  --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #8f8e86;
+  --series-1: #3987e5; --series-2: #d95926;
+  --accent: #3987e5; --accent-soft: rgba(57,135,229,.14);
+  --good: #3fae6a; --bad: #e66767;
+  --sans: "Inter", "Noto Sans JP", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { background: var(--page); color: var(--text-primary); font-family: var(--sans); -webkit-font-smoothing: antialiased; overflow: hidden; }
+.stage { position: fixed; inset: 0; }
+.deck { width: 1600px; height: 900px; position: absolute; left: 50%; top: calc(50% - 12px); transform-origin: center center; }
+.slide { position: absolute; inset: 0; background: var(--slide); border-radius: 20px; padding: 72px 88px 104px;
+  display: flex; flex-direction: column; opacity: 0; pointer-events: none;
+  transition: opacity .35s ease, transform .35s ease; transform: translateY(8px); overflow: hidden; }
+.slide.active { opacity: 1; pointer-events: auto; transform: none; }
+.slide::after { content: attr(data-page); position: absolute; right: 88px; bottom: 36px; font: 500 15px var(--mono); color: var(--text-muted); letter-spacing: .08em; }
+.slide::before { content: "TYPESAFE · JEV-1.13.0 · SAFETY · 2026-09-17"; position: absolute; left: 88px; bottom: 36px; font: 500 13px var(--mono); color: var(--text-muted); letter-spacing: .14em; }
+.cover::before, .cover::after { content: none; }
+.eyebrow { font: 600 16px var(--mono); letter-spacing: .18em; color: var(--accent); text-transform: uppercase; margin: 0 0 18px; }
+h1 { font-size: 92px; line-height: 1.02; font-weight: 900; letter-spacing: -.035em; margin: 0; }
+h2 { font-size: 50px; line-height: 1.12; font-weight: 800; letter-spacing: -.025em; margin: 0 0 14px; }
+.lead { font-size: 25px; line-height: 1.6; color: var(--text-secondary); margin: 0; max-width: 1200px; }
+.lead b, .note b { color: var(--text-primary); font-weight: 700; }
+.body { flex: 1; display: flex; gap: 48px; margin-top: 40px; min-height: 0; }
+.col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+.note { font-size: 20px; line-height: 1.65; color: var(--text-secondary); margin: 0; }
+.muted { color: var(--text-muted); }
+.mono { font-family: var(--mono); }
+.cover { justify-content: space-between; padding: 88px; background:
+  radial-gradient(900px 520px at 88% 8%, rgba(57,135,229,.22), transparent 60%),
+  radial-gradient(700px 420px at 4% 110%, rgba(217,89,38,.14), transparent 60%), var(--slide); }
+.cover h1 { font-size: 108px; }
+.cover h1 .thin { font-weight: 400; color: var(--text-secondary); }
+.cover .sub { font-size: 29px; color: var(--text-secondary); margin-top: 26px; line-height: 1.5; }
+.tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.tile { background: rgba(26,26,25,.78); border: 1px solid var(--line); border-radius: 16px; padding: 26px 28px; }
+.tile .num { font-size: 56px; font-weight: 800; letter-spacing: -.03em; line-height: 1; }
+.tile .num small { font-size: 24px; font-weight: 600; color: var(--text-secondary); margin-left: 4px; }
+.tile .lbl { font-size: 17px; color: var(--text-secondary); margin-top: 12px; line-height: 1.45; }
+.byline { display: flex; justify-content: space-between; align-items: end; font: 500 16px var(--mono); color: var(--text-muted); letter-spacing: .08em; }
+.card { background: var(--surface-1); border: 1px solid var(--line); border-radius: 16px; padding: 26px 30px; }
+.card h3 { margin: 0 0 8px; font-size: 26px; font-weight: 700; }
+.card p { margin: 0; font-size: 19px; line-height: 1.6; color: var(--text-secondary); }
+.card .tag { font: 600 14px var(--mono); color: var(--accent); letter-spacing: .12em; margin-bottom: 10px; display: block; }
+table { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 21px; }
+th { text-align: right; font: 600 14px var(--mono); letter-spacing: .08em; color: var(--text-muted); padding: 0 14px 14px; text-transform: uppercase; }
+th:first-child, td:first-child { text-align: left; }
+td { text-align: right; padding: 13px 14px; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+td:first-child { font-weight: 700; }
+tr.hi td { background: var(--accent-soft); }
+td.good { color: var(--good); font-weight: 700; }
+td.bad { color: var(--bad); font-weight: 700; }
+td.dim { color: var(--text-muted); }
+.chart { width: 100%; height: 100%; display: block; overflow: visible; }
+.chart text { font-family: var(--sans); }
+.chart .cat { fill: var(--text-primary); font-size: 21px; font-weight: 600; }
+.chart .val { fill: var(--text-primary); font-size: 22px; font-weight: 800; }
+.chart .axis { fill: var(--text-muted); font-size: 16px; }
+.chart .gridline { stroke: var(--grid); stroke-width: 1; }
+.legend { display: flex; gap: 28px; font-size: 18px; color: var(--text-secondary); }
+.legend i { display: inline-block; width: 14px; height: 14px; border-radius: 4px; margin-right: 10px; vertical-align: -1px; }
+.big { font-size: 120px; font-weight: 900; letter-spacing: -.04em; line-height: 1; }
+.big small { font-size: 38px; font-weight: 700; color: var(--text-secondary); margin-left: 6px; }
+.callout { border-left: 4px solid var(--accent); padding: 6px 0 6px 22px; }
+.callout p { margin: 0; font-size: 21px; line-height: 1.6; color: var(--text-secondary); }
+.callout.warn { border-color: var(--series-2); }
+.list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 16px; }
+.list li { font-size: 23px; line-height: 1.55; color: var(--text-secondary); padding-left: 30px; position: relative; }
+.list li::before { content: ""; position: absolute; left: 4px; top: 13px; width: 10px; height: 10px; border-radius: 3px; background: var(--accent); }
+.list.o li::before { background: var(--series-2); }
+.list li b { color: var(--text-primary); }
+pre { margin: 0; font: 400 18px/1.65 var(--mono); color: var(--text-secondary); white-space: pre; }
+pre .k { color: #86b6ef; } pre .s { color: #f0a47e; } pre .n { color: #9be0bf; } pre .c { color: var(--text-muted); }
+.nav { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 5; }
+.nav button { width: 10px; height: 10px; border-radius: 50%; border: 0; padding: 0; background: #3a3a37; cursor: pointer; }
+.nav button.on { background: var(--accent); width: 26px; border-radius: 6px; }
+.hint { position: fixed; right: 16px; bottom: 10px; font: 500 12px var(--mono); color: var(--text-muted); }
+.capture .nav, .capture .hint { display: none; }
+.capture .slide { border-radius: 0; transition: none; }
+@media (max-width: 700px) { .hint { display: none; } }
+@media print { @page { size: 1600px 900px; margin: 0; } body { overflow: visible; } .stage { position: static; } .deck { transform: none !important; position: static; } .slide { position: relative; opacity: 1; transform: none; page-break-after: always; } .nav, .hint { display: none; } }
+</style>
+</head>
+<body>
+<div class="stage"><div class="deck" id="deck">
+
+<!-- 1 Cover -->
+<section class="slide cover">
+  <div>
+    <p class="eyebrow">labs · TypeSafe AI System One</p>
+    <h1>Jev に<br>安全判断を<span class="thin">任せる。</span></h1>
+    <p class="sub">文章の有害判定と、AI が生成したコマンドの実行前チェック。<br>「実際の仕事をどれだけ任せられるか」を実測しました。比較は無料の範囲だけ。</p>
+  </div>
+  <div class="tiles">
+    <div class="tile"><div class="num">0<small>/ 43</small></div><div class="lbl">危険コマンドの自動実行<br>1 件も素通りしなかった</div></div>
+    <div class="tile"><div class="num">36<small>vs 292</small></div><div class="lbl">日本語の有害文書の見逃し<br>Jev vs OpenAI（826 件中）</div></div>
+    <div class="tile"><div class="num">0.956</div><div class="lbl">モデレーションの再現率<br>両言語とも。見逃しに強い</div></div>
+    <div class="tile"><div class="num">$0</div><div class="lbl">かかった費用<br>Jev も OpenAI も無料</div></div>
+  </div>
+  <div class="byline"><span>kiarina / labs · 2026-09-17</span><span>← → で移動</span></div>
+</section>
+
+<!-- 2 Two use cases -->
+<section class="slide">
+  <p class="eyebrow">Two tasks</p>
+  <h2>「速く大量に確率で判断する」2 つの用途</h2>
+  <p class="lead">Jev は文章を生成せず、型付きの質問に確率で答えるモデル。安全判断はその得意分野に見えます。<br>見逃し（危険を安全と誤る）と過剰検出（安全を危険と誤る）のバランスを測りました。</p>
+  <div class="body">
+    <div class="card" style="flex:1"><span class="tag">TASK A · MODERATION</span>
+      <h3>文章の有害判定</h3>
+      <p>英語 1,680 件・日本語 1,847 件を、カテゴリごとの Noul で判定。無料の OpenAI Moderation API と比べる。</p>
+      <p style="margin-top:16px" class="muted mono">openai/moderation-api-release（MIT）<br>LLM-jp Toxicity Dataset（CC BY 4.0）</p>
+    </div>
+    <div class="card" style="flex:1"><span class="tag">TASK B · COMMAND RISK</span>
+      <h3>コマンドの実行前チェック</h3>
+      <p>AI が生成したシェルコマンド 134 件を「安全 / 要確認 / 危険」に分類。依頼と作業ディレクトリも渡す。</p>
+      <p style="margin-top:16px" class="muted mono">自作データ・筆者ラベル（主観を含む）<br>比較は正規表現ブロックリスト</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3 Command results -->
+<section class="slide">
+  <p class="eyebrow">Command risk · results</p>
+  <h2>危険なコマンドを、1 つも素通りさせなかった</h2>
+  <div class="body">
+    <div class="col" style="flex:1.5; justify-content:center">
+      <table>
+        <thead><tr><th>手法</th><th>3 段階一致</th><th>ゲート再現率</th><th>危険の自動実行</th></tr></thead>
+        <tbody>
+          <tr class="hi"><td>Jev（文脈あり）</td><td>0.746</td><td>0.872</td><td class="good">0 / 43</td></tr>
+          <tr><td>Jev（コマンドのみ）</td><td>0.731</td><td>0.936</td><td class="good">0 / 43</td></tr>
+          <tr><td>正規表現ルール</td><td class="dim">0.634</td><td class="dim">0.397</td><td class="bad">14 / 43</td></tr>
+        </tbody>
+      </table>
+      <p class="note">「ゲート」は自動実行してよいか／一呼吸置くかの二値。安全判断では見逃しが最も高くつく。</p>
+    </div>
+    <div class="col" style="justify-content:center; gap:28px">
+      <div class="callout"><p><b>危険ラベル 43 件を 1 件も safe と判定せず。</b>危険検出は AP=0.900 / AUROC=0.955。</p></div>
+      <div class="callout"><p><b>正規表現は誤検出こそゼロだが、危険を 14 件取りこぼす。</b>単純なブロックリストの限界。</p></div>
+      <div class="callout"><p>Jev のズレはほぼ <b>危険 → 要確認</b>。ブロックより「人間の確認へ」寄りの保守性。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 category weakness -->
+<section class="slide">
+  <p class="eyebrow">Command risk · by category</p>
+  <h2>苦手は database と cloud</h2>
+  <p class="lead"><span class="mono">DROP DATABASE production</span> や <span class="mono">kubectl delete namespace production</span> を、<br>「危険」でなく「要確認」と見なす例が目立ちました。カテゴリ別の 3 段階一致率です。</p>
+  <div class="body"><svg class="chart" id="cats" viewBox="0 0 1424 430" role="img" aria-label="カテゴリ別の一致率"></svg></div>
+</section>
+
+<!-- 5 context double-edged -->
+<section class="slide">
+  <p class="eyebrow">Command risk · context</p>
+  <h2>文脈は諸刃だった</h2>
+  <p class="lead">依頼文と作業ディレクトリを渡すと、判定が 20 件で変わりました。</p>
+  <div class="body">
+    <div class="col">
+      <div class="card" style="border-left:4px solid var(--good); flex:1">
+        <span class="tag" style="color:var(--good)">改善</span>
+        <h3>紛らわしい安全コマンドを救う</h3>
+        <p class="mono" style="font-size:18px; margin-top:10px">rm -rf ./build<br>rm -rf node_modules<br>git pull --rebase</p>
+        <p style="margin-top:14px">「ビルド前に消して」という依頼があれば、正しく safe に寄る。</p>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card warn" style="border-left:4px solid var(--series-2); flex:1">
+        <span class="tag" style="color:var(--series-2)">副作用</span>
+        <h3>依頼で正当化される危険操作を通す</h3>
+        <p class="mono" style="font-size:18px; margin-top:10px">cat .env<br>git add .env &amp;&amp; commit<br>python manage.py migrate</p>
+        <p style="margin-top:14px">依頼があると safe に寄せてしまう。コマンドのみの方がゲート再現率は高かった。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 moderation table -->
+<section class="slide">
+  <p class="eyebrow">Moderation · results</p>
+  <h2>英語は OpenAI、日本語は Jev</h2>
+  <div class="body" style="align-items:center">
+    <div class="col" style="flex:1.6">
+      <table style="font-size:22px">
+        <thead><tr><th>言語 · 手法</th><th>AP</th><th>AUROC</th><th>再現率@.5</th><th>適合率@.5</th><th>校正誤差</th></tr></thead>
+        <tbody>
+          <tr><td>en · Jev</td><td>0.868</td><td>0.940</td><td>0.956</td><td class="dim">0.591</td><td class="dim">0.185</td></tr>
+          <tr class="hi"><td>en · OpenAI</td><td>0.898</td><td>0.948</td><td>0.872</td><td>0.756</td><td class="good">0.057</td></tr>
+          <tr class="hi"><td>ja · Jev</td><td>0.915</td><td>0.940</td><td class="good">0.956</td><td>0.755</td><td>0.138</td></tr>
+          <tr><td>ja · OpenAI</td><td>0.902</td><td>0.910</td><td class="bad">0.646</td><td>0.945</td><td>0.139</td></tr>
+        </tbody>
+      </table>
+      <p class="note">AP・AUROC はしきい値によらない指標。校正誤差（ECE）は小さいほど、確率がそのまま信頼できる。</p>
+    </div>
+    <div class="col" style="justify-content:center; gap:24px">
+      <div class="callout"><p><b>Jev は両言語で再現率 0.956。</b>見逃しを嫌う安全ゲート向き。</p></div>
+      <div class="callout"><p><b>英語は OpenAI がやや上で、校正も良好</b>（ECE 0.057 対 0.185）。確率をそのまま閾値に使うなら OpenAI。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 japanese miss -->
+<section class="slide">
+  <p class="eyebrow">Moderation · Japanese</p>
+  <h2>日本語の見逃しは、8 倍の差がついた</h2>
+  <p class="lead">日本語の有害文書 826 件のうち、しきい値 0.5 で見逃した数です。OpenAI は日本語で適合率は高い一方、<br>拾える数が少なく、有害検出には注意が要ります。</p>
+  <div class="body" style="gap:56px">
+    <div class="col" style="flex:2; justify-content:center"><svg class="chart" id="miss" viewBox="0 0 900 300" role="img" aria-label="日本語の見逃し数"></svg></div>
+    <div class="col" style="justify-content:center">
+      <div class="big" style="color:var(--good)">36<small>件</small></div>
+      <p class="note" style="margin:0 0 20px">Jev の見逃し（826 件中）</p>
+      <div class="big" style="color:var(--bad)">292<small>件</small></div>
+      <p class="note">OpenAI の見逃し（826 件中）</p>
+    </div>
+  </div>
+</section>
+
+<!-- 8 takeaways -->
+<section class="slide">
+  <p class="eyebrow">Takeaways</p>
+  <h2>使いどころと、まだ分からないこと</h2>
+  <div class="body">
+    <div class="col">
+      <h3 style="margin:0 0 6px; font-size:28px">分かったこと</h3>
+      <ul class="list">
+        <li><b>見逃しを最重視するなら候補になる。</b>危険の自動実行ゼロ、モデレーション再現率 0.956</li>
+        <li><b>日本語のモデレーションは Jev が明確に有利。</b>OpenAI は日本語で見逃しが多い</li>
+        <li><b>英語のモデレーションと校正は OpenAI が優勢。</b>確率をそのまま閾値にするなら OpenAI</li>
+        <li>拾いすぎる分は、confidence で<b>「人間へ回す」</b>設計で吸収する前提</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h3 style="margin:0 0 6px; font-size:28px">未検証・限界</h3>
+      <ul class="list o">
+        <li>コマンドは 134 件・筆者ラベルで、主観を含む</li>
+        <li>モデレーションの正解はデータセット作成者の基準</li>
+        <li>LLM（Claude 等）との精度・コスト比較（コスト方針で見送り）</li>
+        <li>database・cloud の判定は保守的すぎる傾向</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 9 reproduce -->
+<section class="slide cover" style="justify-content:center; gap:40px">
+  <p class="eyebrow">Reproduce</p>
+  <h1 style="font-size:80px">費用は $0。<br><span class="thin">コードも数値も公開しています。</span></h1>
+  <div class="card" style="max-width:1140px"><pre><span class="c"># Jev も OpenAI Moderation も無料。キーは環境変数から読むだけ</span>
+<span class="k">export</span> TYPESAFE_AI_API_KEY=...  OPENAI_API_KEY=...
+<span class="k">mise</span> -C 2026/09/17/typesafe-jev-safety-judgment run</pre></div>
+  <p class="note">github.com/kiarina/labs · <span class="mono">2026/09/17/typesafe-jev-safety-judgment</span> · 指標は単体テスト付き</p>
+</section>
+
+</div></div>
+<nav class="nav" id="nav" aria-label="スライド"></nav>
+<div class="hint">← → / クリックで移動</div>
+
+<script>
+const NS = "http://www.w3.org/2000/svg";
+const el = (tag, attrs = {}, parent, text) => {
+  const n = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v);
+  if (text !== undefined) n.textContent = text;
+  if (parent) parent.appendChild(n);
+  return n;
+};
+function hbar(parent, x, y, w, h, fill) {
+  const r = Math.min(4, Math.max(0, w));
+  el("path", { d: `M${x},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h - r}Q${x + w},${y + h} ${x + w - r},${y + h}H${x}Z`, fill }, parent);
+}
+
+// Category accuracy
+(() => {
+  const svg = document.getElementById("cats");
+  const rows = [
+    ["everyday", 1.00], ["filesystem", 0.90], ["obfuscated", 0.88], ["network", 0.80],
+    ["process", 0.80], ["packaging", 0.75], ["privilege", 0.70], ["secrets", 0.70],
+    ["git", 0.67], ["cloud", 0.50], ["database", 0.42],
+  ];
+  const x0 = 220, W = 980, top = 6, bh = 26, gap = 10;
+  [0, 0.25, 0.5, 0.75, 1].forEach((t) => {
+    const x = x0 + t * W;
+    el("line", { x1: x, x2: x, y1: top - 4, y2: top + rows.length * (bh + gap) - gap + 4, class: "gridline" }, svg);
+    el("text", { x, y: top + rows.length * (bh + gap) + 16, class: "axis", "text-anchor": "middle" }, svg, t.toFixed(2));
+  });
+  rows.forEach(([name, v], i) => {
+    const y = top + i * (bh + gap);
+    const weak = v < 0.7;
+    el("text", { x: x0 - 18, y: y + bh / 2 + 6, class: "cat", "text-anchor": "end", style: "font-size:19px" }, svg, name);
+    hbar(svg, x0, y, v * W, bh, weak ? "var(--series-2)" : "var(--series-1)");
+    el("text", { x: x0 + v * W + 12, y: y + bh / 2 + 6, class: "val", style: "font-size:18px" }, svg, v.toFixed(2));
+  });
+})();
+
+// Japanese miss counts
+(() => {
+  const svg = document.getElementById("miss");
+  const rows = [["Jev", 36, "var(--good)"], ["OpenAI", 292, "var(--bad)"]];
+  const x0 = 190, W = 560, max = 320, top = 40, bh = 74, gap = 60;
+  rows.forEach(([name, v, color], i) => {
+    const y = top + i * (bh + gap);
+    el("text", { x: x0 - 24, y: y + bh / 2 + 8, class: "cat", "text-anchor": "end", style: "font-size:26px" }, svg, name);
+    hbar(svg, x0, y, (v / max) * W, bh, color);
+    el("text", { x: x0 + (v / max) * W + 20, y: y + bh / 2 + 10, class: "val", style: "font-size:34px" }, svg, `${v} 件`);
+  });
+  el("text", { x: x0, y: top + rows.length * (bh + gap) - gap + 34, class: "axis" }, svg, "有害 826 件のうち、しきい値 0.5 で見逃した数（少ないほど良い）");
+})();
+
+// Nav + scaling
+const slides = [...document.querySelectorAll(".slide")];
+const nav = document.getElementById("nav");
+const capture = new URLSearchParams(location.search).has("capture");
+if (capture) document.body.classList.add("capture");
+slides.forEach((s, i) => {
+  s.dataset.page = `${String(i + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
+  const b = document.createElement("button");
+  b.setAttribute("aria-label", `スライド ${i + 1}`);
+  b.onclick = () => go(i);
+  nav.appendChild(b);
+});
+let current = 0;
+function go(i) {
+  current = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach((s, j) => s.classList.toggle("active", j === current));
+  [...nav.children].forEach((b, j) => b.classList.toggle("on", j === current));
+  if (!capture) history.replaceState(null, "", `#${current + 1}`);
+}
+function fit() {
+  if (capture) { const d = document.getElementById("deck"); d.style.transform = "none"; d.style.left = "0"; d.style.top = "0"; return; }
+  const s = Math.min(innerWidth / 1600, (innerHeight - 30) / 900) * 0.98;
+  document.getElementById("deck").style.transform = `translate(-50%, -50%) scale(${s})`;
+}
+addEventListener("resize", fit);
+addEventListener("keydown", (e) => {
+  if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); go(current + 1); }
+  if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); go(current - 1); }
+  if (e.key === "Home") go(0);
+  if (e.key === "End") go(slides.length - 1);
+});
+document.getElementById("deck").addEventListener("click", (e) => {
+  if (e.target.closest("button")) return;
+  const r = e.currentTarget.getBoundingClientRect();
+  go(current + (e.clientX < r.left + r.width / 3 ? -1 : 1));
+});
+let tx = null;
+addEventListener("touchstart", (e) => (tx = e.touches[0].clientX), { passive: true });
+addEventListener("touchend", (e) => {
+  if (tx === null) return;
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 40) go(current + (dx < 0 ? 1 : -1));
+  tx = null;
+});
+fit();
+go((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>
