@@ -22,7 +22,8 @@ Each lab pins exact versions, because those versions are the subject of the reco
 measurements only mean something for the environment that produced them. When a security
 advisory lands on a pinned dependency, the lab is not silently upgraded. The advisory is
 recorded in that lab's README instead, so anyone reproducing it knows what they are about
-to install. Labs are not deployed and take no untrusted input, so the risk is taken by
+to install. A lab is upgraded only when the artifacts it produces can be shown to be
+byte-identical afterwards, and the README says so. Labs are not deployed and take no untrusted input, so the risk is taken by
 whoever runs them.
 
 ## Labs

@@ -117,10 +117,13 @@ mean 119.85 ms, min 114.33 ms, max 125.95 ms, stdev 3.22 ms
 
 ## Dependency advisories
 
-`onnx` 1.20.0 に advisory が 16 件あります（high, medium, low。修正版は 1.22.0。2026-09-23 時点）。
-`pyproject.toml` の完全固定なので lock からは上がりません。`onnx` は `reference.py` が
-モデルを load / save するのに使っており、上げると native 側の参照出力を作り直すことになります。
-**上げるかどうかは未決です。**
+`onnx` は 2026-09-23 に **1.20.0 から 1.22.0 へ上げました**。1.20.0 に advisory が 16 件
+（high, medium, low）あったためです。`onnxruntime` 1.30.0 は変えていません。
+
+この lab で `onnx` を使うのは `reference.py` の `write_ceil0_model` だけで、上げても
+`model_ceil0.onnx`、`decoded_rgb.bin`、`input.bin`、`logits.bin`、`pred_boxes.bin` は
+**すべてバイト一致**でした。検出結果も下の表と同じです。ブラウザが読むファイルが変わらないため、
+ブラウザ側の結果も変わりません。
 
 ## Requirements and run
 
