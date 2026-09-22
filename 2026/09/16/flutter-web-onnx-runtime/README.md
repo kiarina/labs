@@ -21,6 +21,14 @@ Flutter Web アプリから ONNX Runtime Web を呼び出し、ブラウザだ�
 平均・最小・最大・標準偏差を記録します。数値の一致は、同じ入力 tensor に対する
 `logits` と `pred_boxes` の最大絶対差、および検出結果（score 0.5 以上）の一致で判定します。
 
+
+## Dependency advisories
+
+`onnx` 1.20.0 に advisory が 16 件あります（high, medium, low。修正版は 1.22.0。2026-09-23 時点）。
+`pyproject.toml` の完全固定なので lock からは上がりません。`onnx` は `reference.py` が
+モデルを load / save するのに使っており、上げると native 側の参照出力を作り直すことになります。
+**上げるかどうかは未決です。**
+
 ## Answer
 
 - **使えます。** [`flutter_onnxruntime`](https://pub.dev/packages/flutter_onnxruntime)

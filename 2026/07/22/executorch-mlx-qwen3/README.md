@@ -36,6 +36,22 @@ token単位で一致することです。性能値は同一prompt、batch 1、16
 loadだけで、遅延materialization後の全weight展開時間ではありません。RSSはprocess全体のproxyで、
 Metal allocatorの使用量と同義ではありません。
 
+## Dependency advisories
+
+この記録は `executorch 1.3.1` / `optimum-executorch 0.1.0` / `transformers 4.56.1` /
+`torch 2.12.1` で取ったものです。再現すると、advisory のあるパッケージが入ります
+（2026-09-23 時点）。
+
+| パッケージ | 件数 | 上げていない理由 |
+|---|---:|---|
+| `transformers` 4.56.1 | 8（high, medium） | `optimum-executorch 0.1.0` が `transformers==4.56.1` と完全固定している。上げるには optimum-executorch 1.x へ移ることになり、export 経路が変わる別の実験になる |
+| `torch` 2.12.1 | 2（low） | 形式上は上げられる（`executorch 1.3.1` の要求は `torch>=2.12.0a0` で上限なし）。ただし PyTorch MPS BF16 はこの lab の比較対象そのもので、上げると全体の測り直しになる |
+| `accelerate` 1.14.0 | 1（medium, CVE-2026-69112） | 修正版が存在しない |
+| `setuptools` 81.0.0 | 1（medium） | 計測には関わらないが、`uv lock --upgrade-package` では動かない |
+
+意図的に据え置いています。上げるなら、この lab を測り直すのではなく、新しい lab として
+やり直すのが筋です。
+
 ## Run
 
 Apple Silicon MacとXcode Command Line Toolsが必要です。初回はPython環境、Hugging Faceの重み、

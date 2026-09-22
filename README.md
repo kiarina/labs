@@ -16,6 +16,15 @@ cd labs
 git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{slug}
 ```
 
+## Dependency advisories
+
+Each lab pins exact versions, because those versions are the subject of the record: the
+measurements only mean something for the environment that produced them. When a security
+advisory lands on a pinned dependency, the lab is not silently upgraded. The advisory is
+recorded in that lab's README instead, so anyone reproducing it knows what they are about
+to install. Labs are not deployed and take no untrusted input, so the risk is taken by
+whoever runs them.
+
 ## Labs
 
 - 2026/09
