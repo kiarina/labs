@@ -1,0 +1,47 @@
+{
+  "model": "full4bit",
+  "repo": "mlx-community/Qwen3.8-Flash-Next-4bit",
+  "revision": "07b5dc6c54600a359b87f1e53e7adf6351c72a2c",
+  "suite": "needle",
+  "started": "2026-09-23T21:51:40.194420+00:00",
+  "finished": "2026-09-23T21:53:35.354077+00:00",
+  "load_seconds": 20.516253375004453,
+  "load_peak_gb": 111.532449888,
+  "prefill_step": 256,
+  "apc_memory_gb": 8,
+  "environment": {
+    "chip": "Apple M4 Max",
+    "memory_bytes": 137438953472,
+    "macos": "26.6.2",
+    "python": "3.12.11",
+    "packages": {
+      "mlx": "0.32.2",
+      "mlx-vlm": "0.7.1",
+      "transformers": "5.16.1",
+      "huggingface-hub": "1.30.0"
+    },
+    "swap": "total = 7168.00M  used = 6189.06M  free = 978.94M  (encrypted)"
+  },
+  "items": [
+    {
+      "target_tokens": 32768,
+      "sentences": 829,
+      "hits": {
+        "北門": true,
+        "中庭": true,
+        "南塔": true
+      },
+      "score": 3,
+      "text": "```json\n{\n\"北門\": \"アオサギ-1936\",\n\"中庭\": \"コマドリ-7990\",\n\"南塔\": \"ミサゴ-5556\"\n}\n```",
+      "prompt_tokens": 32767,
+      "generation_tokens": 54,
+      "cached_tokens": 0,
+      "prompt_tps": 296.772525198976,
+      "generation_tps": 17.742385005320088,
+      "finish_reason": "stop",
+      "ttft_s": 112.09547066600499,
+      "elapsed_s": 115.1410572080058,
+      "peak_gb": 113.810292342
+    }
+  ]
+}

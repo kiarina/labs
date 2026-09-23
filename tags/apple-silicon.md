@@ -1,5 +1,6 @@
 # apple-silicon
 
+- 2026/09/24 [Qwen3.8-Flash-Next REAP-288 vs full 4-bit vs Qwen3.8-27B on a 128 GB M4 Max](../2026/09/24/qwen38-flash-next-reap-eval/README.md)
 - 2026/09/23 [Mage-VL streaming gate decisions under bfloat16](../2026/09/23/mage-vl-gate-dtype-flip/README.md)
 - 2026/08/27 [Mage-VL real-time segment latency on Apple Silicon](../2026/08/27/mage-vl-realtime-benchmark/README.md)
 - 2026/08/26 [Does the Mage-VL streaming gate track event times, or content type?](../2026/08/26/mage-vl-gate-event-correlation/README.md)

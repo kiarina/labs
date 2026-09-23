@@ -19,6 +19,7 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 ## Labs
 
 - 2026/09
+  - [Qwen3.8-Flash-Next REAP-288 vs full 4-bit vs Qwen3.8-27B on a 128 GB M4 Max](2026/09/24/qwen38-flash-next-reap-eval/README.md) - [llm](tags/llm.md), [mlx](tags/mlx.md), [qwen3-8](tags/qwen3-8.md), [apple-silicon](tags/apple-silicon.md), [quantization](tags/quantization.md), [pruning](tags/pruning.md), [long-context](tags/long-context.md), [agent](tags/agent.md), [benchmark](tags/benchmark.md)
   - [Mage-VL streaming gate decisions under bfloat16](2026/09/23/mage-vl-gate-dtype-flip/README.md) - [mage-vl](tags/mage-vl.md), [mlx](tags/mlx.md), [apple-silicon](tags/apple-silicon.md), [streaming](tags/streaming.md), [video](tags/video.md), [precision](tags/precision.md)
   - [TypeSafe AI Jev: API behavior, input limits, and multilingual evaluation](2026/09/17/typesafe-jev-evaluation/README.md) - [typesafe](tags/typesafe.md), [jev](tags/jev.md), [llm](tags/llm.md), [classification](tags/classification.md), [long-context](tags/long-context.md), [multilingual](tags/multilingual.md), [tokenizer](tags/tokenizer.md), [api](tags/api.md)
   - [TypeSafe AI Jev for moderation and pre-execution command risk checks](2026/09/17/typesafe-jev-safety-judgment/README.md) - [typesafe](tags/typesafe.md), [jev](tags/jev.md), [moderation](tags/moderation.md), [safety](tags/safety.md), [classification](tags/classification.md), [calibration](tags/calibration.md), [agent](tags/agent.md), [openai](tags/openai.md)

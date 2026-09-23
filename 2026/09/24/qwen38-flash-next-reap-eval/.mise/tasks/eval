@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Evaluate one model: mise run eval <reap288|full4bit|dense27b> [suites]"
+set -euo pipefail
+
+# qwen4_exp memory-maps each n-gram embedding shard; the macOS default of 256 is too low.
+ulimit -n 65536
+
+uv run python eval.py --model "$1" --suites "${2:-ja,needle,agent}" "${@:3}"

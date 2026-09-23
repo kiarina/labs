@@ -1,0 +1,85 @@
+{
+  "model": "dense27b",
+  "repo": "mlx-community/Qwen3.8-27B-4bit",
+  "revision": "10c35caafbb80f7dc6a7a432cdd11af10a6d4818",
+  "suite": "needle",
+  "started": "2026-09-23T20:28:41.017989+00:00",
+  "finished": "2026-09-23T21:20:55.978459+00:00",
+  "load_seconds": 3.0743286249999073,
+  "load_peak_gb": 16.055717352,
+  "environment": {
+    "chip": "Apple M4 Max",
+    "memory_bytes": 137438953472,
+    "macos": "26.6.2",
+    "python": "3.12.11",
+    "packages": {
+      "mlx": "0.32.2",
+      "mlx-vlm": "0.7.1",
+      "transformers": "5.16.1",
+      "huggingface-hub": "1.30.0"
+    },
+    "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)"
+  },
+  "items": [
+    {
+      "target_tokens": 32768,
+      "sentences": 829,
+      "hits": {
+        "北門": true,
+        "中庭": true,
+        "南塔": true
+      },
+      "score": 3,
+      "text": "{\n\"北門\": \"アオサギ-1936\",\n\"中庭\": \"コマドリ-7990\",\n\"南塔\": \"ミサゴ-5556\"\n}",
+      "prompt_tokens": 32767,
+      "generation_tokens": 49,
+      "cached_tokens": 0,
+      "prompt_tps": 217.17180866931105,
+      "generation_tps": 23.59547484541707,
+      "finish_reason": "stop",
+      "ttft_s": 150.89948829200148,
+      "elapsed_s": 152.98264579199895,
+      "peak_gb": 24.506404386
+    },
+    {
+      "target_tokens": 131072,
+      "sentences": 3336,
+      "hits": {
+        "北門": true,
+        "中庭": true,
+        "南塔": true
+      },
+      "score": 3,
+      "text": "{\"北門\": \"アオサギ-1936\", \"中庭\": \"コマドリ-7990\", \"南塔\": \"ミサゴ-5556\"}",
+      "prompt_tokens": 131052,
+      "generation_tokens": 43,
+      "cached_tokens": 0,
+      "prompt_tps": 151.87726578009756,
+      "generation_tps": 17.034906483187562,
+      "finish_reason": "stop",
+      "ttft_s": 862.9672284589979,
+      "elapsed_s": 865.4988755840022,
+      "peak_gb": 41.955765718
+    },
+    {
+      "target_tokens": 240000,
+      "sentences": 6118,
+      "hits": {
+        "北門": true,
+        "中庭": true,
+        "南塔": true
+      },
+      "score": 3,
+      "text": "{\"北門\": \"アオサギ-1936\", \"中庭\": \"コマドリ-7990\", \"南塔\": \"ミサゴ-5556\"}",
+      "prompt_tokens": 239979,
+      "generation_tokens": 43,
+      "cached_tokens": 0,
+      "prompt_tps": 113.65329846861094,
+      "generation_tps": 13.377656762324065,
+      "finish_reason": "stop",
+      "ttft_s": 2111.6592884580023,
+      "elapsed_s": 2114.8839195000037,
+      "peak_gb": 61.684149802
+    }
+  ]
+}
