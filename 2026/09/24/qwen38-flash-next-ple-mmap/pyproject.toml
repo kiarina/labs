@@ -1,0 +1,19 @@
+[project]
+name = "qwen38-flash-next-reap-eval"
+version = "0.1.0"
+description = "Compare Qwen3.8-Flash-Next REAP-288, full 4-bit, and Qwen3.8-27B on Japanese, long-context retrieval, and agentic tasks"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "huggingface-hub==1.30.0",
+    "mlx==0.32.2",
+    "mlx-vlm",
+    "psutil==7.2.2",
+    "transformers==5.16.1",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+# Upstream main after qwen4_exp support (#2032, 2026-08-26); no release contains it yet.
+mlx-vlm = { git = "https://github.com/Blaizzy/mlx-vlm.git", rev = "e79b0e041677ec4ca5333ba750376bb4e8c434cb" }

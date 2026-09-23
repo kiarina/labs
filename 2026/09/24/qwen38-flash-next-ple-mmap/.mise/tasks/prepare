@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Build the memory-mapped PLE view of the full 4-bit checkpoint (hard links, no payload copy)"
+set -euo pipefail
+
+ulimit -n 65536
+uv run python prepare.py
