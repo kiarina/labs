@@ -121,7 +121,10 @@ M1 Max も 4 秒以上で初めて追いつく。frames はどちらの機種で
 
 - parity の主張は float32 に限る。bfloat16 では閾値付近で判定が反転する。実例は
   `cut_event` の時刻 0 で、float32 `0.5022` に対し bfloat16 `0.4977` となり speak が
-  silent へ反転した(Stage 3)
+  silent へ反転した(Stage 3)。**gate だけを float32 にしても防げない。**vision tower の
+  bfloat16 も同程度にずれを生み、bfloat16 model + float32 gate でも codec 228 区間中 4 区間で
+  反転した。反転したのは float32 の値が閾値から 0.023 以内の区間だけだった
+  ([gate-dtype-flip](../2026/09/23/mage-vl-gate-dtype-flip/README.md))
 - gate の参照は `mamba-ssm` の CUDA kernel ではなく pure PyTorch 再実装である
 - codec 前処理は ARM64 Linux container を必要とし、macOS native だけでは完結しない
 
@@ -427,7 +430,9 @@ CUDA 環境が使えるようになった時点で確認する。
   差は mixer ではなく平均プールと PreNet に由来する)
 - **gate の判定は bfloat16 に対して頑健でない。** `p_speak` が 0.5 付近にあるとき、
   bfloat16 の丸めだけで speak / silent が反転する(float32 で 0.5022 の時刻が
-  bfloat16 で 0.4977)。判定の再現性が要る用途では float32 で動かす
+  bfloat16 で 0.4977)。判定の再現性が要る用途では、gate だけでなく vision tower も含めて
+  float32 で動かす(2026-09-23 に
+  [gate-dtype-flip](../2026/09/23/mage-vl-gate-dtype-flip/README.md) で確認)
 - ClsNet の rope_theta は Qwen3Config の既定値 10000 で、本体 decoder の 5e6 と異なる
 
 2026-08-25 に実動画で機能面を確認した

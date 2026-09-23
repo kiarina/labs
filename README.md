@@ -16,19 +16,10 @@ cd labs
 git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{slug}
 ```
 
-## Dependency advisories
-
-Each lab pins exact versions, because those versions are the subject of the record: the
-measurements only mean something for the environment that produced them. When a security
-advisory lands on a pinned dependency, the lab is not silently upgraded. The advisory is
-recorded in that lab's README instead, so anyone reproducing it knows what they are about
-to install. A lab is upgraded only when the artifacts it produces can be shown to be
-byte-identical afterwards, and the README says so. Labs are not deployed and take no untrusted input, so the risk is taken by
-whoever runs them.
-
 ## Labs
 
 - 2026/09
+  - [Mage-VL streaming gate decisions under bfloat16](2026/09/23/mage-vl-gate-dtype-flip/README.md) - [mage-vl](tags/mage-vl.md), [mlx](tags/mlx.md), [apple-silicon](tags/apple-silicon.md), [streaming](tags/streaming.md), [video](tags/video.md), [precision](tags/precision.md)
   - [TypeSafe AI Jev: API behavior, input limits, and multilingual evaluation](2026/09/17/typesafe-jev-evaluation/README.md) - [typesafe](tags/typesafe.md), [jev](tags/jev.md), [llm](tags/llm.md), [classification](tags/classification.md), [long-context](tags/long-context.md), [multilingual](tags/multilingual.md), [tokenizer](tags/tokenizer.md), [api](tags/api.md)
   - [TypeSafe AI Jev for moderation and pre-execution command risk checks](2026/09/17/typesafe-jev-safety-judgment/README.md) - [typesafe](tags/typesafe.md), [jev](tags/jev.md), [moderation](tags/moderation.md), [safety](tags/safety.md), [classification](tags/classification.md), [calibration](tags/calibration.md), [agent](tags/agent.md), [openai](tags/openai.md)
   - [firebase_dart RTDB onDisconnect presence on macOS and Linux](2026/09/16/firebase-dart-rtdb-ondisconnect/README.md) - [dart](tags/dart.md), [firebase](tags/firebase.md), [realtime-database](tags/realtime-database.md), [presence](tags/presence.md), [linux](tags/linux.md)

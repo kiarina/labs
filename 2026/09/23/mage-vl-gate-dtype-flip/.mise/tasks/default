@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+#MISE description="Score every segment under four vision/gate dtype pairs"
+#MISE depends=["setup"]
+set -euo pipefail
+
+PORT_DIR=output/mage-vl-mlx
+WEIGHTS_DIR=${MAGE_VL_WEIGHTS:-$PORT_DIR/weights/mage-vl-bf16}
+A=../../../../tests/assets/mp4
+
+sw_vers > output/sw-vers.txt
+system_profiler SPHardwareDataType | grep -E "Model Name|Chip|Memory" > output/hardware.txt
+VIRTUAL_ENV=$PWD/$PORT_DIR/.venv uv pip freeze > output/pip-freeze.txt
+
+CV_PREINFER_BIN=$PWD/$PORT_DIR/docker/cv-preinfer \
+  "$PORT_DIR/.venv/bin/python" gate_dtype.py \
+    --port-dir "$PORT_DIR" \
+    --weights "$WEIGHTS_DIR" \
+    --video "$A/door_open_768x512_24fps_8s_302kb.mp4" \
+    --video "$A/door_static_768x512_24fps_8s_397kb.mp4" \
+    --video "$A/glass_fall_768x512_24fps_8s_490kb.mp4" \
+    --video "$A/soccer_goal_768x512_24fps_8s_1469kb.mp4" \
+    --video "$A/soccer_idle_768x512_24fps_8s_1422kb.mp4" \
+    --video "$A/ltx2_dialogue_512x512_24fps_7s_355kb.mp4" \
+    --video output/testdata/pan_objects.mp4 \
+    --video output/testdata/street_ocr.mp4 \
+    --video output/testdata/faces_odd.mp4 \
+    --video output/testdata/cut_event.mp4 \
+    --segments 1 2 4 8 \
+    --output output/gate-dtype.json
+
+"$PORT_DIR/.venv/bin/python" summarize.py output/gate-dtype.json

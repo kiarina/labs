@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+#MISE description="Clone the pinned Mage-VL MLX port, prepare weights and test clips"
+set -euo pipefail
+
+PORT_COMMIT=${PORT_COMMIT:-355978b}
+PORT_DIR=output/mage-vl-mlx
+WEIGHTS_DIR=${MAGE_VL_WEIGHTS:-$PORT_DIR/weights/mage-vl-bf16}
+
+mise run //:test-assets:download
+mkdir -p output
+if [ ! -d "$PORT_DIR/.git" ]; then
+  git clone https://github.com/kiarina/mage-vl-mlx.git "$PORT_DIR"
+fi
+git -C "$PORT_DIR" fetch origin
+git -C "$PORT_DIR" checkout --quiet "$PORT_COMMIT"
+uv sync --project "$PORT_DIR" --group fixtures
+
+if [ ! -f "$WEIGHTS_DIR/model.safetensors" ]; then
+  uv run --project "$PORT_DIR" --group fixtures \
+    python "$PORT_DIR/scripts/convert_weights.py" --out "$WEIGHTS_DIR"
+fi
+if [ ! -f "$WEIGHTS_DIR/streammind_gate.safetensors" ]; then
+  uv run --project "$PORT_DIR" --group fixtures \
+    python "$PORT_DIR/scripts/convert_gate_weights.py" --out "$WEIGHTS_DIR"
+fi
+
+# Build only when the image is missing; see the realtime lab for why.
+if ! docker image inspect mage-cvprep:0.2.5 > /dev/null 2>&1; then
+  docker build --platform linux/arm64 -t mage-cvprep:0.2.5 \
+    -f "$PORT_DIR/docker/Dockerfile.cvprep" "$PORT_DIR/docker"
+fi
+
+# The four synthetic clips of Stage 2/3, including cut_event, regenerated
+# deterministically from the shared JPEGs into output/testdata/.
+(cd output && "$PWD/mage-vl-mlx/scripts/make_testdata.sh" "$PWD/../../../../../tests/assets/jpg")
