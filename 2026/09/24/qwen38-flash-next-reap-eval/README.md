@@ -103,8 +103,9 @@ build but has no failure mode like REAP-288's.
 - Qwen3.8-27B missed 面積最小の都道府県 (answered 鳥取県) and the hiragana
   reading of 東京特許許可局 (とうきゅうとっきょきょく).
 - REAP-288 got one knowledge item right (平成). Typical answers: 三重県の県庁所在地
-  → 「不存在」, 兼六園 → 「日本」, 予算の先議権 → 「下院」, and a claim in Chinese
-  that the poem 春暁 does not exist. The same prompts to the full 4-bit build
+  → 「不存在」, 兼六園 → 「日本」, and a claim in Chinese that the poem 春暁 does
+  not exist. (Its 予算の先議権 → 「下院」 fails the check, which wants 衆議院, but
+  下院 means the same house; counted by meaning, knowledge is 2/16.) The same prompts to the full 4-bit build
   in the same runtime were answered correctly, so this is the pruning, not the
   runtime. Before the suite, English and Chinese spot checks on REAP-288 also
   failed (it called the longest river in Japan the "Jangwan River" and said
