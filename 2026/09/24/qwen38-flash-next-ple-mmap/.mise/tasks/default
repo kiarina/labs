@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#MISE description="Run unit tests (the evaluation itself needs about 200 GB of weights; see README)"
+#MISE description="Run unit tests (the evaluation needs the 112 GB full 4-bit weights; see README)"
 set -euo pipefail
 
 uv run python -m unittest -v test_eval.py
