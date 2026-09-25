@@ -157,6 +157,9 @@ mise run macos-autorun  # macOS の実カメラ・マイクで 4 条件を実行
 
 ## 未確認の事項と制約
 
+- 送信先の無いマイクが macOS・iOS・Windows で取れない点を避けるため、`record` と `camera` でカメラとマイクを常時取る構成を
+  [後続の lab](../../26/flutter-record-camera-senses/README.md) で確かめました
+
 - 各条件 1 回ずつ、10 秒の計測です。ばらつきは測っていません。Pixel Fold の fps（25〜29）は部屋の明るさで変わった可能性があります
 - iOS / macOS の内蔵カメラは 640×480 しか出していません。1280×720 以上のカメラでの変換コストは未確認です
 - Android は Pixel Fold の 1 台だけ、iOS は iPad の 1 台だけ、Web は Chrome だけです（Safari は MediaStreamTrackProcessor を

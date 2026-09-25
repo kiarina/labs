@@ -353,7 +353,9 @@ mise run signaling       # 2 台構成用の signaling relay（ポート 8787）
 
 - **Phase 2（生の映像フレームと音声 PCM）は扱っていません。** 今回の Local の観測は stats 経由なので、フレームの
   中身はまったく見ていません。上の probe の観測から、ローカルの映像を実際に処理するなら、stats ではなく
-  プラットフォームごとのフレームの取り出し口が必要だと考えています
+  プラットフォームごとのフレームの取り出し口が必要だと考えています（後続の [flutter_webrtc media taps](../flutter-webrtc-media-taps/README.md) で、
+  別の plugin から sink をつなぐ方法を 5 つのプラットフォームで確かめました。flutter_webrtc を使わずにカメラとマイクを常時取る方法は
+  [record + camera の lab](../../26/flutter-record-camera-senses/README.md)）
 - Android の実機は Pixel Fold（Android 17）の 1 台だけです。iPhone は試していません
 - Web は Chrome の fake device だけです。Safari と Firefox、実カメラのブラウザは試していません
 - カメラとマイクの切り替え（デバイス選択）、`Mute Mic` / `Disable Camera`、アプリのバックグラウンド化と復帰は、
