@@ -1,0 +1,123 @@
+{
+    "platform": "ios",
+    "config": {
+        "scenario": "audio-loopback",
+        "seconds": 12,
+        "convertWidth": 320,
+        "deliver": true,
+        "startRecording": true
+    },
+    "taps": [
+        {
+            "name": "local-video",
+            "attachError": null,
+            "windowSeconds": 10.029886,
+            "callbacksPerSecond": 59.920920337479416,
+            "width": 640,
+            "height": 480,
+            "rotation": 90,
+            "bufferType": "cvpixelbuffer-420v",
+            "sampleRate": null,
+            "channels": null,
+            "framesPerChunk": null,
+            "bitsPerSample": null,
+            "convertAvgUs": 176.32445923460898,
+            "convertMaxUs": 404,
+            "droppedToDart": null,
+            "nativeRmsAvg": null,
+            "dartFramesPerSecond": 60.31972845952586,
+            "dartBytesPerSecond": 4632555.145691587,
+            "dartSamplesPerSecond": 0.0,
+            "dartLumaMean": 106.60185332730725,
+            "dartRms": null,
+            "lastCounters": {
+                "convertCount": 722,
+                "convertUsTotal": 126510,
+                "convertUsMax": 404,
+                "height": 480,
+                "width": 640,
+                "rotation": 90,
+                "bufferType": "cvpixelbuffer-420v",
+                "callbacks": 722
+            }
+        },
+        {
+            "name": "local-audio",
+            "attachError": null,
+            "windowSeconds": 10.029886,
+            "callbacksPerSecond": 100.00113660314784,
+            "width": null,
+            "height": null,
+            "rotation": null,
+            "bufferType": null,
+            "sampleRate": 48000,
+            "channels": 1,
+            "framesPerChunk": 480,
+            "bitsPerSample": 16,
+            "convertAvgUs": null,
+            "convertMaxUs": null,
+            "droppedToDart": null,
+            "nativeRmsAvg": 0.004990623873706092,
+            "dartFramesPerSecond": 0.0,
+            "dartBytesPerSecond": 96479.66088547767,
+            "dartSamplesPerSecond": 48239.830442738836,
+            "dartLumaMean": null,
+            "dartRms": 0.004863296374273549,
+            "lastCounters": {
+                "rms": 0.0013579663607165534,
+                "channels": 1,
+                "callbacks": 1203,
+                "bitsPerSample": 16,
+                "sampleRate": 48000,
+                "framesPerChunk": 480
+            }
+        },
+        {
+            "name": "remote-audio",
+            "attachError": null,
+            "windowSeconds": 10.029886,
+            "callbacksPerSecond": 100.00113660314784,
+            "width": null,
+            "height": null,
+            "rotation": null,
+            "bufferType": null,
+            "sampleRate": 48000,
+            "channels": 1,
+            "framesPerChunk": 480,
+            "bitsPerSample": 16,
+            "convertAvgUs": null,
+            "convertMaxUs": null,
+            "droppedToDart": null,
+            "nativeRmsAvg": 0.003661036563243122,
+            "dartFramesPerSecond": 0.0,
+            "dartBytesPerSecond": 96479.66088547767,
+            "dartSamplesPerSecond": 48239.830442738836,
+            "dartLumaMean": null,
+            "dartRms": 0.003874743174140006,
+            "lastCounters": {
+                "sampleRate": 48000,
+                "callbacks": 1203,
+                "bitsPerSample": 16,
+                "rms": 0.001022440397620392,
+                "framesPerChunk": 480,
+                "channels": 1
+            }
+        }
+    ],
+    "poll": {
+        "count": 182,
+        "roundTripP50Us": 614,
+        "roundTripP95Us": 1158,
+        "roundTripMaxUs": 2867,
+        "dartWorkP50Us": 2231,
+        "dartWorkP95Us": 3941,
+        "dartWorkMaxUs": 6416
+    },
+    "notes": [
+        "startLocalRecording: ok"
+    ],
+    "renderer": {
+        "local": "640x480",
+        "remote": "0x0"
+    }
+}

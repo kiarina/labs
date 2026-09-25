@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#MISE description="Build the macOS app and run the scenarios with the real camera/mic; writes results/macos-*.json"
+# The first run shows the macOS camera and microphone permission prompts.
+set -euo pipefail
+
+SECONDS_PER_RUN=${SECONDS_PER_RUN:-12}
+(cd app && flutter build macos --release)
+APP=app/build/macos/Build/Products/Release/media_taps_app.app
+mkdir -p results build
+
+for run in local:320:local loopback:320:loopback audio-loopback:320:audio-loopback loopback:-1:loopback-full; do
+  IFS=: read -r scenario convert name <<< "$run"
+  log=build/macos-$name.log
+  rm -f "$log"
+  timeout $((SECONDS_PER_RUN + 120)) open -W -n \
+    --env TAPS_SCENARIO="$scenario" --env TAPS_CONVERT="$convert" \
+    --env TAPS_SECONDS="$SECONDS_PER_RUN" --env TAPS_EXIT=true \
+    --stdout "$log" --stderr "$log" "$APP" || true
+  grep -m1 TAPS_RESULT "$log" | sed 's/^.*TAPS_RESULT //' |
+    python3 -m json.tool > "results/macos-$name.json" || true
+  echo "results/macos-$name.json"
+done

@@ -1,6 +1,7 @@
 # streaming
 
 - 2026/09/25 [Flutter realtime media pipeline: one Pure Dart pipeline over WebRTC and local capture](../2026/09/25/flutter-realtime-media-pipeline/README.md)
+- 2026/09/25 [Tapping video frames and audio PCM from flutter_webrtc tracks on five platforms](../2026/09/25/flutter-webrtc-media-taps/README.md)
 - 2026/09/23 [Mage-VL streaming gate decisions under bfloat16](../2026/09/23/mage-vl-gate-dtype-flip/README.md)
 - 2026/08/27 [Mage-VL real-time segment latency on Apple Silicon](../2026/08/27/mage-vl-realtime-benchmark/README.md)
 - 2026/08/26 [Does the Mage-VL streaming gate track event times, or content type?](../2026/08/26/mage-vl-gate-event-correlation/README.md)

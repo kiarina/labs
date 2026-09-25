@@ -1,0 +1,87 @@
+{
+    "platform": "macos",
+    "config": {
+        "scenario": "local",
+        "seconds": 12,
+        "convertWidth": 320,
+        "deliver": true,
+        "startRecording": true
+    },
+    "taps": [
+        {
+            "name": "local-video",
+            "attachError": null,
+            "windowSeconds": 9.995968,
+            "callbacksPerSecond": 26.010487428531185,
+            "width": 640,
+            "height": 480,
+            "rotation": 0,
+            "bufferType": "cvpixelbuffer-420v",
+            "sampleRate": null,
+            "channels": null,
+            "framesPerChunk": null,
+            "bitsPerSample": null,
+            "convertAvgUs": 194.32692307692307,
+            "convertMaxUs": 2666,
+            "droppedToDart": null,
+            "nativeRmsAvg": null,
+            "dartFramesPerSecond": 26.110527764794767,
+            "dartBytesPerSecond": 2005288.532336238,
+            "dartSamplesPerSecond": 0.0,
+            "dartLumaMean": 114.28432301644321,
+            "dartRms": null,
+            "lastCounters": {
+                "rotation": 0,
+                "convertUsTotal": 59292,
+                "width": 640,
+                "convertUsMax": 2666,
+                "convertCount": 312,
+                "bufferType": "cvpixelbuffer-420v",
+                "callbacks": 312,
+                "height": 480
+            }
+        },
+        {
+            "name": "local-audio",
+            "attachError": null,
+            "windowSeconds": 9.995968,
+            "callbacksPerSecond": null,
+            "width": null,
+            "height": null,
+            "rotation": null,
+            "bufferType": null,
+            "sampleRate": null,
+            "channels": null,
+            "framesPerChunk": null,
+            "bitsPerSample": null,
+            "convertAvgUs": null,
+            "convertMaxUs": null,
+            "droppedToDart": null,
+            "nativeRmsAvg": null,
+            "dartFramesPerSecond": 0.0,
+            "dartBytesPerSecond": 0.0,
+            "dartSamplesPerSecond": 0.0,
+            "dartLumaMean": null,
+            "dartRms": null,
+            "lastCounters": {
+                "rms": null
+            }
+        }
+    ],
+    "poll": {
+        "count": 186,
+        "roundTripP50Us": 466,
+        "roundTripP95Us": 701,
+        "roundTripMaxUs": 1241,
+        "dartWorkP50Us": 816,
+        "dartWorkP95Us": 1420,
+        "dartWorkMaxUs": 1864
+    },
+    "notes": [
+        "startLocalRecording: ok"
+    ],
+    "renderer": {
+        "local": "640x480",
+        "remote": "0x0"
+    }
+}
