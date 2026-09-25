@@ -1,0 +1,118 @@
+{
+  "note": "macOS: time from starting record + camera after a GPT-Live session to the first audio chunk / camera frame (A2 lasts 4 s; null = nothing within 4 s)",
+  "runs": [
+    {
+      "condition": "none",
+      "file": "live-mac.json",
+      "audioMs": 16059,
+      "frameMs": null,
+      "errors": [
+        "camera: CameraException(initialization_timeout, Camera initialization timed out, no frames received)"
+      ]
+    },
+    {
+      "condition": "none",
+      "file": "live-mac2.json",
+      "audioMs": 15569,
+      "frameMs": null,
+      "errors": [
+        "camera: CameraException(initialization_timeout, Camera initialization timed out, no frames received)"
+      ]
+    },
+    {
+      "condition": "none",
+      "file": "live-mac3.json",
+      "audioMs": 354,
+      "frameMs": 396,
+      "errors": []
+    },
+    {
+      "condition": "none",
+      "file": "live-mac-human.json",
+      "audioMs": 375,
+      "frameMs": 396,
+      "errors": []
+    },
+    {
+      "condition": "none",
+      "file": "live-mac-rep1.json",
+      "audioMs": 353,
+      "frameMs": 374,
+      "errors": []
+    },
+    {
+      "condition": "none",
+      "file": "live-mac-rep2.json",
+      "audioMs": 352,
+      "frameMs": 374,
+      "errors": []
+    },
+    {
+      "condition": "none",
+      "file": "live-mac-rep3.json",
+      "audioMs": 16081,
+      "frameMs": null,
+      "errors": [
+        "camera: CameraException(initialization_timeout, Camera initialization timed out, no frames received)"
+      ]
+    },
+    {
+      "condition": "settle 1500 ms",
+      "file": "live-mac-settle1.json",
+      "audioMs": null,
+      "frameMs": 1379,
+      "errors": []
+    },
+    {
+      "condition": "settle 1500 ms",
+      "file": "live-mac-settle2.json",
+      "audioMs": 267,
+      "frameMs": 288,
+      "errors": []
+    },
+    {
+      "condition": "settle 1500 ms",
+      "file": "live-mac-settle3.json",
+      "audioMs": 1366,
+      "frameMs": 1388,
+      "errors": []
+    },
+    {
+      "condition": "settle 1500 ms",
+      "file": "live-mac-settle4.json",
+      "audioMs": null,
+      "frameMs": 313,
+      "errors": []
+    },
+    {
+      "condition": "stopLocalRecording",
+      "file": "live-mac-adm1.json",
+      "audioMs": 16070,
+      "frameMs": null,
+      "errors": [
+        "camera: CameraException(initialization_timeout, Camera initialization timed out, no frames received)"
+      ]
+    },
+    {
+      "condition": "stopLocalRecording",
+      "file": "live-mac-adm2.json",
+      "audioMs": 513,
+      "frameMs": 427,
+      "errors": []
+    },
+    {
+      "condition": "stopLocalRecording",
+      "file": "live-mac-adm3.json",
+      "audioMs": 322,
+      "frameMs": 345,
+      "errors": []
+    },
+    {
+      "condition": "stopLocalRecording",
+      "file": "live-mac-adm4.json",
+      "audioMs": 593,
+      "frameMs": 445,
+      "errors": []
+    }
+  ]
+}

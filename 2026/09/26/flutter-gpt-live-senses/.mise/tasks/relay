@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Run the SDP relay with OPENAI_API_KEY (reads it from the environment, or from OPENAI_ENV_FILE)"
+set -euo pipefail
+
+if [ -z "${OPENAI_API_KEY:-}" ] && [ -n "${OPENAI_ENV_FILE:-}" ]; then
+  OPENAI_API_KEY=$(grep '^OPENAI_API_KEY=' "$OPENAI_ENV_FILE" | head -1 | cut -d= -f2- | tr -d '"')
+  export OPENAI_API_KEY
+fi
+cd relay
+dart pub get >/dev/null
+dart run bin/relay.dart "$@"

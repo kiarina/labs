@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#MISE description="Build the macOS app and run idle -> conversation -> idle once against a running relay; writes results/macos-run.json"
+# Start the relay first in another terminal: `mise run relay` (needs OPENAI_API_KEY).
+# The model speaks through the speaker. SECONDS_PER_RUN sets the conversation length.
+set -euo pipefail
+
+(cd app && flutter build macos --release)
+mkdir -p results build
+log=build/macos-run.log
+rm -f "$log"
+timeout 300 open -W -n --env LIVE_SECONDS="${SECONDS_PER_RUN:-30}" --env LIVE_EXIT=true \
+  --env LIVE_SETTLE="${SETTLE_MS:-0}" --env LIVE_RELEASE="${RELEASE:-}" \
+  --stdout "$log" --stderr "$log" app/build/macos/Build/Products/Release/gpt_live_app.app || true
+grep -m1 LIVE_RESULT "$log" | sed 's/^.*LIVE_RESULT //' |
+  python3 -m json.tool --no-ensure-ascii > results/macos-run.json
+echo results/macos-run.json

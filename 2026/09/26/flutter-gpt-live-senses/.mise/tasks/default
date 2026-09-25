@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#MISE description="Analyze the relay, the plugin and the app"
+set -euo pipefail
+
+(cd relay && dart pub get >/dev/null && dart analyze)
+(cd media_taps && flutter pub get >/dev/null && flutter analyze)
+cd app
+flutter pub get >/dev/null
+flutter analyze

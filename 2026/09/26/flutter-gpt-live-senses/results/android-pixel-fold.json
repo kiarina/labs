@@ -1,0 +1,757 @@
+{
+  "platform": "android",
+  "config": {
+    "relay": "http://<lan-ip>:8788/session",
+    "conversationSeconds": 30
+  },
+  "idleBefore": {
+    "startAt": 419,
+    "firstAudioAt": 826,
+    "firstFrameAt": 2158,
+    "stopAt": 5802,
+    "stoppedAt": 5910,
+    "audio": {
+      "requested": {
+        "sampleRate": 16000,
+        "channels": 1,
+        "echoCancel": false,
+        "noiseSuppress": false,
+        "autoGain": false,
+        "androidSource": "defaultSource"
+      },
+      "chunks": 126,
+      "samples": 80640,
+      "samplesPerSecond": 16126.422835846653,
+      "chunksPerSecond": 25.197535681010397,
+      "firstChunkMs": 335,
+      "maxGapMs": 118.751,
+      "chunkBytes": [
+        1280
+      ],
+      "oddByteChunks": 0
+    },
+    "camera": {
+      "camera": "1",
+      "preset": "high",
+      "frames": 110,
+      "fps": 29.179275326004785,
+      "width": 1280,
+      "height": 720,
+      "format": "yuv420",
+      "planes": 3,
+      "firstFrameMs": 1733,
+      "maxGapMs": 116.15,
+      "converted": 17,
+      "convertedPerSecond": 4.550896151762214,
+      "convertP50Ms": 0.817,
+      "convertP95Ms": 1.362,
+      "convertMaxMs": 1.376,
+      "rgbGreenMean": 119.74508680555556
+    },
+    "errors": []
+  },
+  "conversation": {
+    "startAt": 5911,
+    "marks": {
+      "startCalled": 5911,
+      "getUserMedia": 6184,
+      "offer": 6448,
+      "answer": 7550,
+      "remoteTrack": 7667,
+      "connected": 8059,
+      "sessionStarted": 8376,
+      "firstOutputTranscript": 10137,
+      "closeCalled": 39877,
+      "sessionClosed": 40629,
+      "closed": 40760
+    },
+    "taps": {
+      "firstTapAudioAt": 9984,
+      "firstTapFrameAt": 9986,
+      "samples": 1482240,
+      "framesToDart": 864,
+      "audioCounters": {
+        "bitsPerSample": 16,
+        "channels": 1,
+        "droppedToDart": 132,
+        "callbacks": 3220,
+        "rms": 4.494440854248387e-05,
+        "sampleRate": 48000,
+        "framesPerChunk": 480
+      },
+      "videoCounters": {
+        "convertUsTotal": 2713324,
+        "bufferType": "texture-oes",
+        "convertCount": 923,
+        "droppedToDart": 59,
+        "rotation": 270,
+        "width": 1280,
+        "callbacks": 923,
+        "convertUsMax": 10625,
+        "height": 720
+      },
+      "micLevelTimeline": [
+        [
+          10404,
+          0.0002
+        ],
+        [
+          10922,
+          5e-05
+        ],
+        [
+          11441,
+          5e-05
+        ],
+        [
+          11959,
+          5e-05
+        ],
+        [
+          12479,
+          5e-05
+        ],
+        [
+          12998,
+          5e-05
+        ],
+        [
+          13517,
+          5e-05
+        ],
+        [
+          14038,
+          4e-05
+        ],
+        [
+          14557,
+          5e-05
+        ],
+        [
+          15076,
+          5e-05
+        ],
+        [
+          15595,
+          5e-05
+        ],
+        [
+          16115,
+          4e-05
+        ],
+        [
+          16634,
+          0.05386
+        ],
+        [
+          17148,
+          0.06537
+        ],
+        [
+          17668,
+          0.05924
+        ],
+        [
+          18184,
+          0.14491
+        ],
+        [
+          18703,
+          0.06433
+        ],
+        [
+          19220,
+          0.00038
+        ],
+        [
+          19743,
+          5e-05
+        ],
+        [
+          20262,
+          4e-05
+        ],
+        [
+          20783,
+          5e-05
+        ],
+        [
+          21306,
+          5e-05
+        ],
+        [
+          21824,
+          5e-05
+        ],
+        [
+          22343,
+          4e-05
+        ],
+        [
+          22862,
+          5e-05
+        ],
+        [
+          23382,
+          5e-05
+        ],
+        [
+          23902,
+          5e-05
+        ],
+        [
+          24418,
+          4e-05
+        ],
+        [
+          24931,
+          5e-05
+        ],
+        [
+          25448,
+          5e-05
+        ],
+        [
+          25966,
+          5e-05
+        ],
+        [
+          26485,
+          4e-05
+        ],
+        [
+          27004,
+          5e-05
+        ],
+        [
+          27523,
+          6e-05
+        ],
+        [
+          28042,
+          0.0271
+        ],
+        [
+          28561,
+          0.13251
+        ],
+        [
+          29078,
+          0.02649
+        ],
+        [
+          29593,
+          5e-05
+        ],
+        [
+          30111,
+          0.10589
+        ],
+        [
+          30631,
+          0.11237
+        ],
+        [
+          31153,
+          0.05908
+        ],
+        [
+          31672,
+          0.07699
+        ],
+        [
+          32193,
+          5e-05
+        ],
+        [
+          32712,
+          4e-05
+        ],
+        [
+          33231,
+          5e-05
+        ],
+        [
+          33751,
+          5e-05
+        ],
+        [
+          34271,
+          0.00038
+        ],
+        [
+          34788,
+          0.07739
+        ],
+        [
+          35304,
+          0.02271
+        ],
+        [
+          35824,
+          5e-05
+        ],
+        [
+          36343,
+          5e-05
+        ],
+        [
+          36863,
+          4e-05
+        ],
+        [
+          37383,
+          5e-05
+        ],
+        [
+          37903,
+          5e-05
+        ],
+        [
+          38422,
+          5e-05
+        ],
+        [
+          38943,
+          5e-05
+        ],
+        [
+          39463,
+          5e-05
+        ]
+      ],
+      "remoteCounters": {
+        "bitsPerSample": 16,
+        "channels": 1,
+        "droppedToDart": 122,
+        "callbacks": 3211,
+        "rms": 0.026058564490414,
+        "sampleRate": 48000,
+        "framesPerChunk": 480
+      },
+      "remoteLevelTimeline": [
+        [
+          10404,
+          0.03212
+        ],
+        [
+          10922,
+          0.05078
+        ],
+        [
+          11441,
+          0.08357
+        ],
+        [
+          11959,
+          0.06497
+        ],
+        [
+          12479,
+          0.04067
+        ],
+        [
+          12998,
+          0.06526
+        ],
+        [
+          13517,
+          0.03152
+        ],
+        [
+          14038,
+          0.09707
+        ],
+        [
+          14557,
+          0.07524
+        ],
+        [
+          15076,
+          0.0392
+        ],
+        [
+          15595,
+          5e-05
+        ],
+        [
+          16115,
+          0.0
+        ],
+        [
+          16634,
+          0.0
+        ],
+        [
+          17148,
+          0.0
+        ],
+        [
+          17668,
+          0.0
+        ],
+        [
+          18184,
+          0.0
+        ],
+        [
+          18704,
+          0.0
+        ],
+        [
+          19220,
+          0.0
+        ],
+        [
+          19743,
+          0.0
+        ],
+        [
+          20262,
+          0.0
+        ],
+        [
+          20783,
+          0.0
+        ],
+        [
+          21306,
+          1e-05
+        ],
+        [
+          21824,
+          0.04639
+        ],
+        [
+          22343,
+          0.05452
+        ],
+        [
+          22862,
+          0.05836
+        ],
+        [
+          23382,
+          0.09051
+        ],
+        [
+          23902,
+          0.04307
+        ],
+        [
+          24418,
+          0.01712
+        ],
+        [
+          24931,
+          0.05996
+        ],
+        [
+          25448,
+          0.05236
+        ],
+        [
+          25966,
+          0.04361
+        ],
+        [
+          26485,
+          0.02893
+        ],
+        [
+          27004,
+          0.0001
+        ],
+        [
+          27523,
+          0.0
+        ],
+        [
+          28042,
+          0.0
+        ],
+        [
+          28561,
+          0.0
+        ],
+        [
+          29078,
+          0.0
+        ],
+        [
+          29593,
+          0.0
+        ],
+        [
+          30111,
+          0.0
+        ],
+        [
+          30631,
+          0.0
+        ],
+        [
+          31153,
+          0.0
+        ],
+        [
+          31672,
+          0.0
+        ],
+        [
+          32193,
+          0.0
+        ],
+        [
+          32712,
+          1e-05
+        ],
+        [
+          33231,
+          0.02186
+        ],
+        [
+          33751,
+          1e-05
+        ],
+        [
+          34271,
+          0.0
+        ],
+        [
+          34788,
+          0.0
+        ],
+        [
+          35304,
+          0.0
+        ],
+        [
+          35824,
+          0.0
+        ],
+        [
+          36343,
+          0.0
+        ],
+        [
+          36863,
+          0.0
+        ],
+        [
+          37383,
+          0.0
+        ],
+        [
+          37903,
+          0.03931
+        ],
+        [
+          38422,
+          0.05362
+        ],
+        [
+          38943,
+          0.03432
+        ],
+        [
+          39463,
+          0.08693
+        ]
+      ]
+    },
+    "outputTranscript": "(redacted: a person spoke in this run; 92 chars)",
+    "inputTranscript": "(redacted: a person spoke in this run; 31 chars)",
+    "mentionsMug": true,
+    "labEvents": [],
+    "eventCounts": {
+      "session.started": 1,
+      "session.thinking.append": 1,
+      "session.instructions.append": 1,
+      "session.thinking.appended": 1,
+      "session.instructions.appended": 1,
+      "session.commentary.append": 1,
+      "session.output_transcript.delta": 53,
+      "session.commentary.appended": 1,
+      "session.input_transcript.delta": 20,
+      "session.usage.updated": 2,
+      "session.close": 1,
+      "session.closed": 1
+    },
+    "contextAcks": [
+      {
+        "type": "session.thinking.appended",
+        "start_ms": 600,
+        "end_ms": 800,
+        "event_id": "event_ES89Y5d4nmnVzbmMAXkzq",
+        "client_event_id": "lab_1"
+      },
+      {
+        "type": "session.instructions.appended",
+        "start_ms": 600,
+        "end_ms": 800,
+        "event_id": "event_ES89YnscbSefp0rVucOUt",
+        "client_event_id": "lab_2"
+      },
+      {
+        "type": "session.commentary.appended",
+        "start_ms": 1600,
+        "end_ms": 1800,
+        "event_id": "event_ES89Zp3hq3GUnCOugrjSu",
+        "client_event_id": "lab_3"
+      }
+    ],
+    "errors": [],
+    "closedEvent": [
+      {
+        "event_id": "event_ES8A37xh2LVm8ur6JSOvw",
+        "type": "session.closed",
+        "reason": "close_requested",
+        "session": {
+          "id": "live_u7_ES89Wp3oMyHuw0MjCjUs4debbpISpBKh",
+          "expires_at": 1790380430,
+          "model": "gpt-live-1",
+          "instructions": "あなたは実験用の音声アシスタントです。日本語で、短く自然に話してください。\n相手の話を遮らず、相槌は控えめにしてください。\n",
+          "audio": {
+            "output": {
+              "voice": "marin"
+            }
+          },
+          "delegation": {
+            "type": "client"
+          },
+          "status": "active",
+          "input": []
+        },
+        "usage": {
+          "seconds": 31.0
+        },
+        "client_event_id": "lab_4"
+      }
+    ],
+    "outputTranscriptTimes": [
+      10137,
+      10434,
+      10647,
+      10846,
+      11037,
+      11299,
+      11426,
+      11851,
+      12246,
+      12445,
+      12637,
+      12856,
+      13367,
+      13485,
+      13611,
+      14144,
+      14154,
+      14363,
+      21053,
+      21244,
+      21450,
+      21654,
+      21841,
+      22032,
+      22243,
+      22460,
+      22668,
+      22873,
+      23024,
+      23439,
+      23649,
+      23835,
+      24049,
+      24240,
+      24445,
+      24631,
+      24847,
+      25040,
+      25221,
+      25625,
+      32654,
+      32824,
+      37418,
+      37851,
+      38023,
+      38448,
+      38654,
+      38845,
+      39050,
+      39237,
+      39505,
+      39684,
+      39798
+    ],
+    "inputTranscriptTimes": [
+      17924,
+      18752,
+      18973,
+      19192,
+      19353,
+      19505,
+      28752,
+      28908,
+      29708,
+      30948,
+      31150,
+      31346,
+      31689,
+      31820,
+      31908,
+      32653,
+      35358,
+      35552,
+      35742,
+      35930
+    ],
+    "humanSpoke": true
+  },
+  "idleAfter": {
+    "startAt": 40760,
+    "firstAudioAt": 41002,
+    "firstFrameAt": 40960,
+    "stopAt": 44913,
+    "stoppedAt": 44996,
+    "audio": {
+      "requested": {
+        "sampleRate": 16000,
+        "channels": 1,
+        "echoCancel": false,
+        "noiseSuppress": false,
+        "autoGain": false,
+        "androidSource": "defaultSource"
+      },
+      "chunks": 100,
+      "samples": 64000,
+      "samplesPerSecond": 16156.765052109353,
+      "chunksPerSecond": 25.244945393920865,
+      "firstChunkMs": 223,
+      "maxGapMs": 87.812,
+      "chunkBytes": [
+        1280
+      ],
+      "oddByteChunks": 0
+    },
+    "camera": {
+      "camera": "1",
+      "preset": "high",
+      "frames": 115,
+      "fps": 28.330378938699273,
+      "width": 1280,
+      "height": 720,
+      "format": "yuv420",
+      "planes": 3,
+      "firstFrameMs": 186,
+      "maxGapMs": 96.786,
+      "converted": 19,
+      "convertedPerSecond": 4.721729823116545,
+      "convertP50Ms": 0.857,
+      "convertP95Ms": 1.378,
+      "convertMaxMs": 1.454,
+      "rgbGreenMean": 88.2337673611111
+    },
+    "errors": []
+  }
+}

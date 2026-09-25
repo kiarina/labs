@@ -1,0 +1,869 @@
+{
+  "platform": "macOS",
+  "config": {
+    "relay": "http://127.0.0.1:8788/session",
+    "conversationSeconds": 40
+  },
+  "idleBefore": {
+    "startAt": 55,
+    "firstAudioAt": 1520,
+    "firstFrameAt": 1563,
+    "stopAt": 6503,
+    "stoppedAt": 6639,
+    "audio": {
+      "requested": {
+        "sampleRate": 16000,
+        "channels": 1,
+        "echoCancel": false,
+        "noiseSuppress": false,
+        "autoGain": false,
+        "androidSource": "defaultSource"
+      },
+      "chunks": 63,
+      "samples": 100554,
+      "samplesPerSecond": 16221.859097906921,
+      "chunksPerSecond": 10.16346563207964,
+      "firstChunkMs": 236,
+      "maxGapMs": 107.593,
+      "chunkBytes": [
+        2708,
+        3200
+      ],
+      "oddByteChunks": 0
+    },
+    "camera": {
+      "camera": "FaceTime HDカメラ (47B4B64B-7067-4B9C-AD2B-AE273A71F4B5)",
+      "preset": "high",
+      "frames": 151,
+      "fps": 30.247247046810035,
+      "width": 1280,
+      "height": 720,
+      "format": "bgra8888",
+      "planes": 1,
+      "firstFrameMs": 1487,
+      "maxGapMs": 49.277,
+      "converted": 23,
+      "convertedPerSecond": 4.637911213844205,
+      "convertP50Ms": 0.319,
+      "convertP95Ms": 0.73,
+      "convertMaxMs": 0.804,
+      "rgbGreenMean": 141.4765625
+    },
+    "errors": []
+  },
+  "conversation": {
+    "startAt": 6639,
+    "marks": {
+      "startCalled": 6639,
+      "getUserMedia": 6641,
+      "offer": 6757,
+      "answer": 7009,
+      "remoteTrack": 7130,
+      "connected": 7700,
+      "sessionStarted": 8025,
+      "firstOutputTranscript": 10326,
+      "closeCalled": 49559,
+      "sessionClosed": 50385,
+      "closed": 50744
+    },
+    "taps": {
+      "firstTapAudioAt": 9631,
+      "firstTapFrameAt": 9631,
+      "samples": 1952640,
+      "framesToDart": 1203,
+      "audioCounters": {
+        "channels": 1,
+        "rms": 3.98432134908366e-06,
+        "sampleRate": 48000,
+        "callbacks": 4068,
+        "framesPerChunk": 480,
+        "bitsPerSample": 16
+      },
+      "videoCounters": {
+        "convertUsMax": 6040,
+        "height": 720,
+        "droppedToDart": 68,
+        "convertCount": 1271,
+        "bufferType": "cvpixelbuffer-420v",
+        "rotation": 0,
+        "callbacks": 1271,
+        "width": 1280,
+        "convertUsTotal": 774352
+      },
+      "micLevelTimeline": [
+        [
+          10048,
+          0.00547
+        ],
+        [
+          10568,
+          0.00344
+        ],
+        [
+          11086,
+          0.00038
+        ],
+        [
+          11605,
+          0.00533
+        ],
+        [
+          12135,
+          0.00555
+        ],
+        [
+          12660,
+          0.00358
+        ],
+        [
+          13171,
+          0.00242
+        ],
+        [
+          13690,
+          0.04317
+        ],
+        [
+          14210,
+          0.01252
+        ],
+        [
+          14729,
+          0.0
+        ],
+        [
+          15249,
+          0.0
+        ],
+        [
+          15763,
+          0.0
+        ],
+        [
+          16282,
+          0.0
+        ],
+        [
+          16801,
+          0.0021
+        ],
+        [
+          17326,
+          0.00401
+        ],
+        [
+          17846,
+          0.00433
+        ],
+        [
+          18368,
+          0.00393
+        ],
+        [
+          18887,
+          0.00389
+        ],
+        [
+          19402,
+          0.00399
+        ],
+        [
+          19918,
+          0.00347
+        ],
+        [
+          20431,
+          0.00342
+        ],
+        [
+          20945,
+          0.00332
+        ],
+        [
+          21462,
+          0.00363
+        ],
+        [
+          21975,
+          0.00351
+        ],
+        [
+          22494,
+          0.00367
+        ],
+        [
+          23016,
+          0.00332
+        ],
+        [
+          23534,
+          0.00364
+        ],
+        [
+          24046,
+          0.00351
+        ],
+        [
+          24562,
+          0.00349
+        ],
+        [
+          25078,
+          0.00924
+        ],
+        [
+          25595,
+          0.00135
+        ],
+        [
+          26110,
+          0.0
+        ],
+        [
+          26635,
+          0.00333
+        ],
+        [
+          27149,
+          0.00249
+        ],
+        [
+          27666,
+          0.0
+        ],
+        [
+          28182,
+          0.00969
+        ],
+        [
+          28705,
+          0.00198
+        ],
+        [
+          29226,
+          0.00374
+        ],
+        [
+          29743,
+          0.0
+        ],
+        [
+          30260,
+          0.0
+        ],
+        [
+          30777,
+          0.0
+        ],
+        [
+          31295,
+          0.00254
+        ],
+        [
+          31814,
+          0.00322
+        ],
+        [
+          32330,
+          0.00346
+        ],
+        [
+          32847,
+          0.00337
+        ],
+        [
+          33369,
+          0.00363
+        ],
+        [
+          33889,
+          0.00318
+        ],
+        [
+          34408,
+          0.00331
+        ],
+        [
+          34939,
+          0.00305
+        ],
+        [
+          35462,
+          0.00239
+        ],
+        [
+          35992,
+          0.00246
+        ],
+        [
+          36508,
+          0.00266
+        ],
+        [
+          37025,
+          0.00237
+        ],
+        [
+          37544,
+          0.00244
+        ],
+        [
+          38070,
+          0.00226
+        ],
+        [
+          38585,
+          0.00239
+        ],
+        [
+          39101,
+          0.00236
+        ],
+        [
+          39619,
+          0.00257
+        ],
+        [
+          40140,
+          0.00223
+        ],
+        [
+          40655,
+          0.0021
+        ],
+        [
+          41175,
+          0.00256
+        ],
+        [
+          41690,
+          0.00253
+        ],
+        [
+          42210,
+          0.0025
+        ],
+        [
+          42728,
+          0.00257
+        ],
+        [
+          43243,
+          0.00302
+        ],
+        [
+          43755,
+          0.00197
+        ],
+        [
+          44274,
+          0.00175
+        ],
+        [
+          44792,
+          3e-05
+        ],
+        [
+          45314,
+          0.0
+        ],
+        [
+          45828,
+          0.00135
+        ],
+        [
+          46344,
+          0.0
+        ],
+        [
+          46862,
+          0.0
+        ],
+        [
+          47386,
+          0.0
+        ],
+        [
+          47902,
+          0.0
+        ],
+        [
+          48416,
+          0.0
+        ],
+        [
+          48941,
+          0.0
+        ],
+        [
+          49456,
+          0.0
+        ]
+      ],
+      "remoteCounters": {
+        "framesPerChunk": 480,
+        "droppedToDart": 33,
+        "callbacks": 4126,
+        "bitsPerSample": 16,
+        "sampleRate": 48000,
+        "channels": 1,
+        "rms": 2.300349003431424e-06
+      },
+      "remoteLevelTimeline": [
+        [
+          10049,
+          3e-05
+        ],
+        [
+          10568,
+          0.05126
+        ],
+        [
+          11086,
+          0.06518
+        ],
+        [
+          11605,
+          0.03513
+        ],
+        [
+          12135,
+          0.04913
+        ],
+        [
+          12660,
+          0.02484
+        ],
+        [
+          13171,
+          0.09627
+        ],
+        [
+          13690,
+          0.09902
+        ],
+        [
+          14210,
+          0.0421
+        ],
+        [
+          14729,
+          0.06785
+        ],
+        [
+          15249,
+          0.03383
+        ],
+        [
+          15763,
+          0.07018
+        ],
+        [
+          16282,
+          0.0458
+        ],
+        [
+          16801,
+          0.02253
+        ],
+        [
+          17326,
+          1e-05
+        ],
+        [
+          17846,
+          0.0
+        ],
+        [
+          18368,
+          0.0
+        ],
+        [
+          18887,
+          0.0
+        ],
+        [
+          19402,
+          0.0
+        ],
+        [
+          19918,
+          0.0
+        ],
+        [
+          20431,
+          0.0
+        ],
+        [
+          20945,
+          0.0
+        ],
+        [
+          21462,
+          0.0
+        ],
+        [
+          21975,
+          0.0
+        ],
+        [
+          22494,
+          0.0
+        ],
+        [
+          23016,
+          0.0
+        ],
+        [
+          23534,
+          0.0
+        ],
+        [
+          24046,
+          0.0
+        ],
+        [
+          24562,
+          0.0
+        ],
+        [
+          25078,
+          0.0
+        ],
+        [
+          25595,
+          0.0
+        ],
+        [
+          26110,
+          0.0
+        ],
+        [
+          26635,
+          0.0
+        ],
+        [
+          27149,
+          0.0
+        ],
+        [
+          27666,
+          0.0
+        ],
+        [
+          28182,
+          0.0
+        ],
+        [
+          28705,
+          0.0
+        ],
+        [
+          29226,
+          0.0
+        ],
+        [
+          29743,
+          0.0
+        ],
+        [
+          30260,
+          0.0
+        ],
+        [
+          30777,
+          0.0
+        ],
+        [
+          31295,
+          0.0
+        ],
+        [
+          31814,
+          0.0
+        ],
+        [
+          32330,
+          0.0
+        ],
+        [
+          32847,
+          0.0
+        ],
+        [
+          33369,
+          0.0
+        ],
+        [
+          33889,
+          0.0
+        ],
+        [
+          34408,
+          0.0
+        ],
+        [
+          34939,
+          0.0
+        ],
+        [
+          35462,
+          0.0
+        ],
+        [
+          35992,
+          0.0
+        ],
+        [
+          36508,
+          0.0
+        ],
+        [
+          37026,
+          0.0
+        ],
+        [
+          37544,
+          0.0
+        ],
+        [
+          38070,
+          0.0
+        ],
+        [
+          38585,
+          0.0
+        ],
+        [
+          39101,
+          0.0
+        ],
+        [
+          39619,
+          0.0
+        ],
+        [
+          40140,
+          0.0
+        ],
+        [
+          40655,
+          0.0
+        ],
+        [
+          41175,
+          0.0
+        ],
+        [
+          41690,
+          0.0
+        ],
+        [
+          42210,
+          0.0
+        ],
+        [
+          42728,
+          0.0
+        ],
+        [
+          43243,
+          0.0
+        ],
+        [
+          43755,
+          0.0
+        ],
+        [
+          44274,
+          0.0
+        ],
+        [
+          44792,
+          0.0
+        ],
+        [
+          45314,
+          0.0
+        ],
+        [
+          45828,
+          0.0
+        ],
+        [
+          46344,
+          0.0
+        ],
+        [
+          46862,
+          0.0
+        ],
+        [
+          47386,
+          0.0
+        ],
+        [
+          47902,
+          0.0
+        ],
+        [
+          48416,
+          0.0
+        ],
+        [
+          48941,
+          0.0
+        ],
+        [
+          49456,
+          0.0
+        ]
+      ]
+    },
+    "outputTranscript": "こんにちは。接続テストです。いまカメラの前には赤いマグカップと青いノートが見えています。",
+    "inputTranscript": "",
+    "mentionsMug": true,
+    "labEvents": [],
+    "eventCounts": {
+      "session.started": 1,
+      "session.thinking.append": 1,
+      "session.instructions.append": 1,
+      "session.commentary.append": 1,
+      "session.output_transcript.delta": 27,
+      "session.thinking.appended": 1,
+      "session.instructions.appended": 1,
+      "session.commentary.appended": 1,
+      "session.usage.updated": 2,
+      "session.close": 1,
+      "session.closed": 1
+    },
+    "contextAcks": [
+      {
+        "type": "session.thinking.appended",
+        "start_ms": 600,
+        "end_ms": 800,
+        "event_id": "event_ES7s6KRL2KJGXoQ2engeY",
+        "client_event_id": "lab_1"
+      },
+      {
+        "type": "session.instructions.appended",
+        "start_ms": 600,
+        "end_ms": 800,
+        "event_id": "event_ES7s6LKLJzZyzufy74MGL",
+        "client_event_id": "lab_2"
+      },
+      {
+        "type": "session.commentary.appended",
+        "start_ms": 600,
+        "end_ms": 1000,
+        "event_id": "event_ES7s6JBiiypa9TpH5ujVh",
+        "client_event_id": "lab_3"
+      }
+    ],
+    "errors": [],
+    "closedEvent": [
+      {
+        "event_id": "event_ES7skTumzQ8BUbWE92V3S",
+        "type": "session.closed",
+        "reason": "close_requested",
+        "session": {
+          "id": "live_u7_ES7s3p3oMyHuc0gRwA7LZ4ONFHNLK2gm",
+          "expires_at": 1790379347,
+          "model": "gpt-live-1",
+          "instructions": "あなたは実験用の音声アシスタントです。日本語で、短く自然に話してください。\n相手の話を遮らず、相槌は控えめにしてください。\n",
+          "audio": {
+            "output": {
+              "voice": "marin"
+            }
+          },
+          "delegation": {
+            "type": "client"
+          },
+          "status": "active",
+          "input": []
+        },
+        "usage": {
+          "seconds": 40.0
+        },
+        "client_event_id": "lab_4"
+      }
+    ],
+    "outputTranscriptTimes": [
+      10326,
+      10555,
+      10697,
+      10858,
+      10998,
+      11242,
+      11375,
+      11786,
+      11998,
+      12238,
+      12427,
+      12592,
+      12795,
+      12953,
+      13373,
+      13569,
+      13857,
+      14024,
+      14148,
+      14394,
+      14557,
+      14768,
+      15045,
+      15163,
+      15388,
+      15570,
+      15950
+    ],
+    "inputTranscriptTimes": []
+  },
+  "idleAfter": {
+    "startAt": 50744,
+    "firstAudioAt": 51098,
+    "firstFrameAt": 51140,
+    "stopAt": 55088,
+    "stoppedAt": 55188,
+    "audio": {
+      "requested": {
+        "sampleRate": 16000,
+        "channels": 1,
+        "echoCancel": false,
+        "noiseSuppress": false,
+        "autoGain": false,
+        "androidSource": "defaultSource"
+      },
+      "chunks": 41,
+      "samples": 65354,
+      "samplesPerSecond": 16336.649874401723,
+      "chunksPerSecond": 10.248839318947129,
+      "firstChunkMs": 276,
+      "maxGapMs": 107.175,
+      "chunkBytes": [
+        2708,
+        3200
+      ],
+      "oddByteChunks": 0
+    },
+    "camera": {
+      "camera": "FaceTime HDカメラ (47B4B64B-7067-4B9C-AD2B-AE273A71F4B5)",
+      "preset": "high",
+      "frames": 120,
+      "fps": 30.07701991831688,
+      "width": 1280,
+      "height": 720,
+      "format": "bgra8888",
+      "planes": 1,
+      "firstFrameMs": 374,
+      "maxGapMs": 47.663,
+      "converted": 19,
+      "convertedPerSecond": 4.802213264269081,
+      "convertP50Ms": 0.361,
+      "convertP95Ms": 0.626,
+      "convertMaxMs": 0.989,
+      "rgbGreenMean": 141.50225694444444
+    },
+    "errors": []
+  }
+}

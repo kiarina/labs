@@ -1,0 +1,743 @@
+{
+  "platform": "iOS",
+  "config": {
+    "relay": "http://<lan-ip>:8788/session",
+    "conversationSeconds": 30
+  },
+  "idleBefore": {
+    "startAt": 27,
+    "firstAudioAt": 425,
+    "firstFrameAt": 447,
+    "stopAt": 5414,
+    "stoppedAt": 5540,
+    "audio": {
+      "requested": {
+        "sampleRate": 16000,
+        "channels": 1,
+        "echoCancel": false,
+        "noiseSuppress": false,
+        "autoGain": false,
+        "androidSource": "defaultSource"
+      },
+      "chunks": 52,
+      "samples": 82954,
+      "samplesPerSecond": 16306.589195592185,
+      "chunksPerSecond": 10.221841480468617,
+      "firstChunkMs": 219,
+      "maxGapMs": 117.353,
+      "chunkBytes": [
+        2708,
+        3200
+      ],
+      "oddByteChunks": 0
+    },
+    "camera": {
+      "camera": "com.apple.avfoundation.avcapturedevice.built-in_video:1",
+      "preset": "high",
+      "frames": 150,
+      "fps": 29.961992508697527,
+      "width": 720,
+      "height": 1280,
+      "format": "bgra8888",
+      "planes": 1,
+      "firstFrameMs": 409,
+      "maxGapMs": 39.665,
+      "converted": 24,
+      "convertedPerSecond": 4.826092753078796,
+      "convertP50Ms": 2.865,
+      "convertP95Ms": 3.624,
+      "convertMaxMs": 3.645,
+      "rgbGreenMean": 141.23816571302817
+    },
+    "errors": []
+  },
+  "conversation": {
+    "startAt": 5540,
+    "marks": {
+      "startCalled": 5540,
+      "getUserMedia": 5548,
+      "offer": 5705,
+      "answer": 6406,
+      "remoteTrack": 6464,
+      "connected": 6869,
+      "sessionStarted": 7183,
+      "firstOutputTranscript": 9388,
+      "closeCalled": 38780,
+      "sessionClosed": 39507,
+      "closed": 39579
+    },
+    "taps": {
+      "firstTapAudioAt": 8790,
+      "firstTapFrameAt": 8791,
+      "samples": 1487520,
+      "framesToDart": 908,
+      "audioCounters": {
+        "channels": 1,
+        "droppedToDart": 56,
+        "sampleRate": 48000,
+        "framesPerChunk": 480,
+        "bitsPerSample": 16,
+        "callbacks": 3155,
+        "rms": 0.0005104777230401733
+      },
+      "videoCounters": {
+        "convertCount": 969,
+        "width": 1280,
+        "callbacks": 969,
+        "bufferType": "cvpixelbuffer-420v",
+        "droppedToDart": 61,
+        "rotation": 90,
+        "convertUsTotal": 671538,
+        "height": 720,
+        "convertUsMax": 2420
+      },
+      "micLevelTimeline": [
+        [
+          9209,
+          0.00341
+        ],
+        [
+          9728,
+          0.00281
+        ],
+        [
+          10247,
+          0.0036
+        ],
+        [
+          10766,
+          1e-05
+        ],
+        [
+          11283,
+          3e-05
+        ],
+        [
+          11801,
+          0.00188
+        ],
+        [
+          12319,
+          0.00203
+        ],
+        [
+          12840,
+          0.00163
+        ],
+        [
+          13360,
+          0.00086
+        ],
+        [
+          13879,
+          0.04176
+        ],
+        [
+          14397,
+          0.0165
+        ],
+        [
+          14915,
+          0.02678
+        ],
+        [
+          15434,
+          0.06821
+        ],
+        [
+          15953,
+          0.00148
+        ],
+        [
+          16472,
+          0.00069
+        ],
+        [
+          16993,
+          0.01084
+        ],
+        [
+          17512,
+          0.11776
+        ],
+        [
+          18032,
+          0.00232
+        ],
+        [
+          18550,
+          0.00255
+        ],
+        [
+          19069,
+          0.0804
+        ],
+        [
+          19586,
+          0.04137
+        ],
+        [
+          20107,
+          0.07811
+        ],
+        [
+          20626,
+          0.01131
+        ],
+        [
+          21145,
+          0.03198
+        ],
+        [
+          21665,
+          0.03454
+        ],
+        [
+          22183,
+          0.02293
+        ],
+        [
+          22700,
+          0.03339
+        ],
+        [
+          23218,
+          0.02983
+        ],
+        [
+          23737,
+          0.00092
+        ],
+        [
+          24256,
+          0.00088
+        ],
+        [
+          24775,
+          0.00082
+        ],
+        [
+          25294,
+          0.0009
+        ],
+        [
+          25813,
+          0.00089
+        ],
+        [
+          26330,
+          0.00082
+        ],
+        [
+          26850,
+          0.00085
+        ],
+        [
+          27368,
+          0.00092
+        ],
+        [
+          27888,
+          0.0009
+        ],
+        [
+          28406,
+          0.00095
+        ],
+        [
+          28924,
+          0.00101
+        ],
+        [
+          29443,
+          0.0322
+        ],
+        [
+          29962,
+          0.07299
+        ],
+        [
+          30481,
+          0.00082
+        ],
+        [
+          31001,
+          0.00083
+        ],
+        [
+          31520,
+          0.00073
+        ],
+        [
+          32038,
+          0.00048
+        ],
+        [
+          32557,
+          0.00066
+        ],
+        [
+          33075,
+          1e-05
+        ],
+        [
+          33595,
+          0.00065
+        ],
+        [
+          34112,
+          0.0009
+        ],
+        [
+          34631,
+          0.00271
+        ],
+        [
+          35152,
+          0.0408
+        ],
+        [
+          35670,
+          0.08607
+        ],
+        [
+          36189,
+          0.00361
+        ],
+        [
+          36708,
+          0.00071
+        ],
+        [
+          37227,
+          0.00115
+        ],
+        [
+          37745,
+          0.02438
+        ],
+        [
+          38262,
+          0.04091
+        ],
+        [
+          38779,
+          0.01926
+        ]
+      ],
+      "remoteCounters": {
+        "callbacks": 3198,
+        "droppedToDart": 99,
+        "bitsPerSample": 16,
+        "framesPerChunk": 480,
+        "rms": 2.2746459732053526e-06,
+        "sampleRate": 48000,
+        "channels": 1
+      },
+      "remoteLevelTimeline": [
+        [
+          9209,
+          0.0
+        ],
+        [
+          9728,
+          0.0676
+        ],
+        [
+          10247,
+          0.05837
+        ],
+        [
+          10766,
+          0.03618
+        ],
+        [
+          11283,
+          0.05732
+        ],
+        [
+          11801,
+          0.0192
+        ],
+        [
+          12319,
+          0.00022
+        ],
+        [
+          12840,
+          0.09882
+        ],
+        [
+          13360,
+          0.07386
+        ],
+        [
+          13879,
+          0.03629
+        ],
+        [
+          14397,
+          0.09507
+        ],
+        [
+          14915,
+          0.03288
+        ],
+        [
+          15434,
+          0.08091
+        ],
+        [
+          15953,
+          0.06312
+        ],
+        [
+          16472,
+          0.03947
+        ],
+        [
+          16993,
+          0.00021
+        ],
+        [
+          17512,
+          0.00022
+        ],
+        [
+          18032,
+          0.00015
+        ],
+        [
+          18550,
+          0.0
+        ],
+        [
+          19069,
+          0.0
+        ],
+        [
+          19586,
+          0.0
+        ],
+        [
+          20107,
+          0.0
+        ],
+        [
+          20626,
+          0.0
+        ],
+        [
+          21145,
+          0.0
+        ],
+        [
+          21665,
+          0.0
+        ],
+        [
+          22183,
+          0.0
+        ],
+        [
+          22700,
+          0.0
+        ],
+        [
+          23218,
+          0.0
+        ],
+        [
+          23737,
+          0.0
+        ],
+        [
+          24256,
+          0.0
+        ],
+        [
+          24775,
+          0.0
+        ],
+        [
+          25294,
+          0.0
+        ],
+        [
+          25813,
+          0.0
+        ],
+        [
+          26330,
+          0.0
+        ],
+        [
+          26850,
+          0.0
+        ],
+        [
+          27368,
+          0.0
+        ],
+        [
+          27888,
+          0.0
+        ],
+        [
+          28406,
+          0.0
+        ],
+        [
+          28924,
+          0.0
+        ],
+        [
+          29443,
+          0.0
+        ],
+        [
+          29962,
+          0.0
+        ],
+        [
+          30481,
+          0.0
+        ],
+        [
+          31001,
+          0.0
+        ],
+        [
+          31520,
+          0.04114
+        ],
+        [
+          32038,
+          0.00123
+        ],
+        [
+          32557,
+          0.08428
+        ],
+        [
+          33075,
+          0.04292
+        ],
+        [
+          33595,
+          1e-05
+        ],
+        [
+          34112,
+          0.0
+        ],
+        [
+          34631,
+          0.0
+        ],
+        [
+          35152,
+          0.0
+        ],
+        [
+          35670,
+          0.0
+        ],
+        [
+          36189,
+          0.0
+        ],
+        [
+          36708,
+          0.0
+        ],
+        [
+          37227,
+          0.0
+        ],
+        [
+          37745,
+          0.0
+        ],
+        [
+          38262,
+          0.0
+        ],
+        [
+          38780,
+          0.0
+        ]
+      ]
+    },
+    "outputTranscript": "(redacted: a person spoke in this run; 54 chars)",
+    "inputTranscript": "(redacted: a person spoke in this run; 34 chars)",
+    "mentionsMug": true,
+    "labEvents": [],
+    "eventCounts": {
+      "session.started": 1,
+      "session.thinking.append": 1,
+      "session.instructions.append": 1,
+      "session.thinking.appended": 1,
+      "session.instructions.appended": 1,
+      "session.commentary.append": 1,
+      "session.output_transcript.delta": 31,
+      "session.commentary.appended": 1,
+      "session.input_transcript.delta": 18,
+      "session.usage.updated": 2,
+      "session.close": 1,
+      "session.closed": 1
+    },
+    "contextAcks": [
+      {
+        "type": "session.thinking.appended",
+        "start_ms": 600,
+        "end_ms": 800,
+        "event_id": "event_ES8ByzUnaz2j7XMKFhZXb",
+        "client_event_id": "lab_1"
+      },
+      {
+        "type": "session.instructions.appended",
+        "start_ms": 600,
+        "end_ms": 800,
+        "event_id": "event_ES8BynzicaV0IOClJhbxJ",
+        "client_event_id": "lab_2"
+      },
+      {
+        "type": "session.commentary.appended",
+        "start_ms": 1400,
+        "end_ms": 1600,
+        "event_id": "event_ES8Bz40WEzEoZoEAYn3DK",
+        "client_event_id": "lab_3"
+      }
+    ],
+    "errors": [],
+    "closedEvent": [
+      {
+        "event_id": "event_ES8CTIHiLGwFu1hBlPxJ3",
+        "type": "session.closed",
+        "reason": "close_requested",
+        "session": {
+          "id": "live_u7_ES8Bwp3oMXjTblV8U0T1eBiQGYdBcFf4",
+          "expires_at": 1790380580,
+          "model": "gpt-live-1",
+          "instructions": "あなたは実験用の音声アシスタントです。日本語で、短く自然に話してください。\n相手の話を遮らず、相槌は控えめにしてください。\n",
+          "audio": {
+            "output": {
+              "voice": "marin"
+            }
+          },
+          "delegation": {
+            "type": "client"
+          },
+          "status": "active",
+          "input": []
+        },
+        "usage": {
+          "seconds": 31.0
+        },
+        "client_event_id": "lab_4"
+      }
+    ],
+    "outputTranscriptTimes": [
+      9388,
+      9790,
+      9986,
+      10388,
+      10623,
+      10832,
+      10955,
+      11790,
+      12001,
+      12174,
+      12399,
+      12588,
+      12776,
+      13399,
+      13599,
+      13793,
+      14007,
+      14171,
+      14627,
+      14808,
+      14984,
+      15204,
+      15426,
+      15617,
+      15995,
+      30994,
+      31184,
+      31576,
+      31988,
+      32210,
+      32390
+    ],
+    "inputTranscriptTimes": [
+      20119,
+      20317,
+      20470,
+      21261,
+      22093,
+      22250,
+      22860,
+      23294,
+      23515,
+      23663,
+      24267,
+      30091,
+      30295,
+      30481,
+      30792,
+      35858,
+      36856,
+      38706
+    ],
+    "humanSpoke": true
+  },
+  "idleAfter": {
+    "startAt": 39580,
+    "firstAudioAt": 39990,
+    "firstFrameAt": 40012,
+    "stopAt": 43974,
+    "stoppedAt": 44100,
+    "audio": {
+      "requested": {
+        "sampleRate": 16000,
+        "channels": 1,
+        "echoCancel": false,
+        "noiseSuppress": false,
+        "autoGain": false,
+        "androidSource": "defaultSource"
+      },
+      "chunks": 42,
+      "samples": 66954,
+      "samplesPerSecond": 16395.75895584723,
+      "chunksPerSecond": 10.284999793075599,
+      "firstChunkMs": 213,
+      "maxGapMs": 117.019,
+      "chunkBytes": [
+        2708,
+        3200
+      ],
+      "oddByteChunks": 0
+    },
+    "camera": {
+      "camera": "com.apple.avfoundation.avcapturedevice.built-in_video:1",
+      "preset": "high",
+      "frames": 120,
+      "fps": 29.992693376630346,
+      "width": 720,
+      "height": 1280,
+      "format": "bgra8888",
+      "planes": 1,
+      "firstFrameMs": 424,
+      "maxGapMs": 35.717,
+      "converted": 19,
+      "convertedPerSecond": 4.788749362655266,
+      "convertP50Ms": 3.11,
+      "convertP95Ms": 4.506,
+      "convertMaxMs": 4.872,
+      "rgbGreenMean": 141.5819872359155
+    },
+    "errors": []
+  }
+}
