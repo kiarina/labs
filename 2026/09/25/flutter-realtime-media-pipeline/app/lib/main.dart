@@ -34,6 +34,14 @@ final _autorunSeconds =
 final _probe = _param('probe', _probeDefine);
 final _signaling = _param('signaling', _signalingDefine);
 final _room = _param('room', _roomDefine);
+// Resolution experiment knobs (see ProbeTuning).
+final _degradation = _param('degradation', '');
+final _startBitrate = int.tryParse(_param('startbitrate', ''));
+final _cpuOveruse = switch (_param('cpuoveruse', '')) {
+  'true' => true,
+  'false' => false,
+  _ => null,
+};
 
 void main() => runApp(const RealtimePipelineApp());
 
@@ -54,6 +62,11 @@ class RealtimePipelineApp extends StatelessWidget {
       signalingUrl: _signaling,
       room: _room,
       probe: LocalStatsProbe.values.byName(_probe),
+      tuning: ProbeTuning(
+        degradation: _degradation.isEmpty ? null : _degradation,
+        startBitrateKbps: _startBitrate,
+        cpuOveruseDetection: _cpuOveruse,
+      ),
     );
     final spec = AutorunSpec(
       duration: Duration(seconds: _autorunSeconds),

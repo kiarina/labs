@@ -10,7 +10,7 @@ class MainActivity : FlutterActivity() {
     // side reads the same way as on desktop.
     override fun onCreate(savedInstanceState: Bundle?) {
         val extras = intent?.extras
-        for (key in listOf("autorun", "probe", "seconds", "exit", "signaling", "room")) {
+        for (key in listOf("autorun", "probe", "seconds", "exit", "signaling", "room", "degradation", "startbitrate", "cpuoveruse")) {
             extras?.getString(key)?.let { Os.setenv("REALTIME_${key.uppercase()}", it, true) }
         }
         super.onCreate(savedInstanceState)

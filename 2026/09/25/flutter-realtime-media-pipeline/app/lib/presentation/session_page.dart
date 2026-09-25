@@ -42,6 +42,8 @@ class _SessionPageState extends State<SessionPage> {
   bool _rendererReady = false;
   Timer? _autorunTimer;
   int _autorunTicks = 0;
+  final List<String> _rendererTimeline = [];
+  final List<String> _statsTimeline = [];
 
   @override
   void initState() {
@@ -92,6 +94,9 @@ class _SessionPageState extends State<SessionPage> {
     final total = spec.duration.inSeconds;
     _autorunTimer = Timer.periodic(const Duration(seconds: 1), (timer) async {
       _autorunTicks++;
+      _rendererTimeline.add('${_renderer.videoWidth}x${_renderer.videoHeight}');
+      final m = bundle.controller.lastMetrics;
+      _statsTimeline.add('${m?.videoWidth}x${m?.videoHeight}');
       unawaited(bundle.controller.sendPing());
       if (_autorunTicks == total ~/ 2) {
         unawaited(bundle.controller.sendMove(0.1, -0.1));
@@ -110,6 +115,8 @@ class _SessionPageState extends State<SessionPage> {
             'videoWidth': _renderer.videoWidth,
             'videoHeight': _renderer.videoHeight,
           },
+          'rendererTimeline': _rendererTimeline,
+          'statsTimeline': _statsTimeline,
           'connectionState': bundle.connectionState?.value?.name,
         });
         await bundle.controller.stop();

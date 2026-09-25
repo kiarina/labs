@@ -44,7 +44,8 @@ ActionTransport (RTCDataChannel | Local operation API | Mock)
   sender に載ったトラックにしか出ず、**接続していない sender だけではネイティブ 4 つ（macOS / iOS / Android /
   Windows）で映像のフレーム数も音量も 0 のまま**でした（Chrome では音量だけ取れた）。さらに、
   **ネイティブ（Windows・Android の実機とエミュレーター）では loopback の probe を付けるとカメラの取り込み解像度自体が
-  下がりました**（Windows で 1280×720 → 480×270、Pixel Fold で 1280×720 → 320×180）。Phase 1 の手段としては使えますが、無料ではありません
+  下がりました**（Windows で 1280×720 → 480×270、Pixel Fold で 1280×720 → 320×180）。原因は接続直後の帯域推定による
+  自動調整で、`maintain-resolution` か CPU 過負荷検知の無効化で避けられました（[追加実験](#追加実験-loopback-で解像度が下がるのを避ける)）
 - **backpressure は意図どおりです。** 処理が遅いときの映像は最新の 1 枚だけが残り、遅延は処理 1 回分から
   伸びませんでした（単体テスト）。実機では処理が軽いため、どのプラットフォームでも落としたフレームは 0 でした
 - **DataChannel の往復は通ります。** Ping → Pong の RTT は、同じプロセスの loopback で 1.5〜15 ms、
@@ -210,9 +211,53 @@ Pixel Fold の viewer は、ほかの計測より古いビルド（結果に `se
 - Android（実機とエミュレーター）と Windows では、loopback の probe を付けたときだけプレビューの解像度が下がりました。macOS と iOS は
   どちらでも 640×480、Chrome はどちらでも 1280×720 で変わりませんでした
 
-解釈（未検証）: libwebrtc のエンコーダーは、接続直後の推定帯域が小さいと解像度を下げます。ネイティブではこの調整が
-取り込み元（カメラ）の出力に掛かり、同じトラックを表示しているプレビューにも出ると考えています。Chrome は
-エンコーダーの入力だけを縮めるので、トラック自体は変わりません。
+原因と回避策は、次の追加実験で確かめました。
+
+### 追加実験: loopback で解像度が下がるのを避ける
+
+上の probe の比較で見えた「loopback を張るとネイティブではカメラの取り込み解像度まで下がる」現象について、原因と回避策を
+確かめました。`local-mock` モードの loopback probe に次の設定を足し（`ProbeTuning`、autorun の `degradation` /
+`startbitrate` / `cpuoveruse`）、プレビュー（`RTCVideoRenderer`）の解像度を 1 秒ごとに 15 秒記録しました
+（`results/resolution/*.json` の `rendererTimeline`）。
+
+| 設定 | Android エミュレーター | Pixel Fold | Windows |
+| --- | --- | --- | --- |
+| 何もしない | 320×180 → 480×270 → 640×360 | 320×180（12 秒）→ 480×270 | 320×180 → 480×270 → 640×360 → 960×540 |
+| `degradationPreference: maintain-resolution` | **1280×720 のまま** | **1280×720 のまま** | **1280×720 のまま** |
+| SDP に `x-google-start-bitrate=3000`（と min） | 960×540（8 秒）→ 1280×720 | 960×540（12 秒）→ 1280×720 | 960×540（10 秒）→ 1280×720 |
+| CPU 過負荷検知を無効化 | **1280×720 のまま** | **1280×720 のまま** | **1280×720 のまま** |
+| 上の 3 つをすべて | 1280×720 のまま | 1280×720 のまま | （未実施） |
+
+fps はどの設定でもほぼ同じでした（エミュレーター 11 fps、Pixel Fold 23〜28 fps、Windows 30 fps）。
+
+原因（libwebrtc m150 のソースで確認。実測と合う）:
+
+1. 接続した直後、推定帯域の初期値は 300 kbps です。エンコーダーは、目標ビットレートに対して大きすぎるフレームを最初の
+   4 枚まで捨て（`VideoStreamEncoder::DropDueToSize`。300 kbps 未満なら 320×240 超、500 kbps 未満なら 640×480 超が対象）、
+   捨てるたびに解像度を 1 段下げるよう要求します
+2. この要求（sink wants の `max_pixel_count`）は、トラックの送り元（`VideoBroadcaster`）で**全ての sink の最小値**に集約され、
+   ネイティブではカメラの送り元にある `VideoAdapter` が縮めます。縮めた後のフレームがプレビューにも届くので、
+   プレビューもローカルの処理も一緒に下がります。Chrome はエンコーダーの入力だけを縮めるので、トラックは変わりません
+3. macOS と iPad で下がらなかったのは、カメラが 640×480 を出していて「640×480 超」に当たらなかったためです（推定）
+4. `maintain-resolution` は解像度を下げる要求を捨てます。**CPU 過負荷検知の無効化は、名前と違って、解像度と fps の自動調整を
+   すべて止めます**（`enable_cpu_adaptation` が false だと degradation preference が `maintain-framerate-and-resolution`
+   に固定され、品質による縮小と最初のフレーム破棄も止まる）
+
+設定の渡し方（flutter_webrtc 1.6.2+hotfix.3。ソースで確認）:
+
+| 設定 | Android | iOS / macOS | Windows | Web |
+| --- | --- | --- | --- | --- |
+| `sender.setParameters(degradationPreference)` | 全ての値が効く | 全ての値が効く | `maintain-resolution` などは効く。`maintain-framerate-and-resolution` は黙って無視され、`disabled` は balanced になる | dart_webrtc が渡さない（不要） |
+| CPU 過負荷検知の無効化 | `createPeerConnection` の設定 `enableCpuOveruseDetection: false` | 制約 `{'mandatory': {'googCpuOveruseDetection': false}}` | 同左（制約） | 不要 |
+
+制約を渡すと flutter_webrtc の既定の制約（`DtlsSrtpKeyAgreement`）が置き換わるので、同じ項目を一緒に入れています。
+iOS / macOS では、1280×720 を出すカメラでまだ試していません。
+
+解釈: ローカルの観測だけに使う loopback なら、帯域の調整は要らないので CPU 過負荷検知を切れば済みます。相手に実際に送る
+場合（2 台構成）に自動調整を止めると、相手側の回線が細いときに画質や遅延が悪くなるので、送る用途では
+`maintain-resolution`（解像度は保ち、必要なら fps を落とす）が穏当だと考えています。自動調整を残したまま処理だけを
+フル解像度で行うには、調整の手前でフレームを受け取る必要があります（iOS / macOS は flutter_webrtc の
+`VideoProcessingAdapter` が手前にある。Android は plugin の小さな改修が要る。Windows には手前の口が無い。いずれも未検証）。
 
 ### その他の観測
 

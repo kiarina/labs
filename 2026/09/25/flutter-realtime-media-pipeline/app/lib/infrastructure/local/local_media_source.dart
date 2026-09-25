@@ -22,6 +22,36 @@ enum LocalStatsProbe {
   loopback,
 }
 
+/// Knobs for the resolution experiment: can the loopback probe avoid pulling
+/// the camera resolution down?
+final class ProbeTuning {
+  /// `maintain-resolution`, `maintain-framerate` or `balanced`; null = default.
+  final String? degradation;
+
+  /// Rewrites the SDP with x-google-start/min-bitrate (kbps); null = default.
+  final int? startBitrateKbps;
+
+  /// Passed as RTCConfiguration `enableCpuOveruseDetection` (Android reads it).
+  final bool? cpuOveruseDetection;
+
+  const ProbeTuning({
+    this.degradation,
+    this.startBitrateKbps,
+    this.cpuOveruseDetection,
+  });
+
+  bool get isDefault =>
+      degradation == null &&
+      startBitrateKbps == null &&
+      cpuOveruseDetection == null;
+
+  Map<String, Object?> toJson() => {
+    'degradation': degradation,
+    'startBitrateKbps': startBitrateKbps,
+    'cpuOveruseDetection': cpuOveruseDetection,
+  };
+}
+
 /// Local camera and microphone via flutter_webrtc getUserMedia. Application
 /// code only sees [MediaSource].
 final class LocalMediaSource
@@ -29,6 +59,8 @@ final class LocalMediaSource
   final MonotonicClock clock;
   final Duration pollInterval;
   final LocalStatsProbe probe;
+  final ProbeTuning tuning;
+  String? _tuningError;
 
   final StreamController<MediaEvent> _events = StreamController.broadcast();
   final ValueNotifier<MediaStream?> _stream = ValueNotifier(null);
@@ -50,6 +82,7 @@ final class LocalMediaSource
     required this.clock,
     this.pollInterval = const Duration(milliseconds: 100),
     this.probe = LocalStatsProbe.loopback,
+    this.tuning = const ProbeTuning(),
   });
 
   @override
@@ -105,21 +138,61 @@ final class LocalMediaSource
 
   Future<void> _startProbe(MediaStream stream) async {
     if (probe == LocalStatsProbe.none) return;
-    final sender = _sender = await newPeerConnection();
+    final config = {
+      ...peerConfiguration,
+      if (tuning.cpuOveruseDetection != null)
+        'enableCpuOveruseDetection': tuning.cpuOveruseDetection,
+    };
+    // Android reads enableCpuOveruseDetection from the configuration;
+    // iOS/macOS/Windows only honour the legacy googCpuOveruseDetection
+    // constraint. Non-empty constraints replace flutter_webrtc's default, so
+    // DtlsSrtpKeyAgreement is repeated here.
+    final constraints = <String, dynamic>{
+      if (tuning.cpuOveruseDetection != null)
+        'mandatory': {'googCpuOveruseDetection': tuning.cpuOveruseDetection},
+      'optional': [
+        {'DtlsSrtpKeyAgreement': true},
+      ],
+    };
+    final sender = _sender = await createPeerConnection(config, constraints);
     for (final track in stream.getTracks()) {
-      await sender.addTrack(track, stream);
+      final rtpSender = await sender.addTrack(track, stream);
+      final degradation = tuning.degradation;
+      if (track.kind == 'video' && degradation != null) {
+        try {
+          final params = rtpSender.parameters;
+          params.degradationPreference = degradationPreferenceforString(
+            degradation,
+          );
+          await rtpSender.setParameters(params);
+        } catch (e) {
+          _tuningError = 'setParameters: $e';
+        }
+      }
     }
     if (probe == LocalStatsProbe.sender) {
       await sender.setLocalDescription(await sender.createOffer());
       return;
     }
-    final receiver = _receiver = await newPeerConnection();
+    final receiver = _receiver = await createPeerConnection(
+      config,
+      constraints,
+    );
     sender.onIceCandidate = (c) => unawaited(receiver.addCandidate(c));
     receiver.onIceCandidate = (c) => unawaited(sender.addCandidate(c));
-    final offer = await sender.createOffer();
+    RTCSessionDescription tune(RTCSessionDescription d) {
+      final kbps = tuning.startBitrateKbps;
+      if (kbps == null || d.sdp == null) return d;
+      return RTCSessionDescription(
+        withVideoBitrate(d.sdp!, startKbps: kbps, minKbps: kbps),
+        d.type,
+      );
+    }
+
+    final offer = tune(await sender.createOffer());
     await sender.setLocalDescription(offer);
     await receiver.setRemoteDescription(offer);
-    final answer = await receiver.createAnswer();
+    final answer = tune(await receiver.createAnswer());
     await receiver.setLocalDescription(answer);
     await sender.setRemoteDescription(answer);
   }
@@ -197,6 +270,8 @@ final class LocalMediaSource
     return {
       'statsSide': 'outbound',
       'probe': probe.name,
+      'tuning': tuning.toJson(),
+      'tuningError': _tuningError,
       'captureMs': _captureLatency == null
           ? null
           : _captureLatency!.inMicroseconds / 1000,

@@ -5,6 +5,7 @@
 /// enforces this, and this package does not depend on Flutter at all.
 library;
 
+export 'src/adapters/sdp.dart';
 export 'src/adapters/webrtc_stats.dart';
 export 'src/application/codec.dart';
 export 'src/application/intake.dart';

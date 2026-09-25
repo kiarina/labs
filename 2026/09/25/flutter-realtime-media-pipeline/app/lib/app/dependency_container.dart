@@ -39,6 +39,7 @@ final class SessionOptions {
   final String signalingUrl;
   final String room;
   final LocalStatsProbe probe;
+  final ProbeTuning tuning;
 
   const SessionOptions({
     this.audioEnabled = true,
@@ -48,6 +49,7 @@ final class SessionOptions {
     this.signalingUrl = 'ws://127.0.0.1:8787',
     this.room = 'lab',
     this.probe = LocalStatsProbe.loopback,
+    this.tuning = const ProbeTuning(),
   });
 
   MediaSourceConfig get mediaConfig => MediaSourceConfig(
@@ -162,7 +164,11 @@ Future<SessionBundle> buildSession(
       );
 
     case SessionMode.localToMock || SessionMode.localToLocalApi:
-      final source = LocalMediaSource(clock: clock, probe: options.probe);
+      final source = LocalMediaSource(
+        clock: clock,
+        probe: options.probe,
+        tuning: options.tuning,
+      );
       cleanups.add(source.dispose);
       SimulatedOperationApi? api;
       final ActionTransport transport;

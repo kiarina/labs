@@ -1,0 +1,118 @@
+{
+    "platform": "windows",
+    "mode": "local-mock",
+    "probe": "loopback",
+    "seconds": 15,
+    "sessionState": "SessionRunning",
+    "metrics": {
+        "elapsedMs": 14938.378,
+        "mediaKind": "local",
+        "transportKind": "mock",
+        "transportConnected": true,
+        "videoActive": true,
+        "videoWidth": 1280,
+        "videoHeight": 720,
+        "videoFps": 30.029188371096705,
+        "lastFrameSequence": 441,
+        "audioActive": true,
+        "audioLevel": 0.0007324442274239326,
+        "stats": {
+            "videoFps": 31.0,
+            "videoWidth": 1280,
+            "videoHeight": 720,
+            "framesDecoded": 441,
+            "framesDropped": null,
+            "audioLevel": 0.0007324442274239326,
+            "roundTripTime": 0.0,
+            "jitter": null,
+            "packetsLost": null,
+            "bitrateKbps": 582.0304690311488,
+            "audioTrackEnabled": true,
+            "videoTrackEnabled": true
+        },
+        "inputEvents": 442,
+        "processedEvents": 442,
+        "inputEventsPerSecond": 36.08588440488362,
+        "processedEventsPerSecond": 36.08588440488362,
+        "droppedVideoFrames": 0,
+        "droppedAudioEvents": 0,
+        "lastLatencyMs": 0.001,
+        "averageLatencyMs": 0.003,
+        "maxLatencyMs": 0.026,
+        "lastResult": "video_tick",
+        "resultCounts": {
+            "media_started": 1,
+            "video_tick": 14
+        },
+        "actionsSent": 29,
+        "actionsReceived": 14,
+        "sendErrors": 0,
+        "lastRoundTripMs": 0.074,
+        "lastAction": {
+            "type": "custom",
+            "name": "video_tick",
+            "data": {
+                "frame": 420
+            }
+        },
+        "lastError": null
+    },
+    "diagnostics": {
+        "statsSide": "outbound",
+        "probe": "loopback",
+        "tuning": {
+            "degradation": null,
+            "startBitrateKbps": null,
+            "cpuOveruseDetection": false
+        },
+        "tuningError": null,
+        "captureMs": 70.401,
+        "polls": 149,
+        "averageGetStatsMs": 1.2259731543624162,
+        "maxGetStatsMs": 3.719,
+        "frameCounterSource": "frames",
+        "audioLevelSource": "audioLevel",
+        "statsWidth": 1280,
+        "statsHeight": 720,
+        "statsFps": 31.0
+    },
+    "renderer": {
+        "videoWidth": 1280,
+        "videoHeight": 720
+    },
+    "rendererTimeline": [
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720"
+    ],
+    "statsTimeline": [
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720",
+        "1280x720"
+    ],
+    "connectionState": null
+}
