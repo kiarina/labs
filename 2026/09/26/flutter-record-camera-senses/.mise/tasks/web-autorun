@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#MISE description="Build the web app and run camera+mic (20 s) in headless Chrome with fake devices; writes results/web.json"
+set -euo pipefail
+
+PORT=${PORT:-8767}
+CHROME=${CHROME:-"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"}
+(cd app && flutter build web --release)
+mkdir -p results
+python3 -m http.server "$PORT" --bind 127.0.0.1 --directory app/build/web >/dev/null 2>&1 &
+SERVER=$!
+trap 'kill $SERVER' EXIT
+sleep 1
+profile=$(mktemp -d)
+timeout 90 "$CHROME" --headless=new --user-data-dir="$profile" \
+  --use-fake-device-for-media-stream --use-fake-ui-for-media-stream \
+  --autoplay-policy=no-user-gesture-required --enable-logging=stderr --v=0 \
+  "http://127.0.0.1:$PORT/?scenario=all&seconds=20" 2>&1 |
+  grep -m1 SENSES_RESULT | sed -E 's/.*"SENSES_RESULT (.*)", source.*/\1/' |
+  python3 -m json.tool --no-ensure-ascii > results/web.json
+rm -rf "$profile"
+echo results/web.json

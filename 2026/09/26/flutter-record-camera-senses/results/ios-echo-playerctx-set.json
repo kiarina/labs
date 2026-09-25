@@ -1,0 +1,132 @@
+{
+    "platform": "iOS",
+    "config": {
+        "scenario": "echo",
+        "seconds": 5,
+        "intervalMs": 200,
+        "preset": "high"
+    },
+    "echo": [
+        {
+            "variant": "raw",
+            "playerContext": "set",
+            "playbackCompleted": true,
+            "audio": {
+                "requested": {
+                    "sampleRate": 16000,
+                    "channels": 1,
+                    "echoCancel": false,
+                    "noiseSuppress": false,
+                    "autoGain": false,
+                    "androidSource": "defaultSource"
+                },
+                "chunks": 90,
+                "samples": 143754,
+                "samplesPerSecond": 16169.676204916683,
+                "chunksPerSecond": 10.123341670092667,
+                "firstChunkMs": 238,
+                "maxGapMs": 116.901,
+                "chunkBytes": [
+                    2708,
+                    3200
+                ],
+                "oddByteChunks": 0
+            },
+            "baselineDbfs": -40.627484224222854,
+            "playbackDbfs": -40.918292020648266,
+            "leakDb": -0.2908077964254119,
+            "samplesCaptured": 83200,
+            "nonZeroSamples": 83048,
+            "correlation": 0.09484679196755212,
+            "lagMs": 226,
+            "recordedMs": 5200
+        },
+        {
+            "variant": "ec",
+            "playerContext": "set",
+            "playbackCompleted": true,
+            "audio": {
+                "requested": {
+                    "sampleRate": 16000,
+                    "channels": 1,
+                    "echoCancel": true,
+                    "noiseSuppress": false,
+                    "autoGain": false,
+                    "androidSource": "defaultSource"
+                },
+                "chunks": 89,
+                "samples": 142154,
+                "samplesPerSecond": 16180.331348837102,
+                "chunksPerSecond": 10.130207310708824,
+                "firstChunkMs": 360,
+                "maxGapMs": 115.415,
+                "chunkBytes": [
+                    2708,
+                    3200
+                ],
+                "oddByteChunks": 0
+            },
+            "baselineDbfs": -39.821402576577036,
+            "playbackDbfs": -43.044817381686386,
+            "leakDb": -3.22341480510935,
+            "samplesCaptured": 83200,
+            "nonZeroSamples": 66399,
+            "correlation": 0.12037696255346629,
+            "lagMs": 469,
+            "recordedMs": 5200
+        },
+        {
+            "variant": "ec-ns-agc",
+            "playerContext": "set",
+            "playbackCompleted": true,
+            "audio": {
+                "requested": {
+                    "sampleRate": 16000,
+                    "channels": 1,
+                    "echoCancel": true,
+                    "noiseSuppress": true,
+                    "autoGain": true,
+                    "androidSource": "defaultSource"
+                },
+                "chunks": 89,
+                "samples": 142154,
+                "samplesPerSecond": 16177.600588499852,
+                "chunksPerSecond": 10.128497631980014,
+                "firstChunkMs": 272,
+                "maxGapMs": 116.451,
+                "chunkBytes": [
+                    2708,
+                    3200
+                ],
+                "oddByteChunks": 0
+            },
+            "baselineDbfs": -34.52706450098206,
+            "playbackDbfs": -33.86961952365921,
+            "leakDb": 0.6574449773228466,
+            "samplesCaptured": 83200,
+            "nonZeroSamples": 63341,
+            "correlation": 0.14164959421711754,
+            "lagMs": 215,
+            "recordedMs": 5200
+        }
+    ],
+    "camera": {
+        "camera": "com.apple.avfoundation.avcapturedevice.built-in_video:1",
+        "preset": "high",
+        "frames": 878,
+        "fps": 29.977178035964343,
+        "width": 720,
+        "height": 1280,
+        "format": "bgra8888",
+        "planes": 1,
+        "firstFrameMs": 384,
+        "maxGapMs": 59.21,
+        "converted": 135,
+        "convertedPerSecond": 4.614502890370794,
+        "convertP50Ms": 2.989,
+        "convertP95Ms": 3.654,
+        "convertMaxMs": 4.16,
+        "rgbGreenMean": 141.29951034330986
+    },
+    "errors": []
+}

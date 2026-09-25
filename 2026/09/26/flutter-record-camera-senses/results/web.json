@@ -1,0 +1,69 @@
+{
+    "platform": "web",
+    "config": {
+        "scenario": "all",
+        "seconds": 20,
+        "intervalMs": 200,
+        "preset": "high"
+    },
+    "sensesAudio": {
+        "requested": {
+            "sampleRate": 16000,
+            "channels": 1,
+            "echoCancel": false,
+            "noiseSuppress": false,
+            "autoGain": false,
+            "androidSource": "defaultSource"
+        },
+        "chunks": 430,
+        "samples": 319506,
+        "samplesPerSecond": 16035.59383281137,
+        "chunksPerSecond": 21.581145105597045,
+        "firstChunkMs": 257,
+        "maxGapMs": 55.6,
+        "chunkBytes": [
+            1486,
+            1488
+        ],
+        "oddByteChunks": 0,
+        "rmsDbfs": -17.186721772350293
+    },
+    "sensesCamera": {
+        "camera": "fake_device_0",
+        "preset": "getUserMedia 1280x720",
+        "frames": 404,
+        "fps": 20.046360317160282,
+        "width": 1280,
+        "height": 720,
+        "format": "NV12",
+        "planes": 1,
+        "firstFrameMs": 210,
+        "maxGapMs": 57,
+        "converted": 89,
+        "convertedPerSecond": 4.427111831829442,
+        "convertP50Ms": 7.3,
+        "convertP95Ms": 10.5,
+        "convertMaxMs": 13.4,
+        "rgbGreenMean": 143.0146875
+    },
+    "echo": "skipped on web (headless fake mic cannot hear the speaker; pass echo=force)",
+    "camera": {
+        "camera": "fake_device_0",
+        "preset": "getUserMedia 1280x720",
+        "frames": 404,
+        "fps": 20.046360317160282,
+        "width": 1280,
+        "height": 720,
+        "format": "NV12",
+        "planes": 1,
+        "firstFrameMs": 210,
+        "maxGapMs": 57,
+        "converted": 89,
+        "convertedPerSecond": 4.427111831829442,
+        "convertP50Ms": 7.3,
+        "convertP95Ms": 10.5,
+        "convertMaxMs": 13.4,
+        "rgbGreenMean": 143.0146875
+    },
+    "errors": []
+}

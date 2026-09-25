@@ -1,0 +1,173 @@
+{
+    "platform": "windows",
+    "config": {
+        "scenario": "all",
+        "seconds": 20,
+        "intervalMs": 200,
+        "preset": "high"
+    },
+    "sensesAudio": {
+        "requested": {
+            "sampleRate": 16000,
+            "channels": 1,
+            "echoCancel": false,
+            "noiseSuppress": false,
+            "autoGain": false,
+            "androidSource": "defaultSource"
+        },
+        "chunks": 427,
+        "samples": 319169,
+        "samplesPerSecond": 16024.914132610711,
+        "chunksPerSecond": 21.43891898845055,
+        "firstChunkMs": 104,
+        "maxGapMs": 48.962,
+        "chunkBytes": [
+            898,
+            1280,
+            1600
+        ],
+        "oddByteChunks": 0,
+        "rmsDbfs": -40.252250697539765
+    },
+    "sensesCamera": {
+        "camera": "Pixel Fold (Windows 仮想カメラ) (\\\\?\\swd#vcamdevapi#7df0f10d09d1a412f093d13e45d01495a23074a6a429f8a77563c10a441c014b#{e5323777-f976-4f5b-9b55-b94699c46e44}\\{fcebba03-9d13-4c13-9940-cc84fcd132d1})",
+        "preset": "high",
+        "frames": 606,
+        "fps": 30.323549769967055,
+        "width": 1280,
+        "height": 720,
+        "format": "bgra8888",
+        "planes": 1,
+        "firstFrameMs": 141,
+        "maxGapMs": 56.735,
+        "converted": 92,
+        "convertedPerSecond": 4.611184427829701,
+        "convertP50Ms": 0.195,
+        "convertP95Ms": 0.332,
+        "convertMaxMs": 0.897,
+        "rgbGreenMean": 58.285555555555554
+    },
+    "echo": [
+        {
+            "variant": "raw",
+            "playbackCompleted": true,
+            "audio": {
+                "requested": {
+                    "sampleRate": 16000,
+                    "channels": 1,
+                    "echoCancel": false,
+                    "noiseSuppress": false,
+                    "autoGain": false,
+                    "androidSource": "defaultSource"
+                },
+                "chunks": 190,
+                "samples": 141089,
+                "samplesPerSecond": 16059.552690082355,
+                "chunksPerSecond": 21.626880983745348,
+                "firstChunkMs": 78,
+                "maxGapMs": 48.441,
+                "chunkBytes": [
+                    1218,
+                    1280,
+                    1600
+                ],
+                "oddByteChunks": 0
+            },
+            "baselineDbfs": -42.159727378648455,
+            "playbackDbfs": -29.440127010514278,
+            "leakDb": 12.719600368134177,
+            "samplesCaptured": 80960,
+            "nonZeroSamples": 76430,
+            "correlation": 0.44782069364103416,
+            "lagMs": 261,
+            "recordedMs": 5060
+        },
+        {
+            "variant": "ec",
+            "playbackCompleted": true,
+            "audio": {
+                "requested": {
+                    "sampleRate": 16000,
+                    "channels": 1,
+                    "echoCancel": true,
+                    "noiseSuppress": false,
+                    "autoGain": false,
+                    "androidSource": "defaultSource"
+                },
+                "chunks": 189,
+                "samples": 141089,
+                "samplesPerSecond": 16062.200055442248,
+                "chunksPerSecond": 21.516601651996858,
+                "firstChunkMs": 68,
+                "maxGapMs": 48.617,
+                "chunkBytes": [
+                    1218,
+                    1280,
+                    1600
+                ],
+                "oddByteChunks": 0
+            },
+            "baselineDbfs": -52.326225203744805,
+            "playbackDbfs": -28.560175893389175,
+            "leakDb": 23.76604931035563,
+            "samplesCaptured": 80800,
+            "nonZeroSamples": 80721,
+            "correlation": 0.36706481196741386,
+            "lagMs": 242,
+            "recordedMs": 5050
+        },
+        {
+            "variant": "ec-ns-agc",
+            "playbackCompleted": true,
+            "audio": {
+                "requested": {
+                    "sampleRate": 16000,
+                    "channels": 1,
+                    "echoCancel": true,
+                    "noiseSuppress": true,
+                    "autoGain": true,
+                    "androidSource": "defaultSource"
+                },
+                "chunks": 189,
+                "samples": 141089,
+                "samplesPerSecond": 16082.152810145017,
+                "chunksPerSecond": 21.543329962771075,
+                "firstChunkMs": 76,
+                "maxGapMs": 48.717,
+                "chunkBytes": [
+                    1280,
+                    1538,
+                    1600
+                ],
+                "oddByteChunks": 0
+            },
+            "baselineDbfs": -34.58056445577464,
+            "playbackDbfs": -22.428578960634354,
+            "leakDb": 12.151985495140288,
+            "samplesCaptured": 80480,
+            "nonZeroSamples": 80395,
+            "correlation": 0.5170646504384844,
+            "lagMs": 220,
+            "recordedMs": 5030
+        }
+    ],
+    "camera": {
+        "camera": "Pixel Fold (Windows 仮想カメラ) (\\\\?\\swd#vcamdevapi#7df0f10d09d1a412f093d13e45d01495a23074a6a429f8a77563c10a441c014b#{e5323777-f976-4f5b-9b55-b94699c46e44}\\{fcebba03-9d13-4c13-9940-cc84fcd132d1})",
+        "preset": "high",
+        "frames": 1458,
+        "fps": 30.303740610962098,
+        "width": 1280,
+        "height": 720,
+        "format": "bgra8888",
+        "planes": 1,
+        "firstFrameMs": 141,
+        "maxGapMs": 56.735,
+        "converted": 221,
+        "convertedPerSecond": 4.5965179650120955,
+        "convertP50Ms": 0.2,
+        "convertP95Ms": 0.288,
+        "convertMaxMs": 0.897,
+        "rgbGreenMean": 46.78376736111111
+    },
+    "errors": []
+}

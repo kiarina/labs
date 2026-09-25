@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Analyze the app and build the web app"
+set -euo pipefail
+
+cd app
+flutter pub get
+flutter analyze
+flutter build web --release

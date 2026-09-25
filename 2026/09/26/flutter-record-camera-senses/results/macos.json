@@ -1,0 +1,169 @@
+{
+    "platform": "macOS",
+    "config": {
+        "scenario": "all",
+        "seconds": 20,
+        "intervalMs": 200,
+        "preset": "high"
+    },
+    "sensesAudio": {
+        "requested": {
+            "sampleRate": 16000,
+            "channels": 1,
+            "echoCancel": false,
+            "noiseSuppress": false,
+            "autoGain": false,
+            "androidSource": "defaultSource"
+        },
+        "chunks": 200,
+        "samples": 319754,
+        "samplesPerSecond": 16072.883065671447,
+        "chunksPerSecond": 10.053280375333191,
+        "firstChunkMs": 214,
+        "maxGapMs": 111.027,
+        "chunkBytes": [
+            2708,
+            3200
+        ],
+        "oddByteChunks": 0,
+        "rmsDbfs": -42.89626708027355
+    },
+    "sensesCamera": {
+        "camera": "FaceTime HDカメラ (47B4B64B-7067-4B9C-AD2B-AE273A71F4B5)",
+        "preset": "high",
+        "frames": 598,
+        "fps": 29.762225245306542,
+        "width": 1280,
+        "height": 720,
+        "format": "bgra8888",
+        "planes": 1,
+        "firstFrameMs": 1560,
+        "maxGapMs": 62.915,
+        "converted": 92,
+        "convertedPerSecond": 4.586473572141042,
+        "convertP50Ms": 0.48,
+        "convertP95Ms": 0.89,
+        "convertMaxMs": 2.963,
+        "rgbGreenMean": 113.70982638888889
+    },
+    "echo": [
+        {
+            "variant": "raw",
+            "playbackCompleted": true,
+            "audio": {
+                "requested": {
+                    "sampleRate": 16000,
+                    "channels": 1,
+                    "echoCancel": false,
+                    "noiseSuppress": false,
+                    "autoGain": false,
+                    "androidSource": "defaultSource"
+                },
+                "chunks": 89,
+                "samples": 142154,
+                "samplesPerSecond": 16152.718261795982,
+                "chunksPerSecond": 10.112919265724795,
+                "firstChunkMs": 190,
+                "maxGapMs": 107.937,
+                "chunkBytes": [
+                    2708,
+                    3200
+                ],
+                "oddByteChunks": 0
+            },
+            "baselineDbfs": -44.04856748371548,
+            "playbackDbfs": -26.71980318835271,
+            "leakDb": 17.32876429536277,
+            "samplesCaptured": 83200,
+            "nonZeroSamples": 83124,
+            "correlation": 0.7953106353557856,
+            "lagMs": 277,
+            "recordedMs": 5200
+        },
+        {
+            "variant": "ec",
+            "playbackCompleted": true,
+            "audio": {
+                "requested": {
+                    "sampleRate": 16000,
+                    "channels": 1,
+                    "echoCancel": true,
+                    "noiseSuppress": false,
+                    "autoGain": false,
+                    "androidSource": "defaultSource"
+                },
+                "chunks": 89,
+                "samples": 142154,
+                "samplesPerSecond": 16150.921599167788,
+                "chunksPerSecond": 10.111794408359478,
+                "firstChunkMs": 774,
+                "maxGapMs": 110.082,
+                "chunkBytes": [
+                    2708,
+                    3200
+                ],
+                "oddByteChunks": 0
+            },
+            "baselineDbfs": null,
+            "playbackDbfs": null,
+            "leakDb": null,
+            "samplesCaptured": 83200,
+            "nonZeroSamples": 0,
+            "correlation": 0.0,
+            "lagMs": 0,
+            "recordedMs": 5200
+        },
+        {
+            "variant": "ec-ns-agc",
+            "playbackCompleted": true,
+            "audio": {
+                "requested": {
+                    "sampleRate": 16000,
+                    "channels": 1,
+                    "echoCancel": true,
+                    "noiseSuppress": true,
+                    "autoGain": true,
+                    "androidSource": "defaultSource"
+                },
+                "chunks": 89,
+                "samples": 142154,
+                "samplesPerSecond": 16151.8263037276,
+                "chunksPerSecond": 10.112360827213841,
+                "firstChunkMs": 783,
+                "maxGapMs": 127.354,
+                "chunkBytes": [
+                    2708,
+                    3200
+                ],
+                "oddByteChunks": 0
+            },
+            "baselineDbfs": null,
+            "playbackDbfs": null,
+            "leakDb": null,
+            "samplesCaptured": 83200,
+            "nonZeroSamples": 0,
+            "correlation": 0.0,
+            "lagMs": 0,
+            "recordedMs": 5200
+        }
+    ],
+    "camera": {
+        "camera": "FaceTime HDカメラ (47B4B64B-7067-4B9C-AD2B-AE273A71F4B5)",
+        "preset": "high",
+        "frames": 1506,
+        "fps": 29.781066812428335,
+        "width": 1280,
+        "height": 720,
+        "format": "bgra8888",
+        "planes": 1,
+        "firstFrameMs": 1560,
+        "maxGapMs": 62.915,
+        "converted": 231,
+        "convertedPerSecond": 4.571047464233186,
+        "convertP50Ms": 0.443,
+        "convertP95Ms": 0.782,
+        "convertMaxMs": 2.963,
+        "rgbGreenMean": 113.73444444444445
+    },
+    "errors": []
+}

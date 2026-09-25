@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#MISE description="Build the macOS app and run camera+mic (20 s) and the echo test; writes results/macos.json"
+# Plays ~4 s test chirps through the speaker three times. The first run shows
+# the macOS camera and microphone permission prompts.
+set -euo pipefail
+
+(cd app && flutter build macos --release)
+mkdir -p results build
+log=build/macos.log
+rm -f "$log"
+timeout 400 open -W -n --env SENSES_SCENARIO=all --env SENSES_SECONDS=20 \
+  --env SENSES_EXIT=true --stdout "$log" --stderr "$log" \
+  app/build/macos/Build/Products/Release/senses_app.app || true
+grep -m1 SENSES_RESULT "$log" | sed 's/^.*SENSES_RESULT //' |
+  python3 -m json.tool --no-ensure-ascii > results/macos.json
+echo results/macos.json
