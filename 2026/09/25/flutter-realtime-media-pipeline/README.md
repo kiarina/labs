@@ -3,7 +3,7 @@
 Flutter で、**WebRTC で受け取るリモートの映像と音声**と**端末のカメラとマイク**を、同じリアルタイム処理ロジックで
 扱えるかを確かめます。処理ロジック（Domain と Application）は Flutter に依存しない Pure Dart のパッケージに置き、
 入力（`MediaSource`）と出力（`ActionTransport`）の Adapter を差し替えても Pipeline のコードが変わらないことを、
-Web / macOS / iOS / Android / Windows の 5 つで実機（Android はエミュレーター）を使って確認しました。
+Web / macOS / iOS / Android / Windows の 5 つで確認しました（Android は実機の Pixel Fold とエミュレーターの両方）。
 
 ```text
 MediaSource (WebRTC | Local camera+mic | Mock)
@@ -35,7 +35,7 @@ ActionTransport (RTCDataChannel | Local operation API | Mock)
 - **境界は保てました。** `core/`（Domain + Application + Mock + stats の変換）は `pubspec.yaml` に実行時依存が 1 つも
   なく、`dart test` だけで 16 件のテストが通ります（約 5 秒）。同じ `RealtimePipeline` が
   5 つのプラットフォームすべてで、Mock・Local→Mock・Local→Local API・WebRTC loopback の 4 通り、
-  さらに端末をまたぐ WebRTC（macOS → Chrome、macOS → iPad）で動きました。Pipeline 側の分岐は 0 です
+  さらに端末をまたぐ WebRTC（macOS → Chrome、macOS → iPad、macOS → Pixel Fold）で動きました。Pipeline 側の分岐は 0 です
 - **Phase 1 の映像と音量は getStats のポーリングでしか取れません。** flutter_webrtc にはフレームごとの
   コールバックも音量のコールバックもないため、100 ms ごとの `getStats()` をイベントに変換しました。
   したがって `VideoFrameObserved` は「フレームごと」ではなく「ポーリングごとの最新フレーム」で、
@@ -43,12 +43,12 @@ ActionTransport (RTCDataChannel | Local operation API | Mock)
 - **ローカルのカメラとマイクを観測するには、内部に loopback の PeerConnection が要ります。** stats は
   sender に載ったトラックにしか出ず、**接続していない sender だけではネイティブ 4 つ（macOS / iOS / Android /
   Windows）で映像のフレーム数も音量も 0 のまま**でした（Chrome では音量だけ取れた）。さらに、
-  **ネイティブ（Windows・Android エミュレーター）では loopback の probe を付けるとカメラの取り込み解像度自体が
-  下がりました**（Windows で 1280×720 → 480×270）。Phase 1 の手段としては使えますが、無料ではありません
+  **ネイティブ（Windows・Android の実機とエミュレーター）では loopback の probe を付けるとカメラの取り込み解像度自体が
+  下がりました**（Windows で 1280×720 → 480×270、Pixel Fold で 1280×720 → 320×180）。Phase 1 の手段としては使えますが、無料ではありません
 - **backpressure は意図どおりです。** 処理が遅いときの映像は最新の 1 枚だけが残り、遅延は処理 1 回分から
   伸びませんでした（単体テスト）。実機では処理が軽いため、どのプラットフォームでも落としたフレームは 0 でした
 - **DataChannel の往復は通ります。** Ping → Pong の RTT は、同じプロセスの loopback で 1.5〜15 ms、
-  Wi-Fi 越しの macOS ↔ iPad で 41.7 ms でした
+  Wi-Fi 越しの macOS ↔ iPad で 41.7 ms、macOS ↔ Pixel Fold で 36.6 ms でした
 - 指示書のコード例には、そのままでは成り立たない箇所が 4 つありました（[指示書から変えた点](#指示書から変えた点)）
 
 ## Architecture
@@ -132,7 +132,8 @@ Android では一部の数値が文字列で返るため、数値の読み取り
 | Web | MacBook Pro M1 Max | Chrome 153 headless | Chrome の fake device（`--use-fake-device-for-media-stream`） |
 | macOS | MacBook Pro M1 Max | macOS 26.6.2、Xcode 27.0 | 内蔵 |
 | iOS | iPad Air（第 4 世代） | iPadOS 26.6.2 | 内蔵 |
-| Android | Android 13 (API 33) arm64 エミュレーター（MacBook Pro M1 Max 上） | — | エミュレーターの virtual scene、マイクはホスト |
+| Android（実機） | Pixel Fold | Android 17 | 内蔵 |
+| Android（エミュレーター） | Android 13 (API 33) arm64 エミュレーター（MacBook Pro M1 Max 上） | — | エミュレーターの virtual scene、マイクはホスト |
 | Windows | デスクトップ PC | Windows 11 25H2（10.0.26220）、Visual Studio 2022 17.14 | 接続済みの USB カメラ |
 
 すべて Flutter 3.47.2（Dart 3.13.2）、flutter_webrtc 1.6.2+hotfix.3、release ビルドです。
@@ -156,10 +157,14 @@ Android では一部の数値が文字列で返るため、数値の読み取り
 | iOS | local-mock | 640×480 | 60.2 | 23 / 1 | 36 / 11 | 0.39 | 0.01 / 0.10 | 4.6 / 143 |
 | iOS | local-api | 640×480 | 60.0 | 23 / 0 | 35 / 11 | 0.30 | 0.02 / 0.10 | 4.6 / 153 |
 | iOS | loopback | 640×480 | 60.7 | 22 / 0 | 34 / 11 | 3.1 | 0.66 / 190 | 4.6 / 233 |
-| Android | mock | 1280×720 | 30.3 | 11 / 6 | 29 / 11 | 1.1 | 0.02 / 2.4 | — |
-| Android | local-mock | 720×1280 | 11.3 | 4 / 0 | 16 / 11 | 3.2 | 0.01 / 0.63 | 3.7 / 16.2 |
-| Android | local-api | 720×1280 | 11.3 | 4 / 0 | 16 / 11 | 0.35 | 0.01 / 0.23 | 3.4 / 30.6 |
-| Android | loopback | 480×270 | 11.3 | 3 / 0 | 15 / 11 | 5.4 | 3.2 / 697 | 5.1 / 89.0 |
+| Android（Pixel Fold） | mock | 1280×720 | 30.5 | 11 / 6 | 29 / 11 | 1.3 | 0.05 / 2.3 | — |
+| Android（Pixel Fold） | local-mock | 720×1280 | 28.4 | 10 / 1 | 23 / 11 | 1.1 | 0.03 / 2.8 | 9.4 / 24.3 |
+| Android（Pixel Fold） | local-api | 720×1280 | 30.1 | 11 / 1 | 24 / 11 | 0.37 | 0.03 / 0.76 | 9.5 / 84.0 |
+| Android（Pixel Fold） | loopback | 320×180 | 30.0 | 10 / 0 | 22 / 11 | 13.5 | 2.3 / 654 | 10.4 / 337 |
+| Android（エミュ） | mock | 1280×720 | 30.3 | 11 / 6 | 29 / 11 | 1.1 | 0.02 / 2.4 | — |
+| Android（エミュ） | local-mock | 720×1280 | 11.3 | 4 / 0 | 16 / 11 | 3.2 | 0.01 / 0.63 | 3.7 / 16.2 |
+| Android（エミュ） | local-api | 720×1280 | 11.3 | 4 / 0 | 16 / 11 | 0.35 | 0.01 / 0.23 | 3.4 / 30.6 |
+| Android（エミュ） | loopback | 480×270 | 11.3 | 3 / 0 | 15 / 11 | 5.4 | 3.2 / 697 | 5.1 / 89.0 |
 | Windows | mock | 1280×720 | 30.3 | 5 / 3 | 14 / 5 | 0.15 | 0.01 / 0.05 | — |
 | Windows | local-mock | 480×270 | 30.0 | 11 / 0 | 23 / 11 | 1.4 | 0.00 / 0.28 | 1.3 / 2.4 |
 | Windows | local-api | 480×270 | 30.1 | 11 / 0 | 23 / 11 | 0.08 | 0.01 / 0.07 | 1.8 / 8.8 |
@@ -180,7 +185,9 @@ Pong を返す）にして、別のアプリを `webrtc`（viewer。受け取っ
 | --- | --- | --- | --- | --- | --- |
 | Chrome headless（同じ Mac） | localhost | 640×480 / 25.3 | 25 | 26 | 0.9 |
 | iPad Air（第 4 世代） | Wi-Fi LAN | 640×480 / 26.0 | 34 | 34 | 41.7 |
+| Pixel Fold | Wi-Fi LAN | 640×480 / 28.9 | 40 | 40 | 36.6 |
 
+Pixel Fold の viewer は、ほかの計測より古いビルド（結果に `sessionState` が無い版）で動かしました。
 送った数と受けた数の 1 件の差は、viewer の metrics を最後に更新した時点（250 ms ごと）と、publisher が数えた時点の
 ずれです。libwebrtc（ネイティブ）と Chrome の間でも、映像・音声・DataChannel がつながりました。
 
@@ -191,7 +198,8 @@ Pong を返す）にして、別のアプリを `webrtc`（viewer。受け取っ
 | Web | 0 | 取れた（0.015） | 1280×720 | 1280×720 |
 | macOS | 0 | 0.0 | 640×480 | 640×480 |
 | iOS | 0 | 0.0 | 640×480 | 640×480 |
-| Android | 0 | 0.0 | 1280×720 | 480×270 |
+| Android（Pixel Fold） | 0 | 0.0 | 1280×720 | 480×270（local-mock）/ 320×180（local-api） |
+| Android（エミュ） | 0 | 0.0 | 1280×720 | 480×270 |
 | Windows | 0 | 0.0 | 1280×720 | 480×270 |
 
 プレビューの解像度は、画面の `RTCVideoRenderer` の `videoWidth`/`videoHeight` です（`results/*.json` の `renderer`）。
@@ -199,7 +207,7 @@ Pong を返す）にして、別のアプリを `webrtc`（viewer。受け取っ
 観測した事実:
 
 - 接続していない sender では、どのプラットフォームでも `media-source` の `frames` が増えませんでした。音量は Chrome だけで取れました
-- Android と Windows では、loopback の probe を付けたときだけプレビューの解像度が下がりました。macOS と iOS は
+- Android（実機とエミュレーター）と Windows では、loopback の probe を付けたときだけプレビューの解像度が下がりました。macOS と iOS は
   どちらでも 640×480、Chrome はどちらでも 1280×720 で変わりませんでした
 
 解釈（未検証）: libwebrtc のエンコーダーは、接続直後の推定帯域が小さいと解像度を下げます。ネイティブではこの調整が
@@ -301,7 +309,7 @@ mise run signaling       # 2 台構成用の signaling relay（ポート 8787）
 - **Phase 2（生の映像フレームと音声 PCM）は扱っていません。** 今回の Local の観測は stats 経由なので、フレームの
   中身はまったく見ていません。上の probe の観測から、ローカルの映像を実際に処理するなら、stats ではなく
   プラットフォームごとのフレームの取り出し口が必要だと考えています
-- Android は実機ではなくエミュレーターです。Android 実機と、iPhone は試していません
+- Android の実機は Pixel Fold（Android 17）の 1 台だけです。iPhone は試していません
 - Web は Chrome の fake device だけです。Safari と Firefox、実カメラのブラウザは試していません
 - カメラとマイクの切り替え（デバイス選択）、`Mute Mic` / `Disable Camera`、アプリのバックグラウンド化と復帰は、
   実装はしていますが自動実行では確かめていません
