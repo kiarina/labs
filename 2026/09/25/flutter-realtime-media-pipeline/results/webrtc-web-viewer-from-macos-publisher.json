@@ -1,0 +1,75 @@
+{
+    "platform": "web",
+    "mode": "webrtc",
+    "probe": "loopback",
+    "seconds": 15,
+    "metrics": {
+        "elapsedMs": 15116.8,
+        "mediaKind": "webrtc",
+        "transportKind": "datachannel",
+        "transportConnected": true,
+        "videoActive": true,
+        "videoWidth": 640,
+        "videoHeight": 480,
+        "videoFps": 25.336728454946293,
+        "lastFrameSequence": 322,
+        "audioActive": true,
+        "audioLevel": 0,
+        "stats": {
+            "videoFps": 25,
+            "videoWidth": 640,
+            "videoHeight": 480,
+            "framesDecoded": 322,
+            "framesDropped": 0,
+            "audioLevel": 0,
+            "roundTripTime": 0.002,
+            "jitter": 0.005,
+            "packetsLost": 0,
+            "bitrateKbps": 260.68397478932656,
+            "audioTrackEnabled": true,
+            "videoTrackEnabled": true
+        },
+        "inputEvents": 404,
+        "processedEvents": 404,
+        "inputEventsPerSecond": 23.904382470119522,
+        "processedEventsPerSecond": 23.904382470119522,
+        "droppedVideoFrames": 0,
+        "droppedAudioEvents": 0,
+        "lastLatencyMs": 0,
+        "averageLatencyMs": 1.284,
+        "maxLatencyMs": 313.5,
+        "lastResult": "video_tick",
+        "resultCounts": {
+            "media_started": 1,
+            "video_tick": 10
+        },
+        "actionsSent": 25,
+        "actionsReceived": 14,
+        "sendErrors": 0,
+        "lastRoundTripMs": 0.9,
+        "lastAction": {
+            "type": "custom",
+            "name": "video_tick",
+            "data": {
+                "frame": 301
+            }
+        },
+        "lastError": null
+    },
+    "diagnostics": {
+        "statsSide": "inbound",
+        "polls": 149,
+        "averageGetStatsMs": 1.6053557046979865,
+        "maxGetStatsMs": 11,
+        "frameCounterSource": "framesDecoded",
+        "audioLevelSource": "audioLevel",
+        "statsWidth": 640,
+        "statsHeight": 480,
+        "statsFps": 25
+    },
+    "renderer": {
+        "videoWidth": 640,
+        "videoHeight": 480
+    },
+    "connectionState": "RTCPeerConnectionStateConnected"
+}

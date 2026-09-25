@@ -1,5 +1,6 @@
 # audio
 
+- 2026/09/25 [Flutter realtime media pipeline: one Pure Dart pipeline over WebRTC and local capture](../2026/09/25/flutter-realtime-media-pipeline/README.md)
 - 2026/07/30 [LTX-2 dialogue video generation](../2026/07/30/ltx2-dialogue-video/README.md)
 - 2026/07/25 [Unreal mixed-audio auditory attention](../2026/07/25/unreal-mixed-audio-attention/README.md)
 - 2026/07/23 [Unreal Engine virtual-ear audio localization](../2026/07/23/unreal-audio-localization/README.md)

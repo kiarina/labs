@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Run the Pure Dart core tests with dart test (no Flutter)"
+set -euo pipefail
+
+cd core
+dart pub get
+dart analyze
+dart test

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Run the WebSocket signaling relay for the two-device WebRTC mode (port 8787)"
+set -euo pipefail
+
+cd core
+dart run bin/signaling_server.dart "$@"

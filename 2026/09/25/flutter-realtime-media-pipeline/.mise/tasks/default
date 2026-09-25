@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#MISE description="Test the Pure Dart core, analyze the app, and build the web app"
+set -euo pipefail
+
+mise run core-test
+cd app
+flutter pub get
+flutter analyze
+flutter build web --release

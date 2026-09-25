@@ -1,0 +1,73 @@
+{
+    "platform": "android",
+    "mode": "local-mock",
+    "probe": "sender",
+    "seconds": 12,
+    "metrics": {
+        "elapsedMs": 12283.543,
+        "mediaKind": "local",
+        "transportKind": "mock",
+        "transportConnected": true,
+        "videoActive": false,
+        "videoWidth": 720,
+        "videoHeight": 1280,
+        "videoFps": null,
+        "lastFrameSequence": 0,
+        "audioActive": true,
+        "audioLevel": 0.0,
+        "stats": {
+            "videoFps": 0.0,
+            "videoWidth": 720,
+            "videoHeight": 1280,
+            "framesDecoded": 0,
+            "framesDropped": null,
+            "audioLevel": 0.0,
+            "roundTripTime": null,
+            "jitter": null,
+            "packetsLost": null,
+            "bitrateKbps": 0.0,
+            "audioTrackEnabled": true,
+            "videoTrackEnabled": true
+        },
+        "inputEvents": 236,
+        "processedEvents": 236,
+        "inputEventsPerSecond": 24.11003821441057,
+        "processedEventsPerSecond": 24.11003821441057,
+        "droppedVideoFrames": 0,
+        "droppedAudioEvents": 0,
+        "lastLatencyMs": 0.003,
+        "averageLatencyMs": 0.004,
+        "maxLatencyMs": 0.156,
+        "lastResult": "media_started",
+        "resultCounts": {
+            "media_started": 1
+        },
+        "actionsSent": 12,
+        "actionsReceived": 11,
+        "sendErrors": 0,
+        "lastRoundTripMs": 1.147,
+        "lastAction": {
+            "type": "ping",
+            "id": "ping-11"
+        },
+        "lastError": null
+    },
+    "diagnostics": {
+        "statsSide": "outbound",
+        "probe": "sender",
+        "captureMs": 234.416,
+        "polls": 119,
+        "averageGetStatsMs": 3.165008403361344,
+        "maxGetStatsMs": 33.225,
+        "frameCounterSource": "frames",
+        "audioLevelSource": "audioLevel",
+        "statsWidth": 720,
+        "statsHeight": 1280,
+        "statsFps": 0.0
+    },
+    "renderer": {
+        "videoWidth": 1280,
+        "videoHeight": 720
+    },
+    "connectionState": null
+}

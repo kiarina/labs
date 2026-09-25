@@ -1,0 +1,74 @@
+{
+    "platform": "android",
+    "mode": "local-mock",
+    "probe": "loopback",
+    "seconds": 12,
+    "metrics": {
+        "elapsedMs": 12667.824,
+        "mediaKind": "local",
+        "transportKind": "mock",
+        "transportConnected": true,
+        "videoActive": true,
+        "videoWidth": 720,
+        "videoHeight": 1280,
+        "videoFps": 11.336741913735397,
+        "lastFrameSequence": 133,
+        "audioActive": true,
+        "audioLevel": 3.051850947599719e-05,
+        "stats": {
+            "videoFps": 11.0,
+            "videoWidth": 720,
+            "videoHeight": 1280,
+            "framesDecoded": 133,
+            "framesDropped": null,
+            "audioLevel": 3.051850947599719e-05,
+            "roundTripTime": 0.0,
+            "jitter": null,
+            "packetsLost": null,
+            "bitrateKbps": 396.55566259795205,
+            "audioTrackEnabled": true,
+            "videoTrackEnabled": true
+        },
+        "inputEvents": 352,
+        "processedEvents": 352,
+        "inputEventsPerSecond": 35.91122744575409,
+        "processedEventsPerSecond": 35.91122744575409,
+        "droppedVideoFrames": 0,
+        "droppedAudioEvents": 0,
+        "lastLatencyMs": 0.002,
+        "averageLatencyMs": 0.006,
+        "maxLatencyMs": 0.633,
+        "lastResult": "video_tick",
+        "resultCounts": {
+            "media_started": 1,
+            "video_tick": 4
+        },
+        "actionsSent": 16,
+        "actionsReceived": 11,
+        "sendErrors": 0,
+        "lastRoundTripMs": 3.186,
+        "lastAction": {
+            "type": "ping",
+            "id": "ping-11"
+        },
+        "lastError": null
+    },
+    "diagnostics": {
+        "statsSide": "outbound",
+        "probe": "loopback",
+        "captureMs": 304.775,
+        "polls": 119,
+        "averageGetStatsMs": 3.685075630252101,
+        "maxGetStatsMs": 16.218,
+        "frameCounterSource": "frames",
+        "audioLevelSource": "audioLevel",
+        "statsWidth": 720,
+        "statsHeight": 1280,
+        "statsFps": 11.0
+    },
+    "renderer": {
+        "videoWidth": 480,
+        "videoHeight": 270
+    },
+    "connectionState": null
+}

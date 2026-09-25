@@ -1,0 +1,77 @@
+{
+    "platform": "web",
+    "mode": "local-mock",
+    "probe": "sender",
+    "seconds": 12,
+    "metrics": {
+        "elapsedMs": 12331.701,
+        "mediaKind": "local",
+        "transportKind": "mock",
+        "transportConnected": true,
+        "videoActive": false,
+        "videoWidth": 1280,
+        "videoHeight": 720,
+        "videoFps": null,
+        "lastFrameSequence": 0,
+        "audioActive": true,
+        "audioLevel": 0.015381328775902585,
+        "stats": {
+            "videoFps": 0,
+            "videoWidth": 1280,
+            "videoHeight": 720,
+            "framesDecoded": 0,
+            "framesDropped": null,
+            "audioLevel": 0.015381328775902585,
+            "roundTripTime": null,
+            "jitter": null,
+            "packetsLost": null,
+            "bitrateKbps": 0,
+            "audioTrackEnabled": true,
+            "videoTrackEnabled": true
+        },
+        "inputEvents": 240,
+        "processedEvents": 240,
+        "inputEventsPerSecond": 15.942543074758571,
+        "processedEventsPerSecond": 15.942543074758571,
+        "droppedVideoFrames": 0,
+        "droppedAudioEvents": 0,
+        "lastLatencyMs": 0,
+        "averageLatencyMs": 0.029,
+        "maxLatencyMs": 0.3,
+        "lastResult": "audio_peak",
+        "resultCounts": {
+            "media_started": 1,
+            "audio_peak": 23
+        },
+        "actionsSent": 35,
+        "actionsReceived": 11,
+        "sendErrors": 0,
+        "lastRoundTripMs": 4.801,
+        "lastAction": {
+            "type": "custom",
+            "name": "audio_peak",
+            "data": {
+                "level": 0.9858699301126133
+            }
+        },
+        "lastError": null
+    },
+    "diagnostics": {
+        "statsSide": "outbound",
+        "probe": "sender",
+        "captureMs": 314.1,
+        "polls": 119,
+        "averageGetStatsMs": 0.9991848739495798,
+        "maxGetStatsMs": 5.801,
+        "frameCounterSource": "frames",
+        "audioLevelSource": "audioLevel",
+        "statsWidth": 1280,
+        "statsHeight": 720,
+        "statsFps": 0
+    },
+    "renderer": {
+        "videoWidth": 1280,
+        "videoHeight": 720
+    },
+    "connectionState": null
+}

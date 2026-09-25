@@ -1,0 +1,93 @@
+{
+    "platform": "iOS",
+    "mode": "loopback",
+    "probe": "loopback",
+    "seconds": 12,
+    "metrics": {
+        "elapsedMs": 12000.549,
+        "mediaKind": "webrtc",
+        "transportKind": "datachannel (peer B)",
+        "transportConnected": true,
+        "videoActive": true,
+        "videoWidth": 640,
+        "videoHeight": 480,
+        "videoFps": 60.6726382818651,
+        "lastFrameSequence": 661,
+        "audioActive": true,
+        "audioLevel": 0.007965330973235268,
+        "stats": {
+            "videoFps": 61.0,
+            "videoWidth": 640,
+            "videoHeight": 480,
+            "framesDecoded": 661,
+            "framesDropped": 0,
+            "audioLevel": 0.007965330973235268,
+            "roundTripTime": 0.0,
+            "jitter": 0.003,
+            "packetsLost": 0,
+            "bitrateKbps": 52.16610997557207,
+            "audioTrackEnabled": true,
+            "videoTrackEnabled": true
+        },
+        "inputEvents": 346,
+        "processedEvents": 346,
+        "inputEventsPerSecond": 24.086228698741497,
+        "processedEventsPerSecond": 24.086228698741497,
+        "droppedVideoFrames": 0,
+        "droppedAudioEvents": 0,
+        "lastLatencyMs": 0.362,
+        "averageLatencyMs": 0.658,
+        "maxLatencyMs": 189.846,
+        "lastResult": "video_tick",
+        "resultCounts": {
+            "media_started": 1,
+            "video_tick": 22
+        },
+        "actionsSent": 34,
+        "actionsReceived": 11,
+        "sendErrors": 0,
+        "lastRoundTripMs": 3.128,
+        "lastAction": {
+            "type": "custom",
+            "name": "video_tick",
+            "data": {
+                "frame": 661
+            }
+        },
+        "lastError": null
+    },
+    "diagnostics": {
+        "statsSide": "inbound",
+        "polls": 117,
+        "averageGetStatsMs": 4.602401709401709,
+        "maxGetStatsMs": 232.74,
+        "frameCounterSource": "framesDecoded",
+        "audioLevelSource": "audioLevel",
+        "statsWidth": 640,
+        "statsHeight": 480,
+        "statsFps": 61.0,
+        "peerA": {
+            "connected": true,
+            "received": 34,
+            "pongsSent": 11,
+            "countsByType": {
+                "ping": 11,
+                "video_tick": 22,
+                "move": 1
+            },
+            "lastAction": {
+                "type": "custom",
+                "name": "video_tick",
+                "data": {
+                    "frame": 661
+                }
+            },
+            "lastError": null
+        }
+    },
+    "renderer": {
+        "videoWidth": 640,
+        "videoHeight": 480
+    },
+    "connectionState": "RTCPeerConnectionStateConnected"
+}

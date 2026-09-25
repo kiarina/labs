@@ -1,0 +1,53 @@
+{
+    "platform": "web",
+    "mode": "mock",
+    "probe": "loopback",
+    "seconds": 12,
+    "metrics": {
+        "elapsedMs": 12001.1,
+        "mediaKind": "mock",
+        "transportKind": "mock",
+        "transportConnected": true,
+        "videoActive": true,
+        "videoWidth": 1280,
+        "videoHeight": 720,
+        "videoFps": 30.423885860397633,
+        "lastFrameSequence": 361,
+        "audioActive": true,
+        "audioLevel": 0.45766501689432854,
+        "stats": null,
+        "inputEvents": 958,
+        "processedEvents": 958,
+        "inputEventsPerSecond": 80.22462896109106,
+        "processedEventsPerSecond": 80.22462896109106,
+        "droppedVideoFrames": 0,
+        "droppedAudioEvents": 0,
+        "lastLatencyMs": 0.1,
+        "averageLatencyMs": 0.081,
+        "maxLatencyMs": 5.199,
+        "lastResult": "video_tick",
+        "resultCounts": {
+            "media_started": 1,
+            "audio_peak": 6,
+            "video_tick": 12
+        },
+        "actionsSent": 30,
+        "actionsReceived": 11,
+        "sendErrors": 0,
+        "lastRoundTripMs": 9.3,
+        "lastAction": {
+            "type": "custom",
+            "name": "video_tick",
+            "data": {
+                "frame": 360
+            }
+        },
+        "lastError": null
+    },
+    "diagnostics": {},
+    "renderer": {
+        "videoWidth": 0,
+        "videoHeight": 0
+    },
+    "connectionState": null
+}

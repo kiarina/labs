@@ -1,0 +1,80 @@
+{
+    "platform": "android",
+    "mode": "local-api",
+    "probe": "loopback",
+    "seconds": 12,
+    "metrics": {
+        "elapsedMs": 12576.974,
+        "mediaKind": "local",
+        "transportKind": "local-api",
+        "transportConnected": true,
+        "videoActive": true,
+        "videoWidth": 720,
+        "videoHeight": 1280,
+        "videoFps": 11.333741348021862,
+        "lastFrameSequence": 133,
+        "audioActive": true,
+        "audioLevel": 3.051850947599719e-05,
+        "stats": {
+            "videoFps": 11.0,
+            "videoWidth": 720,
+            "videoHeight": 1280,
+            "framesDecoded": 133,
+            "framesDropped": null,
+            "audioLevel": 3.051850947599719e-05,
+            "roundTripTime": 0.0,
+            "jitter": null,
+            "packetsLost": null,
+            "bitrateKbps": 212.7913927077107,
+            "audioTrackEnabled": true,
+            "videoTrackEnabled": true
+        },
+        "inputEvents": 352,
+        "processedEvents": 352,
+        "inputEventsPerSecond": 35.96719791550106,
+        "processedEventsPerSecond": 35.96719791550106,
+        "droppedVideoFrames": 0,
+        "droppedAudioEvents": 0,
+        "lastLatencyMs": 0.001,
+        "averageLatencyMs": 0.006,
+        "maxLatencyMs": 0.232,
+        "lastResult": "video_tick",
+        "resultCounts": {
+            "media_started": 1,
+            "video_tick": 4
+        },
+        "actionsSent": 16,
+        "actionsReceived": 11,
+        "sendErrors": 0,
+        "lastRoundTripMs": 0.354,
+        "lastAction": {
+            "type": "ping",
+            "id": "ping-11"
+        },
+        "lastError": null
+    },
+    "diagnostics": {
+        "statsSide": "outbound",
+        "probe": "loopback",
+        "captureMs": 260.778,
+        "polls": 119,
+        "averageGetStatsMs": 3.441966386554622,
+        "maxGetStatsMs": 30.649,
+        "frameCounterSource": "frames",
+        "audioLevelSource": "audioLevel",
+        "statsWidth": 720,
+        "statsHeight": 1280,
+        "statsFps": 11.0,
+        "operationApi": {
+            "handled": 17,
+            "customCounts": {
+                "video_tick": 4
+            }
+        }
+    },
+    "renderer": {
+        "videoWidth": 480,
+        "videoHeight": 270
+    },
+    "connectionState": null
+}

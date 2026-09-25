@@ -1,0 +1,77 @@
+{
+    "platform": "macOS",
+    "mode": "local-mock",
+    "probe": "loopback",
+    "seconds": 12,
+    "metrics": {
+        "elapsedMs": 13084.876,
+        "mediaKind": "local",
+        "transportKind": "mock",
+        "transportConnected": true,
+        "videoActive": true,
+        "videoWidth": 640,
+        "videoHeight": 480,
+        "videoFps": 25.646980709196008,
+        "lastFrameSequence": 301,
+        "audioActive": true,
+        "audioLevel": 0.022003845332193975,
+        "stats": {
+            "videoFps": 26.0,
+            "videoWidth": 640,
+            "videoHeight": 480,
+            "framesDecoded": 301,
+            "framesDropped": null,
+            "audioLevel": 0.022003845332193975,
+            "roundTripTime": 0.0,
+            "jitter": null,
+            "packetsLost": null,
+            "bitrateKbps": 1640.955711182756,
+            "audioTrackEnabled": true,
+            "videoTrackEnabled": true
+        },
+        "inputEvents": 325,
+        "processedEvents": 325,
+        "inputEventsPerSecond": 36.01555872136763,
+        "processedEventsPerSecond": 36.01555872136763,
+        "droppedVideoFrames": 0,
+        "droppedAudioEvents": 0,
+        "lastLatencyMs": 0.015,
+        "averageLatencyMs": 0.006,
+        "maxLatencyMs": 0.033,
+        "lastResult": "video_tick",
+        "resultCounts": {
+            "media_started": 1,
+            "video_tick": 10
+        },
+        "actionsSent": 22,
+        "actionsReceived": 11,
+        "sendErrors": 0,
+        "lastRoundTripMs": 0.213,
+        "lastAction": {
+            "type": "custom",
+            "name": "video_tick",
+            "data": {
+                "frame": 301
+            }
+        },
+        "lastError": null
+    },
+    "diagnostics": {
+        "statsSide": "outbound",
+        "probe": "loopback",
+        "captureMs": 1113.717,
+        "polls": 110,
+        "averageGetStatsMs": 12.704027272727274,
+        "maxGetStatsMs": 945.211,
+        "frameCounterSource": "frames",
+        "audioLevelSource": "audioLevel",
+        "statsWidth": 640,
+        "statsHeight": 480,
+        "statsFps": 26.0
+    },
+    "renderer": {
+        "videoWidth": 640,
+        "videoHeight": 480
+    },
+    "connectionState": null
+}

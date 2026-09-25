@@ -1,0 +1,76 @@
+{
+    "platform": "iOS",
+    "mode": "webrtc",
+    "probe": "loopback",
+    "seconds": 20,
+    "sessionState": "SessionRunning",
+    "metrics": {
+        "elapsedMs": 19770.618,
+        "mediaKind": "webrtc",
+        "transportKind": "datachannel",
+        "transportConnected": true,
+        "videoActive": true,
+        "videoWidth": 640,
+        "videoHeight": 480,
+        "videoFps": 26.037059414566734,
+        "lastFrameSequence": 439,
+        "audioActive": true,
+        "audioLevel": 0.00891140476699118,
+        "stats": {
+            "videoFps": 26.0,
+            "videoWidth": 640,
+            "videoHeight": 480,
+            "framesDecoded": 439,
+            "framesDropped": 0,
+            "audioLevel": 0.00891140476699118,
+            "roundTripTime": 0.006,
+            "jitter": 0.012,
+            "packetsLost": 0,
+            "bitrateKbps": 790.7927552230262,
+            "audioTrackEnabled": true,
+            "videoTrackEnabled": true
+        },
+        "inputEvents": 539,
+        "processedEvents": 539,
+        "inputEventsPerSecond": 36.02391988280218,
+        "processedEventsPerSecond": 36.02391988280218,
+        "droppedVideoFrames": 0,
+        "droppedAudioEvents": 0,
+        "lastLatencyMs": 0.003,
+        "averageLatencyMs": 9.732,
+        "maxLatencyMs": 985.059,
+        "lastResult": "video_tick",
+        "resultCounts": {
+            "media_started": 1,
+            "video_tick": 14
+        },
+        "actionsSent": 34,
+        "actionsReceived": 19,
+        "sendErrors": 0,
+        "lastRoundTripMs": 41.712,
+        "lastAction": {
+            "type": "custom",
+            "name": "video_tick",
+            "data": {
+                "frame": 421
+            }
+        },
+        "lastError": null
+    },
+    "diagnostics": {
+        "statsSide": "inbound",
+        "polls": 199,
+        "averageGetStatsMs": 7.23508040201005,
+        "maxGetStatsMs": 68.759,
+        "frameCounterSource": "framesDecoded",
+        "audioLevelSource": "audioLevel",
+        "statsWidth": 640,
+        "statsHeight": 480,
+        "statsFps": 26.0
+    },
+    "renderer": {
+        "videoWidth": 640,
+        "videoHeight": 480
+    },
+    "connectionState": "RTCPeerConnectionStateConnected"
+}

@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+#MISE description="Build the macOS app and run each mode with the real camera/mic; writes results/macos-*.json"
+# The first run shows the macOS camera and microphone permission prompts.
+set -euo pipefail
+
+SECONDS_PER_RUN=${SECONDS_PER_RUN:-12}
+(cd app && flutter build macos --release)
+APP=app/build/macos/Build/Products/Release/realtime_pipeline_app.app
+mkdir -p results build
+
+for run in ${RUNS:-mock:loopback local-mock:loopback local-mock:sender local-mock:none local-api:loopback loopback:loopback}; do
+  mode=${run%%:*}
+  probe=${run##*:}
+  log=build/macos-$mode-$probe.log
+  out=results/macos-$mode-$probe.json
+  rm -f "$log"
+  # `open` makes the app itself the responsible process for camera access.
+  timeout $((SECONDS_PER_RUN + 120)) open -W -n \
+    --env REALTIME_AUTORUN="$mode" --env REALTIME_PROBE="$probe" \
+    --env REALTIME_SECONDS="$SECONDS_PER_RUN" --env REALTIME_EXIT=true \
+    --stdout "$log" --stderr "$log" "$APP" || true
+  grep -m1 REALTIME_RESULT "$log" | sed 's/^flutter: REALTIME_RESULT //' |
+    python3 -m json.tool > "$out" || true
+  echo "$out"
+done
