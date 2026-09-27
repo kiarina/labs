@@ -5,6 +5,7 @@
 #USAGE arg "<name>" help="Result name (results/<name>.json and results/<name>.log)"
 #USAGE flag "--model <model>" default="Seed-san.vrm" help="File under .cache/models/"
 #USAGE flag "--filler <n>" default="0" help="Static mesh components to keep in the world"
+#USAGE flag "--natural" help="spring scenario: keep gravity, wind and colliders"
 #USAGE flag "--shot" help="load scenario: save results/<name>.png"
 #USAGE flag "--timeout <sec>" default="240" help="Kill the Editor after this many seconds"
 
@@ -26,6 +27,9 @@ TAG="$(git -C "${LAB_ROOT}/UnrealProject/Plugins/VRM4U" rev-parse --short HEAD) 
 ARGS=(-VrmRepro "-VrmReproFile=${LAB_ROOT}/.cache/models/${usage_model}" "-VrmReproOut=${OUT_JSON}"
       "-VrmReproScenario=${SCENARIO}" "-VrmReproFiller=${usage_filler}" "-VrmReproTag=${TAG}"
       -unattended -nosplash -nosound -stdout -FullStdOutLogOutput "-abslog=${RAW_LOG}")
+if [ "${usage_natural:-false}" = "true" ]; then
+    ARGS+=(-VrmReproNatural)
+fi
 if [ "${usage_shot:-false}" = "true" ]; then
     rm -f "${LAB_ROOT}/results/${NAME}.png"
     ARGS+=("-VrmReproShot=${LAB_ROOT}/results/${NAME}.png")

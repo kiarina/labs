@@ -125,38 +125,64 @@ temporal jitter at a different frame, not a material change.
 
 ### 4: VRM 1.0 spring bones (PIE)
 
-The axis VRM4U uses differs from the specification's on every Seed-san joint:
-1.5°–65.1°, and 146.2° on `hair_G.001`
-([`results/spring-axis-Seed-san.txt`](results/spring-axis-Seed-san.txt)).
+Model for this part: VRoid's official sample **AvatarSample_E** (VRM 1.0, 45
+springs / 173 joints; sha256 `6a6237bc…abdfec1`). It is not redistributed here:
+place it at `.cache/models/AvatarSample_E.vrm` and derive the thinned variant
+with `scripts/thin_spring_joints.py`. The runs are in `scripts/run_matrix.sh`
+under "AvatarSample_E".
 
-| Model | Spring | Joints | Tail offset, upstream (00+02) | Tail offset, 00+02+04 |
-|---|---|---|---|---|
-| Seed-san | hair_tail_1 | 7 | −14.46 cm | −16.18 cm |
-| Seed-san | robo_wire | 7 | −36.96 cm | −38.40 cm |
-| Seed-san | hair_A_001 | 2 | −2.33 cm | −2.51 cm |
-| Seed-san-thinned | hair_tail_1 | 4 | 0.00 cm | −13.53 cm |
-| Seed-san-thinned | robo_wire | 4 | 0.00 cm | −29.20 cm |
+**Axis.** Across AvatarSample_E's 128 Head/Tail pairs the axis VRM4U uses
+differs from the specification's by a median of 3.3°, by more than 90° on 17
+pairs, and by 110°–141° at the root of all ten hair strands (`J_Sec_Hair1_*`:
+the specification points down the strand, VRM4U points from the head centre
+to the root) ([`results/spring-axis-AvatarSample_E.txt`](results/spring-axis-AvatarSample_E.txt)).
 
-- When the Tail is not the Head's direct child, upstream leaves the chain
-  where it is: each joint's position comes from the incoming pose and plain
-  nodes are never output, so the tail does not move at all. The patch composes
-  the rest transform across the plain nodes and moves them rigidly with the
-  joint.
-- Direct parent–child chains respond similarly before and after.
-- At rest (no gravity, wind or colliders) every joint stays within 0.01° of
-  the authored rest pose in both variants. A wrong axis does not show at rest:
-  VRM4U derives both ends of its rotation from the same axis, so they cancel.
+**Response while cruising** (gravity, wind and colliders off; tail offset
+along X, negative = trails behind):
+
+| Spring | Joints | upstream (00+02) | 00+02+04 |
+|---|---|---|---|
+| J_Sec_Hair1_01 | 4 | −7.66 cm | −17.40 cm |
+| J_Sec_Hair1_10 | 5 | −21.99 cm | −38.66 cm |
+| J_Opt_C_RabbitTail1_01 | 4 | −16.42 cm | −25.05 cm |
+| J_Opt_L_RabbitEar2_01 | 3 | −4.09 cm | −19.23 cm |
+| J_Sec_L_SkirtBack1_01 | 4 | −3.93 cm | −8.32 cm |
+
+Of the 37 springs that trail with the patch, upstream gives 0–66 % of that
+response (the two bust springs 90 %). Three of them (`J_Sec_Hair1_06` and two
+coat-skirt side springs) instead move forward slightly upstream (at most
+0.3 cm).
+
+**At rest with gravity, wind and colliders on** (`--natural`): upstream turns
+`J_Sec_Hair1_06` and `_07` 135.4° and 134.1° away from the rest pose, and the
+other hair strands do not droop at all (0.0°). With the patch the strands droop
+6.6°–9.2° under gravity.
+
+**Joints that are not direct children** (`AvatarSample_E-thinned`, 50
+intermediate joints removed, 123 remain): upstream leaves 21 of 45 springs
+completely still (e.g. `J_Sec_Hair1_10` 0.00 cm, `J_Opt_L_RabbitEar2_01`
+0.00 cm); with the patch those move (−36.40 cm, −16.71 cm). The 8 springs that
+stay still with the patch are the coat-skirt springs, which do not move in the
+unthinned model either.
+
+The same checks on Seed-san (freely downloadable) show the same pattern for
+non-adjacent joints (`Seed-san-thinned`: tail 0.00 cm upstream, −13.53 cm with
+the patch; axis differences 1.5°–65.1°, 146.2° on `hair_G.001`), but its
+direct chains differ little (−14.46 vs −16.18 cm on the back hair).
+
+At rest with gravity, wind and colliders off every joint stays within 0.01° of
+the rest pose in both variants and on both models: a wrong axis does not show
+at rest, because VRM4U derives both ends of its rotation from the same axis.
 
 ## Interpretation and limits
 
 - 1–3 are reproduced on upstream master with a single sample model and fixed
   by the patches without changing Editor import or the rendered image.
-- 4 is shown by the specification and the rest-skeleton angles, and by the
-  non-adjacent chains not moving at all. The lab does not measure a "wrong
-  direction" of motion on direct chains; with gravity and colliders off the
-  direct-chain differences are small. The shipping game saw hair on a VRoid
-  VRM 1.0 model react against the character's motion; that model is private
-  and is not part of this lab.
+- 4 is shown on a VRoid sample by the rest-skeleton angles, a response about
+  weaker upstream (0–66 % on most springs), two hair strands turned ~135° at rest under gravity,
+  and non-adjacent chains not moving at all. The cruise test moves the
+  character in a straight line only; it did not reproduce hair moving the
+  wrong way, which the shipping game reported during play.
 - 1 and 2 were tested only on macOS. The UE 5.8 / Metal render-resource race
   that the shipping game also patches is not covered here (it needs two
   machines).

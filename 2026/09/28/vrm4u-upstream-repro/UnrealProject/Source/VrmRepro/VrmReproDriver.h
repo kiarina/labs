@@ -12,6 +12,7 @@ class USkeletalMeshComponent;
 //   -VrmReproFile=<path.vrm>         model to runtime-load
 //   -VrmReproOut=<path.json>         result file
 //   -VrmReproScenario=load|spring    load only, or load + spring response
+//   -VrmReproNatural                 spring scenario: keep gravity, wind and colliders
 //   -VrmReproFiller=<N>              static mesh components to keep in the world
 //   -VrmReproTag=<text>              copied into the result (which fixes were applied)
 //   -VrmReproShot=<path.png>         load scenario: show the model and save a screenshot

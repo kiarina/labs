@@ -105,6 +105,10 @@ void AVrmReproDriver::Tick(float DeltaSeconds)
         break;
 
     case EPhase::Settle:
+        if (!ShotPath.IsEmpty() && PhaseTime >= SettleSeconds - 0.5f && PhaseTime - DeltaSeconds < SettleSeconds - 0.5f)
+        {
+            FScreenshotRequest::RequestScreenshot(ShotPath, false, false);
+        }
         if (PhaseTime >= SettleSeconds)
         {
             MeasureRest();
@@ -239,7 +243,29 @@ void AVrmReproDriver::StartSpring()
     Mesh->SetSkeletalMesh(AssetList->SkeletalMesh);
     Mesh->SetAnimInstanceClass(UVrmReproAnimInstance::StaticClass());
     Mesh->RegisterComponent();
-    CastChecked<UVrmReproAnimInstance>(Mesh->GetAnimInstance())->Meta = Meta;
+    UVrmReproAnimInstance* Instance = CastChecked<UVrmReproAnimInstance>(Mesh->GetAnimInstance());
+    Instance->Meta = Meta;
+    // -VrmReproNatural keeps the model's gravity, wind and colliders (closer to a game).
+    Instance->bNoGravityNoWind = !FParse::Param(FCommandLine::Get(), TEXT("VrmReproNatural"));
+    Result->SetBoolField(TEXT("natural"), !Instance->bNoGravityNoWind);
+
+    if (FParse::Value(FCommandLine::Get(), TEXT("VrmReproShot="), ShotPath))
+    {
+        // Rear three-quarter view of the head and back hair, taken at the end of the rest phase.
+        if (APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0))
+        {
+            PC->SetIgnoreMoveInput(true);
+            PC->SetIgnoreLookInput(true);
+            const FVector Eye(-90.f, 90.f, 150.f);
+            const FVector Target(0.f, 0.f, 125.f);
+            PC->SetControlRotation((Target - Eye).Rotation());
+            if (APawn* Pawn = PC->GetPawn())
+            {
+                Pawn->DisableInput(PC);
+                Pawn->SetActorLocation(Eye);
+            }
+        }
+    }
 
     const FReferenceSkeleton& RefSkeleton = AssetList->SkeletalMesh->GetRefSkeleton();
     for (const FVRM1SpringMeta& Spring : Meta->VRM1SpringBoneMeta.Springs)

@@ -34,5 +34,20 @@ for t in 1 2; do run pie load "fix02+03-pie-shot-$t" --shot; done
 variant fix02+04 00-mac-build 02-runtime-skip-postprocess-abp 04-vrm1-spring-head-tail-axis
 for m in Seed-san Seed-san-thinned; do run pie spring "fix02+04-pie-spring-$m" --model "$m.vrm"; done
 
+# AvatarSample_E (VRoid official sample, not redistributed): run only if present.
+if [ -f .cache/models/AvatarSample_E.vrm ]; then
+    python3 scripts/thin_spring_joints.py .cache/models/AvatarSample_E.vrm .cache/models/AvatarSample_E-thinned.vrm
+    python3 scripts/spring_axis_report.py .cache/models/AvatarSample_E.vrm > results/spring-axis-AvatarSample_E.txt
+    for v in "fix02 00-mac-build 02-runtime-skip-postprocess-abp" \
+             "fix02+04 00-mac-build 02-runtime-skip-postprocess-abp 04-vrm1-spring-head-tail-axis"; do
+        set -- $v
+        variant "$@"
+        name=$1
+        run pie spring "$name-pie-spring-AvatarSample_E" --model AvatarSample_E.vrm
+        run pie spring "$name-pie-spring-AvatarSample_E-natural" --model AvatarSample_E.vrm --natural --shot
+        run pie spring "$name-pie-spring-AvatarSample_E-thinned" --model AvatarSample_E-thinned.vrm
+    done
+fi
+
 python3 scripts/summarize_matrix.py > results/summary.md
 cat results/summary.md
