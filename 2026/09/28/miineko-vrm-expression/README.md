@@ -2,7 +2,18 @@
 
 ## Question
 
-Can VRM 1.0 facial expressions be added to a Tripo-rigged Miineko model **without replacing the head and losing the generated appearance**? This lab records the failed replacement-head attempt and probes a conformal face mask with local UVs and detachable eyelids.
+Can VRM 1.0 facial expressions be added to a Tripo-rigged Miineko model **without replacing the head and losing the generated appearance**? The current candidate is a thin copy of the original face with aligned expression blocks in one BaseColor atlas. Whole-head replacement and separate eyelid caps are recorded as failed alternatives.
+
+## Current result
+
+| Tested | Result |
+| --- | --- |
+| Original-UV face mask at neutral | Preserves most of the Tripo appearance; small cheek seams remain visible. |
+| One BaseColor atlas, original body region plus aligned neutral/blink mask blocks | Blender switches the mask block with a U offset of `0.25` while the body keeps its texture. This proves the layout, not VRM export or visual quality. |
+| Closed-eye texture | The line now follows measured eye centers. The copied mesh still contains the original highlight cavities and sculpted eye rings. |
+| Local quadratic Shape Key over highlights | Rejected: raised knobs appeared and interrupted the eye line. The saved probe keeps this Shape Key at zero. |
+
+**Quality gate remains open.** No acceptable closed-eye render, lip-sync block, independent left/right blink, VRM `TextureTransformBind` export, or independent viewer check exists for the mask route. Keep the original Tripo FBX as the comparison baseline. The detailed observations and failures follow below.
 
 ## Inputs and environment
 
@@ -37,14 +48,16 @@ export MIINEKO_FBX=/path/to/tripo-rigged.fbx
 export BLENDER_BIN=/path/to/Blender
 mise run mask-probe
 mise run bake-probe
-mise run blink-cap-probe
-mise run prosthetic-probe
 mise run mask-uv-blink-probe
 export MIINEKO_BASECOLOR=/path/to/original-BaseColor.jpg
-# With requirements-compare.txt installed in the selected Python environment:
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements-compare.txt
+export COMPARE_PYTHON="$PWD/.venv/bin/python"
 mise run atlas-probe
-# In an environment with requirements-compare.txt installed:
 mise run compare-mask
+# To inspect the rejected separate-eyelid routes as well:
+mise run blink-cap-probe
+mise run prosthetic-probe
 ```
 
 `mask-probe` copies selected face triangles and keeps the original UV for its neutral material. `bake-probe` transfers the original BaseColor into a new 4096² face-local UV. `blink-cap-probe` uses copied eye triangles; `prosthetic-probe` uses a smooth fitted eyelid and a local eye-recession Shape Key. `mask-uv-blink-probe` is the separate full-mask texture-switch experiment described below. These are visual prototypes only; they do not create VRM expressions. The measured neutral comparison is in [`results/mask-render-comparison.json`](results/mask-render-comparison.json). The input FBX, rendered images and `.blend` files remain local and are not published.
@@ -79,7 +92,7 @@ The [VRM 1.0 expression specification](https://github.com/vrm-c/vrm-specificatio
 
 **Inference from the specification and this FBX:** keeping the original head while using UV expressions requires independently addressable face materials, whether by splitting selected original polygons or by attaching separate mask meshes. At minimum, left eye, right eye and mouth need independent control so `blinkLeft` and `blinkRight` do not change the entire face. A complete atlas for all requested expressions has **not** yet been built or visually validated. Material reassignment can preserve geometry, but a new atlas and UV remapping/baking are substantial work because the current islands are scattered.
 
-Texture changes cannot flatten protruding eyes or open a mouth in 3D. A useful hybrid would use UV switching for color/eye direction and small, localized Shape Keys or separate eyelids for the silhouette changes. The earlier failure of a global head reconstruction does **not** prove that every local Morph Target is unsuitable; it shows that naive deformation of the welded eye surface was unsuitable.
+Texture changes cannot remove a sculpted highlight cavity or open a mouth silhouette in 3D. A useful hybrid may combine UV switching with *small, verified* local geometry changes. The eyeball's overall bulge should remain when the eyelid closes. The earlier failure of a global head reconstruction does **not** prove that every local Morph Target is unsuitable; it shows that naive deformation of the welded eye surface was unsuitable.
 
 ## Conformal mask probes
 
@@ -89,9 +102,11 @@ The rendered neutral mask stayed close to the original numerically: the face-reg
 
 The 4096² local-UV BaseColor bake was worse: face error **2.202/255**, with **4.91%** changed pixels, concentrated at eye/nose/mouth rims (face-core error **5.661/255**). Raising the bake from 2048² to 4096² did not visibly fix the feature edges. A simple planar local UV was also worse than the angle-unwrapped version. The cause has not been isolated; UV discontinuities, overlapping source geometry and other material maps are candidates. A rebaked shell should not replace the neutral surface yet.
 
+### Rejected separate-eyelid route
+
 For a blink, copying the original eye triangles into a colored lid left jagged boundaries and exposed dark edges. A second prototype fitted a smooth polar patch to an approximate quadratic skin surface around each eye and used a local Shape Key to push only protruding eye vertices behind it. Its **neutral render is pixel-identical within the renderer's one-level noise** because the patch is hidden and the Shape Key is zero. Its closed-eye render still has a raised circular rim and central artifacts. The fitted surface is only an approximation of this model's head, not a general facial reconstruction algorithm. No VRM export or independent viewer check was done for this prototype.
 
-The closed-eye prototype has **no closed-eye image texture and no UV animation**. At neutral, the original FBX head samples its original BaseColor atlas; the full-face copied mask and the prosthetic eyelids are hidden. At blink, the original eye vertices are locally pushed back, and the two new eyelids are rendered with a constant pink material, vertex-alpha fade at their edges, and separate dark curve objects as eye lines. The 4096² face-local image belongs only to the separate bake experiment and is not used by the blink prototype. This distinction matters: the poor closed-eye appearance is caused by the rough geometry/material transition, not by a failed animated texture.
+This separate-eyelid prototype has **no closed-eye image texture and no UV animation**. At neutral, the original FBX head samples its original BaseColor atlas; the full-face copied mask and the prosthetic eyelids are hidden. At blink, the original eye vertices are locally pushed back, and the two new eyelids are rendered with a constant pink material, vertex-alpha fade at their edges, and separate dark curve objects as eye lines. The 4096² face-local image was not used by this route. Its poor closed-eye appearance is caused by the rough geometry/material transition, not by an animated texture.
 
 ### Actual full-mask UV texture switch
 
@@ -99,7 +114,7 @@ After reviewing that mismatch, `mask-uv-blink-probe` used the **full conformal m
 
 The neutral render (`artifacts/mask-uv-neutral.png`) matches the neutral full-mask probe. The closed render (`artifacts/mask-uv-blink.png`) proves that the texture switch reaches both eyes on the original UV layout, but **does not yet look like an eyelid**: the eye sockets have a hard circular transition, small sculpted eye details remain visible, and the painted skin/line do not follow a convincing lid boundary. The new texture does not remove relief already present in the mesh and normal map. The owner's point is also correct: a human eyelid does not erase the eye's overall bulge. The next geometry work, if needed, should smooth the local rim and sculpted highlights while retaining the rounded volume, rather than flattening the eye.
 
-This is a Blender material-image switch, **not yet a VRM `TextureTransformBind` or a lip-sync test**. To encode this as VRM 1.0, the two states would need to share a compact atlas and a material isolated to the mask; the original FBX's single material cannot be transformed wholesale. Independent left/right blinking and mouth states require further material/atlas planning.
+This is a Blender material-image switch, **not yet a VRM `TextureTransformBind` or a lip-sync test**. The following atlas probe implements the required aligned blocks in Blender. The original FBX's single material cannot be transformed wholesale. Independent left/right blinking and mouth states require further material/atlas planning.
 
 ### One-image atlas with aligned expression blocks
 
@@ -122,13 +137,13 @@ The first closed line was centered at model `x=±0.15`. Sampling dark-eye vertic
 
 The pale circular indentation near the top of each closed eye corresponds to the original sculpted highlight feature. The mask material in this atlas test has **no normal map**, so the relief is in copied geometry. The sampled highlight vertices had medians `(-0.2001, 0.6486)` and `(0.1558, 0.6525)`. A trial Shape Key filled just these neighborhoods with a quadratic surface fitted to nearby vertices. The trial render (`artifacts/atlas-blink-highlight-fill.png`) was **worse**: it created raised knobs and interrupted the painted line. The Shape Key is kept at zero in the saved `.blend`. This failed fit should not be treated as an eyelid solution. The mask still needs a method that smooths the small highlight feature while respecting the local eyeball surface and preserving its overall rounded volume.
 
-**Interpretation:** the full conformal mask can carry texture variants while preserving the original UV and eye volume. It also retains the original sculpted eye ring, so painted variants alone cannot guarantee a natural blink. The hidden-patch route remains a separate fallback. Clean transitions, side views, independent left/right control, mouth motion and VRM binding remain unsolved.
+**Interpretation:** the full conformal mask can carry texture variants while preserving the eye volume. The original-UV test avoids a neutral rebake but needs two separate images; the one-image atlas test uses a face-local UV and inherits bake defects. Both retain the original sculpted eye ring, so painted variants alone cannot guarantee a natural blink. The hidden-patch route remains a separate fallback. Clean transitions, side views, independent left/right control, mouth motion and VRM binding remain unsolved.
 
 ## Next experiment and acceptance gate
 
-1. Refine the full-mask closed texture and the local eye-ring/normal transition while retaining the eye volume. Make the neutral and blink states visually acceptable from front and side before adding more expressions.
-2. Render original FBX and modified neutral model with identical camera, lighting and pose from front, side and back. Require the body, ribbon, head silhouette and neutral face to match visually. The full-mask neutral front render is close numerically but still has small cheek seams.
-3. Extend the two-state BaseColor atlas and its isolated mask material. Test VRM `TextureTransformBind` and preserve other maps when shifting UVs. Verify left/right blink independently.
-4. Extend the same mask approach to mouth texture states, adding only local geometry correction needed for readable lip shapes. Check the results in Blender **and** an independent VRM viewer, including combined emotion + blink + lip-sync.
+1. Diagnose the neutral face-local bake defects and visible cheek seams before making more atlas blocks. Compare original and mask with fixed camera/lighting from front, side and back; a small mean pixel difference alone is not acceptance.
+2. Fit the closed-eye line to measured eye landmarks and smooth only the sculpted highlight cavity/ring while retaining the eyeball volume. Reject local geometry changes that create raised features or expose the original eye. Require acceptable neutral and blink renders from front and side.
+3. Once those visual gates pass, extend the isolated mask material's atlas to independent left/right blink and mouth states. Account for the material-wide effect of VRM Texture Transform on other maps, and measure atlas size/quality tradeoffs.
+4. Export the bindings as VRM 1.0 and verify in Blender **and** an independent viewer, including combined emotion, blink and lip-sync. The two-state Blender mapping test is not evidence of VRM runtime behavior.
 
 This lab concludes that direct UV offset of the original material and a permanently visible **rebaked** full-face shell are unsuitable in the tested form. A full face mask using the **original UV** can switch its BaseColor without replacing the head, and a two-state, one-image atlas can be addressed in Blender, but both closed-eye variants are visually poor. VRM `TextureTransformBind`, mouth states and the complete expression atlas remain unvalidated.
