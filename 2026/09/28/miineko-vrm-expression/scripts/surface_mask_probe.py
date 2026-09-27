@@ -34,7 +34,6 @@ for face in bm.faces:
     center = face.calc_center_median()
     within_face = (
         center.y < -0.09
-        and face.normal.y < -0.10
         and ((center.x / 0.30) ** 2 + ((center.z - 0.63) / 0.25) ** 2) < 1
     )
     if not within_face:
