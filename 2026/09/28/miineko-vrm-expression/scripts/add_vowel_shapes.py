@@ -10,6 +10,7 @@ import json
 import math
 import os
 import struct
+import sys
 from pathlib import Path
 
 import bpy
@@ -237,6 +238,72 @@ if envelope_mode in ('linear','linear-local','linear-vertex'):
         for i,p in enumerate(mouth.data.vertices):p.co=keys[0].data[i].co
         envelope_report['collapsedColumnsPinned']=pinned
 
+onset_depth=None
+if os.environ.get('MOUTH_ONSET_DEPTH') in ('1','lip-occlusion'):
+    assert flat_start and envelope_mode=='linear-vertex'
+    base=np.asarray([p.co for p in keys[0].data]);old_base=base.copy()
+    targets={n:np.asarray([p.co for p in mouth.data.shape_keys.key_blocks[n.upper()].data]) for n in ('aa','ih','ou','ee','oh')}
+    # Full-open targets stay fixed. Move only the invisible neutral surface
+    # back toward the source so small openings don't inherit full-range stand-off.
+    lip_occlusion=os.environ.get('MOUTH_ONSET_DEPTH')=='lip-occlusion'
+    if lip_occlusion:
+        sys.path.insert(0,str(ROOT/'scripts'))
+        from source_ink import SourceInk
+        ink=SourceInk(body,head)
+    desired=[]
+    for x,y,z in base:
+        surface=face_y(float(x),float(z))
+        if lip_occlusion and ink.sample(float(x),float(z))[1]:
+            z1=float(np.interp(x,xs,curve[:,2]))-.006;z2=z1-.015
+            y1,y2=face_y(float(x),z1),face_y(float(x),z2)
+            surface=max(surface,y1+(z-z1)*(y1-y2)/(z1-z2))
+        desired.append(surface-.0008)
+    base[:,1]=np.maximum(old_base[:,1],np.asarray(desired))
+    states=[{name:w} for name in targets for w in (.02,.05,.1,.18,.22,.35,.5,.75,.9)]
+    states += [{'aa':.25,'ih':.25},{'ou':.25,'oh':.25},dict.fromkeys(targets,.1),dict.fromkeys(targets,.036)]
+    tri=np.asarray(topology);uv=np.zeros((len(base),2))
+    for loop in mouth.data.loops:uv[loop.vertex_index]=mouth.data.uv_layers[0].data[loop.index].uv
+    constraints=[]
+    for mix in states:
+        total=sum(mix.values());rest=1-total
+        fixed=sum((w*targets[name] for name,w in mix.items()),start=np.zeros_like(base))
+        old=rest*old_base+fixed
+        valid=np.linalg.norm(np.cross(old[tri[:,1]]-old[tri[:,0]],old[tri[:,2]]-old[tri[:,0]]),axis=1)>2e-12
+        for bary in ((1/3,1/3,1/3),(.6,.2,.2),(.2,.6,.2),(.2,.2,.6)):
+            active=valid&(np.einsum('tvc,v->tc',uv[tri],bary)[:,1]+.65*total>.501)
+            ids=tri[active];samples=np.einsum('tvc,v->tc',old[ids],bary)
+            # Do not worsen existing intersections in the prior candidate.
+            if lip_occlusion:
+                sampled=[ink.sample(float(x),float(z)) for x,y,z in samples]
+                keep=np.asarray([not dark for depth,dark in sampled],dtype=bool)
+                ids=ids[keep];samples=samples[keep]
+                depths=np.asarray([depth for depth,dark in sampled])[keep]
+                bound=np.maximum(samples[:,1],depths-.0008)
+            else:
+                bound=np.asarray([max(y,face_y(float(x),float(z))-.0008) for x,y,z in samples])
+            fixed_y=np.einsum('tv,v->t',fixed[ids,1],bary)
+            constraints.append((ids,np.asarray(bary),(bound-fixed_y)/rest))
+    for _ in range(6):
+        push=np.zeros(len(base))
+        for ids,bary,bound in constraints:
+            error=np.maximum(0,np.einsum('tv,v->t',base[ids,1],bary)-bound)
+            np.maximum.at(push,ids.ravel(),np.repeat(error,3))
+        base[:,1]=np.maximum(old_base[:,1],base[:,1]-push)
+    # Fall back locally to the prior depth where a sampled constraint still
+    # fails; this retains its safety margin instead of accepting new holes.
+    fallback=set()
+    for ids,bary,bound in constraints:
+        bad=np.einsum('tv,v->t',base[ids,1],bary)>bound+1e-7
+        fallback.update(ids[bad].ravel().tolist())
+    if fallback:
+        indices=np.asarray(sorted(fallback));base[indices,1]=old_base[indices,1]
+    grid=base.reshape(17,161,3);collapsed=np.ptp(grid[:,:,2],axis=0)<1e-7
+    grid[:,collapsed,1]=grid[:,collapsed,1].min(axis=0)
+    for i,p in enumerate(keys[0].data):p.co=base[i]
+    for i,p in enumerate(mouth.data.vertices):p.co=base[i]
+    retraction=base[:,1]-old_base[:,1]
+    onset_depth={'mode':'neutral-depth-under-source-ink' if lip_occlusion else 'neutral-depth-only','states':len(states),'maximumRetraction':float(retraction.max()),'movedVertices':int((retraction>1e-7).sum()),'fallbackVertices':len(fallback),'fullTargetsUnchanged':True,'scope':'sampled non-ink source depth constraints; original black lip may occlude the opening' if lip_occlusion else 'sampled no-worse-than-prior depth constraints'}
+
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'continuous-blink.blend'))
 result=bpy.ops.export_scene.vrm(filepath=str(OUT/'continuous-blink.vrm'))
 if flat_start:
@@ -252,6 +319,6 @@ if flat_start:
     encoded=json.dumps(document,separators=(',',':')).encode();encoded+=b' '*((-len(encoded))%4)
     path.write_bytes(struct.pack('<4sII',b'glTF',2,20+len(encoded)+len(tail))+struct.pack('<I4s',len(encoded),b'JSON')+encoded+tail)
     flat_report['vrmSampler']='LINEAR without mipmaps; neutral alpha bleed prevention'
-report={'method':'five-cartoon-vowel-targets','singleSurface':single_surface,'flatStart':flat_report,'linearEnvelope':envelope_report,'source':SOURCE.name,'sourceVrmSha256':hashlib.sha256((SOURCE/'continuous-blink.vrm').read_bytes()).hexdigest(),'sourceBlendSha256':hashlib.sha256((SOURCE/'continuous-blink.blend').read_bytes()).hexdigest(),'scriptSha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'vowels':{name:[width,floors[name.upper()] if flat_start else floor] for name,(width,floor) in {'aa':(source_width,settings['floor']),**presets}.items()},'driverConstraint':'nonnegative weights with sum <= 1','export':sorted(result)}
+report={'method':'five-cartoon-vowel-targets','singleSurface':single_surface,'flatStart':flat_report,'linearEnvelope':envelope_report,'onsetDepth':onset_depth,'source':SOURCE.name,'sourceVrmSha256':hashlib.sha256((SOURCE/'continuous-blink.vrm').read_bytes()).hexdigest(),'sourceBlendSha256':hashlib.sha256((SOURCE/'continuous-blink.blend').read_bytes()).hexdigest(),'scriptSha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'vowels':{name:[width,floors[name.upper()] if flat_start else floor] for name,(width,floor) in {'aa':(source_width,settings['floor']),**presets}.items()},'driverConstraint':'nonnegative weights with sum <= 1','export':sorted(result)}
 (OUT/'report.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report))

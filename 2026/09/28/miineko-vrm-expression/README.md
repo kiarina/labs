@@ -25,7 +25,10 @@ The owner then requested a flatter lower edge during opening; the latest
 `mouth-vowels-flatstart` candidate uses a flat floor with an exported UV reveal.
 The owner approved that front appearance. A depth-only comparison now reduces
 much of the profile gap while retaining its frontal geometry; see [PROFILE.md](PROFILE.md).
-Narrow-vowel corner tips remain, so profile quality is not finished.
+A further small-opening comparison tucks the red surface behind the original
+black lip, addressing the owner's 18%-open profile example while preserving
+full-target coordinates; the front rim consequently appears thicker at low weights.
+Full-open corner tips remain, so profile quality is not finished.
 Side-view projection and audio-driven timing remain unresolved. This is not yet
 a finished lip-sync system.
 

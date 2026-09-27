@@ -7,9 +7,11 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-parser=argparse.ArgumentParser();parser.add_argument('candidate');args=parser.parse_args()
+parser=argparse.ArgumentParser();parser.add_argument('candidate')
+parser.add_argument('--baseline',default='mouth-vowels-flatstart')
+parser.add_argument('--full-targets',action='store_true');args=parser.parse_args()
 root=Path(__file__).resolve().parents[1]/'artifacts'
-baseline=root/'mouth-vowels-flatstart';candidate=root/args.candidate
+baseline=root/args.baseline;candidate=root/args.candidate
 
 def read_mesh(folder):
     raw=(folder/'continuous-blink.vrm').read_bytes();n=struct.unpack_from('<I',raw,12)[0]
@@ -52,5 +54,20 @@ for vowel in ('aa','ih','ou','ee','oh'):
 report={'baseline':baseline.name,'candidate':candidate.name,'frontalCoordinatesAndUvsExact':True,
     'depthChanges':geometry,'frontRenders':images,
     'scope':'same frontal outline coordinates; occlusion can still alter rendered appearance'}
-(candidate/'profile-comparison.json').write_text(json.dumps(report,indent=2)+'\n')
+if args.full_targets:
+    report['fullTargetMaximumCoordinateDifference']=max(float(abs((a[0]+x)-(b[0]+y)).max()) for x,y in zip(a[1:],b[1:]))
+    assert report['fullTargetMaximumCoordinateDifference']<1e-7
+    report['fullOpenViews']=[]
+    for vowel in ('aa','ih','ou','ee','oh'):
+        for angle in (0,45,-45,90,-90):
+            name=f'vowel-{vowel}-1-{angle}.png'
+            old=np.asarray(Image.open(baseline/'viewer'/name).convert('RGB')).astype(float)
+            new=np.asarray(Image.open(candidate/'viewer'/name).convert('RGB')).astype(float)
+            diff=abs(old-new);changed=int((diff.max(2)>2).sum())
+            # Rebased float32 deltas can change a few edge pixels even when
+            # full-target coordinates agree within 1e-7 m. Bound the affected
+            # area and average error, and retain the maximum rather than hiding it.
+            assert changed<=old.shape[0]*old.shape[1]*.0001 and diff.mean()<.001
+            report['fullOpenViews'].append({'vowel':vowel,'angle':angle,'maximumChannelDifference':float(diff.max()),'changedPixelsAbove2':changed,'meanChannelDifference':float(diff.mean())})
+(candidate/('onset-comparison.json' if args.full_targets else 'profile-comparison.json')).write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps({'frontImages':len(images),'maximumChangedPixels':max(i['changedPixelsAbove2'] for i in images)}))

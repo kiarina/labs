@@ -1,0 +1,1144 @@
+{
+  "date": "2026-09-28",
+  "ownerCondition": {
+    "vowel": "aa",
+    "weight": 0.18,
+    "angle": -90
+  },
+  "construction": {
+    "method": "five-cartoon-vowel-targets",
+    "singleSurface": true,
+    "flatStart": {
+      "basisFloor": 0.438,
+      "floors": {
+        "Basis": 0.438,
+        "AA": 0.415,
+        "IH": 0.435,
+        "OU": 0.421,
+        "EE": 0.428,
+        "OH": 0.404
+      },
+      "profilePower": 4,
+      "uvShift": 0.65,
+      "revealEnd": 0.12,
+      "neutralVisibility": "zero texture alpha; nondegenerate geometry",
+      "vrmSampler": "LINEAR without mipmaps; neutral alpha bleed prevention"
+    },
+    "linearEnvelope": {
+      "mode": "linear-vertex",
+      "sampledMinimumClearance": 0.0009999999999999454,
+      "sampledMaximumForwardDistance": 0.0201486296546316,
+      "samplesPerFit": 241,
+      "fitCount": 2737,
+      "range": "actual morph range per vertex",
+      "forwardOnlySmoothingPasses": 8,
+      "measurementScope": "per-vertex fits before forward-only smoothing",
+      "triangleCorrection": {
+        "states": 38,
+        "samples": 575904,
+        "maximumForwardCorrection": 0.005649052429199252,
+        "targetClearance": 0.0008,
+        "scope": "four barycentric samples per visible triangle; sampled states only"
+      },
+      "collapsedColumnsPinned": 166
+    },
+    "onsetDepth": {
+      "mode": "neutral-depth-under-source-ink",
+      "states": 49,
+      "maximumRetraction": 0.030452340841293335,
+      "movedVertices": 2736,
+      "fallbackVertices": 0,
+      "fullTargetsUnchanged": true,
+      "scope": "sampled non-ink source depth constraints; original black lip may occlude the opening"
+    },
+    "source": "mouth-red-bound",
+    "sourceVrmSha256": "f6995691bb723a7ed19fce5d594cbd52771b8d2a4e8055b69d8a9559452535b5",
+    "sourceBlendSha256": "c7f82ad03374725a7c91d54befcf3a2cfd102bf593b082d8fb6eae2a5c1f7cbe",
+    "scriptSha256": "3864a2ab74fd726b40242da216ab002ac6a8fe29dc29307c1961dbbc9d2dc076",
+    "vowels": {
+      "aa": [
+        0.076,
+        0.415
+      ],
+      "ih": [
+        0.076,
+        0.435
+      ],
+      "ou": [
+        0.038,
+        0.421
+      ],
+      "ee": [
+        0.068,
+        0.428
+      ],
+      "oh": [
+        0.048,
+        0.404
+      ]
+    },
+    "driverConstraint": "nonnegative weights with sum <= 1",
+    "export": [
+      "FINISHED"
+    ]
+  },
+  "reproducibility": {
+    "byteIdentical": true,
+    "vrmSha256": "052668cc45689eaef8e9b1b4779a5c1b22aa1393263ee4236ab4260253584fb2"
+  },
+  "viewer": {
+    "errors": [],
+    "warnings": [],
+    "mouthStates": 50,
+    "vowelStates": 150,
+    "zeroRestoration": [
+      {
+        "a": 0,
+        "r": 0,
+        "w": 0,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "a": 0,
+        "r": 0,
+        "w": 1,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "a": 0,
+        "r": 0.35,
+        "w": 0,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "a": 0,
+        "r": 0.35,
+        "w": 1,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "a": 45,
+        "r": 0,
+        "w": 0,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "a": 45,
+        "r": 0,
+        "w": 1,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "a": 45,
+        "r": 0.35,
+        "w": 0,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "a": 45,
+        "r": 0.35,
+        "w": 1,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "a": 90,
+        "r": 0,
+        "w": 0,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "a": 90,
+        "r": 0,
+        "w": 1,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "a": 90,
+        "r": 0.35,
+        "w": 0,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "a": 90,
+        "r": 0.35,
+        "w": 1,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "a": -45,
+        "r": 0,
+        "w": 0,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "a": -45,
+        "r": 0,
+        "w": 1,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "a": -45,
+        "r": 0.35,
+        "w": 0,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "a": -45,
+        "r": 0.35,
+        "w": 1,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "a": -90,
+        "r": 0,
+        "w": 0,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "a": -90,
+        "r": 0,
+        "w": 1,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "a": -90,
+        "r": 0.35,
+        "w": 0,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "a": -90,
+        "r": 0.35,
+        "w": 1,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      }
+    ],
+    "eyePreservation": [
+      {
+        "r": 0,
+        "w": 0,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "r": 0,
+        "w": 0.5,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "r": 0,
+        "w": 1,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "r": 0.35,
+        "w": 0,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "r": 0.35,
+        "w": 0.5,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      },
+      {
+        "r": 0.35,
+        "w": 1,
+        "maxChannelDifference": 0,
+        "channelsAbove2": 0
+      }
+    ],
+    "relaxedMaximumDifference": 0
+  },
+  "comparison": {
+    "baseline": "mouth-profile-fitted",
+    "candidate": "mouth-onset-recessed",
+    "frontalCoordinatesAndUvsExact": true,
+    "depthChanges": [
+      {
+        "maximumDepthChange": 0.030452340841293335
+      },
+      {
+        "maximumDepthChange": 0.030452340841293335
+      },
+      {
+        "maximumDepthChange": 0.030452340841293335
+      },
+      {
+        "maximumDepthChange": 0.030452340841293335
+      },
+      {
+        "maximumDepthChange": 0.030452340841293335
+      },
+      {
+        "maximumDepthChange": 0.030452340841293335
+      }
+    ],
+    "frontRenders": [
+      {
+        "vowel": "aa",
+        "weight": 0,
+        "meanChannelDifference": 0.0,
+        "maximumChannelDifference": 0.0,
+        "changedPixelsAbove2": 0
+      },
+      {
+        "vowel": "aa",
+        "weight": 0.1,
+        "meanChannelDifference": 0.09656633960929904,
+        "maximumChannelDifference": 205.0,
+        "changedPixelsAbove2": 1095
+      },
+      {
+        "vowel": "aa",
+        "weight": 0.22,
+        "meanChannelDifference": 0.10391629099266331,
+        "maximumChannelDifference": 205.0,
+        "changedPixelsAbove2": 1186
+      },
+      {
+        "vowel": "aa",
+        "weight": 0.5,
+        "meanChannelDifference": 0.1121652081675948,
+        "maximumChannelDifference": 205.0,
+        "changedPixelsAbove2": 1298
+      },
+      {
+        "vowel": "aa",
+        "weight": 1,
+        "meanChannelDifference": 3.5357553257314593e-06,
+        "maximumChannelDifference": 7.0,
+        "changedPixelsAbove2": 1
+      },
+      {
+        "vowel": "ih",
+        "weight": 0,
+        "meanChannelDifference": 0.0,
+        "maximumChannelDifference": 0.0,
+        "changedPixelsAbove2": 0
+      },
+      {
+        "vowel": "ih",
+        "weight": 0.1,
+        "meanChannelDifference": 0.08880800848581279,
+        "maximumChannelDifference": 205.0,
+        "changedPixelsAbove2": 1002
+      },
+      {
+        "vowel": "ih",
+        "weight": 0.22,
+        "meanChannelDifference": 0.08976001060726597,
+        "maximumChannelDifference": 205.0,
+        "changedPixelsAbove2": 1010
+      },
+      {
+        "vowel": "ih",
+        "weight": 0.5,
+        "meanChannelDifference": 0.09300450808804031,
+        "maximumChannelDifference": 205.0,
+        "changedPixelsAbove2": 1058
+      },
+      {
+        "vowel": "ih",
+        "weight": 1,
+        "meanChannelDifference": 4.419694157164324e-07,
+        "maximumChannelDifference": 1.0,
+        "changedPixelsAbove2": 0
+      },
+      {
+        "vowel": "ou",
+        "weight": 0,
+        "meanChannelDifference": 0.0,
+        "maximumChannelDifference": 0.0,
+        "changedPixelsAbove2": 0
+      },
+      {
+        "vowel": "ou",
+        "weight": 0.1,
+        "meanChannelDifference": 0.08450808804030761,
+        "maximumChannelDifference": 205.0,
+        "changedPixelsAbove2": 966
+      },
+      {
+        "vowel": "ou",
+        "weight": 0.22,
+        "meanChannelDifference": 0.07989702112613807,
+        "maximumChannelDifference": 205.0,
+        "changedPixelsAbove2": 921
+      },
+      {
+        "vowel": "ou",
+        "weight": 0.5,
+        "meanChannelDifference": 0.06973791213648016,
+        "maximumChannelDifference": 205.0,
+        "changedPixelsAbove2": 826
+      },
+      {
+        "vowel": "ou",
+        "weight": 1,
+        "meanChannelDifference": 0.0,
+        "maximumChannelDifference": 0.0,
+        "changedPixelsAbove2": 0
+      },
+      {
+        "vowel": "ee",
+        "weight": 0,
+        "meanChannelDifference": 0.0,
+        "maximumChannelDifference": 0.0,
+        "changedPixelsAbove2": 0
+      },
+      {
+        "vowel": "ee",
+        "weight": 0.1,
+        "meanChannelDifference": 0.08889640236895607,
+        "maximumChannelDifference": 205.0,
+        "changedPixelsAbove2": 1011
+      },
+      {
+        "vowel": "ee",
+        "weight": 0.22,
+        "meanChannelDifference": 0.08913727570052152,
+        "maximumChannelDifference": 205.0,
+        "changedPixelsAbove2": 1017
+      },
+      {
+        "vowel": "ee",
+        "weight": 0.5,
+        "meanChannelDifference": 0.08998806682577566,
+        "maximumChannelDifference": 205.0,
+        "changedPixelsAbove2": 1039
+      },
+      {
+        "vowel": "ee",
+        "weight": 1,
+        "meanChannelDifference": 4.8616635728807565e-05,
+        "maximumChannelDifference": 51.0,
+        "changedPixelsAbove2": 2
+      },
+      {
+        "vowel": "oh",
+        "weight": 0,
+        "meanChannelDifference": 0.0,
+        "maximumChannelDifference": 0.0,
+        "changedPixelsAbove2": 0
+      },
+      {
+        "vowel": "oh",
+        "weight": 0.1,
+        "meanChannelDifference": 0.08584283567577124,
+        "maximumChannelDifference": 205.0,
+        "changedPixelsAbove2": 986
+      },
+      {
+        "vowel": "oh",
+        "weight": 0.22,
+        "meanChannelDifference": 0.08237956333421727,
+        "maximumChannelDifference": 205.0,
+        "changedPixelsAbove2": 968
+      },
+      {
+        "vowel": "oh",
+        "weight": 0.5,
+        "meanChannelDifference": 0.07514408202952355,
+        "maximumChannelDifference": 205.0,
+        "changedPixelsAbove2": 913
+      },
+      {
+        "vowel": "oh",
+        "weight": 1,
+        "meanChannelDifference": 0.0,
+        "maximumChannelDifference": 0.0,
+        "changedPixelsAbove2": 0
+      }
+    ],
+    "scope": "same frontal outline coordinates; occlusion can still alter rendered appearance",
+    "fullTargetMaximumCoordinateDifference": 0.0,
+    "fullOpenViews": [
+      {
+        "vowel": "aa",
+        "angle": 0,
+        "maximumChannelDifference": 7.0,
+        "changedPixelsAbove2": 1,
+        "meanChannelDifference": 3.5357553257314593e-06
+      },
+      {
+        "vowel": "aa",
+        "angle": 45,
+        "maximumChannelDifference": 51.0,
+        "changedPixelsAbove2": 2,
+        "meanChannelDifference": 3.2263767347299565e-05
+      },
+      {
+        "vowel": "aa",
+        "angle": -45,
+        "maximumChannelDifference": 5.0,
+        "changedPixelsAbove2": 5,
+        "meanChannelDifference": 9.723327145761513e-06
+      },
+      {
+        "vowel": "aa",
+        "angle": 90,
+        "maximumChannelDifference": 183.0,
+        "changedPixelsAbove2": 4,
+        "meanChannelDifference": 0.00028109254839565103
+      },
+      {
+        "vowel": "aa",
+        "angle": -90,
+        "maximumChannelDifference": 183.0,
+        "changedPixelsAbove2": 6,
+        "meanChannelDifference": 0.0003204278263944135
+      },
+      {
+        "vowel": "ih",
+        "angle": 0,
+        "maximumChannelDifference": 1.0,
+        "changedPixelsAbove2": 0,
+        "meanChannelDifference": 4.419694157164324e-07
+      },
+      {
+        "vowel": "ih",
+        "angle": 45,
+        "maximumChannelDifference": 98.0,
+        "changedPixelsAbove2": 4,
+        "meanChannelDifference": 8.397418898612215e-05
+      },
+      {
+        "vowel": "ih",
+        "angle": -45,
+        "maximumChannelDifference": 102.0,
+        "changedPixelsAbove2": 6,
+        "meanChannelDifference": 0.0001485017236807213
+      },
+      {
+        "vowel": "ih",
+        "angle": 90,
+        "maximumChannelDifference": 137.0,
+        "changedPixelsAbove2": 10,
+        "meanChannelDifference": 0.0005316892071068682
+      },
+      {
+        "vowel": "ih",
+        "angle": -90,
+        "maximumChannelDifference": 137.0,
+        "changedPixelsAbove2": 12,
+        "meanChannelDifference": 0.0005851675064085565
+      },
+      {
+        "vowel": "ou",
+        "angle": 0,
+        "maximumChannelDifference": 0.0,
+        "changedPixelsAbove2": 0,
+        "meanChannelDifference": 0.0
+      },
+      {
+        "vowel": "ou",
+        "angle": 45,
+        "maximumChannelDifference": 48.0,
+        "changedPixelsAbove2": 1,
+        "meanChannelDifference": 2.3866348448687352e-05
+      },
+      {
+        "vowel": "ou",
+        "angle": -45,
+        "maximumChannelDifference": 2.0,
+        "changedPixelsAbove2": 0,
+        "meanChannelDifference": 2.6518164942985944e-06
+      },
+      {
+        "vowel": "ou",
+        "angle": 90,
+        "maximumChannelDifference": 0.0,
+        "changedPixelsAbove2": 0,
+        "meanChannelDifference": 0.0
+      },
+      {
+        "vowel": "ou",
+        "angle": -90,
+        "maximumChannelDifference": 17.0,
+        "changedPixelsAbove2": 2,
+        "meanChannelDifference": 1.1491204808627244e-05
+      },
+      {
+        "vowel": "ee",
+        "angle": 0,
+        "maximumChannelDifference": 51.0,
+        "changedPixelsAbove2": 2,
+        "meanChannelDifference": 4.8616635728807565e-05
+      },
+      {
+        "vowel": "ee",
+        "angle": 45,
+        "maximumChannelDifference": 12.0,
+        "changedPixelsAbove2": 2,
+        "meanChannelDifference": 1.5910898965791566e-05
+      },
+      {
+        "vowel": "ee",
+        "angle": -45,
+        "maximumChannelDifference": 51.0,
+        "changedPixelsAbove2": 5,
+        "meanChannelDifference": 6.010784053743481e-05
+      },
+      {
+        "vowel": "ee",
+        "angle": 90,
+        "maximumChannelDifference": 57.0,
+        "changedPixelsAbove2": 6,
+        "meanChannelDifference": 0.00023203394325112703
+      },
+      {
+        "vowel": "ee",
+        "angle": -90,
+        "maximumChannelDifference": 52.0,
+        "changedPixelsAbove2": 7,
+        "meanChannelDifference": 0.00022849818792539556
+      },
+      {
+        "vowel": "oh",
+        "angle": 0,
+        "maximumChannelDifference": 0.0,
+        "changedPixelsAbove2": 0,
+        "meanChannelDifference": 0.0
+      },
+      {
+        "vowel": "oh",
+        "angle": 45,
+        "maximumChannelDifference": 0.0,
+        "changedPixelsAbove2": 0,
+        "meanChannelDifference": 0.0
+      },
+      {
+        "vowel": "oh",
+        "angle": -45,
+        "maximumChannelDifference": 2.0,
+        "changedPixelsAbove2": 0,
+        "meanChannelDifference": 1.7678776628657296e-06
+      },
+      {
+        "vowel": "oh",
+        "angle": 90,
+        "maximumChannelDifference": 46.0,
+        "changedPixelsAbove2": 2,
+        "meanChannelDifference": 8.04384336603907e-05
+      },
+      {
+        "vowel": "oh",
+        "angle": -90,
+        "maximumChannelDifference": 45.0,
+        "changedPixelsAbove2": 1,
+        "meanChannelDifference": 4.021921683019535e-05
+      }
+    ]
+  },
+  "surface": {
+    "scope": "visible triangle centroids at sampled states; not continuous collision proof",
+    "states": [
+      {
+        "weights": {
+          "aa": 0.1
+        },
+        "samples": 4913,
+        "minimum": -0.01791122555732727,
+        "median": -0.014079004526138306,
+        "p95": 0.0018833696376532316,
+        "maximum": 0.0026322007179260254,
+        "behindHeadCount": 3766,
+        "nonInkMinimum": 0.0008217394351959229,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3766
+      },
+      {
+        "weights": {
+          "aa": 0.18
+        },
+        "samples": 5088,
+        "minimum": -0.01782873272895813,
+        "median": -0.012752801179885864,
+        "p95": 0.0021072339732199907,
+        "maximum": 0.003736346960067749,
+        "behindHeadCount": 3571,
+        "nonInkMinimum": 0.000810772180557251,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3571
+      },
+      {
+        "weights": {
+          "aa": 0.22
+        },
+        "samples": 5088,
+        "minimum": -0.017714112997055054,
+        "median": -0.012063980102539062,
+        "p95": 0.0024196282029151917,
+        "maximum": 0.00424465537071228,
+        "behindHeadCount": 3479,
+        "nonInkMinimum": 0.0008237659931182861,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3479
+      },
+      {
+        "weights": {
+          "aa": 0.5
+        },
+        "samples": 5088,
+        "minimum": -0.013067513704299927,
+        "median": -0.00662347674369812,
+        "p95": 0.0047143734991550446,
+        "maximum": 0.007852345705032349,
+        "behindHeadCount": 2873,
+        "nonInkMinimum": 0.00083199143409729,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 2873
+      },
+      {
+        "weights": {
+          "aa": 1
+        },
+        "samples": 5088,
+        "minimum": 0.0007999837398529053,
+        "median": 0.0015921741724014282,
+        "p95": 0.01284283772110939,
+        "maximum": 0.019672662019729614,
+        "behindHeadCount": 0,
+        "nonInkMinimum": 0.0009570419788360596,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 0
+      },
+      {
+        "weights": {
+          "ih": 0.1
+        },
+        "samples": 4913,
+        "minimum": -0.0157453715801239,
+        "median": -0.013605654239654541,
+        "p95": 0.0019706301391124725,
+        "maximum": 0.002733200788497925,
+        "behindHeadCount": 3959,
+        "nonInkMinimum": 0.0008344352245330811,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3959
+      },
+      {
+        "weights": {
+          "ih": 0.18
+        },
+        "samples": 5088,
+        "minimum": -0.014187932014465332,
+        "median": -0.01203957200050354,
+        "p95": 0.0024391114711761475,
+        "maximum": 0.003893047571182251,
+        "behindHeadCount": 3933,
+        "nonInkMinimum": 0.0008589327335357666,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3933
+      },
+      {
+        "weights": {
+          "ih": 0.22
+        },
+        "samples": 5088,
+        "minimum": -0.013409167528152466,
+        "median": -0.01127713918685913,
+        "p95": 0.0025016129948198795,
+        "maximum": 0.004528403282165527,
+        "behindHeadCount": 3923,
+        "nonInkMinimum": 0.0008712708950042725,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3923
+      },
+      {
+        "weights": {
+          "ih": 0.5
+        },
+        "samples": 5088,
+        "minimum": -0.008195251226425171,
+        "median": -0.005946218967437744,
+        "p95": 0.004961211699992418,
+        "maximum": 0.008893400430679321,
+        "behindHeadCount": 3839,
+        "nonInkMinimum": 0.0009150505065917969,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3839
+      },
+      {
+        "weights": {
+          "ih": 1
+        },
+        "samples": 5088,
+        "minimum": 0.0008443295955657959,
+        "median": 0.0019116997718811035,
+        "p95": 0.013949754647910595,
+        "maximum": 0.018746912479400635,
+        "behindHeadCount": 0,
+        "nonInkMinimum": 0.0010724961757659912,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 0
+      },
+      {
+        "weights": {
+          "ou": 0.1
+        },
+        "samples": 4913,
+        "minimum": -0.015475839376449585,
+        "median": -0.012770742177963257,
+        "p95": 0.0018844484584406018,
+        "maximum": 0.0029271841049194336,
+        "behindHeadCount": 3960,
+        "nonInkMinimum": 0.000821232795715332,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3960
+      },
+      {
+        "weights": {
+          "ou": 0.18
+        },
+        "samples": 5088,
+        "minimum": -0.014020472764968872,
+        "median": -0.010563358664512634,
+        "p95": 0.0022047250531613827,
+        "maximum": 0.004442721605300903,
+        "behindHeadCount": 3943,
+        "nonInkMinimum": 0.0008423328399658203,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3943
+      },
+      {
+        "weights": {
+          "ou": 0.22
+        },
+        "samples": 5088,
+        "minimum": -0.013292789459228516,
+        "median": -0.009463474154472351,
+        "p95": 0.0022957290057092905,
+        "maximum": 0.005007624626159668,
+        "behindHeadCount": 3927,
+        "nonInkMinimum": 0.0008460581302642822,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3927
+      },
+      {
+        "weights": {
+          "ou": 0.5
+        },
+        "samples": 5088,
+        "minimum": -0.008198738098144531,
+        "median": -0.001059219241142273,
+        "p95": 0.00460593868046999,
+        "maximum": 0.00882267951965332,
+        "behindHeadCount": 3822,
+        "nonInkMinimum": 0.0008879601955413818,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3822
+      },
+      {
+        "weights": {
+          "ou": 1
+        },
+        "samples": 2528,
+        "minimum": 0.0007999241352081299,
+        "median": 0.0022418946027755737,
+        "p95": 0.01345584075897932,
+        "maximum": 0.016138136386871338,
+        "behindHeadCount": 0,
+        "nonInkMinimum": 0.0009629130363464355,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 0
+      },
+      {
+        "weights": {
+          "ee": 0.1
+        },
+        "samples": 4913,
+        "minimum": -0.015646934509277344,
+        "median": -0.013701647520065308,
+        "p95": 0.001966058975085616,
+        "maximum": 0.002703636884689331,
+        "behindHeadCount": 3901,
+        "nonInkMinimum": 0.0008473694324493408,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3901
+      },
+      {
+        "weights": {
+          "ee": 0.18
+        },
+        "samples": 5088,
+        "minimum": -0.014020472764968872,
+        "median": -0.012110486626625061,
+        "p95": 0.00249591120518744,
+        "maximum": 0.003964364528656006,
+        "behindHeadCount": 3826,
+        "nonInkMinimum": 0.0008434951305389404,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3826
+      },
+      {
+        "weights": {
+          "ee": 0.22
+        },
+        "samples": 5088,
+        "minimum": -0.013292789459228516,
+        "median": -0.01136094331741333,
+        "p95": 0.002903651911765337,
+        "maximum": 0.004522353410720825,
+        "behindHeadCount": 3795,
+        "nonInkMinimum": 0.0008630752563476562,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3795
+      },
+      {
+        "weights": {
+          "ee": 0.5
+        },
+        "samples": 5088,
+        "minimum": -0.008198738098144531,
+        "median": -0.006218969821929932,
+        "p95": 0.006631884723901749,
+        "maximum": 0.009234815835952759,
+        "behindHeadCount": 3566,
+        "nonInkMinimum": 0.000910639762878418,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3566
+      },
+      {
+        "weights": {
+          "ee": 1
+        },
+        "samples": 4576,
+        "minimum": 0.00087699294090271,
+        "median": 0.0020464658737182617,
+        "p95": 0.014107704162597656,
+        "maximum": 0.016938716173171997,
+        "behindHeadCount": 0,
+        "nonInkMinimum": 0.000989675521850586,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 0
+      },
+      {
+        "weights": {
+          "oh": 0.1
+        },
+        "samples": 4913,
+        "minimum": -0.015475839376449585,
+        "median": -0.01326015591621399,
+        "p95": 0.0019132972229272127,
+        "maximum": 0.0027591288089752197,
+        "behindHeadCount": 3782,
+        "nonInkMinimum": 0.0008063316345214844,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3782
+      },
+      {
+        "weights": {
+          "oh": 0.18
+        },
+        "samples": 5088,
+        "minimum": -0.014243662357330322,
+        "median": -0.011066809296607971,
+        "p95": 0.0022338549606502056,
+        "maximum": 0.0038653314113616943,
+        "behindHeadCount": 3651,
+        "nonInkMinimum": 0.0008012056350708008,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3651
+      },
+      {
+        "weights": {
+          "oh": 0.22
+        },
+        "samples": 5088,
+        "minimum": -0.013963311910629272,
+        "median": -0.009884029626846313,
+        "p95": 0.0025008926168084145,
+        "maximum": 0.004263967275619507,
+        "behindHeadCount": 3594,
+        "nonInkMinimum": 0.0008063912391662598,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3594
+      },
+      {
+        "weights": {
+          "oh": 0.5
+        },
+        "samples": 5088,
+        "minimum": -0.010466009378433228,
+        "median": -0.001046791672706604,
+        "p95": 0.0047138528898358345,
+        "maximum": 0.008487850427627563,
+        "behindHeadCount": 3299,
+        "nonInkMinimum": 0.0008076727390289307,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3299
+      },
+      {
+        "weights": {
+          "oh": 1
+        },
+        "samples": 3232,
+        "minimum": 0.000800013542175293,
+        "median": 0.0029144659638404846,
+        "p95": 0.01294338796287775,
+        "maximum": 0.016720682382583618,
+        "behindHeadCount": 0,
+        "nonInkMinimum": 0.0010378062725067139,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 0
+      },
+      {
+        "weights": {
+          "aa": 0.5,
+          "ih": 0.5
+        },
+        "samples": 5088,
+        "minimum": 0.0008443295955657959,
+        "median": 0.001425817608833313,
+        "p95": 0.013579776510596275,
+        "maximum": 0.01689276099205017,
+        "behindHeadCount": 0,
+        "nonInkMinimum": 0.0009763538837432861,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 0
+      },
+      {
+        "weights": {
+          "ou": 0.5,
+          "oh": 0.5
+        },
+        "samples": 4230,
+        "minimum": 0.0008368194103240967,
+        "median": 0.00544816255569458,
+        "p95": 0.015684843063354492,
+        "maximum": 0.016074299812316895,
+        "behindHeadCount": 0,
+        "nonInkMinimum": 0.0009755790233612061,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 0
+      },
+      {
+        "weights": {
+          "aa": 0.2,
+          "ih": 0.2,
+          "ou": 0.2,
+          "ee": 0.2,
+          "oh": 0.2
+        },
+        "samples": 5088,
+        "minimum": 0.0008533596992492676,
+        "median": 0.0034017711877822876,
+        "p95": 0.013017972931265831,
+        "maximum": 0.017666220664978027,
+        "behindHeadCount": 0,
+        "nonInkMinimum": 0.0009624958038330078,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 0
+      },
+      {
+        "weights": {
+          "aa": 0.25,
+          "ih": 0.25
+        },
+        "samples": 5088,
+        "minimum": -0.011706799268722534,
+        "median": -0.007077664136886597,
+        "p95": 0.006032162811607122,
+        "maximum": 0.008854717016220093,
+        "behindHeadCount": 3331,
+        "nonInkMinimum": 0.0009015202522277832,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3331
+      },
+      {
+        "weights": {
+          "ou": 0.25,
+          "oh": 0.25
+        },
+        "samples": 5088,
+        "minimum": -0.008868962526321411,
+        "median": -0.0015186965465545654,
+        "p95": 0.006330905482172966,
+        "maximum": 0.008616030216217041,
+        "behindHeadCount": 3545,
+        "nonInkMinimum": 0.0008379817008972168,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3545
+      },
+      {
+        "weights": {
+          "aa": 0.1,
+          "ih": 0.1,
+          "ou": 0.1,
+          "ee": 0.1,
+          "oh": 0.1
+        },
+        "samples": 5088,
+        "minimum": -0.008195668458938599,
+        "median": -0.005137354135513306,
+        "p95": 0.006541551556438208,
+        "maximum": 0.008910328149795532,
+        "behindHeadCount": 3518,
+        "nonInkMinimum": 0.0008869469165802002,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3518
+      },
+      {
+        "weights": {
+          "aa": 0.036,
+          "ih": 0.036,
+          "ou": 0.036,
+          "ee": 0.036,
+          "oh": 0.036
+        },
+        "samples": 5088,
+        "minimum": -0.014017552137374878,
+        "median": -0.011986032128334045,
+        "p95": 0.002518045948818326,
+        "maximum": 0.004004091024398804,
+        "behindHeadCount": 3795,
+        "nonInkMinimum": 0.0008417665958404541,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3795
+      }
+    ]
+  },
+  "blenderImportedExpressions": [
+    "blink",
+    "blink_left",
+    "blink_right",
+    "relaxed",
+    "aa",
+    "ih",
+    "ou",
+    "ee",
+    "oh"
+  ],
+  "limits": [
+    "Original black lip intentionally occludes red plane at small weights",
+    "Front apparent black rim is thicker at low weights, although frontal coordinates and UVs are unchanged",
+    "Full-open states retain existing corner artifacts",
+    "Full-open exported coordinates agree within 1e-7 m; a few edge pixels differ",
+    "Sampled source-ink classification is specific to this input; other models and runtimes unverified"
+  ]
+}

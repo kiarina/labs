@@ -74,3 +74,62 @@ baseline. The no-mipmap mouth sampler from the flat-onset pipeline still applies
 Open `viewer.html?model=mouth-profile-fitted`; the earlier front-approved candidate
 remains a separate choice. Do not overwrite it or equate front approval with
 approval of the new profile, audio timing, or the complete production VRM.
+
+## Small-opening depth and lip occlusion
+
+The owner subsequently supported the profile improvement but pointed out a red
+projection at `aa=.18`, viewed from the left profile. The new candidate is
+`mouth-onset-recessed`; `mouth-profile-fitted` remains its comparison baseline.
+
+The first attempt (`mouth-onset-depth`) moved only Basis toward the source face
+while keeping all full targets fixed. It improved typical clearance, but the
+maximum sampled forward gap at `aa=.18` remained 18.47 mm and the visible tip
+persisted. Treating the original raised black lip as a surface the opening must
+always cover was the wrong constraint for this small opening.
+
+The revised builder samples the original BaseColor through the original UVs to
+identify dark lip ink. At those neutral vertices, it estimates the underlying
+face depth from two samples below the dark rim. Original black lips may then
+occlude the opening. At non-ink triangle samples, 49 individual/mixed states
+constrain retraction so the mouth does not create new holes in the pink face.
+Only the Basis depth changes; the full target coordinates and front-plane
+coordinates/UVs stay fixed. This is input-specific authoring, not general-purpose
+material segmentation or an anatomical cavity.
+
+The distinction between occlusion and unwanted penetration matters here. The
+new source-ink-aware surface report records both separately. In 32 measured
+states, no non-ink sample is behind the head; minimum non-ink clearance is
+0.801 mm. Many samples behind the original black lip are deliberately hidden.
+At `aa=.18`, maximum forward gap in the sampled mouth falls from 18.47 to
+3.74 mm. The negative median in that state is dominated by intentionally hidden
+lip samples and must not be presented as a clearance improvement metric.
+
+The cost of keeping the original rim in front is visible in the front view:
+small openings show a thicker black W rim and less red near its upper sides.
+The flat lower edge remains. Front coordinates being identical therefore does
+**not** mean the intermediate images are identical (up to 1,298 changed pixels
+in the sampled front comparisons against the prior profile).
+
+The composed full-target POSITION arrays agree exactly in the exported files.
+In 25 full-open screenshots there are up to 12 differing edge pixels, despite
+that coordinate equality; this is not a claim of pixel-identical full opening.
+The comparator bounds affected area and mean difference and records the maximum
+channel difference. The former maximum-channel-only assertion was too strict
+for these sparse edge differences and was replaced without discarding them.
+Closed-mouth, eye-region and relaxed/blink reference checks remain pixel-exact.
+The viewer now captures 150 vowel states, 50 aa states and six mixtures, including
+18% explicitly. Blender binding reimport and byte-identical rebuild both pass.
+
+Evidence: [results/mouth-onset-depth-evaluation.json](results/mouth-onset-depth-evaluation.json).
+All earlier full-open corner limitations remain because those targets are
+preserved. Other models, renderers and audio-driven timing are still unverified.
+
+```sh
+MOUTH_ONSET_DEPTH=lip-occlusion mise run mouth-profile-probe
+MOUTH_ONSET_DEPTH=lip-occlusion MOUTH_RUN=mouth-onset-recessed-repeat mise run mouth-profile-probe
+```
+
+Open `viewer.html?model=mouth-onset-recessed`; the default output is separate from
+the prior profile and front baselines. `scripts/source_ink.py` samples source ink
+for both construction and diagnostics. Avoid replacing its source-UV lookup
+with a height-only rule: the source W ridge is irregular.

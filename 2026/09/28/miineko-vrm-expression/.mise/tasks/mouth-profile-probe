@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 BLENDER_BIN="${BLENDER_BIN:-blender}"
-export MOUTH_RUN="${MOUTH_RUN:-mouth-profile-fitted}"
-if [[ "$MOUTH_RUN" == mouth-vowels-flatstart ]]; then
+profile_default=mouth-profile-fitted
+if [[ "${MOUTH_ONSET_DEPTH:-0}" == 1 ]]; then profile_default=mouth-onset-depth; fi
+if [[ "${MOUTH_ONSET_DEPTH:-0}" == lip-occlusion ]]; then profile_default=mouth-onset-recessed; fi
+export MOUTH_RUN="${MOUTH_RUN:-$profile_default}"
+if [[ "$MOUTH_RUN" == mouth-vowels-flatstart ]] || [[ "${MOUTH_ONSET_DEPTH:-0}" != 0 && "$MOUTH_RUN" == mouth-profile-fitted ]]; then
   echo 'Preserve the front-view comparison baseline' >&2
   exit 1
 fi
@@ -15,6 +18,9 @@ export BLINK_RUN="$MOUTH_RUN"
 PROBE_ANGLES=0,45,-45 PROBE_UI=1 PROBE_VOWEL_PROFILE=1 node scripts/verify_viewer.mjs
 VERIFY_RELAXED=1 VERIFY_MOUTH=1 VERIFY_VOWELS=1 \
   "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/check_blink_roundtrip.py
-SURFACE_RUN="$MOUTH_RUN" "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/measure_mouth_surface.py
+SURFACE_RUN="$MOUTH_RUN" MEASURE_SOURCE_INK=1 "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/measure_mouth_surface.py
 "${COMPARE_PYTHON:-python3}" scripts/measure_mouth_probe.py "$BLINK_RUN"
 "${COMPARE_PYTHON:-python3}" scripts/compare_mouth_profile.py "$BLINK_RUN"
+if [[ "${MOUTH_ONSET_DEPTH:-0}" != 0 ]]; then
+  "${COMPARE_PYTHON:-python3}" scripts/compare_mouth_profile.py "$BLINK_RUN" --baseline mouth-profile-fitted --full-targets
+fi

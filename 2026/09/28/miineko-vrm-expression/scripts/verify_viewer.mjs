@@ -70,7 +70,7 @@ try{
  }
  if(await page.evaluate(()=>probe.hasMouth)){
   report.mouthStates=[];
-  for(const a of [0,45,90,-45,-90])for(const m of [0,.02,.05,.1,.22,.25,.5,.75,1]){
+  for(const a of [0,45,90,-45,-90])for(const m of [0,.02,.05,.1,.18,.22,.25,.5,.75,1]){
    await page.evaluate(({a,m})=>probe.set({a,m,w:0,r:0,e:'blink',visible:true}),{a,m});
    await canvas.screenshot({path:path.join(output,`aa-${m}-${a}.png`)});
    report.mouthStates.push({a,m});
@@ -129,7 +129,7 @@ try{
  if(await page.evaluate(()=>probe.hasVowels)){
   report.vowels=[];
   const vowelAngles=process.env.PROBE_VOWEL_PROFILE==='1'?[0,45,-45,90,-90]:[0,45,-45];
-  for(const v of ['aa','ih','ou','ee','oh'])for(const a of vowelAngles)for(const m of [0,.1,.22,.5,1]){
+  for(const v of ['aa','ih','ou','ee','oh'])for(const a of vowelAngles)for(const m of [0,.1,.18,.22,.5,1]){
    await page.evaluate(({v,a,m})=>probe.set({v,a,m,w:0,r:0,e:'blink'}),{v,a,m});
    await canvas.screenshot({path:path.join(output,`vowel-${v}-${m}-${a}.png`)});report.vowels.push({v,a,m});
   }
