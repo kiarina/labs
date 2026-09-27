@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+: "${MIINEKO_BASECOLOR:?Set MIINEKO_BASECOLOR to the original Tripo BaseColor image}"
+BLENDER_BIN="${BLENDER_BIN:-blender}"
+test -f artifacts/face-local-neutral.png || { echo 'Run bake-probe first' >&2; exit 1; }
+test -f artifacts/mask-uv-blink-texture.png || { echo 'Run mask-uv-blink-probe first' >&2; exit 1; }
+"$BLENDER_BIN" --background --python-exit-code 1 --python scripts/bake_closed_face_local.py
+"${COMPARE_PYTHON:-python3}" scripts/compose_expression_atlas.py
+"$BLENDER_BIN" --background --python-exit-code 1 --python scripts/render_expression_atlas.py

@@ -40,11 +40,16 @@ mise run bake-probe
 mise run blink-cap-probe
 mise run prosthetic-probe
 mise run mask-uv-blink-probe
+export MIINEKO_BASECOLOR=/path/to/original-BaseColor.jpg
+# With requirements-compare.txt installed in the selected Python environment:
+mise run atlas-probe
 # In an environment with requirements-compare.txt installed:
 mise run compare-mask
 ```
 
 `mask-probe` copies selected face triangles and keeps the original UV for its neutral material. `bake-probe` transfers the original BaseColor into a new 4096² face-local UV. `blink-cap-probe` uses copied eye triangles; `prosthetic-probe` uses a smooth fitted eyelid and a local eye-recession Shape Key. `mask-uv-blink-probe` is the separate full-mask texture-switch experiment described below. These are visual prototypes only; they do not create VRM expressions. The measured neutral comparison is in [`results/mask-render-comparison.json`](results/mask-render-comparison.json). The input FBX, rendered images and `.blend` files remain local and are not published.
+
+`atlas-probe` requires `bake-probe` and `mask-uv-blink-probe` outputs. It creates one shared BaseColor atlas and renders the two expression blocks through a UV mapping offset. The atlas, previews and `.blend` stay in ignored `artifacts/` because they contain private source imagery.
 
 ## Observations
 
@@ -95,6 +100,21 @@ After reviewing that mismatch, `mask-uv-blink-probe` used the **full conformal m
 The neutral render (`artifacts/mask-uv-neutral.png`) matches the neutral full-mask probe. The closed render (`artifacts/mask-uv-blink.png`) proves that the texture switch reaches both eyes on the original UV layout, but **does not yet look like an eyelid**: the eye sockets have a hard circular transition, small sculpted eye details remain visible, and the painted skin/line do not follow a convincing lid boundary. The new texture does not remove relief already present in the mesh and normal map. The owner's point is also correct: a human eyelid does not erase the eye's overall bulge. The next geometry work, if needed, should smooth the local rim and sculpted highlights while retaining the rounded volume, rather than flattening the eye.
 
 This is a Blender material-image switch, **not yet a VRM `TextureTransformBind` or a lip-sync test**. To encode this as VRM 1.0, the two states would need to share a compact atlas and a material isolated to the mask; the original FBX's single material cannot be transformed wholesale. Independent left/right blinking and mouth states require further material/atlas planning.
+
+### One-image atlas with aligned expression blocks
+
+The subsequent `atlas-probe` implements that layout for **BaseColor** in an 8192 × 4096 image:
+
+| Pixel region (top-left origin) | Contents | UV mapping |
+| --- | --- | --- |
+| `x=0…4095, y=0…4095` | Original 4096² Tripo atlas | Body `u'=0.5u`, `v'=v` |
+| `x=4096…6143, y=0…2047` | Mask neutral, 2048² | Mask `u'=0.5+0.25u_local`, `v'=0.5+0.5v_local` |
+| `x=6144…8191, y=0…2047` | Mask blink, 2048², same local UV structure | Neutral mask mapping plus `0.25` in U |
+| Right-half bottom row | Empty, reserved for later expression blocks | Not tested |
+
+The original atlas and both expression blocks are in **one PNG** (`artifacts/miineko-expression-atlas.png`). The body and mask use separate materials but reference the same image, so only the mask material's UV transform changes. In Blender, `atlas-neutral.png` and `atlas-blink.png` were rendered from the same scene and atlas with the mask mapping location changing from `(0.5, 0.5)` to `(0.75, 0.5)`. The body did not move. This validates the requested **layout and switching mechanism** in Blender; it does not validate visual quality or VRM export.
+
+The neutral and blink blocks were baked from the original scattered UV layout into the same face-local UV and then reduced to 2048². They therefore inherit the earlier rebake defects, with further softness from downsampling. The atlas render still shows the face-mask seam, and blink still exposes the source eye's sculpted ring. This prototype uses the original normal/roughness/metallic maps on the body and a simpler mask material; it is **one BaseColor image**, not one image for every material property. The [VRM 1.0 expression specification](https://github.com/vrm-c/vrm-specification/blob/master/specification/VRMC_vrm-1.0/expressions.md) applies Texture Transform to a material's UV-accessed textures, so a production mask must either pack its other maps into matching blocks or omit them deliberately. A full set of 17 expression states would also require a larger atlas, smaller blocks, or multiple separately controlled materials/images; this 8192 × 4096 two-state proof does not settle that tradeoff.
 
 **Interpretation:** the full conformal mask can carry texture variants while preserving the original UV and eye volume. It also retains the original sculpted eye ring, so painted variants alone cannot guarantee a natural blink. The hidden-patch route remains a separate fallback. Clean transitions, side views, independent left/right control, mouth motion and VRM binding remain unsolved.
 
