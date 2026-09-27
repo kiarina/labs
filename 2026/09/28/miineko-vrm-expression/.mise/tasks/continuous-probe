@@ -7,6 +7,7 @@ BLENDER_BIN="${BLENDER_BIN:-blender}"
 "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/surface_mask_probe.py
 export BLINK_RUN="${BLINK_RUN:-continuous-blink-hybrid-edge}"
 export BLINK_METHOD=hybrid BLINK_EDGE=source BLINK_SKIN=sampled
+export BLINK_APERTURE=parallel BLINK_INK=uniform
 export BLINK_SURFACE=quadratic-eye BLINK_RX=.102 BLINK_RZ=.105 BLINK_CURVE=.008
 "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/continuous_blink_probe.py
 node scripts/verify_viewer.mjs

@@ -2,7 +2,7 @@
 
 ## Question
 
-Can VRM 1.0 facial expressions be added to a Tripo-rigged Miineko model **without replacing the head and losing the generated appearance**? The current candidate is a thin copy of the original face with aligned expression blocks in one BaseColor atlas. Whole-head replacement and separate eyelid caps are recorded as failed alternatives.
+Can VRM 1.0 facial expressions be added to a Tripo-rigged Miineko model **without replacing the head and losing the generated appearance**? The owner selected the eyelid-overlay candidate (`continuous-fresh`) after reviewing three methods. The current work refines that family while retaining the selected appearance. The earlier full-face atlas and head-replacement experiments below are historical alternatives.
 
 ## Current result
 
@@ -10,7 +10,8 @@ Can VRM 1.0 facial expressions be added to a Tripo-rigged Miineko model **withou
 moving eyelid meshes, and locally rebuilt eye surfaces. The first two support
 VRM 1.0 continuous and independent left/right blink in a local three-vrm viewer.
 The source-preserving hybrid also rebuilt from the original FBX with an identical
-VRM binary. **Visual quality is still not accepted.** The experiment design,
+VRM binary. The owner prefers the overlay's appearance; final production quality
+and the complete expression set are still being developed. The experiment design,
 commands, failed candidates and current limits are in [EXPERIMENTS.md](EXPERIMENTS.md).
 The two-state atlas below is the earlier experiment, not the current selected route.
 

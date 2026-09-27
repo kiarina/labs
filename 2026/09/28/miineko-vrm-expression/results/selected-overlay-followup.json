@@ -1,0 +1,1246 @@
+{
+  "date": "2026-09-28",
+  "selectedBaseline": "continuous-fresh",
+  "selectedBaselineSha256": "c690e80abf9dcc159726441b4067c83b7601895d6d70918abe6187d4f06db60a",
+  "baselineRebuildByteIdentical": true,
+  "runs": {
+    "overlay-rounded": {
+      "build": {
+        "aperture": "ellipse",
+        "edge": "source",
+        "skin": "sampled",
+        "geometryControl": "hybrid",
+        "surface": "quadratic-eye",
+        "blender": "5.1.2",
+        "method": "continuous-alpha-wipe",
+        "centers": {
+          "L": [
+            0.1764,
+            0.619
+          ],
+          "R": [
+            -0.1848,
+            0.619
+          ]
+        },
+        "grid": 65,
+        "radius": [
+          0.102,
+          0.105
+        ],
+        "curve": 0.008,
+        "sourceScriptSha256": "042833923ff6c108d8bbe735f503cae58a5249e5eda9dda4d39a3a7f91b77040",
+        "eyes": {
+          "L": {
+            "maxEnvelopeOffset": 0.00527727161001491,
+            "maxForwardDistance": 0.01902309144679576
+          },
+          "R": {
+            "maxEnvelopeOffset": 0.004203646232005653,
+            "maxForwardDistance": 0.02230005840846494
+          }
+        },
+        "export": [
+          "FINISHED"
+        ]
+      },
+      "runtime": {
+        "chrome": "Chrome/153.0.8010.53",
+        "states": 44,
+        "errors": [],
+        "warnings": []
+      },
+      "measurements": {
+        "run": "overlay-rounded",
+        "colors": [
+          {
+            "mesh": "Lid L lower",
+            "channels": 4,
+            "min": [
+              0.439658197909514,
+              0.0,
+              0.10461585412375067,
+              0.0
+            ],
+            "max": [
+              0.9559777218280309,
+              0.01599145494773785,
+              0.2831464103150988,
+              1.0
+            ]
+          },
+          {
+            "mesh": "Lid L upper",
+            "channels": 4,
+            "min": [
+              0.41254291599908444,
+              0.0,
+              0.11953917753871977,
+              0.0
+            ],
+            "max": [
+              1.0,
+              0.01599145494773785,
+              0.27049668116273745,
+              1.0
+            ]
+          },
+          {
+            "mesh": "Lid R lower",
+            "channels": 4,
+            "min": [
+              0.49102006561379413,
+              0.0,
+              0.14702067597467003,
+              0.0
+            ],
+            "max": [
+              0.9386892500190738,
+              0.011612115663385977,
+              0.2831464103150988,
+              1.0
+            ]
+          },
+          {
+            "mesh": "Lid R upper",
+            "channels": 4,
+            "min": [
+              0.40198367284657055,
+              0.0,
+              0.13287556267643244,
+              0.0
+            ],
+            "max": [
+              0.9473105973907072,
+              0.01228351262684062,
+              0.2746776531624323,
+              1.0
+            ]
+          }
+        ],
+        "neutral": [
+          {
+            "kind": "material-split",
+            "angle": 0,
+            "meanAbsoluteRgb255": 3.2150205761316875e-05,
+            "maxRgb255": 1.0,
+            "fractionPixelsAbove12": 0.0
+          },
+          {
+            "kind": "wipe-0",
+            "angle": 0,
+            "meanAbsoluteRgb255": 0.09730066872427984,
+            "maxRgb255": 42.0,
+            "fractionPixelsAbove12": 0.0006867283950617284
+          },
+          {
+            "kind": "viewer",
+            "angle": 0,
+            "meanAbsoluteRgb255": 0.0,
+            "maxRgb255": 0.0,
+            "fractionPixelsAbove12": 0.0
+          },
+          {
+            "kind": "material-split",
+            "angle": 45,
+            "meanAbsoluteRgb255": 5.6584362139917696e-05,
+            "maxRgb255": 1.0,
+            "fractionPixelsAbove12": 0.0
+          },
+          {
+            "kind": "wipe-0",
+            "angle": 45,
+            "meanAbsoluteRgb255": 0.07163001543209876,
+            "maxRgb255": 52.0,
+            "fractionPixelsAbove12": 0.0004243827160493827
+          },
+          {
+            "kind": "viewer",
+            "angle": 45,
+            "meanAbsoluteRgb255": 8.641975308641975e-06,
+            "maxRgb255": 9.0,
+            "fractionPixelsAbove12": 0.0
+          },
+          {
+            "kind": "material-split",
+            "angle": 90,
+            "meanAbsoluteRgb255": 4.11522633744856e-05,
+            "maxRgb255": 1.0,
+            "fractionPixelsAbove12": 0.0
+          },
+          {
+            "kind": "wipe-0",
+            "angle": 90,
+            "meanAbsoluteRgb255": 0.02156442901234568,
+            "maxRgb255": 42.0,
+            "fractionPixelsAbove12": 8.487654320987654e-05
+          },
+          {
+            "kind": "viewer",
+            "angle": 90,
+            "meanAbsoluteRgb255": 0.0,
+            "maxRgb255": 0.0,
+            "fractionPixelsAbove12": 0.0
+          }
+        ],
+        "bindings": {
+          "blink": {
+            "materials": [
+              "Lid L upper",
+              "Lid L lower",
+              "Lid R upper",
+              "Lid R lower"
+            ],
+            "nodes": [
+              "Miineko_Body",
+              "Miineko_Body"
+            ],
+            "targets": [
+              "LidClearanceL",
+              "LidClearanceR"
+            ]
+          },
+          "blinkLeft": {
+            "materials": [
+              "Lid L upper",
+              "Lid L lower"
+            ],
+            "nodes": [
+              "Miineko_Body"
+            ],
+            "targets": [
+              "LidClearanceL"
+            ]
+          },
+          "blinkRight": {
+            "materials": [
+              "Lid R upper",
+              "Lid R lower"
+            ],
+            "nodes": [
+              "Miineko_Body"
+            ],
+            "targets": [
+              "LidClearanceR"
+            ]
+          }
+        },
+        "visualAcceptance": "not granted"
+      },
+      "neutralFiveAngles": [
+        {
+          "angle": 0,
+          "meanRgb255": 0.0,
+          "maxRgb255": 0.0,
+          "pixelsAbove12": 0
+        },
+        {
+          "angle": 45,
+          "meanRgb255": 8.641975308641975e-06,
+          "maxRgb255": 9.0,
+          "pixelsAbove12": 0
+        },
+        {
+          "angle": 90,
+          "meanRgb255": 0.0,
+          "maxRgb255": 0.0,
+          "pixelsAbove12": 0
+        },
+        {
+          "angle": -45,
+          "meanRgb255": 0.0,
+          "maxRgb255": 0.0,
+          "pixelsAbove12": 0
+        },
+        {
+          "angle": -90,
+          "meanRgb255": 0.0,
+          "maxRgb255": 0.0,
+          "pixelsAbove12": 0
+        }
+      ],
+      "inactiveEyeAtHalfWink": {
+        "blinkLeft": {
+          "meanRgb255": 2.7434842249657065e-06,
+          "maxRgb255": 1.0,
+          "pixelsAbove12": 0
+        },
+        "blinkRight": {
+          "meanRgb255": 0.0,
+          "maxRgb255": 0.0,
+          "pixelsAbove12": 0
+        }
+      }
+    },
+    "overlay-refined": {
+      "build": {
+        "ink": "eye-local",
+        "aperture": "ellipse",
+        "edge": "source",
+        "skin": "sampled",
+        "geometryControl": "hybrid",
+        "surface": "quadratic-eye",
+        "blender": "5.1.2",
+        "method": "continuous-alpha-wipe",
+        "centers": {
+          "L": [
+            0.1764,
+            0.619
+          ],
+          "R": [
+            -0.1848,
+            0.619
+          ]
+        },
+        "grid": 65,
+        "radius": [
+          0.102,
+          0.105
+        ],
+        "curve": 0.008,
+        "sourceScriptSha256": "209877015771f26a28d16931864ee1c3ddf225623e2c2e8d6d605f152b11c88e",
+        "eyes": {
+          "L": {
+            "maxEnvelopeOffset": 0.00527727161001491,
+            "maxForwardDistance": 0.01902309144679576
+          },
+          "R": {
+            "maxEnvelopeOffset": 0.004203646232005653,
+            "maxForwardDistance": 0.02230005840846494
+          }
+        },
+        "export": [
+          "FINISHED"
+        ]
+      },
+      "runtime": {
+        "chrome": "Chrome/153.0.8010.53",
+        "states": 44,
+        "errors": [],
+        "warnings": []
+      },
+      "measurements": {
+        "run": "overlay-refined",
+        "colors": [
+          {
+            "mesh": "Lid L lower",
+            "channels": 4,
+            "min": [
+              0.439658197909514,
+              0.0,
+              0.10461585412375067,
+              0.0
+            ],
+            "max": [
+              0.9559777218280309,
+              0.01599145494773785,
+              0.2831464103150988,
+              1.0
+            ]
+          },
+          {
+            "mesh": "Lid L upper",
+            "channels": 4,
+            "min": [
+              0.41254291599908444,
+              0.0,
+              0.11953917753871977,
+              0.0
+            ],
+            "max": [
+              1.0,
+              0.01599145494773785,
+              0.27049668116273745,
+              1.0
+            ]
+          },
+          {
+            "mesh": "Lid R lower",
+            "channels": 4,
+            "min": [
+              0.49102006561379413,
+              0.0,
+              0.14702067597467003,
+              0.0
+            ],
+            "max": [
+              0.9386892500190738,
+              0.011612115663385977,
+              0.2831464103150988,
+              1.0
+            ]
+          },
+          {
+            "mesh": "Lid R upper",
+            "channels": 4,
+            "min": [
+              0.40198367284657055,
+              0.0,
+              0.13287556267643244,
+              0.0
+            ],
+            "max": [
+              0.9473105973907072,
+              0.01228351262684062,
+              0.2746776531624323,
+              1.0
+            ]
+          }
+        ],
+        "neutral": [
+          {
+            "kind": "material-split",
+            "angle": 0,
+            "meanAbsoluteRgb255": 3.8580246913580246e-05,
+            "maxRgb255": 1.0,
+            "fractionPixelsAbove12": 0.0
+          },
+          {
+            "kind": "wipe-0",
+            "angle": 0,
+            "meanAbsoluteRgb255": 0.09730131172839507,
+            "maxRgb255": 42.0,
+            "fractionPixelsAbove12": 0.0006867283950617284
+          },
+          {
+            "kind": "viewer",
+            "angle": 0,
+            "meanAbsoluteRgb255": 0.0,
+            "maxRgb255": 0.0,
+            "fractionPixelsAbove12": 0.0
+          },
+          {
+            "kind": "material-split",
+            "angle": 45,
+            "meanAbsoluteRgb255": 4.1795267489711935e-05,
+            "maxRgb255": 1.0,
+            "fractionPixelsAbove12": 0.0
+          },
+          {
+            "kind": "wipe-0",
+            "angle": 45,
+            "meanAbsoluteRgb255": 0.07163387345679012,
+            "maxRgb255": 52.0,
+            "fractionPixelsAbove12": 0.0004243827160493827
+          },
+          {
+            "kind": "viewer",
+            "angle": 45,
+            "meanAbsoluteRgb255": 3.7037037037037037e-05,
+            "maxRgb255": 14.0,
+            "fractionPixelsAbove12": 1.234567901234568e-06
+          },
+          {
+            "kind": "material-split",
+            "angle": 90,
+            "meanAbsoluteRgb255": 4.243827160493827e-05,
+            "maxRgb255": 1.0,
+            "fractionPixelsAbove12": 0.0
+          },
+          {
+            "kind": "wipe-0",
+            "angle": 90,
+            "meanAbsoluteRgb255": 0.021559927983539093,
+            "maxRgb255": 42.0,
+            "fractionPixelsAbove12": 8.487654320987654e-05
+          },
+          {
+            "kind": "viewer",
+            "angle": 90,
+            "meanAbsoluteRgb255": 0.0,
+            "maxRgb255": 0.0,
+            "fractionPixelsAbove12": 0.0
+          }
+        ],
+        "bindings": {
+          "blink": {
+            "materials": [
+              "Lid L upper",
+              "Lid L lower",
+              "Lid R upper",
+              "Lid R lower"
+            ],
+            "nodes": [
+              "Miineko_Body",
+              "Miineko_Body"
+            ],
+            "targets": [
+              "LidClearanceL",
+              "LidClearanceR"
+            ]
+          },
+          "blinkLeft": {
+            "materials": [
+              "Lid L upper",
+              "Lid L lower"
+            ],
+            "nodes": [
+              "Miineko_Body"
+            ],
+            "targets": [
+              "LidClearanceL"
+            ]
+          },
+          "blinkRight": {
+            "materials": [
+              "Lid R upper",
+              "Lid R lower"
+            ],
+            "nodes": [
+              "Miineko_Body"
+            ],
+            "targets": [
+              "LidClearanceR"
+            ]
+          }
+        },
+        "visualAcceptance": "not granted"
+      },
+      "neutralFiveAngles": [
+        {
+          "angle": 0,
+          "meanRgb255": 0.0,
+          "maxRgb255": 0.0,
+          "pixelsAbove12": 0
+        },
+        {
+          "angle": 45,
+          "meanRgb255": 3.7037037037037037e-05,
+          "maxRgb255": 14.0,
+          "pixelsAbove12": 1
+        },
+        {
+          "angle": 90,
+          "meanRgb255": 0.0,
+          "maxRgb255": 0.0,
+          "pixelsAbove12": 0
+        },
+        {
+          "angle": -45,
+          "meanRgb255": 1.6872427983539095e-05,
+          "maxRgb255": 9.0,
+          "pixelsAbove12": 0
+        },
+        {
+          "angle": -90,
+          "meanRgb255": 7.4074074074074075e-06,
+          "maxRgb255": 5.0,
+          "pixelsAbove12": 0
+        }
+      ],
+      "inactiveEyeAtHalfWink": {
+        "blinkLeft": {
+          "meanRgb255": 2.7434842249657065e-06,
+          "maxRgb255": 1.0,
+          "pixelsAbove12": 0
+        },
+        "blinkRight": {
+          "meanRgb255": 0.0,
+          "maxRgb255": 0.0,
+          "pixelsAbove12": 0
+        }
+      }
+    },
+    "overlay-selected-plus": {
+      "build": {
+        "method": "selected-overlay-with-relaxed",
+        "source": "continuous-fresh",
+        "sourceVrmSha256": "c690e80abf9dcc159726441b4067c83b7601895d6d70918abe6187d4f06db60a",
+        "sourceBlendSha256": "694068822227030ebaf674dfeaeb71d819187c78139fa7daa01f09390c9b748e",
+        "blender": "5.1.2",
+        "relaxed": {
+          "morphBinds": 2,
+          "textureBinds": 4,
+          "overrideBlink": "blend",
+          "suggestedPartialWeight": 0.35
+        },
+        "export": [
+          "FINISHED"
+        ]
+      },
+      "runtime": {
+        "chrome": "Chrome/153.0.8010.53",
+        "states": 29,
+        "errors": [],
+        "warnings": []
+      },
+      "measurements": {
+        "run": "overlay-selected-plus",
+        "colors": [
+          {
+            "mesh": "Lid L lower",
+            "channels": 4,
+            "min": [
+              0.439658197909514,
+              0.0,
+              0.10461585412375067,
+              0.0
+            ],
+            "max": [
+              0.9559777218280309,
+              0.01599145494773785,
+              0.2831464103150988,
+              1.0
+            ]
+          },
+          {
+            "mesh": "Lid L upper",
+            "channels": 4,
+            "min": [
+              0.41254291599908444,
+              0.0,
+              0.11953917753871977,
+              0.0
+            ],
+            "max": [
+              1.0,
+              0.01599145494773785,
+              0.27049668116273745,
+              1.0
+            ]
+          },
+          {
+            "mesh": "Lid R lower",
+            "channels": 4,
+            "min": [
+              0.49102006561379413,
+              0.0,
+              0.14702067597467003,
+              0.0
+            ],
+            "max": [
+              0.9386892500190738,
+              0.011612115663385977,
+              0.2831464103150988,
+              1.0
+            ]
+          },
+          {
+            "mesh": "Lid R upper",
+            "channels": 4,
+            "min": [
+              0.40198367284657055,
+              0.0,
+              0.13287556267643244,
+              0.0
+            ],
+            "max": [
+              0.9473105973907072,
+              0.01228351262684062,
+              0.2746776531624323,
+              1.0
+            ]
+          }
+        ],
+        "neutral": [
+          {
+            "kind": "viewer",
+            "angle": 0,
+            "meanAbsoluteRgb255": 0.0,
+            "maxRgb255": 0.0,
+            "fractionPixelsAbove12": 0.0
+          },
+          {
+            "kind": "viewer",
+            "angle": 45,
+            "meanAbsoluteRgb255": 0.0,
+            "maxRgb255": 0.0,
+            "fractionPixelsAbove12": 0.0
+          },
+          {
+            "kind": "viewer",
+            "angle": 90,
+            "meanAbsoluteRgb255": 0.0,
+            "maxRgb255": 0.0,
+            "fractionPixelsAbove12": 0.0
+          }
+        ],
+        "bindings": {
+          "blink": {
+            "materials": [
+              "Lid L upper",
+              "Lid L lower",
+              "Lid R upper",
+              "Lid R lower"
+            ],
+            "nodes": [
+              "Miineko_Body",
+              "Miineko_Body"
+            ],
+            "targets": [
+              "LidClearanceL",
+              "LidClearanceR"
+            ]
+          },
+          "blinkLeft": {
+            "materials": [
+              "Lid L upper",
+              "Lid L lower"
+            ],
+            "nodes": [
+              "Miineko_Body"
+            ],
+            "targets": [
+              "LidClearanceL"
+            ]
+          },
+          "blinkRight": {
+            "materials": [
+              "Lid R upper",
+              "Lid R lower"
+            ],
+            "nodes": [
+              "Miineko_Body"
+            ],
+            "targets": [
+              "LidClearanceR"
+            ]
+          }
+        },
+        "visualAcceptance": "not granted"
+      },
+      "relaxedComposition": [
+        {
+          "r": 0,
+          "w": 0,
+          "e": "blink",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0,
+          "w": 0,
+          "e": "blinkLeft",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0,
+          "w": 0,
+          "e": "blinkRight",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0,
+          "w": 0.5,
+          "e": "blink",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0,
+          "w": 0.5,
+          "e": "blinkLeft",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0,
+          "w": 0.5,
+          "e": "blinkRight",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0,
+          "w": 1,
+          "e": "blink",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0,
+          "w": 1,
+          "e": "blinkLeft",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0,
+          "w": 1,
+          "e": "blinkRight",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.35,
+          "w": 0,
+          "e": "blink",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.35,
+          "w": 0,
+          "e": "blinkLeft",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.35,
+          "w": 0,
+          "e": "blinkRight",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.35,
+          "w": 0.5,
+          "e": "blink",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.35,
+          "w": 0.5,
+          "e": "blinkLeft",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.35,
+          "w": 0.5,
+          "e": "blinkRight",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.35,
+          "w": 1,
+          "e": "blink",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.35,
+          "w": 1,
+          "e": "blinkLeft",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.35,
+          "w": 1,
+          "e": "blinkRight",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.7,
+          "w": 0,
+          "e": "blink",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.7,
+          "w": 0,
+          "e": "blinkLeft",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.7,
+          "w": 0,
+          "e": "blinkRight",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.7,
+          "w": 0.5,
+          "e": "blink",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.7,
+          "w": 0.5,
+          "e": "blinkLeft",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.7,
+          "w": 0.5,
+          "e": "blinkRight",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.7,
+          "w": 1,
+          "e": "blink",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.7,
+          "w": 1,
+          "e": "blinkLeft",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.7,
+          "w": 1,
+          "e": "blinkRight",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 1,
+          "w": 0,
+          "e": "blink",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 1,
+          "w": 0,
+          "e": "blinkLeft",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 1,
+          "w": 0,
+          "e": "blinkRight",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 1,
+          "w": 0.5,
+          "e": "blink",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 1,
+          "w": 0.5,
+          "e": "blinkLeft",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 1,
+          "w": 0.5,
+          "e": "blinkRight",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 1,
+          "w": 1,
+          "e": "blink",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 1,
+          "w": 1,
+          "e": "blinkLeft",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 1,
+          "w": 1,
+          "e": "blinkRight",
+          "maxChannelDifference": 0,
+          "meanChannelDifference": 0,
+          "channelsAbove2": 0
+        }
+      ],
+      "naturalPlayback": {
+        "maximum": 1,
+        "first": 0,
+        "last": 0,
+        "frames": 91
+      },
+      "originalTogglePersists": true,
+      "compactLayout": {
+        "scrollWidth": 600,
+        "width": 600,
+        "canvasHeight": 658
+      },
+      "blenderImport": {
+        "blender": "5.1.2",
+        "scope": "binding import only, shading not certified",
+        "expressions": {
+          "blink": {
+            "morphs": [
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceL",
+                "weight": 1.0
+              },
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceR",
+                "weight": 1.0
+              }
+            ],
+            "textures": [
+              {
+                "material": "Lid L upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid L lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid R upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid R lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ],
+            "binary": false
+          },
+          "blink_left": {
+            "morphs": [
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceL",
+                "weight": 1.0
+              }
+            ],
+            "textures": [
+              {
+                "material": "Lid L upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid L lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ],
+            "binary": false
+          },
+          "blink_right": {
+            "morphs": [
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceR",
+                "weight": 1.0
+              }
+            ],
+            "textures": [
+              {
+                "material": "Lid R upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid R lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ],
+            "binary": false
+          },
+          "relaxed": {
+            "morphs": [
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceL",
+                "weight": 1.0
+              },
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceR",
+                "weight": 1.0
+              }
+            ],
+            "textures": [
+              {
+                "material": "Lid L upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid L lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid R upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid R lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ],
+            "binary": false
+          }
+        }
+      },
+      "neutralFiveAngles": [
+        {
+          "angle": 0,
+          "meanRgb255": 0.0,
+          "maxRgb255": 0.0,
+          "pixelsAbove12": 0
+        },
+        {
+          "angle": 45,
+          "meanRgb255": 0.0,
+          "maxRgb255": 0.0,
+          "pixelsAbove12": 0
+        },
+        {
+          "angle": 90,
+          "meanRgb255": 0.0,
+          "maxRgb255": 0.0,
+          "pixelsAbove12": 0
+        },
+        {
+          "angle": -45,
+          "meanRgb255": 0.0,
+          "maxRgb255": 0.0,
+          "pixelsAbove12": 0
+        },
+        {
+          "angle": -90,
+          "meanRgb255": 0.0,
+          "maxRgb255": 0.0,
+          "pixelsAbove12": 0
+        }
+      ],
+      "inactiveEyeAtHalfWink": {
+        "blinkLeft": {
+          "meanRgb255": 9.728667464417399e-07,
+          "maxRgb255": 1.0,
+          "pixelsAbove12": 0
+        },
+        "blinkRight": {
+          "meanRgb255": 9.728667464417399e-07,
+          "maxRgb255": 1.0,
+          "pixelsAbove12": 0
+        }
+      }
+    }
+  }
+}

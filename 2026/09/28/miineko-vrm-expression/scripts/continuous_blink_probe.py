@@ -19,6 +19,10 @@ RX = float(os.environ.get("BLINK_RX", ".112"))
 RZ = float(os.environ.get("BLINK_RZ", ".115"))
 CURVE = float(os.environ.get("BLINK_CURVE", "0"))
 SHIFT = .027+RZ*2
+APERTURE = os.environ.get("BLINK_APERTURE", "parallel")
+assert APERTURE in ("parallel", "ellipse")
+INK = os.environ.get("BLINK_INK", "uniform")
+assert INK in ("uniform", "eye-local")
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "artifacts" / os.environ.get("BLINK_RUN", "continuous-blink")
@@ -138,7 +142,7 @@ def skin_rgb(cx,cz,x,z):
     return np.where(raw<=.04045,raw/12.92,((raw+.055)/1.055)**2.4)
 
 method = os.environ.get("BLINK_METHOD", "wipe")
-report = {"edge":os.environ.get("BLINK_EDGE","feather"), "skin":os.environ.get("BLINK_SKIN","constant"), "geometryControl": method, "surface": os.environ.get("BLINK_SURFACE", "envelope"), "blender": bpy.app.version_string, "method": "morph-lid" if method=="morph" else "continuous-alpha-wipe",
+report = {"ink":INK,"aperture":APERTURE,"edge":os.environ.get("BLINK_EDGE","feather"), "skin":os.environ.get("BLINK_SKIN","constant"), "geometryControl": method, "surface": os.environ.get("BLINK_SURFACE", "envelope"), "blender": bpy.app.version_string, "method": "morph-lid" if method=="morph" else "continuous-alpha-wipe",
           "centers": centers, "grid": 65, "radius": [RX, RZ], "curve": CURVE, "sourceScriptSha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(), "eyes": {}}
 
 
@@ -196,7 +200,7 @@ def surface(cx, cz):
 def wipe_image(side):
     # Algorithmic material ramp, not a rebake or edit of the source artwork.
     # Texture-space v>=0.5 is opaque; the leading edge is ink, then pink.
-    height, width = 2048, 8
+    height, width = 2048, (128 if INK == "eye-local" else 8)
     vv = (np.arange(height) + .5) / height
     alpha = smooth((vv - .5) / .002)
     ink = 1 - smooth((vv - .507) / .003)
@@ -205,6 +209,12 @@ def wipe_image(side):
     rgba = np.ones((height, width, 4), dtype=np.float32)
     rgba[:, :, :3] = rgb[:, None, :]
     rgba[:, :, 3] = alpha[:, None]
+    if INK == "eye-local":
+        # U controls a static ink mask; V still controls only the moving lid.
+        # At the skin perimeter the moving edge is skin-colored rather than
+        # drawing an extra black ring before it reaches the original eye.
+        strength=np.linspace(0,1,width)[None,:,None]*ink[:,None,None]
+        rgba[:,:,:3]=skin[None,None,:]*(1-strength)+.004*strength
     img = bpy.data.images.new(f"Eyelid ramp {side}", width=width, height=height, alpha=True)
     img.pixels.foreach_set(rgba.ravel())
     img.filepath_raw = str(OUT / f"ramp-{side}.png")
@@ -258,7 +268,20 @@ for side, (cx, cz) in centers.items():
                 inds[j, i] = len(verts)
                 verts.append((cx + xx[j, i], yy[j, i], cz + zz[j, i]))
                 # At neutral max V=.475; at closure boundary V=.502.
-                uvcoords.append((.5, .475 + (direction * local_z - RZ) * 2))
+                ink_u=.5
+                if INK == "eye-local":
+                    ink_radius=math.hypot(xx[j,i]/.087,zz[j,i]/.096)
+                    ink_u=.5/128+(127/128)*float(smooth((1-ink_radius)/.13))
+                if APERTURE == "ellipse":
+                    # A single linear VRM offset now sweeps an elliptical
+                    # opening. The ink tapers near the corners. Keep all UVs
+                    # below the alpha threshold at neutral, even outside the
+                    # geometric ellipse where vertex alpha fades to zero.
+                    height = RZ * math.sqrt(max(.015, 1-(xx[j,i]/RX)**2))
+                    q = min(1., direction*local_z/height)
+                    uvcoords.append((ink_u, .475+(q-1)*RZ*2))
+                else:
+                    uvcoords.append((ink_u, .475 + (direction * local_z - RZ) * 2))
                 opacity.append(float(1 - smooth((rr[j, i] - (.94 if os.environ.get("BLINK_EDGE")=="source" else .83)) / (.06 if os.environ.get("BLINK_EDGE")=="source" else .17))))
         for j in range(n - 1):
             for i in range(n - 1):

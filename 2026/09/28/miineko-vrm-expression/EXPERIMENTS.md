@@ -2,6 +2,68 @@
 
 ## Question and scope
 
+The owner reviewed the three viewer candidates on 2026-09-28 and preferred
+`continuous-fresh` (eyelids over the original face), describing it as cute.
+Preserve that binary and its appearance as the selected baseline. Further work
+prioritizes this overlay family. The earlier engineering quality assessment
+below remains the record of defects; it is not a reason to override the owner's
+visual preference or return to whole-head/local-eye replacement as the main path.
+
+### Selected-family follow-up
+
+The next controlled comparison changes only the eyelid aperture UV mapping:
+parallel upper/lower edges versus an elliptical opening with tapered corners.
+Geometry, colors, skin sampling, source-eye clearance, lighting and cameras are
+held fixed. Check neutral preservation, the complete blink interval, both sides,
+and front/oblique/profile views in Blender and the independent VRM viewer. Do not
+overwrite `artifacts/continuous-fresh/` with the new experiment.
+
+Results of this follow-up:
+
+- `overlay-rounded` tapers the opening and ink toward the eye corners using
+  static UVs. It exposed an extra black ring near blink weight 0.12.
+- `overlay-refined` adds a static eye-local ink mask in the texture's U direction;
+  only V moves at runtime. This removes that early ring while retaining the
+  rounded opening. It remains an optional comparison, not a replacement for the
+  owner's selected baseline. The rounded lid volume and geometry are unchanged.
+- Both were inspected at eight weights (including 0.10, 0.12 and 0.15) from
+  0°, ±45° and ±90°, plus half/full independent winks: 44 captures per run.
+  Neither produced runtime errors or warnings. In the tested front half-winks,
+  the inactive eye differed by at most one 8-bit channel level.
+- `overlay-selected-plus` keeps the selected baseline's geometry, UVs and materials
+  and adds `relaxed`. Weight 0 is the original face; intermediate weights lower
+  the lids; weight 1 closes them. `overrideBlink=blend` implements the standard
+  VRM combination `r + (1-r)*b`, so a full automatic blink still closes fully.
+  Across 36 front-view combinations of relaxation, blink strength and side, the
+  framebuffer exactly matched the corresponding selected-baseline state.
+  Blender reimport retains the new expression and its override setting.
+- The viewer now has a deliberate fast-close/slower-open preview with pauses,
+  separate from slow inspection. This timing is a viewer demonstration, not a
+  self-playing animation embedded in the VRM. The playback test reached both
+  closure 1 and reopening 0. Original-model toggling survives angle changes;
+  a 600-pixel-wide layout does not overflow horizontally. A resize-triggered blank
+  canvas found in the in-app browser was fixed by rendering after resizing.
+- Rebuilding the baseline with the extended builder still produced the original
+  SHA-256 `c690e80abf9dcc159726441b4067c83b7601895d6d70918abe6187d4f06db60a`.
+
+Measurements are in [selected-overlay-followup.json](results/selected-overlay-followup.json).
+Do not interpret the baseline preference as final acceptance of every proposed
+refinement. Some eyelid/material transitions remain visible, especially in profile.
+
+After preparing the preserved baseline, run `mise run overlay-followup` with the
+same `BLENDER_BIN`, `COMPARE_PYTHON` and optional `CHROME_BIN` used below. The
+relaxation addition is in `scripts/add_relaxed_expression.py`; it refuses to
+overwrite its input directory. To recreate only the optional corner comparison:
+
+```sh
+BLINK_RUN=overlay-refined BLINK_APERTURE=ellipse BLINK_INK=eye-local \
+  BLINK_METHOD=hybrid BLINK_EDGE=source BLINK_SKIN=sampled \
+  BLINK_SURFACE=quadratic-eye BLINK_RX=.102 BLINK_RZ=.105 BLINK_CURVE=.008 \
+  "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/continuous_blink_probe.py
+BLINK_RUN=overlay-refined PROBE_ANGLES=0,45,90,-45,-90 \
+  PROBE_WEIGHTS=0,.1,.12,.15,.25,.5,.75,1 node scripts/verify_viewer.mjs
+```
+
 Can the original neutral face remain unchanged while a rounded eyelid closes
 continuously, using only controls supported by VRM 1.0? A half blink must be a
 partially covered eye, not the midpoint between unrelated texture atlas tiles.
@@ -157,11 +219,12 @@ uploaded. Rendered media and binaries are intentionally not in Git.
 
 ## Remaining acceptance work
 
-No candidate is yet accepted as the production method. Do not add the remaining
-expressions on top of an unsuccessful blink. The next comparison must separate
-the closed surface, boundary continuity, coverage, and shading rather than changing
-all of them at once. Keep source-preserving UV coverage as the runtime reference;
-use the stitched experiments to diagnose local geometry and normal transfer.
-Mouth shapes, gaze, combined expressions and integration of springs remain after
-the blink/neutral quality gate. Cross-character transfer and other VRM runtimes
-remain unverified.
+The owner-selected overlay is the main development path; the complete production
+VRM is not finished. Preserve its appearance when refining the closed surface,
+boundary, coverage or shading, and change these separately. Relaxation plus blink
+is now runtime-verified. The next isolated expression experiment is one `aa`
+mouth shape, starting with exact restoration of the original nose/mouth at zero.
+Do not mass-produce the full preset set before that visual comparison. Gaze,
+other emotions, spring integration, cross-character transfer and other VRM
+runtimes remain unverified in this selected pipeline. Stitched-eye prototypes
+remain diagnostic references, not the selected direction.

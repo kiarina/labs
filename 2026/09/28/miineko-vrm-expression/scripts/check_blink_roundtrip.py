@@ -15,7 +15,11 @@ arms=[o for o in bpy.data.objects if o.type=='ARMATURE']
 assert len(arms)==1
 preset=arms[0].data.vrm_addon_extension.vrm1.expressions.preset
 report={'blender':bpy.app.version_string,'scope':'binding import only, shading not certified','expressions':{}}
-for name in ('blink','blink_left','blink_right'):
+names=['blink','blink_left','blink_right']
+if os.environ.get('VERIFY_RELAXED')=='1':
+    names.append('relaxed')
+    assert preset.relaxed.override_blink=='blend'
+for name in names:
     expr=getattr(preset,name)
     morphs=[{'object':b.node.mesh_object_name,'key':b.index,'weight':b.weight} for b in expr.morph_target_binds]
     textures=[{'material':b.material.name,'offset':list(b.offset),'scale':list(b.scale)} for b in expr.texture_transform_binds]

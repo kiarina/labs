@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+BLENDER_BIN="${BLENDER_BIN:-blender}"
+test -f artifacts/continuous-fresh/continuous-blink.blend || {
+  echo 'Prepare the preserved baseline with BLINK_RUN=continuous-fresh mise run continuous-probe' >&2
+  exit 1
+}
+export BLINK_INPUT=continuous-fresh BLINK_RUN=overlay-selected-plus
+"$BLENDER_BIN" --background --python-exit-code 1 --python scripts/add_relaxed_expression.py
+PROBE_UI=1 PROBE_ANGLES=0,45,90,-45,-90 node scripts/verify_viewer.mjs
+VERIFY_RELAXED=1 "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/check_blink_roundtrip.py
+"${COMPARE_PYTHON:-python3}" scripts/measure_blink_probe.py "$BLINK_RUN"
