@@ -3,6 +3,7 @@
 from pathlib import Path
 
 import bpy
+import numpy as np
 
 
 out = Path(__file__).resolve().parents[1] / "artifacts"
@@ -61,4 +62,40 @@ bpy.ops.render.render(write_still=True)
 mapping.inputs["Location"].default_value = (0.75, 0.5, 0)
 scene.render.filepath = str(out / "atlas-blink.png")
 bpy.ops.render.render(write_still=True)
+
+# Preserve the eyeball's rounded silhouette. Fill only the small sculpted
+# highlight cavities in the copied mask, using the surrounding eye surface.
+mask.shape_key_add(name="Basis")
+filled = mask.shape_key_add(name="BlinkHighlightFill")
+for center_x, center_z in ((-0.2001, 0.6486), (0.1558, 0.6525)):
+    ring = []
+    for vertex in mask.data.vertices:
+        p = vertex.co
+        radius = np.hypot((p.x - center_x) / 0.050, (p.z - center_z) / 0.045)
+        if 0.95 < radius < 1.75 and p.y < -0.28:
+            ring.append((p.x - center_x, p.z - center_z, p.y))
+    if len(ring) < 12:
+        raise RuntimeError(f"Not enough eye-surface samples at {center_x}: {len(ring)}")
+    ring = np.asarray(ring)
+    x, z, y = ring.T
+    basis = np.column_stack((np.ones_like(x), x, z, x*x, z*z, x*z))
+    coefficients = np.linalg.lstsq(basis, y, rcond=None)[0]
+    changed = 0
+    for vertex in mask.data.vertices:
+        p = vertex.co
+        dx, dz = p.x - center_x, p.z - center_z
+        radius = np.hypot(dx / 0.050, dz / 0.045)
+        if radius >= 1.25:
+            continue
+        predicted = np.dot(coefficients, (1, dx, dz, dx*dx, dz*dz, dx*dz))
+        weight = 1 if radius < 0.75 else max(0, (1.25-radius)/0.5)
+        target_y = min(p.y, predicted - 0.001)
+        filled.data[vertex.index].co.y = p.y + (target_y-p.y)*weight
+        if abs(target_y-p.y) > 0.0001:
+            changed += 1
+    print("HIGHLIGHT_FILL", center_x, "ring", len(ring), "changed", changed)
+filled.value = 1
+scene.render.filepath = str(out / "atlas-blink-highlight-fill.png")
+bpy.ops.render.render(write_still=True)
+filled.value = 0
 bpy.ops.wm.save_as_mainfile(filepath=str(out / "atlas-probe.blend"))

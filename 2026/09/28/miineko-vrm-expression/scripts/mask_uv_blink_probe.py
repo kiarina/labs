@@ -28,6 +28,31 @@ pixels = np.empty(width * height * 4, dtype=np.float32)
 source_image.pixels.foreach_get(pixels)
 pixels = pixels.reshape((height, width, 4))
 closed = pixels.copy()
+
+eye_centers = {}
+for side in (-1, 1):
+    dark_points = []
+    light_points = []
+    for loop in mask.data.loops:
+        point = mask.data.vertices[loop.vertex_index].co
+        if point.x * side < 0.04 or not 0.52 < point.z < 0.72:
+            continue
+        texel = mask.data.uv_layers[0].data[loop.index].uv
+        color = pixels[min(height - 1, int(texel.y * height)),
+                       min(width - 1, int(texel.x * width)), :3]
+        if color.max() < 0.18:
+            dark_points.append((point.x, point.z))
+        elif color.min() > 0.75:
+            light_points.append((point.x, point.z))
+    for label, points in (("dark", dark_points), ("highlight", light_points)):
+        if points:
+            values = np.asarray(points)
+            if label == "dark":
+                eye_centers[side] = np.median(values, axis=0)
+            print("EYE_LANDMARK", side, label, len(points),
+                  "median", np.median(values, axis=0),
+                  "x5_95", np.percentile(values[:, 0], [5, 95]),
+                  "z5_95", np.percentile(values[:, 1], [5, 95]))
 # Sampled from a forehead UV pixel of the original Tripo BaseColor atlas.
 skin_color = np.array((0.9215687, 0.00392157, 0.53333336), dtype=np.float32)
 ink_color = np.array((0.004, 0.002, 0.004), dtype=np.float32)
@@ -65,9 +90,11 @@ for tri in mesh.loop_triangles:
         continue
     px = wa * points[0, 0] + wb * points[1, 0] + wc * points[2, 0]
     pz = wa * points[0, 2] + wb * points[1, 2] + wc * points[2, 2]
+    left_x, left_z = eye_centers[-1]
+    right_x, right_z = eye_centers[1]
     r = np.minimum(
-        np.sqrt(((px - 0.15) / 0.125) ** 2 + ((pz - 0.62) / 0.12) ** 2),
-        np.sqrt(((px + 0.15) / 0.125) ** 2 + ((pz - 0.62) / 0.12) ** 2),
+        np.sqrt(((px - left_x) / 0.125) ** 2 + ((pz - left_z) / 0.12) ** 2),
+        np.sqrt(((px - right_x) / 0.125) ** 2 + ((pz - right_z) / 0.12) ** 2),
     )
     blend = np.clip((1.02 - r) / 0.10, 0, 1)
     blend = blend * blend * (3 - 2 * blend)
@@ -75,9 +102,10 @@ for tri in mesh.loop_triangles:
     if not (blend > 0).any():
         continue
     # A curved line is painted into the texture, not placed as geometry.
-    eye_x = np.where(px >= 0, px - 0.15, px + 0.15)
-    curve_z = 0.62 + 0.008 * (1 - (eye_x / 0.075) ** 2)
-    line = (np.abs(eye_x) < 0.076) & (np.abs(pz - curve_z) < 0.0035)
+    eye_x = np.where(px >= 0, px - right_x, px - left_x)
+    eye_z = np.where(px >= 0, right_z, left_z)
+    curve_z = eye_z + 0.007 * (1 - (eye_x / 0.064) ** 2)
+    line = (np.abs(eye_x) < 0.064) & (np.abs(pz - curve_z) < 0.0035)
     target = np.where(line[..., None], ink_color, skin_color)
     region = closed[y0:y1, x0:x1, :3]
     region[:] = region * (1 - blend[..., None]) + target * blend[..., None]
