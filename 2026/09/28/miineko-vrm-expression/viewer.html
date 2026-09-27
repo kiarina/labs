@@ -1,0 +1,58 @@
+<!doctype html><html lang="ja"><meta charset="utf-8">
+<title>みぃねこ — まばたきの比較</title>
+<style>
+body{margin:0;background:#20232a;color:#edf0f5;font:16px system-ui}header{padding:18px 24px;display:flex;gap:20px;align-items:center;flex-wrap:wrap}h1{font-size:19px;margin:0}label{display:flex;gap:8px;align-items:center}button,select{font:inherit;padding:5px 12px}#status{color:#abb8c9;font-size:13px}canvas{display:block;width:100%;height:calc(100vh - 100px)}
+</style>
+<header><h1>みぃねこ：まばたきの比較</h1>
+<select id="method" aria-label="比較する試作"><option value="continuous-fresh">元の顔にまぶたを重ねる</option><option value="continuous-blink-morph">まぶたの形を動かす</option><option value="stitched-wide">目の周囲を作り直す</option></select>
+<label>目を閉じる <input id="weight" type="range" min="0" max="1" step="0.01" value="0"><output id="value">0%</output></label>
+<select id="eye"><option value="blink">両目</option><option value="blinkLeft">左目</option><option value="blinkRight">右目</option></select>
+<select id="angle"><option value="0">正面</option><option value="45">斜め</option><option value="90">側面</option></select>
+<button id="play">動かす</button><label><input id="lids" type="checkbox" checked>試作を表示（オフで元モデル）</label>
+<span id="status">読み込み中</span></header><canvas id="canvas"></canvas>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/","@pixiv/three-vrm":"/node_modules/@pixiv/three-vrm/lib/three-vrm.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {VRMLoaderPlugin} from '@pixiv/three-vrm';
+const canvas=document.querySelector('canvas');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:true});
+renderer.setPixelRatio(1);renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+const scene=new THREE.Scene();scene.background=new THREE.Color('#b7b7b7');
+scene.add(new THREE.HemisphereLight(0xffffff,0x726778,2.5));
+for(const [x,y,z,power] of [[-1.2,2.5,1.5,3],[1.5,1.6,.4,1.5]]){const light=new THREE.DirectionalLight(0xffffff,power);light.position.set(x,y,z);scene.add(light);}
+const camera=new THREE.OrthographicCamera(-.41,.41,.41,-.41,.01,100);
+function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;renderer.setSize(w,h,false);const aspect=w/h;camera.left=-.41*aspect;camera.right=.41*aspect;camera.updateProjectionMatrix();}
+window.addEventListener('resize',resize);resize();
+const loader=new GLTFLoader();loader.register(p=>new VRMLoaderPlugin(p));
+const file=new URLSearchParams(location.search).get('model')||'continuous-fresh';
+const methodSelect=document.querySelector('#method');
+if([...methodSelect.options].some(o=>o.value===file))methodSelect.value=file;
+else{const option=new Option(file,file,true,true);methodSelect.add(option);}
+methodSelect.onchange=e=>{location.search=new URLSearchParams({model:e.target.value}).toString();};
+if(!/^[a-z0-9-]+$/.test(file))throw new Error('Invalid local artifact directory');
+const gltf=await loader.loadAsync(`/artifacts/${file}/continuous-blink.vrm`);
+const vrm=gltf.userData.vrm;scene.add(vrm.scene);
+const reference=(await loader.loadAsync('/artifacts/base-vrm.vrm')).userData.vrm;
+scene.add(reference.scene);reference.update(0);reference.scene.visible=false;
+let animated=false,weight=0,angle=0,eye='blink',lidsVisible=true;
+const lids=[];vrm.scene.traverse(o=>{if(o.isMesh&&(o.name.startsWith('Lid')||o.name.startsWith('Eye_patch')))lids.push(o);});
+function set({w=weight,a=angle,e=eye,visible=lidsVisible}={}){
+ weight=w;angle=a;eye=e;lidsVisible=visible;
+ for(const name of ['blink','blinkLeft','blinkRight'])vrm.expressionManager.setValue(name,0);
+ vrm.expressionManager.setValue(eye,weight);vrm.update(0);
+ vrm.scene.visible=visible;reference.scene.visible=!visible;
+ const rad=angle*Math.PI/180;camera.position.set(2.5*Math.sin(rad),.64,2.5*Math.cos(rad));camera.lookAt(0,.64,0);
+ renderer.render(scene,camera);
+ document.querySelector('#weight').value=weight;document.querySelector('#value').value=`${Math.round(weight*100)}%`;document.querySelector('#lids').checked=lidsVisible;
+}
+window.probe={set,vrm,reference,renderer,scene,camera,lids,stats(){return lids.map(o=>({name:o.name,vertexAlpha:o.geometry.attributes.color?.itemSize,alphaMode:o.material.transparent,offset:o.material.map?.offset.toArray(),morphs:o.morphTargetInfluences,visible:o.visible}));}};
+document.querySelector('#weight').oninput=e=>{animated=false;set({w:+e.target.value});};
+document.querySelector('#angle').onchange=e=>set({a:+e.target.value});
+document.querySelector('#eye').onchange=e=>set({e:e.target.value});
+document.querySelector('#lids').onchange=e=>set({visible:e.target.checked});
+document.querySelector('#play').onclick=()=>animated=!animated;
+renderer.setAnimationLoop(t=>{if(animated)set({w:(1-Math.cos(t*.003))/2});});
+set();document.querySelector('#status').textContent='試作・品質評価中';window.ready=true;
+</script></html>

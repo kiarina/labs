@@ -1,0 +1,704 @@
+{
+  "date": "2026-09-28",
+  "environment": {
+    "hardware": "Apple M1 Max",
+    "os": "macOS arm64",
+    "blender": "5.1.2",
+    "vrmAddon": "4.7.2",
+    "three": "0.186.1",
+    "threeVrm": "3.5.5"
+  },
+  "visualAcceptance": false,
+  "runs": {
+    "continuous-fresh": {
+      "build": {
+        "edge": "source",
+        "skin": "sampled",
+        "geometryControl": "hybrid",
+        "surface": "quadratic-eye",
+        "blender": "5.1.2",
+        "method": "continuous-alpha-wipe",
+        "centers": {
+          "L": [
+            0.1764,
+            0.619
+          ],
+          "R": [
+            -0.1848,
+            0.619
+          ]
+        },
+        "grid": 65,
+        "radius": [
+          0.102,
+          0.105
+        ],
+        "curve": 0.008,
+        "sourceScriptSha256": "349d2dfd5cde0ade701f360cd7b91e6e828710b0a4e34ca82ad634512fbeb832",
+        "eyes": {
+          "L": {
+            "maxEnvelopeOffset": 0.00527727161001491,
+            "maxForwardDistance": 0.01902309144679576
+          },
+          "R": {
+            "maxEnvelopeOffset": 0.004203646232005653,
+            "maxForwardDistance": 0.02230005840846494
+          }
+        },
+        "export": [
+          "FINISHED"
+        ]
+      },
+      "measurements": {
+        "run": "continuous-fresh",
+        "colors": [
+          {
+            "mesh": "Lid L lower",
+            "channels": 4,
+            "min": [
+              0.439658197909514,
+              0.0,
+              0.10461585412375067,
+              0.0
+            ],
+            "max": [
+              0.9559777218280309,
+              0.01599145494773785,
+              0.2831464103150988,
+              1.0
+            ]
+          },
+          {
+            "mesh": "Lid L upper",
+            "channels": 4,
+            "min": [
+              0.41254291599908444,
+              0.0,
+              0.11953917753871977,
+              0.0
+            ],
+            "max": [
+              1.0,
+              0.01599145494773785,
+              0.27049668116273745,
+              1.0
+            ]
+          },
+          {
+            "mesh": "Lid R lower",
+            "channels": 4,
+            "min": [
+              0.49102006561379413,
+              0.0,
+              0.14702067597467003,
+              0.0
+            ],
+            "max": [
+              0.9386892500190738,
+              0.011612115663385977,
+              0.2831464103150988,
+              1.0
+            ]
+          },
+          {
+            "mesh": "Lid R upper",
+            "channels": 4,
+            "min": [
+              0.40198367284657055,
+              0.0,
+              0.13287556267643244,
+              0.0
+            ],
+            "max": [
+              0.9473105973907072,
+              0.01228351262684062,
+              0.2746776531624323,
+              1.0
+            ]
+          }
+        ],
+        "neutral": [
+          {
+            "kind": "material-split",
+            "angle": 0,
+            "meanAbsoluteRgb255": 4.372427983539095e-05,
+            "maxRgb255": 1.0,
+            "fractionPixelsAbove12": 0.0
+          },
+          {
+            "kind": "wipe-0",
+            "angle": 0,
+            "meanAbsoluteRgb255": 0.09729295267489711,
+            "maxRgb255": 42.0,
+            "fractionPixelsAbove12": 0.0006867283950617284
+          },
+          {
+            "kind": "viewer",
+            "angle": 0,
+            "meanAbsoluteRgb255": 0.0,
+            "maxRgb255": 0.0,
+            "fractionPixelsAbove12": 0.0
+          },
+          {
+            "kind": "material-split",
+            "angle": 45,
+            "meanAbsoluteRgb255": 3.793724279835391e-05,
+            "maxRgb255": 1.0,
+            "fractionPixelsAbove12": 0.0
+          },
+          {
+            "kind": "wipe-0",
+            "angle": 45,
+            "meanAbsoluteRgb255": 0.07162744341563786,
+            "maxRgb255": 52.0,
+            "fractionPixelsAbove12": 0.0004243827160493827
+          },
+          {
+            "kind": "viewer",
+            "angle": 45,
+            "meanAbsoluteRgb255": 8.23045267489712e-07,
+            "maxRgb255": 1.0,
+            "fractionPixelsAbove12": 0.0
+          },
+          {
+            "kind": "material-split",
+            "angle": 90,
+            "meanAbsoluteRgb255": 4.1795267489711935e-05,
+            "maxRgb255": 1.0,
+            "fractionPixelsAbove12": 0.0
+          },
+          {
+            "kind": "wipe-0",
+            "angle": 90,
+            "meanAbsoluteRgb255": 0.02155928497942387,
+            "maxRgb255": 42.0,
+            "fractionPixelsAbove12": 8.487654320987654e-05
+          },
+          {
+            "kind": "viewer",
+            "angle": 90,
+            "meanAbsoluteRgb255": 0.0,
+            "maxRgb255": 0.0,
+            "fractionPixelsAbove12": 0.0
+          }
+        ],
+        "bindings": {
+          "blink": {
+            "materials": [
+              "Lid L upper",
+              "Lid L lower",
+              "Lid R upper",
+              "Lid R lower"
+            ],
+            "nodes": [
+              "Miineko_Body",
+              "Miineko_Body"
+            ],
+            "targets": [
+              "LidClearanceL",
+              "LidClearanceR"
+            ]
+          },
+          "blinkLeft": {
+            "materials": [
+              "Lid L upper",
+              "Lid L lower"
+            ],
+            "nodes": [
+              "Miineko_Body"
+            ],
+            "targets": [
+              "LidClearanceL"
+            ]
+          },
+          "blinkRight": {
+            "materials": [
+              "Lid R upper",
+              "Lid R lower"
+            ],
+            "nodes": [
+              "Miineko_Body"
+            ],
+            "targets": [
+              "LidClearanceR"
+            ]
+          }
+        },
+        "visualAcceptance": "not granted"
+      },
+      "viewer": {
+        "chrome": "Chrome/153.0.8010.53",
+        "errors": [],
+        "warnings": [],
+        "states": 15
+      },
+      "blenderReimport": {
+        "blender": "5.1.2",
+        "scope": "binding import only, shading not certified",
+        "expressions": {
+          "blink": {
+            "morphs": [
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceL",
+                "weight": 1.0
+              },
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceR",
+                "weight": 1.0
+              }
+            ],
+            "textures": [
+              {
+                "material": "Lid L upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid L lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid R upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid R lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ],
+            "binary": false
+          },
+          "blink_left": {
+            "morphs": [
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceL",
+                "weight": 1.0
+              }
+            ],
+            "textures": [
+              {
+                "material": "Lid L upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid L lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ],
+            "binary": false
+          },
+          "blink_right": {
+            "morphs": [
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceR",
+                "weight": 1.0
+              }
+            ],
+            "textures": [
+              {
+                "material": "Lid R upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid R lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ],
+            "binary": false
+          }
+        }
+      }
+    },
+    "stitched-wide": {
+      "build": {
+        "method": "stitched-local-retopo-squint",
+        "blender": "5.1.2",
+        "warp": "physical",
+        "closedSurface": "smooth",
+        "normalTransfer": "morph",
+        "rings": 64,
+        "angularSubdivisions": 6,
+        "radius": [
+          0.14,
+          0.15
+        ],
+        "eyes": {
+          "L": {
+            "removedFaces": 345,
+            "boundaryVertices": 62,
+            "newVertices": 23437
+          },
+          "R": {
+            "removedFaces": 376,
+            "boundaryVertices": 62,
+            "newVertices": 23437
+          }
+        },
+        "export": [
+          "FINISHED"
+        ],
+        "scriptSha256": "979f0d1e139d437f37a06e67f0cfa02d0efa284be65b70c6e5d58c88d3de7844"
+      },
+      "measurements": {
+        "run": "stitched-wide",
+        "colors": [
+          {
+            "mesh": "Stitched eyes and original body",
+            "channels": 4,
+            "min": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "max": [
+              0.9908140688181888,
+              0.020004577706569007,
+              0.2892957961394675,
+              1.0
+            ]
+          },
+          {
+            "mesh": "Stitched eyes and original body",
+            "channels": 4,
+            "min": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "max": [
+              1.0,
+              0.9848172732127871,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "mesh": "Stitched eyes and original body",
+            "channels": 4,
+            "min": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "max": [
+              0.9771419851987487,
+              0.037964446478980694,
+              0.2917677576867323,
+              1.0
+            ]
+          },
+          {
+            "mesh": "Stitched eyes and original body",
+            "channels": 4,
+            "min": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "max": [
+              0.9988860914015412,
+              0.9810177767605096,
+              1.0,
+              1.0
+            ]
+          }
+        ],
+        "neutral": [
+          {
+            "kind": "wipe-0",
+            "angle": 0,
+            "meanAbsoluteRgb255": 0.4824909979423868,
+            "maxRgb255": 119.0,
+            "fractionPixelsAbove12": 0.006084104938271605
+          },
+          {
+            "kind": "viewer",
+            "angle": 0,
+            "meanAbsoluteRgb255": 0.833058024691358,
+            "maxRgb255": 211.0,
+            "fractionPixelsAbove12": 0.01434320987654321
+          },
+          {
+            "kind": "wipe-0",
+            "angle": 45,
+            "meanAbsoluteRgb255": 0.42156635802469133,
+            "maxRgb255": 142.0,
+            "fractionPixelsAbove12": 0.005484182098765432
+          },
+          {
+            "kind": "viewer",
+            "angle": 45,
+            "meanAbsoluteRgb255": 0.711517695473251,
+            "maxRgb255": 225.0,
+            "fractionPixelsAbove12": 0.010634567901234567
+          },
+          {
+            "kind": "wipe-0",
+            "angle": 90,
+            "meanAbsoluteRgb255": 0.16616190843621398,
+            "maxRgb255": 166.0,
+            "fractionPixelsAbove12": 0.002065972222222222
+          },
+          {
+            "kind": "viewer",
+            "angle": 90,
+            "meanAbsoluteRgb255": 0.23927942386831275,
+            "maxRgb255": 203.0,
+            "fractionPixelsAbove12": 0.0031592592592592592
+          }
+        ],
+        "bindings": {
+          "blink": {
+            "materials": [],
+            "nodes": [
+              "Miineko_Body",
+              "Miineko_Body"
+            ],
+            "targets": [
+              "CloseL",
+              "CloseR"
+            ]
+          },
+          "blinkLeft": {
+            "materials": [],
+            "nodes": [
+              "Miineko_Body"
+            ],
+            "targets": [
+              "CloseL"
+            ]
+          },
+          "blinkRight": {
+            "materials": [],
+            "nodes": [
+              "Miineko_Body"
+            ],
+            "targets": [
+              "CloseR"
+            ]
+          }
+        },
+        "visualAcceptance": "not granted"
+      },
+      "viewer": {
+        "chrome": "Chrome/153.0.8010.53",
+        "errors": [],
+        "warnings": [],
+        "states": 15
+      },
+      "blenderReimport": {
+        "blender": "5.1.2",
+        "scope": "binding import only, shading not certified",
+        "expressions": {
+          "blink": {
+            "morphs": [
+              {
+                "object": "Miineko_Body",
+                "key": "CloseL",
+                "weight": 1.0
+              },
+              {
+                "object": "Miineko_Body",
+                "key": "CloseR",
+                "weight": 1.0
+              }
+            ],
+            "textures": [],
+            "binary": false
+          },
+          "blink_left": {
+            "morphs": [
+              {
+                "object": "Miineko_Body",
+                "key": "CloseL",
+                "weight": 1.0
+              }
+            ],
+            "textures": [],
+            "binary": false
+          },
+          "blink_right": {
+            "morphs": [
+              {
+                "object": "Miineko_Body",
+                "key": "CloseR",
+                "weight": 1.0
+              }
+            ],
+            "textures": [],
+            "binary": false
+          }
+        }
+      },
+      "normalExport": {
+        "sourceVertices": 46874,
+        "matchedVertices": 46874,
+        "exportedVerticesChanged": 47456,
+        "normalTargets": [
+          "CloseL",
+          "CloseR"
+        ],
+        "bytes": 14728392
+      }
+    }
+  },
+  "repeatability": {
+    "wipe-0-0.png": false,
+    "wipe-0-45.png": false,
+    "wipe-0-90.png": false,
+    "wipe-0.25-0.png": false,
+    "wipe-0.25-45.png": false,
+    "wipe-0.25-90.png": false,
+    "wipe-0.5-0.png": false,
+    "wipe-0.5-45.png": false,
+    "wipe-0.5-90.png": false,
+    "wipe-0.75-0.png": false,
+    "wipe-0.75-45.png": false,
+    "wipe-0.75-90.png": false,
+    "wipe-1-0.png": false,
+    "wipe-1-45.png": false,
+    "wipe-1-90.png": false,
+    "vrmBytesEqual": true,
+    "decodedPixels": {
+      "wipe-0-0.png": {
+        "equal": false,
+        "meanAbs": 2.9417438271604938e-05,
+        "max": 1.0
+      },
+      "wipe-0-45.png": {
+        "equal": false,
+        "meanAbs": 3.520447530864198e-05,
+        "max": 1.0
+      },
+      "wipe-0-90.png": {
+        "equal": false,
+        "meanAbs": 3.0381944444444444e-05,
+        "max": 1.0
+      },
+      "wipe-0.25-0.png": {
+        "equal": false,
+        "meanAbs": 3.6651234567901234e-05,
+        "max": 1.0
+      },
+      "wipe-0.25-45.png": {
+        "equal": false,
+        "meanAbs": 3.520447530864198e-05,
+        "max": 1.0
+      },
+      "wipe-0.25-90.png": {
+        "equal": false,
+        "meanAbs": 3.08641975308642e-05,
+        "max": 1.0
+      },
+      "wipe-0.5-0.png": {
+        "equal": false,
+        "meanAbs": 2.8935185185185186e-05,
+        "max": 1.0
+      },
+      "wipe-0.5-45.png": {
+        "equal": false,
+        "meanAbs": 2.652391975308642e-05,
+        "max": 1.0
+      },
+      "wipe-0.5-90.png": {
+        "equal": false,
+        "meanAbs": 3.0381944444444444e-05,
+        "max": 1.0
+      },
+      "wipe-0.75-0.png": {
+        "equal": false,
+        "meanAbs": 3.134645061728395e-05,
+        "max": 1.0
+      },
+      "wipe-0.75-45.png": {
+        "equal": false,
+        "meanAbs": 3.375771604938271e-05,
+        "max": 1.0
+      },
+      "wipe-0.75-90.png": {
+        "equal": false,
+        "meanAbs": 3.568672839506173e-05,
+        "max": 1.0
+      },
+      "wipe-1-0.png": {
+        "equal": false,
+        "meanAbs": 2.5559413580246914e-05,
+        "max": 1.0
+      },
+      "wipe-1-45.png": {
+        "equal": false,
+        "meanAbs": 3.6651234567901234e-05,
+        "max": 1.0
+      },
+      "wipe-1-90.png": {
+        "equal": false,
+        "meanAbs": 1.54320987654321e-05,
+        "max": 1.0
+      }
+    },
+    "freshFbxVrmBytesEqual": true
+  }
+}

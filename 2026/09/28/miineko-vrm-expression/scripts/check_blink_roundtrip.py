@@ -1,0 +1,29 @@
+"""Check imported blink bindings; this does not certify round-trip shading."""
+import json
+import os
+from pathlib import Path
+
+import bpy
+
+root=Path(__file__).resolve().parents[1]
+folder=root/'artifacts'/os.environ.get('BLINK_RUN','continuous-fresh')
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+result=bpy.ops.import_scene.vrm(filepath=str(folder/'continuous-blink.vrm'))
+assert result=={'FINISHED'}
+arms=[o for o in bpy.data.objects if o.type=='ARMATURE']
+assert len(arms)==1
+preset=arms[0].data.vrm_addon_extension.vrm1.expressions.preset
+report={'blender':bpy.app.version_string,'scope':'binding import only, shading not certified','expressions':{}}
+for name in ('blink','blink_left','blink_right'):
+    expr=getattr(preset,name)
+    morphs=[{'object':b.node.mesh_object_name,'key':b.index,'weight':b.weight} for b in expr.morph_target_binds]
+    textures=[{'material':b.material.name,'offset':list(b.offset),'scale':list(b.scale)} for b in expr.texture_transform_binds]
+    assert morphs or textures
+    for bind in morphs:
+        obj=bpy.data.objects[bind['object']]
+        assert obj.data.shape_keys and bind['key'] in obj.data.shape_keys.key_blocks
+    report['expressions'][name]={'morphs':morphs,'textures':textures,'binary':expr.is_binary}
+assert not any(x['binary'] for x in report['expressions'].values())
+(folder/'blender-import-report.json').write_text(json.dumps(report,indent=2)+'\n')
+print('ROUNDTRIP',json.dumps(report))

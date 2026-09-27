@@ -6,6 +6,14 @@ Can VRM 1.0 facial expressions be added to a Tripo-rigged Miineko model **withou
 
 ## Current result
 
+**2026-09-28 follow-up:** the investigation now compares continuous UV coverage,
+moving eyelid meshes, and locally rebuilt eye surfaces. The first two support
+VRM 1.0 continuous and independent left/right blink in a local three-vrm viewer.
+The source-preserving hybrid also rebuilt from the original FBX with an identical
+VRM binary. **Visual quality is still not accepted.** The experiment design,
+commands, failed candidates and current limits are in [EXPERIMENTS.md](EXPERIMENTS.md).
+The two-state atlas below is the earlier experiment, not the current selected route.
+
 | Tested | Result |
 | --- | --- |
 | Original-UV face mask at neutral | Preserves most of the Tripo appearance; small cheek seams remain visible. |
