@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+: "${MIINEKO_FBX:?Set MIINEKO_FBX to the local Tripo FBX path}"
+BLENDER_BIN="${BLENDER_BIN:-blender}"
+"$BLENDER_BIN" --background --python-exit-code 1 --python scripts/surface_mask_probe.py

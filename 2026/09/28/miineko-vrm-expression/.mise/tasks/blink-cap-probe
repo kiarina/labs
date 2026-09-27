@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+BLENDER_BIN="${BLENDER_BIN:-blender}"
+test -f artifacts/mask-probe.blend || { echo 'Run mask-probe first' >&2; exit 1; }
+"$BLENDER_BIN" --background --python-exit-code 1 --python scripts/blink_cap_probe.py

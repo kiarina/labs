@@ -1,0 +1,75 @@
+{
+  "method": {
+    "imageSize": [
+      900,
+      900
+    ],
+    "render": "Blender 5.1.2 Cycles, 32 samples, fixed camera and lighting",
+    "meanAbsoluteError": "mean absolute difference per RGB channel, 0-255",
+    "changedPixelFraction": "fraction with at least one RGB channel difference > 12",
+    "regionsXYXY": {
+      "face": [
+        180,
+        120,
+        720,
+        550
+      ],
+      "face_core": [
+        255,
+        300,
+        640,
+        505
+      ],
+      "body_control": [
+        180,
+        550,
+        720,
+        830
+      ]
+    }
+  },
+  "comparisons": {
+    "mask-probe-neutral.png": {
+      "face": {
+        "meanAbsoluteError": 0.5857,
+        "changedPixelFraction": 0.01382
+      },
+      "face_core": {
+        "meanAbsoluteError": 1.4709,
+        "changedPixelFraction": 0.038974
+      },
+      "body_control": {
+        "meanAbsoluteError": 0.0754,
+        "changedPixelFraction": 4.6e-05
+      }
+    },
+    "mask-probe-baked.png": {
+      "face": {
+        "meanAbsoluteError": 2.2136,
+        "changedPixelFraction": 0.049535
+      },
+      "face_core": {
+        "meanAbsoluteError": 5.6878,
+        "changedPixelFraction": 0.135901
+      },
+      "body_control": {
+        "meanAbsoluteError": 0.0759,
+        "changedPixelFraction": 4.6e-05
+      }
+    },
+    "prosthetic-neutral.png": {
+      "face": {
+        "meanAbsoluteError": 0.0001,
+        "changedPixelFraction": 0.0
+      },
+      "face_core": {
+        "meanAbsoluteError": 0.0,
+        "changedPixelFraction": 0.0
+      },
+      "body_control": {
+        "meanAbsoluteError": 0.0001,
+        "changedPixelFraction": 0.0
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+test -f artifacts/mask-probe-original.png || { echo 'Run mask-probe first' >&2; exit 1; }
+test -f artifacts/mask-probe-baked.png || { echo 'Run bake-probe first' >&2; exit 1; }
+test -f artifacts/prosthetic-neutral.png || { echo 'Run prosthetic-probe first' >&2; exit 1; }
+"${COMPARE_PYTHON:-python3}" scripts/compare_render.py
