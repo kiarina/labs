@@ -23,6 +23,9 @@ sticker reference then informed a red graphic mouth with five vowel morphs,
 verified neutral restoration and normalized blend samples; see [VOWELS.md](VOWELS.md).
 The owner then requested a flatter lower edge during opening; the latest
 `mouth-vowels-flatstart` candidate uses a flat floor with an exported UV reveal.
+The owner approved that front appearance. A depth-only comparison now reduces
+much of the profile gap while retaining its frontal geometry; see [PROFILE.md](PROFILE.md).
+Narrow-vowel corner tips remain, so profile quality is not finished.
 Side-view projection and audio-driven timing remain unresolved. This is not yet
 a finished lip-sync system.
 

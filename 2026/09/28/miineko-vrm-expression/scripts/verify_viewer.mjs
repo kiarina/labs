@@ -128,7 +128,8 @@ try{
  }
  if(await page.evaluate(()=>probe.hasVowels)){
   report.vowels=[];
-  for(const v of ['aa','ih','ou','ee','oh'])for(const a of [0,45,-45])for(const m of [0,.1,.22,.5,1]){
+  const vowelAngles=process.env.PROBE_VOWEL_PROFILE==='1'?[0,45,-45,90,-90]:[0,45,-45];
+  for(const v of ['aa','ih','ou','ee','oh'])for(const a of vowelAngles)for(const m of [0,.1,.22,.5,1]){
    await page.evaluate(({v,a,m})=>probe.set({v,a,m,w:0,r:0,e:'blink'}),{v,a,m});
    await canvas.screenshot({path:path.join(output,`vowel-${v}-${m}-${a}.png`)});report.vowels.push({v,a,m});
   }
@@ -183,4 +184,14 @@ try{
  await fs.writeFile(path.join(output,'report.json'),JSON.stringify(report,null,2)+'\n');
  if(errors.length)throw new Error(errors.join('\n'));
  console.log(JSON.stringify({output,errors,warnings,states:report.states.length,mouthStates:report.mouthStates?.length||0,mouthZeroCases:report.mouthZeroRestoration?.length||0}));
-}finally{if(browser)await browser.close();await new Promise(resolve=>server.close(resolve));}
+}finally{
+ if(browser){
+  let timer;
+  try{await Promise.race([browser.close(),new Promise(resolve=>{timer=setTimeout(resolve,5000);})]);}
+  finally{clearTimeout(timer);browser.disconnect();const child=browser.process();if(child&&child.exitCode===null)child.kill('SIGTERM');}
+ }
+ server.closeAllConnections();await new Promise(resolve=>server.close(resolve));
+}
+// All results are persisted and our server/browser are closed. Puppeteer can
+// retain internal handles after concurrent capture runs; don't hang the CLI.
+process.exit(0);

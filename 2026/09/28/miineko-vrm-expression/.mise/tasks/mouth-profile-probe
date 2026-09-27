@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+BLENDER_BIN="${BLENDER_BIN:-blender}"
+export MOUTH_RUN="${MOUTH_RUN:-mouth-profile-fitted}"
+if [[ "$MOUTH_RUN" == mouth-vowels-flatstart ]]; then
+  echo 'Preserve the front-view comparison baseline' >&2
+  exit 1
+fi
+test -f artifacts/mouth-red-bound/continuous-blink.blend
+test -f artifacts/mouth-vowels-flatstart/viewer/vowel-oh-1-0.png
+MOUTH_SINGLE_SURFACE=1 MOUTH_ENVELOPE=linear-vertex MOUTH_FLAT_START=1 \
+  MOUTH_CLEARANCE=.001 MOUTH_DEPTH_SMOOTH=8 MOUTH_TRIANGLE_CLEARANCE=1 \
+  "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/add_vowel_shapes.py
+export BLINK_RUN="$MOUTH_RUN"
+PROBE_ANGLES=0,45,-45 PROBE_UI=1 PROBE_VOWEL_PROFILE=1 node scripts/verify_viewer.mjs
+VERIFY_RELAXED=1 VERIFY_MOUTH=1 VERIFY_VOWELS=1 \
+  "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/check_blink_roundtrip.py
+SURFACE_RUN="$MOUTH_RUN" "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/measure_mouth_surface.py
+"${COMPARE_PYTHON:-python3}" scripts/measure_mouth_probe.py "$BLINK_RUN"
+"${COMPARE_PYTHON:-python3}" scripts/compare_mouth_profile.py "$BLINK_RUN"

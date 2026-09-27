@@ -118,6 +118,9 @@ the vowel and `口を開く` controls its weight. The eye, relaxation, angle and
 automatic blink controls remain available. The dropdown also retains previous
 mouth candidates and the unmodified approved face for comparison.
 
+The owner subsequently approved the improved front appearance. The next
+depth-only comparison and its remaining profile defects are in [PROFILE.md](PROFILE.md).
+
 ## Flat onset follow-up (2026-09-28)
 
 A linear morph from a collapsed W contour retains some of its central peak at

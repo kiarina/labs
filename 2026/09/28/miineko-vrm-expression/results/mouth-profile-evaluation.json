@@ -1,0 +1,836 @@
+{
+  "date": "2026-09-28",
+  "input": "mouth-red-bound; compare against owner-approved front in mouth-vowels-flatstart",
+  "build": {
+    "method": "five-cartoon-vowel-targets",
+    "singleSurface": true,
+    "flatStart": {
+      "basisFloor": 0.438,
+      "floors": {
+        "Basis": 0.438,
+        "AA": 0.415,
+        "IH": 0.435,
+        "OU": 0.421,
+        "EE": 0.428,
+        "OH": 0.404
+      },
+      "profilePower": 4,
+      "uvShift": 0.65,
+      "revealEnd": 0.12,
+      "neutralVisibility": "zero texture alpha; nondegenerate geometry",
+      "vrmSampler": "LINEAR without mipmaps; neutral alpha bleed prevention"
+    },
+    "linearEnvelope": {
+      "mode": "linear-vertex",
+      "sampledMinimumClearance": 0.0009999999999999454,
+      "sampledMaximumForwardDistance": 0.0201486296546316,
+      "samplesPerFit": 241,
+      "fitCount": 2737,
+      "range": "actual morph range per vertex",
+      "forwardOnlySmoothingPasses": 8,
+      "measurementScope": "per-vertex fits before forward-only smoothing",
+      "triangleCorrection": {
+        "states": 38,
+        "samples": 575904,
+        "maximumForwardCorrection": 0.005649052429199252,
+        "targetClearance": 0.0008,
+        "scope": "four barycentric samples per visible triangle; sampled states only"
+      },
+      "collapsedColumnsPinned": 166
+    },
+    "source": "mouth-red-bound",
+    "sourceVrmSha256": "f6995691bb723a7ed19fce5d594cbd52771b8d2a4e8055b69d8a9559452535b5",
+    "sourceBlendSha256": "c7f82ad03374725a7c91d54befcf3a2cfd102bf593b082d8fb6eae2a5c1f7cbe",
+    "scriptSha256": "88100e628d95f134606d837005d14570aaf5b7f7713299ff8ccffe0fd9db18d7",
+    "vowels": {
+      "aa": [
+        0.076,
+        0.415
+      ],
+      "ih": [
+        0.076,
+        0.435
+      ],
+      "ou": [
+        0.038,
+        0.421
+      ],
+      "ee": [
+        0.068,
+        0.428
+      ],
+      "oh": [
+        0.048,
+        0.404
+      ]
+    },
+    "driverConstraint": "nonnegative weights with sum <= 1",
+    "export": [
+      "FINISHED"
+    ]
+  },
+  "reproducibility": {
+    "byteIdentical": true,
+    "sha256": "651e2bb29494eee36441f4abb4daaa3684408d39566dbbf85d8d7f3f3da3c5cf"
+  },
+  "viewer": {
+    "errors": [],
+    "warnings": [],
+    "vowelStates": 125,
+    "mouthStates": 45,
+    "mixes": 6,
+    "zeroCases": 20,
+    "zeroMaximumDifference": 0,
+    "eyeMaximumDifference": 0,
+    "relaxedMaximumDifference": 0
+  },
+  "floorChecksPassed": 30,
+  "frontComparison": {
+    "baseline": "mouth-vowels-flatstart",
+    "candidate": "mouth-profile-fitted",
+    "frontalCoordinatesAndUvsExact": true,
+    "depthChanges": [
+      {
+        "maximumDepthChange": 0.01472732424736023
+      },
+      {
+        "maximumDepthChange": 0.015681684017181396
+      },
+      {
+        "maximumDepthChange": 0.00217360258102417
+      },
+      {
+        "maximumDepthChange": 0.014914482831954956
+      },
+      {
+        "maximumDepthChange": 0.006827682256698608
+      },
+      {
+        "maximumDepthChange": 0.01859581470489502
+      }
+    ],
+    "frontRenders": [
+      {
+        "vowel": "aa",
+        "weight": 0,
+        "meanChannelDifference": 0.0,
+        "maximumChannelDifference": 0.0,
+        "changedPixelsAbove2": 0
+      },
+      {
+        "vowel": "aa",
+        "weight": 0.1,
+        "meanChannelDifference": 6.762132060461415e-05,
+        "maximumChannelDifference": 75.0,
+        "changedPixelsAbove2": 4
+      },
+      {
+        "vowel": "aa",
+        "weight": 0.22,
+        "meanChannelDifference": 5.7456024043136216e-05,
+        "maximumChannelDifference": 57.0,
+        "changedPixelsAbove2": 4
+      },
+      {
+        "vowel": "aa",
+        "weight": 0.5,
+        "meanChannelDifference": 3.8893308583046053e-05,
+        "maximumChannelDifference": 41.0,
+        "changedPixelsAbove2": 4
+      },
+      {
+        "vowel": "aa",
+        "weight": 1,
+        "meanChannelDifference": 2.3866348448687352e-05,
+        "maximumChannelDifference": 26.0,
+        "changedPixelsAbove2": 4
+      },
+      {
+        "vowel": "ih",
+        "weight": 0,
+        "meanChannelDifference": 0.0,
+        "maximumChannelDifference": 0.0,
+        "changedPixelsAbove2": 0
+      },
+      {
+        "vowel": "ih",
+        "weight": 0.1,
+        "meanChannelDifference": 7.380889242464422e-05,
+        "maximumChannelDifference": 87.0,
+        "changedPixelsAbove2": 4
+      },
+      {
+        "vowel": "ih",
+        "weight": 0.22,
+        "meanChannelDifference": 7.248298417749491e-05,
+        "maximumChannelDifference": 85.0,
+        "changedPixelsAbove2": 4
+      },
+      {
+        "vowel": "ih",
+        "weight": 0.5,
+        "meanChannelDifference": 6.983116768319632e-05,
+        "maximumChannelDifference": 80.0,
+        "changedPixelsAbove2": 4
+      },
+      {
+        "vowel": "ih",
+        "weight": 1,
+        "meanChannelDifference": 6.452753469459913e-05,
+        "maximumChannelDifference": 70.0,
+        "changedPixelsAbove2": 4
+      },
+      {
+        "vowel": "ou",
+        "weight": 0,
+        "meanChannelDifference": 0.0,
+        "maximumChannelDifference": 0.0,
+        "changedPixelsAbove2": 0
+      },
+      {
+        "vowel": "ou",
+        "weight": 0.1,
+        "meanChannelDifference": 8.30902501546893e-05,
+        "maximumChannelDifference": 78.0,
+        "changedPixelsAbove2": 5
+      },
+      {
+        "vowel": "ou",
+        "weight": 0.22,
+        "meanChannelDifference": 6.275965703173341e-05,
+        "maximumChannelDifference": 66.0,
+        "changedPixelsAbove2": 4
+      },
+      {
+        "vowel": "ou",
+        "weight": 0.5,
+        "meanChannelDifference": 4.729072748165827e-05,
+        "maximumChannelDifference": 45.0,
+        "changedPixelsAbove2": 4
+      },
+      {
+        "vowel": "ou",
+        "weight": 1,
+        "meanChannelDifference": 2.740210377441881e-05,
+        "maximumChannelDifference": 35.0,
+        "changedPixelsAbove2": 4
+      },
+      {
+        "vowel": "ee",
+        "weight": 0,
+        "meanChannelDifference": 0.0,
+        "maximumChannelDifference": 0.0,
+        "changedPixelsAbove2": 0
+      },
+      {
+        "vowel": "ee",
+        "weight": 0.1,
+        "meanChannelDifference": 7.159904534606205e-05,
+        "maximumChannelDifference": 83.0,
+        "changedPixelsAbove2": 4
+      },
+      {
+        "vowel": "ee",
+        "weight": 0.22,
+        "meanChannelDifference": 6.762132060461415e-05,
+        "maximumChannelDifference": 75.0,
+        "changedPixelsAbove2": 4
+      },
+      {
+        "vowel": "ee",
+        "weight": 0.5,
+        "meanChannelDifference": 5.833996287456908e-05,
+        "maximumChannelDifference": 58.0,
+        "changedPixelsAbove2": 4
+      },
+      {
+        "vowel": "ee",
+        "weight": 1,
+        "meanChannelDifference": 9.192963846901795e-05,
+        "maximumChannelDifference": 51.0,
+        "changedPixelsAbove2": 6
+      },
+      {
+        "vowel": "oh",
+        "weight": 0,
+        "meanChannelDifference": 0.0,
+        "maximumChannelDifference": 0.0,
+        "changedPixelsAbove2": 0
+      },
+      {
+        "vowel": "oh",
+        "weight": 0.1,
+        "meanChannelDifference": 7.734464775037567e-05,
+        "maximumChannelDifference": 67.0,
+        "changedPixelsAbove2": 5
+      },
+      {
+        "vowel": "oh",
+        "weight": 0.22,
+        "meanChannelDifference": 5.0384513391673294e-05,
+        "maximumChannelDifference": 46.0,
+        "changedPixelsAbove2": 4
+      },
+      {
+        "vowel": "oh",
+        "weight": 0.5,
+        "meanChannelDifference": 2.740210377441881e-05,
+        "maximumChannelDifference": 35.0,
+        "changedPixelsAbove2": 4
+      },
+      {
+        "vowel": "oh",
+        "weight": 1,
+        "meanChannelDifference": 1.4143021302925837e-05,
+        "maximumChannelDifference": 12.0,
+        "changedPixelsAbove2": 3
+      }
+    ],
+    "scope": "same frontal outline coordinates; occlusion can still alter rendered appearance"
+  },
+  "surfaceBaseline": {
+    "scope": "visible triangle centroids at 23 sampled states; not continuous collision proof",
+    "states": [
+      {
+        "weights": {
+          "aa": 0.1
+        },
+        "samples": 4913,
+        "minimum": -0.0012459754943847656,
+        "median": 0.003751009702682495,
+        "p95": 0.014486241154372692,
+        "maximum": 0.01613616943359375,
+        "behindHeadCount": 1
+      },
+      {
+        "weights": {
+          "aa": 0.22
+        },
+        "samples": 5088,
+        "minimum": -0.001254439353942871,
+        "median": 0.004360660910606384,
+        "p95": 0.014524174854159355,
+        "maximum": 0.01619693636894226,
+        "behindHeadCount": 1
+      },
+      {
+        "weights": {
+          "aa": 0.5
+        },
+        "samples": 5088,
+        "minimum": -0.0012745261192321777,
+        "median": 0.0057821571826934814,
+        "p95": 0.014623135328292847,
+        "maximum": 0.01687157154083252,
+        "behindHeadCount": 2
+      },
+      {
+        "weights": {
+          "aa": 1
+        },
+        "samples": 5088,
+        "minimum": -0.0013100206851959229,
+        "median": 0.005813330411911011,
+        "p95": 0.014191240072250366,
+        "maximum": 0.017582356929779053,
+        "behindHeadCount": 2
+      },
+      {
+        "weights": {
+          "ih": 0.1
+        },
+        "samples": 4913,
+        "minimum": -0.0012397170066833496,
+        "median": 0.0037173330783843994,
+        "p95": 0.014490204863250256,
+        "maximum": 0.01564815640449524,
+        "behindHeadCount": 1
+      },
+      {
+        "weights": {
+          "ih": 0.22
+        },
+        "samples": 5088,
+        "minimum": -0.001240760087966919,
+        "median": 0.003974050283432007,
+        "p95": 0.014429895207285881,
+        "maximum": 0.015752673149108887,
+        "behindHeadCount": 1
+      },
+      {
+        "weights": {
+          "ih": 0.5
+        },
+        "samples": 5088,
+        "minimum": -0.0012433826923370361,
+        "median": 0.004008114337921143,
+        "p95": 0.01444522850215435,
+        "maximum": 0.0160486102104187,
+        "behindHeadCount": 1
+      },
+      {
+        "weights": {
+          "ih": 1
+        },
+        "samples": 5088,
+        "minimum": -0.0012479424476623535,
+        "median": 0.0040884315967559814,
+        "p95": 0.014495634473860264,
+        "maximum": 0.016189247369766235,
+        "behindHeadCount": 1
+      },
+      {
+        "weights": {
+          "ou": 0.1
+        },
+        "samples": 4913,
+        "minimum": -0.0012439191341400146,
+        "median": 0.0039088428020477295,
+        "p95": 0.014419203624129295,
+        "maximum": 0.01574048399925232,
+        "behindHeadCount": 1
+      },
+      {
+        "weights": {
+          "ou": 0.22
+        },
+        "samples": 5088,
+        "minimum": -0.0012503564357757568,
+        "median": 0.004364967346191406,
+        "p95": 0.014397183433175087,
+        "maximum": 0.015641897916793823,
+        "behindHeadCount": 1
+      },
+      {
+        "weights": {
+          "ou": 0.5
+        },
+        "samples": 5088,
+        "minimum": -0.0012650489807128906,
+        "median": 0.00498238205909729,
+        "p95": 0.014512144960463047,
+        "maximum": 0.015772461891174316,
+        "behindHeadCount": 1
+      },
+      {
+        "weights": {
+          "ou": 1
+        },
+        "samples": 2528,
+        "minimum": -0.001291513442993164,
+        "median": 0.005425930023193359,
+        "p95": 0.014069437980651855,
+        "maximum": 0.015779972076416016,
+        "behindHeadCount": 2
+      },
+      {
+        "weights": {
+          "ee": 0.1
+        },
+        "samples": 4913,
+        "minimum": -0.0012418031692504883,
+        "median": 0.0038506686687469482,
+        "p95": 0.014568841084837914,
+        "maximum": 0.016086727380752563,
+        "behindHeadCount": 1
+      },
+      {
+        "weights": {
+          "ee": 0.22
+        },
+        "samples": 5088,
+        "minimum": -0.0012456178665161133,
+        "median": 0.004269614815711975,
+        "p95": 0.014601861126720905,
+        "maximum": 0.016107648611068726,
+        "behindHeadCount": 1
+      },
+      {
+        "weights": {
+          "ee": 0.5
+        },
+        "samples": 5088,
+        "minimum": -0.0012542009353637695,
+        "median": 0.004799708724021912,
+        "p95": 0.014765925705432892,
+        "maximum": 0.016033589839935303,
+        "behindHeadCount": 1
+      },
+      {
+        "weights": {
+          "ee": 1
+        },
+        "samples": 4576,
+        "minimum": -0.0012697875499725342,
+        "median": 0.007584810256958008,
+        "p95": 0.015270955860614777,
+        "maximum": 0.016266584396362305,
+        "behindHeadCount": 2
+      },
+      {
+        "weights": {
+          "oh": 0.1
+        },
+        "samples": 4913,
+        "minimum": -0.0012492239475250244,
+        "median": 0.004389733076095581,
+        "p95": 0.01452441792935133,
+        "maximum": 0.01599675416946411,
+        "behindHeadCount": 1
+      },
+      {
+        "weights": {
+          "oh": 0.22
+        },
+        "samples": 5088,
+        "minimum": -0.0012619495391845703,
+        "median": 0.005456000566482544,
+        "p95": 0.01449623703956604,
+        "maximum": 0.01616474986076355,
+        "behindHeadCount": 1
+      },
+      {
+        "weights": {
+          "oh": 0.5
+        },
+        "samples": 5088,
+        "minimum": -0.0012914538383483887,
+        "median": 0.006471499800682068,
+        "p95": 0.014562664553523064,
+        "maximum": 0.016130119562149048,
+        "behindHeadCount": 2
+      },
+      {
+        "weights": {
+          "oh": 1
+        },
+        "samples": 3232,
+        "minimum": -4.723668098449707e-05,
+        "median": 0.0063956379890441895,
+        "p95": 0.013841193169355392,
+        "maximum": 0.016149312257766724,
+        "behindHeadCount": 1
+      },
+      {
+        "weights": {
+          "aa": 0.5,
+          "ih": 0.5
+        },
+        "samples": 5088,
+        "minimum": -0.001278996467590332,
+        "median": 0.006009429693222046,
+        "p95": 0.014596501365303993,
+        "maximum": 0.016846507787704468,
+        "behindHeadCount": 2
+      },
+      {
+        "weights": {
+          "ou": 0.5,
+          "oh": 0.5
+        },
+        "samples": 4112,
+        "minimum": -3.129243850708008e-05,
+        "median": 0.006604492664337158,
+        "p95": 0.014796534553170204,
+        "maximum": 0.01570799946784973,
+        "behindHeadCount": 1
+      },
+      {
+        "weights": {
+          "aa": 0.2,
+          "ih": 0.2,
+          "ou": 0.2,
+          "ee": 0.2,
+          "oh": 0.2
+        },
+        "samples": 5088,
+        "minimum": -0.0012926757335662842,
+        "median": 0.0055655837059021,
+        "p95": 0.014154755510389805,
+        "maximum": 0.01611223816871643,
+        "behindHeadCount": 2
+      }
+    ]
+  },
+  "surfaceCandidate": {
+    "scope": "visible triangle centroids at 23 sampled states; not continuous collision proof",
+    "states": [
+      {
+        "weights": {
+          "aa": 0.1
+        },
+        "samples": 4913,
+        "minimum": 0.0008443295955657959,
+        "median": 0.001871258020401001,
+        "p95": 0.012741412036120892,
+        "maximum": 0.016775846481323242,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "aa": 0.22
+        },
+        "samples": 5088,
+        "minimum": 0.0008443295955657959,
+        "median": 0.001868918538093567,
+        "p95": 0.014275715686380863,
+        "maximum": 0.01822948455810547,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "aa": 0.5
+        },
+        "samples": 5088,
+        "minimum": 0.0008443295955657959,
+        "median": 0.0014996230602264404,
+        "p95": 0.013774409890174866,
+        "maximum": 0.01702067255973816,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "aa": 1
+        },
+        "samples": 5088,
+        "minimum": 0.0007999837398529053,
+        "median": 0.0015932545065879822,
+        "p95": 0.01280119176954031,
+        "maximum": 0.019672662019729614,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "ih": 0.1
+        },
+        "samples": 4913,
+        "minimum": 0.000800013542175293,
+        "median": 0.0019337832927703857,
+        "p95": 0.009986828081309795,
+        "maximum": 0.016626864671707153,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "ih": 0.22
+        },
+        "samples": 5088,
+        "minimum": 0.0008443295955657959,
+        "median": 0.002009972929954529,
+        "p95": 0.009992627426981926,
+        "maximum": 0.016885966062545776,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "ih": 0.5
+        },
+        "samples": 5088,
+        "minimum": 0.0008443295955657959,
+        "median": 0.0019701719284057617,
+        "p95": 0.010292844846844673,
+        "maximum": 0.016793876886367798,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "ih": 1
+        },
+        "samples": 5088,
+        "minimum": 0.0008443295955657959,
+        "median": 0.0019122213125228882,
+        "p95": 0.013945015147328377,
+        "maximum": 0.018746912479400635,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "ou": 0.1
+        },
+        "samples": 4913,
+        "minimum": 0.0008465051651000977,
+        "median": 0.002569258213043213,
+        "p95": 0.010405605658888817,
+        "maximum": 0.016803711652755737,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "ou": 0.22
+        },
+        "samples": 5088,
+        "minimum": 0.0008490979671478271,
+        "median": 0.0034380704164505005,
+        "p95": 0.0112467585131526,
+        "maximum": 0.018728435039520264,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "ou": 0.5
+        },
+        "samples": 5088,
+        "minimum": 0.0008533596992492676,
+        "median": 0.004391849040985107,
+        "p95": 0.013075978495180607,
+        "maximum": 0.017705529928207397,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "ou": 1
+        },
+        "samples": 2528,
+        "minimum": 0.0007999241352081299,
+        "median": 0.0022469907999038696,
+        "p95": 0.013438885100185871,
+        "maximum": 0.016138136386871338,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "ee": 0.1
+        },
+        "samples": 4913,
+        "minimum": 0.0008465051651000977,
+        "median": 0.001955866813659668,
+        "p95": 0.010609750635921955,
+        "maximum": 0.01678970456123352,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "ee": 0.22
+        },
+        "samples": 5088,
+        "minimum": 0.0008490979671478271,
+        "median": 0.0020107924938201904,
+        "p95": 0.012599662877619267,
+        "maximum": 0.0167120099067688,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "ee": 0.5
+        },
+        "samples": 5088,
+        "minimum": 0.0008533596992492676,
+        "median": 0.0019731372594833374,
+        "p95": 0.014199277386069298,
+        "maximum": 0.01823553442955017,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "ee": 1
+        },
+        "samples": 4576,
+        "minimum": 0.00087699294090271,
+        "median": 0.0020464658737182617,
+        "p95": 0.014086157083511353,
+        "maximum": 0.016938716173171997,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "oh": 0.1
+        },
+        "samples": 4913,
+        "minimum": 0.0008465051651000977,
+        "median": 0.0024945735931396484,
+        "p95": 0.012356624938547611,
+        "maximum": 0.018697351217269897,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "oh": 0.22
+        },
+        "samples": 5088,
+        "minimum": 0.0008490979671478271,
+        "median": 0.002885371446609497,
+        "p95": 0.013953178189694881,
+        "maximum": 0.017695456743240356,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "oh": 0.5
+        },
+        "samples": 5088,
+        "minimum": 0.0008533596992492676,
+        "median": 0.0029154419898986816,
+        "p95": 0.01310831680893898,
+        "maximum": 0.01632288098335266,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "oh": 1
+        },
+        "samples": 3232,
+        "minimum": 0.000800013542175293,
+        "median": 0.00291549414396286,
+        "p95": 0.01294338796287775,
+        "maximum": 0.016720682382583618,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "aa": 0.5,
+          "ih": 0.5
+        },
+        "samples": 5088,
+        "minimum": 0.0008443295955657959,
+        "median": 0.0014258027076721191,
+        "p95": 0.013546052388846874,
+        "maximum": 0.01689276099205017,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "ou": 0.5,
+          "oh": 0.5
+        },
+        "samples": 4220,
+        "minimum": 0.0006551146507263184,
+        "median": 0.005444616079330444,
+        "p95": 0.015706151723861694,
+        "maximum": 0.016074299812316895,
+        "behindHeadCount": 0
+      },
+      {
+        "weights": {
+          "aa": 0.2,
+          "ih": 0.2,
+          "ou": 0.2,
+          "ee": 0.2,
+          "oh": 0.2
+        },
+        "samples": 5088,
+        "minimum": 0.0008533596992492676,
+        "median": 0.003404378890991211,
+        "p95": 0.013003604486584663,
+        "maximum": 0.017666220664978027,
+        "behindHeadCount": 0
+      }
+    ]
+  },
+  "blenderImportedExpressions": [
+    "blink",
+    "blink_left",
+    "blink_right",
+    "relaxed",
+    "aa",
+    "ih",
+    "ou",
+    "ee",
+    "oh"
+  ],
+  "limits": [
+    "Not a collision proof for all weights/poses; measured triangle centroids at 23 states",
+    "Corner protrusion and profile ripples remain, especially narrow vowels",
+    "Local maximum standoff is not reduced everywhere; median improved",
+    "Binding reimport only; other VRM runtimes and audio timing remain unverified"
+  ]
+}

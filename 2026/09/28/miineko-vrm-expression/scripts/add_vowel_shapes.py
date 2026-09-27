@@ -152,31 +152,90 @@ if flat_start:
 
 envelope_report=None
 envelope_mode=os.environ.get('MOUTH_ENVELOPE')
-if envelope_mode in ('linear','linear-local'):
+if envelope_mode in ('linear','linear-local','linear-vertex'):
     assert single_surface,'Envelope probe currently targets the single surface'
     # A per-column affine depth field is preserved exactly by linear morph
     # interpolation, including mixtures. Fit it in front of the source face,
     # instead of letting chords between sampled curved surfaces cut through it.
     coefficients=[];max_gap=0.;min_gap=1.
-    for column,x in enumerate(xs):
+    clearance=float(os.environ.get('MOUTH_CLEARANCE','.001'))
+    per_vertex=envelope_mode=='linear-vertex'
+    keys=list(mouth.data.shape_keys.key_blocks)
+    key_z=np.asarray([[p.co.z for p in key.data] for key in keys])
+    for column in range(len(mouth.data.vertices) if per_vertex else len(xs)):
+        x=xs[column%161]
         top=float(np.interp(x,xs,curve[:,0]));bottom=.400
-        if envelope_mode=='linear-local':
-            used=[p.co.z for key in mouth.data.shape_keys.key_blocks for p in list(key.data)[column::161]]
-            bottom,top=min(used),max(used)
+        if envelope_mode in ('linear-local','linear-vertex'):
+            used=key_z[:,column] if per_vertex else key_z[:,column::161]
+            bottom,top=float(used.min()),float(used.max())
         zs=np.linspace(bottom,top,241)
         ys=np.asarray([face_y(float(x),float(z)) for z in zs])
         A=np.stack([np.ones_like(zs),zs-.45],axis=-1)
         c=np.linalg.lstsq(A,ys,rcond=None)[0]
-        c[0]-=max(0,float((A@c-ys).max()))+.001
+        c[0]-=max(0,float((A@c-ys).max()))+clearance
         gaps=ys-A@c;max_gap=max(max_gap,float(gaps.max()));min_gap=min(min_gap,float(gaps.min()))
         coefficients.append(c)
     for key in mouth.data.shape_keys.key_blocks:
         for i,point in enumerate(key.data):
-            c=coefficients[i%161]
+            c=coefficients[i if per_vertex else i%161]
             point.co.y=c[0]+c[1]*(point.co.z-.45)
     for i,point in enumerate(mouth.data.vertices):
-        c=coefficients[i%161];point.co.y=c[0]+c[1]*(point.co.z-.45)
-    envelope_report={'mode':envelope_mode,'sampledMinimumClearance':min_gap,'sampledMaximumForwardDistance':max_gap,'samplesPerColumn':241,'range':'actual morph range per column' if envelope_mode=='linear-local' else '0.400 to source lip'}
+        c=coefficients[i if per_vertex else i%161];point.co.y=c[0]+c[1]*(point.co.z-.45)
+    envelope_report={'mode':envelope_mode,'sampledMinimumClearance':min_gap,'sampledMaximumForwardDistance':max_gap,'samplesPerFit':241,'fitCount':len(coefficients),'range':'actual morph range per vertex' if per_vertex else ('actual morph range per column' if envelope_mode=='linear-local' else '0.400 to source lip')}
+    smoothing=int(os.environ.get('MOUTH_DEPTH_SMOOTH','0'))
+    if smoothing:
+        for key in keys:
+            ys=np.asarray([p.co.y for p in key.data]).reshape(17,161)
+            for _ in range(smoothing):
+                averaged=ys.copy();averaged[:,1:-1]=.25*ys[:,:-2]+.5*ys[:,1:-1]+.25*ys[:,2:]
+                ys=np.minimum(ys,averaged)
+            for point,y in zip(key.data,ys.ravel()):point.co.y=y
+        for i,point in enumerate(mouth.data.vertices):point.co=keys[0].data[i].co
+        envelope_report['forwardOnlySmoothingPasses']=smoothing
+        envelope_report['measurementScope']='per-vertex fits before forward-only smoothing'
+    if os.environ.get('MOUTH_TRIANGLE_CLEARANCE')=='1':
+        assert flat_start and per_vertex
+        # Vertex fits do not bound triangle interiors against the irregular
+        # source lips. Push affected vertices forward for sampled visible
+        # barycentric points, using one shared correction for every target.
+        tri=np.asarray(topology);uv=np.zeros((len(mouth.data.vertices),2))
+        for loop in mouth.data.loops:uv[loop.vertex_index]=mouth.data.uv_layers[0].data[loop.index].uv
+        base=np.asarray([p.co for p in keys[0].data])
+        deltas={name:np.asarray([p.co for p in mouth.data.shape_keys.key_blocks[name.upper()].data])-base for name in ('aa','ih','ou','ee','oh')}
+        states=[{name:w} for name in deltas for w in (.02,.05,.1,.22,.5,.75,1)]
+        states += [{'aa':.5,'ih':.5},{'ou':.5,'oh':.5},dict.fromkeys(deltas,.2)]
+        push=np.zeros(len(base));sample_count=0
+        for mix in states:
+            points=base.copy()
+            for name,w in mix.items():points+=w*deltas[name]
+            triangles=points[tri]
+            valid=np.linalg.norm(np.cross(triangles[:,1]-triangles[:,0],triangles[:,2]-triangles[:,0]),axis=1)>2e-12
+            for bary in ((1/3,1/3,1/3),(.6,.2,.2),(.2,.6,.2),(.2,.2,.6)):
+                active=valid & (np.einsum('tvc,v->tc',uv[tri],bary)[:,1]+.65*sum(mix.values())>.501)
+                samples=np.einsum('tvc,v->tc',triangles[active],bary)
+                required=np.asarray([max(0,y-face_y(float(x),float(z))+.0008) for x,y,z in samples])
+                np.maximum.at(push,tri[active].ravel(),np.repeat(required,3));sample_count+=len(samples)
+        grid=push.reshape(17,161)
+        for _ in range(8):
+            average=grid.copy();average[:,1:-1]=.25*grid[:,:-2]+.5*grid[:,1:-1]+.25*grid[:,2:]
+            grid=np.maximum(grid,average)
+        push=grid.ravel()
+        for key in keys:
+            for p,d in zip(key.data,push):p.co.y-=d
+        for i,p in enumerate(mouth.data.vertices):p.co=keys[0].data[i].co
+        envelope_report['triangleCorrection']={'states':len(states),'samples':sample_count,'maximumForwardCorrection':float(push.max()),'targetClearance':.0008,'scope':'four barycentric samples per visible triangle; sampled states only'}
+    if per_vertex:
+        # Narrow vowels collapse unused columns. Different per-vertex depth
+        # fits must not turn a collapsed line into a horizontal colored shelf.
+        pinned=0
+        for key in keys:
+            coords=np.asarray([p.co for p in key.data]).reshape(17,161,3)
+            collapsed=np.ptp(coords[:,:,2],axis=0)<1e-7
+            coords[:,collapsed,1]=coords[:,collapsed,1].min(axis=0)
+            pinned+=int(collapsed.sum())
+            for p,co in zip(key.data,coords.reshape(-1,3)):p.co=co
+        for i,p in enumerate(mouth.data.vertices):p.co=keys[0].data[i].co
+        envelope_report['collapsedColumnsPinned']=pinned
 
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'continuous-blink.blend'))
 result=bpy.ops.export_scene.vrm(filepath=str(OUT/'continuous-blink.vrm'))
