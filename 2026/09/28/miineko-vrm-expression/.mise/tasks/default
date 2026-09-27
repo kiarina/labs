@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+python3 -m compileall -q scripts
+python3 - <<'PY'
+import json
+from pathlib import Path
+
+root = Path.cwd()
+report = json.loads((root / "results/uv-inspection.json").read_text())
+assert report["materials"] == ["tripo_mat_1cddadbe"]
+assert report["shapeKeys"] == []
+assert all(region["uvIslandCount"] > 1 for region in report["regions"].values())
+print("Static lab checks passed")
+PY

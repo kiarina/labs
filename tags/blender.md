@@ -1,4 +1,3 @@
-# 3d
+# blender
 
 - 2026/09/28 [Preserving a Tripo VRM face while adding expressions](../2026/09/28/miineko-vrm-expression/README.md)
-- 2026/07/11 [AniGen on Apple Silicon](../2026/07/11/anigen-mac/README.md)

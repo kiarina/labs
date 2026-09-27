@@ -19,6 +19,7 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 ## Labs
 
 - 2026/09
+  - [Preserving a Tripo VRM face while adding expressions](2026/09/28/miineko-vrm-expression/README.md) - [vrm](tags/vrm.md), [blender](tags/blender.md), [3d](tags/3d.md)
   - [VRM4U upstream bug reproductions (UE 5.8)](2026/09/28/vrm4u-upstream-repro/README.md) - [unreal-engine](tags/unreal-engine.md), [vrm](tags/vrm.md), [bug-reproduction](tags/bug-reproduction.md)
   - [GPT-Live over WebRTC from native Flutter, with idle and conversation capture switching](2026/09/26/flutter-gpt-live-senses/README.md) - [flutter](tags/flutter.md), [dart](tags/dart.md), [webrtc](tags/webrtc.md), [gpt-live](tags/gpt-live.md), [openai](tags/openai.md), [audio](tags/audio.md), [video](tags/video.md), [echo-cancellation](tags/echo-cancellation.md), [android](tags/android.md), [ios](tags/ios.md), [macos](tags/macos.md)
   - [Always-on camera and microphone in Flutter with record and camera, and what echoCancel really does](2026/09/26/flutter-record-camera-senses/README.md) - [flutter](tags/flutter.md), [dart](tags/dart.md), [audio](tags/audio.md), [video](tags/video.md), [echo-cancellation](tags/echo-cancellation.md), [android](tags/android.md), [ios](tags/ios.md), [macos](tags/macos.md), [windows](tags/windows.md)
