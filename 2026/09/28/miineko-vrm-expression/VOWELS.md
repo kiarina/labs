@@ -10,6 +10,13 @@ acceptance are not established by the presence of five VRM presets.
 
 ## Construction and failed comparisons
 
+**Current follow-up:** after viewing `mouth-vowels-stable`, the owner supported
+the direction but reported that the lower edge retained a central W-shaped peak
+while opening (screenshot at approximately 22%). `mouth-vowels-flatstart` is the
+new comparison candidate; the earlier build remains available. See the flat
+onset section below. The earlier construction and measurements in this document
+describe `mouth-vowels-stable`, not the revised invisible neutral surface.
+
 The input is the preserved `overlay-selected-plus` blend. The first stage
 (`scripts/mouth_aa_probe.py`) traces the W rim and builds a collapsed-neutral
 opening, as described in [MOUTH.md](MOUTH.md). The follow-up uses a lower center
@@ -22,7 +29,7 @@ height of 0.415 m and a larger red fill.
 | `mouth-red-vowels` | Five shapes with fixed X columns; narrow shapes collapse the unused columns. Two separate colored surfaces still cause artifacts in blends. |
 | `mouth-vowels-flat` | One mouth surface with red/black vertex colors removes red/black intersection. Interpolated shapes can still cut through the curved original face. |
 | `mouth-vowels-envelope` | Per-column affine depth support clears the sampled face for morph mixtures, but the broad sampling range unnecessarily projects some edges forward. |
-| `mouth-vowels-stable` | The same support restricted to each column's actual morph range. Current inspectable prototype. Front/oblique mixtures are cleaner; a thin projecting edge remains visible in profile. |
+| `mouth-vowels-stable` | The same support restricted to each column's actual morph range. Earlier inspectable prototype. Front/oblique mixtures are cleaner; a thin projecting edge remains visible in profile. |
 
 The final stage (`scripts/add_vowel_shapes.py`) keeps source Body and eyes intact.
 Each vertical mouth column has one fixed X and an affine depth `y = a + b*z`.
@@ -110,3 +117,66 @@ Open `viewer.html?model=mouth-vowels-stable` on the local server. `口の形` se
 the vowel and `口を開く` controls its weight. The eye, relaxation, angle and
 automatic blink controls remain available. The dropdown also retains previous
 mouth candidates and the unmodified approved face for comparison.
+
+## Flat onset follow-up (2026-09-28)
+
+A linear morph from a collapsed W contour retains some of its central peak at
+intermediate weights. The revised candidate instead has a shallow, invisible
+neutral mouth with a nearly flat central floor. Its floor profile uses a fourth
+power rather than a quadratic, so its central section remains flatter as it
+opens. The lower-center heights for `ih` and `ee` are .435 and .428 m; the other
+three full-open heights are unchanged. This alters both onset and full-open
+floor curvature; it is not just a timing change in the viewer.
+
+The extra neutral surface is hidden by zero texture alpha. During the first
+12% of the normalized mouth weight, a horizontal alpha boundary reveals it
+progressively; the morph simultaneously lowers the floor. The upper W smile and
+source Body remain in place. All five presets contain their morph and the same
+standard VRM TextureTransformBind, so normalized mixtures move the reveal by
+the sum of their weights. This still requires nonnegative weights totaling at
+most one. Very small openings first reveal a small central red area; motion
+still needs artistic evaluation and audio calibration.
+
+The material is standard glTF unlit with one RGBA texture. U stores the static
+red/black palette; V stores reveal progress. An alpha-only texture connection
+was omitted by Blender's unlit exporter, and a texture/vertex-color multiply
+exported the useful colors as COLOR_1 while the viewer used white COLOR_0.
+Encoding both palette and alpha in one texture avoids these exporter issues.
+The procedural palette explicitly encodes its linear RGB values as sRGB.
+
+The final export step gives this texture a dedicated non-mipmapped LINEAR glTF
+sampler. The exporter's default mipmaps caused a few neutral pixels to remain
+visible at thin corners, despite zero alpha at the base UVs. This is a standard
+sampler setting in the saved VRM, not a viewer-specific patch. Re-exporting the
+blend manually needs the same sampler adjustment; use the generation script
+for the verified result. Blender reimport checks bindings, not shading parity.
+
+Neutral triangles now have nonzero area: the correct structural test is zero
+alpha across the neutral UV rectangle (with a filtering margin), followed by
+render comparison with the approved face. Do not reuse the earlier zero-area
+assertion for this variant. Floor checks compare the center against both
+nearby flanks at six weights for all five targets. Runtime captures now include
+22% explicitly, with 45 aa captures and 75 vowel captures plus mixtures.
+All 20 neutral comparisons, 36 relaxed/blink comparisons and six eye-region
+checks are pixel-identical; 30 floor checks show no raised center at the tested
+weights. Five-vowel binding reimport and a separate deterministic rebuild pass.
+Evidence: [results/flat-mouth-onset-evaluation.json](results/flat-mouth-onset-evaluation.json).
+
+Reproduce while preserving the earlier candidate:
+
+```sh
+MOUTH_FLAT_START=1 mise run vowel-probe
+```
+
+To rebuild only this follow-up from the existing `mouth-red-bound` input:
+
+```sh
+MOUTH_RUN=mouth-vowels-flatstart MOUTH_SINGLE_SURFACE=1 \
+MOUTH_ENVELOPE=linear-local MOUTH_FLAT_START=1 \
+"$BLENDER_BIN" --background --python-exit-code 1 --python scripts/add_vowel_shapes.py
+```
+
+Open `viewer.html?model=mouth-vowels-flatstart`. The previous opening is available
+as a separate comparison. The profile projection remains a limitation: the new
+sampled maximum support distance is 18.38 mm. This change targets the center
+peak, not the separate problem of a shallow mouth surface projecting in profile.

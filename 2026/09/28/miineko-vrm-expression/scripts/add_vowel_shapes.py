@@ -9,6 +9,7 @@ import hashlib
 import json
 import math
 import os
+import struct
 from pathlib import Path
 
 import bpy
@@ -105,6 +106,50 @@ if single_surface:
     links.new(color.outputs['Color'],output.inputs['Surface'])
     mouth.data.materials.clear();mouth.data.materials.append(material)
 
+flat_start=os.environ.get('MOUTH_FLAT_START')=='1'
+flat_report=None
+if flat_start:
+    assert single_surface, 'Flat onset requires the single mouth surface'
+    # A collapsed W basis necessarily leaves a central peak at intermediate
+    # morph weights. Start from an invisible, shallow opening instead, with a
+    # flat central floor. A standard VRM UV reveal hides it exactly at neutral.
+    floors={'Basis':.438,'AA':settings['floor'],'IH':.435,'OU':.421,'EE':.428,'OH':.404}
+    widths={'Basis':source_width,'AA':source_width,**{n.upper():p[0] for n,p in presets.items()}}
+    for key in mouth.data.shape_keys.key_blocks:
+        floor=floors[key.name];width=widths[key.name]
+        for i,point in enumerate(key.data):
+            x=float(xs[i%161]);t=(i//161)/16
+            top=float(np.interp(x,xs,curve[:,0]))
+            bottom=top if abs(x)>=width else min(top-.0001,floor+(.479-floor)*(x/width)**4)
+            point.co.z=top+(bottom-top)*t
+    for i,point in enumerate(mouth.data.vertices):point.co=mouth.data.shape_keys.key_blocks['Basis'].data[i].co
+    shift=.65;reveal_end=.12;z_start=.485;z_end=.430
+    uv=mouth.data.uv_layers.new(name='FlatOpeningReveal')
+    for loop in mouth.data.loops:
+        z=mouth.data.vertices[loop.vertex_index].co.z
+        uv.data[loop.index].uv=((loop.vertex_index//161)/16,.5+(z-z_start)*shift*reveal_end/(z_start-z_end))
+    height=4096;vv=(np.arange(height)+.5)/height
+    alpha=np.clip((vv-.5)/.001,0,1);alpha=alpha*alpha*(3-2*alpha)
+    palette_width=256;uu=(np.arange(palette_width)+.5)/palette_width
+    palette=np.asarray([smooth((u-.03)/.045)*(1-smooth((u-.93)/.045)) for u in uu])
+    rgb=np.asarray((.002,.0007,.0015))[None,:]*(1-palette[:,None])+np.asarray((.52,.003,.015))[None,:]*palette[:,None]
+    rgb=np.where(rgb<=.0031308,12.92*rgb,1.055*rgb**(1/2.4)-.055)
+    rgba=np.ones((height,palette_width,4),np.float32);rgba[:,:,:3]=rgb[None,:,:];rgba[:,:,3]=alpha[:,None]
+    ramp=bpy.data.images.new('Mouth onset reveal',width=palette_width,height=height,alpha=True)
+    ramp.pixels.foreach_set(rgba.ravel());ramp.filepath_raw=str(OUT/'mouth-reveal.png');ramp.file_format='PNG';ramp.save()
+    ramp=bpy.data.images.load(ramp.filepath_raw,check_existing=False);ramp.pack()
+    material.surface_render_method='BLENDED';material.use_backface_culling=False
+    coord=nodes.new('ShaderNodeTexCoord');mapping=nodes.new('ShaderNodeMapping');mapping.vector_type='POINT'
+    tex=nodes.new('ShaderNodeTexImage');tex.image=ramp;tex.extension='EXTEND'
+    links.new(coord.outputs['UV'],mapping.inputs['Vector']);links.new(mapping.outputs['Vector'],tex.inputs['Vector'])
+    transparent=nodes.new('ShaderNodeBsdfTransparent');mix=nodes.new('ShaderNodeMixShader')
+    links.new(tex.outputs['Alpha'],mix.inputs[0]);links.new(transparent.outputs[0],mix.inputs[1])
+    links.new(tex.outputs['Color'],mix.inputs[2]);links.new(mix.outputs[0],output.inputs['Surface'])
+    mouth.data.color_attributes.remove(colors);nodes.remove(color)
+    for name in ('aa','ih','ou','ee','oh'):
+        bind=getattr(exprs,name).texture_transform_binds.add();bind.material=material;bind.scale=(1,1);bind.offset=(0,-shift)
+    flat_report={'basisFloor':floors['Basis'],'floors':floors,'profilePower':4,'uvShift':shift,'revealEnd':reveal_end,'neutralVisibility':'zero texture alpha; nondegenerate geometry'}
+
 envelope_report=None
 envelope_mode=os.environ.get('MOUTH_ENVELOPE')
 if envelope_mode in ('linear','linear-local'):
@@ -135,6 +180,19 @@ if envelope_mode in ('linear','linear-local'):
 
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'continuous-blink.blend'))
 result=bpy.ops.export_scene.vrm(filepath=str(OUT/'continuous-blink.vrm'))
-report={'method':'five-cartoon-vowel-targets','singleSurface':single_surface,'linearEnvelope':envelope_report,'source':SOURCE.name,'sourceVrmSha256':hashlib.sha256((SOURCE/'continuous-blink.vrm').read_bytes()).hexdigest(),'sourceBlendSha256':hashlib.sha256((SOURCE/'continuous-blink.blend').read_bytes()).hexdigest(),'scriptSha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'vowels':{'aa':[source_width,settings['floor']],**presets},'driverConstraint':'nonnegative weights with sum <= 1','export':sorted(result)}
+if flat_start:
+    # The exporter always requests mipmaps for linear image nodes. Near the
+    # narrow mouth corners those mipmaps leak alpha across the neutral cutoff.
+    # Use the standard glTF non-mipmapped LINEAR sampler for this texture only.
+    path=OUT/'continuous-blink.vrm';raw=path.read_bytes();length=struct.unpack_from('<I',raw,12)[0]
+    document=json.loads(raw[20:20+length]);tail=raw[20+length:]
+    mouth_material=next(m for m in document['materials'] if m['name']==material.name)
+    texture=document['textures'][mouth_material['pbrMetallicRoughness']['baseColorTexture']['index']]
+    sampler=dict(document['samplers'][texture['sampler']]);sampler.update(minFilter=9729,magFilter=9729)
+    texture['sampler']=len(document['samplers']);document['samplers'].append(sampler)
+    encoded=json.dumps(document,separators=(',',':')).encode();encoded+=b' '*((-len(encoded))%4)
+    path.write_bytes(struct.pack('<4sII',b'glTF',2,20+len(encoded)+len(tail))+struct.pack('<I4s',len(encoded),b'JSON')+encoded+tail)
+    flat_report['vrmSampler']='LINEAR without mipmaps; neutral alpha bleed prevention'
+report={'method':'five-cartoon-vowel-targets','singleSurface':single_surface,'flatStart':flat_report,'linearEnvelope':envelope_report,'source':SOURCE.name,'sourceVrmSha256':hashlib.sha256((SOURCE/'continuous-blink.vrm').read_bytes()).hexdigest(),'sourceBlendSha256':hashlib.sha256((SOURCE/'continuous-blink.blend').read_bytes()).hexdigest(),'scriptSha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'vowels':{name:[width,floors[name.upper()] if flat_start else floor] for name,(width,floor) in {'aa':(source_width,settings['floor']),**presets}.items()},'driverConstraint':'nonnegative weights with sum <= 1','export':sorted(result)}
 (OUT/'report.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report))

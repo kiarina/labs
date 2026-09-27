@@ -1,6 +1,7 @@
 """Persist structural and visual measurements of one cartoon mouth probe."""
 import argparse
 import hashlib
+import io
 import json
 import struct
 from pathlib import Path
@@ -10,6 +11,7 @@ from PIL import Image
 
 parser=argparse.ArgumentParser();parser.add_argument('run');args=parser.parse_args()
 root=Path(__file__).resolve().parents[1];folder=root/'artifacts'/args.run
+flat_start=bool(json.loads((folder/'report.json').read_text()).get('flatStart'))
 raw=(folder/'continuous-blink.vrm').read_bytes();n=struct.unpack_from('<I',raw,12)[0]
 doc=json.loads(raw[20:20+n]);blob=raw[28+n:]
 
@@ -24,7 +26,7 @@ def accessor(index):
 aa=doc['extensions']['VRMC_vrm']['expressions']['preset']['aa']
 assert not aa.get('isBinary',False)
 report={'run':args.run,'vrmSha256':hashlib.sha256(raw).hexdigest(),'meshes':[],'bodyOutlineMorph':[]}
-colored_fill=False
+colored_fill=flat_start
 for binding in aa['morphTargetBinds']:
     node=doc['nodes'][binding['node']];mesh=doc['meshes'][node['mesh']]
     target_name=mesh['extras']['targetNames'][binding['index']]
@@ -52,7 +54,31 @@ for binding in aa['morphTargetBinds']:
         joints=accessor(p['attributes']['JOINTS_0']);weights=accessor(p['attributes']['WEIGHTS_0'])
         bone_names={doc['nodes'][skin['joints'][int(joints[i,j])]]['name'] for i,j in np.argwhere(weights>1e-6)}
         assert bone_names=={'J_Bip_C_Head'},bone_names
-        assert float(area.max())<1e-12
+        if flat_start:
+            assert material['alphaMode']=='BLEND'
+            texture=doc['textures'][material['pbrMetallicRoughness']['baseColorTexture']['index']]
+            iv=doc['bufferViews'][doc['images'][texture['source']]['bufferView']]
+            pixels=np.asarray(Image.open(io.BytesIO(blob[iv.get('byteOffset',0):iv.get('byteOffset',0)+iv['byteLength']])).convert('RGBA'))
+            uv=accessor(p['attributes']['TEXCOORD_0'])
+            # Check the full UV bounding rectangle, including interpolation and
+            # one texel of filtering margin, rather than only vertex samples.
+            low=np.floor(uv.min(0)*[pixels.shape[1],pixels.shape[0]]).astype(int)-1
+            high=np.ceil(uv.max(0)*[pixels.shape[1],pixels.shape[0]]).astype(int)+1
+            alpha=pixels[max(0,low[1]):min(pixels.shape[0],high[1]+1),max(0,low[0]):min(pixels.shape[1],high[0]+1),3]
+            assert alpha.size and alpha.max()==0
+            report['neutralTextureAlphaMaximum']=int(alpha.max())
+            report['floorChecks']=[]
+            for name in ('aa','ih','ou','ee','oh'):
+                binding_v=doc['extensions']['VRMC_vrm']['expressions']['preset'][name]['morphTargetBinds'][0]
+                delta=accessor(p['targets'][binding_v['index']]['POSITION'])
+                for weight in (.02,.05,.1,.22,.5,1):
+                    coords=pos+weight*delta
+                    center=coords[abs(coords[:,0])<.002,1].min()
+                    flank=coords[(abs(coords[:,0])>.020)&(abs(coords[:,0])<.024),1].min()
+                    assert center<=flank+1e-6,(name,weight,center,flank)
+                    report['floorChecks'].append({'vowel':name,'weight':weight,'centerAboveFlanks':float(center-flank)})
+        else:
+            assert float(area.max())<1e-12
         target=accessor(p['targets'][binding['index']]['POSITION'])
         assert np.max(np.linalg.norm(target,axis=1))>0
         report['meshes'].append({'name':node['name'],'vertices':len(pos),'triangles':len(tri),'neutralMaximumTriangleArea':float(area.max()),'bones':sorted(bone_names),'maximumDisplacement':float(np.linalg.norm(target,axis=1).max())})

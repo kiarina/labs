@@ -5,7 +5,9 @@ test -f artifacts/overlay-selected-plus/continuous-blink.blend || {
   echo 'Run overlay-followup first to prepare the owner-approved face' >&2
   exit 1
 }
-vowel_run="${MOUTH_RUN:-mouth-vowels-stable}"
+vowel_default=mouth-vowels-stable
+if [[ "${MOUTH_FLAT_START:-0}" == 1 ]]; then vowel_default=mouth-vowels-flatstart; fi
+vowel_run="${MOUTH_RUN:-$vowel_default}"
 vowel_source="${VOWEL_INPUT:-mouth-red-bound}"
 if [[ "$vowel_run" == "$vowel_source" ]]; then
   echo 'Use separate source and final artifact directories' >&2

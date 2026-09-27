@@ -1,0 +1,1008 @@
+{
+  "date": "2026-09-28",
+  "scope": "Flat lower mouth onset following owner feedback at 22 percent",
+  "construction": {
+    "method": "five-cartoon-vowel-targets",
+    "singleSurface": true,
+    "flatStart": {
+      "basisFloor": 0.438,
+      "floors": {
+        "Basis": 0.438,
+        "AA": 0.415,
+        "IH": 0.435,
+        "OU": 0.421,
+        "EE": 0.428,
+        "OH": 0.404
+      },
+      "profilePower": 4,
+      "uvShift": 0.65,
+      "revealEnd": 0.12,
+      "neutralVisibility": "zero texture alpha; nondegenerate geometry",
+      "vrmSampler": "LINEAR without mipmaps; neutral alpha bleed prevention"
+    },
+    "linearEnvelope": {
+      "mode": "linear-local",
+      "sampledMinimumClearance": 0.0010000000000000009,
+      "sampledMaximumForwardDistance": 0.01837852448230337,
+      "samplesPerColumn": 241,
+      "range": "actual morph range per column"
+    },
+    "source": "mouth-red-bound",
+    "sourceVrmSha256": "f6995691bb723a7ed19fce5d594cbd52771b8d2a4e8055b69d8a9559452535b5",
+    "sourceBlendSha256": "c7f82ad03374725a7c91d54befcf3a2cfd102bf593b082d8fb6eae2a5c1f7cbe",
+    "scriptSha256": "666b995283b6f5d01afed8a965ab52bda4349c914d572d66c4f8bafa747d2bac",
+    "vowels": {
+      "aa": [
+        0.076,
+        0.415
+      ],
+      "ih": [
+        0.076,
+        0.435
+      ],
+      "ou": [
+        0.038,
+        0.421
+      ],
+      "ee": [
+        0.068,
+        0.428
+      ],
+      "oh": [
+        0.048,
+        0.404
+      ]
+    },
+    "driverConstraint": "nonnegative weights with sum <= 1",
+    "export": [
+      "FINISHED"
+    ]
+  },
+  "measurements": {
+    "run": "mouth-vowels-flatstart",
+    "vrmSha256": "c19feb3b06ef44b6506559251daac379c673c23cd1df09429054e5e28870673f",
+    "meshes": [
+      {
+        "name": "Mouth_Cartoon",
+        "vertices": 2737,
+        "triangles": 5120,
+        "neutralMaximumTriangleArea": 5.013316240365384e-06,
+        "bones": [
+          "J_Bip_C_Head"
+        ],
+        "maximumDisplacement": 0.038074612617492676
+      }
+    ],
+    "bodyOutlineMorph": [],
+    "neutralTextureAlphaMaximum": 0,
+    "floorChecks": [
+      {
+        "vowel": "aa",
+        "weight": 0.02,
+        "centerAboveFlanks": -0.0002371072769165039
+      },
+      {
+        "vowel": "aa",
+        "weight": 0.05,
+        "centerAboveFlanks": -0.00024107098579406738
+      },
+      {
+        "vowel": "aa",
+        "weight": 0.1,
+        "centerAboveFlanks": -0.00024762749671936035
+      },
+      {
+        "vowel": "aa",
+        "weight": 0.22,
+        "centerAboveFlanks": -0.00026342272758483887
+      },
+      {
+        "vowel": "aa",
+        "weight": 0.5,
+        "centerAboveFlanks": -0.0003002583980560303
+      },
+      {
+        "vowel": "aa",
+        "weight": 1,
+        "centerAboveFlanks": -0.00036603212356567383
+      },
+      {
+        "vowel": "ih",
+        "weight": 0.02,
+        "centerAboveFlanks": -0.00023481249809265137
+      },
+      {
+        "vowel": "ih",
+        "weight": 0.05,
+        "centerAboveFlanks": -0.00023534893989562988
+      },
+      {
+        "vowel": "ih",
+        "weight": 0.1,
+        "centerAboveFlanks": -0.00023618340492248535
+      },
+      {
+        "vowel": "ih",
+        "weight": 0.22,
+        "centerAboveFlanks": -0.00023826956748962402
+      },
+      {
+        "vowel": "ih",
+        "weight": 0.5,
+        "centerAboveFlanks": -0.00024306774139404297
+      },
+      {
+        "vowel": "ih",
+        "weight": 1,
+        "centerAboveFlanks": -0.0002516508102416992
+      },
+      {
+        "vowel": "ou",
+        "weight": 0.02,
+        "centerAboveFlanks": -0.00033596158027648926
+      },
+      {
+        "vowel": "ou",
+        "weight": 0.05,
+        "centerAboveFlanks": -0.0004881322383880615
+      },
+      {
+        "vowel": "ou",
+        "weight": 0.1,
+        "centerAboveFlanks": -0.0007417798042297363
+      },
+      {
+        "vowel": "ou",
+        "weight": 0.22,
+        "centerAboveFlanks": -0.001350492238998413
+      },
+      {
+        "vowel": "ou",
+        "weight": 0.5,
+        "centerAboveFlanks": -0.002770930528640747
+      },
+      {
+        "vowel": "ou",
+        "weight": 1,
+        "centerAboveFlanks": -0.00530734658241272
+      },
+      {
+        "vowel": "ee",
+        "weight": 0.02,
+        "centerAboveFlanks": -0.00023889541625976562
+      },
+      {
+        "vowel": "ee",
+        "weight": 0.05,
+        "centerAboveFlanks": -0.000245511531829834
+      },
+      {
+        "vowel": "ee",
+        "weight": 0.1,
+        "centerAboveFlanks": -0.00025653839111328125
+      },
+      {
+        "vowel": "ee",
+        "weight": 0.22,
+        "centerAboveFlanks": -0.0002830326557159424
+      },
+      {
+        "vowel": "ee",
+        "weight": 0.5,
+        "centerAboveFlanks": -0.00034478306770324707
+      },
+      {
+        "vowel": "ee",
+        "weight": 1,
+        "centerAboveFlanks": -0.0004551112651824951
+      },
+      {
+        "vowel": "oh",
+        "weight": 0.02,
+        "centerAboveFlanks": -0.0002837181091308594
+      },
+      {
+        "vowel": "oh",
+        "weight": 0.05,
+        "centerAboveFlanks": -0.00035756826400756836
+      },
+      {
+        "vowel": "oh",
+        "weight": 0.1,
+        "centerAboveFlanks": -0.0004806220531463623
+      },
+      {
+        "vowel": "oh",
+        "weight": 0.22,
+        "centerAboveFlanks": -0.0007759630680084229
+      },
+      {
+        "vowel": "oh",
+        "weight": 0.5,
+        "centerAboveFlanks": -0.0014651119709014893
+      },
+      {
+        "vowel": "oh",
+        "weight": 1,
+        "centerAboveFlanks": -0.002695739269256592
+      }
+    ],
+    "viewer": {
+      "errors": [],
+      "warnings": [],
+      "mouthStates": 45,
+      "zeroRestoration": [
+        {
+          "a": 0,
+          "r": 0,
+          "w": 0,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "a": 0,
+          "r": 0,
+          "w": 1,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "a": 0,
+          "r": 0.35,
+          "w": 0,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "a": 0,
+          "r": 0.35,
+          "w": 1,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "a": 45,
+          "r": 0,
+          "w": 0,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "a": 45,
+          "r": 0,
+          "w": 1,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "a": 45,
+          "r": 0.35,
+          "w": 0,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "a": 45,
+          "r": 0.35,
+          "w": 1,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "a": 90,
+          "r": 0,
+          "w": 0,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "a": 90,
+          "r": 0,
+          "w": 1,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "a": 90,
+          "r": 0.35,
+          "w": 0,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "a": 90,
+          "r": 0.35,
+          "w": 1,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "a": -45,
+          "r": 0,
+          "w": 0,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "a": -45,
+          "r": 0,
+          "w": 1,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "a": -45,
+          "r": 0.35,
+          "w": 0,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "a": -45,
+          "r": 0.35,
+          "w": 1,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "a": -90,
+          "r": 0,
+          "w": 0,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "a": -90,
+          "r": 0,
+          "w": 1,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "a": -90,
+          "r": 0.35,
+          "w": 0,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "a": -90,
+          "r": 0.35,
+          "w": 1,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        }
+      ],
+      "relaxedCompositionMaximumDifference": 0,
+      "headFollowing": [
+        {
+          "yaw": -0.35,
+          "meshes": [
+            {
+              "name": "Mouth_Cartoon",
+              "skin": true,
+              "morphs": [
+                1,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "yaw": 0,
+          "meshes": [
+            {
+              "name": "Mouth_Cartoon",
+              "skin": true,
+              "morphs": [
+                1,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "yaw": 0.35,
+          "meshes": [
+            {
+              "name": "Mouth_Cartoon",
+              "skin": true,
+              "morphs": [
+                1,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      ],
+      "eyePreservation": [
+        {
+          "r": 0,
+          "w": 0,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0,
+          "w": 0.5,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0,
+          "w": 1,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.35,
+          "w": 0,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.35,
+          "w": 0.5,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        },
+        {
+          "r": 0.35,
+          "w": 1,
+          "maxChannelDifference": 0,
+          "channelsAbove2": 0
+        }
+      ],
+      "vowelStates": 75,
+      "vowelMixes": [
+        {
+          "mix": 0,
+          "a": 0,
+          "weights": {
+            "aa": 0.5,
+            "ih": 0.5,
+            "ou": 0,
+            "ee": 0,
+            "oh": 0
+          }
+        },
+        {
+          "mix": 0,
+          "a": 45,
+          "weights": {
+            "aa": 0.5,
+            "ih": 0.5,
+            "ou": 0,
+            "ee": 0,
+            "oh": 0
+          }
+        },
+        {
+          "mix": 1,
+          "a": 0,
+          "weights": {
+            "aa": 0,
+            "ih": 0,
+            "ou": 0.5,
+            "ee": 0,
+            "oh": 0.5
+          }
+        },
+        {
+          "mix": 1,
+          "a": 45,
+          "weights": {
+            "aa": 0,
+            "ih": 0,
+            "ou": 0.5,
+            "ee": 0,
+            "oh": 0.5
+          }
+        },
+        {
+          "mix": 2,
+          "a": 0,
+          "weights": {
+            "aa": 0.2,
+            "ih": 0.2,
+            "ou": 0.2,
+            "ee": 0.2,
+            "oh": 0.2
+          }
+        },
+        {
+          "mix": 2,
+          "a": 45,
+          "weights": {
+            "aa": 0.2,
+            "ih": 0.2,
+            "ou": 0.2,
+            "ee": 0.2,
+            "oh": 0.2
+          }
+        }
+      ]
+    },
+    "darkAreaMonotonic": false,
+    "darkAreaGateApplied": false,
+    "frontDarkArea": [
+      {
+        "weight": 0,
+        "darkPixels": 4018
+      },
+      {
+        "weight": 0.02,
+        "darkPixels": 4018
+      },
+      {
+        "weight": 0.05,
+        "darkPixels": 3842
+      },
+      {
+        "weight": 0.1,
+        "darkPixels": 2984
+      },
+      {
+        "weight": 0.25,
+        "darkPixels": 2954
+      },
+      {
+        "weight": 0.5,
+        "darkPixels": 2902
+      },
+      {
+        "weight": 0.75,
+        "darkPixels": 2905
+      },
+      {
+        "weight": 1,
+        "darkPixels": 2943
+      }
+    ],
+    "vowelNeutralDifferences": [
+      {
+        "vowel": "ih",
+        "angle": 0,
+        "maximum": 0.0
+      },
+      {
+        "vowel": "ou",
+        "angle": 0,
+        "maximum": 0.0
+      },
+      {
+        "vowel": "ee",
+        "angle": 0,
+        "maximum": 0.0
+      },
+      {
+        "vowel": "oh",
+        "angle": 0,
+        "maximum": 0.0
+      },
+      {
+        "vowel": "ih",
+        "angle": 45,
+        "maximum": 0.0
+      },
+      {
+        "vowel": "ou",
+        "angle": 45,
+        "maximum": 0.0
+      },
+      {
+        "vowel": "ee",
+        "angle": 45,
+        "maximum": 0.0
+      },
+      {
+        "vowel": "oh",
+        "angle": 45,
+        "maximum": 0.0
+      },
+      {
+        "vowel": "ih",
+        "angle": -45,
+        "maximum": 0.0
+      },
+      {
+        "vowel": "ou",
+        "angle": -45,
+        "maximum": 0.0
+      },
+      {
+        "vowel": "ee",
+        "angle": -45,
+        "maximum": 0.0
+      },
+      {
+        "vowel": "oh",
+        "angle": -45,
+        "maximum": 0.0
+      }
+    ],
+    "vowelShapeDifferences": [
+      {
+        "a": "aa",
+        "b": "ih",
+        "changedPixelsAbove12": 2916
+      },
+      {
+        "a": "aa",
+        "b": "ou",
+        "changedPixelsAbove12": 2661
+      },
+      {
+        "a": "aa",
+        "b": "ee",
+        "changedPixelsAbove12": 2379
+      },
+      {
+        "a": "aa",
+        "b": "oh",
+        "changedPixelsAbove12": 2262
+      },
+      {
+        "a": "ih",
+        "b": "ou",
+        "changedPixelsAbove12": 1392
+      },
+      {
+        "a": "ih",
+        "b": "ee",
+        "changedPixelsAbove12": 935
+      },
+      {
+        "a": "ih",
+        "b": "oh",
+        "changedPixelsAbove12": 2666
+      },
+      {
+        "a": "ou",
+        "b": "ee",
+        "changedPixelsAbove12": 1201
+      },
+      {
+        "a": "ou",
+        "b": "oh",
+        "changedPixelsAbove12": 2015
+      },
+      {
+        "a": "ee",
+        "b": "oh",
+        "changedPixelsAbove12": 2159
+      }
+    ]
+  },
+  "blenderImport": {
+    "blender": "5.1.2",
+    "scope": "binding import only, shading not certified",
+    "expressions": {
+      "blink": {
+        "morphs": [
+          {
+            "object": "Miineko_Body",
+            "key": "LidClearanceL",
+            "weight": 1.0
+          },
+          {
+            "object": "Miineko_Body",
+            "key": "LidClearanceR",
+            "weight": 1.0
+          }
+        ],
+        "textures": [
+          {
+            "material": "Lid L upper",
+            "offset": [
+              0.0,
+              -0.2370000034570694
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "material": "Lid L lower",
+            "offset": [
+              0.0,
+              -0.2370000034570694
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "material": "Lid R upper",
+            "offset": [
+              0.0,
+              -0.2370000034570694
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "material": "Lid R lower",
+            "offset": [
+              0.0,
+              -0.2370000034570694
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        ],
+        "binary": false
+      },
+      "blink_left": {
+        "morphs": [
+          {
+            "object": "Miineko_Body",
+            "key": "LidClearanceL",
+            "weight": 1.0
+          }
+        ],
+        "textures": [
+          {
+            "material": "Lid L upper",
+            "offset": [
+              0.0,
+              -0.2370000034570694
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "material": "Lid L lower",
+            "offset": [
+              0.0,
+              -0.2370000034570694
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        ],
+        "binary": false
+      },
+      "blink_right": {
+        "morphs": [
+          {
+            "object": "Miineko_Body",
+            "key": "LidClearanceR",
+            "weight": 1.0
+          }
+        ],
+        "textures": [
+          {
+            "material": "Lid R upper",
+            "offset": [
+              0.0,
+              -0.2370000034570694
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "material": "Lid R lower",
+            "offset": [
+              0.0,
+              -0.2370000034570694
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        ],
+        "binary": false
+      },
+      "relaxed": {
+        "morphs": [
+          {
+            "object": "Miineko_Body",
+            "key": "LidClearanceL",
+            "weight": 1.0
+          },
+          {
+            "object": "Miineko_Body",
+            "key": "LidClearanceR",
+            "weight": 1.0
+          }
+        ],
+        "textures": [
+          {
+            "material": "Lid L upper",
+            "offset": [
+              0.0,
+              -0.2370000034570694
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "material": "Lid L lower",
+            "offset": [
+              0.0,
+              -0.2370000034570694
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "material": "Lid R upper",
+            "offset": [
+              0.0,
+              -0.2370000034570694
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "material": "Lid R lower",
+            "offset": [
+              0.0,
+              -0.2370000034570694
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        ],
+        "binary": false
+      },
+      "aa": {
+        "morphs": [
+          {
+            "object": "Mouth_Cartoon",
+            "key": "AA",
+            "weight": 1.0
+          }
+        ],
+        "textures": [
+          {
+            "material": "Cartoon mouth single palette",
+            "offset": [
+              0.0,
+              -0.6499999761581421
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        ],
+        "binary": false
+      },
+      "ih": {
+        "morphs": [
+          {
+            "object": "Mouth_Cartoon",
+            "key": "IH",
+            "weight": 1.0
+          }
+        ],
+        "textures": [
+          {
+            "material": "Cartoon mouth single palette",
+            "offset": [
+              0.0,
+              -0.6499999761581421
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        ],
+        "binary": false
+      },
+      "ou": {
+        "morphs": [
+          {
+            "object": "Mouth_Cartoon",
+            "key": "OU",
+            "weight": 1.0
+          }
+        ],
+        "textures": [
+          {
+            "material": "Cartoon mouth single palette",
+            "offset": [
+              0.0,
+              -0.6499999761581421
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        ],
+        "binary": false
+      },
+      "ee": {
+        "morphs": [
+          {
+            "object": "Mouth_Cartoon",
+            "key": "EE",
+            "weight": 1.0
+          }
+        ],
+        "textures": [
+          {
+            "material": "Cartoon mouth single palette",
+            "offset": [
+              0.0,
+              -0.6499999761581421
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        ],
+        "binary": false
+      },
+      "oh": {
+        "morphs": [
+          {
+            "object": "Mouth_Cartoon",
+            "key": "OH",
+            "weight": 1.0
+          }
+        ],
+        "textures": [
+          {
+            "material": "Cartoon mouth single palette",
+            "offset": [
+              0.0,
+              -0.6499999761581421
+            ],
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        ],
+        "binary": false
+      }
+    }
+  },
+  "reproducibility": {
+    "source": "mouth-red-bound blend",
+    "byteIdentical": true,
+    "vrmSha256": "c19feb3b06ef44b6506559251daac379c673c23cd1df09429054e5e28870673f"
+  },
+  "limitations": [
+    "Sampled maximum support gap 18.38 mm; profile projection remains",
+    "First small central reveal needs motion and audio evaluation",
+    "Manual Blender re-export needs the dedicated no-mipmap sampler setting",
+    "Other VRM runtimes and roundtrip shading not tested"
+  ]
+}
