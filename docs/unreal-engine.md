@@ -283,6 +283,30 @@ bindに失敗したまま起動したEditorは自動で再bindしない場合が
 
 log pathはplatformとprojectで異なるため、各labのREADMEへ実測した場所を記録します。
 
+## MCP を使わずに Editor・PIE・`-game` を無人で回す
+
+crash の有無や読み込み時間のように、起動から終了までを同じ条件で何度も比べる検証は、MCP で操作するより
+コマンドライン 1 回で完結させたほうが確実です。2026-09-28 の
+[`2026/09/28/vrm4u-upstream-repro`](../2026/09/28/vrm4u-upstream-repro/)（plugin の修正あり／なしを
+`-game`・PIE・Editor import で比べた lab）で使った形です。
+
+- **検証の本体は C++ の Actor に置く。** `GlobalDefaultGameMode` の `BeginPlay` で、コマンドラインに専用の
+  フラグがあるときだけ Actor を spawn します。Actor は `FParse::Value(FCommandLine::Get(), ...)` で条件を読み、
+  結果を JSON に書いて `RequestEngineExit` で終わります。同じ Actor が `-game` でも PIE でも動きます
+- **PIE へ入るには project の `Content/Python/init_unreal.py` を使う。** Editor 起動時に自動で実行されるので、
+  専用のフラグがあるときだけ `LevelEditorSubsystem.editor_request_begin_play()` を呼びます。
+  **`-ExecutePythonScript=` は script を実行したあと Editor を終了してしまう**ため、PIE の起動には使えません
+- **crash したら待たずに止める。** crash すると Editor は CrashReportClient とダイアログを待って残り続けます。
+  `-abslog=` で書かせたログに `=== Critical error: ===` が出たら、数秒待って call stack が書かれてから
+  そのプロセスを終了します。**起動前に前回のログを消します**（残っていると、起動直後に crash と誤判定します）
+- **スクリーンショットで見た目を比べるなら、時間で変わる効果を切る。** `r.AntiAliasingMethod=0`、
+  motion blur と auto exposure の無効化を `DefaultEngine.ini` に入れます。TAA のままだと、撮ったフレームの
+  違いだけで輪郭の画素が 0.1〜0.2% ずれ、修正の有無による差と区別できませんでした
+- **engine の外の plugin は git 管理外にし、固定 commit から毎回作り直す。** 修正は `patches/*.patch` に置き、
+  比べる組み合わせごとに元の tree へ戻してから当てます。Windows 由来の CRLF のソースへ当てる patch は、
+  lab の `.gitattributes` で `patches/*.patch -text` にして改行を変換させません
+- **シェルは bash で書く。** zsh では引用符なしの変数が単語に分かれず、patch 名の並びが 1 つの引数として渡ります
+
 ## 検証の段階
 
 Unreal Engine labは、可能な範囲で次の順序で検証します。
