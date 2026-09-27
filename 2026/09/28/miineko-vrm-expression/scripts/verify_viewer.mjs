@@ -96,6 +96,23 @@ try{
    probe.scene.remove(baseline.scene);probe.set({a:0,r:0,w:0,m:0,e:'blink',visible:true});return cases;
   });
   if(report.mouthZeroRestoration.some(c=>c.maxChannelDifference>2))errors.push('Mouth zero state differs from approved input');
+  report.mouthEyePreservation=await page.evaluate(()=>{
+   const gl=probe.renderer.getContext(),width=gl.drawingBufferWidth,height=gl.drawingBufferHeight;
+   const pixels=()=>{const p=new Uint8Array(width*height*4);gl.readPixels(0,0,width,height,gl.RGBA,gl.UNSIGNED_BYTE,p);return p;};
+   const cases=[];
+   for(const r of [0,.35])for(const w of [0,.5,1]){
+    probe.set({a:0,r,w,m:0,e:'blink',visible:true});const before=pixels();
+    probe.set({m:1});const after=pixels();
+    let max=0,changed=0;
+    // The top 65% covers the eyes/forehead and upper nose, excluding the mouth.
+    for(let y=Math.ceil(height*.35);y<height;y++)for(let x=0;x<width;x++)for(let c=0;c<3;c++){
+     const i=(y*width+x)*4+c,d=Math.abs(before[i]-after[i]);max=Math.max(max,d);if(d>2)changed++;
+    }
+    cases.push({r,w,maxChannelDifference:max,channelsAbove2:changed});
+   }
+   return cases;
+  });
+  if(report.mouthEyePreservation.some(c=>c.maxChannelDifference>2))errors.push('Opening the mouth changed the eye region');
   report.headFollowing=[];
   for(const yaw of [-.35,0,.35]){
    const state=await page.evaluate(yaw=>{
@@ -108,6 +125,25 @@ try{
    await canvas.screenshot({path:path.join(output,`aa-head-${yaw}.png`)});
   }
   await page.evaluate(()=>{probe.vrm.humanoid.getNormalizedBoneNode('head').rotation.y=0;probe.set({m:0,w:0,r:0});});
+ }
+ if(await page.evaluate(()=>probe.hasVowels)){
+  report.vowels=[];
+  for(const v of ['aa','ih','ou','ee','oh'])for(const a of [0,45,-45])for(const m of [0,.5,1]){
+   await page.evaluate(({v,a,m})=>probe.set({v,a,m,w:0,r:0,e:'blink'}),{v,a,m});
+   await canvas.screenshot({path:path.join(output,`vowel-${v}-${m}-${a}.png`)});report.vowels.push({v,a,m});
+  }
+  report.vowelMixes=[];
+  const mixes=[{aa:.5,ih:.5},{ou:.5,oh:.5},{aa:.2,ih:.2,ou:.2,ee:.2,oh:.2}];
+  for(let i=0;i<mixes.length;i++)for(const a of [0,45]){
+   const state=await page.evaluate(({mix,a})=>{
+    probe.set({a,v:'aa',m:0,w:.5,r:.35,e:'blink'});
+    for(const name of ['aa','ih','ou','ee','oh'])probe.vrm.expressionManager.setValue(name,mix[name]||0);
+    probe.vrm.update(0);probe.renderer.render(probe.scene,probe.camera);
+    return Object.fromEntries(['aa','ih','ou','ee','oh'].map(name=>[name,probe.vrm.expressionManager.getValue(name)]));
+   },{mix:mixes[i],a});
+   report.vowelMixes.push({mix:i,a,weights:state});await canvas.screenshot({path:path.join(output,`vowel-mix-${i}-${a}.png`)});
+  }
+  await page.evaluate(()=>probe.set({v:'aa',m:0,a:0,w:0,r:0}));
  }
  if(process.env.PROBE_UI==='1'){
   await page.evaluate(()=>{probe.setMotion(null);probe.set({r:0,w:0,e:'blink',a:0,visible:true});});
@@ -124,6 +160,17 @@ try{
   report.originalTogglePersists=await page.evaluate(()=>!probe.vrm.scene.visible&&probe.reference.scene.visible&&!document.querySelector('#lids').checked);
   if(!report.originalTogglePersists)errors.push('Original toggle changed when changing angle');
   await page.click('#lids');await page.select('#angle','0');
+  if(await page.evaluate(()=>probe.hasVowels)){
+   report.vowelControls=[];
+   await page.evaluate(()=>{const input=document.querySelector('#mouth');input.value='0.5';input.dispatchEvent(new Event('input',{bubbles:true}));});
+   for(const vowel of ['aa','ih','ou','ee','oh']){
+    await page.select('#vowel',vowel);
+    const values=await page.evaluate(()=>Object.fromEntries(['aa','ih','ou','ee','oh'].map(v=>[v,probe.vrm.expressionManager.getValue(v)])));
+    if(Object.entries(values).some(([name,value])=>Math.abs(value-(name===vowel ? .5 : 0))>1e-6))errors.push(`Vowel control failed: ${vowel}`);
+    report.vowelControls.push({vowel,values});
+   }
+   await page.select('#vowel','aa');
+  }
   await page.evaluate(()=>{const input=document.querySelector('#relaxed');input.value='0.35';input.dispatchEvent(new Event('input',{bubbles:true}));if(probe.hasMouth){const mouth=document.querySelector('#mouth');mouth.value='1';mouth.dispatchEvent(new Event('input',{bubbles:true}));}});
   await page.screenshot({path:path.join(output,'controls.png')});
   await page.setViewport({width:600,height:900,deviceScaleFactor:1});

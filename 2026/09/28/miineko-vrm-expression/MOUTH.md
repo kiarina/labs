@@ -9,10 +9,26 @@ opening; it does not redesign the face or add realistic lips/teeth.
 
 The first gate is exact restoration of the approved face at weight zero. Then
 inspect low weights, half/full opening, both oblique/profile views, simultaneous
-blink/relaxation, and attachment when the head turns. The mouth's artistic fit
-still needs owner feedback before extending all vowel shapes.
+blink/relaxation, and attachment when the head turns. The original trial below covers `aa` only. The later reference-guided red mouth
+and five-vowel experiments are recorded separately in [VOWELS.md](VOWELS.md);
+artistic acceptance remains open.
 
-## Construction
+## Rough-stamp reference follow-up
+
+The owner supplied a private rough LINE-sticker sheet, then explicitly clarified
+that it is an ideal reference rather than an absolute target. Use its economical
+black contours, red mouth planes and graphic expressions as guidance, while
+retaining the approved 3D character and sleepy-eye treatment. Do not turn exact
+matching to the drawing into a new acceptance condition.
+
+The controlled follow-up compares a larger red interior with the existing W rim
+against the same interior plus local reduction of that rim's cross-section.
+Only positive `aa` weights may thin the rim; Basis, the nose and the upper center
+stem are pinned. The original selected input is preserved. The same neutral,
+low-weight, side-view and eye-combination checks apply. This is an artistic and
+geometric experiment, not evidence that a thinner outline is automatically better.
+
+## Original small-opening construction
 
 - Input: the preserved `artifacts/overlay-selected-plus/continuous-blink.blend`.
   The source VRM SHA-256 is

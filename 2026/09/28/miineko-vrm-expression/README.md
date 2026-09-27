@@ -18,8 +18,11 @@ The two-state atlas below is the earlier experiment, not the current selected ro
 The owner subsequently approved the selected overlay with relaxation and rejected
 the rounded-corner variant as too realistic for the mascot. A small cartoon `aa`
 opening now preserves the source W smile and restores the approved face at zero.
-The plain and pink-accent mouth prototypes, limits and verification are recorded
-in [MOUTH.md](MOUTH.md); neither is a finished five-vowel lip-sync system.
+The initial plain/pink prototypes are recorded in [MOUTH.md](MOUTH.md). A rough
+sticker reference then informed a red graphic mouth with five vowel morphs,
+verified neutral restoration and normalized blend samples; see [VOWELS.md](VOWELS.md).
+Side-view projection and audio-driven timing remain unresolved. This is not yet
+a finished lip-sync system.
 
 | Tested | Result |
 | --- | --- |

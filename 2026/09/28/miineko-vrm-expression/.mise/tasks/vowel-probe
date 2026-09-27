@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+BLENDER_BIN="${BLENDER_BIN:-blender}"
+test -f artifacts/overlay-selected-plus/continuous-blink.blend || {
+  echo 'Run overlay-followup first to prepare the owner-approved face' >&2
+  exit 1
+}
+vowel_run="${MOUTH_RUN:-mouth-vowels-stable}"
+vowel_source="${VOWEL_INPUT:-mouth-red-bound}"
+if [[ "$vowel_run" == "$vowel_source" ]]; then
+  echo 'Use separate source and final artifact directories' >&2
+  exit 1
+fi
+MOUTH_RUN="$vowel_source" MOUTH_ONSET=lower-rim MOUTH_STYLE=red-panel \
+  MOUTH_WIDTH=.076 MOUTH_FLOOR=.415 MOUTH_OUTLINE_FACTOR=1 MOUTH_SURFACE_BIND=opening \
+  "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/mouth_aa_probe.py
+MOUTH_RUN="$vowel_run" VOWEL_INPUT="$vowel_source" MOUTH_SINGLE_SURFACE=1 MOUTH_ENVELOPE=linear-local \
+  "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/add_vowel_shapes.py
+export BLINK_RUN="$vowel_run"
+PROBE_ANGLES=0,45,-45 PROBE_UI=1 node scripts/verify_viewer.mjs
+VERIFY_RELAXED=1 VERIFY_MOUTH=1 VERIFY_VOWELS=1 \
+  "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/check_blink_roundtrip.py
+"${COMPARE_PYTHON:-python3}" scripts/measure_mouth_probe.py "$BLINK_RUN"

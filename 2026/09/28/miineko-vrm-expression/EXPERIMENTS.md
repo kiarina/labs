@@ -13,9 +13,10 @@ The owner subsequently approved `overlay-selected-plus`, including its relaxed
 expression. The rounded-corner candidate was judged technically convincing but
 too realistic, alien-like and slightly scary for this mascot. It is rejected for
 art direction. Retain the flatter, manga-like sleepy-eye look; realism is not the
-acceptance criterion. The next prototype adds only a cartoon `aa` mouth opening
-to `overlay-selected-plus`, checking exact zero-weight restoration, a fixed nose,
-intermediate weights, both oblique views and combinations with the approved eyes.
+acceptance criterion. Mouth experiments preserve that approved input: the first
+`aa` opening is described in [MOUTH.md](MOUTH.md), followed by a reference-guided
+red opening with five vowel morphs in [VOWELS.md](VOWELS.md). Neutral restoration,
+intermediate weights, side views and combinations with approved eyes are checked.
 
 ### Selected-family follow-up
 
@@ -230,9 +231,11 @@ uploaded. Rendered media and binaries are intentionally not in Git.
 The owner-selected overlay is the main development path; the complete production
 VRM is not finished. Preserve its appearance when refining the closed surface,
 boundary, coverage or shading, and change these separately. Relaxation plus blink
-is now runtime-verified. A single cartoon `aa` mouth has now been prototyped with
-exact zero-weight restoration in the tested views; see [MOUTH.md](MOUTH.md).
-Do not mass-produce the full preset set before owner review of that appearance. Gaze,
+is now runtime-verified. Five cartoon vowel targets now restore the approved
+face at zero and support sampled normalized blends; see [VOWELS.md](VOWELS.md).
+The rough sticker sheet is guidance, not an exact target. Mouth art direction,
+profile projection and speech timing still need evaluation before the full
+preset set is expanded. Gaze,
 other emotions, spring integration, cross-character transfer and other VRM
 runtimes remain unverified in this selected pipeline. Stitched-eye prototypes
 remain diagnostic references, not the selected direction.

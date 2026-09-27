@@ -20,6 +20,7 @@ if os.environ.get('VERIFY_RELAXED')=='1':
     names.append('relaxed')
     assert preset.relaxed.override_blink=='blend'
 if os.environ.get('VERIFY_MOUTH')=='1':names.append('aa')
+if os.environ.get('VERIFY_VOWELS')=='1':names.extend(['ih','ou','ee','oh'])
 for name in names:
     expr=getattr(preset,name)
     morphs=[{'object':b.node.mesh_object_name,'key':b.index,'weight':b.weight} for b in expr.morph_target_binds]
