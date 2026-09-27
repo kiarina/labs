@@ -9,6 +9,14 @@ prioritizes this overlay family. The earlier engineering quality assessment
 below remains the record of defects; it is not a reason to override the owner's
 visual preference or return to whole-head/local-eye replacement as the main path.
 
+The owner subsequently approved `overlay-selected-plus`, including its relaxed
+expression. The rounded-corner candidate was judged technically convincing but
+too realistic, alien-like and slightly scary for this mascot. It is rejected for
+art direction. Retain the flatter, manga-like sleepy-eye look; realism is not the
+acceptance criterion. The next prototype adds only a cartoon `aa` mouth opening
+to `overlay-selected-plus`, checking exact zero-weight restoration, a fixed nose,
+intermediate weights, both oblique views and combinations with the approved eyes.
+
 ### Selected-family follow-up
 
 The next controlled comparison changes only the eyelid aperture UV mapping:
@@ -222,9 +230,9 @@ uploaded. Rendered media and binaries are intentionally not in Git.
 The owner-selected overlay is the main development path; the complete production
 VRM is not finished. Preserve its appearance when refining the closed surface,
 boundary, coverage or shading, and change these separately. Relaxation plus blink
-is now runtime-verified. The next isolated expression experiment is one `aa`
-mouth shape, starting with exact restoration of the original nose/mouth at zero.
-Do not mass-produce the full preset set before that visual comparison. Gaze,
+is now runtime-verified. A single cartoon `aa` mouth has now been prototyped with
+exact zero-weight restoration in the tested views; see [MOUTH.md](MOUTH.md).
+Do not mass-produce the full preset set before owner review of that appearance. Gaze,
 other emotions, spring integration, cross-character transfer and other VRM
 runtimes remain unverified in this selected pipeline. Stitched-eye prototypes
 remain diagnostic references, not the selected direction.

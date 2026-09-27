@@ -1,0 +1,924 @@
+{
+  "date": "2026-09-28",
+  "runs": {
+    "mouth-aa-onset": {
+      "build": {
+        "method": "cartoon-aa-under-source-smile",
+        "onset": "lower-rim",
+        "blender": "5.1.2",
+        "width": 0.076,
+        "floor": 0.423,
+        "vertices": 2737,
+        "sourceVrmSha256": "34f5456a9d9f4ec55c08bf34be70fc93c651e065f227cb5755e88c4f1e1876da",
+        "bodyVertexPositionsUnchanged": true,
+        "export": [
+          "FINISHED"
+        ]
+      },
+      "measurements": {
+        "run": "mouth-aa-onset",
+        "vrmSha256": "5b6b3d972cd7f63360b4d7b3772f38f5276986ac7081a4c450eee5587aa31076",
+        "meshes": [
+          {
+            "name": "Mouth_Cartoon",
+            "vertices": 2737,
+            "triangles": 5120,
+            "neutralMaximumTriangleArea": 0.0,
+            "bones": [
+              "J_Bip_C_Head"
+            ],
+            "maximumDisplacement": 0.05263633280992508
+          }
+        ],
+        "viewer": {
+          "errors": [],
+          "warnings": [],
+          "mouthStates": 40,
+          "zeroRestoration": [
+            {
+              "a": 0,
+              "r": 0,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 0,
+              "r": 0,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 0,
+              "r": 0.35,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 0,
+              "r": 0.35,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 45,
+              "r": 0,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 45,
+              "r": 0,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 45,
+              "r": 0.35,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 45,
+              "r": 0.35,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 90,
+              "r": 0,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 90,
+              "r": 0,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 90,
+              "r": 0.35,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 90,
+              "r": 0.35,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": -45,
+              "r": 0,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": -45,
+              "r": 0,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": -45,
+              "r": 0.35,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": -45,
+              "r": 0.35,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": -90,
+              "r": 0,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": -90,
+              "r": 0,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": -90,
+              "r": 0.35,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": -90,
+              "r": 0.35,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            }
+          ],
+          "relaxedCompositionMaximumDifference": 0,
+          "headFollowing": []
+        },
+        "frontDarkArea": [
+          {
+            "weight": 0,
+            "darkPixels": 4018
+          },
+          {
+            "weight": 0.02,
+            "darkPixels": 4018
+          },
+          {
+            "weight": 0.05,
+            "darkPixels": 4018
+          },
+          {
+            "weight": 0.1,
+            "darkPixels": 4030
+          },
+          {
+            "weight": 0.25,
+            "darkPixels": 4254
+          },
+          {
+            "weight": 0.5,
+            "darkPixels": 4696
+          },
+          {
+            "weight": 0.75,
+            "darkPixels": 5133
+          },
+          {
+            "weight": 1,
+            "darkPixels": 5659
+          }
+        ]
+      },
+      "blenderImport": {
+        "blender": "5.1.2",
+        "scope": "binding import only, shading not certified",
+        "expressions": {
+          "blink": {
+            "morphs": [
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceL",
+                "weight": 1.0
+              },
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceR",
+                "weight": 1.0
+              }
+            ],
+            "textures": [
+              {
+                "material": "Lid L upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid L lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid R upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid R lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ],
+            "binary": false
+          },
+          "blink_left": {
+            "morphs": [
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceL",
+                "weight": 1.0
+              }
+            ],
+            "textures": [
+              {
+                "material": "Lid L upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid L lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ],
+            "binary": false
+          },
+          "blink_right": {
+            "morphs": [
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceR",
+                "weight": 1.0
+              }
+            ],
+            "textures": [
+              {
+                "material": "Lid R upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid R lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ],
+            "binary": false
+          },
+          "relaxed": {
+            "morphs": [
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceL",
+                "weight": 1.0
+              },
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceR",
+                "weight": 1.0
+              }
+            ],
+            "textures": [
+              {
+                "material": "Lid L upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid L lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid R upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid R lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ],
+            "binary": false
+          },
+          "aa": {
+            "morphs": [
+              {
+                "object": "Mouth_Cartoon",
+                "key": "AA",
+                "weight": 1.0
+              }
+            ],
+            "textures": [],
+            "binary": false
+          }
+        }
+      }
+    },
+    "mouth-aa-tongue": {
+      "build": {
+        "method": "cartoon-aa-under-source-smile",
+        "pinkAccent": true,
+        "onset": "lower-rim",
+        "blender": "5.1.2",
+        "width": 0.076,
+        "floor": 0.423,
+        "vertices": 2737,
+        "sourceVrmSha256": "34f5456a9d9f4ec55c08bf34be70fc93c651e065f227cb5755e88c4f1e1876da",
+        "bodyVertexPositionsUnchanged": true,
+        "export": [
+          "FINISHED"
+        ]
+      },
+      "measurements": {
+        "run": "mouth-aa-tongue",
+        "vrmSha256": "2464150a794bbc473871ed147e4cd394076d4b1362b6c00b02ffdc54d995f02e",
+        "meshes": [
+          {
+            "name": "Mouth_Cartoon",
+            "vertices": 2737,
+            "triangles": 5120,
+            "neutralMaximumTriangleArea": 0.0,
+            "bones": [
+              "J_Bip_C_Head"
+            ],
+            "maximumDisplacement": 0.05263633280992508
+          },
+          {
+            "name": "Mouth_Pink_Accent",
+            "vertices": 1863,
+            "triangles": 1152,
+            "neutralMaximumTriangleArea": 0.0,
+            "bones": [
+              "J_Bip_C_Head"
+            ],
+            "maximumDisplacement": 0.04935825243592262
+          }
+        ],
+        "viewer": {
+          "errors": [],
+          "warnings": [],
+          "mouthStates": 40,
+          "zeroRestoration": [
+            {
+              "a": 0,
+              "r": 0,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 0,
+              "r": 0,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 0,
+              "r": 0.35,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 0,
+              "r": 0.35,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 45,
+              "r": 0,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 45,
+              "r": 0,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 45,
+              "r": 0.35,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 45,
+              "r": 0.35,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 90,
+              "r": 0,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 90,
+              "r": 0,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 90,
+              "r": 0.35,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": 90,
+              "r": 0.35,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": -45,
+              "r": 0,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": -45,
+              "r": 0,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": -45,
+              "r": 0.35,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": -45,
+              "r": 0.35,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": -90,
+              "r": 0,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": -90,
+              "r": 0,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": -90,
+              "r": 0.35,
+              "w": 0,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            },
+            {
+              "a": -90,
+              "r": 0.35,
+              "w": 1,
+              "maxChannelDifference": 0,
+              "channelsAbove2": 0
+            }
+          ],
+          "relaxedCompositionMaximumDifference": 0,
+          "headFollowing": [
+            {
+              "yaw": -0.35,
+              "meshes": [
+                {
+                  "name": "Mouth_Cartoon",
+                  "skin": true,
+                  "morphs": [
+                    1
+                  ]
+                },
+                {
+                  "name": "Mouth_Pink_Accent",
+                  "skin": true,
+                  "morphs": [
+                    1
+                  ]
+                }
+              ]
+            },
+            {
+              "yaw": 0,
+              "meshes": [
+                {
+                  "name": "Mouth_Cartoon",
+                  "skin": true,
+                  "morphs": [
+                    1
+                  ]
+                },
+                {
+                  "name": "Mouth_Pink_Accent",
+                  "skin": true,
+                  "morphs": [
+                    1
+                  ]
+                }
+              ]
+            },
+            {
+              "yaw": 0.35,
+              "meshes": [
+                {
+                  "name": "Mouth_Cartoon",
+                  "skin": true,
+                  "morphs": [
+                    1
+                  ]
+                },
+                {
+                  "name": "Mouth_Pink_Accent",
+                  "skin": true,
+                  "morphs": [
+                    1
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "darkAreaMonotonic": false,
+        "darkAreaGateApplied": false,
+        "frontDarkArea": [
+          {
+            "weight": 0,
+            "darkPixels": 4018
+          },
+          {
+            "weight": 0.02,
+            "darkPixels": 3990
+          },
+          {
+            "weight": 0.05,
+            "darkPixels": 3949
+          },
+          {
+            "weight": 0.1,
+            "darkPixels": 3941
+          },
+          {
+            "weight": 0.25,
+            "darkPixels": 4088
+          },
+          {
+            "weight": 0.5,
+            "darkPixels": 4409
+          },
+          {
+            "weight": 0.75,
+            "darkPixels": 4735
+          },
+          {
+            "weight": 1,
+            "darkPixels": 5080
+          }
+        ]
+      },
+      "blenderImport": {
+        "blender": "5.1.2",
+        "scope": "binding import only, shading not certified",
+        "expressions": {
+          "blink": {
+            "morphs": [
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceL",
+                "weight": 1.0
+              },
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceR",
+                "weight": 1.0
+              }
+            ],
+            "textures": [
+              {
+                "material": "Lid L upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid L lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid R upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid R lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ],
+            "binary": false
+          },
+          "blink_left": {
+            "morphs": [
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceL",
+                "weight": 1.0
+              }
+            ],
+            "textures": [
+              {
+                "material": "Lid L upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid L lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ],
+            "binary": false
+          },
+          "blink_right": {
+            "morphs": [
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceR",
+                "weight": 1.0
+              }
+            ],
+            "textures": [
+              {
+                "material": "Lid R upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid R lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ],
+            "binary": false
+          },
+          "relaxed": {
+            "morphs": [
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceL",
+                "weight": 1.0
+              },
+              {
+                "object": "Miineko_Body",
+                "key": "LidClearanceR",
+                "weight": 1.0
+              }
+            ],
+            "textures": [
+              {
+                "material": "Lid L upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid L lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid R upper",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              },
+              {
+                "material": "Lid R lower",
+                "offset": [
+                  0.0,
+                  -0.2370000034570694
+                ],
+                "scale": [
+                  1.0,
+                  1.0
+                ]
+              }
+            ],
+            "binary": false
+          },
+          "aa": {
+            "morphs": [
+              {
+                "object": "Mouth_Cartoon",
+                "key": "AA",
+                "weight": 1.0
+              },
+              {
+                "object": "Mouth_Pink_Accent",
+                "key": "AA",
+                "weight": 1.0
+              }
+            ],
+            "textures": [],
+            "binary": false
+          }
+        }
+      }
+    }
+  },
+  "plainRepeatByteIdentical": true
+}

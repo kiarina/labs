@@ -1,13 +1,14 @@
 <!doctype html><html lang="ja"><meta charset="utf-8">
-<title>みぃねこ — まばたきの比較</title>
+<title>みぃねこ — 表情の比較</title>
 <style>
 body{margin:0;background:#20232a;color:#edf0f5;font:16px system-ui;height:100vh;display:flex;flex-direction:column}header{padding:16px 22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;flex-shrink:0}h1{font-size:19px;margin:0}label{display:flex;gap:8px;align-items:center}button,select{font:inherit;padding:5px 12px}button[aria-pressed=true]{background:#f5c3da}#status{color:#abb8c9;font-size:13px}canvas{display:block;width:100%;flex:1;min-height:0}label[hidden]{display:none}
 </style>
-<header><h1>みぃねこ：まばたきの比較</h1>
-<select id="method" aria-label="比較する試作"><option value="overlay-selected-plus">選んだ案＋リラックス</option><option value="continuous-fresh">元の顔にまぶたを重ねる（選択時）</option><option value="overlay-refined">比較：目尻を丸く調整</option><option value="continuous-blink-morph">参考：まぶたの形を動かす</option><option value="stitched-wide">参考：目の周囲を作り直す</option></select>
+<header><h1>みぃねこ：表情の比較</h1>
+<select id="method" aria-label="比較する試作"><optgroup label="選んだ方向"><option value="mouth-aa-onset">口の開閉：シンプル</option><option value="mouth-aa-tongue">口の開閉：ピンクを少し</option><option value="overlay-selected-plus">選んだ案＋リラックス</option><option value="continuous-fresh">元の顔にまぶたを重ねる（選択時）</option></optgroup><optgroup label="不採用・参考"><option value="overlay-refined">不採用：目尻を丸く調整</option><option value="continuous-blink-morph">参考：まぶたの形を動かす</option><option value="stitched-wide">参考：目の周囲を作り直す</option></optgroup></select>
 <label>目を閉じる <input id="weight" type="range" min="0" max="1" step="0.01" value="0"><output id="value">0%</output></label>
 <select id="eye"><option value="blink">両目</option><option value="blinkLeft">左目</option><option value="blinkRight">右目</option></select>
 <label id="relaxed-control" hidden>リラックス <input id="relaxed" type="range" min="0" max="1" step="0.01" value="0"><output id="relaxed-value">0%</output></label>
+<label id="mouth-control" hidden>口を開く <input id="mouth" type="range" min="0" max="1" step="0.01" value="0"><output id="mouth-value">0%</output></label>
 <select id="angle"><option value="0">正面</option><option value="45">右から斜め</option><option value="90">右から側面</option><option value="-45">左から斜め</option><option value="-90">左から側面</option></select>
 <button id="natural" aria-pressed="false">自然なまばたき</button><button id="play" aria-pressed="false">ゆっくり確認</button><label><input id="lids" type="checkbox" checked>試作を表示（オフで元モデル）</label>
 <span id="status">読み込み中</span></header><canvas id="canvas"></canvas>
@@ -38,26 +39,31 @@ const gltf=await loader.loadAsync(`/artifacts/${file}/continuous-blink.vrm`);
 const vrm=gltf.userData.vrm;scene.add(vrm.scene);
 const reference=(await loader.loadAsync('/artifacts/base-vrm.vrm')).userData.vrm;
 scene.add(reference.scene);reference.update(0);reference.scene.visible=false;
-let motion=null,motionStart=0,weight=0,angle=0,eye='blink',lidsVisible=true,relaxation=0;
+let motion=null,motionStart=0,weight=0,angle=0,eye='blink',lidsVisible=true,relaxation=0,mouthOpening=0;
 const hasRelaxed=(vrm.expressionManager.getExpression('relaxed')?.binds.length||0)>0;
+const hasMouth=(vrm.expressionManager.getExpression('aa')?.binds.length||0)>0;
 document.querySelector('#relaxed-control').hidden=!hasRelaxed;
+document.querySelector('#mouth-control').hidden=!hasMouth;
 const lids=[];vrm.scene.traverse(o=>{if(o.isMesh&&(o.name.startsWith('Lid')||o.name.startsWith('Eye_patch')))lids.push(o);});
-function set({w=weight,a=angle,e=eye,visible=lidsVisible,r=relaxation}={}){
- weight=w;angle=a;eye=e;lidsVisible=visible;relaxation=hasRelaxed?r:0;
+function set({w=weight,a=angle,e=eye,visible=lidsVisible,r=relaxation,m=mouthOpening}={}){
+ weight=w;angle=a;eye=e;lidsVisible=visible;relaxation=hasRelaxed?r:0;mouthOpening=hasMouth?m:0;
  for(const name of ['blink','blinkLeft','blinkRight'])vrm.expressionManager.setValue(name,0);
  vrm.expressionManager.setValue('relaxed',relaxation);
+ vrm.expressionManager.setValue('aa',mouthOpening);
  vrm.expressionManager.setValue(eye,weight);vrm.update(0);
  vrm.scene.visible=visible;reference.scene.visible=!visible;
  const rad=angle*Math.PI/180;camera.position.set(2.5*Math.sin(rad),.64,2.5*Math.cos(rad));camera.lookAt(0,.64,0);
  renderer.render(scene,camera);
  document.querySelector('#weight').value=weight;document.querySelector('#value').value=`${Math.round(weight*100)}%`;document.querySelector('#lids').checked=lidsVisible;
  document.querySelector('#relaxed').value=relaxation;document.querySelector('#relaxed-value').value=`${Math.round(relaxation*100)}%`;
+ document.querySelector('#mouth').value=mouthOpening;document.querySelector('#mouth-value').value=`${Math.round(mouthOpening*100)}%`;
 }
 function setMotion(mode){motion=mode;motionStart=performance.now();document.querySelector('#natural').setAttribute('aria-pressed',String(mode==='natural'));document.querySelector('#play').setAttribute('aria-pressed',String(mode==='slow'));}
 function blinkAt(ms){const t=ms%3000;const ease=x=>x*x*(3-2*x);if(t<1000)return 0;if(t<1100)return ease((t-1000)/100);if(t<1140)return 1;if(t<1320)return 1-ease((t-1140)/180);return 0;}
-window.probe={set,vrm,reference,renderer,scene,camera,loader,lids,hasRelaxed,blinkAt,setMotion,stats(){return lids.map(o=>({name:o.name,vertexAlpha:o.geometry.attributes.color?.itemSize,alphaMode:o.material.transparent,offset:o.material.map?.offset.toArray(),morphs:o.morphTargetInfluences,visible:o.visible}));}};
+window.probe={set,vrm,reference,renderer,scene,camera,loader,lids,hasRelaxed,hasMouth,blinkAt,setMotion,stats(){return lids.map(o=>({name:o.name,vertexAlpha:o.geometry.attributes.color?.itemSize,alphaMode:o.material.transparent,offset:o.material.map?.offset.toArray(),morphs:o.morphTargetInfluences,visible:o.visible}));}};
 document.querySelector('#weight').oninput=e=>{setMotion(null);set({w:+e.target.value});};
 document.querySelector('#relaxed').oninput=e=>set({r:+e.target.value});
+document.querySelector('#mouth').oninput=e=>set({m:+e.target.value});
 document.querySelector('#angle').onchange=e=>set({a:+e.target.value});
 document.querySelector('#eye').onchange=e=>set({e:e.target.value});
 document.querySelector('#lids').onchange=e=>set({visible:e.target.checked});

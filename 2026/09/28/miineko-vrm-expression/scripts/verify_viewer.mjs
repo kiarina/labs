@@ -68,6 +68,47 @@ try{
    await page.evaluate(({r,w})=>probe.set({r,w,a:0,e:'blink'}),{r,w});await canvas.screenshot({path:path.join(output,`${label}.png`)});
   }
  }
+ if(await page.evaluate(()=>probe.hasMouth)){
+  report.mouthStates=[];
+  for(const a of [0,45,90,-45,-90])for(const m of [0,.02,.05,.1,.25,.5,.75,1]){
+   await page.evaluate(({a,m})=>probe.set({a,m,w:0,r:0,e:'blink',visible:true}),{a,m});
+   await canvas.screenshot({path:path.join(output,`aa-${m}-${a}.png`)});
+   report.mouthStates.push({a,m});
+  }
+  for(const m of [.5,1])for(const w of [0,.5,1]){
+   await page.evaluate(({m,w})=>probe.set({m,w,r:.35,a:0,e:'blink'}),{m,w});
+   await canvas.screenshot({path:path.join(output,`aa-${m}-relaxed-blink-${w}.png`)});
+  }
+  report.mouthZeroRestoration=await page.evaluate(async()=>{
+   const baseline=(await probe.loader.loadAsync('/artifacts/overlay-selected-plus/continuous-blink.vrm')).userData.vrm;
+   probe.scene.add(baseline.scene);baseline.scene.visible=false;
+   const gl=probe.renderer.getContext(),width=gl.drawingBufferWidth,height=gl.drawingBufferHeight;
+   const pixels=()=>{const p=new Uint8Array(width*height*4);gl.readPixels(0,0,width,height,gl.RGBA,gl.UNSIGNED_BYTE,p);return p;};
+   const cases=[];
+   for(const a of [0,45,90,-45,-90])for(const r of [0,.35])for(const w of [0,1]){
+    baseline.scene.visible=false;probe.set({a,r,w,m:0,e:'blink',visible:true});const candidate=pixels();
+    probe.vrm.scene.visible=false;baseline.scene.visible=true;
+    baseline.expressionManager.setValue('relaxed',r);baseline.expressionManager.setValue('blink',w);
+    baseline.update(0);probe.renderer.render(probe.scene,probe.camera);const expected=pixels();
+    let max=0,changed=0;for(let i=0;i<candidate.length;i++){const d=Math.abs(candidate[i]-expected[i]);max=Math.max(max,d);if(d>2)changed++;}
+    cases.push({a,r,w,maxChannelDifference:max,channelsAbove2:changed});
+   }
+   probe.scene.remove(baseline.scene);probe.set({a:0,r:0,w:0,m:0,e:'blink',visible:true});return cases;
+  });
+  if(report.mouthZeroRestoration.some(c=>c.maxChannelDifference>2))errors.push('Mouth zero state differs from approved input');
+  report.headFollowing=[];
+  for(const yaw of [-.35,0,.35]){
+   const state=await page.evaluate(yaw=>{
+    probe.vrm.humanoid.getNormalizedBoneNode('head').rotation.y=yaw;
+    probe.set({a:0,m:1,r:.35,w:0,e:'blink'});
+    const meshes=[];probe.vrm.scene.traverse(o=>{if(o.isSkinnedMesh&&o.name.startsWith('Mouth'))meshes.push({name:o.name,skin:!!o.skeleton,morphs:o.morphTargetInfluences});});
+    return {yaw,meshes};
+   },yaw);
+   report.headFollowing.push(state);
+   await canvas.screenshot({path:path.join(output,`aa-head-${yaw}.png`)});
+  }
+  await page.evaluate(()=>{probe.vrm.humanoid.getNormalizedBoneNode('head').rotation.y=0;probe.set({m:0,w:0,r:0});});
+ }
  if(process.env.PROBE_UI==='1'){
   await page.evaluate(()=>{probe.setMotion(null);probe.set({r:0,w:0,e:'blink',a:0,visible:true});});
   await page.click('#natural');
@@ -83,7 +124,7 @@ try{
   report.originalTogglePersists=await page.evaluate(()=>!probe.vrm.scene.visible&&probe.reference.scene.visible&&!document.querySelector('#lids').checked);
   if(!report.originalTogglePersists)errors.push('Original toggle changed when changing angle');
   await page.click('#lids');await page.select('#angle','0');
-  await page.evaluate(()=>{const input=document.querySelector('#relaxed');input.value='0.35';input.dispatchEvent(new Event('input',{bubbles:true}));});
+  await page.evaluate(()=>{const input=document.querySelector('#relaxed');input.value='0.35';input.dispatchEvent(new Event('input',{bubbles:true}));if(probe.hasMouth){const mouth=document.querySelector('#mouth');mouth.value='1';mouth.dispatchEvent(new Event('input',{bubbles:true}));}});
   await page.screenshot({path:path.join(output,'controls.png')});
   await page.setViewport({width:600,height:900,deviceScaleFactor:1});
   await page.waitForFunction(()=>document.querySelector('canvas').clientHeight>200);
@@ -94,5 +135,5 @@ try{
  }
  await fs.writeFile(path.join(output,'report.json'),JSON.stringify(report,null,2)+'\n');
  if(errors.length)throw new Error(errors.join('\n'));
- console.log(JSON.stringify({output,errors,warnings,states:report.states.length}));
+ console.log(JSON.stringify({output,errors,warnings,states:report.states.length,mouthStates:report.mouthStates?.length||0,mouthZeroCases:report.mouthZeroRestoration?.length||0}));
 }finally{if(browser)await browser.close();await new Promise(resolve=>server.close(resolve));}

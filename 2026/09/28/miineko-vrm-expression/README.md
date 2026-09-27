@@ -15,6 +15,12 @@ and the complete expression set are still being developed. The experiment design
 commands, failed candidates and current limits are in [EXPERIMENTS.md](EXPERIMENTS.md).
 The two-state atlas below is the earlier experiment, not the current selected route.
 
+The owner subsequently approved the selected overlay with relaxation and rejected
+the rounded-corner variant as too realistic for the mascot. A small cartoon `aa`
+opening now preserves the source W smile and restores the approved face at zero.
+The plain and pink-accent mouth prototypes, limits and verification are recorded
+in [MOUTH.md](MOUTH.md); neither is a finished five-vowel lip-sync system.
+
 | Tested | Result |
 | --- | --- |
 | Original-UV face mask at neutral | Preserves most of the Tripo appearance; small cheek seams remain visible. |

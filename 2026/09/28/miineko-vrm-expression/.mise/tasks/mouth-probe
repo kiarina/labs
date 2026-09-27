@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+BLENDER_BIN="${BLENDER_BIN:-blender}"
+test -f artifacts/overlay-selected-plus/continuous-blink.blend || {
+  echo 'Run overlay-followup first to prepare the owner-approved face' >&2
+  exit 1
+}
+export MOUTH_ONSET=lower-rim
+export MOUTH_TONGUE="${MOUTH_TONGUE:-0}"
+mouth_default_run=mouth-aa-onset
+if [[ "$MOUTH_TONGUE" == 1 ]]; then mouth_default_run=mouth-aa-tongue; fi
+export MOUTH_RUN="${MOUTH_RUN:-$mouth_default_run}"
+"$BLENDER_BIN" --background --python-exit-code 1 --python scripts/mouth_aa_probe.py
+export BLINK_RUN="$MOUTH_RUN"
+PROBE_ANGLES=0,45,-45 PROBE_UI=1 node scripts/verify_viewer.mjs
+VERIFY_RELAXED=1 VERIFY_MOUTH=1 "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/check_blink_roundtrip.py
+"${COMPARE_PYTHON:-python3}" scripts/measure_mouth_probe.py "$BLINK_RUN"
