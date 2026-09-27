@@ -1,0 +1,44 @@
+[2026.09.27-16.27.53:496][ 34]LogVrmRepro: Display: VRMREPRO load begin Seed-san.vrm (10917800 bytes)
+[2026.09.27-16.27.53:795][ 34]LogMac: Error: appError called: Assertion failed: Index >= 0 [File:Runtime/CoreUObject/Public/UObject/UObjectArray.h] [Line: 1083] 
+[2026.09.27-16.27.53:841][ 34]LogMac: === Critical error: ===
+---- crash context ----
+[2026.09.27-16.27.53:795][ 34]LogMac: Error: appError called: Assertion failed: Index >= 0 [File:Runtime/CoreUObject/Public/UObject/UObjectArray.h] [Line: 1083] 
+
+
+[2026.09.27-16.27.53:841][ 34]LogMac: === Critical error: ===
+SIGSEGV: invalid attempt to access memory at address 0x3
+
+[2026.09.27-16.27.53:841][ 34]LogMac: 0x069be274 libUnrealEditor-Core.dylib!FGenericPlatformMisc::RaiseException(unsigned int)   [UnknownFile]) 
+0x06b823ec libUnrealEditor-Core.dylib!FMacErrorOutputDevice::Serialize(char16_t const*, ELogVerbosity::Type, FName const&)   [UnknownFile]) 
+0x06cfc2fc libUnrealEditor-Core.dylib!FOutputDevice::LogfImpl(char16_t const*, ...)   [UnknownFile]) 
+0x06bf7afc libUnrealEditor-Core.dylib!FDebug::CheckVerifyFailedImpl2V(char const*, char const*, int, char16_t const*, char*)   [UnknownFile]) 
+0x06bf2168 libUnrealEditor-Core.dylib!FDebug::CheckVerifyFailedImpl2(char const*, char const*, int, char16_t const*, ...)   [UnknownFile]) 
+0x056ad818 libUnrealEditor-CoreUObject.dylib!FUObjectArray::AllocateSerialNumber(int) (.cold.1)   [UnknownFile]) 
+0x05495a3c libUnrealEditor-CoreUObject.dylib!FUObjectArray::AllocateSerialNumber(int)   [UnknownFile]) 
+0x0551a39c libUnrealEditor-CoreUObject.dylib!FWeakObjectPtr::operator=(FObjectPtr)   [UnknownFile]) 
+0x15db4ff0 libUnrealEditor-Engine.dylib!TPersistentObjectPtr<FSoftObjectPath>::operator=(FObjectPtr)   [UnknownFile]) 
+0x160fbb74 libUnrealEditor-Engine.dylib!UAnimBlueprint::SetPreviewMesh(USkeletalMesh*, bool)   [UnknownFile]) 
+0xf60d892c libUnrealEditor-VRM4ULoader.dylib!VRMConverter::ConvertModel(UVrmAssetListObject*)   [UnknownFile]) 
+0xf60af918 libUnrealEditor-VRM4ULoader.dylib!ULoaderBPFunctionLibrary::LoadVRMFileFromMemory(UVrmAssetListObject const*, UVrmAssetListObject*&, FString, unsigned char const*, unsigned long)   [UnknownFile]) 
+0xf2d80e50 libUnrealEditor-VrmRepro.dylib!AVrmReproDriver::LoadModel()   [UnknownFile]) 
+0xf2d80040 libUnrealEditor-VrmRepro.dylib!AVrmReproDriver::Tick(float)   [UnknownFile]) 
+0x15d42e70 libUnrealEditor-Engine.dylib!FActorTickFunction::ExecuteTick(float, ELevelTick, ENamedThreads::Type, TRefCountPtr<FBaseGraphTask> const&)   [UnknownFile]) 
+0x17d64740 libUnrealEditor-Engine.dylib!TGraphTask<FTickFunctionTask>::ExecuteTask()   [UnknownFile]) 
+0x06801190 libUnrealEditor-Core.dylib!UE::Tasks::Private::FTaskBase::TryExecuteTask()   [UnknownFile]) 
+0x06807708 libUnrealEditor-Core.dylib!FNamedTaskThread::ProcessTasksNamedThread(int, bool)   [UnknownFile]) 
+0x068068b0 libUnrealEditor-Core.dylib!FNamedTaskThread::ProcessTasksUntilIdle(int)   [UnknownFile]) 
+0x06805c80 libUnrealEditor-Core.dylib!FTaskGraphCompatibilityImplementation::ProcessUntilTasksComplete(TArray<TRefCountPtr<FBaseGraphTask>, TSizedInlineAllocator<4u, 32, TSizedDefaultAllocator<32>>> const&, ENamedThreads::Type, TFunction<FTaskGraphInterface::EProcessTasksOperation (int)> const&)   [UnknownFile]) 
+0x17d5f78c libUnrealEditor-Engine.dylib!FTickTaskSequencer::ReleaseTickGroup(ETickingGroup, bool, TArray<FTickFunction*, TSizedDefaultAllocator<32>>&)   [UnknownFile]) 
+0x17d5b31c libUnrealEditor-Engine.dylib!FTickTaskManager::RunTickGroup(ETickingGroup, bool)   [UnknownFile]) 
+0x16d32524 libUnrealEditor-Engine.dylib!UWorld::Tick(ELevelTick, float)   [UnknownFile]) 
+0x11613d34 libUnrealEditor-UnrealEd.dylib!UEditorEngine::Tick(float, bool)   [UnknownFile]) 
+0x12172528 libUnrealEditor-UnrealEd.dylib!UUnrealEdEngine::Tick(float, bool)   [UnknownFile]) 
+0x02ba51d8 UnrealEditor!FEngineLoop::Tick()   [UnknownFile]) 
+0x02ba9488 UnrealEditor!GuardedMain(char16_t const*)   [UnknownFile]) 
+0x02bc0afc UnrealEditor!-[UEAppDelegate runGameThread:]   [UnknownFile]) 
+0x06b81ac0 libUnrealEditor-Core.dylib!-[FCocoaGameThread main]   [UnknownFile]) 
+0x8ffe5b7c Foundation!__NSThread__start__()   [UnknownFile]) 
+0x8e6e3c58 libsystem_pthread.dylib!_pthread_start()   [UnknownFile]) 
+0x8e6dec1c libsystem_pthread.dylib!thread_start()   [UnknownFile]) 
+
+[2026.09.27-16.27.53:851][ 34]LogExit: Executing StaticShutdownAfterError

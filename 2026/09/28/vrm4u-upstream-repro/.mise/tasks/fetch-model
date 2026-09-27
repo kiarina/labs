@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#MISE description="Download Seed-san (VRM 1.0 sample, VRM Public License 1.0) and derive the thinned-chain variant"
+
+set -euo pipefail
+LAB_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+# shellcheck source=/dev/null
+source "${LAB_ROOT}/pins.env"
+MODEL_DIR="${LAB_ROOT}/.cache/models"
+mkdir -p "${MODEL_DIR}"
+if [ ! -f "${MODEL_DIR}/Seed-san.vrm" ]; then
+    curl -sSL -o "${MODEL_DIR}/Seed-san.vrm" "${SEED_SAN_URL}"
+fi
+echo "${SEED_SAN_SHA256}  ${MODEL_DIR}/Seed-san.vrm" | shasum -a 256 -c -
+python3 "${LAB_ROOT}/scripts/thin_spring_joints.py" "${MODEL_DIR}/Seed-san.vrm" "${MODEL_DIR}/Seed-san-thinned.vrm"

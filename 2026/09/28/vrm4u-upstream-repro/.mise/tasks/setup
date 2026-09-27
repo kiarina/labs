@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+#MISE description="Fetch VRM4U at the pinned commit, build assimp for arm64 Mac, and apply the selected fixes"
+#USAGE arg "[fixes]..." help="Patch names under patches/ to apply (without .patch). Empty = upstream as-is"
+
+set -euo pipefail
+
+LAB_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+# shellcheck source=/dev/null
+source "${LAB_ROOT}/pins.env"
+
+PLUGIN_DIR="${LAB_ROOT}/UnrealProject/Plugins/VRM4U"
+CACHE_DIR="${LAB_ROOT}/.cache"
+ASSIMP_SRC="${CACHE_DIR}/assimp-src"
+ASSIMP_BUILD="${CACHE_DIR}/assimp-build-mac-arm64"
+ASSIMP_LIB="${ASSIMP_BUILD}/lib/libassimp.a"
+
+mkdir -p "${CACHE_DIR}" "$(dirname "${PLUGIN_DIR}")"
+
+if [ ! -d "${PLUGIN_DIR}/.git" ]; then
+    git clone --filter=blob:none --no-checkout "${VRM4U_URL}" "${PLUGIN_DIR}"
+fi
+git -C "${PLUGIN_DIR}" fetch --quiet origin "${VRM4U_COMMIT}"
+# Always start from the pristine pinned tree so that fixes never stack.
+git -C "${PLUGIN_DIR}" checkout --quiet --force --detach "${VRM4U_COMMIT}"
+git -C "${PLUGIN_DIR}" clean --quiet -fdx -e ThirdParty/assimp/lib/Mac/libassimp.a -e Binaries -e Intermediate
+
+if [ ! -f "${ASSIMP_LIB}" ]; then
+    if [ ! -d "${ASSIMP_SRC}/.git" ]; then
+        git init --quiet "${ASSIMP_SRC}"
+        git -C "${ASSIMP_SRC}" remote add origin "${ASSIMP_URL}"
+    fi
+    git -C "${ASSIMP_SRC}" fetch --quiet --depth 1 origin "${ASSIMP_COMMIT}"
+    git -C "${ASSIMP_SRC}" checkout --quiet --force --detach FETCH_HEAD
+    cmake -S "${ASSIMP_SRC}" -B "${ASSIMP_BUILD}" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_OSX_ARCHITECTURES=arm64 \
+        -DCMAKE_OSX_DEPLOYMENT_TARGET=14.0 \
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+        -DBUILD_SHARED_LIBS=OFF \
+        -DASSIMP_BUILD_TESTS=OFF \
+        -DASSIMP_BUILD_ASSIMP_TOOLS=OFF \
+        -DASSIMP_BUILD_SAMPLES=OFF \
+        -DASSIMP_BUILD_ZLIB=OFF \
+        -DASSIMP_WARNINGS_AS_ERRORS=OFF \
+        -DASSIMP_NO_EXPORT=ON
+    cmake --build "${ASSIMP_BUILD}" --config Release --parallel
+fi
+mkdir -p "${PLUGIN_DIR}/ThirdParty/assimp/lib/Mac"
+cp "${ASSIMP_LIB}" "${PLUGIN_DIR}/ThirdParty/assimp/lib/Mac/libassimp.a"
+
+for fix in "$@"; do
+    patch_file="${LAB_ROOT}/patches/${fix}.patch"
+    [ -f "${patch_file}" ] || { echo "Error: no such fix: ${fix}" >&2; exit 1; }
+    git -C "${PLUGIN_DIR}" apply --whitespace=nowarn "${patch_file}"
+    echo "applied: ${fix}"
+done
+
+echo "VRM4U ${VRM4U_COMMIT} ready (fixes: ${*:-none})"

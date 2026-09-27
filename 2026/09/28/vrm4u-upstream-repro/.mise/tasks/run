@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+#MISE description="Run one scenario in -game or PIE and record the outcome"
+#USAGE arg "<mode>" help="game (UnrealEditor -game), pie (Play In Editor) or import (Editor import, no play)"
+#USAGE arg "<scenario>" help="load or spring"
+#USAGE arg "<name>" help="Result name (results/<name>.json and results/<name>.log)"
+#USAGE flag "--model <model>" default="Seed-san.vrm" help="File under .cache/models/"
+#USAGE flag "--filler <n>" default="0" help="Static mesh components to keep in the world"
+#USAGE flag "--shot" help="load scenario: save results/<name>.png"
+#USAGE flag "--timeout <sec>" default="240" help="Kill the Editor after this many seconds"
+
+set -uo pipefail
+: "${UE_ROOT:?Set UE_ROOT to the Unreal Engine 5.8 installation directory}"
+LAB_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+PROJECT="${LAB_ROOT}/UnrealProject/VrmRepro.uproject"
+EDITOR="${UE_EDITOR:-${UE_ROOT}/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor}"
+MODE="${usage_mode}"
+SCENARIO="${usage_scenario}"
+NAME="${usage_name}"
+OUT_JSON="${LAB_ROOT}/results/${NAME}.json"
+OUT_LOG="${LAB_ROOT}/results/${NAME}.log"
+RAW_LOG="${LAB_ROOT}/.cache/logs/${NAME}.log"
+mkdir -p "${LAB_ROOT}/results" "$(dirname "${RAW_LOG}")"
+rm -f "${OUT_JSON}" "${RAW_LOG}"
+
+TAG="$(git -C "${LAB_ROOT}/UnrealProject/Plugins/VRM4U" rev-parse --short HEAD) $(git -C "${LAB_ROOT}/UnrealProject/Plugins/VRM4U" diff --stat | tail -1 | tr -s ' ')"
+ARGS=(-VrmRepro "-VrmReproFile=${LAB_ROOT}/.cache/models/${usage_model}" "-VrmReproOut=${OUT_JSON}"
+      "-VrmReproScenario=${SCENARIO}" "-VrmReproFiller=${usage_filler}" "-VrmReproTag=${TAG}"
+      -unattended -nosplash -nosound -stdout -FullStdOutLogOutput "-abslog=${RAW_LOG}")
+if [ "${usage_shot:-false}" = "true" ]; then
+    rm -f "${LAB_ROOT}/results/${NAME}.png"
+    ARGS+=("-VrmReproShot=${LAB_ROOT}/results/${NAME}.png")
+fi
+case "${MODE}" in
+    game) ARGS=(-game -windowed -ResX=640 -ResY=360 "${ARGS[@]}") ;;
+    pie)  ARGS=(-VrmReproPIE "${ARGS[@]}") ;;
+    import) ARGS=("-VrmReproImport=${OUT_JSON}" "${ARGS[@]}") ;;
+    *) echo "Error: mode must be game, pie or import" >&2; exit 2 ;;
+esac
+
+"${EDITOR}" "${PROJECT}" "${ARGS[@]}" > /dev/null 2>&1 &
+PID=$!
+SECONDS=0
+while kill -0 "${PID}" 2>/dev/null; do
+    if grep -q "=== Critical error: ===" "${RAW_LOG}" 2>/dev/null; then
+        sleep 3   # let the call stack reach the log
+        kill -9 "${PID}" 2>/dev/null
+        break
+    fi
+    if [ "${SECONDS}" -ge "${usage_timeout}" ]; then
+        kill -9 "${PID}" 2>/dev/null
+        echo "timeout after ${usage_timeout}s" >> "${RAW_LOG}"
+        break
+    fi
+    sleep 1
+done
+wait "${PID}" 2>/dev/null
+EXIT=$?
+pkill -9 -f "CrashReportClient.*VrmRepro" 2>/dev/null || true
+
+python3 "${LAB_ROOT}/scripts/summarize_run.py" "${RAW_LOG}" "${OUT_LOG}" "${OUT_JSON}" "${MODE}" "${EXIT}"

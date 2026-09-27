@@ -1,0 +1,54 @@
+[2026.09.27-16.34.29:524][ 34]LogVrmRepro: Display: VRMREPRO load begin Seed-san-thinned.vrm (10917204 bytes)
+[2026.09.27-16.34.30:117][ 34]LogVrmRepro: Display: VRMREPRO load end ok=1 seconds=0.593
+[2026.09.27-16.34.34:190][282]LogVrmRepro: Display: VRMREPRO spring=hair_tail_1 joints=4 restMaxAngle=0.00deg restTailOffset=0.00cm cruiseTailOffsetX=-13.53cm
+[2026.09.27-16.34.34:191][282]LogVrmRepro: Display: VRMREPRO spring=hair_A_001 joints=2 restMaxAngle=0.00deg restTailOffset=0.00cm cruiseTailOffsetX=-2.51cm
+[2026.09.27-16.34.34:191][282]LogVrmRepro: Display: VRMREPRO spring=hair_B_001 joints=2 restMaxAngle=0.00deg restTailOffset=0.00cm cruiseTailOffsetX=-2.38cm
+[2026.09.27-16.34.34:191][282]LogVrmRepro: Display: VRMREPRO spring=hair_C_001 joints=2 restMaxAngle=0.00deg restTailOffset=0.00cm cruiseTailOffsetX=-2.20cm
+[2026.09.27-16.34.34:191][282]LogVrmRepro: Display: VRMREPRO spring=hair_D_001 joints=2 restMaxAngle=0.00deg restTailOffset=0.00cm cruiseTailOffsetX=-3.16cm
+[2026.09.27-16.34.34:191][282]LogVrmRepro: Display: VRMREPRO spring=hair_E_001 joints=2 restMaxAngle=0.01deg restTailOffset=0.00cm cruiseTailOffsetX=-2.57cm
+[2026.09.27-16.34.34:191][282]LogVrmRepro: Display: VRMREPRO spring=hair_F_001 joints=2 restMaxAngle=0.00deg restTailOffset=0.00cm cruiseTailOffsetX=-0.00cm
+[2026.09.27-16.34.34:191][282]LogVrmRepro: Display: VRMREPRO spring=hair_G_001 joints=2 restMaxAngle=0.00deg restTailOffset=0.00cm cruiseTailOffsetX=0.00cm
+[2026.09.27-16.34.34:191][282]LogVrmRepro: Display: VRMREPRO spring=robo_wire joints=4 restMaxAngle=0.00deg restTailOffset=0.00cm cruiseTailOffsetX=-29.20cm
+[2026.09.27-16.34.34:191][282]LogVrmRepro: Display: VRMREPRO result {
+[2026.09.27-16.34.34:314][283]LogMac: === Critical error: ===
+---- crash context ----
+[2026.09.27-16.34.34:314][283]LogMac: === Critical error: ===
+SIGSEGV: invalid attempt to access memory at address 0x60
+
+[2026.09.27-16.34.34:314][283]LogMac: 0x0fc376a0 libUnrealEditor-UnrealEd.dylib!UAssetEditorSubsystem::FindEditorsForAssetAndSubObjects(UObject*)   [UnknownFile]) 
+0x0fc32a38 libUnrealEditor-UnrealEd.dylib!UAssetEditorSubsystem::CloseAllEditorsForAsset(UObject*)   [UnknownFile]) 
+0x0f910d64 libUnrealEditor-UnrealEd.dylib!UEditorEngine::EndPlayMap()   [UnknownFile]) 
+0x0eb5add0 libUnrealEditor-UnrealEd.dylib!FAssetEditorViewportLayout::~FAssetEditorViewportLayout()   [UnknownFile]) 
+0x1efcbe88 libUnrealEditor-LevelEditor.dylib!FLevelViewportLayout::~FLevelViewportLayout()   [UnknownFile]) 
+0x1efcbec8 libUnrealEditor-LevelEditor.dylib!FLevelViewportLayout::~FLevelViewportLayout()   [UnknownFile]) 
+0x1ef09678 libUnrealEditor-LevelEditor.dylib!SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>::ReleaseSharedReferenceNoInline(SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>*)   [UnknownFile]) 
+0x1eff02a8 libUnrealEditor-LevelEditor.dylib!FViewportTabContent::~FViewportTabContent()   [UnknownFile]) 
+0x1efd0b38 libUnrealEditor-LevelEditor.dylib!FLevelViewportTabContent::~FLevelViewportTabContent()   [UnknownFile]) 
+0x0eaeb9b4 libUnrealEditor-UnrealEd.dylib!SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>::ReleaseSharedReferenceNoInline(SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>*)   [UnknownFile]) 
+0x0ebb280c libUnrealEditor-UnrealEd.dylib!SharedPointerInternals::TIntrusiveReferenceController<SAssetEditorViewportsOverlay, (ESPMode)1>::DestroyObject()   [UnknownFile]) 
+0x07dd7668 libUnrealEditor-SlateCore.dylib!SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>::ReleaseSharedReferenceNoInline(SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>*)   [UnknownFile]) 
+0x07ebd0c8 libUnrealEditor-SlateCore.dylib!FSlotBase::~FSlotBase()   [UnknownFile]) 
+0x07fd33ec libUnrealEditor-SlateCore.dylib!SCompoundWidget::~SCompoundWidget()   [UnknownFile]) 
+0x07dd7668 libUnrealEditor-SlateCore.dylib!SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>::ReleaseSharedReferenceNoInline(SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>*)   [UnknownFile]) 
+0x07ebd0c8 libUnrealEditor-SlateCore.dylib!FSlotBase::~FSlotBase()   [UnknownFile]) 
+0x08000728 libUnrealEditor-SlateCore.dylib!SOverlay::FOverlaySlot::~FOverlaySlot()   [UnknownFile]) 
+0x07ff12fc libUnrealEditor-SlateCore.dylib!void DestructItems<TUniquePtr<SOverlay::FOverlaySlot, TDefaultDelete<SOverlay::FOverlaySlot>>, int>(TUniquePtr<SOverlay::FOverlaySlot, TDefaultDelete<SOverlay::FOverlaySlot>>*, int)   [UnknownFile]) 
+0x07fd4370 libUnrealEditor-SlateCore.dylib!SOverlay::~SOverlay()   [UnknownFile]) 
+0x07dd7668 libUnrealEditor-SlateCore.dylib!SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>::ReleaseSharedReferenceNoInline(SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>*)   [UnknownFile]) 
+0x07ebd0c8 libUnrealEditor-SlateCore.dylib!FSlotBase::~FSlotBase()   [UnknownFile]) 
+0x073422a8 libUnrealEditor-Slate.dylib!SVerticalBox::FSlot::~FSlot()   [UnknownFile]) 
+0x07ff03dc libUnrealEditor-SlateCore.dylib!void DestructItems<TUniquePtr<SBoxPanel::FSlot, TDefaultDelete<SBoxPanel::FSlot>>, int>(TUniquePtr<SBoxPanel::FSlot, TDefaultDelete<SBoxPanel::FSlot>>*, int)   [UnknownFile]) 
+0x07fce5c4 libUnrealEditor-SlateCore.dylib!SBoxPanel::~SBoxPanel()   [UnknownFile]) 
+0x07dd7668 libUnrealEditor-SlateCore.dylib!SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>::ReleaseSharedReferenceNoInline(SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>*)   [UnknownFile]) 
+0x07ebd0c8 libUnrealEditor-SlateCore.dylib!FSlotBase::~FSlotBase()   [UnknownFile]) 
+0x07fd33ec libUnrealEditor-SlateCore.dylib!SCompoundWidget::~SCompoundWidget()   [UnknownFile]) 
+0x07dd7668 libUnrealEditor-SlateCore.dylib!SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>::ReleaseSharedReferenceNoInline(SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>*)   [UnknownFile]) 
+0x07ebd0c8 libUnrealEditor-SlateCore.dylib!FSlotBase::~FSlotBase()   [UnknownFile]) 
+0x075f881c libUnrealEditor-Slate.dylib!SSplitter::FSlot::~FSlot()   [UnknownFile]) 
+0x0736c4d4 libUnrealEditor-Slate.dylib!void DestructItems<TUniquePtr<SSplitter::FSlot, TDefaultDelete<SSplitter::FSlot>>, int>(TUniquePtr<SSplitter::FSlot, TDefaultDelete<SSplitter::FSlot>>*, int)   [UnknownFile]) 
+0x0736c468 libUnrealEditor-Slate.dylib!SharedPointerInternals::TIntrusiveReferenceController<SSplitter, (ESPMode)1>::DestroyObject()   [UnknownFile]) 
+0x07dd7668 libUnrealEditor-SlateCore.dylib!SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>::ReleaseSharedReferenceNoInline(SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>*)   [UnknownFile]) 
+0x07ebd0c8 libUnrealEditor-SlateCore.dylib!FSlotBase::~FSlotBase()   [UnknownFile]) 
+0x07fd33ec libUnrealEditor-SlateCore.dylib!SCompoundWidget::~SCompoundWidget()   [UnknownFile]) 
+0x07dd7668 libUnrealEditor-SlateCore.dylib!SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>::ReleaseSharedReferenceNoInline(SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>*)   [UnknownFile]) 
+0x07ebd0c8 libUnrealEditor-SlateCore.dylib!FSlotBase::~FSlotBase()   [UnknownFile]) 

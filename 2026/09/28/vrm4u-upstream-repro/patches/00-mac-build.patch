@@ -1,0 +1,15 @@
+diff --git a/Source/VRM4ULoader/Private/VrmAsyncLoadAction.cpp b/Source/VRM4ULoader/Private/VrmAsyncLoadAction.cpp
+index 84658e9..abf6980 100644
+--- a/Source/VRM4ULoader/Private/VrmAsyncLoadAction.cpp
++++ b/Source/VRM4ULoader/Private/VrmAsyncLoadAction.cpp
+@@ -182,8 +182,8 @@ void FVrmAsyncLoadAction::UpdateOperation(FLatentResponse& Response)
+ 	auto logFunc = [&](FString str="") {
+ 		UE_LOG(LogVRM4ULoader, Log, TEXT("AsyncLoad frame=%04d(%02.2lf),  SequenceNo=%02d %s"), FrameCount, FPlatformTime::Seconds()-StartTime, SequenceCount, *str);
+ 	};
+-	auto logTexFunc = [&](int TexCount) {
+-		UE_LOG(LogVRM4ULoader, Log, TEXT("AsyncLoad frame=%04d(%02.2lf),  SequenceNo=%02d  TextureCount=%02d"), FrameCount, FPlatformTime::Seconds() - StartTime, SequenceCount, TexCount);
++	auto logTexFunc = [&](int InTexCount) {
++		UE_LOG(LogVRM4ULoader, Log, TEXT("AsyncLoad frame=%04d(%02.2lf),  SequenceNo=%02d  TextureCount=%02d"), FrameCount, FPlatformTime::Seconds() - StartTime, SequenceCount, InTexCount);
+ 	};
+ 
+ 	// async file load

@@ -1,0 +1,41 @@
+[2026.09.27-16.27.39:839][ 55]LogVrmRepro: Display: VRMREPRO load begin Seed-san.vrm (10917800 bytes)
+[2026.09.27-16.27.40:134][ 55]LogMac: Error: appError called: Fatal error: [File:./Runtime/CoreUObject/Private/Templates/Casts.cpp] [Line: 10] 
+[2026.09.27-16.27.40:175][ 55]LogMac: === Critical error: ===
+---- crash context ----
+[2026.09.27-16.27.40:134][ 55]LogMac: Error: appError called: Fatal error: [File:./Runtime/CoreUObject/Private/Templates/Casts.cpp] [Line: 10] 
+Cast of None_0 None_0 to Package failed
+
+
+
+[2026.09.27-16.27.40:175][ 55]LogMac: === Critical error: ===
+SIGSEGV: invalid attempt to access memory at address 0x3
+
+[2026.09.27-16.27.40:175][ 55]LogMac: 0x04f6b1bc libUnrealEditor-CoreUObject.dylib!CastLogError(char16_t const*, char16_t const*)   [UnknownFile]) 
+0x0516e148 libUnrealEditor-CoreUObject.dylib!TCopyQualifiersFromTo<UObject const, UPackage>::Type* CastChecked<UPackage, UObject const>(UObject const*)   [UnknownFile]) 
+0x05324a3c libUnrealEditor-CoreUObject.dylib!FSoftObjectPath::SetPath(UObject const*)   [UnknownFile]) 
+0x05361824 libUnrealEditor-CoreUObject.dylib!FSoftObjectPath::FSoftObjectPath(FObjectPtr const&)   [UnknownFile]) 
+0x15c60e3c libUnrealEditor-Engine.dylib!TPersistentObjectPtr<FSoftObjectPath>::operator=(FObjectPtr)   [UnknownFile]) 
+0x15fa7b74 libUnrealEditor-Engine.dylib!UAnimBlueprint::SetPreviewMesh(USkeletalMesh*, bool)   [UnknownFile]) 
+0xe6c8092c libUnrealEditor-VRM4ULoader.dylib!VRMConverter::ConvertModel(UVrmAssetListObject*)   [UnknownFile]) 
+0xe6c57918 libUnrealEditor-VRM4ULoader.dylib!ULoaderBPFunctionLibrary::LoadVRMFileFromMemory(UVrmAssetListObject const*, UVrmAssetListObject*&, FString, unsigned char const*, unsigned long)   [UnknownFile]) 
+0xe05b8e50 libUnrealEditor-VrmRepro.dylib!AVrmReproDriver::LoadModel()   [UnknownFile]) 
+0xe05b8040 libUnrealEditor-VrmRepro.dylib!AVrmReproDriver::Tick(float)   [UnknownFile]) 
+0x15beee70 libUnrealEditor-Engine.dylib!FActorTickFunction::ExecuteTick(float, ELevelTick, ENamedThreads::Type, TRefCountPtr<FBaseGraphTask> const&)   [UnknownFile]) 
+0x17c10740 libUnrealEditor-Engine.dylib!TGraphTask<FTickFunctionTask>::ExecuteTask()   [UnknownFile]) 
+0x066ad190 libUnrealEditor-Core.dylib!UE::Tasks::Private::FTaskBase::TryExecuteTask()   [UnknownFile]) 
+0x066b3708 libUnrealEditor-Core.dylib!FNamedTaskThread::ProcessTasksNamedThread(int, bool)   [UnknownFile]) 
+0x066b28b0 libUnrealEditor-Core.dylib!FNamedTaskThread::ProcessTasksUntilIdle(int)   [UnknownFile]) 
+0x066b1c80 libUnrealEditor-Core.dylib!FTaskGraphCompatibilityImplementation::ProcessUntilTasksComplete(TArray<TRefCountPtr<FBaseGraphTask>, TSizedInlineAllocator<4u, 32, TSizedDefaultAllocator<32>>> const&, ENamedThreads::Type, TFunction<FTaskGraphInterface::EProcessTasksOperation (int)> const&)   [UnknownFile]) 
+0x17c0b78c libUnrealEditor-Engine.dylib!FTickTaskSequencer::ReleaseTickGroup(ETickingGroup, bool, TArray<FTickFunction*, TSizedDefaultAllocator<32>>&)   [UnknownFile]) 
+0x17c0731c libUnrealEditor-Engine.dylib!FTickTaskManager::RunTickGroup(ETickingGroup, bool)   [UnknownFile]) 
+0x16bde524 libUnrealEditor-Engine.dylib!UWorld::Tick(ELevelTick, float)   [UnknownFile]) 
+0x1681b60c libUnrealEditor-Engine.dylib!UGameEngine::Tick(float, bool)   [UnknownFile]) 
+0x02a251d8 UnrealEditor!FEngineLoop::Tick()   [UnknownFile]) 
+0x02a29488 UnrealEditor!GuardedMain(char16_t const*)   [UnknownFile]) 
+0x02a40afc UnrealEditor!-[UEAppDelegate runGameThread:]   [UnknownFile]) 
+0x06a2dac0 libUnrealEditor-Core.dylib!-[FCocoaGameThread main]   [UnknownFile]) 
+0x8ffe5b7c Foundation!__NSThread__start__()   [UnknownFile]) 
+0x8e6e3c58 libsystem_pthread.dylib!_pthread_start()   [UnknownFile]) 
+0x8e6dec1c libsystem_pthread.dylib!thread_start()   [UnknownFile]) 
+
+[2026.09.27-16.27.40:179][ 55]LogExit: Executing StaticShutdownAfterError

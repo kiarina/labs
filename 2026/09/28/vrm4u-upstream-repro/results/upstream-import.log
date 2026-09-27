@@ -1,0 +1,45 @@
+[2026.09.27-16.28.10:818][  4]LogPython: VRMREPRO import result {"source": "Seed-san.vrm", "status": "ok", "skeletal_mesh": "/Game/ImportCheck/SK_Seed-san.SK_Seed-san", "post_process_anim_blueprint": "/Game/ImportCheck/ABP_Post_Seed-san.ABP_Post_Seed-san_C", "morph_targets": 43}
+[2026.09.27-16.28.12:169][  5]LogOutputDevice: Error: Ensure condition failed: Internal::EditorModeToolsSingleton.IsValid()  [File:./Editor/UnrealEd/Private/UnrealEdGlobals.cpp] [Line: 196] 
+[2026.09.27-16.28.13:402][  5]LogMac: Error: appError called: Fatal error: [File:./Runtime/CoreUObject/Private/UObject/UObjectGlobals.cpp] [Line: 3302] 
+[2026.09.27-16.28.13:446][  5]LogMac: === Critical error: ===
+---- crash context ----
+[2026.09.27-16.28.13:402][  5]LogMac: Error: appError called: Fatal error: [File:./Runtime/CoreUObject/Private/UObject/UObjectGlobals.cpp] [Line: 3302] 
+Object is not packaged: ModeManagerInteractiveToolsContext None
+
+
+
+[2026.09.27-16.28.13:446][  5]LogMac: === Critical error: ===
+SIGSEGV: invalid attempt to access memory at address 0x3
+
+[2026.09.27-16.28.13:446][  5]LogMac: 0x03667894 libUnrealEditor-CoreUObject.dylib!StaticAllocateObjectErrorTests(UClass const*, UObject*, FName, EObjectFlags)   [UnknownFile]) 
+0x036680d4 libUnrealEditor-CoreUObject.dylib!StaticAllocateObject(UClass const*, UObject*, FName, EObjectFlags, EInternalObjectFlags, bool, bool*, UPackage*, int, FRemoteObjectId, FGCReconstructionGuard*)   [UnknownFile]) 
+0x03666e44 libUnrealEditor-CoreUObject.dylib!StaticConstructObject_Internal(FStaticConstructObjectParameters const&)   [UnknownFile]) 
+0x0f7e6bc4 libUnrealEditor-UnrealEd.dylib!UModeManagerInteractiveToolsContext* NewObject<UModeManagerInteractiveToolsContext>(UObject*, UClass const*, FName, EObjectFlags, UObject*, bool, FObjectInstancingGraph*, UPackage*)   [UnknownFile]) 
+0x0f7e6670 libUnrealEditor-UnrealEd.dylib!FEditorModeTools::FEditorModeTools()   [UnknownFile]) 
+0x1035edf4 libUnrealEditor-UnrealEd.dylib!Internal::FLevelEditorModeTools::FLevelEditorModeTools()   [UnknownFile]) 
+0x102f04d0 libUnrealEditor-UnrealEd.dylib!TSharedRef<Internal::FLevelEditorModeTools, (ESPMode)1> MakeShared<Internal::FLevelEditorModeTools, (ESPMode)1>()   [UnknownFile]) 
+0x102ed9f8 libUnrealEditor-UnrealEd.dylib!GLevelEditorModeTools()   [UnknownFile]) 
+0x1f58f890 libUnrealEditor-LevelEditor.dylib!SLevelEditor::~SLevelEditor()   [UnknownFile]) 
+0x08327668 libUnrealEditor-SlateCore.dylib!SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>::ReleaseSharedReferenceNoInline(SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>*)   [UnknownFile]) 
+0x0840d0c8 libUnrealEditor-SlateCore.dylib!FSlotBase::~FSlotBase()   [UnknownFile]) 
+0x085233ec libUnrealEditor-SlateCore.dylib!SCompoundWidget::~SCompoundWidget()   [UnknownFile]) 
+0x08327668 libUnrealEditor-SlateCore.dylib!SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>::ReleaseSharedReferenceNoInline(SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>*)   [UnknownFile]) 
+0x0840d0c8 libUnrealEditor-SlateCore.dylib!FSlotBase::~FSlotBase()   [UnknownFile]) 
+0x08550728 libUnrealEditor-SlateCore.dylib!SOverlay::FOverlaySlot::~FOverlaySlot()   [UnknownFile]) 
+0x085412fc libUnrealEditor-SlateCore.dylib!void DestructItems<TUniquePtr<SOverlay::FOverlaySlot, TDefaultDelete<SOverlay::FOverlaySlot>>, int>(TUniquePtr<SOverlay::FOverlaySlot, TDefaultDelete<SOverlay::FOverlaySlot>>*, int)   [UnknownFile]) 
+0x08524370 libUnrealEditor-SlateCore.dylib!SOverlay::~SOverlay()   [UnknownFile]) 
+0x08327668 libUnrealEditor-SlateCore.dylib!SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>::ReleaseSharedReferenceNoInline(SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>*)   [UnknownFile]) 
+0x0840d0c8 libUnrealEditor-SlateCore.dylib!FSlotBase::~FSlotBase()   [UnknownFile]) 
+0x078922a8 libUnrealEditor-Slate.dylib!SVerticalBox::FSlot::~FSlot()   [UnknownFile]) 
+0x085403dc libUnrealEditor-SlateCore.dylib!void DestructItems<TUniquePtr<SBoxPanel::FSlot, TDefaultDelete<SBoxPanel::FSlot>>, int>(TUniquePtr<SBoxPanel::FSlot, TDefaultDelete<SBoxPanel::FSlot>>*, int)   [UnknownFile]) 
+0x0851e5c4 libUnrealEditor-SlateCore.dylib!SBoxPanel::~SBoxPanel()   [UnknownFile]) 
+0x08327668 libUnrealEditor-SlateCore.dylib!SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>::ReleaseSharedReferenceNoInline(SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>*)   [UnknownFile]) 
+0x0840d0c8 libUnrealEditor-SlateCore.dylib!FSlotBase::~FSlotBase()   [UnknownFile]) 
+0x085233ec libUnrealEditor-SlateCore.dylib!SCompoundWidget::~SCompoundWidget()   [UnknownFile]) 
+0x08327668 libUnrealEditor-SlateCore.dylib!SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>::ReleaseSharedReferenceNoInline(SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>*)   [UnknownFile]) 
+0x0840d0c8 libUnrealEditor-SlateCore.dylib!FSlotBase::~FSlotBase()   [UnknownFile]) 
+0x07b4881c libUnrealEditor-Slate.dylib!SSplitter::FSlot::~FSlot()   [UnknownFile]) 
+0x078bc4d4 libUnrealEditor-Slate.dylib!void DestructItems<TUniquePtr<SSplitter::FSlot, TDefaultDelete<SSplitter::FSlot>>, int>(TUniquePtr<SSplitter::FSlot, TDefaultDelete<SSplitter::FSlot>>*, int)   [UnknownFile]) 
+0x078bc468 libUnrealEditor-Slate.dylib!SharedPointerInternals::TIntrusiveReferenceController<SSplitter, (ESPMode)1>::DestroyObject()   [UnknownFile]) 
+0x08327668 libUnrealEditor-SlateCore.dylib!SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>::ReleaseSharedReferenceNoInline(SharedPointerInternals::TReferenceControllerBase<(ESPMode)1>*)   [UnknownFile]) 
+0x0840d0c8 libUnrealEditor-SlateCore.dylib!FSlotBase::~FSlotBase()   [UnknownFile]) 

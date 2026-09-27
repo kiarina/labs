@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Verify the generated project structure"
+
+set -euo pipefail
+LAB_UNREAL_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+python3 "${LAB_UNREAL_ROOT}/verify.py"

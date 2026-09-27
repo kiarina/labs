@@ -1,0 +1,32 @@
+[2026.09.27-16.28.35:117][ 55]LogVrmRepro: Display: VRMREPRO load begin Seed-san.vrm (10917800 bytes)
+[2026.09.27-16.28.35:981][ 55]LogMac: === Critical error: ===
+---- crash context ----
+[2026.09.27-16.28.35:981][ 55]LogMac: === Critical error: ===
+SIGSEGV: invalid attempt to access memory at address 0x0
+
+[2026.09.27-16.28.35:981][ 55]LogMac: 0x13039b74 libUnrealEditor-UnrealEd.dylib!UEditorEngine::BeginTransaction(FText const&)   [UnknownFile]) 
+0x17865b04 libUnrealEditor-Engine.dylib!UAnimCurveMetaData::AddCurveMetaData(FName, bool)   [UnknownFile]) 
+0x17a75620 libUnrealEditor-Engine.dylib!USkeleton::AccumulateCurveMetaData(FName, bool, bool)   [UnknownFile]) 
+0xe91b526c libUnrealEditor-VRM4ULoader.dylib!VRMConverter::ConvertMorphTarget(UVrmAssetListObject*)   [UnknownFile]) 
+0xe9123ad4 libUnrealEditor-VRM4ULoader.dylib!ULoaderBPFunctionLibrary::LoadVRMFileFromMemory(UVrmAssetListObject const*, UVrmAssetListObject*&, FString, unsigned char const*, unsigned long)   [UnknownFile]) 
+0xde0e8e50 libUnrealEditor-VrmRepro.dylib!AVrmReproDriver::LoadModel()   [UnknownFile]) 
+0xde0e8040 libUnrealEditor-VrmRepro.dylib!AVrmReproDriver::Tick(float)   [UnknownFile]) 
+0x176f2e70 libUnrealEditor-Engine.dylib!FActorTickFunction::ExecuteTick(float, ELevelTick, ENamedThreads::Type, TRefCountPtr<FBaseGraphTask> const&)   [UnknownFile]) 
+0x19714740 libUnrealEditor-Engine.dylib!TGraphTask<FTickFunctionTask>::ExecuteTask()   [UnknownFile]) 
+0x081b1190 libUnrealEditor-Core.dylib!UE::Tasks::Private::FTaskBase::TryExecuteTask()   [UnknownFile]) 
+0x081b7708 libUnrealEditor-Core.dylib!FNamedTaskThread::ProcessTasksNamedThread(int, bool)   [UnknownFile]) 
+0x081b68b0 libUnrealEditor-Core.dylib!FNamedTaskThread::ProcessTasksUntilIdle(int)   [UnknownFile]) 
+0x081b5c80 libUnrealEditor-Core.dylib!FTaskGraphCompatibilityImplementation::ProcessUntilTasksComplete(TArray<TRefCountPtr<FBaseGraphTask>, TSizedInlineAllocator<4u, 32, TSizedDefaultAllocator<32>>> const&, ENamedThreads::Type, TFunction<FTaskGraphInterface::EProcessTasksOperation (int)> const&)   [UnknownFile]) 
+0x1970f78c libUnrealEditor-Engine.dylib!FTickTaskSequencer::ReleaseTickGroup(ETickingGroup, bool, TArray<FTickFunction*, TSizedDefaultAllocator<32>>&)   [UnknownFile]) 
+0x1970b31c libUnrealEditor-Engine.dylib!FTickTaskManager::RunTickGroup(ETickingGroup, bool)   [UnknownFile]) 
+0x186e2524 libUnrealEditor-Engine.dylib!UWorld::Tick(ELevelTick, float)   [UnknownFile]) 
+0x1831f60c libUnrealEditor-Engine.dylib!UGameEngine::Tick(float, bool)   [UnknownFile]) 
+0x045351d8 UnrealEditor!FEngineLoop::Tick()   [UnknownFile]) 
+0x04539488 UnrealEditor!GuardedMain(char16_t const*)   [UnknownFile]) 
+0x04550afc UnrealEditor!-[UEAppDelegate runGameThread:]   [UnknownFile]) 
+0x08531ac0 libUnrealEditor-Core.dylib!-[FCocoaGameThread main]   [UnknownFile]) 
+0x8ffe5b7c Foundation!__NSThread__start__()   [UnknownFile]) 
+0x8e6e3c58 libsystem_pthread.dylib!_pthread_start()   [UnknownFile]) 
+0x8e6dec1c libsystem_pthread.dylib!thread_start()   [UnknownFile]) 
+
+[2026.09.27-16.28.35:981][ 55]LogExit: Executing StaticShutdownAfterError
