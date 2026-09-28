@@ -1,5 +1,9 @@
 # Mouth depth follow-up
 
+Latest comparison: `mouth-full-refined` retracts the four non-aa vowel targets,
+preserving the approved aa and neutral. Earlier stages below remain as records
+and separate viewer choices.
+
 The owner approved the improved front appearance of `mouth-vowels-flatstart`.
 Keep its horizontal opening and eye treatment as the baseline. This follow-up
 changes mouth depth only; it does not change the front-plane coordinates, UVs,
@@ -133,3 +137,58 @@ Open `viewer.html?model=mouth-onset-recessed`; the default output is separate fr
 the prior profile and front baselines. `scripts/source_ink.py` samples source ink
 for both construction and diagnostics. Avoid replacing its source-UV lookup
 with a height-only rule: the source W ridge is irregular.
+
+## Four full-open vowels (2026-09-28)
+
+The owner confirmed that the small-aa projection improved, then requested the
+same correction for ih/ou/ee/oh at 100%. Those full targets had deliberately
+been fixed during the preceding onset work. The new stage loads the preserved
+`mouth-onset-recessed` blend and modifies only the depth of those four targets.
+Basis and AA remain byte-identical as coordinate arrays. The original Body,
+eye bindings, UVs and horizontal/vertical mouth coordinates are retained.
+
+`scripts/refine_vowel_depth.py` places the four targets near the pink face and
+behind source lip ink, then checks 55 sampled individual and paired mixtures.
+Depth constraints are solved only through the four modified keys; AA/Basis
+cannot move to compensate. Collapsed unused columns stay collapsed. An initial
+eight-iteration run (`mouth-full-recessed`) fell back to the old depth at 45 OH
+vertices, leaving a small jagged tip. Sixty-four iterations converge without
+fallback vertices in all four targets (`mouth-full-refined`) and remove that tip
+in the inspected left/right profiles.
+
+Measured maximum forward gaps at full opening (triangle samples, in mm):
+
+| Vowel | Previous | Revised |
+| --- | ---: | ---: |
+| ih | 18.75 | 7.54 |
+| ou | 16.14 | 6.93 |
+| ee | 16.94 | 6.88 |
+| oh | 16.72 | 6.66 |
+
+These maxima include alpha-enabled points that may be occluded by source ink;
+this is not a uniform visible shell-thickness claim. In 32 sampled states no
+non-ink point lies behind the head; the minimum non-ink clearance is 0.800 mm.
+Black-lip occlusion is intentional and reported separately.
+
+All 50 AA screenshots (ten weights, five views) are pixel-identical to the
+approved preceding candidate. Closed-mouth, eye-region and relaxed/blink checks
+also remain exact. The viewer captures 150 vowel states and verifies the five
+shapes remain distinct. The other four vowels show more of the original black
+rim and less red near it; coordinate preservation does not imply unchanged
+front appearance. Blender reimport retains the bindings, and a separate rebuild
+is byte-identical. Evidence is stored in
+[results/full-vowel-depth-evaluation.json](results/full-vowel-depth-evaluation.json).
+
+With the preceding onset input and its viewer captures prepared:
+
+```sh
+mise run full-vowel-probe
+MOUTH_RUN=mouth-full-repeat mise run full-vowel-probe
+```
+
+The task exports, checks the independent viewer and binding reimport, requires
+clear non-ink samples, and compares all AA weights against the preserved input.
+Open `viewer.html?model=mouth-full-refined`. The older onset-only candidate is
+still available. This is still an art-direction prototype: phonetic clarity,
+audio-driven motion, all possible mixtures/poses and other VRM runtimes have
+not been certified.

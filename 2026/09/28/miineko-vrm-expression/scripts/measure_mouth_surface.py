@@ -1,4 +1,4 @@
-"""Measure sampled visible triangle clearance, not merely fitted vertex lines."""
+"""Measure alpha-enabled triangle clearance, classifying source ink occlusion."""
 import json
 import os
 import sys
@@ -31,7 +31,7 @@ delta={name:np.asarray([p.co for p in keys[name.upper()].data])-base for name in
 states=[{name:weight} for name in delta for weight in (.1,.18,.22,.5,1)]
 states += [{'aa':.5,'ih':.5},{'ou':.5,'oh':.5},dict.fromkeys(delta,.2)]
 states += [{'aa':.25,'ih':.25},{'ou':.25,'oh':.25},dict.fromkeys(delta,.1),dict.fromkeys(delta,.036)]
-report={'scope':'visible triangle centroids at sampled states; not continuous collision proof','states':[]}
+report={'scope':'alpha-enabled triangle centroids; source occlusion classified separately; not continuous collision proof','states':[]}
 for mix in states:
     points=base.copy()
     for name,weight in mix.items():points+=weight*delta[name]
@@ -52,6 +52,9 @@ for mix in states:
         dark=np.asarray(dark);skin=gaps[~dark]
         report['states'][-1].update(nonInkMinimum=float(skin.min()) if len(skin) else None,
             nonInkBehindHeadCount=int((skin<0).sum()),inkOccludedCount=int(((gaps<0)&dark).sum()))
+if os.environ.get('SURFACE_REQUIRE_CLEAR')=='1':
+    assert ink is not None
+    assert all(s['nonInkBehindHeadCount']==0 for s in report['states']), 'Mouth penetrates non-ink face samples'
 (folder/'surface-measurements.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps({'run':folder.name,'states':len(report['states']),
     'worstPenetration':min(s['minimum'] for s in report['states']),

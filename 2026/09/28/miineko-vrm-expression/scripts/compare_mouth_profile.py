@@ -9,7 +9,8 @@ from PIL import Image
 
 parser=argparse.ArgumentParser();parser.add_argument('candidate')
 parser.add_argument('--baseline',default='mouth-vowels-flatstart')
-parser.add_argument('--full-targets',action='store_true');args=parser.parse_args()
+parser.add_argument('--full-targets',action='store_true')
+parser.add_argument('--preserve-vowels',default='');args=parser.parse_args()
 root=Path(__file__).resolve().parents[1]/'artifacts'
 baseline=root/args.baseline;candidate=root/args.candidate
 
@@ -26,9 +27,10 @@ def read_mesh(folder):
     node=next(n for n in doc['nodes'] if n.get('name')=='Mouth_Cartoon')
     mesh=doc['meshes'][node['mesh']];assert len(mesh['primitives'])==1
     p=mesh['primitives'][0]
-    return [accessor(p['attributes']['POSITION']),*[accessor(t['POSITION']) for t in p['targets']]],accessor(p['attributes']['TEXCOORD_0'])
+    return [accessor(p['attributes']['POSITION']),*[accessor(t['POSITION']) for t in p['targets']]],accessor(p['attributes']['TEXCOORD_0']),mesh['extras']['targetNames']
 
-a,auv=read_mesh(baseline);b,buv=read_mesh(candidate)
+a,auv,anames=read_mesh(baseline);b,buv,bnames=read_mesh(candidate)
+assert anames==bnames
 assert len(a)==len(b)
 assert np.array_equal(auv,buv)
 geometry=[]
@@ -69,5 +71,19 @@ if args.full_targets:
             # area and average error, and retain the maximum rather than hiding it.
             assert changed<=old.shape[0]*old.shape[1]*.0001 and diff.mean()<.001
             report['fullOpenViews'].append({'vowel':vowel,'angle':angle,'maximumChannelDifference':float(diff.max()),'changedPixelsAbove2':changed,'meanChannelDifference':float(diff.mean())})
-(candidate/('onset-comparison.json' if args.full_targets else 'profile-comparison.json')).write_text(json.dumps(report,indent=2)+'\n')
+if args.preserve_vowels:
+    assert np.array_equal(a[0],b[0]),'Neutral mesh changed'
+    report['preservedVowelViews']=[]
+    for vowel in args.preserve_vowels.split(','):
+        index=anames.index(vowel.upper())+1
+        assert np.array_equal(a[index],b[index]),f'{vowel} morph changed'
+        for weight in (0,.02,.05,.1,.18,.22,.25,.5,.75,1):
+            for angle in (0,45,-45,90,-90):
+                name=f'{vowel}-{weight}-{angle}.png'
+                old=np.asarray(Image.open(baseline/'viewer'/name).convert('RGB')).astype(float)
+                new=np.asarray(Image.open(candidate/'viewer'/name).convert('RGB')).astype(float)
+                maximum=float(abs(old-new).max());assert maximum<=2
+                report['preservedVowelViews'].append({'vowel':vowel,'weight':weight,'angle':angle,'maximumChannelDifference':maximum})
+output='preserved-vowel-comparison.json' if args.preserve_vowels else ('onset-comparison.json' if args.full_targets else 'profile-comparison.json')
+(candidate/output).write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps({'frontImages':len(images),'maximumChangedPixels':max(i['changedPixelsAbove2'] for i in images)}))

@@ -28,7 +28,9 @@ much of the profile gap while retaining its frontal geometry; see [PROFILE.md](P
 A further small-opening comparison tucks the red surface behind the original
 black lip, addressing the owner's 18%-open profile example while preserving
 full-target coordinates; the front rim consequently appears thicker at low weights.
-Full-open corner tips remain, so profile quality is not finished.
+The latest `mouth-full-refined` comparison also retracts the other four full-open
+vowel targets while preserving the approved `aa` and neutral shape. Motion,
+audio timing and the complete production expression set remain unfinished.
 Side-view projection and audio-driven timing remain unresolved. This is not yet
 a finished lip-sync system.
 
@@ -173,3 +175,14 @@ The pale circular indentation near the top of each closed eye corresponds to the
 4. Export the bindings as VRM 1.0 and verify in Blender **and** an independent viewer, including combined emotion, blink and lip-sync. The two-state Blender mapping test is not evidence of VRM runtime behavior.
 
 This lab concludes that direct UV offset of the original material and a permanently visible **rebaked** full-face shell are unsuitable in the tested form. A full face mask using the **original UV** can switch its BaseColor without replacing the head, and a two-state, one-image atlas can be addressed in Blender, but both closed-eye variants are visually poor. VRM `TextureTransformBind`, mouth states and the complete expression atlas remain unvalidated.
+
+## Dependency policy during geometry comparisons
+
+This continuation retains the measured Blender/add-on and viewer pins so that
+appearance changes can be attributed to the geometry. The lockfile resolves
+three 0.186.1, three-vrm 3.5.5 and puppeteer-core 25.12.0, matching the installed
+comparison runtime on Apple Silicon macOS. These are recorded test versions,
+not a claim that they are the newest releases. Reconsider updates when this
+expression refinement is accepted, or when compatibility/security requires a
+migration. Per the labs policy, verify output parity before changing these pins;
+otherwise establish a new comparison baseline in a separate lab.
