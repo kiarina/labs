@@ -45,7 +45,8 @@ AA/IH blend, simultaneous mouth motion and blink, pause, manual takeover,
 original-model toggling and exact framebuffer restoration after stop.
 
 Desktop (1280 px), compact (600 px) and narrow (390 px) layouts were inspected;
-all fit without horizontal scrolling. Browser screenshots and the detailed
+all fit without horizontal scrolling. The preview camera also keeps the head
+inside a narrow canvas, without changing the static comparison framing. Browser screenshots and the detailed
 report are local in `artifacts/mouth-motion/`. Compact numerical evidence is in
 [results/mouth-motion-evaluation.json](results/mouth-motion-evaluation.json).
 The existing static expression viewer checks also pass after the control change.

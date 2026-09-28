@@ -28,6 +28,9 @@ import * as THREE from 'three';
 import {VOWELS, VOWEL_LABELS, normalizeVowels, MouthPlayback, clipDuration} from './scripts/mouth_motion.mjs';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {VRMLoaderPlugin} from '@pixiv/three-vrm';
+const params=new URLSearchParams(location.search);
+const previewEnabled=params.get('motion')==='1';
+document.body.classList.toggle('motion-preview',previewEnabled);
 const canvas=document.querySelector('canvas');
 const renderer=new THREE.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:true});
 renderer.setPixelRatio(1);renderer.outputColorSpace=THREE.SRGBColorSpace;
@@ -36,13 +39,10 @@ const scene=new THREE.Scene();scene.background=new THREE.Color('#b7b7b7');
 scene.add(new THREE.HemisphereLight(0xffffff,0x726778,2.5));
 for(const [x,y,z,power] of [[-1.2,2.5,1.5,3],[1.5,1.6,.4,1.5]]){const light=new THREE.DirectionalLight(0xffffff,power);light.position.set(x,y,z);scene.add(light);}
 const camera=new THREE.OrthographicCamera(-.41,.41,.41,-.41,.01,100);
-function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(w<1||h<1)return;renderer.setSize(w,h,false);const aspect=w/h;camera.left=-.41*aspect;camera.right=.41*aspect;camera.updateProjectionMatrix();renderer.render(scene,camera);}
+function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(w<1||h<1)return;renderer.setSize(w,h,false);const aspect=w/h;const half=.41*(previewEnabled?Math.max(1,1/aspect):1);camera.top=half;camera.bottom=-half;camera.left=-half*aspect;camera.right=half*aspect;camera.updateProjectionMatrix();renderer.render(scene,camera);}
 window.addEventListener('resize',resize);resize();
 new ResizeObserver(resize).observe(canvas);
 const loader=new GLTFLoader();loader.register(p=>new VRMLoaderPlugin(p));
-const params=new URLSearchParams(location.search);
-const previewEnabled=params.get('motion')==='1';
-document.body.classList.toggle('motion-preview',previewEnabled);
 const file=params.get('model')||'mouth-aa-aligned';
 const methodSelect=document.querySelector('#method');
 if([...methodSelect.options].some(o=>o.value===file))methodSelect.value=file;
