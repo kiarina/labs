@@ -147,4 +147,3 @@ The pale circular indentation near the top of each closed eye corresponds to the
 4. Export the bindings as VRM 1.0 and verify in Blender **and** an independent viewer, including combined emotion, blink and lip-sync. The two-state Blender mapping test is not evidence of VRM runtime behavior.
 
 This early experiment concluded that direct UV offset of the original material and a permanently visible **rebaked** full-face shell are unsuitable in the tested form. A full face mask using the **original UV** can switch its BaseColor without replacing the head, and a two-state, one-image atlas can be addressed in Blender, but both closed-eye variants are visually poor. For this full-mask route, VRM `TextureTransformBind`, mouth states and the complete expression atlas were not validated. The later accepted route uses separate eye overlays and a mouth surface, as described in [BASELINE.md](BASELINE.md).
-
