@@ -456,6 +456,10 @@ class _GardenPageState extends State<GardenPage> {
     if (avatars.length > 2) {
       await step('07 focus avatar2', () => rig.focusOn(avatars[2]));
     }
+    if (avatars.length > 10) {
+      // Seated sideways at the desk (yaw -90 degrees).
+      await step('07b focus desk sitter', () => rig.focusOn(avatars[10]));
+    }
     await step('08 avatar0 sleep', () {
       avatars[0].talking = false;
       _setActivity(avatars[0], AvatarActivity.lightSleep);

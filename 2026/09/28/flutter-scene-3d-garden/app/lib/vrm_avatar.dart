@@ -272,8 +272,10 @@ class VrmAvatar {
       _bones[name]!.node.globalTransform.getTranslation();
 
   /// Character front in world space for the current wrapper transform.
-  Vector3 get front =>
-      Quaternion.axisAngle(Vector3(0, 1, 0), yaw).rotated(Vector3(0, 0, -1));
+  Vector3 get front => Quaternion.axisAngle(
+    Vector3(0, 1, 0),
+    yaw,
+  ).asRotationMatrix().transformed(Vector3(0, 0, -1));
 
   Vector3 get headWorld => boneWorld('head');
 
@@ -538,7 +540,17 @@ class VrmAvatar {
     final mid = (hips + head) * 0.5;
     final axis = head - hips;
     final len = axis.length;
-    final q = Quaternion.fromTwoVectors(Vector3(0, 1, 0), axis.normalized());
+    // Rotation taking +Y onto the hips->head axis. (vector_math's
+    // Quaternion.rotated applies the inverse of what compose applies, so
+    // build it from axis/angle rather than fromTwoVectors.)
+    final dir = axis.normalized();
+    final cross = Vector3(0, 1, 0).cross(dir);
+    final q = cross.length2 < 1e-10
+        ? Quaternion.identity()
+        : Quaternion.axisAngle(
+            cross.normalized(),
+            math.acos(dir.y.clamp(-1.0, 1.0)),
+          );
     pickProxy.localTransform = Matrix4.compose(
       mid,
       q,

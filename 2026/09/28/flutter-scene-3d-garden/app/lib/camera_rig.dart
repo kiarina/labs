@@ -159,9 +159,15 @@ class CameraRig {
       // face by the user's yaw / pitch offsets.
       var dir = s.faceForward.normalized();
       final up = lying ? s.front.normalized() * -1.0 : Vector3(0, 1, 0);
-      dir = Quaternion.axisAngle(up, _focusYaw).rotated(dir);
+      dir = Quaternion.axisAngle(
+        up,
+        _focusYaw,
+      ).asRotationMatrix().transformed(dir);
       final side = up.cross(dir)..normalize();
-      dir = Quaternion.axisAngle(side, -_focusPitch).rotated(dir);
+      dir = Quaternion.axisAngle(
+        side,
+        -_focusPitch,
+      ).asRotationMatrix().transformed(dir);
       final eye = face + dir * _focusDistance;
       return (eye, face);
     }
