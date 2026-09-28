@@ -195,3 +195,12 @@ Pixel 6 では、インストールのたびに Google Play プロテクトの�
 - メモリは macOS でしか測っていません。iPad・Pixel の上限は「落ちたかどうか」だけです
 - SpringBone（髪・服の揺れ）、MToon、LookAt の設定値、NodeConstraint は実装していません。首と頭は簡単な回転でカメラを向くだけです
 - 画面写真は載せていません（VRM がどちらも公開できないため）
+
+## その後（2026-09-29）
+
+- VRM の扱いは OSS の [kiarina/flutter_vrm](https://github.com/kiarina/flutter_vrm) に移しました。この lab で未実装だった MToon（輪郭線まで）、
+  SpringBone、NodeConstraint、VRM Animation（`.vrma`）と、姿勢に付いてくる当たり判定（骨に沿ったカプセル）はそちらにあります。
+  この lab の `app/lib/vrm_avatar.dart` は出発点として残しています
+- 「見つかったこと」の glTF のサンプラーの wrap は、本家へ修正の Pull Request を出しました（[bdero/flutter_scene#430](https://github.com/bdero/flutter_scene/pull/430)）
+- Windows の初回の遅さは「読み込み」の節の追記のとおり、初めて描くフレームの準備でした
+
