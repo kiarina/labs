@@ -24,8 +24,8 @@ speech-to-vowel inference is still unimplemented.
 
 **Start with [EMOTIONS.md](EMOTIONS.md)** for the current relaxed/sad comparison.
 The owner accepted the synchronized smile and angry direction, and identified
-the preceding curved sad eyes as relaxed. The current sad candidate is straighter
-while retaining raised inner corners; happy and angry are preserved. Skin-color/perimeter artifacts and fine tuning remain
+the preceding curved sad eyes as relaxed. The straight sad shape was found improved; the current trial adds about 2°
+of tilt while retaining its curvature. Happy, angry and relaxed are preserved. Skin-color/perimeter artifacts and fine tuning remain
 open, so this is not a production-complete avatar.
 [BASELINE.md](BASELINE.md) records the earlier accepted artifact,
 prerequisites, ordered rebuild recipe, limitations, and lessons to carry forward.

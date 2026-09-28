@@ -6,10 +6,12 @@ The owner accepted the angry direction, with possible later angle refinement.
 The preceding sad expression read as **relaxed**, so it is reassigned to that
 preset without changing its appearance. For sadness, the owner requested raised
 inner corners with much less arc, referring to the sticker sheet's left column,
-sixth row. The current candidate is **`eye-emotions-straight`**. The new sad shape
-has not yet received owner feedback. Happy and angry remain accepted references.
+sixth row. The owner subsequently found the straighter shape improved and requested a
+slightly stronger angle. The current candidate is **`eye-emotions-steeper`**: slope
+magnitude .28 → .32 (about 15.6° → 17.7° at the center), with rise .008 and the
+central gap retained. The preceding angle remains available for comparison. Happy and angry remain accepted references.
 
-Open `expression-study.html?variant=straight-sad&sad=1&opening=0&angle=0`.
+Open `expression-study.html?variant=steeper-sad&sad=1&opening=0&angle=0`.
 The four 100% buttons select happy, angry, sad or relaxed individually. Sliders
 allow intermediate strengths and mixtures. The slow cycle includes all four
 emotions. Mouth control is independent. The previous `eye-emotions` model remains
@@ -19,7 +21,7 @@ available as a comparison, including its former upper-lid-only relaxed expressio
 
 `scripts/refine_sad_expression.py` reads `eye-emotions` and copies its former
 `sad` preset **exactly** into `relaxed`. It then lowers the sad curve coefficient
-from .024 to .008, retaining the ±.28 central slope, full central band gap, and
+from .024 to .008, initially retaining the ±.28 central slope, full central band gap, and
 raised inner corners. This is a substantially straighter appearance, not a claim
 of mathematically zero curvature. The existing parabolic reveal material is
 reused; angle and center compensation are recalculated for the lower curvature.
@@ -52,7 +54,8 @@ The optional upper-ink binds remain inactive to avoid a duplicated line.
 
 This is not rigid rotation of the whole eye. At partial strength the translated
 parabola has a small nonlinear center shift. Reducing k increases that effect:
-for the new sad parameters its maximum is approximately .0066 model units,
+for the .28-slope sad version its maximum is approximately .0066 model units,
+and for the current .32 slope approximately .0087 model units,
 compared with .0022 for the preceding .024-rise shape. The existing smile's exact
 onset/7:3 measurements must not be attributed automatically to these emotions.
 Intermediate appearance still needs artistic evaluation.
@@ -73,15 +76,29 @@ Prepare the original `eye-emotions` reference first if it is absent:
 ```sh
 BLENDER_BIN=/path/to/Blender COMPARE_PYTHON=.venv/bin/python mise run eye-emotions-probe
 BLENDER_BIN=/path/to/Blender COMPARE_PYTHON=.venv/bin/python mise run straight-sad-probe
+BLENDER_BIN=/path/to/Blender COMPARE_PYTHON=.venv/bin/python mise run steeper-sad-probe
 ```
 
-The current task writes `artifacts/eye-emotions-straight` and `-repeat`, with
-captures in `artifacts/straight-sad-review`. The prior task writes its separate
+The straight task writes `artifacts/eye-emotions-straight` and `-repeat`, with
+captures in `artifacts/straight-sad-review`. The current steeper task sets
+`SAD_STEEPER=1` and writes `eye-emotions-steeper`, its repeat, and
+`artifacts/steeper-sad-review`. The prior task writes its separate
 `eye-emotions` folders. Private binary/bitmap artifacts remain ignored. GUI
 re-export of the blend is not the validated runtime artifact; previous export
 patches remain applicable.
 
-## Current evidence
+## Angle refinement evidence
+
+- [Structure](results/steeper-sad-structure.json): only sad differs from the
+  preceding straight version; all other JSON fields and the binary chunk are
+  identical. Authoring/imported binds and repeat bytes agree.
+- [Runtime](results/steeper-sad-evaluation.json): 30 preserved views, 40 sad
+  strength/mouth/view captures, mixed expressions, reset and responsive layouts.
+- [Shape](results/steeper-sad-shape.json): the fitted frontal slope magnitude
+  increases from about .262/.273 to .301/.311, while estimated rise stays near
+  .008. This checks the modest tilt increase without increasing the arc.
+
+## Previous curvature split evidence
 
 - [Structure/import](results/straight-sad-structure.json): binary chunk and JSON
   outside sad/relaxed are unchanged. Relaxed equals the former sad preset exactly.

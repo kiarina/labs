@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+export SAD_STEEPER=1
+exec "$(dirname "$0")/straight-sad-probe"
