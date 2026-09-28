@@ -108,6 +108,25 @@ async def main(args) -> dict[str, Any]:
     cases["elicit_with_handler"] = await outcome(ask.ainvoke({}))
     await outcome(cm.__aexit__(None, None, None))
 
+    # kimcp's shape: connect, call and disconnect each in its own task (each FastAPI request).
+    async def in_task(coro):
+        return await asyncio.create_task(coro)
+
+    naive = MultiServerMCPClient({"probe": conn}).session("probe")
+    naive_session: list[Any] = []
+
+    async def naive_connect():
+        naive_session.append(await naive.__aenter__())
+
+    async def naive_call():
+        pid_tool = {t.name: t for t in await load_mcp_tools(naive_session[0])}["pid"]
+        return await pid_tool.ainvoke({})
+
+    cases["cross_task_connect"] = await outcome(in_task(naive_connect()))
+    if cases["cross_task_connect"]["ok"]:
+        cases["cross_task_call"] = await outcome(in_task(naive_call()))
+        cases["cross_task_disconnect"] = await outcome(in_task(naive.__aexit__(None, None, None)))
+
     out["cases"] = cases
     out["stdio_child_alive_after_disconnect"] = child_alive(args, cases)
     return out

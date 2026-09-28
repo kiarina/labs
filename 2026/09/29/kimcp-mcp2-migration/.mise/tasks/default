@@ -4,4 +4,6 @@ set -euo pipefail
 
 (cd v1 && uv sync -q)
 (cd v2 && uv sync -q)
+(cd sdk && uv sync -q)
+(cd fastmcp && uv sync -q)
 v2/.venv/bin/python run_matrix.py "$@"

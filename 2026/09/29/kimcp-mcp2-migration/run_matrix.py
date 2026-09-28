@@ -1,6 +1,7 @@
 """Run every client x server x transport combination and save the outcomes.
 
-Clients: v1 (langchain-mcp-adapters on mcp 1.30) and v2 (langchain.mcp on mcp 2.2).
+Clients: v1 (langchain-mcp-adapters on mcp 1.30), v2 (langchain.mcp on mcp 2.2),
+sdk (mcp 2.2 alone) and fastmcp (fastmcp-slim[client] alone).
 Servers: v1 (mcp 1.30 FastMCP) and v2 (mcp 2.2 MCPServer).
 Each side runs from its own uv environment, so the two mcp majors never share
 a process. Standard library only.
@@ -62,8 +63,9 @@ def run_one(client: str, server: str, transport: str, mode: str | None, port: in
 
 
 def main() -> None:
-    combos = [(c, s, t, None) for c in ("v1", "v2") for s in ("v1", "v2") for t in TRANSPORTS]
-    combos += [("v2", s, t, "legacy") for s in ("v1", "v2") for t in ("stdio", "streamable_http")]
+    clients = ("v1", "v2", "sdk", "fastmcp")
+    combos = [(c, s, t, None) for c in clients for s in ("v1", "v2") for t in TRANSPORTS]
+    combos += [(c, s, t, "legacy") for c in clients[1:] for s in ("v1", "v2") for t in ("stdio", "streamable_http")]
     only = sys.argv[1:]
     results = []
     port = 18800
@@ -75,9 +77,10 @@ def main() -> None:
         print(f"== {key}", flush=True)
         data = run_one(client, server, transport, mode, port)
         results.append({"key": key, "client": client, "server": server, "transport": transport,
-                        "mode": mode or ("auto" if client == "v2" else None), **data})
+                        "mode": mode or (None if client == "v1" else "auto"), **data})
     out = HERE / "results" / ("matrix.partial.json" if only else "matrix.json")
-    out.write_text(json.dumps(results, ensure_ascii=False, indent=2, default=str) + "\n")
+    text = json.dumps(results, ensure_ascii=False, indent=2, default=str) + "\n"
+    out.write_text(text.replace(str(HERE), "<lab>"))  # keep local paths out of the committed results
     print(f"wrote {out.relative_to(HERE)}")
 
 

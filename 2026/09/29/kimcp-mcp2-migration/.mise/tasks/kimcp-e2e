@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+#MISE description="Drive the published kimcp 0.1.0 end to end: connect a stdio server, run tools, disconnect, check the server process"
+set -euo pipefail
+
+cd "$(dirname "$0")/../.."
+(cd v1 && uv sync -q)
+(cd v2 && uv sync -q)
+
+export KIMCP_APP_USER_DATA_DIR="$(mktemp -d)"
+PORT=18960
+GW="http://localhost:$PORT"
+K=(uvx -q --from kimcp==0.1.0 kimcp)
+OUT=results/kimcp-0.1.0-e2e.txt
+: > "$OUT"
+
+"${K[@]}" serve --port "$PORT" --no-reload > "$KIMCP_APP_USER_DATA_DIR/serve.log" 2>&1 &
+SERVE_PID=$!
+trap 'kill "$SERVE_PID" 2>/dev/null || true' EXIT
+for _ in $(seq 1 60); do curl -s -o /dev/null "$GW/docs" && break; sleep 0.5; done
+
+for server in v1 v2; do
+  {
+    echo "## stdio server $server"
+    "${K[@]}" connect stdio --gateway-base-url "$GW" --server-name "probe-$server" \
+      --command "$PWD/$server/.venv/bin/python" --arg "$PWD/$server/server.py" --arg --transport --arg stdio
+    echo "### run-tool add"
+    "${K[@]}" run-tool --gateway-base-url "$GW" --server-name "probe-$server" --tool-name add --tool-args '{"a": 1, "b": 2}'
+    echo "### run-tool fail"
+    "${K[@]}" run-tool --gateway-base-url "$GW" --server-name "probe-$server" --tool-name fail || true
+  } >> "$OUT" 2>&1
+  pid_json=$("${K[@]}" run-tool --gateway-base-url "$GW" --server-name "probe-$server" --tool-name pid)
+  server_pid=$(echo "$pid_json" | grep -oE '"text": ?"[0-9]+"' | grep -oE '[0-9]+' | head -1)
+  {
+    echo "### server process before disconnect: $(ps -p "$server_pid" > /dev/null && echo alive || echo gone)"
+    echo "### disconnect"
+    "${K[@]}" disconnect --gateway-base-url "$GW" --server-name "probe-$server" || true
+    sleep 1
+    echo "### server process after disconnect: $(ps -p "$server_pid" > /dev/null && echo alive || echo gone)"
+    echo
+  } >> "$OUT" 2>&1
+done
+
+echo "## gateway log (warnings and errors)" >> "$OUT"
+grep -iE "warn|error|exception|cancel scope" "$KIMCP_APP_USER_DATA_DIR/serve.log" | head -20 >> "$OUT" || true
+sed -i '' "s|$PWD|<lab>|g" "$OUT" 2>/dev/null || sed -i "s|$PWD|<lab>|g" "$OUT"
+cat "$OUT"

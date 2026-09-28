@@ -1,0 +1,125 @@
+## stdio server v1
+{
+  "agent_id": "default",
+  "mcp_server": {
+    "connection": {
+      "args": [
+        "<lab>/v1/server.py",
+        "--transport",
+        "stdio"
+      ],
+      "command": "<lab>/v1/.venv/bin/python",
+      "cwd": null,
+      "encoding": null,
+      "env": {},
+      "session_kwargs": {},
+      "transport": "stdio"
+    },
+    "server_name": "probe-v1"
+  }
+}
+### run-tool add
+{
+  "agent_id": "default",
+  "result": [
+    {
+      "id": "lc_8d4f4047-4aba-4d2e-b184-f48c6f2c791b",
+      "text": "3",
+      "type": "text"
+    }
+  ],
+  "server_name": "probe-v1",
+  "tool_name": "add"
+}
+### run-tool fail
+{
+  "agent_id": "default",
+  "result": [
+    {
+      "id": "lc_b2ee8875-8219-4f1d-a18e-7e9939e6cc56",
+      "text": "Error executing tool fail: boom from tool",
+      "type": "text"
+    }
+  ],
+  "server_name": "probe-v1",
+  "tool_name": "fail"
+}
+### server process before disconnect: alive
+### disconnect
+{
+  "agent_id": "default",
+  "disconnected": true,
+  "server_name": "probe-v1"
+}
+### server process after disconnect: gone
+
+## stdio server v2
+{
+  "agent_id": "default",
+  "mcp_server": {
+    "connection": {
+      "args": [
+        "<lab>/v2/server.py",
+        "--transport",
+        "stdio"
+      ],
+      "command": "<lab>/v2/.venv/bin/python",
+      "cwd": null,
+      "encoding": null,
+      "env": {},
+      "session_kwargs": {},
+      "transport": "stdio"
+    },
+    "server_name": "probe-v2"
+  }
+}
+### run-tool add
+{
+  "agent_id": "default",
+  "result": [
+    {
+      "id": "lc_2bc0d863-294d-4072-ac91-56202e571543",
+      "text": "3",
+      "type": "text"
+    }
+  ],
+  "server_name": "probe-v2",
+  "tool_name": "add"
+}
+### run-tool fail
+{
+  "agent_id": "default",
+  "result": [
+    {
+      "id": "lc_17c713d3-e111-428d-95c6-a82eddd35cf1",
+      "text": "Error executing tool fail",
+      "type": "text"
+    }
+  ],
+  "server_name": "probe-v2",
+  "tool_name": "fail"
+}
+### server process before disconnect: alive
+### disconnect
+{
+  "agent_id": "default",
+  "disconnected": true,
+  "server_name": "probe-v2"
+}
+### server process after disconnect: gone
+
+## gateway log (warnings and errors)
+Failed to close session probe-v1: Attempted to exit cancel scope in a different task than it was entered in
+[09/29/26 01:17:44] ERROR    Tool 'fail' raised an unexpected      server.py:446
+                             exception                                          
+                             │ ❱  55 │   raise ValueError("boom  │              
+                             ValueError: boom from tool                         
+                             The above exception was the direct                 
+                             cause of the following exception:                  
+                             │    434 │   │   except MCPError:   │              
+                             │    436 │   │   except Exception a │              
+                             │   85 │   │   │   raise ToolError( │              
+                             │   207 │   │   │   raise ToolError │              
+                             │   208 │   │   except Exception as │              
+                             UnexpectedToolError: Error executing               
+Failed to close session probe-v2: Attempted to exit cancel scope in a different task than it was entered in
