@@ -14,10 +14,11 @@ was rejected for its protruding, bulb-like closed eyes. The current direction is
 a [feature-depth study](FEATURE_DEPTH.md): preserve the pink head geometry and
 nose while reducing only eye/W depth. The broader [thin-face study](THIN_FACE.md)
 was rejected because it changed the head profile. The old baseline remains the
-input and comparison reference. Arbitrary
+input and comparison reference. The current [mouth-depth candidate](MOUTH_FLUSH.md) includes
+the joining band and vertical line while retaining the original line weight. Arbitrary
 speech-to-vowel inference is still unimplemented.
 
-**Start with [FEATURE_DEPTH.md](FEATURE_DEPTH.md)** for the current design comparison.
+**Start with [MOUTH_FLUSH.md](MOUTH_FLUSH.md)** for the current design comparison.
 [BASELINE.md](BASELINE.md) records the earlier accepted artifact,
 prerequisites, ordered rebuild recipe, limitations, and lessons to carry forward.
 Keep new experiments in separate output directories. Character designs, source
@@ -27,7 +28,8 @@ FBX/textures, blends, VRMs and screenshots are private and excluded from Git.
 
 | Document | Purpose |
 | --- | --- |
-| [FEATURE_DEPTH.md](FEATURE_DEPTH.md) | Current normal-face comparison: pin pink geometry and nose; adjust eyes/W only. |
+| [MOUTH_FLUSH.md](MOUTH_FLUSH.md) | Current mouth/vertical-line depth adjustment; original stroke weight and nose retained. |
+| [FEATURE_DEPTH.md](FEATURE_DEPTH.md) | Earlier eyes/W interior adjustment and strict pink-boundary protection. |
 | [THIN_FACE.md](THIN_FACE.md) | Rejected broad face deformation; retains historical static comparison and measurements. |
 | [BASELINE.md](BASELINE.md) | Earlier accepted appearance and motion baseline; retained for comparison and reproduction. |
 | [HAPPY.md](HAPPY.md) | Rejected raised-eye smile; emotion/blink composition and measured repeatability. |

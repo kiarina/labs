@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+BLENDER_BIN="${BLENDER_BIN:-blender}"
+"$BLENDER_BIN" --background --python-exit-code 1 --python scripts/refine_w_surface.py
+"$BLENDER_BIN" --background --python-exit-code 1 --python scripts/refine_mouth_depth.py
+STUDY_SUFFIX=-repeat "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/refine_mouth_depth.py
+node scripts/verify_mouth_flush.mjs
+"${COMPARE_PYTHON:-python3}" scripts/verify_mouth_flush_audit.py

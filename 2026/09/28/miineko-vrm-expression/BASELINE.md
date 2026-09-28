@@ -3,8 +3,9 @@
 ## Current design direction
 
 After reviewing the smile, the owner rejected the protruding eye volume and
-requested thinner face features. [FEATURE_DEPTH.md](FEATURE_DEPTH.md) is the current
-comparison: pink head geometry and the nose are fixed. The intervening broad
+requested thinner face features. [MOUTH_FLUSH.md](MOUTH_FLUSH.md) is the current
+comparison: the head and nose are fixed, with the authorized mouth joining band
+and vertical line adjusted in depth. Original stroke weight is retained. The intervening broad
 face deformation was rejected for changing the profile. The acceptance below records the earlier stages, not a requirement
 to preserve eye/mouth protrusions in the next design.
 
