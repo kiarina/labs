@@ -2,6 +2,11 @@
 
 ## Current result — 2026-09-29
 
+**Latest comparison: [blink-aligned](BLINK_ALIGNED.md).** The owner requested an
+update to ordinary blink, whose older lower-led motion and thin line remained.
+The new upper-led, thicker closure is pending owner review; the accepted source
+below remains preserved.
+
 **The current working baseline is `artifacts/surprise-ears/continuous-blink.vrm`.**
 The owner provisionally accepted the mouth-plus-raised-ear surprise on 2026-09-29.
 Start with [SURPRISE_EARS.md](SURPRISE_EARS.md) for its construction, source chain,
@@ -12,6 +17,7 @@ expressions; it is not a production-complete avatar.
 | --- | --- | --- |
 | Head, nose and normal face | Retain the pink head and protruding nose; fit black eyes, W and vertical mouth line to the surface without thinning their strokes. | [MOUTH_FLUSH.md](MOUTH_FLUSH.md) |
 | Mouth | Connected red interior and lower outline; five vowels on one fixed surface. Small-opening response still needs polish. | [CONNECTED_VOWELS.md](CONNECTED_VOWELS.md) |
+| Blink | New shared-onset, roughly 7:3 closure and thicker shallow line; pending owner review. | [BLINK_ALIGNED.md](BLINK_ALIGNED.md) |
 | Happy | Shared upper/lower onset, approximately 7:3 travel; white highlight stays until covered. Accepted minimum quality. | [BALANCED_SMILE.md](BALANCED_SMILE.md) |
 | Angry / relaxed / sad | Angry accepted; former curved sad reassigned to relaxed; steeper straight-looking sad provisionally accepted. | [EMOTIONS.md](EMOTIONS.md) |
 | Surprised | Normal round eyes, OH mouth plus raised ears; provisionally accepted. Ears are independent of blink and mouth. | [SURPRISE_EARS.md](SURPRISE_EARS.md) |
@@ -30,6 +36,7 @@ from Git; pulling this repository alone does not provide the model.
 
 | Document | Purpose |
 | --- | --- |
+| [BLINK_ALIGNED.md](BLINK_ALIGNED.md) | Current ordinary-blink correction; movement, thickness and one-shot comparison. |
 | [SURPRISE_EARS.md](SURPRISE_EARS.md) | Provisionally accepted raised-ear surprise; source chain, original eyes, independent mouth and blink. |
 | [SURPRISE.md](SURPRISE.md) | Rejected eye-narrowing comparison and mouth-only reference. |
 | [EMOTIONS.md](EMOTIONS.md) | Current curved-relaxed/straighter-sad split; accepted happy and angry preserved. |
@@ -59,7 +66,8 @@ historical routes. They are not the path to the accepted face.
 
 ## Remaining work
 
-The basic expression directions have been reviewed. Next check transitions and
+The basic emotion directions have been reviewed. First evaluate the ordinary
+blink correction, then check transitions and
 how quickly the ears rise, then integrate the chosen driving behavior. Fine
 mouth/onset/audio tuning is a separate follow-up, not a reason to reopen the
 accepted face. Skin-color/perimeter seams and exact eye ratios remain unresolved.

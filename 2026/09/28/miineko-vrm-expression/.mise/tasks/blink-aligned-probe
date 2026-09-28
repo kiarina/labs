@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Align blink onset, upper/lower travel and final line with current emotions"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+: "${BLENDER_BIN:?Set BLENDER_BIN to the Blender executable}"
+"$BLENDER_BIN" -b --python-exit-code 1 --python scripts/refine_blink.py
+STUDY_SUFFIX=-repeat "$BLENDER_BIN" -b --python-exit-code 1 --python scripts/refine_blink.py
+"$BLENDER_BIN" -b --python-exit-code 1 --python scripts/check_blink_aligned.py
+node scripts/verify_blink_aligned.mjs
+"${COMPARE_PYTHON:-.venv/bin/python}" scripts/measure_blink_aligned.py

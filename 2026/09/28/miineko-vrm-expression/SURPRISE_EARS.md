@@ -2,6 +2,10 @@
 
 ## Current direction — 2026-09-29
 
+The ear/face baseline remains accepted. Ordinary blinking is being updated in
+[BLINK_ALIGNED.md](BLINK_ALIGNED.md) after the owner identified its older closure
+method. That candidate retains this model's other expressions and ears.
+
 The owner rejected the [eye narrowing comparison](SURPRISE.md): the normal eyes
 already look wide open. The working design pairs the unchanged normal eyes with an OH mouth and ears
 that stand more upright. The owner provisionally accepted this appearance on
