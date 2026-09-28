@@ -1,6 +1,12 @@
 # Surprise: mouth-only versus subtly taller-looking eyes
 
-## Question and scope — 2026-09-29
+## Superseded after owner review — 2026-09-29
+
+The owner rejected the eye deformation and chose to retain the normal wide-open
+eyes. Continue with [mouth plus raised ears](SURPRISE_EARS.md). This document and
+its outputs preserve the preceding comparison, not an accepted design.
+
+## Original question and scope — 2026-09-29
 
 After provisionally accepting the steeper sad eyes, the owner approved comparing
 surprise starting with the existing round eyes and a small vertical mouth. The
@@ -13,8 +19,7 @@ Switch between **驚き：口だけ** and **驚き：目を少し縦長に**. Th
 selects OH at opening .30 and eye strength .40; **えっ！** selects OH at .65 and
 eye strength 1. The mouth-only option ignores eye strength. These are starting
 poses, not an assertion that their emotional reading is settled. The original W
-still gives the open mouth a cheerful quality; the owner has not evaluated the
-surprise direction yet. Keep the accepted happy/angry/relaxed/sad references.
+still gives the open mouth a cheerful quality; the owner subsequently rejected the eye change. Keep the accepted happy/angry/relaxed/sad references.
 
 Mouth opening, vowel and eye strength remain independently controllable. The
 existing `early` mouth response is q^.6, so the displayed opening is not the raw
@@ -73,6 +78,5 @@ same VRM bytes. [Runtime evidence](results/surprise-evaluation.json) covers
 1280/600/390 px layouts. Pixel equality of retained states and weight validity
 are distinct from judging whether the new expression is cute or surprised.
 
-Next: owner evaluation of the two directions; then integrate the chosen design
-into the authoring route and check transitions with the other expressions.
+Next: test the owner-requested raised-ear direction in [SURPRISE_EARS.md](SURPRISE_EARS.md).
 Skin seams, precise eye ratios and mouth/audio polish remain later work.

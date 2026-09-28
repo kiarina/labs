@@ -22,8 +22,8 @@ approved that direction. A [five-vowel extension](CONNECTED_VOWELS.md) now adds
 wide/shallow and narrow/round openings plus continuous transitions. Arbitrary
 speech-to-vowel inference is still unimplemented.
 
-**Start with [SURPRISE.md](SURPRISE.md)** for the current mouth-only versus
-subtly taller-looking-eye comparison. [EMOTIONS.md](EMOTIONS.md) records the
+**Start with [SURPRISE_EARS.md](SURPRISE_EARS.md)** for the current mouth-plus-ear
+surprise trial. The owner rejected eye narrowing and kept the normal round eyes. [EMOTIONS.md](EMOTIONS.md) records the
 preceding relaxed/sad work.
 The owner accepted the synchronized smile and angry direction, and identified
 the preceding curved sad eyes as relaxed. The straight sad shape was found improved; the current trial adds about 2°
@@ -39,7 +39,8 @@ FBX/textures, blends, VRMs and screenshots are private and excluded from Git.
 
 | Document | Purpose |
 | --- | --- |
-| [SURPRISE.md](SURPRISE.md) | Current surprise direction comparison; separate eye and mouth control, pending owner evaluation. |
+| [SURPRISE_EARS.md](SURPRISE_EARS.md) | Current raised-ear surprise trial; original eyes, independent mouth and blink. |
+| [SURPRISE.md](SURPRISE.md) | Rejected eye-narrowing comparison and mouth-only reference. |
 | [EMOTIONS.md](EMOTIONS.md) | Current curved-relaxed/straighter-sad split; accepted happy and angry preserved. |
 | [BALANCED_SMILE.md](BALANCED_SMILE.md) | Accepted minimum-quality smile baseline; shared onset, upper/lower ratio, remaining limits. |
 | [CRESCENT_SMILE.md](CRESCENT_SMILE.md) | Earlier broad smile; owner found the lower-lid lift and darkened highlight frightening. |

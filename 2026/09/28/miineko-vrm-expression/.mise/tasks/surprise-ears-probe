@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Raise the ears while preserving the normal eyes"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+: "${BLENDER_BIN:?Set BLENDER_BIN to the Blender executable}"
+"$BLENDER_BIN" -b --python-exit-code 1 --python scripts/build_surprise_ears.py
+STUDY_SUFFIX=-repeat "$BLENDER_BIN" -b --python-exit-code 1 --python scripts/build_surprise_ears.py
+"$BLENDER_BIN" -b --python-exit-code 1 --python scripts/check_surprise_ears.py
+node scripts/verify_surprise_ears.mjs
+"${COMPARE_PYTHON:-.venv/bin/python}" scripts/measure_surprise_ears.py

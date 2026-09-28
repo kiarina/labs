@@ -123,6 +123,6 @@ presets, not the new sad/relaxed meaning.
 ## Next work
 
 The owner provisionally accepted the stronger sad angle. Continue with the
-[surprise comparison](SURPRISE.md), keeping happy, angry, sad and relaxed intact. Angle refinements, 7:3 tuning, skin-color seams and mouth/audio
+[mouth-and-ear surprise comparison](SURPRISE_EARS.md), keeping happy, angry, sad and relaxed intact. Angle refinements, 7:3 tuning, skin-color seams and mouth/audio
 response can follow the basic expression set. Gaze, springs, full-body poses,
 target-runtime checks and end-to-end generation remain open.
