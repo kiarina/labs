@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+BLENDER_BIN="${BLENDER_BIN:-blender}"
+HAPPY_RUN=happy-arc "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/add_happy_expression.py
+HAPPY_RUN=happy-arc-repeat "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/add_happy_expression.py
+BLINK_RUN=happy-arc VERIFY_HAPPY=1 VERIFY_RELAXED=1 VERIFY_MOUTH=1 VERIFY_VOWELS=1 \
+ "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/check_blink_roundtrip.py
+node scripts/verify_happy.mjs

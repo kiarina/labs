@@ -19,6 +19,10 @@ names=['blink','blink_left','blink_right']
 if os.environ.get('VERIFY_RELAXED')=='1':
     names.append('relaxed')
     assert preset.relaxed.override_blink=='blend'
+if os.environ.get('VERIFY_HAPPY')=='1':
+    names.append('happy')
+    assert preset.happy.override_blink=='blend' and preset.happy.override_mouth=='none'
+    assert len(preset.happy.morph_target_binds)==6 and len(preset.happy.texture_transform_binds)==4
 if os.environ.get('VERIFY_MOUTH')=='1':names.append('aa')
 if os.environ.get('VERIFY_VOWELS')=='1':names.extend(['ih','ou','ee','oh'])
 for name in names:

@@ -5,10 +5,11 @@ body{margin:0;background:#20232a;color:#edf0f5;font:16px system-ui;height:100vh;
 @media(max-width:600px){body.motion-preview header{gap:8px;padding:10px;font-size:13px}body.motion-preview h1{font-size:16px}body.motion-preview header input[type=range]{width:90px}body.motion-preview button,body.motion-preview select{padding:5px 8px}body.motion-preview .motion-controls{font-size:13px;gap:8px}body.motion-preview #mouth-play{min-width:145px}body.motion-preview #mouth-blend{min-width:170px}}
 </style>
 <header><h1>みぃねこ：表情の比較</h1>
-<select id="method" aria-label="比較する試作"><optgroup label="選んだ方向での試作"><option value="mouth-aa-aligned">採用版：目と5母音</option><option value="mouth-full-refined">比較：4母音を調整</option><option value="mouth-onset-recessed">比較：あの開き始めまで</option><option value="mouth-profile-fitted">比較：前の横顔</option><option value="mouth-vowels-flatstart">正面の基準：下側を平らに</option><option value="mouth-vowels-stable">比較：前の口の開き方</option><option value="mouth-red-bound-light">比較：口の輪郭を軽く</option><option value="mouth-red-bound">赤い口：元の輪郭</option><option value="overlay-selected-plus">選んだ案＋リラックス</option></optgroup><optgroup label="前の比較・参考"><option value="mouth-red-vowels">参考：調整前の５種類</option><option value="mouth-aa-onset">前の口：シンプル</option><option value="mouth-aa-tongue">前の口：ピンクを少し</option><option value="continuous-fresh">元のまばたき（選択時）</option><option value="overlay-refined">不採用：目尻を丸く調整</option><option value="continuous-blink-morph">参考：まぶたの形を動かす</option><option value="stitched-wide">参考：目の周囲を作り直す</option></optgroup></select>
+<select id="method" aria-label="比較する試作"><optgroup label="選んだ方向での試作"><option value="happy-arc">試作：にっこりした目</option><option value="mouth-aa-aligned">採用版：目と5母音</option><option value="mouth-full-refined">比較：4母音を調整</option><option value="mouth-onset-recessed">比較：あの開き始めまで</option><option value="mouth-profile-fitted">比較：前の横顔</option><option value="mouth-vowels-flatstart">正面の基準：下側を平らに</option><option value="mouth-vowels-stable">比較：前の口の開き方</option><option value="mouth-red-bound-light">比較：口の輪郭を軽く</option><option value="mouth-red-bound">赤い口：元の輪郭</option><option value="overlay-selected-plus">選んだ案＋リラックス</option></optgroup><optgroup label="前の比較・参考"><option value="mouth-red-vowels">参考：調整前の５種類</option><option value="mouth-aa-onset">前の口：シンプル</option><option value="mouth-aa-tongue">前の口：ピンクを少し</option><option value="continuous-fresh">元のまばたき（選択時）</option><option value="overlay-refined">不採用：目尻を丸く調整</option><option value="continuous-blink-morph">参考：まぶたの形を動かす</option><option value="stitched-wide">参考：目の周囲を作り直す</option></optgroup></select>
 <label>目を閉じる <input id="weight" type="range" min="0" max="1" step="0.01" value="0"><output id="value">0%</output></label>
 <select id="eye"><option value="blink">両目</option><option value="blinkLeft">左目</option><option value="blinkRight">右目</option></select>
 <label id="relaxed-control" hidden>リラックス <input id="relaxed" type="range" min="0" max="1" step="0.01" value="0"><output id="relaxed-value">0%</output></label>
+<label id="happy-control" hidden>にっこり <input id="happy" type="range" min="0" max="1" step="0.01" value="0"><output id="happy-value">0%</output></label>
 <label id="mouth-control" hidden>口を開く <input id="mouth" type="range" min="0" max="1" step="0.01" value="0"><output id="mouth-value">0%</output></label>
 <label id="vowel-control" hidden>口の形 <select id="vowel"><option value="aa">あ</option><option value="ih">い</option><option value="ou">う</option><option value="ee">え</option><option value="oh">お</option></select></label>
 <select id="angle"><option value="0">正面</option><option value="45">右から斜め</option><option value="90">右から側面</option><option value="-45">左から斜め</option><option value="-90">左から側面</option></select>
@@ -51,14 +52,16 @@ const file=params.get('model')||'mouth-aa-aligned';
 const methodSelect=document.querySelector('#method');
 if([...methodSelect.options].some(o=>o.value===file))methodSelect.value=file;
 else{const option=new Option(file,file,true,true);methodSelect.add(option);}
-methodSelect.onchange=e=>{const next=new URLSearchParams({model:e.target.value});if(previewEnabled)next.set('motion','1');if(['1','greeting'].includes(params.get('audio')))next.set('audio',params.get('audio'));location.search=next.toString();};
+methodSelect.onchange=e=>{const next=new URLSearchParams({model:e.target.value});if(previewEnabled)next.set('motion','1');if(['1','greeting'].includes(params.get('audio')))next.set('audio',params.get('audio'));if(params.has('happy'))next.set('happy',params.get('happy'));location.search=next.toString();};
 if(!/^[a-z0-9-]+$/.test(file))throw new Error('Invalid local artifact directory');
 const gltf=await loader.loadAsync(`/artifacts/${file}/continuous-blink.vrm`);
 const vrm=gltf.userData.vrm;scene.add(vrm.scene);
 const reference=(await loader.loadAsync('/artifacts/base-vrm.vrm')).userData.vrm;
 scene.add(reference.scene);reference.update(0);reference.scene.visible=false;
-let motion=null,motionStart=0,weight=0,angle=0,eye='blink',lidsVisible=true,relaxation=0,mouthOpening=0,mouthVowel='aa';
+let motion=null,motionStart=0,weight=0,angle=0,eye='blink',lidsVisible=true,relaxation=0,happiness=0,mouthOpening=0,mouthVowel='aa';
 const hasRelaxed=(vrm.expressionManager.getExpression('relaxed')?.binds.length||0)>0;
+const hasHappy=(vrm.expressionManager.getExpression('happy')?.binds.length||0)>0;
+document.querySelector('#happy-control').hidden=!hasHappy;
 const hasMouth=(vrm.expressionManager.getExpression('aa')?.binds.length||0)>0;
 document.querySelector('#relaxed-control').hidden=!hasRelaxed;
 document.querySelector('#mouth-control').hidden=!hasMouth;
@@ -70,8 +73,8 @@ const hasVowels=vowels.every(v=>(vrm.expressionManager.getExpression(v)?.binds.l
 document.querySelector('#vowel-control').hidden=!hasVowels;
 document.querySelector('#mouth-preview').hidden=!hasVowels||!previewEnabled;
 const lids=[];vrm.scene.traverse(o=>{if(o.isMesh&&(o.name.startsWith('Lid')||o.name.startsWith('Eye_patch')))lids.push(o);});
-function set({w=weight,a=angle,e=eye,visible=lidsVisible,r=relaxation,m,v,mix}={}){
- weight=w;angle=a;eye=e;lidsVisible=visible;relaxation=hasRelaxed?r:0;
+function set({w=weight,a=angle,e=eye,visible=lidsVisible,r=relaxation,h=happiness,m,v,mix}={}){
+ weight=w;angle=a;eye=e;lidsVisible=visible;relaxation=hasRelaxed?r:0;happiness=hasHappy?Math.max(0,Math.min(1,h)):0;
  if(mix!==undefined&&hasVowels){
   mouthWeights=normalizeVowels(mix);
   const dominant=vowels.reduce((a,b)=>mouthWeights[a]>=mouthWeights[b]?a:b);
@@ -82,13 +85,15 @@ function set({w=weight,a=angle,e=eye,visible=lidsVisible,r=relaxation,m,v,mix}={
  }
  mouthOpening=vowels.reduce((s,name)=>s+mouthWeights[name],0);
  for(const name of ['blink','blinkLeft','blinkRight'])vrm.expressionManager.setValue(name,0);
- vrm.expressionManager.setValue('relaxed',relaxation);
+ vrm.expressionManager.setValue('happy',happiness);
+ vrm.expressionManager.setValue('relaxed',relaxation*(1-happiness));
  for(const name of vowels)vrm.expressionManager.setValue(name,mouthWeights[name]);
  vrm.expressionManager.setValue(eye,weight);vrm.update(0);
  vrm.scene.visible=visible;reference.scene.visible=!visible;
  const rad=angle*Math.PI/180;camera.position.set(2.5*Math.sin(rad),.64,2.5*Math.cos(rad));camera.lookAt(0,.64,0);
  renderer.render(scene,camera);
  document.querySelector('#weight').value=weight;document.querySelector('#value').value=`${Math.round(weight*100)}%`;document.querySelector('#lids').checked=lidsVisible;
+ document.querySelector('#happy').value=happiness;document.querySelector('#happy-value').value=`${Math.round(happiness*100)}%`;
  document.querySelector('#relaxed').value=relaxation;document.querySelector('#relaxed-value').value=`${Math.round(relaxation*100)}%`;
  document.querySelector('#mouth').value=mouthOpening;document.querySelector('#mouth-value').value=`${Math.round(mouthOpening*100)}%`;
  document.querySelector('#vowel').value=mouthVowel;
@@ -145,8 +150,9 @@ async function loadAudioPreview(){
   window.addEventListener('pagehide',()=>{media.pause();URL.revokeObjectURL(url);},{once:true});
  }catch(error){status.textContent='音声テストを読み込めませんでした';window.probe.audioError=String(error);}
 }
-window.probe={mouthPlayback,seekMouth,stopMouth,set,vrm,reference,renderer,scene,camera,loader,lids,hasRelaxed,hasMouth,hasVowels,blinkAt,setMotion,stats(){return lids.map(o=>({name:o.name,vertexAlpha:o.geometry.attributes.color?.itemSize,alphaMode:o.material.transparent,offset:o.material.map?.offset.toArray(),morphs:o.morphTargetInfluences,visible:o.visible}));}};
+window.probe={mouthPlayback,seekMouth,stopMouth,set,vrm,reference,renderer,scene,camera,loader,lids,hasRelaxed,hasHappy,hasMouth,hasVowels,blinkAt,setMotion,stats(){return lids.map(o=>({name:o.name,vertexAlpha:o.geometry.attributes.color?.itemSize,alphaMode:o.material.transparent,offset:o.material.map?.offset.toArray(),morphs:o.morphTargetInfluences,visible:o.visible}));}};
 document.querySelector('#weight').oninput=e=>{setMotion(null);set({w:+e.target.value});};
+document.querySelector('#happy').oninput=e=>set({h:+e.target.value});
 document.querySelector('#relaxed').oninput=e=>set({r:+e.target.value});
 document.querySelector('#mouth').oninput=e=>{manualMouth();set({m:+e.target.value});};
 document.querySelector('#vowel').onchange=e=>{manualMouth();set({v:e.target.value});};
@@ -196,6 +202,6 @@ renderer.setAnimationLoop(t=>{
   set(next);
  }
 });
-set();document.querySelector('#status').textContent='試作・品質評価中';window.ready=true;
+const initialHappy=Number(params.get('happy')||0);set({h:Number.isFinite(initialHappy)?initialHappy:0});document.querySelector('#status').textContent='試作・品質評価中';window.ready=true;
 if(previewEnabled&&hasVowels&&['1','greeting'].includes(params.get('audio')))void loadAudioPreview();
 </script></html>

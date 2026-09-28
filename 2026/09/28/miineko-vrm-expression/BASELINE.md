@@ -154,8 +154,10 @@ for the current acceptance state.
 A [silent playback preview](MOTION.md) now checks fades, pauses and normalized
 mixtures without modifying this baseline. An [audio-backed vowel test](AUDIO.md)
 now checks known cues and media-clock playback. A [continuous greeting](SPEECH.md)
-adds authored approximate timing and transitions. Next review speech appearance,
-then add a small set of comic emotions; automatic phoneme alignment remains open. Gaze and ear/tail springs need integration and
+adds authored approximate timing and transitions; the owner found it natural.
+A [happy-eye prototype](HAPPY.md) is available for artistic comparison, without
+replacing this baseline. Review its appearance before extending comic emotions;
+automatic phoneme alignment remains open. Gaze and ear/tail springs need integration and
 combined runtime validation. Do not automatically return to rejected realistic
 eyelids or full-head replacement. Another character requires its own calibration.
 
