@@ -4,7 +4,9 @@
 
 The owner selected the sticker sheet’s left-column, third-row smile as the
 full-strength target. The short-line attempt was later corrected to keep the width and thickness of
-its 92% state; [CRESCENT_SMILE.md](CRESCENT_SMILE.md) is the latest candidate;
+its 92% state; [CRESCENT_SMILE.md](CRESCENT_SMILE.md) records that trial. The current
+[BALANCED_SMILE.md](BALANCED_SMILE.md) tests upper-led closure without highlight
+darkening;
 this document retains the preceding shallow-arc and shading-control experiment.
 
 ## Priority and scope — 2026-09-29

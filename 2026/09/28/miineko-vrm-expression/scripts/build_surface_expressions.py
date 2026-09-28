@@ -6,10 +6,10 @@ from mathutils.bvhtree import BVHTree
 root=Path(__file__).resolve().parents[1];source=root/'artifacts/mouth-connected-vowels'
 suffix=os.environ.get('STUDY_SUFFIX','');assert suffix in ['', '-repeat']
 normal_mode=os.environ.get('LID_NORMALS','skin-fit');assert normal_mode in ['skin-fit','source']
-style=os.environ.get('EXPRESSION_STYLE','original');assert style in ['original','rounded','crescent']
-rounded=style in ['rounded','crescent'];crescent=style=='crescent'
+style=os.environ.get('EXPRESSION_STYLE','original');assert style in ['original','rounded','crescent','balanced']
+rounded=style in ['rounded','crescent','balanced'];crescent=style=='crescent';balanced=style=='balanced'
 assert not (rounded and normal_mode=='source'), 'Keep the shading control separate from the rounded-smile study'
-out=root/'artifacts'/(('crescent-smile' if crescent else 'rounded-smile' if rounded else 'surface-expressions')+('-source' if normal_mode=='source' else '')+suffix);out.mkdir(exist_ok=True)
+out=root/'artifacts'/(('balanced-smile' if balanced else 'crescent-smile' if crescent else 'rounded-smile' if rounded else 'surface-expressions')+('-source' if normal_mode=='source' else '')+suffix);out.mkdir(exist_ok=True)
 expected=json.loads((source/'report.json').read_text())['outputSha256'];assert hashlib.sha256((source/'continuous-blink.vrm').read_bytes()).hexdigest()==expected
 bpy.ops.wm.open_mainfile(filepath=str(source/'continuous-blink.blend'))
 body=bpy.data.objects['Miineko_Body'];arm=bpy.data.objects['Miineko_Rig'];mesh=body.data;mesh.calc_loop_triangles()
@@ -46,6 +46,17 @@ if crescent:
 report={'expressionStyle':style,'lidNormalMode':normal_mode,'sourceSha256':expected,'scope':'expression-direction probe on fixed revised-eye surface; no source head deformation','eyes':{},'shapes':shapes}
 for side,cx in [('L',.1764),('R',-.1848)]:
  cz=.619;rx=.104;rz=.113;samples=[]
+ if balanced:
+  # Calibrate travel from visible source artwork, not the oversized lid shell.
+  zs=np.linspace(.50,.75,1001);eye_z=[]
+  for z in zs:
+   c=sample(cx,float(z));pink=c[0]>max(.08,1.6*c[1]) and c[2]>max(.035,1.2*c[1])
+   if not pink:eye_z.append(float(z))
+  assert len(eye_z)>300
+  top,bottom=max(eye_z),min(eye_z);upper_origin=top+.001;lower_origin=bottom-.001
+  gap=.024;travel=upper_origin-lower_origin-gap
+  shapes={'blink':{'upper':(upper_origin-.619,1),'lower':(.622-lower_origin,1)},'happy':{'upper':(.7*travel,math.sqrt(.055/.004)),'lower':(.3*travel,math.sqrt(.055/.004))},'relaxed':{'upper':(upper_origin-.660,1),'lower':(0,1)}}
+  report.setdefault('closureCalibration',{})[side]={'top':top,'bottom':bottom,'upperOrigin':upper_origin,'lowerOrigin':lower_origin,'upperTravel':.7*travel,'lowerTravel':.3*travel,'gap':gap,'centerUpperShare':(.7*travel-.001)/(travel-.002),'shapes':shapes}
  for radius in [1.10,1.22,1.35]:
   for angle in np.linspace(0,2*math.pi,96,endpoint=False):
    x,z=cx+rx*radius*math.cos(angle),cz+rz*radius*math.sin(angle);c=sample(x,z)
@@ -55,6 +66,7 @@ for side,cx in [('L',.1764),('R',-.1848)]:
  verts=[];normals=[];colors=[];ink_mask=[];faces=[];parents=[];lookup={};xs=np.linspace(cx-rx*1.24,cx+rx*1.24,81)
  for ti,ids in enumerate(tris):
   points=pos[ids]
+  if balanced and np.linalg.norm(np.cross(points[1].astype(float)-points[0],points[2].astype(float)-points[0]))<1e-9:continue
   if points[:,1].min()>-.1 or points[:,0].min()>xs[-1] or points[:,0].max()<xs[0] or points[:,2].max()<cz-rz*1.24 or points[:,2].min()>cz+rz*1.24:continue
   lo=max(0,np.searchsorted(xs,points[:,0].min(),side='right')-1);hi=min(len(xs)-2,np.searchsorted(xs,points[:,0].max()))
   for i in range(lo,hi+1):
@@ -80,7 +92,7 @@ for side,cx in [('L',.1764),('R',-.1848)]:
     polygon.append(lookup[key])
    for j in range(1,len(polygon)-1):
     t=(polygon[0],polygon[j],polygon[j+1])
-    if len(set(t))==3 and np.linalg.norm(np.cross(np.array(verts[t[1]])-verts[t[0]],np.array(verts[t[2]])-verts[t[0]]))>1e-12:faces.append(t);parents.append(ti)
+    if len(set(t))==3 and np.linalg.norm(np.cross(np.array(verts[t[1]])-verts[t[0]],np.array(verts[t[2]])-verts[t[0]]))>(1e-10 if balanced else 1e-12):faces.append(t);parents.append(ti)
  report['eyes'][side]={'verticesPerLid':len(verts),'trianglesPerLid':len(faces),'skinSamples':len(samples)}
  for direction,label,origin,offset in [(1,'upper',upper_origin,.0007),(-1,'lower',lower_origin,.0004)]:
   name=f'Surface Lid {side} {label}';data=bpy.data.meshes.new(name);xyz=np.array(verts);xyz[:,1]-=offset;data.from_pydata(xyz.tolist(),[],faces);data.update();obj=bpy.data.objects.new(name,data);bpy.context.collection.objects.link(obj);obj.parent=arm;vg=obj.vertex_groups.new(name='J_Bip_C_Head');vg.add(list(range(len(verts))),1,'REPLACE');obj.modifiers.new('Armature','ARMATURE').object=arm
@@ -88,7 +100,9 @@ for side,cx in [('L',.1764),('R',-.1848)]:
   data.normals_split_custom_set([normals[l.vertex_index] for l in data.loops])
   uv=data.uv_layers.new(name='ExpressionReveal');attr=data.color_attributes.new(name='SkinTint',type='FLOAT_COLOR',domain='CORNER');data.color_attributes.active_color=attr
   for loop in data.loops:
-   p=verts[loop.vertex_index];uv.data[loop.index].uv=(.5+(p[0]-cx)/((16 if rounded else 8)*rx),.5+3*direction*(p[2]-origin));attr.data[loop.index].color=colors[loop.vertex_index]
+   p=verts[loop.vertex_index];u=.5+(p[0]-cx)/((16 if rounded else 8)*rx);v=.5+3*direction*(p[2]-origin)
+   if balanced:v=min(v,.48-direction*3*.004*((p[0]-cx)/rx)**2)
+   uv.data[loop.index].uv=(u,v);attr.data[loop.index].color=colors[loop.vertex_index]
   w=h=2048;u=(np.arange(w)+.5)/w;v=(np.arange(h)+.5)/h;q=(16 if rounded else 8)*(u-.5)
   distance=v[:,None]-.5+direction*3*.004*q[None,:]**2;alpha=smooth(distance/.0015)
   ink=(1-smooth((distance-.018)/.006))*(1-smooth((abs(q)[None,:]-1.40)/.25)) if direction==1 else np.zeros_like(distance)
@@ -119,7 +133,7 @@ for side,cx in [('L',.1764),('R',-.1848)]:
    sim=bpy.data.images.new(stroke_name,width=w,height=h,alpha=True);sim.pixels.foreach_set(stroke_rgba.ravel());sim.filepath_raw=str(out/f'{side}-upper-ink.png');sim.file_format='PNG';sim.save();sim=bpy.data.images.load(sim.filepath_raw,check_existing=False);sim.pack()
    next(n for n in stroke_mat.node_tree.nodes if n.type=='TEX_IMAGE').image=sim
    for expression,settings in shapes.items():
-    depth,scale=(0,1) if crescent and expression=='happy' else settings['upper']
+    depth,scale=(0,1) if (crescent or balanced) and expression=='happy' else settings['upper']
     for target in [expression]+([('blink_left' if side=='L' else 'blink_right')] if expression=='blink' else []):
      bind=getattr(presets,target).texture_transform_binds.add();bind.material=stroke_mat;bind.scale=(scale,1);bind.offset=((1-scale)/2,-3*depth)
    if crescent:
@@ -137,6 +151,7 @@ for side,cx in [('L',.1764),('R',-.1848)]:
     fill_xyz=np.array([v.co for v in fill_mesh.vertices]);np.savez_compressed(out/f'audit-{side}-fill.npz',source=pos,sourceTriangles=tris,opening=fill_xyz,openingTriangles=np.array(faces),parentTriangle=np.array(parents),offset=np.array([0,-.0002,0]))
    ink_xyz=np.array([v.co for v in stroke_mesh.vertices]);np.savez_compressed(out/f'audit-{side}-ink.npz',source=pos,sourceTriangles=tris,opening=ink_xyz,openingTriangles=np.array(faces),parentTriangle=np.array(parents),offset=np.array([0,-offset-.0002,0]))
   np.savez_compressed(out/f'audit-{side}-{label}.npz',source=pos,sourceTriangles=tris,opening=xyz,openingTriangles=np.array(faces),parentTriangle=np.array(parents),offset=np.array([0,-offset,0]))
+if balanced:report['shapes']={side:c['shapes'] for side,c in report['closureCalibration'].items()}
 assert np.array_equal(pos,np.array([v.co for v in body.data.vertices]))
 bpy.ops.wm.save_as_mainfile(filepath=str(out/'continuous-blink.blend'));assert bpy.ops.export_scene.vrm(filepath=str(out/'continuous-blink.vrm'))=={'FINISHED'}
 path=out/'continuous-blink.vrm';raw=path.read_bytes();size=struct.unpack_from('<I',raw,12)[0];doc=json.loads(raw[20:20+size]);tail=raw[20+size:];patched=[]

@@ -1,6 +1,13 @@
 # Preserve the eye width and thickness of the former 92% smile
 
-## Owner correction — 2026-09-29
+## Superseded by upper-led closure
+
+The owner found this candidate frightening, attributing it to excessive early
+lower-lid lift and unnecessary highlight darkening. [BALANCED_SMILE.md](BALANCED_SMILE.md)
+now tests approximately 7:3 upper/lower closure with the source highlight intact.
+The former 92% silhouette and the darkening below are historical controls.
+
+## Earlier owner correction — 2026-09-29
 
 The owner found [ROUNDED_SMILE.md](ROUNDED_SMILE.md)'s 100% endpoint too thin, with
 ends that did not fit the original eye size. The supplied **92% screenshot** was

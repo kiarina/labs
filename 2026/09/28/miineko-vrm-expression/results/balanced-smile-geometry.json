@@ -1,0 +1,139 @@
+{
+  "lids": {
+    "audit-L-ink": {
+      "vertices": 6361,
+      "triangles": 9648,
+      "maximumParentPlaneError": 2.978039971134744e-08,
+      "maximumDistance": 0.0009000005084089935
+    },
+    "audit-L-lower": {
+      "vertices": 6361,
+      "triangles": 9648,
+      "maximumParentPlaneError": 1.402688695924248e-08,
+      "maximumDistance": 0.0004000067710876465
+    },
+    "audit-L-upper": {
+      "vertices": 6361,
+      "triangles": 9648,
+      "maximumParentPlaneError": 1.402688695924248e-08,
+      "maximumDistance": 0.0006999971228651702
+    },
+    "audit-R-ink": {
+      "vertices": 6338,
+      "triangles": 9478,
+      "maximumParentPlaneError": 3.1988004751092036e-08,
+      "maximumDistance": 0.000900000857654959
+    },
+    "audit-R-lower": {
+      "vertices": 6338,
+      "triangles": 9478,
+      "maximumParentPlaneError": 1.4526990476759587e-08,
+      "maximumDistance": 0.00040000700391829014
+    },
+    "audit-R-upper": {
+      "vertices": 6338,
+      "triangles": 9478,
+      "maximumParentPlaneError": 1.4526990476759587e-08,
+      "maximumDistance": 0.0006999973556958139
+    }
+  },
+  "mouthBindingsUnchanged": true,
+  "sourceBodyCoordinatesExact": true,
+  "noLidMorphs": true,
+  "closureCalibration": {
+    "L": {
+      "top": 0.69425,
+      "bottom": 0.52525,
+      "upperOrigin": 0.69525,
+      "lowerOrigin": 0.52425,
+      "upperTravel": 0.10290000000000003,
+      "lowerTravel": 0.044100000000000014,
+      "gap": 0.024,
+      "centerUpperShare": 0.7027586206896552,
+      "shapes": {
+        "blink": {
+          "upper": [
+            0.07625000000000004,
+            1
+          ],
+          "lower": [
+            0.09775,
+            1
+          ]
+        },
+        "happy": {
+          "upper": [
+            0.10290000000000003,
+            3.7080992435478315
+          ],
+          "lower": [
+            0.044100000000000014,
+            3.7080992435478315
+          ]
+        },
+        "relaxed": {
+          "upper": [
+            0.035250000000000004,
+            1
+          ],
+          "lower": [
+            0,
+            1
+          ]
+        }
+      }
+    },
+    "R": {
+      "top": 0.69425,
+      "bottom": 0.5255,
+      "upperOrigin": 0.69525,
+      "lowerOrigin": 0.5245,
+      "upperTravel": 0.10272500000000005,
+      "lowerTravel": 0.04402500000000002,
+      "gap": 0.024,
+      "centerUpperShare": 0.7027633851468048,
+      "shapes": {
+        "blink": {
+          "upper": [
+            0.07625000000000004,
+            1
+          ],
+          "lower": [
+            0.09750000000000003,
+            1
+          ]
+        },
+        "happy": {
+          "upper": [
+            0.10272500000000005,
+            3.7080992435478315
+          ],
+          "lower": [
+            0.04402500000000002,
+            3.7080992435478315
+          ]
+        },
+        "relaxed": {
+          "upper": [
+            0.035250000000000004,
+            1
+          ],
+          "lower": [
+            0,
+            1
+          ]
+        }
+      }
+    }
+  },
+  "highlightColorBinds": 0,
+  "blackFillAbsent": true,
+  "reimportTextureBinds": {
+    "happy": 6,
+    "relaxed": 6,
+    "blink": 6,
+    "blink_left": 3,
+    "blink_right": 3
+  },
+  "scope": "fixed source-following lids, unchanged head and vowel bindings; no all-pose or aesthetic guarantee"
+}

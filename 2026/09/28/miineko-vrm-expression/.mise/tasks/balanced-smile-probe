@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+BLENDER_BIN="${BLENDER_BIN:-blender}"
+EXPRESSION_STYLE=balanced "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/build_surface_expressions.py
+EXPRESSION_STYLE=balanced STUDY_SUFFIX=-repeat "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/build_surface_expressions.py
+EXPRESSION_STYLE=balanced "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/check_surface_expressions.py
+EXPRESSION_STYLE=balanced node scripts/verify_surface_expressions.mjs
+"${COMPARE_PYTHON:-python3}" scripts/measure_balanced_smile.py
