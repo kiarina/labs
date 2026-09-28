@@ -21,11 +21,14 @@ body{margin:0;background:#20232a;color:#edf0f5;font:16px system-ui;height:100vh;
 <label>開きの強さ <input id="mouth-strength" type="range" min="0" max="1" step="0.05" value="0.8"><output id="mouth-strength-value">80%</output></label>
 <label>位置 <input id="mouth-progress" type="range" min="0" max="5500" step="10" value="0"><output id="mouth-time">0.00秒</output></label>
 <span id="mouth-blend" aria-live="off">閉口</span>
+<label id="audio-volume-control" hidden>音量 <input id="audio-volume" type="range" min="0" max="1" step="0.05" value="0.7"></label>
+<span id="audio-status" role="status" hidden></span>
 </div></header><canvas id="canvas"></canvas>
 <script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/","@pixiv/three-vrm":"/node_modules/@pixiv/three-vrm/lib/three-vrm.module.js"}}</script>
 <script type="module">
 import * as THREE from 'three';
 import {VOWELS, VOWEL_LABELS, normalizeVowels, MouthPlayback, clipDuration} from './scripts/mouth_motion.mjs';
+import {AudioMouthPlayback,validateAudioManifest} from './scripts/audio_mouth.mjs';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {VRMLoaderPlugin} from '@pixiv/three-vrm';
 const params=new URLSearchParams(location.search);
@@ -47,7 +50,7 @@ const file=params.get('model')||'mouth-aa-aligned';
 const methodSelect=document.querySelector('#method');
 if([...methodSelect.options].some(o=>o.value===file))methodSelect.value=file;
 else{const option=new Option(file,file,true,true);methodSelect.add(option);}
-methodSelect.onchange=e=>{const next=new URLSearchParams({model:e.target.value});if(previewEnabled)next.set('motion','1');location.search=next.toString();};
+methodSelect.onchange=e=>{const next=new URLSearchParams({model:e.target.value});if(previewEnabled)next.set('motion','1');if(params.get('audio')==='1')next.set('audio','1');location.search=next.toString();};
 if(!/^[a-z0-9-]+$/.test(file))throw new Error('Invalid local artifact directory');
 const gltf=await loader.loadAsync(`/artifacts/${file}/continuous-blink.vrm`);
 const vrm=gltf.userData.vrm;scene.add(vrm.scene);
@@ -60,6 +63,8 @@ document.querySelector('#relaxed-control').hidden=!hasRelaxed;
 document.querySelector('#mouth-control').hidden=!hasMouth;
 const vowels=VOWELS;
 const mouthPlayback=new MouthPlayback();let mouthWeights=normalizeVowels();
+let audioPlayback=null,audioActive=false;
+const isAudio=()=>document.querySelector('#mouth-sequence').value==='audio';
 const hasVowels=vowels.every(v=>(vrm.expressionManager.getExpression(v)?.binds.length||0)>0);
 document.querySelector('#vowel-control').hidden=!hasVowels;
 document.querySelector('#mouth-preview').hidden=!hasVowels||!previewEnabled;
@@ -91,16 +96,51 @@ function set({w=weight,a=angle,e=eye,visible=lidsVisible,r=relaxation,m,v,mix}={
 function setMotion(mode){motion=mode;motionStart=performance.now();document.querySelector('#natural').setAttribute('aria-pressed',String(mode==='natural'));document.querySelector('#play').setAttribute('aria-pressed',String(mode==='slow'));}
 function blinkAt(ms){const t=ms%3000;const ease=x=>x*x*(3-2*x);if(t<1000)return 0;if(t<1100)return ease((t-1000)/100);if(t<1140)return 1;if(t<1320)return 1-ease((t-1140)/180);return 0;}
 function refreshPlayback(){
- document.querySelector('#mouth-play').textContent=mouthPlayback.playing?'口の動きを一時停止':'口の動きを再生';
- document.querySelector('#mouth-play').setAttribute('aria-pressed',String(mouthPlayback.playing));
- document.querySelector('#mouth-progress').max=clipDuration(mouthPlayback.mode);
- document.querySelector('#mouth-progress').value=mouthPlayback.position;
- document.querySelector('#mouth-time').textContent=`${(mouthPlayback.position/1000).toFixed(2)}秒`;
+ const active=isAudio()?audioPlayback:mouthPlayback;
+ const playing=active?.playing||false;
+ document.querySelector('#mouth-play').textContent=isAudio()?(playing?'音声と口を一時停止':'音声と口を再生'):(playing?'口の動きを一時停止':'口の動きを再生');
+ document.querySelector('#mouth-play').setAttribute('aria-pressed',String(playing));
+ document.querySelector('#mouth-progress').max=isAudio()?(audioPlayback?.duration||0):clipDuration(mouthPlayback.mode);
+ document.querySelector('#mouth-progress').value=active?.position||0;
+ document.querySelector('#mouth-time').textContent=`${((active?.position||0)/1000).toFixed(2)}秒`;
  document.querySelector('#mouth-strength-value').textContent=`${Math.round(mouthPlayback.amount*100)}%`;
+ document.querySelector('#audio-volume-control').hidden=!isAudio();
 }
-function seekMouth(ms){set({mix:mouthPlayback.seek(ms,performance.now())});refreshPlayback();}
-function stopMouth(){set({mix:mouthPlayback.reset(performance.now())});refreshPlayback();}
-function manualMouth(){mouthPlayback.reset(performance.now());refreshPlayback();}
+function seekMouth(ms){
+ if(isAudio()&&audioPlayback){audioActive=true;set({mix:audioPlayback.seek(ms)});}
+ else set({mix:mouthPlayback.seek(ms,performance.now())});
+ refreshPlayback();
+}
+function stopMouth(){audioActive=false;audioPlayback?.reset();set({mix:mouthPlayback.reset(performance.now())});refreshPlayback();}
+function manualMouth(){audioActive=false;audioPlayback?.reset();mouthPlayback.reset(performance.now());refreshPlayback();}
+async function loadAudioPreview(){
+ const status=document.querySelector('#audio-status');status.hidden=false;status.textContent='テスト音声を読み込み中';
+ try{
+  const response=await fetch('/artifacts/vowel-audio/manifest.json',{cache:'no-store'});if(!response.ok)throw Error('Audio manifest unavailable');
+  const manifest=validateAudioManifest(await response.json());
+  const wav=await fetch('/artifacts/vowel-audio/vowels.wav',{cache:'no-store'});if(!wav.ok)throw Error('Audio file unavailable');
+  const bytes=await wav.arrayBuffer();
+  const digest=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),n=>n.toString(16).padStart(2,'0')).join('');
+  if(digest!==manifest.audioSha256)throw Error('Audio and envelope fingerprints differ');
+  const media=new Audio();media.preload='auto';media.volume=.7;
+  const url=URL.createObjectURL(new Blob([bytes],{type:'audio/wav'}));
+  await new Promise((resolve,reject)=>{
+   const timer=setTimeout(()=>reject(Error('Audio load timed out')),15000);
+   media.addEventListener('loadedmetadata',()=>{clearTimeout(timer);resolve();},{once:true});
+   media.addEventListener('error',()=>{clearTimeout(timer);reject(Error('Audio decode failed'));},{once:true});
+   media.src=url;media.load();
+  });
+  if(Math.abs(media.duration-manifest.duration)>.02)throw Error('Audio duration mismatch');
+  audioPlayback=new AudioMouthPlayback(media,manifest);
+  for(const event of ['play','pause','timeupdate','seeked','ended','ratechange'])media.addEventListener(event,()=>{if(isAudio()&&audioActive){set({mix:audioPlayback.weights()});refreshPlayback();}});
+  media.addEventListener('error',()=>{if(isAudio()){audioActive=false;set({mix:normalizeVowels()});status.textContent='音声の再生で問題が発生しました';refreshPlayback();}});
+  document.querySelector('#mouth-sequence').add(new Option('母音テスト（音声あり）','audio'));
+  window.probe.audioPlayback=audioPlayback;window.probe.audioReady=true;
+  status.textContent=`仮のテスト音声：${manifest.source?.voice||'母音'}`;
+  document.querySelector('#mouth-sequence').value='audio';refreshPlayback();
+  window.addEventListener('pagehide',()=>{media.pause();URL.revokeObjectURL(url);},{once:true});
+ }catch(error){status.textContent='音声テストを読み込めませんでした';window.probe.audioError=String(error);}
+}
 window.probe={mouthPlayback,seekMouth,stopMouth,set,vrm,reference,renderer,scene,camera,loader,lids,hasRelaxed,hasMouth,hasVowels,blinkAt,setMotion,stats(){return lids.map(o=>({name:o.name,vertexAlpha:o.geometry.attributes.color?.itemSize,alphaMode:o.material.transparent,offset:o.material.map?.offset.toArray(),morphs:o.morphTargetInfluences,visible:o.visible}));}};
 document.querySelector('#weight').oninput=e=>{setMotion(null);set({w:+e.target.value});};
 document.querySelector('#relaxed').oninput=e=>set({r:+e.target.value});
@@ -111,20 +151,46 @@ document.querySelector('#eye').onchange=e=>set({e:e.target.value});
 document.querySelector('#lids').onchange=e=>set({visible:e.target.checked});
 document.querySelector('#play').onclick=()=>setMotion(motion==='slow'?null:'slow');
 document.querySelector('#natural').onclick=()=>setMotion(motion==='natural'?null:'natural');
-document.querySelector('#mouth-play').onclick=()=>{set({mix:mouthPlayback.play(!mouthPlayback.playing,performance.now())});refreshPlayback();};
+document.querySelector('#mouth-play').onclick=async()=>{
+ if(isAudio()&&audioPlayback){
+  audioActive=true;
+  try{if(audioPlayback.playing)audioPlayback.pause();else await audioPlayback.play();if(audioActive&&isAudio())set({mix:audioPlayback.weights()});}
+  catch{if(audioActive&&isAudio()){audioActive=false;set({mix:normalizeVowels()});document.querySelector('#audio-status').textContent='音声を再生できませんでした。もう一度再生してください';}}
+ }else set({mix:mouthPlayback.play(!mouthPlayback.playing,performance.now())});
+ refreshPlayback();
+};
 document.querySelector('#mouth-stop').onclick=stopMouth;
-document.querySelector('#mouth-sequence').onchange=e=>{set({mix:mouthPlayback.select(e.target.value,performance.now())});refreshPlayback();};
-document.querySelector('#mouth-speed').onchange=e=>{set({mix:mouthPlayback.configure({speed:+e.target.value},performance.now())});refreshPlayback();};
-document.querySelector('#mouth-strength').oninput=e=>{set({mix:mouthPlayback.configure({amount:+e.target.value},performance.now())});refreshPlayback();};
+document.querySelector('#mouth-sequence').onchange=e=>{
+ stopMouth();
+ if(e.target.value==='audio')audioPlayback?.configure({speed:mouthPlayback.speed,amount:mouthPlayback.amount});
+ else set({mix:mouthPlayback.select(e.target.value,performance.now())});
+ refreshPlayback();
+};
+function configureMouth(options){
+ const silent=mouthPlayback.configure(options,performance.now());
+ if(isAudio()&&audioPlayback)set({mix:audioPlayback.configure(options)});else set({mix:silent});
+ refreshPlayback();
+}
+document.querySelector('#mouth-speed').onchange=e=>configureMouth({speed:+e.target.value});
+document.querySelector('#mouth-strength').oninput=e=>configureMouth({amount:+e.target.value});
 document.querySelector('#mouth-progress').oninput=e=>seekMouth(+e.target.value);
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&mouthPlayback.playing){set({mix:mouthPlayback.play(false,performance.now())});refreshPlayback();}});
+document.querySelector('#audio-volume').oninput=e=>{if(audioPlayback)audioPlayback.media.volume=+e.target.value;};
+document.addEventListener('visibilitychange',()=>{
+ if(document.hidden){
+  if(isAudio()&&audioPlayback?.playing)audioPlayback.pause();
+  else if(mouthPlayback.playing)set({mix:mouthPlayback.play(false,performance.now())});
+  refreshPlayback();
+ }
+});
 renderer.setAnimationLoop(t=>{
- if(motion||mouthPlayback.playing){
+ if(motion||mouthPlayback.playing||(isAudio()&&audioPlayback?.playing)){
   const next={};
   if(motion)next.w=motion==='natural'?blinkAt(t-motionStart):(1-Math.cos((t-motionStart)*.003))/2;
-  if(mouthPlayback.playing){next.mix=mouthPlayback.advance(t);refreshPlayback();}
+  if(isAudio()&&audioPlayback&&audioActive){next.mix=audioPlayback.weights();refreshPlayback();}
+  else if(mouthPlayback.playing){next.mix=mouthPlayback.advance(t);refreshPlayback();}
   set(next);
  }
 });
 set();document.querySelector('#status').textContent='試作・品質評価中';window.ready=true;
+if(previewEnabled&&hasVowels&&params.get('audio')==='1')void loadAudioPreview();
 </script></html>

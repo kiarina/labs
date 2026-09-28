@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+node --test scripts/audio_mouth.test.mjs
+node scripts/verify_audio_motion.mjs

@@ -152,8 +152,9 @@ for the current acceptance state.
 ## Handoff and remaining work
 
 A [silent playback preview](MOTION.md) now checks fades, pauses and normalized
-mixtures without modifying this baseline. Next evaluate that timing and add
-actual audio synchronization, then additional comic emotions. Gaze and ear/tail springs need integration and
+mixtures without modifying this baseline. An [audio-backed vowel test](AUDIO.md)
+now checks known cues and media-clock playback. Next evaluate short connected
+speech with an explicit alignment/inference method, then additional comic emotions. Gaze and ear/tail springs need integration and
 combined runtime validation. Do not automatically return to rejected realistic
 eyelids or full-head replacement. Another character requires its own calibration.
 

@@ -60,9 +60,9 @@ remains separate from this motion test; no dependency versions were changed.
 
 ## Next verification
 
-Artistic timing still needs review. Before calling this lip sync, add an actual
-audio source and a defined alignment or inference method, then measure visible
-timing against that audio. Also check silence/stop handling, latency and sustained
-mixed expressions in the intended application. The synthetic preview, scripted
+The next [audio-backed test](AUDIO.md) now covers known synthesized vowel cues,
+measured energy, pause/seek/rate controls and the audio playback clock. Artistic
+timing and arbitrary-speech inference still need evaluation, along with physical
+audio/display latency and sustained mixed expressions in the intended application. The synthetic preview, scripted
 blink overlap and sampled weight bounds do not certify phonetic correctness,
 all possible geometry combinations, additional emotions, gaze or spring motion.
