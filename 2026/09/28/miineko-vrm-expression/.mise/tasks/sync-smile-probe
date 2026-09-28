@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+BLENDER_BIN="${BLENDER_BIN:-blender}"
+EXPRESSION_STYLE=sync "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/build_surface_expressions.py
+EXPRESSION_STYLE=sync STUDY_SUFFIX=-repeat "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/build_surface_expressions.py
+EXPRESSION_STYLE=sync "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/check_surface_expressions.py
+EXPRESSION_STYLE=sync node scripts/verify_surface_expressions.mjs
+"${COMPARE_PYTHON:-python3}" scripts/measure_sync_smile.py

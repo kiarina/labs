@@ -3,7 +3,7 @@ import bpy,numpy as np,json,struct,hashlib,os
 from pathlib import Path
 from mathutils import Vector
 from mathutils.bvhtree import BVHTree
-root=Path(__file__).resolve().parents[1];style=os.environ.get('EXPRESSION_STYLE','original');balanced=style=='balanced';crescent=style=='crescent';rounded=style in ['rounded','crescent','balanced'];folder=root/'artifacts'/('balanced-smile' if balanced else 'crescent-smile' if crescent else 'rounded-smile' if rounded else 'surface-expressions');source=root/'artifacts/mouth-connected-vowels';report={'lids':{}}
+root=Path(__file__).resolve().parents[1];style=os.environ.get('EXPRESSION_STYLE','original');synchronized=style=='sync';balanced=style in ['balanced','sync'];crescent=style=='crescent';rounded=style in ['rounded','crescent','balanced','sync'];folder=root/'artifacts'/('sync-smile' if synchronized else 'balanced-smile' if balanced else 'crescent-smile' if crescent else 'rounded-smile' if rounded else 'surface-expressions');source=root/'artifacts/mouth-connected-vowels';report={'lids':{}}
 for path in sorted(folder.glob('audit-*.npz')):
  a=np.load(path);positions=a['source'].astype(float);opening=a['opening'].astype(float);parent=positions[a['sourceTriangles'][a['parentTriangle']]];tri=a['openingTriangles'];raw=opening[tri]-a['offset'];norm=np.cross(parent[:,1]-parent[:,0],parent[:,2]-parent[:,0]);norm/=np.linalg.norm(norm,axis=1)[:,None];error=np.abs(np.einsum('tvc,tc->tv',raw-parent[:,None,0],norm));assert error.max()<2e-7
  tree=BVHTree.FromPolygons([Vector(p) for p in positions],a['sourceTriangles'].tolist(),all_triangles=True);maximum=max(tree.find_nearest(Vector(p))[3] for p in opening);assert maximum<abs(a['offset'][1])+2e-7
@@ -20,7 +20,7 @@ def mouth(document):
   result[name]=binds
  return result
 assert mouth(d)==mouth(s)==mouth(control);report['mouthBindingsUnchanged']=True
-for variant in (['balanced-smile','crescent-smile'] if balanced else ['crescent-smile','rounded-smile'] if crescent else ['rounded-smile','surface-expressions'] if rounded else ['surface-expressions','surface-expressions-source']):
+for variant in (['sync-smile','balanced-smile'] if synchronized else ['balanced-smile','crescent-smile'] if balanced else ['crescent-smile','rounded-smile'] if crescent else ['rounded-smile','surface-expressions'] if rounded else ['surface-expressions','surface-expressions-source']):
  a=root/'artifacts'/variant
  bpy.ops.wm.open_mainfile(filepath=str(a/'continuous-blink.blend'));body=bpy.data.objects['Miineko_Body'];coords=np.array([v.co for v in body.data.vertices]);assert np.array_equal(coords,positions)
  for obj in bpy.data.objects:
@@ -61,7 +61,17 @@ if balanced:
    if b.material.name.endswith('upper ink'):assert np.allclose(b.offset,[0,0]) and np.allclose(b.scale,[1,1])
    else:
     label='upper' if b.material.name.endswith('upper') else 'lower';depth,scale=c['shapes']['happy'][label]
-    assert abs(b.offset[1]+3*depth)<1e-6 and abs(b.scale[0]-scale)<1e-6
+    assert abs(b.offset[1]+(c['revealScales'][label] if synchronized else 3)*depth)<1e-6 and abs(b.scale[0]-scale)<1e-6
+ if synchronized:
+  previous=json.loads((root/'artifacts/balanced-smile/report.json').read_text())['closureCalibration']
+  for side,c in settings['closureCalibration'].items():
+   old=previous[side]
+   assert abs((c['upperOrigin']-c['upperTravel'])-(old['upperOrigin']-old['upperTravel']))<1e-8
+   assert abs((c['lowerOrigin']+c['lowerTravel'])-(old['lowerOrigin']+old['lowerTravel']))<1e-8
+   assert abs((c['upperOrigin']-c['top'])/c['upperTravel']-.01)<1e-8
+   assert abs((c['bottom']-c['lowerOrigin'])/c['lowerTravel']-.01)<1e-8
+   assert all(abs(c['revealScales'][name]*c[name+'Travel']-.35)<1e-8 for name in ['upper','lower'])
+  report['synchronizedNormalizedClearance']=True;report['fullEndpointsPreserved']=True
  report['closureCalibration']=settings['closureCalibration'];report['highlightColorBinds']=0;report['blackFillAbsent']=True
 report['reimportTextureBinds']=bindings;report['scope']='fixed source-following lids, unchanged head and vowel bindings; no all-pose or aesthetic guarantee'
-(root/'results'/('balanced-smile-geometry.json' if balanced else 'crescent-smile-geometry.json' if crescent else 'rounded-smile-geometry.json' if rounded else 'surface-expressions-geometry.json')).write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))
+(root/'results'/('sync-smile-geometry.json' if synchronized else 'balanced-smile-geometry.json' if balanced else 'crescent-smile-geometry.json' if crescent else 'rounded-smile-geometry.json' if rounded else 'surface-expressions-geometry.json')).write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))

@@ -1,108 +1,118 @@
-# Close mainly from the upper lid and preserve the highlight
+# Upper-led smile closure with a shared start
 
 ## Current direction — 2026-09-29
 
-The owner found the [crescent smile](CRESCENT_SMILE.md) frightening and suggested
-that the lower lid rose too far/too early while the upper lid lagged. The owner
-also asked to retain the highlight until the upper lid naturally covers it,
-using approximately **upper 70% / lower 30%** closure as a starting point. This
-supersedes freezing the former 92% shape and darkening its remaining highlight.
-It is an artistic trial ratio, not a physiological rule or a finished design.
+The owner found the [crescent smile](CRESCENT_SMILE.md) frightening and proposed
+upper 70% / lower 30% closure, keeping the highlight unchanged until the upper lid
+covers it. The resulting `balanced-smile` was judged substantially improved.
+The next correction was to start both lids together: the smaller lower movement
+should be slower, not delayed. The current candidate is **`sync-smile`**.
 
-Open `expression-study.html?variant=balanced&happy=.5&opening=0&angle=0`.
-The new endpoint and 25/50/75% transitions can be compared with the preceding
-lower-lid-heavy/darkened-highlight candidate. The body, nose and mouth remain
-unchanged. Existing pink-lid color and perimeter artifacts remain visible; the
-candidate has not been accepted by the owner.
+Open `expression-study.html?variant=sync&happy=.13&opening=0&angle=0`.
+The selector retains `balanced-smile`, which had a later lower-lid onset, and
+older candidates. Mouth control stays independent. Head, nose and source mouth
+are unchanged. The pink-lid color/perimeter artifacts remain unresolved, and
+the latest synchronized candidate has not yet received owner feedback.
 
-## How closure is defined
+## Visible travel, onset and endpoint
 
-The builder samples source eye artwork along each eye's center column, at .00025
-model-unit intervals. Achromatic black/highlight texels determine the visible
-upper and lower limits. It does not use the much larger invisible lid shell as
-the measure of eye height. Current sampled bounds are .69425/.52525 (L) and
-.69425/.52550 (R).
+Source eye artwork is sampled along each center column at .00025 model-unit
+intervals. Achromatic black/highlight texels define the visible limits, rather
+than the oversized invisible lid shell. Sampled top/bottom coordinates are
+.69425/.52525 (L) and .69425/.52550 (R). The former balanced version retained a
+.024-wide central gap and assigned 70/30 of the closing travel to upper/lower.
+After its initial physical clearance, visible upper shares were approximately
+.70276. This is central vertical travel, not the covered fraction of the entire
+eye area or a physiological rule.
 
-Add .001 of neutral clearance above/below those bounds and retain a .024-wide
-vertical gap at full happiness. Allocate 70% of the remaining travel to the upper
-lid and 30% to the lower. After subtracting invisible clearance, the central
-visible upper shares are approximately .70276. This is **central vertical travel**,
-not the fraction of the entire eye area covered. Curvature changes the ratio away
-from the center, so do not claim a uniform 7:3 split over every column.
+The former builder used the same UV scale, alpha margin and physical clearance
+for both lids. The smaller lower travel took longer to cross that margin. In the
+fixed frontal samples it first moved at .16, versus .08 for the upper lid.
 
-The former high/low sweep origins delayed actual contact with the eye. Origins
-now come from these measured bounds. Neutral UVs are clamped just below the reveal
-threshold, including curvature, to suppress peripheral cover at zero. The measured tiny residual is recorded below.
-This makes both lids begin acting earlier. The full smile uses rise coefficient
-.055 rather than the old .1056784; the closure band is lower on the face and its
-width/curve consequently differ from the former 92% snapshot. Preserving that
-snapshot exactly is no longer the objective.
+The synchronized candidate keeps the **full endpoints** of that balanced version.
+Let the visible movement at full strength be `D`. Neutral clearance is now a
+common fraction, .01, of each lid's own total movement: `T=D/(1-.01)`, with
+clearance `.01*T`. Each lid's UV scale is `.35/T`, so its full VRM V shift is
+exactly .35. The same .02 neutral alpha guard now consumes the same normalized
+progress in both lids, instead of delaying the lower one. Curve terms are scaled
+with the same UV factor; the full smile's .055 rise coefficient is retained.
+Ink distances are rescaled to retain the prior blink/relaxed stroke dimensions.
 
-All positions remain fixed source-triangle layers. The highlight fill is absent;
-there are **no happy material-color binds**. The original eye materials/textures
-are unchanged. The extra upper ink remains inactive during a pure smile. Only
-pink lid reveal masks hide the highlight. The source highlight therefore keeps
-its original color in uncovered pixels, rather than fading toward gray/black.
+A short **shared initial dead zone** remains: .02/.35 is about .057. The left upper/lower first move at .06/.06 and the right at .06/.08 in the
+sampled central raster (a .02 sampling interval). This does not assert motion from
+an infinitesimal nonzero weight or simultaneous onset in every eye column.
+At .13 the upper travels farther while the lower has already started. Endpoint
+coordinates match the previous balanced version numerically; filtering can still
+change the rendered edge by about a pixel.
 
-Blink and relaxed full edge positions remain at their earlier levels, but use
-the new per-eye origins and neutral clamp; their onset is not claimed identical.
-The normalized eye-weight driver and independent vowel control remain as in
-[SURFACE_EXPRESSIONS.md](SURFACE_EXPRESSIONS.md). A .030-rise exploratory version
-looked too flat at the endpoint; the final comparison uses .055. This is still a
-visual candidate rather than a claim that the expression is no longer frightening.
+The source highlight keeps its color. There is no black eye fill and no happy
+material-color bind. Pink reveal layers alone cover the eye. The extra upper ink
+remains inactive for a pure smile. Normalized eye weights and independent vowel
+control are as in [SURFACE_EXPRESSIONS.md](SURFACE_EXPRESSIONS.md). Blink and relaxed
+endpoints are retained but their onset uses the new common mapping as well.
 
-## Reproduce and checks
+## Reproduce
 
-Prepare the input and controls using [BASELINE.md](BASELINE.md),
+Prepare the input/control artifacts using [BASELINE.md](BASELINE.md),
 [CONNECTED_VOWELS.md](CONNECTED_VOWELS.md), and the preceding expression studies.
-Use the pinned Blender/VRM add-on, Node and Python versions.
+Keep the pinned Blender/VRM add-on, Node and comparison Python environments.
 
 ```sh
-BLENDER_BIN=/path/to/Blender COMPARE_PYTHON=.venv/bin/python mise run balanced-smile-probe
+BLENDER_BIN=/path/to/Blender COMPARE_PYTHON=.venv/bin/python mise run sync-smile-probe
 ```
 
-Outputs replace only `artifacts/balanced-smile` and `-repeat`, with captures in
-`artifacts/balanced-smile-review`. Models, screenshots and source audits stay
-private/ignored. Existing candidate binaries are retained for comparison.
+This replaces `artifacts/sync-smile`, `-repeat` and captures in
+`artifacts/sync-smile-review`. Private binaries, images and coordinate audits
+stay ignored. The previous candidate remains reproducible with
+`mise run balanced-smile-probe`, which writes its own directories.
 
-- [Geometry and bindings](results/balanced-smile-geometry.json): unchanged source
-  body coordinates and vowel binds, fixed source-following planes, per-eye travel
-  calibration, six texture binds per bilateral eye preset and no black fill or
-  happy color bind after reimport.
-- [Visible motion](results/balanced-smile-motion.json): front-view central lid
-  displacement at 25/50/75/100%, source bright pixels that remain exactly unchanged,
-  and highlight disappearance through occlusion. This measures a small central
-  image region, not all poses/views or subjective naturalness.
-- [Runtime](results/balanced-smile-evaluation.json): zero-eye comparison with the
-  source for five vowels at five angles in two candidates, 120 expression/view
-  samples, 27 mixed weights, live cycle, reset, three widths and repeat-byte parity.
+## Current evidence and limits
 
-## Observations and failed strict checks
+- [Onset measurements](results/sync-smile-onset.json): source-matched frontal
+  captures at 0/2/4/6/8/10/13/16/20/50/100%, separately for both eyes and both
+  candidates. First motion is a median displacement of at least one pixel across
+  five central columns. Compare onset, endpoint displacement and unchanged bright
+  pixels, rather than just checking exported expression weights.
+- [Geometry/import](results/sync-smile-geometry.json): body coordinates and vowel
+  binds unchanged; fixed source-following planes; matching normalized clearance
+  and UV travel; old/new full endpoints preserved; no black fill or color bind.
+- [Runtime](results/sync-smile-evaluation.json): source comparisons for five vowels
+  × five views in two candidates, 120 expression/view samples, early-onset
+  captures, 27 mixed weights, live cycle, frontal reset, three screen widths and
+  repeat-byte equality. Read the recorded pixel deltas: neutral comparisons are
+  not all exact.
 
-In the fixed frontal captures, central upper shares over 25/50/75/100% are
-approximately 70.6–71.8%; at full strength they are 70.8% (L) and 70.6% (R).
-At 50%, 993/1,142 source bright pixels remain exactly unchanged. At 75% and
-100%, the frontal bright count is zero, with no color bind or black fill.
+Changing the UV mapping exposed small oblique/perimeter residuals at neutral.
+In the initial focused check the new candidate had 7 changed pixels (max channel
+6/255) at +45°, one pixel (8/255) at +90°, and four pixels (35/255) at -45°;
+front and -90° matched. The runtime test records deltas per comparison and bounds
+only this candidate to at most ten pixels and 40/255; the older balanced control
+retains its tighter two-pixel, 1/255 limit. This is an acknowledged rendering
+limitation, not exact neutral parity or a solved boundary. Its cause is not fully
+resolved. The visible larger skin-color seam also remains.
 
-A strict zero-state pixel test initially failed near the eye edges. Increasing
-the neutral UV margin from .498 through .49 to .48 reduced the residual; tiny
-degenerate triangles are excluded from these new lid layers (the source body
-is untouched). This did not eliminate the final single-channel-step difference:
-of 50 source comparisons, 45 are exact and five have **one pixel differing by
-1/255** at the same right-oblique view, once per vowel. The test records this
-and permits at most two such pixels only for this candidate; it does not call
-those five comparisons exact. Reset to the frontal initial frame is exact.
+## Earlier balanced results and failed checks
 
-The import check also initially confused material names carrying Blender's
-`.001` suffix after loading another control blend. It now removes scratch scene
-materials before import so canonical names and per-eye bindings can be checked.
+The preceding fixed frontal captures had upper shares of 70.6–71.8% at
+25/50/75/100%; full strength was 70.8% (L), 70.6% (R). At 50%, 993/1,142 bright
+source pixels remained exactly unchanged. At 75/100%, frontal bright counts
+were zero without color changes. See [motion](results/balanced-smile-motion.json),
+[geometry](results/balanced-smile-geometry.json), and
+[runtime](results/balanced-smile-evaluation.json) for those historical values.
 
-## Remaining work
+Strict neutral checking first failed near the eye edges. Increasing the old UV
+margin from .498 through .49 to .48 and excluding near-degenerate lid triangles
+(the source body stays intact) reduced but did not remove the residual: 45 of
+50 comparisons were exact; five right-oblique comparisons each differed in one
+pixel by 1/255. The new normalized UV mapping must not inherit that tighter result
+as if it had been re-established. The reimport check also needed scratch materials
+cleared to avoid confusing Blender's `.001` name suffixes with canonical names.
 
-Assess the intermediate motion and full expression before selecting this ratio.
-The remaining pink color patch, sharp reveal boundaries, and oblique perimeter
-slivers still affect the appearance. Neutral UV clamping can make the peripheral
-cover appear early; do not mistake early onset for seamless eyelid shading.
-Do not restore black highlight painting to conceal a lid-position problem.
-Mouth/audio polish stays deferred. Full pose/skinning, other runtimes, gaze,
-SpringBone and end-to-end regeneration remain outstanding.
+## Next work
+
+Assess the shared-start motion and full expression before adopting the candidate.
+Keep the highlight untouched and preserve the approximately 7:3 travel allocation.
+Then resolve skin-color patches, sharp reveal boundaries and oblique edge slivers.
+Do not return to highlight painting to conceal a lid-position problem. Mouth/audio
+polish remains deferred; full poses/skinning, other runtimes, gaze, SpringBone and
+end-to-end generation remain open.

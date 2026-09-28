@@ -6,10 +6,10 @@ from mathutils.bvhtree import BVHTree
 root=Path(__file__).resolve().parents[1];source=root/'artifacts/mouth-connected-vowels'
 suffix=os.environ.get('STUDY_SUFFIX','');assert suffix in ['', '-repeat']
 normal_mode=os.environ.get('LID_NORMALS','skin-fit');assert normal_mode in ['skin-fit','source']
-style=os.environ.get('EXPRESSION_STYLE','original');assert style in ['original','rounded','crescent','balanced']
-rounded=style in ['rounded','crescent','balanced'];crescent=style=='crescent';balanced=style=='balanced'
+style=os.environ.get('EXPRESSION_STYLE','original');assert style in ['original','rounded','crescent','balanced','sync']
+rounded=style in ['rounded','crescent','balanced','sync'];crescent=style=='crescent';balanced=style in ['balanced','sync'];synchronized=style=='sync'
 assert not (rounded and normal_mode=='source'), 'Keep the shading control separate from the rounded-smile study'
-out=root/'artifacts'/(('balanced-smile' if balanced else 'crescent-smile' if crescent else 'rounded-smile' if rounded else 'surface-expressions')+('-source' if normal_mode=='source' else '')+suffix);out.mkdir(exist_ok=True)
+out=root/'artifacts'/(('sync-smile' if synchronized else 'balanced-smile' if balanced else 'crescent-smile' if crescent else 'rounded-smile' if rounded else 'surface-expressions')+('-source' if normal_mode=='source' else '')+suffix);out.mkdir(exist_ok=True)
 expected=json.loads((source/'report.json').read_text())['outputSha256'];assert hashlib.sha256((source/'continuous-blink.vrm').read_bytes()).hexdigest()==expected
 bpy.ops.wm.open_mainfile(filepath=str(source/'continuous-blink.blend'))
 body=bpy.data.objects['Miineko_Body'];arm=bpy.data.objects['Miineko_Rig'];mesh=body.data;mesh.calc_loop_triangles()
@@ -56,7 +56,15 @@ for side,cx in [('L',.1764),('R',-.1848)]:
   top,bottom=max(eye_z),min(eye_z);upper_origin=top+.001;lower_origin=bottom-.001
   gap=.024;travel=upper_origin-lower_origin-gap
   shapes={'blink':{'upper':(upper_origin-.619,1),'lower':(.622-lower_origin,1)},'happy':{'upper':(.7*travel,math.sqrt(.055/.004)),'lower':(.3*travel,math.sqrt(.055/.004))},'relaxed':{'upper':(upper_origin-.660,1),'lower':(0,1)}}
+  if synchronized:
+   # Preserve endpoints, but express both neutral clearance and UV guard in
+   # normalized closure progress, not the same physical/UV distance.
+   upper_visible=.7*travel-.001;lower_visible=.3*travel-.001;onset=.01
+   upper_travel=upper_visible/(1-onset);lower_travel=lower_visible/(1-onset)
+   upper_origin=top+onset*upper_travel;lower_origin=bottom-onset*lower_travel
+   shapes={'blink':{'upper':(upper_origin-.619,1),'lower':(.622-lower_origin,1)},'happy':{'upper':(upper_travel,math.sqrt(.055/.004)),'lower':(lower_travel,math.sqrt(.055/.004))},'relaxed':{'upper':(upper_origin-.660,1),'lower':(0,1)}}
   report.setdefault('closureCalibration',{})[side]={'top':top,'bottom':bottom,'upperOrigin':upper_origin,'lowerOrigin':lower_origin,'upperTravel':.7*travel,'lowerTravel':.3*travel,'gap':gap,'centerUpperShare':(.7*travel-.001)/(travel-.002),'shapes':shapes}
+  if synchronized:report['closureCalibration'][side].update(upperOrigin=upper_origin,lowerOrigin=lower_origin,upperTravel=upper_travel,lowerTravel=lower_travel,commonUVShift=.35,normalizedOriginClearance=onset,revealScales={'upper':.35/upper_travel,'lower':.35/lower_travel})
  for radius in [1.10,1.22,1.35]:
   for angle in np.linspace(0,2*math.pi,96,endpoint=False):
    x,z=cx+rx*radius*math.cos(angle),cz+rz*radius*math.sin(angle);c=sample(x,z)
@@ -95,20 +103,22 @@ for side,cx in [('L',.1764),('R',-.1848)]:
     if len(set(t))==3 and np.linalg.norm(np.cross(np.array(verts[t[1]])-verts[t[0]],np.array(verts[t[2]])-verts[t[0]]))>(1e-10 if balanced else 1e-12):faces.append(t);parents.append(ti)
  report['eyes'][side]={'verticesPerLid':len(verts),'trianglesPerLid':len(faces),'skinSamples':len(samples)}
  for direction,label,origin,offset in [(1,'upper',upper_origin,.0007),(-1,'lower',lower_origin,.0004)]:
+  reveal_scale=report['closureCalibration'][side]['revealScales'][label] if synchronized else 3.
   name=f'Surface Lid {side} {label}';data=bpy.data.meshes.new(name);xyz=np.array(verts);xyz[:,1]-=offset;data.from_pydata(xyz.tolist(),[],faces);data.update();obj=bpy.data.objects.new(name,data);bpy.context.collection.objects.link(obj);obj.parent=arm;vg=obj.vertex_groups.new(name='J_Bip_C_Head');vg.add(list(range(len(verts))),1,'REPLACE');obj.modifiers.new('Armature','ARMATURE').object=arm
   for p in data.polygons:p.use_smooth=True
   data.normals_split_custom_set([normals[l.vertex_index] for l in data.loops])
   uv=data.uv_layers.new(name='ExpressionReveal');attr=data.color_attributes.new(name='SkinTint',type='FLOAT_COLOR',domain='CORNER');data.color_attributes.active_color=attr
   for loop in data.loops:
-   p=verts[loop.vertex_index];u=.5+(p[0]-cx)/((16 if rounded else 8)*rx);v=.5+3*direction*(p[2]-origin)
-   if balanced:v=min(v,.48-direction*3*.004*((p[0]-cx)/rx)**2)
+   p=verts[loop.vertex_index];u=.5+(p[0]-cx)/((16 if rounded else 8)*rx);v=.5+reveal_scale*direction*(p[2]-origin)
+   if balanced:v=min(v,.48-direction*reveal_scale*.004*((p[0]-cx)/rx)**2)
    uv.data[loop.index].uv=(u,v);attr.data[loop.index].color=colors[loop.vertex_index]
   w=h=2048;u=(np.arange(w)+.5)/w;v=(np.arange(h)+.5)/h;q=(16 if rounded else 8)*(u-.5)
-  distance=v[:,None]-.5+direction*3*.004*q[None,:]**2;alpha=smooth(distance/.0015)
-  ink=(1-smooth((distance-.018)/.006))*(1-smooth((abs(q)[None,:]-1.40)/.25)) if direction==1 else np.zeros_like(distance)
+  distance=v[:,None]-.5+direction*reveal_scale*.004*q[None,:]**2;alpha=smooth(distance/.0015)
+  ink_distance=distance*3/reveal_scale if synchronized else distance
+  ink=(1-smooth((ink_distance-.018)/.006))*(1-smooth((abs(q)[None,:]-1.40)/.25)) if direction==1 else np.zeros_like(distance)
   if rounded and direction==1:
    # Rounded caps around a short parabolic stroke, independent of the reveal alpha.
-   cap_distance=np.sqrt(np.maximum(abs(q)[None,:]-2.50,0)**2*.04**2+(distance-.015)**2)
+   cap_distance=np.sqrt(np.maximum(abs(q)[None,:]-2.50,0)**2*.04**2+(ink_distance-.015)**2)
    ink=1-smooth((cap_distance-.0135)/.003)
   rgba=np.ones((h,w,4),np.float32);rgba[:,:,:3]=(1-.997*ink)[:,:,None];rgba[:,:,3]=alpha
   stroke_rgba=rgba.copy() if rounded and direction==1 else None
@@ -120,7 +130,7 @@ for side,cx in [('L',.1764),('R',-.1848)]:
   for expression,settings in shapes.items():
    depth,scale=settings[label]
    for target in [expression]+([('blink_left' if side=='L' else 'blink_right')] if expression=='blink' else []):
-    bind=getattr(presets,target).texture_transform_binds.add();bind.material=mat;bind.scale=(scale,1);bind.offset=((1-scale)/2,-3*depth)
+    bind=getattr(presets,target).texture_transform_binds.add();bind.material=mat;bind.scale=(scale,1);bind.offset=((1-scale)/2,-reveal_scale*depth)
   if stroke_rgba is not None:
    # Keep moving ink on the original eye artwork, so it cannot become a
    # detached eyebrow while the lid is still above the open eye.
@@ -135,7 +145,7 @@ for side,cx in [('L',.1764),('R',-.1848)]:
    for expression,settings in shapes.items():
     depth,scale=(0,1) if (crescent or balanced) and expression=='happy' else settings['upper']
     for target in [expression]+([('blink_left' if side=='L' else 'blink_right')] if expression=='blink' else []):
-     bind=getattr(presets,target).texture_transform_binds.add();bind.material=stroke_mat;bind.scale=(scale,1);bind.offset=((1-scale)/2,-3*depth)
+     bind=getattr(presets,target).texture_transform_binds.add();bind.material=stroke_mat;bind.scale=(scale,1);bind.offset=((1-scale)/2,-reveal_scale*depth)
    if crescent:
     # Paint only the source eye artwork black as happiness rises, beneath both
     # lids. This removes the old highlight without changing the head or mouth.

@@ -23,7 +23,8 @@ wide/shallow and narrow/round openings plus continuous transitions. Arbitrary
 speech-to-vowel inference is still unimplemented.
 
 **Start with [BALANCED_SMILE.md](BALANCED_SMILE.md)** for the current priority:
-validate upper-led smile closure with the original highlight, blink and relaxed expressions before
+validate upper-led smile closure with a shared upper/lower onset and the original
+highlight, blink and relaxed expressions before
 mouth/audio polish. The
 prototype reduces inherited eye-bulb shading but still has visible color/perimeter
 artifacts and is not an accepted finished face.
@@ -36,7 +37,7 @@ FBX/textures, blends, VRMs and screenshots are private and excluded from Git.
 
 | Document | Purpose |
 | --- | --- |
-| [BALANCED_SMILE.md](BALANCED_SMILE.md) | Current upper-70/lower-30 closure trial; preserve highlight color and evaluate intermediate motion. |
+| [BALANCED_SMILE.md](BALANCED_SMILE.md) | Current shared-start upper-70/lower-30 closure; preserve highlight color and evaluate early motion. |
 | [CRESCENT_SMILE.md](CRESCENT_SMILE.md) | Earlier broad smile; owner found the lower-lid lift and darkened highlight frightening. |
 | [ROUNDED_SMILE.md](ROUNDED_SMILE.md) | Earlier short-arc candidate; 100% was rejected as too thin and mismatched to eye size. |
 | [SURFACE_EXPRESSIONS.md](SURFACE_EXPRESSIONS.md) | Earlier expression diagnostic, fixed lids, shading control and remaining color/perimeter issues. |
