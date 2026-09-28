@@ -1,5 +1,9 @@
 # Five cartoon mouth shapes from a rough expression reference
 
+Historical red-mouth and flat-onset experiments. The accepted result and current
+rebuild order are in [BASELINE.md](BASELINE.md); later depth changes are recorded
+in [PROFILE.md](PROFILE.md).
+
 ## Aim
 
 Use the owner's private rough sticker sheet as expression guidance, not an exact
@@ -10,10 +14,10 @@ acceptance are not established by the presence of five VRM presets.
 
 ## Construction and failed comparisons
 
-**Current follow-up:** after viewing `mouth-vowels-stable`, the owner supported
+**Recorded flat-onset follow-up:** after viewing `mouth-vowels-stable`, the owner supported
 the direction but reported that the lower edge retained a central W-shaped peak
-while opening (screenshot at approximately 22%). `mouth-vowels-flatstart` is the
-new comparison candidate; the earlier build remains available. See the flat
+while opening (screenshot at approximately 22%). `mouth-vowels-flatstart` was the
+next comparison candidate; the earlier build remains available. See the flat
 onset section below. The earlier construction and measurements in this document
 describe `mouth-vowels-stable`, not the revised invisible neutral surface.
 
@@ -31,7 +35,7 @@ height of 0.415 m and a larger red fill.
 | `mouth-vowels-envelope` | Per-column affine depth support clears the sampled face for morph mixtures, but the broad sampling range unnecessarily projects some edges forward. |
 | `mouth-vowels-stable` | The same support restricted to each column's actual morph range. Earlier inspectable prototype. Front/oblique mixtures are cleaner; a thin projecting edge remains visible in profile. |
 
-The final stage (`scripts/add_vowel_shapes.py`) keeps source Body and eyes intact.
+The `mouth-vowels-stable` stage (`scripts/add_vowel_shapes.py`) keeps source Body and eyes intact.
 Each vertical mouth column has one fixed X and an affine depth `y = a + b*z`.
 The coefficients are fit in front of 241 source-face samples per column, over
 that column's actual range across Basis and all target vertices. Consequently,
@@ -39,7 +43,7 @@ normalized linear mixtures share that support field rather than connecting
 different curved surfaces through the head. This is a sampled clearance method,
 not a proof of collision freedom for every triangle or pose.
 
-The final single mesh has 2,737 vertices and 5,120 exported triangles, weighted
+That stage's single mesh has 2,737 vertices and 5,120 exported triangles, weighted
 only to the existing head bone. Its neutral triangles all have zero area. Red
 and black are vertex colors on one standard `KHR_materials_unlit` material;
 they do not need custom code or layered depth offsets in the viewer.

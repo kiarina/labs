@@ -1,5 +1,8 @@
 # Continuous blink comparison
 
+This is the eye-experiment record. For the accepted combined eye/mouth baseline
+and ordered rebuild recipe, start with [BASELINE.md](BASELINE.md).
+
 ## Question and scope
 
 The owner reviewed the three viewer candidates on 2026-09-28 and preferred
@@ -18,9 +21,9 @@ acceptance criterion. Mouth experiments preserve that approved input: the first
 red opening with five vowel morphs in [VOWELS.md](VOWELS.md). Neutral restoration,
 intermediate weights, side views and combinations with approved eyes are checked.
 
-### Selected-family follow-up
+### Recorded selected-family follow-up
 
-The next controlled comparison changes only the eyelid aperture UV mapping:
+At that stage, the controlled comparison changed only the eyelid aperture UV mapping:
 parallel upper/lower edges versus an elliptical opening with tapered corners.
 Geometry, colors, skin sampling, source-eye clearance, lighting and cameras are
 held fixed. Check neutral preservation, the complete blink interval, both sides,
@@ -33,8 +36,8 @@ Results of this follow-up:
   static UVs. It exposed an extra black ring near blink weight 0.12.
 - `overlay-refined` adds a static eye-local ink mask in the texture's U direction;
   only V moves at runtime. This removes that early ring while retaining the
-  rounded opening. It remains an optional comparison, not a replacement for the
-  owner's selected baseline. The rounded lid volume and geometry are unchanged.
+  rounded opening. The owner subsequently rejected its realistic appearance; retain it as a
+  diagnostic comparison, not a replacement for the selected baseline. The rounded lid volume and geometry are unchanged.
 - Both were inspected at eight weights (including 0.10, 0.12 and 0.15) from
   0°, ±45° and ±90°, plus half/full independent winks: 44 captures per run.
   Neither produced runtime errors or warnings. In the tested front half-winks,
@@ -62,7 +65,7 @@ refinement. Some eyelid/material transitions remain visible, especially in profi
 After preparing the preserved baseline, run `mise run overlay-followup` with the
 same `BLENDER_BIN`, `COMPARE_PYTHON` and optional `CHROME_BIN` used below. The
 relaxation addition is in `scripts/add_relaxed_expression.py`; it refuses to
-overwrite its input directory. To recreate only the optional corner comparison:
+overwrite its input directory. To recreate only the rejected corner comparison:
 
 ```sh
 BLINK_RUN=overlay-refined BLINK_APERTURE=ellipse BLINK_INK=eye-local \
@@ -109,7 +112,9 @@ References: [VRM expression specification](https://github.com/vrm-c/vrm-specific
 
 These are successive exploratory prototypes, not a controlled benchmark where
 only one variable changes. Earlier failures remain in ignored `artifacts/`.
-The source FBX and all character images/models remain private.
+The source FBX and all character images/models remain private. The table records
+the initial engineering assessment, before the owner selected the overlay;
+its earlier rejection language does not supersede that later art direction.
 
 | Candidate | Observation and disposition |
 | --- | --- |
@@ -222,7 +227,7 @@ The patched VRM must be checked in the independent viewer; do not infer success
 from the editable blend alone.
 
 For interactive inspection, serve this lab on loopback and open
-`viewer.html?model=continuous-fresh`. The slider, individual eye selector, three
+`viewer.html?model=continuous-fresh`. The slider, individual eye selector, five
 view angles and original-model toggle work locally. No character files are
 uploaded. Rendered media and binaries are intentionally not in Git.
 
@@ -233,9 +238,9 @@ VRM is not finished. Preserve its appearance when refining the closed surface,
 boundary, coverage or shading, and change these separately. Relaxation plus blink
 is now runtime-verified. Five cartoon vowel targets now restore the approved
 face at zero and support sampled normalized blends; see [VOWELS.md](VOWELS.md).
-The rough sticker sheet is guidance, not an exact target. Mouth art direction,
-profile projection and speech timing still need evaluation before the full
-preset set is expanded. Gaze,
+The rough sticker sheet is guidance, not an exact target. The owner has since
+accepted `mouth-aa-aligned` as the five-vowel mouth baseline; see [BASELINE.md](BASELINE.md).
+Speech timing and integration with the remaining preset set still need work. Gaze,
 other emotions, spring integration, cross-character transfer and other VRM
 runtimes remain unverified in this selected pipeline. Stitched-eye prototypes
 remain diagnostic references, not the selected direction.

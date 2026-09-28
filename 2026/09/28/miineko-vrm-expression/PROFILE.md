@@ -1,5 +1,8 @@
 # Mouth depth follow-up
 
+For the current rebuild order and synthesis, see [BASELINE.md](BASELINE.md).
+This file retains the sequence of depth experiments.
+
 Approved mouth baseline: `mouth-aa-aligned` also retracts AA, while retaining
 the approved four other vowels and neutral. The owner confirmed all five mouth
 shapes were improved on 2026-09-28. Earlier stages below remain as records
@@ -21,7 +24,7 @@ of the opening closer to the head while retaining linear VRM morph blending.
 | --- | --- |
 | `mouth-profile-vertex` | Shorter profile projection, but irregular depths and triangle/head intersections leave rough edges. |
 | `mouth-profile-smooth` | Eight forward-only smoothing passes and 2.5 mm vertex clearance improve continuity, but sampled triangle interiors still penetrate by up to 2.85 mm. Vertex clearance alone is insufficient. |
-| `mouth-profile-fitted` | Use 1 mm vertex clearance, eight smoothing passes, and forward correction from four barycentric samples per visible triangle at 38 states. Collapse unused narrow-vowel columns in all coordinates. Current comparison candidate. |
+| `mouth-profile-fitted` | Use 1 mm vertex clearance, eight smoothing passes, and forward correction from four barycentric samples per visible triangle at 38 states. Collapse unused narrow-vowel columns in all coordinates. Comparison candidate at that stage. |
 
 Without the last collapse constraint, vertices at the same X/Z but different
 depths form horizontal colored shelves in narrow vowels. Each collapsed column

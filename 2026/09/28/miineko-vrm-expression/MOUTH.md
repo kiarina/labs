@@ -1,5 +1,9 @@
 # Cartoon mouth opening on the selected face
 
+Historical record of the initial black/pink AA probes. The accepted red five-vowel
+method is [BASELINE.md](BASELINE.md); its neutral geometry is hidden by alpha,
+whereas the original probes below used zero-area geometry.
+
 ## Aim and acceptance
 
 The owner approved the flatter manga-like eyelids and relaxed expression in
@@ -56,10 +60,10 @@ These are input-specific authoring values, not transferable human anatomy rules.
 | Artifact directory | Observation |
 | --- | --- |
 | `mouth-aa-cartoon` | Collapsing onto the center of the old black ridge hid most changes until larger weights. Preserved the source at zero, but onset was too weak. Kept as a failed comparison. |
-| `mouth-aa-onset` | Collapsing at the lower dark rim makes the opening respond earlier. Simple dark mouth; source W smile remains the upper edge. Current plain prototype. |
+| `mouth-aa-onset` | Collapsing at the lower dark rim makes the opening respond earlier. Simple dark mouth; source W smile remains the upper edge. Plain prototype at this stage. |
 | `mouth-aa-tongue` | Same motion with a small flat pink accent. An optional appearance comparison, not a confirmed owner choice. |
 
-Both current prototypes were checked with five viewing angles (front, ±45°,
+Both prototypes were checked with five viewing angles (front, ±45°,
 ±90°) at `aa=0, .02, .05, .10, .25, .50, .75, 1`: 40 captures each. Six additional
 front captures combine `aa=.5/1`, relaxed `.35`, and blink `0/.5/1`.
 
