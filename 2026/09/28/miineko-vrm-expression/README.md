@@ -30,10 +30,11 @@ black lip, addressing the owner's 18%-open profile example while preserving
 full-target coordinates; the front rim consequently appears thicker at low weights.
 The owner approved the four-vowel depth correction, then requested the same
 treatment for AA across its opening range. The latest `mouth-aa-aligned` candidate
-changes AA only and preserves the other four vowels and neutral shape. Motion,
+changes AA only and preserves the other four vowels and neutral shape. The owner
+confirmed all five were improved; preserve this version as the accepted mouth
+baseline. Motion,
 audio timing and the complete production expression set remain unfinished.
-Side-view projection and audio-driven timing remain unresolved. This is not yet
-a finished lip-sync system.
+Audio-driven timing remains unverified. This is not yet a finished lip-sync system.
 
 | Tested | Result |
 | --- | --- |

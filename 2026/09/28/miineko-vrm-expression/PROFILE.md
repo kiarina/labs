@@ -1,7 +1,8 @@
 # Mouth depth follow-up
 
-Latest comparison: `mouth-aa-aligned` also retracts AA, while retaining the
-approved four other vowels and neutral. Earlier stages below remain as records
+Approved mouth baseline: `mouth-aa-aligned` also retracts AA, while retaining
+the approved four other vowels and neutral. The owner confirmed all five mouth
+shapes were improved on 2026-09-28. Earlier stages below remain as records
 and separate viewer choices.
 
 The owner approved the improved front appearance of `mouth-vowels-flatstart`.
@@ -225,3 +226,13 @@ MOUTH_RUN=mouth-aa-repeat mise run align-aa-probe
 Open `viewer.html?model=mouth-aa-aligned`. Prior candidates remain available.
 The geometry solver only validates sampled constraints; audio timing, all motion
 and pose combinations, and other VRM runtimes remain outside this result.
+
+### Owner acceptance of the mouth baseline
+
+After reviewing `mouth-aa-aligned`, the owner confirmed that all five vowels
+were improved. Preserve this appearance as the accepted mouth baseline for
+subsequent work. Its VRM SHA-256 is
+`cc8ca99d04f671b3df7a0489bdb17cabb6847e00dbf01ca94d72bc2ff5681e31`.
+Further experiments should use separate artifact directories and compare back
+to this version. This accepts the mouth-shape refinement; audio synchronization,
+additional emotions, gaze and the complete production VRM still need work.
