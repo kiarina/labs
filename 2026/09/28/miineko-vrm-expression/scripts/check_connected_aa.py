@@ -1,11 +1,12 @@
 """Check static-surface clearance and reimported AA binding independently."""
-import bpy,numpy as np,json,sys,struct
+import bpy,numpy as np,json,sys,struct,os
 from pathlib import Path
 from mathutils import Vector
 from mathutils.bvhtree import BVHTree
 root=Path(__file__).resolve().parents[1];sys.path.insert(0,str(root/'scripts'))
 from source_ink import SourceInk
-folder=root/'artifacts/mouth-connected-aa';settings=json.loads((folder/'report.json').read_text())
+vowel_mode=os.environ.get('CONNECTED_VOWELS')=='1'
+folder=root/'artifacts'/('mouth-connected-vowels' if vowel_mode else 'mouth-connected-aa');settings=json.loads((folder/'report.json').read_text())
 # Independently check the recorded source-triangle relationship in double
 # precision. Near-vertical source edges make Y-ray differences ill-conditioned;
 # the actual parent-plane/nearest-surface distance is the appropriate bound.
@@ -28,6 +29,18 @@ assert bpy.ops.import_scene.vrm(filepath=str(folder/'continuous-blink.vrm'))=={'
 arm=next(o for o in bpy.data.objects if o.type=='ARMATURE');presets=arm.data.vrm_addon_extension.vrm1.expressions.preset;e=presets.aa
 assert len(e.texture_transform_binds)==1 and len(e.morph_target_binds)==0 and not e.is_binary
 bind=e.texture_transform_binds[0];assert bind.material is not None and abs(bind.offset[1]+settings['shift'])<1e-6
-assert all(len(getattr(presets,name).morph_target_binds)==0 and len(getattr(presets,name).texture_transform_binds)==0 for name in ['ih','ou','ee','oh','blink','relaxed'])
-report['reimport']={'aaTextureBinds':1,'aaMorphBinds':0,'offset':list(bind.offset),'material':bind.material.name,'otherVowelsAndEyesNotRestored':True}
-(root/'results/connected-aa-geometry.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))
+if vowel_mode:
+ bindings={}
+ for name,shape in settings['vowels'].items():
+  e=getattr(presets,name);assert len(e.texture_transform_binds)==1 and len(e.morph_target_binds)==0 and not e.is_binary
+  bind=e.texture_transform_binds[0];factor=shape['scaleX']
+  assert abs(bind.scale[0]-factor)<1e-6 and abs(bind.scale[1]-1)<1e-6
+  assert abs(bind.offset[0]-(1-factor)/2)<1e-6 and abs(bind.offset[1]+3*shape['depth'])<1e-6
+  bindings[name]={'scale':list(bind.scale),'offset':list(bind.offset),'material':bind.material.name}
+ assert len({b['material'] for b in bindings.values()})==1
+ assert all(len(getattr(presets,n).texture_transform_binds)==0 and len(getattr(presets,n).morph_target_binds)==0 for n in ['blink','relaxed'])
+ report['reimport']={'vowels':bindings,'eyesNotRestored':True}
+else:
+ assert all(len(getattr(presets,name).morph_target_binds)==0 and len(getattr(presets,name).texture_transform_binds)==0 for name in ['ih','ou','ee','oh','blink','relaxed'])
+ report['reimport']={'aaTextureBinds':1,'aaMorphBinds':0,'offset':list(bind.offset),'material':bind.material.name,'otherVowelsAndEyesNotRestored':True}
+(root/'results'/('connected-vowels-geometry.json' if vowel_mode else 'connected-aa-geometry.json')).write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))

@@ -11,7 +11,8 @@ from mathutils.bvhtree import BVHTree
 root=Path(__file__).resolve().parents[1];sys.path.insert(0,str(root/'scripts'))
 from source_ink import SourceInk
 source=root/'artifacts/feature-mouth-flush';suffix=os.environ.get('STUDY_SUFFIX','');assert suffix in ['', '-repeat']
-out=root/'artifacts'/('mouth-connected-aa'+suffix);out.mkdir(exist_ok=True)
+vowel_mode=os.environ.get('CONNECTED_VOWELS')=='1'
+out=root/'artifacts'/(('mouth-connected-vowels' if vowel_mode else 'mouth-connected-aa')+suffix);out.mkdir(exist_ok=True)
 expected='989f33cb81f91a99e2112fb9ce7df47e2734096d649519950f371cdddbc99665'
 assert hashlib.sha256((source/'continuous-blink.vrm').read_bytes()).hexdigest()==expected
 bpy.ops.wm.open_mainfile(filepath=str(source/'continuous-blink.blend'))
@@ -30,6 +31,10 @@ upper=np.array(upper)
 for _ in range(3):old=upper.copy();upper[1:-1]=.25*old[:-2]+.5*old[1:-1]+.25*old[2:]
 # The revealing boundary is a rounded U without a central lower-lip peak.
 start=.479;travel=.089;corner_rise=.078;scale=3.;shift=scale*travel
+vowels={'aa':(.089,.078),'ih':(.058,.031),'ou':(.072,.170),'ee':(.070,.060),'oh':(.092,.140)} if vowel_mode else {'aa':(travel,corner_rise)}
+# A conservative envelope also contains mixtures: effective depth <= max depth,
+# and the squared interpolated U scale keeps curvature >= min curvature.
+def envelope(x):return start-max(d for d,k in vowels.values())+min(k for d,k in vowels.values())*(x/width)**2-.002
 verts=[];faces=[];uvs=[];vertex_alpha=[];lookup={};parents=[]
 def clip(poly,fn):
  result=[]
@@ -42,11 +47,11 @@ def clip(poly,fn):
 # the actual head surface rather than approximating its depth on an unrelated grid.
 for ti,ids in enumerate(indices):
  points=original[ids]
- if points[:,1].min()>-.1 or points[:,0].min()>width or points[:,0].max()<-width or points[:,2].max()<start-travel-.003 or points[:,2].min()>upper.max():continue
+ if points[:,1].min()>-.1 or points[:,0].min()>width or points[:,0].max()<-width or points[:,2].max()<min(start-d for d,k in vowels.values())-.003 or points[:,2].min()>upper.max():continue
  low=max(0,int(np.searchsorted(xs,points[:,0].min(),side='right')-1));high=min(cols-2,int(np.searchsorted(xs,points[:,0].max())))
  for i in range(low,high+1):
   x0,x1=xs[i:i+2];top0,top1=upper[i:i+2]
-  bottom0=start-travel+corner_rise*(x0/width)**2-.002;bottom1=start-travel+corner_rise*(x1/width)**2-.002
+  bottom0=envelope(x0);bottom1=envelope(x1)
   poly=[np.concatenate([p,st]).astype(float) for p,st in zip(points,source_uv[source_loops[ti]])]
   for fn in [lambda p:p[0]-x0,lambda p:x1-p[0],lambda p:top0+(top1-top0)*(p[0]-x0)/(x1-x0)-p[2],lambda p:p[2]-(bottom0+(bottom1-bottom0)*(p[0]-x0)/(x1-x0))]:
    poly=clip(poly,fn)
@@ -56,7 +61,7 @@ for ti,ids in enumerate(indices):
   for point in poly:
    x,y,z=point[:3];key=tuple(np.round(point,8))
    if key not in lookup:
-    lookup[key]=len(verts);verts.append((x,y-.0007,z));uvs.append((.5,.5+scale*(z-start-corner_rise*(x/width)**2)));u0,v0=point[3:];c=ink.pixels[min(ink.height-1,max(0,int(v0*ink.height))),min(ink.width-1,max(0,int(u0*ink.width))),:3];vertex_alpha.append(0. if c.max()<.25 else 1.)
+    lookup[key]=len(verts);verts.append((x,y-.0007,z));uvs.append((.5+x/(4*width),.5+scale*(z-start)) if vowel_mode else (.5,.5+scale*(z-start-corner_rise*(x/width)**2)));u0,v0=point[3:];c=ink.pixels[min(ink.height-1,max(0,int(v0*ink.height))),min(ink.width-1,max(0,int(u0*ink.width))),:3];vertex_alpha.append(0. if c.max()<.25 else 1.)
    polygon.append(lookup[key])
   for j in range(1,len(polygon)-1):
    t=(polygon[0],polygon[j],polygon[j+1])
@@ -68,18 +73,25 @@ uv=mesh.uv_layers.new(name='AA_Reveal')
 colors=mesh.color_attributes.new(name='SourceInkMask',type='FLOAT_COLOR',domain='CORNER');mesh.color_attributes.active_color=colors
 for loop in mesh.loops:
  uv.data[loop.index].uv=uvs[loop.vertex_index];colors.data[loop.index].color=(1,1,1,vertex_alpha[loop.vertex_index])
-# A procedural 1-D palette: transparent, then black lower rim, then red interior.
-height=4096;v=(np.arange(height)+.5)/height
+# Procedural palette: 1-D for accepted AA, 2-D for variable vowel curvature.
+height=4096;texture_width=1024 if vowel_mode else 8
+v=(np.arange(height)+.5)/height
 smooth=lambda x: np.clip(x,0,1)**2*(3-2*np.clip(x,0,1))
-alpha=smooth((v-.5)/.0015);red=smooth((v-(.5+scale*.010))/ (scale*.002))
-black=np.array((.002,.0007,.0015));fill=np.array((.52,.003,.015));rgb=black[None,:]*(1-red[:,None])+fill[None,:]*red[:,None];rgb=np.where(rgb<=.0031308,12.92*rgb,1.055*rgb**(1/2.4)-.055)
-rgba=np.ones((height,8,4),np.float32);rgba[:,:,:3]=rgb[:,None,:];rgba[:,:,3]=alpha[:,None]
-image=bpy.data.images.new('Connected AA reveal',width=8,height=height,alpha=True);image.pixels.foreach_set(rgba.ravel());image.filepath_raw=str(out/'aa-reveal.png');image.file_format='PNG';image.save();image=bpy.data.images.load(image.filepath_raw,check_existing=False);image.pack()
+if vowel_mode:
+ u=(np.arange(texture_width)+.5)/texture_width
+ distance=v[:,None]-.5-scale*corner_rise*(4*(u[None,:]-.5))**2
+else:distance=np.broadcast_to(v[:,None]-.5,(height,texture_width))
+alpha=smooth(distance/.0015);red=smooth((distance-scale*.010)/(scale*.002))
+black=np.array((.002,.0007,.0015));fill=np.array((.52,.003,.015));rgb=black*(1-red[:,:,None])+fill*red[:,:,None];rgb=np.where(rgb<=.0031308,12.92*rgb,1.055*rgb**(1/2.4)-.055)
+rgba=np.ones((height,texture_width,4),np.float32);rgba[:,:,:3]=rgb;rgba[:,:,3]=alpha
+image=bpy.data.images.new('Connected AA reveal',width=texture_width,height=height,alpha=True);image.pixels.foreach_set(rgba.ravel());image.filepath_raw=str(out/'aa-reveal.png');image.file_format='PNG';image.save();image=bpy.data.images.load(image.filepath_raw,check_existing=False);image.pack()
 mat=bpy.data.materials.new('Connected AA red and rim');mat.use_nodes=True;mat.surface_render_method='BLENDED';mat.use_backface_culling=False;nodes=mat.node_tree.nodes;links=mat.node_tree.links;nodes.clear()
 output=nodes.new('ShaderNodeOutputMaterial');coord=nodes.new('ShaderNodeTexCoord');mapping=nodes.new('ShaderNodeMapping');mapping.vector_type='POINT';tex=nodes.new('ShaderNodeTexImage');tex.image=image;tex.extension='EXTEND'
 links.new(coord.outputs['UV'],mapping.inputs['Vector']);links.new(mapping.outputs['Vector'],tex.inputs['Vector']);transparent=nodes.new('ShaderNodeBsdfTransparent');mix=nodes.new('ShaderNodeMixShader');color=nodes.new('ShaderNodeVertexColor');color.layer_name='SourceInkMask';alpha_multiply=nodes.new('ShaderNodeMath');alpha_multiply.operation='MULTIPLY';links.new(tex.outputs['Alpha'],alpha_multiply.inputs[0]);links.new(color.outputs['Alpha'],alpha_multiply.inputs[1]);links.new(alpha_multiply.outputs[0],mix.inputs[0]);links.new(transparent.outputs[0],mix.inputs[1]);links.new(tex.outputs['Color'],mix.inputs[2]);links.new(mix.outputs[0],output.inputs['Surface']);mesh.materials.append(mat)
-expr=arm.data.vrm_addon_extension.vrm1.expressions.preset.aa;expr.texture_transform_binds.clear();expr.morph_target_binds.clear();expr.material_color_binds.clear();expr.is_binary=False;expr.override_blink='none';expr.override_mouth='none';expr.override_look_at='none'
-bind=expr.texture_transform_binds.add();bind.material=mat;bind.scale=(1,1);bind.offset=(0,-shift)
+for name,(depth,rise) in vowels.items():
+ expr=getattr(arm.data.vrm_addon_extension.vrm1.expressions.preset,name);expr.texture_transform_binds.clear();expr.morph_target_binds.clear();expr.material_color_binds.clear();expr.is_binary=False;expr.override_blink='none';expr.override_mouth='none';expr.override_look_at='none'
+ factor=math.sqrt(rise/corner_rise)
+ bind=expr.texture_transform_binds.add();bind.material=mat;bind.scale=(factor,1);bind.offset=((1-factor)/2,-scale*depth)
 assert np.array_equal(original,np.array([v.co for v in body.data.vertices]))
 np.savez_compressed(out/'surface-audit.npz',source=original,sourceTriangles=indices,opening=np.array([v.co for v in mesh.vertices]),openingTriangles=np.array(faces),parentTriangle=np.array(parents),offset=np.array([0,-.0007,0]))
 bpy.ops.wm.save_as_mainfile(filepath=str(out/'continuous-blink.blend'));result=bpy.ops.export_scene.vrm(filepath=str(out/'continuous-blink.vrm'));assert result=={'FINISHED'}
@@ -95,5 +107,6 @@ for gm in doc['meshes']:
   attrs['COLOR_0']=attrs.pop('COLOR_1');patched+=1
 assert patched==1
 encoded=json.dumps(doc,separators=(',',':')).encode();encoded+=b' '*((-len(encoded))%4);path.write_bytes(struct.pack('<4sII',b'glTF',2,20+len(encoded)+len(tail))+struct.pack('<I4s',len(encoded),b'JSON')+encoded+tail)
-report={'sourceSha256':expected,'sourceBodyUnchanged':True,'vertexAlphaPatchedToColor0':True,'sourceInkMaskThreshold':.25,'width':width,'sourceTrianglesClipped':True,'columns':cols,'vertices':len(verts),'triangles':len(faces),'start':start,'travel':travel,'cornerRise':corner_rise,'uvScale':scale,'shift':shift,'rimThickness':.010,'neutralMaximumUV':max(v for u,v in uvs),'scope':'fixed source-triangle opening with vertex alpha ink mask; AA-only; source W upper contour; no new eye/relaxed/vowel binds','upperCurve':upper.tolist(),'outputSha256':hashlib.sha256(path.read_bytes()).hexdigest()}
+report={'sourceSha256':expected,'sourceBodyUnchanged':True,'vertexAlphaPatchedToColor0':True,'sourceInkMaskThreshold':.25,'width':width,'sourceTrianglesClipped':True,'columns':cols,'vertices':len(verts),'triangles':len(faces),'start':start,'travel':travel,'cornerRise':corner_rise,'uvScale':scale,'shift':shift,'rimThickness':.010,'neutralMaximumUV':max(v-scale*corner_rise*(4*(u-.5))**2 if vowel_mode else v for u,v in uvs),'vowels':{name:{'depth':d,'rise':k,'scaleX':math.sqrt(k/corner_rise)} for name,(d,k) in vowels.items()},'scope':'fixed source-triangle opening with vertex alpha ink mask; AA-only; source W upper contour; no new eye/relaxed/vowel binds','upperCurve':upper.tolist(),'outputSha256':hashlib.sha256(path.read_bytes()).hexdigest()}
+if vowel_mode:report['scope']='five-vowel texture transform on one fixed surface; source W retained; eye expressions/audio not restored'
 (out/'report.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps({k:v for k,v in report.items() if k!='upperCurve'}))

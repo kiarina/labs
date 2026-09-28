@@ -14,9 +14,10 @@ the source normal face. The selector also shows the source directly.
 
 The new `mouth-connected-aa` VRM has **AA only**. Other vowels, blinking,
 relaxation, emotions and speech playback have not been restored to this geometry.
-The previous motion viewer remains available through the page link. This candidate
-is pending artistic review; technical checks do not establish that the expression
-is the final intended Miineko mouth.
+The previous motion viewer remains available through the page link. On 2026-09-29,
+the owner approved this direction as closer to the sticker sheet. Keep this AA
+artifact as a comparison reference. The next [five-vowel probe](CONNECTED_VOWELS.md)
+extends the method; its new vowel shapes have not yet received artistic approval.
 
 ## Reproduce
 
@@ -100,7 +101,8 @@ Current output hash is recorded in the evaluation report.
 
 ## Next work
 
-Review the full opening, its onset, the lower curve and the two corner joins.
+The owner approved the opening direction. Continue with [CONNECTED_VOWELS.md](CONNECTED_VOWELS.md)
+for onset response and the other vowels.
 The W remains fixed in this first probe; adapting its curvature during opening
 is a separate possible refinement. Preserve the accepted closed face and original
 line weight. Then derive the other vowels and retest mixtures before reconnecting

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+BLENDER_BIN="${BLENDER_BIN:-blender}"
+CONNECTED_VOWELS=1 "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/build_connected_aa.py
+CONNECTED_VOWELS=1 STUDY_SUFFIX=-repeat "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/build_connected_aa.py
+CONNECTED_VOWELS=1 "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/check_connected_aa.py
+node scripts/verify_connected_vowels.mjs
+"${COMPARE_PYTHON:-python3}" scripts/measure_connected_vowels.py

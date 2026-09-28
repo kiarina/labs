@@ -17,10 +17,12 @@ was rejected because it changed the head profile. The old baseline remains the
 input and comparison reference. The current [mouth-depth candidate](MOUTH_FLUSH.md) includes
 the joining band and vertical line while retaining the original line weight. The
 owner found this improved; a [connected AA opening](CONNECTED_AA.md) now tests
-the red interior and lower-contour connection against the sticker reference. Arbitrary
+the red interior and lower-contour connection against the sticker reference. The owner
+approved that direction. A [five-vowel extension](CONNECTED_VOWELS.md) now adds
+wide/shallow and narrow/round openings plus continuous transitions. Arbitrary
 speech-to-vowel inference is still unimplemented.
 
-**Start with [CONNECTED_AA.md](CONNECTED_AA.md)** for the current design comparison.
+**Start with [CONNECTED_VOWELS.md](CONNECTED_VOWELS.md)** for the current design comparison.
 [BASELINE.md](BASELINE.md) records the earlier accepted artifact,
 prerequisites, ordered rebuild recipe, limitations, and lessons to carry forward.
 Keep new experiments in separate output directories. Character designs, source
@@ -30,7 +32,8 @@ FBX/textures, blends, VRMs and screenshots are private and excluded from Git.
 
 | Document | Purpose |
 | --- | --- |
-| [CONNECTED_AA.md](CONNECTED_AA.md) | Current AA-only opening, source-W connection, closed recovery and validation limits. |
+| [CONNECTED_VOWELS.md](CONNECTED_VOWELS.md) | Current five-vowel probe, shared-surface mixtures, onset response and validation. |
+| [CONNECTED_AA.md](CONNECTED_AA.md) | Accepted AA-only opening, source-W connection, closed recovery and validation limits. |
 | [MOUTH_FLUSH.md](MOUTH_FLUSH.md) | Current mouth/vertical-line depth adjustment; original stroke weight and nose retained. |
 | [FEATURE_DEPTH.md](FEATURE_DEPTH.md) | Earlier eyes/W interior adjustment and strict pink-boundary protection. |
 | [THIN_FACE.md](THIN_FACE.md) | Rejected broad face deformation; retains historical static comparison and measurements. |
@@ -51,8 +54,8 @@ historical routes. They are not the path to the accepted face.
 
 ## Remaining work
 
-Review the feature-depth normal face while enforcing pink/nose preservation first. Rebuild
-expressions on the chosen surface, then integrate speech, gaze and SpringBone. Then
+The revised normal face and connected AA direction are accepted. Evaluate the new
+vowels and onset response, restore eye expressions, then integrate speech, gaze and SpringBone. Then
 validate the combined result in the intended runtime and review export metadata
 before distribution. Binding reimport, screenshot checks and owner approval of
 mouth shapes do not certify all poses, all runtimes or audio synchronization.
