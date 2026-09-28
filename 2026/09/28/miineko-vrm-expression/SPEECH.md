@@ -89,7 +89,7 @@ would provide Japanese phoneme timing for this fixture.
 
 The owner found the greeting natural. The later [happy-eye prototype](HAPPY.md)
 was rejected for its raised-eye appearance; current expression work starts with
-the [thin-face static studies](THIN_FACE.md).
+the [feature-depth normal-face study](FEATURE_DEPTH.md).
 If automatic speech driving is required, evaluate synthesis-provided durations
 or forced alignment on multiple held-out sentences. Do not expand hand-tuned
 sentence profiles into an apparent general recognizer. The final character voice,

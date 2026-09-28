@@ -3,8 +3,9 @@
 ## Current design direction
 
 After reviewing the smile, the owner rejected the protruding eye volume and
-requested thinner face features. [THIN_FACE.md](THIN_FACE.md) is the current
-comparison. The acceptance below records the earlier stages, not a requirement
+requested thinner face features. [FEATURE_DEPTH.md](FEATURE_DEPTH.md) is the current
+comparison: pink head geometry and the nose are fixed. The intervening broad
+face deformation was rejected for changing the profile. The acceptance below records the earlier stages, not a requirement
 to preserve eye/mouth protrusions in the next design.
 
 ## Scope and acceptance
@@ -163,7 +164,7 @@ mixtures without modifying this baseline. An [audio-backed vowel test](AUDIO.md)
 now checks known cues and media-clock playback. A [continuous greeting](SPEECH.md)
 adds authored approximate timing and transitions; the owner found it natural.
 The [happy-eye prototype](HAPPY.md) was rejected for its raised-eye appearance.
-Review the [thin-face studies](THIN_FACE.md) before rebuilding expressions;
+Review the [feature-depth study](FEATURE_DEPTH.md) before rebuilding expressions;
 automatic phoneme alignment remains open. Gaze and ear/tail springs need integration and
 combined runtime validation. Do not automatically return to rejected realistic
 eyelids or full-head replacement. Another character requires its own calibration.

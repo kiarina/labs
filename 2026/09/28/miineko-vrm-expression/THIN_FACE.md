@@ -1,6 +1,14 @@
 # Thinner face features: static design comparison
 
-## Current direction
+## Superseded by owner correction
+
+The owner rejected these variants because the pink head profile changed. Keeping
+x/z alone was insufficient. The new [feature-depth study](FEATURE_DEPTH.md) pins
+pink geometry, nose and central stem and changes only eye/W feature interiors.
+The designs and results below remain historical comparisons, not the active
+construction method.
+
+## Original direction
 
 The owner rejected `happy-arc`: closed eyes retained round protrusions and did
 not feel cute or close enough to the sticker reference. The new goal is a round

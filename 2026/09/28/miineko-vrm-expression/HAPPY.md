@@ -83,7 +83,8 @@ The existing silent-motion regression also passes and restores neutral exactly.
 
 ## Superseded next direction
 
-Proceed with the [thin-face studies](THIN_FACE.md). The existing raised-eye shading remains;
+Proceed with the [feature-depth study](FEATURE_DEPTH.md), preserving pink geometry
+and the nose. The existing raised-eye shading remains;
 this candidate does not flatten or replace the original eyes. Do not silently
 promote it to the accepted baseline. Settle the new static facial structure before
 rebuilding expressions, then address gaze, springs and full pipeline reproduction. Automatic speech alignment and the final character voice remain

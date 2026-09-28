@@ -1,0 +1,212 @@
+{
+  "date": "2026-09-28",
+  "scope": "normal face only; protected pink geometry and nose; artistic review pending",
+  "states": [
+    {
+      "variant": "original",
+      "angle": "0",
+      "key": "mouth-aa-aligned"
+    },
+    {
+      "variant": "original",
+      "angle": "45",
+      "key": "mouth-aa-aligned"
+    },
+    {
+      "variant": "original",
+      "angle": "90",
+      "key": "mouth-aa-aligned"
+    },
+    {
+      "variant": "original",
+      "angle": "-45",
+      "key": "mouth-aa-aligned"
+    },
+    {
+      "variant": "original",
+      "angle": "-90",
+      "key": "mouth-aa-aligned"
+    },
+    {
+      "variant": "eyes",
+      "angle": "0",
+      "key": "feature-eyes"
+    },
+    {
+      "variant": "eyes",
+      "angle": "45",
+      "key": "feature-eyes"
+    },
+    {
+      "variant": "eyes",
+      "angle": "90",
+      "key": "feature-eyes"
+    },
+    {
+      "variant": "eyes",
+      "angle": "-45",
+      "key": "feature-eyes"
+    },
+    {
+      "variant": "eyes",
+      "angle": "-90",
+      "key": "feature-eyes"
+    },
+    {
+      "variant": "eyes-mouth",
+      "angle": "0",
+      "key": "feature-eyes-mouth"
+    },
+    {
+      "variant": "eyes-mouth",
+      "angle": "45",
+      "key": "feature-eyes-mouth"
+    },
+    {
+      "variant": "eyes-mouth",
+      "angle": "90",
+      "key": "feature-eyes-mouth"
+    },
+    {
+      "variant": "eyes-mouth",
+      "angle": "-45",
+      "key": "feature-eyes-mouth"
+    },
+    {
+      "variant": "eyes-mouth",
+      "angle": "-90",
+      "key": "feature-eyes-mouth"
+    }
+  ],
+  "layouts": [
+    {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "canvasHeight": 804
+    },
+    {
+      "width": 600,
+      "scrollWidth": 600,
+      "canvasHeight": 790
+    },
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "canvasHeight": 743
+    }
+  ],
+  "errors": [],
+  "models": [
+    {
+      "sourceSha256": "cc8ca99d04f671b3df7a0489bdb17cabb6847e00dbf01ca94d72bc2ff5681e31",
+      "sourceBlendSha256": "97d2030f89d53e5081af9fad20cb6511920ad5971a207cc5a6fcc44ff19e9d93",
+      "variant": "eyes",
+      "scope": "neutral only; conservative pink UV mask, no skin cover or texture edits",
+      "pinkTriangleCount": 15121,
+      "isolatedPinkReflectionTriangles": 15,
+      "protectedVertices": 8060,
+      "protectedCoordinatesExact": true,
+      "noseStemVertices": 178,
+      "noseStemCoordinatesExact": true,
+      "xzExact": true,
+      "changedVertices": 305,
+      "regions": [
+        {
+          "name": "eye-L",
+          "eligibleVertices": 146,
+          "changedVertices": 136,
+          "maxRetraction": 0.03714406490325928,
+          "fitSamples": 232,
+          "coefficients": [
+            -0.2590581774711609,
+            0.04138290882110596,
+            0.0030444504227489233,
+            0.022447282448410988,
+            -0.0010882933856919408,
+            0.01533131767064333
+          ]
+        },
+        {
+          "name": "eye-R",
+          "eligibleVertices": 173,
+          "changedVertices": 169,
+          "maxRetraction": 0.033024996519088745,
+          "fitSamples": 243,
+          "coefficients": [
+            -0.25818932056427,
+            -0.04533649608492851,
+            0.002455798676237464,
+            0.026119166985154152,
+            0.0007231098134070635,
+            0.017060359939932823
+          ]
+        }
+      ],
+      "outputSha256": "068d4aca5ce4a0e9328beb5533c28dbb03bf578fb91e1cb2ff23d9cdd4a29789",
+      "repeatByteIdentical": true
+    },
+    {
+      "sourceSha256": "cc8ca99d04f671b3df7a0489bdb17cabb6847e00dbf01ca94d72bc2ff5681e31",
+      "sourceBlendSha256": "97d2030f89d53e5081af9fad20cb6511920ad5971a207cc5a6fcc44ff19e9d93",
+      "variant": "eyes-mouth",
+      "scope": "neutral only; conservative pink UV mask, no skin cover or texture edits",
+      "pinkTriangleCount": 15121,
+      "isolatedPinkReflectionTriangles": 15,
+      "protectedVertices": 8060,
+      "protectedCoordinatesExact": true,
+      "noseStemVertices": 178,
+      "noseStemCoordinatesExact": true,
+      "xzExact": true,
+      "changedVertices": 341,
+      "regions": [
+        {
+          "name": "eye-L",
+          "eligibleVertices": 146,
+          "changedVertices": 136,
+          "maxRetraction": 0.03714406490325928,
+          "fitSamples": 232,
+          "coefficients": [
+            -0.2590581774711609,
+            0.04138290882110596,
+            0.0030444504227489233,
+            0.022447282448410988,
+            -0.0010882933856919408,
+            0.01533131767064333
+          ]
+        },
+        {
+          "name": "eye-R",
+          "eligibleVertices": 173,
+          "changedVertices": 169,
+          "maxRetraction": 0.033024996519088745,
+          "fitSamples": 243,
+          "coefficients": [
+            -0.25818932056427,
+            -0.04533649608492851,
+            0.002455798676237464,
+            0.026119166985154152,
+            0.0007231098134070635,
+            0.017060359939932823
+          ]
+        },
+        {
+          "name": "w-mouth",
+          "eligibleVertices": 36,
+          "changedVertices": 36,
+          "maxRetraction": 0.004742354154586792,
+          "fitSamples": 106,
+          "coefficients": [
+            -0.2737511098384857,
+            1.089145129640201e-7,
+            -0.020793752744793892,
+            0.016509154811501503,
+            0.000003180652129231021,
+            0.018648643046617508
+          ]
+        }
+      ],
+      "outputSha256": "384c3ab64684d8f4c452f7ca5f0e8ccbeafb4a4dbba046f04b154926f7bb5734",
+      "repeatByteIdentical": true
+    }
+  ]
+}

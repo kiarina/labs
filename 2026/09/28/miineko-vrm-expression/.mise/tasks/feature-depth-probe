@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+BLENDER_BIN="${BLENDER_BIN:-blender}"
+for variant in eyes eyes-mouth; do
+ FEATURE_STUDY="$variant" "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/build_feature_depth_study.py
+ FEATURE_STUDY="$variant" STUDY_SUFFIX=-repeat "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/build_feature_depth_study.py
+done
+node scripts/capture_feature_study.mjs
+"${COMPARE_PYTHON:-python3}" scripts/verify_feature_audit.py
