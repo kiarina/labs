@@ -4,16 +4,20 @@
 
 The owner accepted the manga-like eyelid overlay, relaxation, and five cartoon
 vowel shapes while retaining the original Tripo head. The combined comparison
-baseline is `artifacts/mouth-aa-aligned/continuous-blink.vrm`. It is not yet an
+baseline is `artifacts/mouth-aa-aligned/continuous-blink.vrm`. It is not yet a
 production-complete avatar. A [silent mouth-motion preview](MOTION.md) exercises
 vowel transitions and pauses; an [audio-backed vowel test](AUDIO.md) now drives
 the same shapes from known cues and measured energy on the audio playback clock.
 A [continuous greeting preview](SPEECH.md) adds authored timing and smooth vowel
 transitions; the owner found the greeting natural. A [smile-eye candidate](HAPPY.md)
-now adds a composable happy preset, pending artistic review. Arbitrary
+was rejected for its protruding, bulb-like closed eyes. The current direction is
+a [thin-face static study](THIN_FACE.md): retain the rounded head while fitting
+thinner graphic features to its surface. The old baseline is preserved for
+comparison; its exact pixels are no longer the new design target. Arbitrary
 speech-to-vowel inference is still unimplemented.
 
-**Start with [BASELINE.md](BASELINE.md)** for the exact accepted artifact,
+**Start with [THIN_FACE.md](THIN_FACE.md)** for the current design comparison.
+[BASELINE.md](BASELINE.md) records the earlier accepted artifact,
 prerequisites, ordered rebuild recipe, limitations, and lessons to carry forward.
 Keep new experiments in separate output directories. Character designs, source
 FBX/textures, blends, VRMs and screenshots are private and excluded from Git.
@@ -22,8 +26,9 @@ FBX/textures, blends, VRMs and screenshots are private and excluded from Git.
 
 | Document | Purpose |
 | --- | --- |
-| [BASELINE.md](BASELINE.md) | Current method, reproduction and validation boundaries. Update this when the accepted baseline changes. |
-| [HAPPY.md](HAPPY.md) | Smile-eye candidate, emotion/blink composition, repeatability and pending review. |
+| [THIN_FACE.md](THIN_FACE.md) | Current static comparison: thinner eyes/mouth, input preservation and remaining work. |
+| [BASELINE.md](BASELINE.md) | Earlier accepted appearance and motion baseline; retained for comparison and reproduction. |
+| [HAPPY.md](HAPPY.md) | Rejected raised-eye smile; emotion/blink composition and measured repeatability. |
 | [SPEECH.md](SPEECH.md) | Continuous greeting, authored timing, vowel transitions and repeatability. |
 | [AUDIO.md](AUDIO.md) | Local test voice, known vowel cues, audio-clock playback and validation limits. |
 | [MOTION.md](MOTION.md) | Silent playback controls, normalized driving contract and runtime checks. |
@@ -39,8 +44,8 @@ historical routes. They are not the path to the accepted face.
 
 ## Remaining work
 
-Preserve the accepted appearance while testing speech timing and normalized
-vowel mixtures, additional emotions, gaze, and SpringBone integration. Then
+Review the thin-face static designs and their skin/feature styling first. Rebuild
+expressions on the chosen surface, then integrate speech, gaze and SpringBone. Then
 validate the combined result in the intended runtime and review export metadata
 before distribution. Binding reimport, screenshot checks and owner approval of
 mouth shapes do not certify all poses, all runtimes or audio synchronization.

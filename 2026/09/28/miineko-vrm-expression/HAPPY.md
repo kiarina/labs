@@ -3,7 +3,9 @@
 ## Scope
 
 `happy-arc` adds an upward-curved eye seam to the accepted `mouth-aa-aligned`
-model. It is a comparison candidate, not an owner-approved replacement. The
+model. The owner rejected its appearance: it did not feel cute or close enough to the
+sticker reference, with protruding eyes still visible after closure. It is a
+historical comparison, not an owner-approved replacement. The
 owner approved the greeting's naturalness before this stage. Keep the original
 head, mouth and selected manga eyelids as the reference.
 
@@ -79,12 +81,10 @@ Accepted source SHA-256 remains
 `cc8ca99d04f671b3df7a0489bdb17cabb6847e00dbf01ca94d72bc2ff5681e31`.
 The existing silent-motion regression also passes and restores neutral exactly.
 
-## Next decisions
+## Superseded next direction
 
-Evaluate the artistic appearance, including whether the curved eyes read as a
-smile at full and partial strengths. The existing raised-eye shading remains;
+Proceed with the [thin-face studies](THIN_FACE.md). The existing raised-eye shading remains;
 this candidate does not flatten or replace the original eyes. Do not silently
-promote it to the accepted baseline. Refine this expression or add a small
-worried/surprised comparison next, then address gaze, springs and full pipeline
-reproduction. Automatic speech alignment and the final character voice remain
+promote it to the accepted baseline. Settle the new static facial structure before
+rebuilding expressions, then address gaze, springs and full pipeline reproduction. Automatic speech alignment and the final character voice remain
 separate open items.

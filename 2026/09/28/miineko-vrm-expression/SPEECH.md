@@ -87,8 +87,9 @@ as carrying metadata including phonemes and offsets. The older
 is restricted to MacinTalk voices. We therefore did not assume either interface
 would provide Japanese phoneme timing for this fixture.
 
-The owner found the greeting natural. The next [happy-eye prototype](HAPPY.md)
-adds an independently controlled emotion for comparison.
+The owner found the greeting natural. The later [happy-eye prototype](HAPPY.md)
+was rejected for its raised-eye appearance; current expression work starts with
+the [thin-face static studies](THIN_FACE.md).
 If automatic speech driving is required, evaluate synthesis-provided durations
 or forced alignment on multiple held-out sentences. Do not expand hand-tuned
 sentence profiles into an apparent general recognizer. The final character voice,

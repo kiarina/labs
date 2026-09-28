@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+BLENDER_BIN="${BLENDER_BIN:-blender}"
+for variant in eyes eyes-mouth; do
+ for pose in neutral smile; do
+  FACE_STUDY="$variant" FACE_POSE="$pose" "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/build_thin_face_study.py
+  FACE_STUDY="$variant" FACE_POSE="$pose" STUDY_SUFFIX=-repeat "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/build_thin_face_study.py
+ done
+done
+node scripts/capture_thin_study.mjs

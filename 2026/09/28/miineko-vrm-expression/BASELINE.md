@@ -1,4 +1,11 @@
-# Accepted expression baseline
+# Earlier accepted expression baseline
+
+## Current design direction
+
+After reviewing the smile, the owner rejected the protruding eye volume and
+requested thinner face features. [THIN_FACE.md](THIN_FACE.md) is the current
+comparison. The acceptance below records the earlier stages, not a requirement
+to preserve eye/mouth protrusions in the next design.
 
 ## Scope and acceptance
 
@@ -155,8 +162,8 @@ A [silent playback preview](MOTION.md) now checks fades, pauses and normalized
 mixtures without modifying this baseline. An [audio-backed vowel test](AUDIO.md)
 now checks known cues and media-clock playback. A [continuous greeting](SPEECH.md)
 adds authored approximate timing and transitions; the owner found it natural.
-A [happy-eye prototype](HAPPY.md) is available for artistic comparison, without
-replacing this baseline. Review its appearance before extending comic emotions;
+The [happy-eye prototype](HAPPY.md) was rejected for its raised-eye appearance.
+Review the [thin-face studies](THIN_FACE.md) before rebuilding expressions;
 automatic phoneme alignment remains open. Gaze and ear/tail springs need integration and
 combined runtime validation. Do not automatically return to rejected realistic
 eyelids or full-head replacement. Another character requires its own calibration.
