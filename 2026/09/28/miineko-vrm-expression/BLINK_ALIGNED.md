@@ -4,8 +4,7 @@
 
 After accepting the basic emotion directions, the owner identified ordinary
 blinking as visually older: upper/lower travel, the 100% endpoint and line weight
-had not followed the newer expressions. `blink-aligned` is a new comparison
-candidate, not yet owner-approved. Its unchanged input is the accepted
+had not followed the newer expressions. `blink-aligned` was accepted by the owner on 2026-09-29. Its unchanged input is the accepted
 [surprise-ears](SURPRISE_EARS.md) model.
 
 Open `expression-study.html?variant=blink-aligned&blink=1&opening=0`.
@@ -70,6 +69,15 @@ the validated runtime file without the earlier export patches.
   remains inside the eye crops at full closure. These are central five-column
   measurements, not proof of identical onset everywhere on the eye.
 
-Next: owner review of the new closed-eye shape and intermediate movement. Keep
+Next: retain the accepted closed-eye shape while checking broader transitions. Keep
 accepted emotion endpoints and the raised-ear surprise intact. Ear reaction
 timing, broader transitions and mouth/audio polish follow this correction.
+
+## Saved private snapshot
+
+At the owner’s request, byte-identical copies of this stage’s blend and VRM are
+saved in the private assets repository as
+`miineko/tripo/v1/miineko-blink-aligned.{blend,vrm}`. The adjacent README records
+hashes and provenance. All file-backed images in the blend are packed. This
+snapshot does not automatically track later lab edits; use the lab recipe for
+rebuilding rather than treating a GUI export as equivalent to the saved VRM.
