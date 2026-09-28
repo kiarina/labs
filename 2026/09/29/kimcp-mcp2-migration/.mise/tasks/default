@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Sync both environments and run every client x server x transport combination"
+set -euo pipefail
+
+(cd v1 && uv sync -q)
+(cd v2 && uv sync -q)
+v2/.venv/bin/python run_matrix.py "$@"

@@ -1,0 +1,2338 @@
+[
+  {
+    "key": "client-v1__server-v1__stdio",
+    "client": "v1",
+    "server": "v1",
+    "transport": "stdio",
+    "mode": null,
+    "connect_ms": 165.2,
+    "tools": [
+      "add",
+      "ask",
+      "fail",
+      "image",
+      "open_object",
+      "pid",
+      "slow",
+      "structured"
+    ],
+    "open_object_schema": {
+      "properties": {
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        }
+      },
+      "required": [
+        "options"
+      ],
+      "title": "open_objectArguments",
+      "type": "object"
+    },
+    "tool_metadata": "None",
+    "cases": {
+      "add": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '3', 'id': 'lc_ba220ba0-44ed-49a4-a725-1a06785294c8'}]",
+        "ms": 5.6
+      },
+      "pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29359', 'id': 'lc_0f858b5e-3fa7-4585-b443-7d79e4d0d737'}]",
+        "ms": 1.4
+      },
+      "pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29359', 'id': 'lc_dc7473cc-6717-48b1-8254-55530bf11ca7'}]",
+        "ms": 1.2
+      },
+      "image": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'image', 'id': 'lc_ba313d3e-1203-4976-9076-b5128bfd3b1e', 'base64': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'mime_type': 'image/png'}]",
+        "ms": 0.9
+      },
+      "structured": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_a1762533-985d-440a-a4d9-3733869228f5'}]",
+        "ms": 1.2
+      },
+      "structured_toolcall": {
+        "ok": true,
+        "type": "ToolMessage",
+        "value": "ToolMessage(content=[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_393d7392-40b8-42a6-b3b7-cbc509a7e40e'}], name='structured', tool_call_id='1', artifact={'structured_content': {'answer': 42, 'items': ['a', 'b']}})",
+        "ms": 1.2
+      },
+      "fail": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool fail: boom from tool', 'id': 'lc_3da01c1c-a6bf-4123-ba79-0d2b29b0f2d7'}]",
+        "ms": 0.8
+      },
+      "open_object": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'x,y', 'id': 'lc_1ba28142-5c47-450a-afb7-4cdeb79f4432'}]",
+        "ms": 1.2
+      },
+      "elicit_no_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool ask: Elicitation not supported', 'id': 'lc_b81cecc6-439a-4b4a-b17a-07038b611c15'}]",
+        "ms": 1.8
+      },
+      "disconnect": {
+        "ok": true,
+        "type": "bool",
+        "value": "False",
+        "ms": 26.4
+      },
+      "timeout_1s_on_2s_tool": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.McpError",
+        "message": "'Timed out while waiting for response to ClientRequest. Waited 1.0 seconds.'",
+        "ms": 1002.2
+      },
+      "add_after_timeout": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '5', 'id': 'lc_50086b17-1f3b-4ff5-8265-f07c014a6cc8'}]",
+        "ms": 3.7
+      },
+      "disconnect_after_timeout": {
+        "ok": true,
+        "type": "bool",
+        "value": "False",
+        "ms": 44.0
+      },
+      "elicit_with_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'hello kiarina', 'id': 'lc_21e61f3f-092a-48a2-96fd-899162aa99b7'}]",
+        "ms": 2.8
+      }
+    },
+    "stdio_child_alive_after_disconnect": false
+  },
+  {
+    "key": "client-v1__server-v1__sse",
+    "client": "v1",
+    "server": "v1",
+    "transport": "sse",
+    "mode": null,
+    "connect_ms": 22.4,
+    "tools": [
+      "add",
+      "ask",
+      "fail",
+      "image",
+      "open_object",
+      "pid",
+      "slow",
+      "structured"
+    ],
+    "open_object_schema": {
+      "properties": {
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        }
+      },
+      "required": [
+        "options"
+      ],
+      "title": "open_objectArguments",
+      "type": "object"
+    },
+    "tool_metadata": "None",
+    "cases": {
+      "add": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '3', 'id': 'lc_447791ea-de3f-4720-93b6-bed1438092f3'}]",
+        "ms": 6.7
+      },
+      "pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29362', 'id': 'lc_8117d119-b99a-4dc0-a987-aaa3b7cb4c37'}]",
+        "ms": 2.0
+      },
+      "pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29362', 'id': 'lc_7c8d57c3-2075-480d-b837-20d92097767e'}]",
+        "ms": 1.9
+      },
+      "image": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'image', 'id': 'lc_51161ad4-dd65-48e2-832f-d217c11f0fd0', 'base64': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'mime_type': 'image/png'}]",
+        "ms": 1.6
+      },
+      "structured": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_bd782bcf-4ddc-43f7-b47b-5305c9c842b2'}]",
+        "ms": 2.5
+      },
+      "structured_toolcall": {
+        "ok": true,
+        "type": "ToolMessage",
+        "value": "ToolMessage(content=[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_f9100557-c52e-41e5-afe5-3a35955366ad'}], name='structured', tool_call_id='1', artifact={'structured_content': {'answer': 42, 'items': ['a', 'b']}})",
+        "ms": 2.2
+      },
+      "fail": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool fail: boom from tool', 'id': 'lc_65511aac-3afc-4a16-b00b-50f2a3e35499'}]",
+        "ms": 3.8
+      },
+      "open_object": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'x,y', 'id': 'lc_84368203-6e66-4400-8cac-7e831fe8f94c'}]",
+        "ms": 2.6
+      },
+      "elicit_no_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool ask: Elicitation not supported', 'id': 'lc_baa60637-621c-4d32-adff-61ecaa84dc1a'}]",
+        "ms": 3.0
+      },
+      "disconnect": {
+        "ok": true,
+        "type": "bool",
+        "value": "False",
+        "ms": 0.3
+      },
+      "timeout_1s_on_2s_tool": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.McpError",
+        "message": "'Timed out while waiting for response to ClientRequest. Waited 1.0 seconds.'",
+        "ms": 1003.1
+      },
+      "add_after_timeout": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '5', 'id': 'lc_8285f641-ef0f-44f2-b085-ec33213a9892'}]",
+        "ms": 5.1
+      },
+      "disconnect_after_timeout": {
+        "ok": true,
+        "type": "bool",
+        "value": "False",
+        "ms": 0.6
+      },
+      "elicit_with_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'hello kiarina', 'id': 'lc_1fa4b4c4-07ec-4f93-98a9-9aefd64b78a0'}]",
+        "ms": 4.3
+      }
+    },
+    "stdio_child_alive_after_disconnect": null
+  },
+  {
+    "key": "client-v1__server-v1__streamable_http",
+    "client": "v1",
+    "server": "v1",
+    "transport": "streamable_http",
+    "mode": null,
+    "connect_ms": 18.4,
+    "tools": [
+      "add",
+      "ask",
+      "fail",
+      "image",
+      "open_object",
+      "pid",
+      "slow",
+      "structured"
+    ],
+    "open_object_schema": {
+      "properties": {
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        }
+      },
+      "required": [
+        "options"
+      ],
+      "title": "open_objectArguments",
+      "type": "object"
+    },
+    "tool_metadata": "None",
+    "cases": {
+      "add": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '3', 'id': 'lc_d303d91a-d4c8-4bbc-9c68-688453b4f014'}]",
+        "ms": 5.7
+      },
+      "pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29364', 'id': 'lc_0d540696-a6b6-4fe2-a087-3d736135331b'}]",
+        "ms": 2.3
+      },
+      "pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29364', 'id': 'lc_54b03ee5-f469-4c86-9f40-a6ab95e2e563'}]",
+        "ms": 2.0
+      },
+      "image": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'image', 'id': 'lc_0b42dfa1-f177-4a4f-97d5-ec3fed911e12', 'base64': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'mime_type': 'image/png'}]",
+        "ms": 1.5
+      },
+      "structured": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_45094faa-4b59-48ef-840f-e34cd7827290'}]",
+        "ms": 1.9
+      },
+      "structured_toolcall": {
+        "ok": true,
+        "type": "ToolMessage",
+        "value": "ToolMessage(content=[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_57dc7d39-542c-46fb-b703-ad106d0ed912'}], name='structured', tool_call_id='1', artifact={'structured_content': {'answer': 42, 'items': ['a', 'b']}})",
+        "ms": 2.0
+      },
+      "fail": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool fail: boom from tool', 'id': 'lc_bb307c1c-4236-47de-b633-6baaa383347a'}]",
+        "ms": 3.1
+      },
+      "open_object": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'x,y', 'id': 'lc_27fe79af-fe7c-493d-bfe3-db3df120743e'}]",
+        "ms": 2.1
+      },
+      "elicit_no_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool ask: Elicitation not supported', 'id': 'lc_c010d4bc-cc9e-43ac-aaad-dd1cfbfe5f7c'}]",
+        "ms": 2.9
+      },
+      "disconnect": {
+        "ok": true,
+        "type": "bool",
+        "value": "False",
+        "ms": 1.1
+      },
+      "timeout_1s_on_2s_tool": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.McpError",
+        "message": "'Timed out while waiting for response to ClientRequest. Waited 1.0 seconds.'",
+        "ms": 1003.2
+      },
+      "add_after_timeout": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '5', 'id': 'lc_1cd6a6f7-8274-4d9f-859f-1085986b512e'}]",
+        "ms": 5.4
+      },
+      "disconnect_after_timeout": {
+        "ok": true,
+        "type": "bool",
+        "value": "False",
+        "ms": 2.4
+      },
+      "elicit_with_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'hello kiarina', 'id': 'lc_5230eea2-a293-49fe-b1de-3525a4580a14'}]",
+        "ms": 5.2
+      }
+    },
+    "stdio_child_alive_after_disconnect": null
+  },
+  {
+    "key": "client-v1__server-v2__stdio",
+    "client": "v1",
+    "server": "v2",
+    "transport": "stdio",
+    "mode": null,
+    "connect_ms": 243.6,
+    "tools": [
+      "add",
+      "ask",
+      "ask_modern",
+      "fail",
+      "image",
+      "open_object",
+      "pid",
+      "slow",
+      "structured"
+    ],
+    "open_object_schema": {
+      "properties": {
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        }
+      },
+      "required": [
+        "options"
+      ],
+      "type": "object",
+      "title": "open_objectArguments"
+    },
+    "tool_metadata": "None",
+    "cases": {
+      "add": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '3', 'id': 'lc_f49096de-15d2-4b77-9654-68bccf37efc4'}]",
+        "ms": 5.2
+      },
+      "pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29367', 'id': 'lc_35e6cde8-c556-42b3-9042-8959df412b82'}]",
+        "ms": 1.2
+      },
+      "pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29367', 'id': 'lc_a424919a-5343-4be7-a8a8-1c70980ce32e'}]",
+        "ms": 1.0
+      },
+      "image": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'image', 'id': 'lc_b60de051-8adf-4561-9ed1-1b69bd34a8ca', 'base64': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'mime_type': 'image/png'}]",
+        "ms": 0.9
+      },
+      "structured": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_1ab965f0-450f-4a67-9ad1-f5eea6b4fb29'}]",
+        "ms": 1.1
+      },
+      "structured_toolcall": {
+        "ok": true,
+        "type": "ToolMessage",
+        "value": "ToolMessage(content=[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_7db36ca7-eaab-4f25-a7c6-04e297234fb8'}], name='structured', tool_call_id='1', artifact={'structured_content': {'answer': 42, 'items': ['a', 'b']}})",
+        "ms": 1.0
+      },
+      "fail": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool fail', 'id': 'lc_4c1dcab8-ca1a-4762-b836-c45139a0abc0'}]",
+        "ms": 146.4
+      },
+      "open_object": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'x,y', 'id': 'lc_eb89ff63-288d-435b-aa93-25baa60753ac'}]",
+        "ms": 1.3
+      },
+      "elicit_no_handler": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.McpError",
+        "message": "'Elicitation not supported'",
+        "ms": 1.7
+      },
+      "disconnect": {
+        "ok": true,
+        "type": "bool",
+        "value": "False",
+        "ms": 39.1
+      },
+      "timeout_1s_on_2s_tool": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.McpError",
+        "message": "'Timed out while waiting for response to ClientRequest. Waited 1.0 seconds.'",
+        "ms": 1003.2
+      },
+      "add_after_timeout": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '5', 'id': 'lc_2485f42d-81e7-41d0-bac0-fe9550918678'}]",
+        "ms": 4.6
+      },
+      "disconnect_after_timeout": {
+        "ok": false,
+        "error": "builtins.ExceptionGroup",
+        "message": "'unhandled errors in a TaskGroup (1 sub-exception)'",
+        "ms": 3.9
+      },
+      "elicit_with_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'hello kiarina', 'id': 'lc_83a64eaa-7e56-433e-92c0-63581f34db23'}]",
+        "ms": 2.3
+      }
+    },
+    "stdio_child_alive_after_disconnect": false
+  },
+  {
+    "key": "client-v1__server-v2__sse",
+    "client": "v1",
+    "server": "v2",
+    "transport": "sse",
+    "mode": null,
+    "connect_ms": 19.2,
+    "tools": [
+      "add",
+      "ask",
+      "ask_modern",
+      "fail",
+      "image",
+      "open_object",
+      "pid",
+      "slow",
+      "structured"
+    ],
+    "open_object_schema": {
+      "properties": {
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        }
+      },
+      "required": [
+        "options"
+      ],
+      "type": "object",
+      "title": "open_objectArguments"
+    },
+    "tool_metadata": "None",
+    "cases": {
+      "add": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '3', 'id': 'lc_2db878c6-52c6-4474-b444-8934006a45a0'}]",
+        "ms": 5.1
+      },
+      "pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29370', 'id': 'lc_ca0d17d2-bdae-4131-afb8-8021fe23a817'}]",
+        "ms": 1.6
+      },
+      "pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29370', 'id': 'lc_52d9a117-1b8b-4ec0-8a7d-47d1239012bd'}]",
+        "ms": 1.6
+      },
+      "image": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'image', 'id': 'lc_5b4a5e57-362d-41ec-9ad7-3f9cec1e3c4f', 'base64': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'mime_type': 'image/png'}]",
+        "ms": 1.2
+      },
+      "structured": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_fc2cc3c4-6cf1-43d1-80bd-4fd45f38b6d8'}]",
+        "ms": 1.4
+      },
+      "structured_toolcall": {
+        "ok": true,
+        "type": "ToolMessage",
+        "value": "ToolMessage(content=[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_fb649c7f-b0cc-4cb1-bb1e-8ab114b116c6'}], name='structured', tool_call_id='1', artifact={'structured_content': {'answer': 42, 'items': ['a', 'b']}})",
+        "ms": 1.4
+      },
+      "fail": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool fail', 'id': 'lc_762ffd5c-4ab5-48e2-aae4-d57e5408db67'}]",
+        "ms": 147.7
+      },
+      "open_object": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'x,y', 'id': 'lc_3128e77a-bb22-4830-8fa8-137d4a65f123'}]",
+        "ms": 1.7
+      },
+      "elicit_no_handler": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.McpError",
+        "message": "'Elicitation not supported'",
+        "ms": 2.4
+      },
+      "disconnect": {
+        "ok": true,
+        "type": "bool",
+        "value": "False",
+        "ms": 0.3
+      },
+      "timeout_1s_on_2s_tool": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.McpError",
+        "message": "'Timed out while waiting for response to ClientRequest. Waited 1.0 seconds.'",
+        "ms": 1002.9
+      },
+      "add_after_timeout": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '5', 'id': 'lc_27f4d870-4e3c-4b8c-b1ca-3d38710986b5'}]",
+        "ms": 4.6
+      },
+      "disconnect_after_timeout": {
+        "ok": true,
+        "type": "bool",
+        "value": "False",
+        "ms": 0.6
+      },
+      "elicit_with_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'hello kiarina', 'id': 'lc_7a6d60d8-02ae-43d2-b3cb-13e19dbf0a09'}]",
+        "ms": 3.9
+      }
+    },
+    "stdio_child_alive_after_disconnect": null
+  },
+  {
+    "key": "client-v1__server-v2__streamable_http",
+    "client": "v1",
+    "server": "v2",
+    "transport": "streamable_http",
+    "mode": null,
+    "connect_ms": 18.5,
+    "tools": [
+      "add",
+      "ask",
+      "ask_modern",
+      "fail",
+      "image",
+      "open_object",
+      "pid",
+      "slow",
+      "structured"
+    ],
+    "open_object_schema": {
+      "properties": {
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        }
+      },
+      "required": [
+        "options"
+      ],
+      "type": "object",
+      "title": "open_objectArguments"
+    },
+    "tool_metadata": "None",
+    "cases": {
+      "add": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '3', 'id': 'lc_853b6f5d-abbb-47b7-b9c8-9b1094dcf830'}]",
+        "ms": 5.6
+      },
+      "pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29372', 'id': 'lc_1161b5ad-66a0-4447-808e-48e4f950d6c4'}]",
+        "ms": 2.2
+      },
+      "pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29372', 'id': 'lc_96459e11-563b-4bad-aaf4-591eb728d2b2'}]",
+        "ms": 1.8
+      },
+      "image": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'image', 'id': 'lc_b3ba3b98-9fa7-4799-a0a4-0251bdbdf448', 'base64': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'mime_type': 'image/png'}]",
+        "ms": 1.6
+      },
+      "structured": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_55da714b-97c9-4d90-b77f-89ea7bee7baf'}]",
+        "ms": 1.7
+      },
+      "structured_toolcall": {
+        "ok": true,
+        "type": "ToolMessage",
+        "value": "ToolMessage(content=[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_69d24018-930b-44db-8e2c-65e043104381'}], name='structured', tool_call_id='1', artifact={'structured_content': {'answer': 42, 'items': ['a', 'b']}})",
+        "ms": 1.8
+      },
+      "fail": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool fail', 'id': 'lc_ca2533d7-916f-451c-9070-e02ea9955f1a'}]",
+        "ms": 148.1
+      },
+      "open_object": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'x,y', 'id': 'lc_2894835e-8d4a-46e2-878a-739f8d639f4b'}]",
+        "ms": 2.3
+      },
+      "elicit_no_handler": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.McpError",
+        "message": "'Elicitation not supported'",
+        "ms": 3.3
+      },
+      "disconnect": {
+        "ok": true,
+        "type": "bool",
+        "value": "False",
+        "ms": 1.6
+      },
+      "timeout_1s_on_2s_tool": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.McpError",
+        "message": "'Timed out while waiting for response to ClientRequest. Waited 1.0 seconds.'",
+        "ms": 1000.9
+      },
+      "add_after_timeout": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '5', 'id': 'lc_62d819a6-7a86-4a4d-97d6-c19f22860ec3'}]",
+        "ms": 3.2
+      },
+      "disconnect_after_timeout": {
+        "ok": true,
+        "type": "bool",
+        "value": "False",
+        "ms": 2.4
+      },
+      "elicit_with_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'hello kiarina', 'id': 'lc_15a3c306-ff2b-492f-babc-bfd5c766a03b'}]",
+        "ms": 4.2
+      }
+    },
+    "stdio_child_alive_after_disconnect": null
+  },
+  {
+    "key": "client-v2__server-v1__stdio",
+    "client": "v2",
+    "server": "v1",
+    "transport": "stdio",
+    "mode": "auto",
+    "connect_ms": 165.8,
+    "protocol_version": "2025-11-25",
+    "server_info": "Implementation(name='probe-v1', title=None, version='1.30.0', description=None, website_url=None, icons=None)",
+    "tools": [
+      "add",
+      "ask",
+      "fail",
+      "image",
+      "open_object",
+      "pid",
+      "slow",
+      "structured"
+    ],
+    "open_object_schema": {
+      "properties": {
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        }
+      },
+      "required": [
+        "options"
+      ],
+      "title": "open_objectArguments",
+      "type": "object"
+    },
+    "tool_metadata": "{'mcp': {'server': {'name': 'probe-v1', 'version': '1.30.0'}}}",
+    "stdio_child_alive_after_aexit": true,
+    "stdio_child_alive_after_transport_close": false,
+    "cases": {
+      "add": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '3', 'id': 'lc_156f9a7d-1e58-40b2-9e0a-92f755284076'}]",
+        "ms": 19.6
+      },
+      "pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29378', 'id': 'lc_e8ee2fc6-2e91-4356-a0c0-deebfd63c0ce'}]",
+        "ms": 2.0
+      },
+      "pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29378', 'id': 'lc_f908ea8f-4eab-4037-8468-43ff7bf6166a'}]",
+        "ms": 1.2
+      },
+      "image": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'image', 'id': 'lc_edb71187-1809-4542-96f6-b8886515e20d', 'base64': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'mime_type': 'image/png'}]",
+        "ms": 1.0
+      },
+      "structured": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_18920815-6d86-4b5f-a4c7-90f1a1e8f6af'}]",
+        "ms": 1.4
+      },
+      "structured_toolcall": {
+        "ok": true,
+        "type": "ToolMessage",
+        "value": "ToolMessage(content=[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_c7fcf93a-b27e-475c-9848-04b984873738'}], name='structured', tool_call_id='1', artifact={'structured_content': {'answer': 42, 'items': ['a', 'b']}})",
+        "ms": 1.3
+      },
+      "fail": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool fail: boom from tool', 'id': 'lc_da249949-4786-4837-ba03-57e7a88f89ee'}]",
+        "ms": 1.0
+      },
+      "open_object": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'x,y', 'id': 'lc_fb0cba0b-f8e8-4f7f-b232-61ffd249054f'}]",
+        "ms": 1.6
+      },
+      "elicit_no_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool ask: Elicitation not supported', 'id': 'lc_d4422e6d-2b9a-438d-a1b6-7bcc93cd3f7a'}]",
+        "ms": 1.7
+      },
+      "list_resources": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 0.7
+      },
+      "list_prompts": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 0.7
+      },
+      "disconnect": {
+        "ok": true,
+        "type": "NoneType",
+        "value": "None",
+        "ms": 0.1
+      },
+      "timeout_1s_on_2s_tool": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "\"Request 'tools/call' timed out\"",
+        "ms": 1004.1
+      },
+      "add_after_timeout": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '5', 'id': 'lc_88a1b08e-55ed-43b7-8d1c-09650f77152c'}]",
+        "ms": 8.0
+      },
+      "disconnect_after_timeout": {
+        "ok": true,
+        "type": "NoneType",
+        "value": "None",
+        "ms": 0.3
+      },
+      "elicit_with_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'hello kiarina', 'id': 'lc_5a2d6336-d605-42d5-8958-8998f811a6f2'}]",
+        "ms": 3.9
+      },
+      "adapter_pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29381', 'id': 'lc_7d72eb43-44eb-4d4f-903e-806d8c90f1e3'}]",
+        "ms": 2.2
+      },
+      "adapter_pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29381', 'id': 'lc_33ed31b2-38e3-43fb-a230-5a0e4aa9c45a'}]",
+        "ms": 1.4
+      },
+      "adapter_elicit_outside_graph": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool ask: This MCP server asked for input over the legacy server-initiated elicitation path, which interrupt-based elicitation cannot answer. It needs a server that returns its requests as an `InputRequiredResult`, or a pre-built client with your own `elici...",
+        "ms": 1.9
+      }
+    }
+  },
+  {
+    "key": "client-v2__server-v1__sse",
+    "client": "v2",
+    "server": "v1",
+    "transport": "sse",
+    "mode": "auto",
+    "connect_ms": 19.1,
+    "protocol_version": "2025-11-25",
+    "server_info": "Implementation(name='probe-v1', title=None, version='1.30.0', description=None, website_url=None, icons=None)",
+    "tools": [
+      "add",
+      "ask",
+      "fail",
+      "image",
+      "open_object",
+      "pid",
+      "slow",
+      "structured"
+    ],
+    "open_object_schema": {
+      "properties": {
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        }
+      },
+      "required": [
+        "options"
+      ],
+      "title": "open_objectArguments",
+      "type": "object"
+    },
+    "tool_metadata": "{'mcp': {'server': {'name': 'probe-v1', 'version': '1.30.0'}}}",
+    "cases": {
+      "add": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '3', 'id': 'lc_1df6d3e8-8380-4e62-84e5-3c9e8fd2c604'}]",
+        "ms": 39.2
+      },
+      "pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29382', 'id': 'lc_9d238906-82de-4458-820c-e0ec98ed7d90'}]",
+        "ms": 2.5
+      },
+      "pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29382', 'id': 'lc_3d80ffe8-c3a8-42d2-b5c9-b0b85b78368a'}]",
+        "ms": 1.6
+      },
+      "image": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'image', 'id': 'lc_2034ad96-b896-45e4-98d2-68da3407d069', 'base64': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'mime_type': 'image/png'}]",
+        "ms": 1.4
+      },
+      "structured": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_47ff30b0-63f0-42e0-aeb3-87f4b12b6325'}]",
+        "ms": 1.8
+      },
+      "structured_toolcall": {
+        "ok": true,
+        "type": "ToolMessage",
+        "value": "ToolMessage(content=[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_29961fda-0243-49f0-b679-96b9119a6fe1'}], name='structured', tool_call_id='1', artifact={'structured_content': {'answer': 42, 'items': ['a', 'b']}})",
+        "ms": 1.4
+      },
+      "fail": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool fail: boom from tool', 'id': 'lc_b8fa4861-101d-400f-ae44-a6578c9a1627'}]",
+        "ms": 1.4
+      },
+      "open_object": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'x,y', 'id': 'lc_c1a282a9-3cd0-47c8-b994-c963b01cd3eb'}]",
+        "ms": 2.0
+      },
+      "elicit_no_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool ask: Elicitation not supported', 'id': 'lc_e38d7f02-cedc-46ed-a0d5-e376664ae598'}]",
+        "ms": 2.4
+      },
+      "list_resources": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 1.0
+      },
+      "list_prompts": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 1.0
+      },
+      "disconnect": {
+        "ok": true,
+        "type": "NoneType",
+        "value": "None",
+        "ms": 0.5
+      },
+      "timeout_1s_on_2s_tool": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "\"Request 'tools/call' timed out\"",
+        "ms": 1005.6
+      },
+      "add_after_timeout": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '5', 'id': 'lc_32e31f26-d218-42f3-9086-75a4ad6b59b8'}]",
+        "ms": 8.6
+      },
+      "disconnect_after_timeout": {
+        "ok": true,
+        "type": "NoneType",
+        "value": "None",
+        "ms": 1.0
+      },
+      "elicit_with_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'hello kiarina', 'id': 'lc_5eaa11c4-9346-4efb-acb1-841a216c29ce'}]",
+        "ms": 6.3
+      },
+      "adapter_pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29382', 'id': 'lc_56fdb12f-2308-4c06-aabf-961e47591231'}]",
+        "ms": 10.8
+      },
+      "adapter_pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29382', 'id': 'lc_f721bb9e-d106-49ae-ab02-483907c61366'}]",
+        "ms": 8.7
+      },
+      "adapter_elicit_outside_graph": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool ask: This MCP server asked for input over the legacy server-initiated elicitation path, which interrupt-based elicitation cannot answer. It needs a server that returns its requests as an `InputRequiredResult`, or a pre-built client with your own `elici...",
+        "ms": 7.0
+      }
+    }
+  },
+  {
+    "key": "client-v2__server-v1__streamable_http",
+    "client": "v2",
+    "server": "v1",
+    "transport": "streamable_http",
+    "mode": "auto",
+    "connect_ms": 19.3,
+    "protocol_version": "2025-11-25",
+    "server_info": "Implementation(name='probe-v1', title=None, version='1.30.0', description=None, website_url=None, icons=None)",
+    "tools": [
+      "add",
+      "ask",
+      "fail",
+      "image",
+      "open_object",
+      "pid",
+      "slow",
+      "structured"
+    ],
+    "open_object_schema": {
+      "properties": {
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        }
+      },
+      "required": [
+        "options"
+      ],
+      "title": "open_objectArguments",
+      "type": "object"
+    },
+    "tool_metadata": "{'mcp': {'server': {'name': 'probe-v1', 'version': '1.30.0'}}}",
+    "cases": {
+      "add": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '3', 'id': 'lc_e8df5802-64ed-4b57-a525-5d7c49fa054a'}]",
+        "ms": 40.4
+      },
+      "pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29384', 'id': 'lc_4c1fdc49-d9f3-44b4-b003-2f3e1c9ff8d1'}]",
+        "ms": 3.1
+      },
+      "pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29384', 'id': 'lc_1eb006d8-3e04-429b-91ca-7586d7e78f32'}]",
+        "ms": 2.1
+      },
+      "image": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'image', 'id': 'lc_123c654d-6150-4b41-9d1a-3960e4b14601', 'base64': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'mime_type': 'image/png'}]",
+        "ms": 2.0
+      },
+      "structured": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_df9e7895-9d1e-46e8-8328-df21e26fa99d'}]",
+        "ms": 2.3
+      },
+      "structured_toolcall": {
+        "ok": true,
+        "type": "ToolMessage",
+        "value": "ToolMessage(content=[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_0d9ad209-cd26-4b76-b5df-180d57eb28da'}], name='structured', tool_call_id='1', artifact={'structured_content': {'answer': 42, 'items': ['a', 'b']}})",
+        "ms": 2.1
+      },
+      "fail": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool fail: boom from tool', 'id': 'lc_df772759-8845-4998-a5b3-a8c1a38d2c5f'}]",
+        "ms": 3.2
+      },
+      "open_object": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'x,y', 'id': 'lc_7c7e7a1a-426a-4f74-a927-a76d7d1691d8'}]",
+        "ms": 2.4
+      },
+      "elicit_no_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool ask: Elicitation not supported', 'id': 'lc_5814c48a-030e-4998-bab9-981b2eda7d16'}]",
+        "ms": 3.4
+      },
+      "list_resources": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 1.4
+      },
+      "list_prompts": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 1.5
+      },
+      "disconnect": {
+        "ok": true,
+        "type": "NoneType",
+        "value": "None",
+        "ms": 1.4
+      },
+      "timeout_1s_on_2s_tool": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "\"Request 'tools/call' timed out\"",
+        "ms": 1003.4
+      },
+      "add_after_timeout": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '5', 'id': 'lc_02f398e1-b3b6-490c-96e6-08008505289a'}]",
+        "ms": 12.9
+      },
+      "disconnect_after_timeout": {
+        "ok": true,
+        "type": "NoneType",
+        "value": "None",
+        "ms": 2.7
+      },
+      "elicit_with_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'hello kiarina', 'id': 'lc_00a5a190-cc17-4141-8716-e7eccd04e501'}]",
+        "ms": 6.5
+      },
+      "adapter_pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29384', 'id': 'lc_473f3886-e577-4292-bc2d-38597f286ff0'}]",
+        "ms": 11.1
+      },
+      "adapter_pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29384', 'id': 'lc_f09da4ff-c247-4309-b5d8-f525d75b035d'}]",
+        "ms": 10.1
+      },
+      "adapter_elicit_outside_graph": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool ask: This MCP server asked for input over the legacy server-initiated elicitation path, which interrupt-based elicitation cannot answer. It needs a server that returns its requests as an `InputRequiredResult`, or a pre-built client with your own `elici...",
+        "ms": 8.9
+      }
+    }
+  },
+  {
+    "key": "client-v2__server-v2__stdio",
+    "client": "v2",
+    "server": "v2",
+    "transport": "stdio",
+    "mode": "auto",
+    "connect_ms": 253.0,
+    "protocol_version": "2026-07-28",
+    "server_info": "Implementation(name='probe-v2', title=None, version='', description=None, website_url=None, icons=None)",
+    "tools": [
+      "add",
+      "ask",
+      "ask_modern",
+      "fail",
+      "image",
+      "open_object",
+      "pid",
+      "slow",
+      "structured"
+    ],
+    "open_object_schema": {
+      "type": "object",
+      "properties": {
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        }
+      },
+      "required": [
+        "options"
+      ],
+      "title": "open_objectArguments"
+    },
+    "tool_metadata": "{'mcp': {'server': {'name': 'probe-v2', 'version': ''}}}",
+    "stdio_child_alive_after_aexit": true,
+    "stdio_child_alive_after_transport_close": false,
+    "cases": {
+      "add": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '3', 'id': 'lc_be51a9cf-e05b-4b13-938e-e47ea5c7081a'}]",
+        "ms": 19.8
+      },
+      "pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29387', 'id': 'lc_fc2bf319-8695-4484-a6e8-edf0ec8d5048'}]",
+        "ms": 1.8
+      },
+      "pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29387', 'id': 'lc_79046777-da54-4124-a431-393ff1565b81'}]",
+        "ms": 1.2
+      },
+      "image": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'image', 'id': 'lc_7df8e79a-01e5-4222-a8f4-9b2339c420bc', 'base64': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'mime_type': 'image/png'}]",
+        "ms": 1.1
+      },
+      "structured": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_0736bfe1-f6a4-498a-8b42-605ad1f4744b'}]",
+        "ms": 1.4
+      },
+      "structured_toolcall": {
+        "ok": true,
+        "type": "ToolMessage",
+        "value": "ToolMessage(content=[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_ac9008c2-07c8-48cd-a560-659c044f3a55'}], name='structured', tool_call_id='1', artifact={'structured_content': {'answer': 42, 'items': ['a', 'b']}})",
+        "ms": 1.1
+      },
+      "fail": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool fail', 'id': 'lc_42586b07-d9a1-4624-8f10-8dc403f6e7af'}]",
+        "ms": 146.7
+      },
+      "open_object": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'x,y', 'id': 'lc_0006005f-5df1-4828-9d63-542d5df5fdb9'}]",
+        "ms": 1.9
+      },
+      "elicit_no_handler": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "\"Cannot send 'elicitation/create': this transport context has no back-channel for server-initiated requests.\"",
+        "ms": 1.2
+      },
+      "list_resources": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 0.7
+      },
+      "list_prompts": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 0.7
+      },
+      "disconnect": {
+        "ok": true,
+        "type": "NoneType",
+        "value": "None",
+        "ms": 0.1
+      },
+      "timeout_1s_on_2s_tool": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "\"Request 'tools/call' timed out\"",
+        "ms": 1004.0
+      },
+      "add_after_timeout": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '5', 'id': 'lc_7f5fec7b-5e7a-4186-8983-95d435ae358f'}]",
+        "ms": 9.9
+      },
+      "disconnect_after_timeout": {
+        "ok": true,
+        "type": "NoneType",
+        "value": "None",
+        "ms": 0.2
+      },
+      "elicit_with_handler": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "\"Cannot send 'elicitation/create': this transport context has no back-channel for server-initiated requests.\"",
+        "ms": 1.4
+      },
+      "elicit_modern_with_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'hello kiarina (accept)', 'id': 'lc_543878bf-f80e-4fae-b1f8-aa4c82a4bdd7'}]",
+        "ms": 3.4
+      },
+      "elicit_modern_no_handler": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "'Elicitation not supported'",
+        "ms": 1.7
+      },
+      "adapter_pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29399', 'id': 'lc_81aeca8c-722f-4410-9a5d-72c75c783f0f'}]",
+        "ms": 4.1
+      },
+      "adapter_pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29399', 'id': 'lc_380cd9b6-ff0a-4158-bf6f-766c4ba1029d'}]",
+        "ms": 1.3
+      },
+      "adapter_elicit_outside_graph": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "\"Cannot send 'elicitation/create': this transport context has no back-channel for server-initiated requests.\"",
+        "ms": 1.2
+      },
+      "adapter_elicit_modern_outside_graph": {
+        "ok": false,
+        "error": "builtins.KeyError",
+        "message": "\"'__pregel_scratchpad'\"",
+        "ms": 2.0
+      }
+    }
+  },
+  {
+    "key": "client-v2__server-v2__sse",
+    "client": "v2",
+    "server": "v2",
+    "transport": "sse",
+    "mode": "auto",
+    "connect_ms": 19.0,
+    "protocol_version": "2025-11-25",
+    "server_info": "Implementation(name='probe-v2', title=None, version='', description=None, website_url=None, icons=None)",
+    "tools": [
+      "add",
+      "ask",
+      "ask_modern",
+      "fail",
+      "image",
+      "open_object",
+      "pid",
+      "slow",
+      "structured"
+    ],
+    "open_object_schema": {
+      "properties": {
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        }
+      },
+      "required": [
+        "options"
+      ],
+      "type": "object",
+      "title": "open_objectArguments"
+    },
+    "tool_metadata": "{'mcp': {'server': {'name': 'probe-v2', 'version': ''}}}",
+    "cases": {
+      "add": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '3', 'id': 'lc_df17910f-f647-41d8-a5f4-ded245c5b92a'}]",
+        "ms": 38.0
+      },
+      "pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29400', 'id': 'lc_55476fc4-8ddb-4796-9989-8db21b0ad66b'}]",
+        "ms": 2.4
+      },
+      "pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29400', 'id': 'lc_fc2c98c8-960d-46cf-b932-16bbde7c9104'}]",
+        "ms": 1.5
+      },
+      "image": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'image', 'id': 'lc_8b785dc9-af2a-41ec-b4b0-8c4baac197df', 'base64': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'mime_type': 'image/png'}]",
+        "ms": 1.5
+      },
+      "structured": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_bf3e565d-e5c9-46c7-a05c-44925ffaa938'}]",
+        "ms": 1.6
+      },
+      "structured_toolcall": {
+        "ok": true,
+        "type": "ToolMessage",
+        "value": "ToolMessage(content=[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_8cebe94e-f777-47c0-b548-636859a26caa'}], name='structured', tool_call_id='1', artifact={'structured_content': {'answer': 42, 'items': ['a', 'b']}})",
+        "ms": 1.4
+      },
+      "fail": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool fail', 'id': 'lc_811e66c3-ad8b-4455-ad21-3159a88afcb6'}]",
+        "ms": 150.3
+      },
+      "open_object": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'x,y', 'id': 'lc_f3bd719b-3c1b-468e-bb06-64c64b8bb33e'}]",
+        "ms": 2.4
+      },
+      "elicit_no_handler": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "'Elicitation not supported'",
+        "ms": 2.5
+      },
+      "list_resources": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 1.0
+      },
+      "list_prompts": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 0.9
+      },
+      "disconnect": {
+        "ok": true,
+        "type": "NoneType",
+        "value": "None",
+        "ms": 0.6
+      },
+      "timeout_1s_on_2s_tool": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "\"Request 'tools/call' timed out\"",
+        "ms": 1003.9
+      },
+      "add_after_timeout": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '5', 'id': 'lc_00d5da24-53d4-49d0-bf7d-98b4e9f22b0f'}]",
+        "ms": 4.7
+      },
+      "disconnect_after_timeout": {
+        "ok": true,
+        "type": "NoneType",
+        "value": "None",
+        "ms": 0.8
+      },
+      "elicit_with_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'hello kiarina', 'id': 'lc_9715aa29-ec0c-47e1-94af-857116de8bd3'}]",
+        "ms": 5.2
+      },
+      "elicit_modern_with_handler": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "'Handler returned an invalid result'",
+        "ms": 48.8
+      },
+      "elicit_modern_no_handler": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "'Handler returned an invalid result'",
+        "ms": 37.9
+      },
+      "adapter_pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29400', 'id': 'lc_b65219c0-d80b-4fae-812e-fef4485d4354'}]",
+        "ms": 6.7
+      },
+      "adapter_pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29400', 'id': 'lc_64f3210f-efa0-49de-9b96-f52812df2cac'}]",
+        "ms": 6.3
+      },
+      "adapter_elicit_outside_graph": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "'This MCP server asked for input over the legacy server-initiated elicitation path, which interrupt-based elicitation cannot answer. It needs a server that returns its requests as an `InputRequiredResult`, or a pre-built client with your own `elicitation_handler`.'",
+        "ms": 5.9
+      },
+      "adapter_elicit_modern_outside_graph": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "'Handler returned an invalid result'",
+        "ms": 40.0
+      }
+    }
+  },
+  {
+    "key": "client-v2__server-v2__streamable_http",
+    "client": "v2",
+    "server": "v2",
+    "transport": "streamable_http",
+    "mode": "auto",
+    "connect_ms": 17.6,
+    "protocol_version": "2026-07-28",
+    "server_info": "Implementation(name='probe-v2', title=None, version='', description=None, website_url=None, icons=None)",
+    "tools": [
+      "add",
+      "ask",
+      "ask_modern",
+      "fail",
+      "image",
+      "open_object",
+      "pid",
+      "slow",
+      "structured"
+    ],
+    "open_object_schema": {
+      "type": "object",
+      "properties": {
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        }
+      },
+      "required": [
+        "options"
+      ],
+      "title": "open_objectArguments"
+    },
+    "tool_metadata": "{'mcp': {'server': {'name': 'probe-v2', 'version': ''}}}",
+    "cases": {
+      "add": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '3', 'id': 'lc_1cda420c-cc30-405e-8c6f-23ea66d71034'}]",
+        "ms": 39.6
+      },
+      "pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29402', 'id': 'lc_f530e0c5-a4a1-42d2-8ed6-26b98534b73d'}]",
+        "ms": 2.4
+      },
+      "pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29402', 'id': 'lc_90cf0130-3b3f-4e58-8f9e-f091d54ba614'}]",
+        "ms": 1.5
+      },
+      "image": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'image', 'id': 'lc_2144703c-0f78-41bd-a80b-8c976db61777', 'base64': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'mime_type': 'image/png'}]",
+        "ms": 1.5
+      },
+      "structured": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_7d271bc7-11ca-4297-b772-2a63ea4a9166'}]",
+        "ms": 1.6
+      },
+      "structured_toolcall": {
+        "ok": true,
+        "type": "ToolMessage",
+        "value": "ToolMessage(content=[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_7c226862-4c2b-4471-bae9-75e910d25634'}], name='structured', tool_call_id='1', artifact={'structured_content': {'answer': 42, 'items': ['a', 'b']}})",
+        "ms": 1.3
+      },
+      "fail": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool fail', 'id': 'lc_0328ff7f-7372-4bed-87f9-5bb1c9c57ba0'}]",
+        "ms": 148.5
+      },
+      "open_object": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'x,y', 'id': 'lc_664323f0-2f15-47b6-a625-b2e8b5b956d4'}]",
+        "ms": 2.5
+      },
+      "elicit_no_handler": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "\"Cannot send 'elicitation/create': this transport context has no back-channel for server-initiated requests.\"",
+        "ms": 1.7
+      },
+      "list_resources": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 1.1
+      },
+      "list_prompts": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 1.0
+      },
+      "disconnect": {
+        "ok": true,
+        "type": "NoneType",
+        "value": "None",
+        "ms": 0.4
+      },
+      "timeout_1s_on_2s_tool": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "\"Request 'tools/call' timed out\"",
+        "ms": 1003.2
+      },
+      "add_after_timeout": {
+        "ok": false,
+        "error": "builtins.RuntimeError",
+        "message": "\"Client is not connected. Use the 'async with client:' context manager first.\"",
+        "ms": 2.6
+      },
+      "disconnect_after_timeout": {
+        "ok": false,
+        "error": "httpx2.ReadTimeout",
+        "message": "''",
+        "ms": 0.3
+      },
+      "elicit_with_handler": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "\"Cannot send 'elicitation/create': this transport context has no back-channel for server-initiated requests.\"",
+        "ms": 3.0
+      },
+      "elicit_modern_with_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'hello kiarina (accept)', 'id': 'lc_c138c09c-f4e6-4995-a07f-b595ee067eea'}]",
+        "ms": 6.4
+      },
+      "elicit_modern_no_handler": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "'Elicitation not supported'",
+        "ms": 1.9
+      },
+      "adapter_pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29402', 'id': 'lc_e5fa3496-347b-44ef-8790-ff4d43ac4d9e'}]",
+        "ms": 6.5
+      },
+      "adapter_pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29402', 'id': 'lc_9d47529d-d708-4829-8176-0b36c87921cb'}]",
+        "ms": 5.5
+      },
+      "adapter_elicit_outside_graph": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "\"Cannot send 'elicitation/create': this transport context has no back-channel for server-initiated requests.\"",
+        "ms": 4.2
+      },
+      "adapter_elicit_modern_outside_graph": {
+        "ok": false,
+        "error": "builtins.KeyError",
+        "message": "\"'__pregel_scratchpad'\"",
+        "ms": 4.6
+      }
+    }
+  },
+  {
+    "key": "client-v2__server-v1__stdio__legacy",
+    "client": "v2",
+    "server": "v1",
+    "transport": "stdio",
+    "mode": "legacy",
+    "connect_ms": 163.7,
+    "protocol_version": "2025-11-25",
+    "server_info": "Implementation(name='probe-v1', title=None, version='1.30.0', description=None, website_url=None, icons=None)",
+    "tools": [
+      "add",
+      "ask",
+      "fail",
+      "image",
+      "open_object",
+      "pid",
+      "slow",
+      "structured"
+    ],
+    "open_object_schema": {
+      "properties": {
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        }
+      },
+      "required": [
+        "options"
+      ],
+      "title": "open_objectArguments",
+      "type": "object"
+    },
+    "tool_metadata": "{'mcp': {'server': {'name': 'probe-v1', 'version': '1.30.0'}}}",
+    "stdio_child_alive_after_aexit": true,
+    "stdio_child_alive_after_transport_close": false,
+    "cases": {
+      "add": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '3', 'id': 'lc_c7259bbc-5256-48ca-afd4-77b0ecdeee24'}]",
+        "ms": 19.4
+      },
+      "pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29405', 'id': 'lc_7ac43fab-8e93-4b47-b700-3a47221260f1'}]",
+        "ms": 2.0
+      },
+      "pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29405', 'id': 'lc_4a7fddc1-d94b-4940-9489-54a0c4c9cccd'}]",
+        "ms": 1.1
+      },
+      "image": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'image', 'id': 'lc_6469d15b-6442-4e43-b13d-a55866fa255c', 'base64': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'mime_type': 'image/png'}]",
+        "ms": 1.2
+      },
+      "structured": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_d6961db8-dec0-48dd-b919-7b86ce5cc326'}]",
+        "ms": 1.6
+      },
+      "structured_toolcall": {
+        "ok": true,
+        "type": "ToolMessage",
+        "value": "ToolMessage(content=[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_341ff1db-cb05-4830-a750-41614079d638'}], name='structured', tool_call_id='1', artifact={'structured_content': {'answer': 42, 'items': ['a', 'b']}})",
+        "ms": 1.2
+      },
+      "fail": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool fail: boom from tool', 'id': 'lc_de3bf0e5-9598-4147-8bba-93046468944f'}]",
+        "ms": 0.9
+      },
+      "open_object": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'x,y', 'id': 'lc_8e9564a2-fc09-4849-bf81-5f053e0490c9'}]",
+        "ms": 1.6
+      },
+      "elicit_no_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool ask: Elicitation not supported', 'id': 'lc_a9daf62b-a896-4224-8b7c-8e7abc9c2013'}]",
+        "ms": 1.8
+      },
+      "list_resources": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 0.7
+      },
+      "list_prompts": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 0.7
+      },
+      "disconnect": {
+        "ok": true,
+        "type": "NoneType",
+        "value": "None",
+        "ms": 0.1
+      },
+      "timeout_1s_on_2s_tool": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "\"Request 'tools/call' timed out\"",
+        "ms": 1002.7
+      },
+      "add_after_timeout": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '5', 'id': 'lc_2649fde9-ff57-4d61-9f17-1959e2715a49'}]",
+        "ms": 7.7
+      },
+      "disconnect_after_timeout": {
+        "ok": true,
+        "type": "NoneType",
+        "value": "None",
+        "ms": 0.3
+      },
+      "elicit_with_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'hello kiarina', 'id': 'lc_ba2cad7c-3ff3-46b5-a707-92c5776c60a2'}]",
+        "ms": 3.7
+      },
+      "adapter_pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29408', 'id': 'lc_49975521-a32f-481f-b040-b8da26ed5050'}]",
+        "ms": 2.3
+      },
+      "adapter_pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29408', 'id': 'lc_3026627b-d023-4d90-ace9-e50a80f0c4b4'}]",
+        "ms": 1.4
+      },
+      "adapter_elicit_outside_graph": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool ask: This MCP server asked for input over the legacy server-initiated elicitation path, which interrupt-based elicitation cannot answer. It needs a server that returns its requests as an `InputRequiredResult`, or a pre-built client with your own `elici...",
+        "ms": 1.9
+      }
+    }
+  },
+  {
+    "key": "client-v2__server-v1__streamable_http__legacy",
+    "client": "v2",
+    "server": "v1",
+    "transport": "streamable_http",
+    "mode": "legacy",
+    "connect_ms": 18.5,
+    "protocol_version": "2025-11-25",
+    "server_info": "Implementation(name='probe-v1', title=None, version='1.30.0', description=None, website_url=None, icons=None)",
+    "tools": [
+      "add",
+      "ask",
+      "fail",
+      "image",
+      "open_object",
+      "pid",
+      "slow",
+      "structured"
+    ],
+    "open_object_schema": {
+      "properties": {
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        }
+      },
+      "required": [
+        "options"
+      ],
+      "title": "open_objectArguments",
+      "type": "object"
+    },
+    "tool_metadata": "{'mcp': {'server': {'name': 'probe-v1', 'version': '1.30.0'}}}",
+    "cases": {
+      "add": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '3', 'id': 'lc_9c6620ab-3d85-44fc-8524-02b90e0d6f9b'}]",
+        "ms": 39.9
+      },
+      "pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29409', 'id': 'lc_11ddca2d-b1e3-43a4-888d-cb1f097984d3'}]",
+        "ms": 3.1
+      },
+      "pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29409', 'id': 'lc_f2b19f1c-729b-42c4-ae49-fb2e3aeba4c0'}]",
+        "ms": 2.0
+      },
+      "image": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'image', 'id': 'lc_0b014d22-9cd8-4b94-a6cb-0e045bead29e', 'base64': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'mime_type': 'image/png'}]",
+        "ms": 1.8
+      },
+      "structured": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_fc38739d-8206-4ce9-8c61-7eb5bda521d2'}]",
+        "ms": 2.2
+      },
+      "structured_toolcall": {
+        "ok": true,
+        "type": "ToolMessage",
+        "value": "ToolMessage(content=[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_8ec5421e-5c8e-4a39-8a08-66933a9fe065'}], name='structured', tool_call_id='1', artifact={'structured_content': {'answer': 42, 'items': ['a', 'b']}})",
+        "ms": 1.9
+      },
+      "fail": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool fail: boom from tool', 'id': 'lc_44481f3b-c306-4d0f-8aec-014961fcddfe'}]",
+        "ms": 3.1
+      },
+      "open_object": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'x,y', 'id': 'lc_4d2d97c2-5dd4-4594-955d-ebb20c786daa'}]",
+        "ms": 2.5
+      },
+      "elicit_no_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool ask: Elicitation not supported', 'id': 'lc_52da7e99-4e01-40c5-924a-052c32eec972'}]",
+        "ms": 3.3
+      },
+      "list_resources": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 1.4
+      },
+      "list_prompts": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 1.3
+      },
+      "disconnect": {
+        "ok": true,
+        "type": "NoneType",
+        "value": "None",
+        "ms": 1.3
+      },
+      "timeout_1s_on_2s_tool": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "\"Request 'tools/call' timed out\"",
+        "ms": 1003.5
+      },
+      "add_after_timeout": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '5', 'id': 'lc_0f1edb7f-301b-49c0-ad21-0b9ee7fa90e8'}]",
+        "ms": 11.1
+      },
+      "disconnect_after_timeout": {
+        "ok": true,
+        "type": "NoneType",
+        "value": "None",
+        "ms": 2.8
+      },
+      "elicit_with_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'hello kiarina', 'id': 'lc_bb21b6c2-9f82-4107-bb75-4fc2df1ed287'}]",
+        "ms": 6.6
+      },
+      "adapter_pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29409', 'id': 'lc_6232201c-70a5-4a7b-9b17-a8c9d6804e71'}]",
+        "ms": 10.4
+      },
+      "adapter_pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29409', 'id': 'lc_67a1e992-9e95-43cf-813b-c1cb8dabd15c'}]",
+        "ms": 9.7
+      },
+      "adapter_elicit_outside_graph": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool ask: This MCP server asked for input over the legacy server-initiated elicitation path, which interrupt-based elicitation cannot answer. It needs a server that returns its requests as an `InputRequiredResult`, or a pre-built client with your own `elici...",
+        "ms": 7.9
+      }
+    }
+  },
+  {
+    "key": "client-v2__server-v2__stdio__legacy",
+    "client": "v2",
+    "server": "v2",
+    "transport": "stdio",
+    "mode": "legacy",
+    "connect_ms": 242.9,
+    "protocol_version": "2025-11-25",
+    "server_info": "Implementation(name='probe-v2', title=None, version='', description=None, website_url=None, icons=None)",
+    "tools": [
+      "add",
+      "ask",
+      "ask_modern",
+      "fail",
+      "image",
+      "open_object",
+      "pid",
+      "slow",
+      "structured"
+    ],
+    "open_object_schema": {
+      "properties": {
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        }
+      },
+      "required": [
+        "options"
+      ],
+      "type": "object",
+      "title": "open_objectArguments"
+    },
+    "tool_metadata": "{'mcp': {'server': {'name': 'probe-v2', 'version': ''}}}",
+    "stdio_child_alive_after_aexit": true,
+    "stdio_child_alive_after_transport_close": false,
+    "cases": {
+      "add": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '3', 'id': 'lc_40b41cea-e678-4068-bf13-964f62b24636'}]",
+        "ms": 18.9
+      },
+      "pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29412', 'id': 'lc_5582c33f-cfe6-4994-9b5c-87132b606c26'}]",
+        "ms": 1.8
+      },
+      "pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29412', 'id': 'lc_ef334deb-e14c-48ea-9b3d-5b9b99d539d1'}]",
+        "ms": 1.1
+      },
+      "image": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'image', 'id': 'lc_7f953f02-3346-46b6-8f11-f1b2dd417898', 'base64': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'mime_type': 'image/png'}]",
+        "ms": 1.1
+      },
+      "structured": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_a18f22c9-8e5a-4118-9e62-e8e709beb012'}]",
+        "ms": 1.3
+      },
+      "structured_toolcall": {
+        "ok": true,
+        "type": "ToolMessage",
+        "value": "ToolMessage(content=[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_feb781ea-cb99-4304-bb27-f48c3a710935'}], name='structured', tool_call_id='1', artifact={'structured_content': {'answer': 42, 'items': ['a', 'b']}})",
+        "ms": 1.0
+      },
+      "fail": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool fail', 'id': 'lc_a0420524-ecf7-44fa-b9c1-f8bd92ee5fad'}]",
+        "ms": 152.0
+      },
+      "open_object": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'x,y', 'id': 'lc_49f2b974-5025-40ed-a9a4-f5fcb9282b63'}]",
+        "ms": 1.9
+      },
+      "elicit_no_handler": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "'Elicitation not supported'",
+        "ms": 1.9
+      },
+      "list_resources": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 0.7
+      },
+      "list_prompts": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 0.7
+      },
+      "disconnect": {
+        "ok": true,
+        "type": "NoneType",
+        "value": "None",
+        "ms": 0.1
+      },
+      "timeout_1s_on_2s_tool": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "\"Request 'tools/call' timed out\"",
+        "ms": 1004.0
+      },
+      "add_after_timeout": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '5', 'id': 'lc_f8d7b31d-bb69-4217-b6fc-bd2c47c48bb8'}]",
+        "ms": 6.6
+      },
+      "disconnect_after_timeout": {
+        "ok": true,
+        "type": "NoneType",
+        "value": "None",
+        "ms": 0.2
+      },
+      "elicit_with_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'hello kiarina', 'id': 'lc_fb9525cb-74a2-4022-a2c7-0d79280d5106'}]",
+        "ms": 3.4
+      },
+      "elicit_modern_with_handler": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "'Handler returned an invalid result'",
+        "ms": 55.2
+      },
+      "elicit_modern_no_handler": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "'Handler returned an invalid result'",
+        "ms": 55.1
+      },
+      "adapter_pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29416', 'id': 'lc_3e60eae7-c324-4ab3-ba31-38ce5e43d3d9'}]",
+        "ms": 3.4
+      },
+      "adapter_pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29416', 'id': 'lc_b6abca57-92c9-4a35-ad8a-b3d7325f0133'}]",
+        "ms": 1.2
+      },
+      "adapter_elicit_outside_graph": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "'This MCP server asked for input over the legacy server-initiated elicitation path, which interrupt-based elicitation cannot answer. It needs a server that returns its requests as an `InputRequiredResult`, or a pre-built client with your own `elicitation_handler`.'",
+        "ms": 1.9
+      },
+      "adapter_elicit_modern_outside_graph": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "'Handler returned an invalid result'",
+        "ms": 59.4
+      }
+    }
+  },
+  {
+    "key": "client-v2__server-v2__streamable_http__legacy",
+    "client": "v2",
+    "server": "v2",
+    "transport": "streamable_http",
+    "mode": "legacy",
+    "connect_ms": 18.2,
+    "protocol_version": "2025-11-25",
+    "server_info": "Implementation(name='probe-v2', title=None, version='', description=None, website_url=None, icons=None)",
+    "tools": [
+      "add",
+      "ask",
+      "ask_modern",
+      "fail",
+      "image",
+      "open_object",
+      "pid",
+      "slow",
+      "structured"
+    ],
+    "open_object_schema": {
+      "properties": {
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        }
+      },
+      "required": [
+        "options"
+      ],
+      "type": "object",
+      "title": "open_objectArguments"
+    },
+    "tool_metadata": "{'mcp': {'server': {'name': 'probe-v2', 'version': ''}}}",
+    "cases": {
+      "add": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '3', 'id': 'lc_47cb7007-664c-4d7d-b5b1-2b3f236f9f88'}]",
+        "ms": 40.5
+      },
+      "pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29417', 'id': 'lc_dc166e1b-be12-4cc5-9262-c1a31223ac34'}]",
+        "ms": 2.8
+      },
+      "pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29417', 'id': 'lc_fa4276dd-02f1-44c6-806e-fbc5a3e7fa32'}]",
+        "ms": 1.9
+      },
+      "image": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'image', 'id': 'lc_ed59b932-18af-44b9-8733-cf20729c66ea', 'base64': 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'mime_type': 'image/png'}]",
+        "ms": 1.8
+      },
+      "structured": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_cb066598-fe53-47fe-b8b0-c5f232140a34'}]",
+        "ms": 2.0
+      },
+      "structured_toolcall": {
+        "ok": true,
+        "type": "ToolMessage",
+        "value": "ToolMessage(content=[{'type': 'text', 'text': '{\\n  \"answer\": 42,\\n  \"items\": [\\n    \"a\",\\n    \"b\"\\n  ]\\n}', 'id': 'lc_0957d446-f107-4eeb-a9a5-fd1dbe3bbd76'}], name='structured', tool_call_id='1', artifact={'structured_content': {'answer': 42, 'items': ['a', 'b']}})",
+        "ms": 2.0
+      },
+      "fail": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'Error executing tool fail', 'id': 'lc_8b93bd3a-05b3-4643-a3fd-77ff83ee0aea'}]",
+        "ms": 149.0
+      },
+      "open_object": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'x,y', 'id': 'lc_39c0e4ae-0a37-4b18-875d-7b99c2355cb3'}]",
+        "ms": 2.8
+      },
+      "elicit_no_handler": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "'Elicitation not supported'",
+        "ms": 3.5
+      },
+      "list_resources": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 1.5
+      },
+      "list_prompts": {
+        "ok": true,
+        "type": "list",
+        "value": "[]",
+        "ms": 1.6
+      },
+      "disconnect": {
+        "ok": true,
+        "type": "NoneType",
+        "value": "None",
+        "ms": 1.8
+      },
+      "timeout_1s_on_2s_tool": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "\"Request 'tools/call' timed out\"",
+        "ms": 1003.0
+      },
+      "add_after_timeout": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '5', 'id': 'lc_3655e379-831a-48b7-af56-cc28076bed3d'}]",
+        "ms": 10.2
+      },
+      "disconnect_after_timeout": {
+        "ok": true,
+        "type": "NoneType",
+        "value": "None",
+        "ms": 3.5
+      },
+      "elicit_with_handler": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': 'hello kiarina', 'id': 'lc_eb133dec-f0d2-40b1-8f9d-019729732bec'}]",
+        "ms": 6.1
+      },
+      "elicit_modern_with_handler": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "'Handler returned an invalid result'",
+        "ms": 49.9
+      },
+      "elicit_modern_no_handler": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "'Handler returned an invalid result'",
+        "ms": 38.0
+      },
+      "adapter_pid_1": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29417', 'id': 'lc_f22f3972-3139-4d3b-a25d-0b392eebe07d'}]",
+        "ms": 8.5
+      },
+      "adapter_pid_2": {
+        "ok": true,
+        "type": "list",
+        "value": "[{'type': 'text', 'text': '29417', 'id': 'lc_5b3ef90e-233b-4107-a09b-318f25c1b350'}]",
+        "ms": 8.4
+      },
+      "adapter_elicit_outside_graph": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "'This MCP server asked for input over the legacy server-initiated elicitation path, which interrupt-based elicitation cannot answer. It needs a server that returns its requests as an `InputRequiredResult`, or a pre-built client with your own `elicitation_handler`.'",
+        "ms": 7.7
+      },
+      "adapter_elicit_modern_outside_graph": {
+        "ok": false,
+        "error": "mcp.shared.exceptions.MCPError",
+        "message": "'Handler returned an invalid result'",
+        "ms": 41.1
+      }
+    }
+  }
+]
