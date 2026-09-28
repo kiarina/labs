@@ -1,0 +1,56 @@
+<!doctype html><html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>みぃねこ — 口の接続の比較</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#20232a;color:#edf0f5;font:15px system-ui;height:100vh;display:flex;flex-direction:column}header{padding:15px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;flex-shrink:0}h1{font-size:18px;margin:0 10px 0 0}label{display:flex;align-items:center;gap:7px}button{font:inherit;padding:7px 10px;border:0;border-radius:5px}button[aria-pressed=true]{background:#f5c3da}input[type=range]{width:120px}select{font:inherit;padding:7px 10px;background:#fff;color:#20232a;border:0;border-radius:5px}#status{font-size:13px;color:#bcc7d8}.note{margin:0;flex-basis:100%;color:#bcc7d8;font-size:13px}canvas{display:block;width:100%;flex:1;min-height:0}a{color:#d6c5f3}@media(max-width:600px){header{padding:10px;gap:9px;font-size:13px}h1{font-size:16px;flex-basis:100%}select{padding:6px}.note{font-size:12px}}
+</style>
+<header><h1>みぃねこ：口のつながり（あ）</h1>
+<label>比較 <select id="variant"><option value="connected">接続した口（あ）</option><option value="base">段差調整後の通常顔</option></select></label>
+<label>口を開く <input id="opening" type="range" min="0" max="1" step="0.01" value="0.65"><output id="amount">65%</output></label><button id="play" aria-pressed="false">ゆっくり開閉</button><button id="close">閉じる</button>
+
+<label>向き <select id="angle"><option value="0">正面</option><option value="45">右から斜め</option><option value="90">右から側面</option><option value="-45">左から斜め</option><option value="-90">左から側面</option></select></label>
+<span id="status" role="status">読み込み中</span>
+<p class="note">スタンプの赤い口と太い輪郭を参考にした試作です。0%で元の通常顔へ戻ります。 <a href="viewer.html?model=mouth-aa-aligned&motion=1&audio=greeting">以前の動作ビューア</a></p>
+</header><canvas></canvas>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/","@pixiv/three-vrm":"/node_modules/@pixiv/three-vrm/lib/three-vrm.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {VRMLoaderPlugin} from '@pixiv/three-vrm';
+const canvas=document.querySelector('canvas'),renderer=new THREE.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:true});renderer.setPixelRatio(1);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;
+const scene=new THREE.Scene();scene.background=new THREE.Color('#b7b7b7');scene.add(new THREE.HemisphereLight(0xffffff,0x726778,2.5));
+for(const [x,y,z,power] of [[-1.2,2.5,1.5,3],[1.5,1.6,.4,1.5]]){const light=new THREE.DirectionalLight(0xffffff,power);light.position.set(x,y,z);scene.add(light);}
+const camera=new THREE.OrthographicCamera(-.41,.41,.41,-.41,.01,100);
+function render(){const angle=+document.querySelector('#angle').value,rad=angle*Math.PI/180;camera.position.set(2.5*Math.sin(rad),.64,2.5*Math.cos(rad));camera.lookAt(0,.64,0);renderer.render(scene,camera);}
+function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(w<1||h<1)return;renderer.setSize(w,h,false);const aspect=w/h,half=.41*Math.max(1,1/aspect);camera.top=half;camera.bottom=-half;camera.left=-half*aspect;camera.right=half*aspect;camera.updateProjectionMatrix();render();}
+new ResizeObserver(resize).observe(canvas);window.addEventListener('resize',resize);resize();
+const loader=new GLTFLoader();loader.register(p=>new VRMLoaderPlugin(p));const cache=new Map();let current=null,revision=0;
+const params=new URLSearchParams(location.search);
+for(const [id,fallback] of [['variant','connected'],['angle','0']]){const el=document.querySelector('#'+id),value=params.get(id)||fallback;el.value=[...el.options].some(o=>o.value===value)?value:fallback;}
+function saveQuery(){history.replaceState(null,'','?'+new URLSearchParams(Object.fromEntries(['variant','angle','opening'].map(id=>[id,document.querySelector('#'+id).value]))));}
+async function show(){
+ const version=++revision;window.ready=false;const status=document.querySelector('#status');status.textContent='読み込み中';
+ const variant=document.querySelector('#variant').value;
+ const key=variant==='base'?'feature-mouth-flush':'mouth-connected-aa';
+ try{
+  if(!cache.has(key))cache.set(key,loader.loadAsync(`/artifacts/${key}/continuous-blink.vrm`).then(g=>g.userData.vrm));
+  const vrm=await cache.get(key);if(version!==revision)return;
+  if(current)scene.remove(current.scene);current=vrm;scene.add(vrm.scene);
+  if(variant==='base')document.querySelector('#opening').value=0;
+  document.querySelector('#opening').disabled=variant==='base';document.querySelector('#play').disabled=variant==='base';
+  vrm.expressionManager.setValue('aa',+document.querySelector('#opening').value);vrm.update(0);resize();saveQuery();document.querySelector('#amount').textContent=`${Math.round(+document.querySelector('#opening').value*100)}%`;status.textContent='比較用の試作';window.ready=true;window.study.current=vrm;window.study.key=key;
+ }catch(error){cache.delete(key);if(version!==revision)return;status.textContent='モデルを読み込めませんでした';window.study.error=String(error);}
+}
+const initialOpening=Number(params.get('opening')??.65);document.querySelector('#opening').value=Number.isFinite(initialOpening)?Math.max(0,Math.min(1,initialOpening)):.65;
+let playing=false,animationStart=0,frameId=0;
+function setOpening(value){document.querySelector('#opening').value=value;document.querySelector('#amount').textContent=`${Math.round(value*100)}%`;if(current){current.expressionManager.setValue('aa',value);current.update(0);render();}}
+function pause(){playing=false;cancelAnimationFrame(frameId);document.querySelector('#play').setAttribute('aria-pressed','false');saveQuery();}
+function frame(time){if(!playing)return;setOpening((1-Math.cos((time-animationStart)*Math.PI/2500))/2);frameId=requestAnimationFrame(frame);}
+document.querySelector('#opening').oninput=e=>{pause();setOpening(+e.target.value);saveQuery();};
+document.querySelector('#play').onclick=()=>{if(playing){pause();return;}playing=true;animationStart=performance.now();document.querySelector('#play').setAttribute('aria-pressed','true');frameId=requestAnimationFrame(frame);};
+document.querySelector('#close').onclick=()=>{pause();setOpening(0);saveQuery();};
+document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();});
+window.study={renderer,camera,scene,show,setOpening,pause};
+for(const id of ['variant'])document.querySelector('#'+id).onchange=()=>{pause();void show();};
+document.querySelector('#angle').onchange=()=>{render();saveQuery();};
+await show();
+</script></html>

@@ -1,6 +1,6 @@
 # Preserving a Tripo VRM face while adding expressions
 
-## Current result — 2026-09-28
+## Current result — 2026-09-29
 
 The owner accepted the manga-like eyelid overlay, relaxation, and five cartoon
 vowel shapes while retaining the original Tripo head. The combined comparison
@@ -15,10 +15,12 @@ a [feature-depth study](FEATURE_DEPTH.md): preserve the pink head geometry and
 nose while reducing only eye/W depth. The broader [thin-face study](THIN_FACE.md)
 was rejected because it changed the head profile. The old baseline remains the
 input and comparison reference. The current [mouth-depth candidate](MOUTH_FLUSH.md) includes
-the joining band and vertical line while retaining the original line weight. Arbitrary
+the joining band and vertical line while retaining the original line weight. The
+owner found this improved; a [connected AA opening](CONNECTED_AA.md) now tests
+the red interior and lower-contour connection against the sticker reference. Arbitrary
 speech-to-vowel inference is still unimplemented.
 
-**Start with [MOUTH_FLUSH.md](MOUTH_FLUSH.md)** for the current design comparison.
+**Start with [CONNECTED_AA.md](CONNECTED_AA.md)** for the current design comparison.
 [BASELINE.md](BASELINE.md) records the earlier accepted artifact,
 prerequisites, ordered rebuild recipe, limitations, and lessons to carry forward.
 Keep new experiments in separate output directories. Character designs, source
@@ -28,6 +30,7 @@ FBX/textures, blends, VRMs and screenshots are private and excluded from Git.
 
 | Document | Purpose |
 | --- | --- |
+| [CONNECTED_AA.md](CONNECTED_AA.md) | Current AA-only opening, source-W connection, closed recovery and validation limits. |
 | [MOUTH_FLUSH.md](MOUTH_FLUSH.md) | Current mouth/vertical-line depth adjustment; original stroke weight and nose retained. |
 | [FEATURE_DEPTH.md](FEATURE_DEPTH.md) | Earlier eyes/W interior adjustment and strict pink-boundary protection. |
 | [THIN_FACE.md](THIN_FACE.md) | Rejected broad face deformation; retains historical static comparison and measurements. |

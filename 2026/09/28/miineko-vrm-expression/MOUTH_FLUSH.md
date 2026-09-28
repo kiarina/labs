@@ -86,6 +86,12 @@ The earlier `mouth-aa-aligned` source also remains unchanged. Current candidate
 hash and configuration are recorded in the evaluation report rather than duplicated
 here.
 
+## Subsequent opening probe
+
+The owner found this depth adjustment improved and suggested connecting the W
+to the lower outline of an open mouth. [CONNECTED_AA.md](CONNECTED_AA.md) is the
+current AA-only probe, using this file as its unchanged normal-face source.
+
 ## Remaining work
 
 Evaluate the stepped-depth reduction and the nose-to-line transition at oblique
