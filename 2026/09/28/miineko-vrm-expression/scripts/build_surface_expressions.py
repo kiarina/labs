@@ -6,10 +6,10 @@ from mathutils.bvhtree import BVHTree
 root=Path(__file__).resolve().parents[1];source=root/'artifacts/mouth-connected-vowels'
 suffix=os.environ.get('STUDY_SUFFIX','');assert suffix in ['', '-repeat']
 normal_mode=os.environ.get('LID_NORMALS','skin-fit');assert normal_mode in ['skin-fit','source']
-style=os.environ.get('EXPRESSION_STYLE','original');assert style in ['original','rounded']
-rounded=style=='rounded'
+style=os.environ.get('EXPRESSION_STYLE','original');assert style in ['original','rounded','crescent']
+rounded=style in ['rounded','crescent'];crescent=style=='crescent'
 assert not (rounded and normal_mode=='source'), 'Keep the shading control separate from the rounded-smile study'
-out=root/'artifacts'/(('rounded-smile' if rounded else 'surface-expressions')+('-source' if normal_mode=='source' else '')+suffix);out.mkdir(exist_ok=True)
+out=root/'artifacts'/(('crescent-smile' if crescent else 'rounded-smile' if rounded else 'surface-expressions')+('-source' if normal_mode=='source' else '')+suffix);out.mkdir(exist_ok=True)
 expected=json.loads((source/'report.json').read_text())['outputSha256'];assert hashlib.sha256((source/'continuous-blink.vrm').read_bytes()).hexdigest()==expected
 bpy.ops.wm.open_mainfile(filepath=str(source/'continuous-blink.blend'))
 body=bpy.data.objects['Miineko_Body'];arm=bpy.data.objects['Miineko_Rig'];mesh=body.data;mesh.calc_loop_triangles()
@@ -41,7 +41,9 @@ shapes={'blink':{'upper':(.87-.619,1),'lower':(.622-.37,1)},'happy':{'upper':(.8
 upper_origin=.78 if rounded else .87;lower_origin=.45 if rounded else .37
 if rounded:
  shapes={'blink':{'upper':(upper_origin-.619,1),'lower':(.622-lower_origin,1)},'happy':{'upper':(upper_origin-.646,5.5),'lower':(.649-lower_origin,5.5)},'relaxed':{'upper':(upper_origin-.660,1),'lower':(0,1)}}
-report={'expressionStyle':'rounded' if rounded else 'original','lidNormalMode':normal_mode,'sourceSha256':expected,'scope':'expression-direction probe on fixed revised-eye surface; no source head deformation','eyes':{},'shapes':shapes}
+if crescent:
+ shapes['happy']={label:(depth*.92,1+(scale-1)*.92) for label,(depth,scale) in shapes['happy'].items()}
+report={'expressionStyle':style,'lidNormalMode':normal_mode,'sourceSha256':expected,'scope':'expression-direction probe on fixed revised-eye surface; no source head deformation','eyes':{},'shapes':shapes}
 for side,cx in [('L',.1764),('R',-.1848)]:
  cz=.619;rx=.104;rz=.113;samples=[]
  for radius in [1.10,1.22,1.35]:
@@ -117,9 +119,22 @@ for side,cx in [('L',.1764),('R',-.1848)]:
    sim=bpy.data.images.new(stroke_name,width=w,height=h,alpha=True);sim.pixels.foreach_set(stroke_rgba.ravel());sim.filepath_raw=str(out/f'{side}-upper-ink.png');sim.file_format='PNG';sim.save();sim=bpy.data.images.load(sim.filepath_raw,check_existing=False);sim.pack()
    next(n for n in stroke_mat.node_tree.nodes if n.type=='TEX_IMAGE').image=sim
    for expression,settings in shapes.items():
-    depth,scale=settings['upper']
+    depth,scale=(0,1) if crescent and expression=='happy' else settings['upper']
     for target in [expression]+([('blink_left' if side=='L' else 'blink_right')] if expression=='blink' else []):
      bind=getattr(presets,target).texture_transform_binds.add();bind.material=stroke_mat;bind.scale=(scale,1);bind.offset=((1-scale)/2,-3*depth)
+   if crescent:
+    # Paint only the source eye artwork black as happiness rises, beneath both
+    # lids. This removes the old highlight without changing the head or mouth.
+    fill_name=f'Surface Lid {side} eye fill';fill_mesh=stroke_mesh.copy();fill_mesh.name=fill_name
+    for vertex in fill_mesh.vertices:vertex.co.y+=.0007
+    fill_obj=stroke_obj.copy();fill_obj.data=fill_mesh;fill_obj.name=fill_name;bpy.context.collection.objects.link(fill_obj)
+    fill_attr=fill_mesh.color_attributes['SkinTint']
+    for loop in fill_mesh.loops:fill_attr.data[loop.index].color=(.002,.002,.002,ink_mask[loop.vertex_index])
+    fill_mat=bpy.data.materials.new(fill_name);fill_mat.use_nodes=True;fill_mat.surface_render_method='BLENDED';fill_mat.use_backface_culling=True
+    fn=fill_mat.node_tree.nodes;fl=fill_mat.node_tree.links;fb=next(n for n in fn if n.type=='BSDF_PRINCIPLED');fb.inputs['Roughness'].default_value=1
+    fc=fn.new('ShaderNodeVertexColor');fc.layer_name='SkinTint';fl.new(fc.outputs['Color'],fb.inputs['Base Color']);fm=fn.new('ShaderNodeMath');fm.operation='MULTIPLY';fm.inputs[1].default_value=0;fl.new(fc.outputs['Alpha'],fm.inputs[0]);fl.new(fm.outputs[0],fb.inputs['Alpha']);fill_mesh.materials.clear();fill_mesh.materials.append(fill_mat)
+    cb=presets.happy.material_color_binds.add();cb.material=fill_mat;cb.type='color';cb.target_value=(1,1,1,1)
+    fill_xyz=np.array([v.co for v in fill_mesh.vertices]);np.savez_compressed(out/f'audit-{side}-fill.npz',source=pos,sourceTriangles=tris,opening=fill_xyz,openingTriangles=np.array(faces),parentTriangle=np.array(parents),offset=np.array([0,-.0002,0]))
    ink_xyz=np.array([v.co for v in stroke_mesh.vertices]);np.savez_compressed(out/f'audit-{side}-ink.npz',source=pos,sourceTriangles=tris,opening=ink_xyz,openingTriangles=np.array(faces),parentTriangle=np.array(parents),offset=np.array([0,-offset-.0002,0]))
   np.savez_compressed(out/f'audit-{side}-{label}.npz',source=pos,sourceTriangles=tris,opening=xyz,openingTriangles=np.array(faces),parentTriangle=np.array(parents),offset=np.array([0,-offset,0]))
 assert np.array_equal(pos,np.array([v.co for v in body.data.vertices]))
@@ -130,7 +145,10 @@ for gm in doc['meshes']:
   for p in gm['primitives']:
    attrs=p['attributes']
    if 'COLOR_1' in attrs:attrs['COLOR_0']=attrs.pop('COLOR_1')
-   mat=doc['materials'][p['material']];tex=doc['textures'][mat['pbrMetallicRoughness']['baseColorTexture']['index']];sampler=dict(doc['samplers'][tex['sampler']]);sampler.update(minFilter=9729,magFilter=9729);tex['sampler']=len(doc['samplers']);doc['samplers'].append(sampler);patched.append(gm['name'])
-assert len(patched)==(7 if rounded else 5)
+   mat=doc['materials'][p['material']]
+   if gm['name'].endswith('eye fill'):
+    mat['alphaMode']='BLEND';mat['pbrMetallicRoughness']['baseColorFactor']=[1,1,1,0];mat.setdefault('extensions',{})['KHR_materials_unlit']={};patched.append(gm['name']);continue
+   tex=doc['textures'][mat['pbrMetallicRoughness']['baseColorTexture']['index']];sampler=dict(doc['samplers'][tex['sampler']]);sampler.update(minFilter=9729,magFilter=9729);tex['sampler']=len(doc['samplers']);doc['samplers'].append(sampler);patched.append(gm['name'])
+assert len(patched)==(9 if crescent else 7 if rounded else 5)
 encoded=json.dumps(doc,separators=(',',':')).encode();encoded+=b' '*((-len(encoded))%4);path.write_bytes(struct.pack('<4sII',b'glTF',2,20+len(encoded)+len(tail))+struct.pack('<I4s',len(encoded),b'JSON')+encoded+tail)
-report.update(sourceBodyUnchanged=True,fixedLidOffsets=([.0007,.0004,.0009] if rounded else [.0007,.0004]),patchedMaterials=patched,outputSha256=hashlib.sha256(path.read_bytes()).hexdigest());(out/'report.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))
+report.update(sourceBodyUnchanged=True,fixedLidOffsets=([.0007,.0004,.0009,.0002] if crescent else [.0007,.0004,.0009] if rounded else [.0007,.0004]),patchedMaterials=patched,outputSha256=hashlib.sha256(path.read_bytes()).hexdigest());(out/'report.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))

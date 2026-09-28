@@ -3,7 +3,8 @@
 ## Current continuation
 
 The owner selected the sticker sheet’s left-column, third-row smile as the
-full-strength target. [ROUNDED_SMILE.md](ROUNDED_SMILE.md) is the latest candidate;
+full-strength target. The short-line attempt was later corrected to keep the width and thickness of
+its 92% state; [CRESCENT_SMILE.md](CRESCENT_SMILE.md) is the latest candidate;
 this document retains the preceding shallow-arc and shading-control experiment.
 
 ## Priority and scope — 2026-09-29

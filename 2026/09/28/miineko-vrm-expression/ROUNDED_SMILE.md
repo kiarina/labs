@@ -1,6 +1,14 @@
 # A rounded, short full-strength smile
 
-## Owner direction — 2026-09-29
+## Later owner correction
+
+The owner rejected the 100% endpoint below as too thin, with ends that did not
+match the eye size. The former 92% silhouette was preferred as the next reference,
+with its highlight and duplicated upper arc to be removed.
+[CRESCENT_SMILE.md](CRESCENT_SMILE.md) is the current continuation. The historical
+measurements below remain evidence of the earlier experiment, not a current goal.
+
+## Initial direction — 2026-09-29
 
 The sticker sheet's **left column, third row** is the reference for `happy=1`:
 a short, rounded inverted-U closed eye. The owner approved using this as the

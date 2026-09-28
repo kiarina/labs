@@ -22,8 +22,8 @@ approved that direction. A [five-vowel extension](CONNECTED_VOWELS.md) now adds
 wide/shallow and narrow/round openings plus continuous transitions. Arbitrary
 speech-to-vowel inference is still unimplemented.
 
-**Start with [ROUNDED_SMILE.md](ROUNDED_SMILE.md)** for the current priority:
-validate the owner-selected rounded smile, blink and relaxed expressions before
+**Start with [CRESCENT_SMILE.md](CRESCENT_SMILE.md)** for the current priority:
+validate a smile preserving the eye width and thickness, blink and relaxed expressions before
 mouth/audio polish. The
 prototype reduces inherited eye-bulb shading but still has visible color/perimeter
 artifacts and is not an accepted finished face.
@@ -36,7 +36,8 @@ FBX/textures, blends, VRMs and screenshots are private and excluded from Git.
 
 | Document | Purpose |
 | --- | --- |
-| [ROUNDED_SMILE.md](ROUNDED_SMILE.md) | Current rounded full-smile candidate, intermediate ink control and remaining limitations. |
+| [CRESCENT_SMILE.md](CRESCENT_SMILE.md) | Current broad smile based on the former 92% state; highlight/extra-arc removal and remaining limitations. |
+| [ROUNDED_SMILE.md](ROUNDED_SMILE.md) | Earlier short-arc candidate; 100% was rejected as too thin and mismatched to eye size. |
 | [SURFACE_EXPRESSIONS.md](SURFACE_EXPRESSIONS.md) | Earlier expression diagnostic, fixed lids, shading control and remaining color/perimeter issues. |
 | [CONNECTED_VOWELS.md](CONNECTED_VOWELS.md) | Current five-vowel probe, shared-surface mixtures, onset response and validation. |
 | [CONNECTED_AA.md](CONNECTED_AA.md) | Accepted AA-only opening, source-W connection, closed recovery and validation limits. |
