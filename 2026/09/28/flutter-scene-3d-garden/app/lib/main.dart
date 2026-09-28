@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_scene/scene.dart';
 import 'package:vector_math/vector_math.dart' as vm;
 
+import 'bench_out.dart';
 import 'camera_rig.dart';
 import 'garden.dart';
 import 'vrm_avatar.dart';
@@ -18,8 +19,16 @@ const int kAvatars = int.fromEnvironment('AVATARS', defaultValue: 5);
 const int kBodyRooms = int.fromEnvironment('ROOMS', defaultValue: 2);
 const bool kBench = bool.fromEnvironment('BENCH');
 const bool kTour = bool.fromEnvironment('TOUR');
+
 /// Skip per-frame avatar posing (to separate Dart pose cost from drawing).
 const bool kFreeze = bool.fromEnvironment('FREEZE');
+
+/// Render resolution relative to logical pixels (0 = device pixel ratio).
+final double kPixelRatio =
+    double.tryParse(const String.fromEnvironment('PIXEL_RATIO')) ?? 0;
+
+/// Anti-aliasing mode name (auto, none, msaa, fxaa, ...).
+const String kAntiAliasing = String.fromEnvironment('AA', defaultValue: 'auto');
 const bool kShadows = bool.fromEnvironment('SHADOWS', defaultValue: true);
 
 const List<String> kVrmFiles = [
@@ -64,6 +73,7 @@ class _GardenPageState extends State<GardenPage> {
   bool ready = false;
   String status = 'initializing';
   Size viewSize = Size.zero;
+  double devicePixelRatio = 1;
   int avatarTarget = kAvatars;
   bool loading = false;
   String lastInput = '-';
@@ -114,6 +124,9 @@ class _GardenPageState extends State<GardenPage> {
       intensity: 3.2,
       castsShadow: kShadows,
       shadowMaxDistance: 40,
+    );
+    scene.antiAliasingMode = AntiAliasingMode.values.firstWhere(
+      (m) => m.name == kAntiAliasing,
     );
     rig = CameraRig(target: garden.center, distance: garden.extent * 1.25);
     stats.resetWindow();
@@ -372,6 +385,8 @@ class _GardenPageState extends State<GardenPage> {
       'avatars': avatars.length,
       'shadows': kShadows,
       'freeze': kFreeze,
+      'pixelRatio': kPixelRatio > 0 ? kPixelRatio : devicePixelRatio,
+      'antiAliasing': scene.effectiveAntiAliasingMode.name,
       'view': '${viewSize.width.round()}x${viewSize.height.round()}',
       'loads': [for (final a in avatars) a.loadMilliseconds],
     };
@@ -402,11 +417,18 @@ class _GardenPageState extends State<GardenPage> {
       const Duration(seconds: 6),
       (_) => rig.rotate(0.01),
     );
-    rig.focusOn(avatars.first);
-    await Future<void>.delayed(const Duration(seconds: 1));
-    result['focus'] = await sample('focus', const Duration(seconds: 6), (_) {});
-    rig.backToQuarter();
+    if (avatars.isNotEmpty) {
+      rig.focusOn(avatars.first);
+      await Future<void>.delayed(const Duration(seconds: 1));
+      result['focus'] = await sample(
+        'focus',
+        const Duration(seconds: 6),
+        (_) {},
+      );
+      rig.backToQuarter();
+    }
     debugPrint('BENCH ${jsonEncode(result)}');
+    writeBenchResult(jsonEncode(result));
     _log('bench done');
   }
 
@@ -461,6 +483,7 @@ class _GardenPageState extends State<GardenPage> {
       body: LayoutBuilder(
         builder: (context, constraints) {
           viewSize = constraints.biggest;
+          devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
           return Focus(
             focusNode: keyFocus,
             autofocus: true,
