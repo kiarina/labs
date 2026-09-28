@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+BLENDER_BIN="${BLENDER_BIN:-blender}"
+export MOUTH_RUN="${MOUTH_RUN:-mouth-aa-aligned}"
+export VOWEL_DEPTH_INPUT=mouth-full-refined VOWEL_DEPTH_TARGETS=aa
+test -f artifacts/mouth-full-refined/continuous-blink.blend
+test -f artifacts/mouth-full-refined/viewer/vowel-oh-1-90.png
+"$BLENDER_BIN" --background --python-exit-code 1 --python scripts/refine_vowel_depth.py
+export BLINK_RUN="$MOUTH_RUN"
+PROBE_ANGLES=0,45,-45 PROBE_UI=1 PROBE_VOWEL_PROFILE=1 node scripts/verify_viewer.mjs
+VERIFY_RELAXED=1 VERIFY_MOUTH=1 VERIFY_VOWELS=1 \
+  "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/check_blink_roundtrip.py
+SURFACE_RUN="$MOUTH_RUN" MEASURE_SOURCE_INK=1 SURFACE_REQUIRE_CLEAR=1 \
+  "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/measure_mouth_surface.py
+"${COMPARE_PYTHON:-python3}" scripts/measure_mouth_probe.py "$MOUTH_RUN"
+"${COMPARE_PYTHON:-python3}" scripts/compare_mouth_profile.py "$MOUTH_RUN" \
+  --baseline mouth-full-refined --preserve-vowels ih,ou,ee,oh

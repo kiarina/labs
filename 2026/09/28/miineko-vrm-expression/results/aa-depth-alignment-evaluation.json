@@ -1,0 +1,598 @@
+{
+  "date": "2026-09-28",
+  "scope": "Align aa depth with approved four vowels, keeping Basis and the other four targets fixed",
+  "construction": {
+    "method": "selected-vowel-depth-under-source-ink",
+    "flatStart": {
+      "basisFloor": 0.438,
+      "floors": {
+        "Basis": 0.438,
+        "AA": 0.415,
+        "IH": 0.435,
+        "OU": 0.421,
+        "EE": 0.428,
+        "OH": 0.404
+      },
+      "profilePower": 4,
+      "uvShift": 0.65,
+      "revealEnd": 0.12,
+      "neutralVisibility": "zero texture alpha; nondegenerate geometry",
+      "vrmSampler": "LINEAR without mipmaps; neutral alpha bleed prevention"
+    },
+    "source": "mouth-full-refined",
+    "sourceVrmSha256": "5faceb249b15f8ec6537366d395f2fd7ac9ed369e490eb377335988dad0aad06",
+    "scriptSha256": "83cd729755fe37dc6eab88229e25c79d86846e175411cfca8db84d3cfc7de253",
+    "states": 19,
+    "solverSteps": 64,
+    "basisUnchanged": true,
+    "preservedVowels": [
+      "ih",
+      "ou",
+      "ee",
+      "oh"
+    ],
+    "targets": {
+      "aa": {
+        "maximumRetraction": 0.020199298858642578,
+        "fallbackVertices": 0
+      }
+    },
+    "driverConstraint": "nonnegative weights with sum <= 1",
+    "export": [
+      "FINISHED"
+    ]
+  },
+  "reproducibility": {
+    "byteIdentical": true,
+    "sha256": "cc8ca99d04f671b3df7a0489bdb17cabb6847e00dbf01ca94d72bc2ff5681e31"
+  },
+  "preservedVowels": {
+    "names": [
+      "ih",
+      "ou",
+      "ee",
+      "oh"
+    ],
+    "weights": [
+      0,
+      0.1,
+      0.18,
+      0.22,
+      0.5,
+      1
+    ],
+    "angles": [
+      0,
+      45,
+      -45,
+      90,
+      -90
+    ],
+    "cases": 120,
+    "maximumChannelDifference": 0.0
+  },
+  "viewer": {
+    "errors": [],
+    "warnings": [],
+    "mouthStates": 50,
+    "vowelStates": 150,
+    "zeroCases": 20,
+    "zeroMaximumDifference": 0,
+    "eyeMaximumDifference": 0,
+    "relaxedMaximumDifference": 0
+  },
+  "frontCoordinatesAndUvsExact": true,
+  "aaFullBefore": {
+    "weights": {
+      "aa": 1
+    },
+    "samples": 5088,
+    "minimum": 0.0007999837398529053,
+    "median": 0.0015921741724014282,
+    "p95": 0.01284283772110939,
+    "maximum": 0.019672662019729614,
+    "behindHeadCount": 0,
+    "nonInkMinimum": 0.0009570419788360596,
+    "nonInkBehindHeadCount": 0,
+    "inkOccludedCount": 0
+  },
+  "aaFullAfter": {
+    "weights": {
+      "aa": 1
+    },
+    "samples": 5088,
+    "minimum": -0.018570631742477417,
+    "median": 0.0008064508438110352,
+    "p95": 0.001823421218432486,
+    "maximum": 0.0069200098514556885,
+    "behindHeadCount": 2201,
+    "nonInkMinimum": 0.0007999241352081299,
+    "nonInkBehindHeadCount": 0,
+    "inkOccludedCount": 2201
+  },
+  "surface": {
+    "scope": "alpha-enabled triangle centroids; source occlusion classified separately; not continuous collision proof",
+    "states": [
+      {
+        "weights": {
+          "aa": 0.1
+        },
+        "samples": 4913,
+        "minimum": -0.01805606484413147,
+        "median": -0.01522749662399292,
+        "p95": 0.0016196125652641058,
+        "maximum": 0.002264350652694702,
+        "behindHeadCount": 3766,
+        "nonInkMinimum": 0.0007999539375305176,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3766
+      },
+      {
+        "weights": {
+          "aa": 0.18
+        },
+        "samples": 5088,
+        "minimum": -0.01823735237121582,
+        "median": -0.014826878905296326,
+        "p95": 0.0017277327133342624,
+        "maximum": 0.0021936893463134766,
+        "behindHeadCount": 3574,
+        "nonInkMinimum": 0.0007999837398529053,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3574
+      },
+      {
+        "weights": {
+          "aa": 0.22
+        },
+        "samples": 5088,
+        "minimum": -0.01835581660270691,
+        "median": -0.014698401093482971,
+        "p95": 0.0016690358752384782,
+        "maximum": 0.0024243295192718506,
+        "behindHeadCount": 3483,
+        "nonInkMinimum": 0.000800013542175293,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3483
+      },
+      {
+        "weights": {
+          "aa": 0.5
+        },
+        "samples": 5088,
+        "minimum": -0.018634825944900513,
+        "median": -0.01321960985660553,
+        "p95": 0.0012934297556057572,
+        "maximum": 0.0040381550788879395,
+        "behindHeadCount": 2876,
+        "nonInkMinimum": 0.0007999837398529053,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 2876
+      },
+      {
+        "weights": {
+          "aa": 1
+        },
+        "samples": 5088,
+        "minimum": -0.018570631742477417,
+        "median": 0.0008064508438110352,
+        "p95": 0.001823421218432486,
+        "maximum": 0.0069200098514556885,
+        "behindHeadCount": 2201,
+        "nonInkMinimum": 0.0007999241352081299,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 2201
+      },
+      {
+        "weights": {
+          "ih": 0.1
+        },
+        "samples": 4913,
+        "minimum": -0.017748743295669556,
+        "median": -0.015408307313919067,
+        "p95": 0.0017523764399811625,
+        "maximum": 0.0025100409984588623,
+        "behindHeadCount": 3960,
+        "nonInkMinimum": 0.0008000731468200684,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3960
+      },
+      {
+        "weights": {
+          "ih": 0.18
+        },
+        "samples": 5088,
+        "minimum": -0.017794042825698853,
+        "median": -0.015303477644920349,
+        "p95": 0.0020121484994888306,
+        "maximum": 0.0027144253253936768,
+        "behindHeadCount": 3937,
+        "nonInkMinimum": 0.0008262395858764648,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3937
+      },
+      {
+        "weights": {
+          "ih": 0.22
+        },
+        "samples": 5088,
+        "minimum": -0.017816632986068726,
+        "median": -0.015295371413230896,
+        "p95": 0.002019451465457678,
+        "maximum": 0.0027062594890594482,
+        "behindHeadCount": 3927,
+        "nonInkMinimum": 0.0008302927017211914,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3927
+      },
+      {
+        "weights": {
+          "ih": 0.5
+        },
+        "samples": 5088,
+        "minimum": -0.01795285940170288,
+        "median": -0.015209242701530457,
+        "p95": 0.002051321789622307,
+        "maximum": 0.004345893859863281,
+        "behindHeadCount": 3842,
+        "nonInkMinimum": 0.0008748471736907959,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3842
+      },
+      {
+        "weights": {
+          "ih": 1
+        },
+        "samples": 5088,
+        "minimum": -0.01817449927330017,
+        "median": -0.0150221586227417,
+        "p95": 0.0021466149482876062,
+        "maximum": 0.007535398006439209,
+        "behindHeadCount": 3683,
+        "nonInkMinimum": 0.0009292662143707275,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3683
+      },
+      {
+        "weights": {
+          "ou": 0.1
+        },
+        "samples": 4913,
+        "minimum": -0.017607301473617554,
+        "median": -0.015475422143936157,
+        "p95": 0.0016469056718051434,
+        "maximum": 0.0024476051330566406,
+        "behindHeadCount": 3960,
+        "nonInkMinimum": 0.0008030831813812256,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3960
+      },
+      {
+        "weights": {
+          "ou": 0.18
+        },
+        "samples": 5088,
+        "minimum": -0.017539292573928833,
+        "median": -0.015430361032485962,
+        "p95": 0.0018815216608345509,
+        "maximum": 0.0025193989276885986,
+        "behindHeadCount": 3947,
+        "nonInkMinimum": 0.0008220672607421875,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3947
+      },
+      {
+        "weights": {
+          "ou": 0.22
+        },
+        "samples": 5088,
+        "minimum": -0.017505377531051636,
+        "median": -0.01544344425201416,
+        "p95": 0.0018543642945587635,
+        "maximum": 0.002463698387145996,
+        "behindHeadCount": 3931,
+        "nonInkMinimum": 0.0008126199245452881,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3931
+      },
+      {
+        "weights": {
+          "ou": 0.5
+        },
+        "samples": 5088,
+        "minimum": -0.017292112112045288,
+        "median": -0.015502184629440308,
+        "p95": 0.0016208275919780135,
+        "maximum": 0.004041463136672974,
+        "behindHeadCount": 3846,
+        "nonInkMinimum": 0.0008195340633392334,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3846
+      },
+      {
+        "weights": {
+          "ou": 1
+        },
+        "samples": 2528,
+        "minimum": -0.01573607325553894,
+        "median": 0.0009254515171051025,
+        "p95": 0.0018195371376350522,
+        "maximum": 0.006926804780960083,
+        "behindHeadCount": 1177,
+        "nonInkMinimum": 0.0008347630500793457,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 1177
+      },
+      {
+        "weights": {
+          "ee": 0.1
+        },
+        "samples": 4913,
+        "minimum": -0.017720699310302734,
+        "median": -0.015383362770080566,
+        "p95": 0.0016971408622339368,
+        "maximum": 0.00244024395942688,
+        "behindHeadCount": 3901,
+        "nonInkMinimum": 0.0008049905300140381,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3901
+      },
+      {
+        "weights": {
+          "ee": 0.18
+        },
+        "samples": 5088,
+        "minimum": -0.017743557691574097,
+        "median": -0.015245288610458374,
+        "p95": 0.001937037450261414,
+        "maximum": 0.00256916880607605,
+        "behindHeadCount": 3830,
+        "nonInkMinimum": 0.0008156001567840576,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3830
+      },
+      {
+        "weights": {
+          "ee": 0.22
+        },
+        "samples": 5088,
+        "minimum": -0.01775491237640381,
+        "median": -0.0152214914560318,
+        "p95": 0.0019295659149065614,
+        "maximum": 0.0025168955326080322,
+        "behindHeadCount": 3799,
+        "nonInkMinimum": 0.0008279681205749512,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3799
+      },
+      {
+        "weights": {
+          "ee": 0.5
+        },
+        "samples": 5088,
+        "minimum": -0.017834633588790894,
+        "median": -0.014999091625213623,
+        "p95": 0.0018268896965309978,
+        "maximum": 0.004020661115646362,
+        "behindHeadCount": 3569,
+        "nonInkMinimum": 0.000812143087387085,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3569
+      },
+      {
+        "weights": {
+          "ee": 1
+        },
+        "samples": 4576,
+        "minimum": -0.017915427684783936,
+        "median": -0.013703525066375732,
+        "p95": 0.0016689449548721313,
+        "maximum": 0.006884872913360596,
+        "behindHeadCount": 2725,
+        "nonInkMinimum": 0.0007999837398529053,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 2725
+      },
+      {
+        "weights": {
+          "oh": 0.1
+        },
+        "samples": 4913,
+        "minimum": -0.017607301473617554,
+        "median": -0.015429079532623291,
+        "p95": 0.0015451370272785425,
+        "maximum": 0.0021671652793884277,
+        "behindHeadCount": 3782,
+        "nonInkMinimum": 0.0008032917976379395,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3782
+      },
+      {
+        "weights": {
+          "oh": 0.18
+        },
+        "samples": 5088,
+        "minimum": -0.017539292573928833,
+        "median": -0.015341222286224365,
+        "p95": 0.0016060471534729004,
+        "maximum": 0.002146393060684204,
+        "behindHeadCount": 3652,
+        "nonInkMinimum": 0.0008012056350708008,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3652
+      },
+      {
+        "weights": {
+          "oh": 0.22
+        },
+        "samples": 5088,
+        "minimum": -0.017505377531051636,
+        "median": -0.015341609716415405,
+        "p95": 0.0015194505685940385,
+        "maximum": 0.0023665130138397217,
+        "behindHeadCount": 3595,
+        "nonInkMinimum": 0.0007999241352081299,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3595
+      },
+      {
+        "weights": {
+          "oh": 0.5
+        },
+        "samples": 5088,
+        "minimum": -0.017292112112045288,
+        "median": -0.01530463993549347,
+        "p95": 0.0013105436228215694,
+        "maximum": 0.003906607627868652,
+        "behindHeadCount": 3321,
+        "nonInkMinimum": 0.0007999837398529053,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3321
+      },
+      {
+        "weights": {
+          "oh": 1
+        },
+        "samples": 3232,
+        "minimum": -0.016211718320846558,
+        "median": 0.0009419620037078857,
+        "p95": 0.0030916740652173758,
+        "maximum": 0.006656944751739502,
+        "behindHeadCount": 1188,
+        "nonInkMinimum": 0.0007999539375305176,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 1188
+      },
+      {
+        "weights": {
+          "aa": 0.5,
+          "ih": 0.5
+        },
+        "samples": 5088,
+        "minimum": -0.01865324378013611,
+        "median": -0.01245667040348053,
+        "p95": 0.0014401330845430493,
+        "maximum": 0.007227689027786255,
+        "behindHeadCount": 2762,
+        "nonInkMinimum": 0.0008050799369812012,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 2762
+      },
+      {
+        "weights": {
+          "ou": 0.5,
+          "oh": 0.5
+        },
+        "samples": 4230,
+        "minimum": -0.01728922128677368,
+        "median": -0.01406840980052948,
+        "p95": 0.0018269092543050647,
+        "maximum": 0.006791919469833374,
+        "behindHeadCount": 2501,
+        "nonInkMinimum": 0.0008007586002349854,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 2501
+      },
+      {
+        "weights": {
+          "aa": 0.2,
+          "ih": 0.2,
+          "ou": 0.2,
+          "ee": 0.2,
+          "oh": 0.2
+        },
+        "samples": 5088,
+        "minimum": -0.01815664768218994,
+        "median": -0.014633148908615112,
+        "p95": 0.001433294964954257,
+        "maximum": 0.006984800100326538,
+        "behindHeadCount": 3227,
+        "nonInkMinimum": 0.0008188784122467041,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3227
+      },
+      {
+        "weights": {
+          "aa": 0.25,
+          "ih": 0.25
+        },
+        "samples": 5088,
+        "minimum": -0.018480777740478516,
+        "median": -0.014544352889060974,
+        "p95": 0.00162723776884377,
+        "maximum": 0.004191964864730835,
+        "behindHeadCount": 3334,
+        "nonInkMinimum": 0.000840306282043457,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3334
+      },
+      {
+        "weights": {
+          "ou": 0.25,
+          "oh": 0.25
+        },
+        "samples": 5088,
+        "minimum": -0.017292141914367676,
+        "median": -0.015412375330924988,
+        "p95": 0.0013781993184238672,
+        "maximum": 0.003974109888076782,
+        "behindHeadCount": 3569,
+        "nonInkMinimum": 0.0008239150047302246,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3569
+      },
+      {
+        "weights": {
+          "aa": 0.1,
+          "ih": 0.1,
+          "ou": 0.1,
+          "ee": 0.1,
+          "oh": 0.1
+        },
+        "samples": 5088,
+        "minimum": -0.017967313528060913,
+        "median": -0.015060529112815857,
+        "p95": 0.0015115424757823348,
+        "maximum": 0.004070580005645752,
+        "behindHeadCount": 3520,
+        "nonInkMinimum": 0.0008330047130584717,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3520
+      },
+      {
+        "weights": {
+          "aa": 0.036,
+          "ih": 0.036,
+          "ou": 0.036,
+          "ee": 0.036,
+          "oh": 0.036
+        },
+        "samples": 5088,
+        "minimum": -0.017801612615585327,
+        "median": -0.01526649296283722,
+        "p95": 0.0018393856007605791,
+        "maximum": 0.002374708652496338,
+        "behindHeadCount": 3799,
+        "nonInkMinimum": 0.00082358717918396,
+        "nonInkBehindHeadCount": 0,
+        "inkOccludedCount": 3799
+      }
+    ]
+  },
+  "blenderImportedExpressions": [
+    "blink",
+    "blink_left",
+    "blink_right",
+    "relaxed",
+    "aa",
+    "ih",
+    "ou",
+    "ee",
+    "oh"
+  ],
+  "limits": [
+    "Original black lip intentionally occludes red opening",
+    "Front red area changes for aa although front-plane coordinates stay fixed",
+    "Sampled geometry and image checks do not certify all poses, audio timing or other VRM runtimes"
+  ]
+}

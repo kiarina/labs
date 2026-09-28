@@ -1,4 +1,4 @@
-"""Retract four vowel targets behind source lip ink, preserving Basis and AA."""
+"""Retract selected vowel targets behind source lip ink, preserving all others."""
 import hashlib
 import json
 import os
@@ -14,9 +14,9 @@ from mathutils.bvhtree import BVHTree
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'scripts'))
 from source_ink import SourceInk
 
-SOURCE=ROOT/'artifacts/mouth-onset-recessed'
+SOURCE=ROOT/'artifacts'/os.environ.get('VOWEL_DEPTH_INPUT','mouth-onset-recessed')
 OUT=ROOT/'artifacts'/os.environ.get('MOUTH_RUN','mouth-full-recessed')
-if OUT.name in ('mouth-onset-recessed','mouth-profile-fitted','mouth-vowels-flatstart','overlay-selected-plus','continuous-fresh','mouth-red-bound'):
+if OUT.resolve()==SOURCE.resolve() or OUT.name in ('mouth-onset-recessed','mouth-profile-fitted','mouth-vowels-flatstart','overlay-selected-plus','continuous-fresh','mouth-red-bound'):
     raise ValueError('Preserve approved input and comparison artifacts')
 OUT.mkdir(exist_ok=True)
 settings=json.loads((SOURCE/'report.json').read_text())
@@ -32,7 +32,9 @@ def face_y(x,z):
     if hit is None:raise ValueError('Depth ray misses head')
     return hit.y
 keys=mouth.data.shape_keys.key_blocks
-names=('aa','ih','ou','ee','oh');modified=('ih','ou','ee','oh')
+names=('aa','ih','ou','ee','oh')
+modified=tuple(os.environ.get('VOWEL_DEPTH_TARGETS','ih,ou,ee,oh').split(','))
+assert modified and len(set(modified))==len(modified) and set(modified)<=set(names)
 base=np.asarray([p.co for p in keys['Basis'].data])
 old={n:np.asarray([p.co for p in keys[n.upper()].data]) for n in names}
 targets={n:p.copy() for n,p in old.items()}
@@ -51,7 +53,7 @@ for loop in mouth.data.loops:uv[loop.vertex_index]=mouth.data.uv_layers[0].data[
 states=[{n:w} for n in modified for w in (.05,.1,.18,.22,.35,.5,.75,1)]
 for i,a in enumerate(names):
     for b in names[i+1:]:
-        states += [{a:.5,b:.5},{a:.25,b:.25}]
+        if a in modified or b in modified:states += [{a:.5,b:.5},{a:.25,b:.25}]
 states += [dict.fromkeys(names,.2),dict.fromkeys(names,.1),dict.fromkeys(names,.036)]
 constraints=[]
 for mix in states:
@@ -92,7 +94,8 @@ for name in modified:
     grid[:,collapsed,1]=grid[:,collapsed,1].min(axis=0)
     for p,co in zip(keys[name.upper()].data,targets[name]):p.co=co
 assert np.array_equal(base,np.asarray([p.co for p in keys['Basis'].data]))
-assert np.array_equal(old['aa'],np.asarray([p.co for p in keys['AA'].data]))
+for name in set(names)-set(modified):
+    assert np.array_equal(old[name],np.asarray([p.co for p in keys[name.upper()].data]))
 bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'continuous-blink.blend'))
 result=bpy.ops.export_scene.vrm(filepath=str(OUT/'continuous-blink.vrm'))
 # Preserve the existing standard no-mipmap mouth sampler after Blender export.
@@ -104,5 +107,5 @@ sampler=dict(doc['samplers'][texture['sampler']]);sampler.update(minFilter=9729,
 texture['sampler']=len(doc['samplers']);doc['samplers'].append(sampler)
 encoded=json.dumps(doc,separators=(',',':')).encode();encoded+=b' '*((-len(encoded))%4)
 path.write_bytes(struct.pack('<4sII',b'glTF',2,20+len(encoded)+len(tail))+struct.pack('<I4s',len(encoded),b'JSON')+encoded+tail)
-report={'method':'four-vowel-depth-under-source-ink','flatStart':settings['flatStart'],'source':SOURCE.name,'sourceVrmSha256':hashlib.sha256((SOURCE/'continuous-blink.vrm').read_bytes()).hexdigest(),'scriptSha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'states':len(states),'solverSteps':solver_steps,'basisAndAaUnchanged':True,'targets':{n:{'maximumRetraction':float((targets[n][:,1]-old[n][:,1]).max()),'fallbackVertices':len(fallback[n])} for n in modified},'driverConstraint':'nonnegative weights with sum <= 1','export':sorted(result)}
+report={'method':'selected-vowel-depth-under-source-ink','flatStart':settings['flatStart'],'source':SOURCE.name,'sourceVrmSha256':hashlib.sha256((SOURCE/'continuous-blink.vrm').read_bytes()).hexdigest(),'scriptSha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'states':len(states),'solverSteps':solver_steps,'basisUnchanged':True,'preservedVowels':[n for n in names if n not in modified],'targets':{n:{'maximumRetraction':float((targets[n][:,1]-old[n][:,1]).max()),'fallbackVertices':len(fallback[n])} for n in modified},'driverConstraint':'nonnegative weights with sum <= 1','export':sorted(result)}
 (OUT/'report.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))

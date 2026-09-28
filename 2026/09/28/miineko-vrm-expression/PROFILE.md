@@ -1,7 +1,7 @@
 # Mouth depth follow-up
 
-Latest comparison: `mouth-full-refined` retracts the four non-aa vowel targets,
-preserving the approved aa and neutral. Earlier stages below remain as records
+Latest comparison: `mouth-aa-aligned` also retracts AA, while retaining the
+approved four other vowels and neutral. Earlier stages below remain as records
 and separate viewer choices.
 
 The owner approved the improved front appearance of `mouth-vowels-flatstart`.
@@ -192,3 +192,36 @@ Open `viewer.html?model=mouth-full-refined`. The older onset-only candidate is
 still available. This is still an art-direction prototype: phonetic clarity,
 audio-driven motion, all possible mixtures/poses and other VRM runtimes have
 not been certified.
+
+## Aligning AA after four-vowel review (2026-09-28)
+
+The owner approved the four-vowel improvement, then pointed out that AA now
+stands out: its red plane moves forward and climbs over the original W smile
+as its weight increases. The earlier requirement to keep AA fixed is therefore
+superseded for this stage. Load `mouth-full-refined`, modify only AA depth, and
+preserve Basis plus IH/OU/EE/OH exactly.
+
+The same source-ink occlusion method is now selectable through
+`VOWEL_DEPTH_INPUT` and `VOWEL_DEPTH_TARGETS`. The AA pass checks 19 individual
+and mixed constraints, converges without old-depth fallback vertices, and keeps
+front-plane coordinates and UVs fixed. The authoring data changes by depth only;
+AA's visible red area changes because the original black lip now stays in front.
+
+The independent viewer confirms that the other four vowels match the preceding
+candidate pixel-for-pixel in 120 views (six weights, five angles, four vowels).
+Closed-mouth, eye-region and relaxed/blink checks remain exact. AA was inspected
+at half, three-quarter and full opening from both profiles and front/oblique
+views. Its full-open sampled maximum forward gap falls from 19.67 to 6.92 mm.
+These are alpha-enabled samples, not a uniform visible shell-thickness claim.
+There are no non-ink penetrations in the 32-state centroid check. Blender binding
+reimport and a separate byte-identical rebuild pass. See
+[results/aa-depth-alignment-evaluation.json](results/aa-depth-alignment-evaluation.json).
+
+```sh
+mise run align-aa-probe
+MOUTH_RUN=mouth-aa-repeat mise run align-aa-probe
+```
+
+Open `viewer.html?model=mouth-aa-aligned`. Prior candidates remain available.
+The geometry solver only validates sampled constraints; audio timing, all motion
+and pose combinations, and other VRM runtimes remain outside this result.

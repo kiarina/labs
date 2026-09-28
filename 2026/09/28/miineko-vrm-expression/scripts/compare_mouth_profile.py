@@ -77,9 +77,10 @@ if args.preserve_vowels:
     for vowel in args.preserve_vowels.split(','):
         index=anames.index(vowel.upper())+1
         assert np.array_equal(a[index],b[index]),f'{vowel} morph changed'
-        for weight in (0,.02,.05,.1,.18,.22,.25,.5,.75,1):
+        preserved_weights=(0,.02,.05,.1,.18,.22,.25,.5,.75,1) if vowel=='aa' else (0,.1,.18,.22,.5,1)
+        for weight in preserved_weights:
             for angle in (0,45,-45,90,-90):
-                name=f'{vowel}-{weight}-{angle}.png'
+                name=f'aa-{weight}-{angle}.png' if vowel=='aa' else f'vowel-{vowel}-{weight}-{angle}.png'
                 old=np.asarray(Image.open(baseline/'viewer'/name).convert('RGB')).astype(float)
                 new=np.asarray(Image.open(candidate/'viewer'/name).convert('RGB')).astype(float)
                 maximum=float(abs(old-new).max());assert maximum<=2
