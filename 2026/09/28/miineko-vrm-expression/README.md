@@ -8,7 +8,8 @@ baseline is `artifacts/mouth-aa-aligned/continuous-blink.vrm`. It is not yet an
 production-complete avatar. A [silent mouth-motion preview](MOTION.md) exercises
 vowel transitions and pauses; an [audio-backed vowel test](AUDIO.md) now drives
 the same shapes from known cues and measured energy on the audio playback clock.
-Arbitrary speech-to-vowel inference is still unimplemented.
+A [continuous greeting preview](SPEECH.md) adds authored timing and smooth vowel
+transitions. Arbitrary speech-to-vowel inference is still unimplemented.
 
 **Start with [BASELINE.md](BASELINE.md)** for the exact accepted artifact,
 prerequisites, ordered rebuild recipe, limitations, and lessons to carry forward.
@@ -20,6 +21,7 @@ FBX/textures, blends, VRMs and screenshots are private and excluded from Git.
 | Document | Purpose |
 | --- | --- |
 | [BASELINE.md](BASELINE.md) | Current method, reproduction and validation boundaries. Update this when the accepted baseline changes. |
+| [SPEECH.md](SPEECH.md) | Continuous greeting, authored timing, vowel transitions and repeatability. |
 | [AUDIO.md](AUDIO.md) | Local test voice, known vowel cues, audio-clock playback and validation limits. |
 | [MOTION.md](MOTION.md) | Silent playback controls, normalized driving contract and runtime checks. |
 | [EXPERIMENTS.md](EXPERIMENTS.md) | Continuous blink alternatives, eye selection, and relaxation evidence. |

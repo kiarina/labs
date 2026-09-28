@@ -1,12 +1,14 @@
 import {VOWELS,normalizeVowels} from './mouth_motion.mjs';
 
 export function validateAudioManifest(m){
- if(m?.version!==1||!Number.isFinite(m.duration)||m.duration<=0||m.duration>120)throw Error('Invalid audio duration/version');
+ if(![1,2].includes(m?.version)||!Number.isFinite(m.duration)||m.duration<=0||m.duration>120)throw Error('Invalid audio duration/version');
+ if(m.version===2&&(!Number.isFinite(m.transitionSeconds)||m.transitionSeconds<=0||m.transitionSeconds>.2))throw Error('Invalid transition window');
  if(!/^[a-f0-9]{64}$/.test(m.audioSha256))throw Error('Missing audio fingerprint');
  if(!Array.isArray(m.cues)||!m.cues.length)throw Error('Missing vowel cues');
  let previous=0;
  for(const c of m.cues){
-  if(!VOWELS.includes(c.vowel)||!Number.isFinite(c.start)||!Number.isFinite(c.end)||c.start<previous||c.end<=c.start||c.end>m.duration)throw Error('Invalid vowel cue');
+  if(!(VOWELS.includes(c.vowel)||(m.version===2&&c.vowel==='closed'))||!Number.isFinite(c.start)||!Number.isFinite(c.end)||c.start<previous||c.end<=c.start||c.end>m.duration)throw Error('Invalid vowel cue');
+  if(m.version===2&&c.gain!==undefined&&(!Number.isFinite(c.gain)||c.gain<0||c.gain>1))throw Error('Invalid cue gain');
   previous=c.end;
  }
  const e=m.envelope;
@@ -19,7 +21,28 @@ export function sampleAudioMouth(manifest,seconds,amount=1){
  if(!cue)return normalizeVowels();
  const e=manifest.envelope,index=Math.max(0,Math.min(e.values.length-1,(seconds-e.origin)/e.step));
  const left=Math.floor(index),right=Math.min(left+1,e.values.length-1),fraction=index-left;
- return normalizeVowels({[cue.vowel]:e.values[left]*(1-fraction)+e.values[right]*fraction},amount);
+ const energy=e.values[left]*(1-fraction)+e.values[right]*fraction;
+ if(manifest.version===1)return normalizeVowels({[cue.vowel]:energy},amount);
+ const i=manifest.cues.indexOf(cue),before=manifest.cues[i-1],after=manifest.cues[i+1];
+ const touches=(a,b)=>a&&b&&Math.abs(a.end-b.start)<1e-8;
+ const half=(a,b)=>Math.min(manifest.transitionSeconds/2,(a.end-a.start)/2,(b.end-b.start)/2);
+ const smooth=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t);};
+ const shape=c=>normalizeVowels({[c.vowel]:c.gain??1});
+ let weights=shape(cue);
+ for(const [a,b] of [[before,cue],[cue,after]]){
+  if(!touches(a,b))continue;
+  const h=half(a,b),boundary=b.start;
+  if(seconds>=boundary-h&&seconds<=boundary+h){
+   const t=smooth((seconds-boundary+h)/(2*h)),wa=shape(a),wb=shape(b);
+   weights=Object.fromEntries(VOWELS.map(v=>[v,wa[v]*(1-t)+wb[v]*t]));break;
+  }
+ }
+ // Fade at real gaps; never carry an adjacent vowel across the sentence pause.
+ const edge=Math.min(.02,(cue.end-cue.start)/2);
+ let gate=1;
+ if(!touches(before,cue))gate*=smooth((seconds-cue.start)/edge);
+ if(!touches(cue,after))gate*=smooth((cue.end-seconds)/edge);
+ return normalizeVowels(weights,amount*energy*gate);
 }
 
 // currentTime is the only clock. There is no independently advancing mouth timer.

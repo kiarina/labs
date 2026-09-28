@@ -84,8 +84,9 @@ expression checks pass. The accepted VRM hash remains the one in BASELINE.md.
 
 ## Next work and limits
 
-Use short connected speech next, with explicit phoneme timing or an evaluated
-inference method. RMS alone cannot distinguish vowels. Consonants, coarticulation,
+The [continuous greeting preview](SPEECH.md) now tests one sentence using explicitly
+authored approximate timing. Evaluate its artistic timing before extending the
+method; automatic alignment remains open. RMS alone cannot distinguish vowels. Consonants, coarticulation,
 natural expression timing, microphone/streaming input, physical output latency
 and the final character voice remain unverified. This test does not certify
 additional emotions, gaze, springs or every possible pose/weight combination.

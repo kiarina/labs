@@ -22,6 +22,7 @@ body{margin:0;background:#20232a;color:#edf0f5;font:16px system-ui;height:100vh;
 <label>位置 <input id="mouth-progress" type="range" min="0" max="5500" step="10" value="0"><output id="mouth-time">0.00秒</output></label>
 <span id="mouth-blend" aria-live="off">閉口</span>
 <label id="audio-volume-control" hidden>音量 <input id="audio-volume" type="range" min="0" max="1" step="0.05" value="0.7"></label>
+<label id="audio-clip-control" hidden>音声 <select id="audio-clip"><option value="1">5母音</option><option value="greeting">こんにちは、みぃねこです</option></select></label>
 <span id="audio-status" role="status" hidden></span>
 </div></header><canvas id="canvas"></canvas>
 <script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/","@pixiv/three-vrm":"/node_modules/@pixiv/three-vrm/lib/three-vrm.module.js"}}</script>
@@ -50,7 +51,7 @@ const file=params.get('model')||'mouth-aa-aligned';
 const methodSelect=document.querySelector('#method');
 if([...methodSelect.options].some(o=>o.value===file))methodSelect.value=file;
 else{const option=new Option(file,file,true,true);methodSelect.add(option);}
-methodSelect.onchange=e=>{const next=new URLSearchParams({model:e.target.value});if(previewEnabled)next.set('motion','1');if(params.get('audio')==='1')next.set('audio','1');location.search=next.toString();};
+methodSelect.onchange=e=>{const next=new URLSearchParams({model:e.target.value});if(previewEnabled)next.set('motion','1');if(['1','greeting'].includes(params.get('audio')))next.set('audio',params.get('audio'));location.search=next.toString();};
 if(!/^[a-z0-9-]+$/.test(file))throw new Error('Invalid local artifact directory');
 const gltf=await loader.loadAsync(`/artifacts/${file}/continuous-blink.vrm`);
 const vrm=gltf.userData.vrm;scene.add(vrm.scene);
@@ -115,10 +116,13 @@ function stopMouth(){audioActive=false;audioPlayback?.reset();set({mix:mouthPlay
 function manualMouth(){audioActive=false;audioPlayback?.reset();mouthPlayback.reset(performance.now());refreshPlayback();}
 async function loadAudioPreview(){
  const status=document.querySelector('#audio-status');status.hidden=false;status.textContent='テスト音声を読み込み中';
+ const greeting=params.get('audio')==='greeting';
+ const directory=greeting?'speech-greeting':'vowel-audio';
+ document.querySelector('#audio-clip-control').hidden=false;document.querySelector('#audio-clip').value=greeting?'greeting':'1';
  try{
-  const response=await fetch('/artifacts/vowel-audio/manifest.json',{cache:'no-store'});if(!response.ok)throw Error('Audio manifest unavailable');
+  const response=await fetch(`/artifacts/${directory}/manifest.json`,{cache:'no-store'});if(!response.ok)throw Error('Audio manifest unavailable');
   const manifest=validateAudioManifest(await response.json());
-  const wav=await fetch('/artifacts/vowel-audio/vowels.wav',{cache:'no-store'});if(!wav.ok)throw Error('Audio file unavailable');
+  const wav=await fetch(`/artifacts/${directory}/${greeting?'speech.wav':'vowels.wav'}`,{cache:'no-store'});if(!wav.ok)throw Error('Audio file unavailable');
   const bytes=await wav.arrayBuffer();
   const digest=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),n=>n.toString(16).padStart(2,'0')).join('');
   if(digest!==manifest.audioSha256)throw Error('Audio and envelope fingerprints differ');
@@ -134,7 +138,7 @@ async function loadAudioPreview(){
   audioPlayback=new AudioMouthPlayback(media,manifest);
   for(const event of ['play','pause','timeupdate','seeked','ended','ratechange'])media.addEventListener(event,()=>{if(isAudio()&&audioActive){set({mix:audioPlayback.weights()});refreshPlayback();}});
   media.addEventListener('error',()=>{if(isAudio()){audioActive=false;set({mix:normalizeVowels()});status.textContent='音声の再生で問題が発生しました';refreshPlayback();}});
-  document.querySelector('#mouth-sequence').add(new Option('母音テスト（音声あり）','audio'));
+  document.querySelector('#mouth-sequence').add(new Option(greeting?'短文（音声あり）':'母音テスト（音声あり）','audio'));
   window.probe.audioPlayback=audioPlayback;window.probe.audioReady=true;
   status.textContent=`仮のテスト音声：${manifest.source?.voice||'母音'}`;
   document.querySelector('#mouth-sequence').value='audio';refreshPlayback();
@@ -174,6 +178,7 @@ function configureMouth(options){
 document.querySelector('#mouth-speed').onchange=e=>configureMouth({speed:+e.target.value});
 document.querySelector('#mouth-strength').oninput=e=>configureMouth({amount:+e.target.value});
 document.querySelector('#mouth-progress').oninput=e=>seekMouth(+e.target.value);
+document.querySelector('#audio-clip').onchange=e=>{stopMouth();const next=new URLSearchParams(location.search);next.set('audio',e.target.value);location.search=next.toString();};
 document.querySelector('#audio-volume').oninput=e=>{if(audioPlayback)audioPlayback.media.volume=+e.target.value;};
 document.addEventListener('visibilitychange',()=>{
  if(document.hidden){
@@ -192,5 +197,5 @@ renderer.setAnimationLoop(t=>{
  }
 });
 set();document.querySelector('#status').textContent='試作・品質評価中';window.ready=true;
-if(previewEnabled&&hasVowels&&params.get('audio')==='1')void loadAudioPreview();
+if(previewEnabled&&hasVowels&&['1','greeting'].includes(params.get('audio')))void loadAudioPreview();
 </script></html>

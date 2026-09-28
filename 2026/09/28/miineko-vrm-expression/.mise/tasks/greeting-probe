@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+node --test scripts/greeting_audio.test.mjs
+node scripts/verify_greeting_motion.mjs

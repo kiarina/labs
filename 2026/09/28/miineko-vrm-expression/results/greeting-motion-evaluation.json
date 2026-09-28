@@ -1,0 +1,92 @@
+{
+  "date": "2026-09-28",
+  "scope": "continuous sentence with authored approximate timing; not phoneme inference",
+  "modelSha256": "cc8ca99d04f671b3df7a0489bdb17cabb6847e00dbf01ca94d72bc2ff5681e31",
+  "errors": [],
+  "layouts": [
+    {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "canvasHeight": 679
+    },
+    {
+      "width": 600,
+      "scrollWidth": 600,
+      "canvasHeight": 569
+    },
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "canvasHeight": 397
+    }
+  ],
+  "chrome": "Chrome/153.0.8010.53",
+  "repeatedManifestIdentical": true,
+  "audioSha256": "66fc9c029786d5f5228f32aca5544d991d4a3f522826edf51864b42b86016fda",
+  "duration": 2.886621315192744,
+  "source": {
+    "tool": "macOS say",
+    "voice": "Kyoko",
+    "rate": 140,
+    "osVersion": "26.6.2",
+    "command": [
+      "say",
+      "-v",
+      "Kyoko",
+      "-r",
+      "140",
+      "-f",
+      "text.txt",
+      "-o",
+      "raw.wav",
+      "--file-format=WAVE",
+      "--data-format=LEI16@22050"
+    ],
+    "rawSha256": "4764d1419c4668f8db4ff06dadec99f93743ddc2e927d5df68df27398969f933",
+    "method": "Authored approximate mora timing against this exact continuous recording; not phoneme recognition or measured ground-truth alignment",
+    "rmsWindowFrames": 220,
+    "referenceRms": 0.08440204887802631,
+    "noiseThreshold": 0.0050641229326815786
+  },
+  "sampledStates": 145,
+  "maxSum": 0.8,
+  "blendedStates": 13,
+  "phrasePauseCloses": true,
+  "endingCloses": true,
+  "knownBlend": {
+    "aa": 0,
+    "ih": 0.3091453663583157,
+    "ou": 0,
+    "ee": 0.30984717182350274,
+    "oh": 0
+  },
+  "live": {
+    "frames": 178,
+    "overlap": true,
+    "maxSum": 0.8,
+    "visited": [
+      "oh",
+      "ih",
+      "aa",
+      "ee",
+      "ou"
+    ],
+    "ended": true
+  },
+  "pauseFreezes": true,
+  "halfSpeedResume": true,
+  "vowelComparisonAvailable": true,
+  "regression": {
+    "vowelAudioErrors": [],
+    "vowelAudioMaxSampleDifference": 0.0378350856245494,
+    "silentSamples": 121,
+    "silentStopRestoresNeutral": true,
+    "silentErrors": []
+  },
+  "markerProbe": {
+    "done": true,
+    "events": [],
+    "frames": 40856,
+    "voice": "com.apple.voice.compact.ja-JP.Kyoko"
+  }
+}
