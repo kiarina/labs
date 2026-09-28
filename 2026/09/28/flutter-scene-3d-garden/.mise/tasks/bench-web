@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+#MISE description="Build the web release app per CONFIGS ('<avatars> <shadows>' pairs) and run each in a dedicated Chrome window; appends to results/web.jsonl"
+# A hidden or occluded tab throttles requestAnimationFrame to ~1 fps, so each
+# run gets its own visible Chrome window with a throwaway profile and the
+# background-throttling switches off. Console output is read from Chrome's
+# stderr (--enable-logging=stderr).
+set -euo pipefail
+CHROME="${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
+PORT="${PORT:-8766}"
+CONFIGS="${CONFIGS:-5 true;10 true;20 true;10 false;20 false}"
+LAB="$(cd "$(dirname "$0")/../.." && pwd)"
+cd "$LAB/app"
+python3 "$LAB/tool/serve.py" "$LAB/app/build/web" "$PORT" &
+server=$!
+trap 'kill $server 2>/dev/null' EXIT
+IFS=';' read -ra runs <<< "$CONFIGS"
+for cfg in "${runs[@]}"; do
+  read -r n sh <<< "$cfg"
+  flutter build web --release --dart-define=BENCH=true --dart-define=AVATARS="$n" --dart-define=SHADOWS="$sh" >/dev/null
+  log="$(mktemp)"; prof="$(mktemp -d)"
+  "$CHROME" --user-data-dir="$prof" --no-first-run --no-default-browser-check \
+    --disable-background-timer-throttling --disable-renderer-backgrounding \
+    --disable-backgrounding-occluded-windows --enable-logging=stderr --v=0 \
+    --window-size=1280,860 --new-window "http://127.0.0.1:$PORT/?a=$n&s=$sh" >"$log" 2>&1 &
+  chrome=$!
+  for _ in $(seq 1 300); do grep -q 'BENCH {' "$log" && break; sleep 1; done
+  kill "$chrome"; wait "$chrome" 2>/dev/null || true
+  grep -o 'BENCH {.*' "$log" | head -1 | sed -e 's/^BENCH //' -e 's/", source.*//' \
+    | python3 -c "import json,sys; d=json.load(sys.stdin); d['machine']='${MACHINE:-unspecified}, Chrome, dedicated window'; print(json.dumps(d))" \
+    | tee -a "$LAB/results/web.jsonl"
+  rm -rf "$log" "$prof"
+done

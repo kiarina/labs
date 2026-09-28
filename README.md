@@ -19,6 +19,7 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 ## Labs
 
 - 2026/09
+  - [A human-scale 3D garden with VRM 1.0 avatars on flutter_scene, across five platforms](2026/09/28/flutter-scene-3d-garden/README.md) - [flutter](tags/flutter.md), [dart](tags/dart.md), [flutter-scene](tags/flutter-scene.md), [3d](tags/3d.md), [vrm](tags/vrm.md), [flutter-gpu](tags/flutter-gpu.md), [impeller](tags/impeller.md), [web](tags/web.md), [macos](tags/macos.md), [windows](tags/windows.md), [android](tags/android.md), [ios](tags/ios.md), [benchmark](tags/benchmark.md)
   - [Preserving a Tripo VRM face while adding expressions](2026/09/28/miineko-vrm-expression/README.md) - [vrm](tags/vrm.md), [blender](tags/blender.md), [3d](tags/3d.md)
   - [VRM4U upstream bug reproductions (UE 5.8)](2026/09/28/vrm4u-upstream-repro/README.md) - [unreal-engine](tags/unreal-engine.md), [vrm](tags/vrm.md), [bug-reproduction](tags/bug-reproduction.md)
   - [GPT-Live over WebRTC from native Flutter, with idle and conversation capture switching](2026/09/26/flutter-gpt-live-senses/README.md) - [flutter](tags/flutter.md), [dart](tags/dart.md), [webrtc](tags/webrtc.md), [gpt-live](tags/gpt-live.md), [openai](tags/openai.md), [audio](tags/audio.md), [video](tags/video.md), [echo-cancellation](tags/echo-cancellation.md), [android](tags/android.md), [ios](tags/ios.md), [macos](tags/macos.md)

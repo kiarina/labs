@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+#MISE description="Build the macOS release app with BENCH=true for each AVATARS count and append the BENCH line and memory to results/"
+set -euo pipefail
+COUNTS="${COUNTS:-5 10 20}"
+LAB="$(cd "$(dirname "$0")/../.." && pwd)"
+cd "$LAB/app"
+out="$LAB/results/macos.jsonl"
+for n in $COUNTS; do
+  flutter build macos --release --dart-define=BENCH=true --dart-define=AVATARS="$n" ${EXTRA_DEFINES:-} >/dev/null
+  log="$(mktemp)"
+  ./build/macos/Build/Products/Release/scene_garden.app/Contents/MacOS/scene_garden >"$log" 2>&1 &
+  pid=$!
+  for _ in $(seq 1 600); do grep -q 'BENCH {' "$log" && break; sleep 1; done
+  line="$(grep -o 'BENCH {.*' "$log" | sed 's/^BENCH //')"
+  fp="$(footprint "$pid" 2>/dev/null | awk '/phys_footprint:/ {print $2; exit}')"
+  kill "$pid"; wait "$pid" 2>/dev/null || true
+  echo "$line" | python3 -c "import json,sys; d=json.load(sys.stdin); d['physFootprintMB']=float('$fp' or 0); d['machine']='${MACHINE:-unspecified}'; print(json.dumps(d))" | tee -a "$out"
+  rm -f "$log"
+done

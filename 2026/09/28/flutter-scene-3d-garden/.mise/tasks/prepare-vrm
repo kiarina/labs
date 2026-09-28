@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#MISE description="Copy the VRMs into app/assets/vrm, optionally capping texture edges (MAX_EDGE=full|2048|1024|512)"
+set -euo pipefail
+MAX_EDGE="${MAX_EDGE:-full}"
+: "${MIINEKO_VRM:?set MIINEKO_VRM to the miineko VRM (private)}"
+: "${VROID_DIR:?set VROID_DIR to the directory holding AvatarSample_A..D.vrm}"
+cd "$(dirname "$0")/../../app"
+rm -f assets/vrm/*.vrm assets/vrm/manifest.json
+srcs=("$MIINEKO_VRM:miineko.vrm")
+for x in A B C D; do srcs+=("$VROID_DIR/AvatarSample_$x.vrm:AvatarSample_$x.vrm"); done
+for pair in "${srcs[@]}"; do
+  src="${pair%%:*}"; dst="assets/vrm/${pair##*:}"
+  if [ "$MAX_EDGE" = full ]; then cp "$src" "$dst"; else dart run tool/shrink_vrm.dart "$src" "$dst" "$MAX_EDGE"; fi
+done
+printf '{"maxEdge": "%s"}\n' "$MAX_EDGE" > assets/vrm/manifest.json
+ls -l assets/vrm
