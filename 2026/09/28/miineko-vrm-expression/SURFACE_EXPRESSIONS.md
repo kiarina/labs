@@ -1,5 +1,11 @@
 # Check expressions before polishing the mouth
 
+## Current continuation
+
+The owner selected the sticker sheet’s left-column, third-row smile as the
+full-strength target. [ROUNDED_SMILE.md](ROUNDED_SMILE.md) is the latest candidate;
+this document retains the preceding shallow-arc and shading-control experiment.
+
 ## Priority and scope — 2026-09-29
 
 The owner requested expression validation before mouth fine-tuning: the previous

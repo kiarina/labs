@@ -22,8 +22,9 @@ approved that direction. A [five-vowel extension](CONNECTED_VOWELS.md) now adds
 wide/shallow and narrow/round openings plus continuous transitions. Arbitrary
 speech-to-vowel inference is still unimplemented.
 
-**Start with [SURFACE_EXPRESSIONS.md](SURFACE_EXPRESSIONS.md)** for the current priority:
-validate smile, blink and relaxed expressions before mouth/audio polish. The
+**Start with [ROUNDED_SMILE.md](ROUNDED_SMILE.md)** for the current priority:
+validate the owner-selected rounded smile, blink and relaxed expressions before
+mouth/audio polish. The
 prototype reduces inherited eye-bulb shading but still has visible color/perimeter
 artifacts and is not an accepted finished face.
 [BASELINE.md](BASELINE.md) records the earlier accepted artifact,
@@ -35,7 +36,8 @@ FBX/textures, blends, VRMs and screenshots are private and excluded from Git.
 
 | Document | Purpose |
 | --- | --- |
-| [SURFACE_EXPRESSIONS.md](SURFACE_EXPRESSIONS.md) | Current expression diagnostic, fixed lids, shading control and remaining color/perimeter issues. |
+| [ROUNDED_SMILE.md](ROUNDED_SMILE.md) | Current rounded full-smile candidate, intermediate ink control and remaining limitations. |
+| [SURFACE_EXPRESSIONS.md](SURFACE_EXPRESSIONS.md) | Earlier expression diagnostic, fixed lids, shading control and remaining color/perimeter issues. |
 | [CONNECTED_VOWELS.md](CONNECTED_VOWELS.md) | Current five-vowel probe, shared-surface mixtures, onset response and validation. |
 | [CONNECTED_AA.md](CONNECTED_AA.md) | Accepted AA-only opening, source-W connection, closed recovery and validation limits. |
 | [MOUTH_FLUSH.md](MOUTH_FLUSH.md) | Current mouth/vertical-line depth adjustment; original stroke weight and nose retained. |

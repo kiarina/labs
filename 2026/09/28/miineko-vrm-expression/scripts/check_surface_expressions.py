@@ -1,9 +1,9 @@
 """Check fixed lid geometry and standard expression bindings after VRM import."""
-import bpy,numpy as np,json,struct,hashlib
+import bpy,numpy as np,json,struct,hashlib,os
 from pathlib import Path
 from mathutils import Vector
 from mathutils.bvhtree import BVHTree
-root=Path(__file__).resolve().parents[1];folder=root/'artifacts/surface-expressions';source=root/'artifacts/mouth-connected-vowels';report={'lids':{}}
+root=Path(__file__).resolve().parents[1];rounded=os.environ.get('EXPRESSION_STYLE')=='rounded';folder=root/'artifacts'/('rounded-smile' if rounded else 'surface-expressions');source=root/'artifacts/mouth-connected-vowels';report={'lids':{}}
 for path in sorted(folder.glob('audit-*.npz')):
  a=np.load(path);positions=a['source'].astype(float);opening=a['opening'].astype(float);parent=positions[a['sourceTriangles'][a['parentTriangle']]];tri=a['openingTriangles'];raw=opening[tri]-a['offset'];norm=np.cross(parent[:,1]-parent[:,0],parent[:,2]-parent[:,0]);norm/=np.linalg.norm(norm,axis=1)[:,None];error=np.abs(np.einsum('tvc,tc->tv',raw-parent[:,None,0],norm));assert error.max()<2e-7
  tree=BVHTree.FromPolygons([Vector(p) for p in positions],a['sourceTriangles'].tolist(),all_triangles=True);maximum=max(tree.find_nearest(Vector(p))[3] for p in opening);assert maximum<abs(a['offset'][1])+2e-7
@@ -20,7 +20,7 @@ def mouth(document):
   result[name]=binds
  return result
 assert mouth(d)==mouth(s)==mouth(control);report['mouthBindingsUnchanged']=True
-for variant in ['surface-expressions','surface-expressions-source']:
+for variant in (['rounded-smile','surface-expressions'] if rounded else ['surface-expressions','surface-expressions-source']):
  a=root/'artifacts'/variant
  bpy.ops.wm.open_mainfile(filepath=str(a/'continuous-blink.blend'));body=bpy.data.objects['Miineko_Body'];coords=np.array([v.co for v in body.data.vertices]);assert np.array_equal(coords,positions)
  for obj in bpy.data.objects:
@@ -30,6 +30,7 @@ report['sourceBodyCoordinatesExact']=True;report['noLidMorphs']=True
 bpy.ops.object.select_all(action="SELECT");bpy.ops.object.delete(use_global=False);assert bpy.ops.import_scene.vrm(filepath=str(folder/'continuous-blink.vrm'))=={'FINISHED'}
 arm=next(o for o in bpy.data.objects if o.type=='ARMATURE');presets=arm.data.vrm_addon_extension.vrm1.expressions.preset;bindings={}
 for name,count in [('happy',4),('relaxed',4),('blink',4),('blink_left',2),('blink_right',2)]:
+ count=count*3//2 if rounded else count
  e=getattr(presets,name);assert len(e.texture_transform_binds)==count and not e.morph_target_binds and not e.is_binary and e.override_blink=='none';assert all(b.material for b in e.texture_transform_binds);bindings[name]=count
 report['reimportTextureBinds']=bindings;report['scope']='fixed source-following lids, unchanged head and vowel bindings; no all-pose or aesthetic guarantee'
-(root/'results/surface-expressions-geometry.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))
+(root/'results'/('rounded-smile-geometry.json' if rounded else 'surface-expressions-geometry.json')).write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))
