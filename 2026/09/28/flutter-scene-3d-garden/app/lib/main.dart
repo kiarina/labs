@@ -655,6 +655,15 @@ class _GardenPageState extends State<GardenPage> {
         child: const Text('+1'),
       ),
       FilledButton.tonal(
+        onPressed: () => setState(() {
+          final light = scene.directionalLight;
+          if (light != null) light.castsShadow = !light.castsShadow;
+        }),
+        child: Text(
+          scene.directionalLight?.castsShadow ?? false ? '影 ON' : '影 OFF',
+        ),
+      ),
+      FilledButton.tonal(
         onPressed: loading
             ? null
             : () {
