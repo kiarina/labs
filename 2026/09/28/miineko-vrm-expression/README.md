@@ -5,7 +5,8 @@
 The owner accepted the manga-like eyelid overlay, relaxation, and five cartoon
 vowel shapes while retaining the original Tripo head. The combined comparison
 baseline is `artifacts/mouth-aa-aligned/continuous-blink.vrm`. It is not yet an
-audio-driven or production-complete avatar.
+audio-driven or production-complete avatar. A [silent mouth-motion preview](MOTION.md)
+now exercises vowel transitions, pauses and simultaneous blinking.
 
 **Start with [BASELINE.md](BASELINE.md)** for the exact accepted artifact,
 prerequisites, ordered rebuild recipe, limitations, and lessons to carry forward.
@@ -17,6 +18,7 @@ FBX/textures, blends, VRMs and screenshots are private and excluded from Git.
 | Document | Purpose |
 | --- | --- |
 | [BASELINE.md](BASELINE.md) | Current method, reproduction and validation boundaries. Update this when the accepted baseline changes. |
+| [MOTION.md](MOTION.md) | Silent playback controls, normalized driving contract and runtime checks. |
 | [EXPERIMENTS.md](EXPERIMENTS.md) | Continuous blink alternatives, eye selection, and relaxation evidence. |
 | [MOUTH.md](MOUTH.md) | Initial black/pink AA probes; historical zero-area neutral method. |
 | [VOWELS.md](VOWELS.md) | Red mouth, five-vowel and flat-onset experiments; early failures retained. |

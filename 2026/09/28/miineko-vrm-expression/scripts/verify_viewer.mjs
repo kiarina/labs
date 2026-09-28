@@ -13,7 +13,7 @@ if(!/^[a-z0-9-]+$/.test(run))throw new Error('Invalid run directory');
 const output=path.join(root,'artifacts',run,'viewer');await fs.mkdir(output,{recursive:true});
 // Fail before launching Chrome if the dependent export has not completed.
 await fs.access(path.join(root,'artifacts',run,'continuous-blink.vrm'));
-const mime={'.html':'text/html','.js':'text/javascript','.png':'image/png','.json':'application/json','.vrm':'model/gltf-binary'};
+const mime={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.png':'image/png','.json':'application/json','.vrm':'model/gltf-binary'};
 const server=http.createServer(async(req,res)=>{
  try{let pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);if(pathname==='/favicon.ico'){res.statusCode=204;res.end();return;}if(pathname==='/')pathname='/viewer.html';const file=path.resolve(root,'.'+pathname);
  if(!file.startsWith(root+path.sep))throw new Error('outside root');const bytes=await fs.readFile(file);res.setHeader('Content-Type',mime[path.extname(file)]||'application/octet-stream');res.end(bytes);

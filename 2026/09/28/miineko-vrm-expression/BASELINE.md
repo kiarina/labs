@@ -36,9 +36,11 @@ Historical Blender renders use their own recorded scene/sampling settings.
 
 These are controlled comparison pins, not claims of newest releases. The
 2026-09-28 repository maintenance review left the Pillow update deferred by the
-owner while this experiment was active. Reassess that outstanding update before
-the next implementation phase. Retain measured dependencies until parity is
-checked; under the labs policy, a non-byte-identical migration needs a separate
+owner while this experiment was active. This was reconsidered for the next
+motion stage: the prior trial matched 19/20 output files, but changed historical
+atlas PNG bytes despite equal pixels. Keep the frozen comparison pin; the
+JavaScript-only motion stage does not run Pillow. Retain measured dependencies
+until migration/parity is resolved; under the labs policy, a non-byte-identical migration needs a separate
 lab/baseline. Do not silently update dependencies and attribute changed output
 to geometry. The manifest and lockfile agree on the viewer versions above.
 
@@ -149,8 +151,9 @@ for the current acceptance state.
 
 ## Handoff and remaining work
 
-Next, preserve this baseline while evaluating speech timing, fades and mixtures,
-then additional comic emotions. Gaze and ear/tail springs need integration and
+A [silent playback preview](MOTION.md) now checks fades, pauses and normalized
+mixtures without modifying this baseline. Next evaluate that timing and add
+actual audio synchronization, then additional comic emotions. Gaze and ear/tail springs need integration and
 combined runtime validation. Do not automatically return to rejected realistic
 eyelids or full-head replacement. Another character requires its own calibration.
 

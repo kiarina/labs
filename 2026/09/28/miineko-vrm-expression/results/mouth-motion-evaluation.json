@@ -1,0 +1,63 @@
+{
+  "date": "2026-09-28",
+  "scope": "silent keyframed motion, not audio synchronization",
+  "acceptedVrmSha256": "cc8ca99d04f671b3df7a0489bdb17cabb6847e00dbf01ca94d72bc2ff5681e31",
+  "driverSha256": "c0c78602628e1ca12a3182afc30b7cda0173f4370f4135576adadbbbc78b7f13",
+  "unitTests": {
+    "passed": 3,
+    "runner": "node:test",
+    "scope": [
+      "finite normalized weights",
+      "both loops and crossfades",
+      "clock pause/resume/speed/seek/stop and stale timestamps"
+    ]
+  },
+  "runtimeSamples": 121,
+  "maximumSampledSum": 0.8,
+  "knownCrossfade": {
+    "aa": 0.26,
+    "ih": 0.2,
+    "ou": 0,
+    "ee": 0,
+    "oh": 0
+  },
+  "livePlayback": {
+    "maxBlink": 1,
+    "maxSum": 0.7197185285048011,
+    "overlap": true
+  },
+  "stopRestoresNeutralExactly": true,
+  "layouts": [
+    {
+      "width": 1280,
+      "scrollWidth": 1280,
+      "canvasHeight": 689
+    },
+    {
+      "width": 600,
+      "scrollWidth": 600,
+      "canvasHeight": 607
+    },
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "canvasHeight": 463
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "staticRegression": {
+    "errors": [],
+    "warnings": [],
+    "mouthStates": 50,
+    "vowelStates": 150,
+    "zeroMaximumDifference": 0,
+    "eyeMaximumDifference": 0,
+    "relaxedMaximumDifference": 0
+  },
+  "limits": [
+    "Silent authored timeline, no audio inference or alignment",
+    "No VRM changes or embedded motion clip",
+    "No guarantee for all poses/mixtures/runtimes"
+  ]
+}
