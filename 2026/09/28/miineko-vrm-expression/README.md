@@ -22,12 +22,11 @@ approved that direction. A [five-vowel extension](CONNECTED_VOWELS.md) now adds
 wide/shallow and narrow/round openings plus continuous transitions. Arbitrary
 speech-to-vowel inference is still unimplemented.
 
-**Start with [BALANCED_SMILE.md](BALANCED_SMILE.md)** for the current priority:
-validate upper-led smile closure with a shared upper/lower onset and the original
-highlight, blink and relaxed expressions before
-mouth/audio polish. The
-prototype reduces inherited eye-bulb shading but still has visible color/perimeter
-artifacts and is not an accepted finished face.
+**Start with [EMOTIONS.md](EMOTIONS.md)** for the current angry/sad candidates.
+The owner accepted the synchronized smile as sufficient to move on. Its appearance
+and existing expressions are preserved; the eye-band angle and curvature provide
+the next emotion comparison. Skin-color/perimeter artifacts and fine tuning remain
+open, so this is not a production-complete avatar.
 [BASELINE.md](BASELINE.md) records the earlier accepted artifact,
 prerequisites, ordered rebuild recipe, limitations, and lessons to carry forward.
 Keep new experiments in separate output directories. Character designs, source
@@ -37,7 +36,8 @@ FBX/textures, blends, VRMs and screenshots are private and excluded from Git.
 
 | Document | Purpose |
 | --- | --- |
-| [BALANCED_SMILE.md](BALANCED_SMILE.md) | Current shared-start upper-70/lower-30 closure; preserve highlight color and evaluate early motion. |
+| [EMOTIONS.md](EMOTIONS.md) | Current angry/sad candidates; accepted smile preserved, tilt and blending evaluated. |
+| [BALANCED_SMILE.md](BALANCED_SMILE.md) | Accepted minimum-quality smile baseline; shared onset, upper/lower ratio, remaining limits. |
 | [CRESCENT_SMILE.md](CRESCENT_SMILE.md) | Earlier broad smile; owner found the lower-lid lift and darkened highlight frightening. |
 | [ROUNDED_SMILE.md](ROUNDED_SMILE.md) | Earlier short-arc candidate; 100% was rejected as too thin and mismatched to eye size. |
 | [SURFACE_EXPRESSIONS.md](SURFACE_EXPRESSIONS.md) | Earlier expression diagnostic, fixed lids, shading control and remaining color/perimeter issues. |
@@ -63,8 +63,8 @@ historical routes. They are not the path to the accepted face.
 
 ## Remaining work
 
-The revised normal face and connected AA direction are accepted. Evaluate the new
-eye expressions first; mouth/onset/audio polish is deferred by owner request.
+The revised normal face, connected AA direction and synchronized smile are accepted
+as working baselines. Evaluate angry/sad next; mouth/onset/audio polish is deferred by owner request.
 Then integrate speech, gaze and SpringBone. Then
 validate the combined result in the intended runtime and review export metadata
 before distribution. Binding reimport, screenshot checks and owner approval of

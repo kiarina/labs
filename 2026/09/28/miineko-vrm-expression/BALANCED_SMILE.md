@@ -1,6 +1,13 @@
 # Upper-led smile closure with a shared start
 
-## Current direction — 2026-09-29
+## Accepted comparison baseline
+
+On 2026-09-29 the owner judged `sync-smile` sufficient to move on, while allowing
+later refinement of the 7:3 ratio. Keep this artifact as the smile reference.
+The next [angry/sad probe](EMOTIONS.md) extends it without replacing its geometry
+or existing expressions. Skin-color and perimeter issues are still outstanding.
+
+## Closure direction — 2026-09-29
 
 The owner found the [crescent smile](CRESCENT_SMILE.md) frightening and proposed
 upper 70% / lower 30% closure, keeping the highlight unchanged until the upper lid
@@ -12,7 +19,7 @@ Open `expression-study.html?variant=sync&happy=.13&opening=0&angle=0`.
 The selector retains `balanced-smile`, which had a later lower-lid onset, and
 older candidates. Mouth control stays independent. Head, nose and source mouth
 are unchanged. The pink-lid color/perimeter artifacts remain unresolved, and
-the latest synchronized candidate has not yet received owner feedback.
+the owner accepted this smile as a minimum-quality baseline, not a finished avatar.
 
 ## Visible travel, onset and endpoint
 
@@ -110,9 +117,10 @@ cleared to avoid confusing Blender's `.001` name suffixes with canonical names.
 
 ## Next work
 
-Assess the shared-start motion and full expression before adopting the candidate.
-Keep the highlight untouched and preserve the approximately 7:3 travel allocation.
-Then resolve skin-color patches, sharp reveal boundaries and oblique edge slivers.
+Keep the accepted shared-start smile as the reference while comparing the new
+[angry/sad directions](EMOTIONS.md). Refine the ratio and remaining skin-color
+patches, sharp reveal boundaries and oblique edge slivers after the basic
+expression set has been evaluated.
 Do not return to highlight painting to conceal a lid-position problem. Mouth/audio
 polish remains deferred; full poses/skinning, other runtimes, gaze, SpringBone and
 end-to-end generation remain open.

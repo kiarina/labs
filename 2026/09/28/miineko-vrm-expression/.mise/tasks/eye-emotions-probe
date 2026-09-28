@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+BLENDER_BIN="${BLENDER_BIN:-blender}"
+"$BLENDER_BIN" --background --python-exit-code 1 --python scripts/add_eye_emotions.py
+STUDY_SUFFIX=-repeat "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/add_eye_emotions.py
+"$BLENDER_BIN" --background --python-exit-code 1 --python scripts/check_eye_emotions.py
+node scripts/verify_eye_emotions.mjs
+"${COMPARE_PYTHON:-python3}" scripts/measure_eye_emotions.py
