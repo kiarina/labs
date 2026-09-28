@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Compare mouth-only surprise with fixed eye-side masks"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+PYTHON_BIN="${COMPARE_PYTHON:-.venv/bin/python}"
+"$PYTHON_BIN" scripts/build_surprise_probe.py
+STUDY_SUFFIX=-repeat "$PYTHON_BIN" scripts/build_surprise_probe.py
+node scripts/verify_surprise.mjs

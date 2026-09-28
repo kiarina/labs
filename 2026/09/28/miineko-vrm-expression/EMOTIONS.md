@@ -9,7 +9,7 @@ inner corners with much less arc, referring to the sticker sheet's left column,
 sixth row. The owner subsequently found the straighter shape improved and requested a
 slightly stronger angle. The current candidate is **`eye-emotions-steeper`**: slope
 magnitude .28 → .32 (about 15.6° → 17.7° at the center), with rise .008 and the
-central gap retained. The preceding angle remains available for comparison. Happy and angry remain accepted references.
+central gap retained. The preceding angle remains available for comparison. The owner provisionally accepted this stronger angle. Happy and angry remain accepted references.
 
 Open `expression-study.html?variant=steeper-sad&sad=1&opening=0&angle=0`.
 The four 100% buttons select happy, angry, sad or relaxed individually. Sliders
@@ -122,8 +122,7 @@ presets, not the new sad/relaxed meaning.
 
 ## Next work
 
-Evaluate whether the straighter raised-inner-corner eyes read as sadness and
-remain distinct from relaxed throughout the transition. Keep accepted happy and
-angry intact. Angle refinements, 7:3 tuning, skin-color seams and mouth/audio
+The owner provisionally accepted the stronger sad angle. Continue with the
+[surprise comparison](SURPRISE.md), keeping happy, angry, sad and relaxed intact. Angle refinements, 7:3 tuning, skin-color seams and mouth/audio
 response can follow the basic expression set. Gaze, springs, full-body poses,
 target-runtime checks and end-to-end generation remain open.

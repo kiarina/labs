@@ -22,10 +22,13 @@ approved that direction. A [five-vowel extension](CONNECTED_VOWELS.md) now adds
 wide/shallow and narrow/round openings plus continuous transitions. Arbitrary
 speech-to-vowel inference is still unimplemented.
 
-**Start with [EMOTIONS.md](EMOTIONS.md)** for the current relaxed/sad comparison.
+**Start with [SURPRISE.md](SURPRISE.md)** for the current mouth-only versus
+subtly taller-looking-eye comparison. [EMOTIONS.md](EMOTIONS.md) records the
+preceding relaxed/sad work.
 The owner accepted the synchronized smile and angry direction, and identified
 the preceding curved sad eyes as relaxed. The straight sad shape was found improved; the current trial adds about 2°
-of tilt while retaining its curvature. Happy, angry and relaxed are preserved. Skin-color/perimeter artifacts and fine tuning remain
+of tilt while retaining its curvature; the owner provisionally accepted it.
+Happy, angry and relaxed are preserved. Skin-color/perimeter artifacts and fine tuning remain
 open, so this is not a production-complete avatar.
 [BASELINE.md](BASELINE.md) records the earlier accepted artifact,
 prerequisites, ordered rebuild recipe, limitations, and lessons to carry forward.
@@ -36,6 +39,7 @@ FBX/textures, blends, VRMs and screenshots are private and excluded from Git.
 
 | Document | Purpose |
 | --- | --- |
+| [SURPRISE.md](SURPRISE.md) | Current surprise direction comparison; separate eye and mouth control, pending owner evaluation. |
 | [EMOTIONS.md](EMOTIONS.md) | Current curved-relaxed/straighter-sad split; accepted happy and angry preserved. |
 | [BALANCED_SMILE.md](BALANCED_SMILE.md) | Accepted minimum-quality smile baseline; shared onset, upper/lower ratio, remaining limits. |
 | [CRESCENT_SMILE.md](CRESCENT_SMILE.md) | Earlier broad smile; owner found the lower-lid lift and darkened highlight frightening. |
