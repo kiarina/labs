@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Repair the screen-left/right-character highlight's local shading"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+: "${BLENDER_BIN:?Set BLENDER_BIN to the Blender executable}"
+HIGHLIGHT_SIDE=R "$BLENDER_BIN" -b --python-exit-code 1 --python scripts/refine_highlight_normals.py
+HIGHLIGHT_SIDE=R STUDY_SUFFIX=-repeat "$BLENDER_BIN" -b --python-exit-code 1 --python scripts/refine_highlight_normals.py
+"$BLENDER_BIN" -b --python-exit-code 1 --python scripts/check_highlight_normals.py
+node scripts/verify_highlight_normals.mjs
+"${COMPARE_PYTHON:-.venv/bin/python}" scripts/measure_highlight_normals.py

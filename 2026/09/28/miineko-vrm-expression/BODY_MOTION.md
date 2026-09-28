@@ -104,7 +104,9 @@ Model, motion binary, videos and screenshots remain in ignored artifacts.
 - [Encoded video](results/body-motion-video.json): codec, frame count and duration.
 - Gallery images, video metadata and exact-time navigation were exercised.
 
-Next prioritize a separate ribbon-weight repair and character-appropriate arm
-motion limits, then repeat the same views/timestamps. Ear timing, mouth/audio,
+After review, the owner found no large failure in the dance and chose to start
+small visual improvements with [highlight cleanup](HIGHLIGHT_CLEAN.md). Keep a
+separate ribbon-weight repair and character-appropriate arm motion limits as
+remaining work, then repeat the same views/timestamps. Ear timing, mouth/audio,
 gaze and SpringBone remain later integration work. Do not overwrite the saved
 assets snapshot during diagnosis.
