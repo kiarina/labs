@@ -4,7 +4,8 @@
 
 The owner found this candidate frightening, attributing it to excessive early
 lower-lid lift and unnecessary highlight darkening. [BALANCED_SMILE.md](BALANCED_SMILE.md)
-now tests approximately 7:3 upper/lower closure with the source highlight intact.
+records the accepted synchronized closure, approximately 7:3 upper/lower travel,
+with the source highlight intact.
 The former 92% silhouette and the darkening below are historical controls.
 
 ## Earlier owner correction — 2026-09-29
@@ -12,7 +13,7 @@ The former 92% silhouette and the darkening below are historical controls.
 The owner found [ROUNDED_SMILE.md](ROUNDED_SMILE.md)'s 100% endpoint too thin, with
 ends that did not fit the original eye size. The supplied **92% screenshot** was
 closer to the sticker reference in shape, despite its remaining white highlight
-and superimposed upper arc. The current target is therefore the broad remaining
+and superimposed upper arc. The target at that stage was therefore the broad remaining
 eye shape at that intermediate state, cleaned up into a single black smile.
 Do not reinterpret this as another request for a shorter, thinner drawn line.
 

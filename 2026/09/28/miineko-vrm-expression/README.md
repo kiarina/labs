@@ -2,44 +2,35 @@
 
 ## Current result — 2026-09-29
 
-The owner accepted the manga-like eyelid overlay, relaxation, and five cartoon
-vowel shapes while retaining the original Tripo head. The combined comparison
-baseline is `artifacts/mouth-aa-aligned/continuous-blink.vrm`. It is not yet a
-production-complete avatar. A [silent mouth-motion preview](MOTION.md) exercises
-vowel transitions and pauses; an [audio-backed vowel test](AUDIO.md) now drives
-the same shapes from known cues and measured energy on the audio playback clock.
-A [continuous greeting preview](SPEECH.md) adds authored timing and smooth vowel
-transitions; the owner found the greeting natural. A [smile-eye candidate](HAPPY.md)
-was rejected for its protruding, bulb-like closed eyes. The current direction is
-a [feature-depth study](FEATURE_DEPTH.md): preserve the pink head geometry and
-nose while reducing only eye/W depth. The broader [thin-face study](THIN_FACE.md)
-was rejected because it changed the head profile. The old baseline remains the
-input and comparison reference. The current [mouth-depth candidate](MOUTH_FLUSH.md) includes
-the joining band and vertical line while retaining the original line weight. The
-owner found this improved; a [connected AA opening](CONNECTED_AA.md) now tests
-the red interior and lower-contour connection against the sticker reference. The owner
-approved that direction. A [five-vowel extension](CONNECTED_VOWELS.md) now adds
-wide/shallow and narrow/round openings plus continuous transitions. Arbitrary
-speech-to-vowel inference is still unimplemented.
+**The current working baseline is `artifacts/surprise-ears/continuous-blink.vrm`.**
+The owner provisionally accepted the mouth-plus-raised-ear surprise on 2026-09-29.
+Start with [SURPRISE_EARS.md](SURPRISE_EARS.md) for its construction, source chain,
+reproduction and limitations. It contains the preceding accepted face and basic
+expressions; it is not a production-complete avatar.
 
-**Start with [SURPRISE_EARS.md](SURPRISE_EARS.md)** for the current mouth-plus-ear
-surprise trial. The owner rejected eye narrowing and kept the normal round eyes. [EMOTIONS.md](EMOTIONS.md) records the
-preceding relaxed/sad work.
-The owner accepted the synchronized smile and angry direction, and identified
-the preceding curved sad eyes as relaxed. The straight sad shape was found improved; the current trial adds about 2°
-of tilt while retaining its curvature; the owner provisionally accepted it.
-Happy, angry and relaxed are preserved. Skin-color/perimeter artifacts and fine tuning remain
-open, so this is not a production-complete avatar.
-[BASELINE.md](BASELINE.md) records the earlier accepted artifact,
-prerequisites, ordered rebuild recipe, limitations, and lessons to carry forward.
-Keep new experiments in separate output directories. Character designs, source
-FBX/textures, blends, VRMs and screenshots are private and excluded from Git.
+| Part | Current decision | Canonical detail |
+| --- | --- | --- |
+| Head, nose and normal face | Retain the pink head and protruding nose; fit black eyes, W and vertical mouth line to the surface without thinning their strokes. | [MOUTH_FLUSH.md](MOUTH_FLUSH.md) |
+| Mouth | Connected red interior and lower outline; five vowels on one fixed surface. Small-opening response still needs polish. | [CONNECTED_VOWELS.md](CONNECTED_VOWELS.md) |
+| Happy | Shared upper/lower onset, approximately 7:3 travel; white highlight stays until covered. Accepted minimum quality. | [BALANCED_SMILE.md](BALANCED_SMILE.md) |
+| Angry / relaxed / sad | Angry accepted; former curved sad reassigned to relaxed; steeper straight-looking sad provisionally accepted. | [EMOTIONS.md](EMOTIONS.md) |
+| Surprised | Normal round eyes, OH mouth plus raised ears; provisionally accepted. Ears are independent of blink and mouth. | [SURPRISE_EARS.md](SURPRISE_EARS.md) |
+| Speech | Natural greeting was reviewed on the **older** `mouth-aa-aligned` model. It has not been integrated with this revised face. | [SPEECH.md](SPEECH.md) |
+
+The sticker sheet guides character expression rather than requiring exact copies.
+Rejected experiments remain documented for comparison: broad head smoothing,
+raised closed-eye volume, thin smile arcs, highlight darkening and surprise eye
+narrowing. Their scripts and old acceptance records do not override this table.
+[BASELINE.md](BASELINE.md) records the earlier `mouth-aa-aligned` source and its
+rebuild route. Keep new experiments in separate output directories. Character
+designs, source FBX/textures, blends, VRMs and screenshots are private and excluded
+from Git; pulling this repository alone does not provide the model.
 
 ## Documentation map
 
 | Document | Purpose |
 | --- | --- |
-| [SURPRISE_EARS.md](SURPRISE_EARS.md) | Current raised-ear surprise trial; original eyes, independent mouth and blink. |
+| [SURPRISE_EARS.md](SURPRISE_EARS.md) | Provisionally accepted raised-ear surprise; source chain, original eyes, independent mouth and blink. |
 | [SURPRISE.md](SURPRISE.md) | Rejected eye-narrowing comparison and mouth-only reference. |
 | [EMOTIONS.md](EMOTIONS.md) | Current curved-relaxed/straighter-sad split; accepted happy and angry preserved. |
 | [BALANCED_SMILE.md](BALANCED_SMILE.md) | Accepted minimum-quality smile baseline; shared onset, upper/lower ratio, remaining limits. |
@@ -68,12 +59,14 @@ historical routes. They are not the path to the accepted face.
 
 ## Remaining work
 
-The revised normal face, connected AA direction and synchronized smile are accepted
-as working baselines, as is the angry direction. Evaluate the new sad/relaxed split next; mouth/onset/audio polish is deferred by owner request.
-Then integrate speech, gaze and SpringBone. Then
-validate the combined result in the intended runtime and review export metadata
-before distribution. Binding reimport, screenshot checks and owner approval of
-mouth shapes do not certify all poses, all runtimes or audio synchronization.
+The basic expression directions have been reviewed. Next check transitions and
+how quickly the ears rise, then integrate the chosen driving behavior. Fine
+mouth/onset/audio tuning is a separate follow-up, not a reason to reopen the
+accepted face. Skin-color/perimeter seams and exact eye ratios remain unresolved.
+Gaze, SpringBone, full-body poses, target-runtime checks and a fresh end-to-end
+rebuild from the private FBX are still required. Review export metadata before
+distribution. Stage-by-stage repeatability and appearance approval do not certify
+all poses, all runtimes or audio synchronization.
 
 ## Documentation-only/static check
 

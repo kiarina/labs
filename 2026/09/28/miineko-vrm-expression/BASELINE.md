@@ -2,12 +2,12 @@
 
 ## Current design direction
 
-After reviewing the smile, the owner rejected the protruding eye volume and
-requested thinner face features. [MOUTH_FLUSH.md](MOUTH_FLUSH.md) is the current
-comparison: the head and nose are fixed, with the authorized mouth joining band
-and vertical line adjusted in depth. Original stroke weight is retained. The intervening broad
-face deformation was rejected for changing the profile. The acceptance below records the earlier stages, not a requirement
-to preserve eye/mouth protrusions in the next design.
+The current working baseline is the provisionally accepted mouth-plus-ear surprise
+in [SURPRISE_EARS.md](SURPRISE_EARS.md); [README.md](README.md) summarizes all
+current expression decisions. This document owns the earlier `mouth-aa-aligned`
+input chain and tool pins. Its owner acceptance and measurements below belong to
+that earlier stage; they do not require preserving the rejected protruding eyes
+or mouth in the current face. The new source chain continues from this baseline.
 
 ## Scope and acceptance
 
@@ -155,8 +155,8 @@ ink classification. They do not prove collision freedom for all poses/weights.
 Blender reimport checks bindings, not round-trip shading. Pixel differences and
 owner approval are distinct kinds of evidence; neither replaces the other.
 Older machine reports can contain `visualAcceptance: not granted`; they do not
-track subsequent owner decisions. Preserve those records and use this document
-for the current acceptance state.
+track subsequent owner decisions. Preserve those records; this document records
+the earlier acceptance, and [README.md](README.md) owns the current status.
 
 ## Handoff and remaining work
 
@@ -165,7 +165,8 @@ mixtures without modifying this baseline. An [audio-backed vowel test](AUDIO.md)
 now checks known cues and media-clock playback. A [continuous greeting](SPEECH.md)
 adds authored approximate timing and transitions; the owner found it natural.
 The [happy-eye prototype](HAPPY.md) was rejected for its raised-eye appearance.
-Review the [feature-depth study](FEATURE_DEPTH.md) before rebuilding expressions;
+The revised face continues through [SURPRISE_EARS.md](SURPRISE_EARS.md);
+use its input chain before rebuilding expressions.
 automatic phoneme alignment remains open. Gaze and ear/tail springs need integration and
 combined runtime validation. Do not automatically return to rejected realistic
 eyelids or full-head replacement. Another character requires its own calibration.

@@ -1,6 +1,7 @@
 # Mouth depth follow-up
 
-For the current rebuild order and synthesis, see [BASELINE.md](BASELINE.md).
+For this earlier rebuild order, see [BASELINE.md](BASELINE.md).
+For the current accepted direction, see [README.md](README.md).
 This file retains the sequence of depth experiments.
 
 Approved mouth baseline: `mouth-aa-aligned` also retracts AA, while retaining

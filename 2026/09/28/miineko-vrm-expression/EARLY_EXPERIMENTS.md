@@ -2,7 +2,8 @@
 
 Historical record of the rejected routes before the accepted overlay and mouth
 pipeline. These measurements and proposed next steps describe that stage only.
-For the current baseline and reproduction path, read [BASELINE.md](BASELINE.md).
+For the earlier baseline and reproduction path, read [BASELINE.md](BASELINE.md).
+The current working baseline is listed in [README.md](README.md).
 Do not run `mise run reproduce` expecting the accepted face: it rebuilds the
 rejected head-replacement experiment.
 

@@ -15,7 +15,7 @@ The second option makes the eye look slightly taller by covering its sides;
 it does not enlarge the eye vertically or deform the pink head.
 
 Open `expression-study.html?variant=surprise-mouth&vowel=oh&opening=.65`.
-Switch between **驚き：口だけ** and **驚き：目を少し縦長に**. The **あれ？** button
+Switch between **驚き：口だけ** and **比較：目を変える案（不採用）**. The **あれ？** button
 selects OH at opening .30 and eye strength .40; **えっ！** selects OH at .65 and
 eye strength 1. The mouth-only option ignores eye strength. These are starting
 poses, not an assertion that their emotional reading is settled. The original W
@@ -51,7 +51,7 @@ Initial unrestricted skin masks produced conspicuous pink patches and a small
 neutral-view difference at oblique angles. Restricting vertex alpha to the source
 eye artwork removed those new surrounding patches and restored the checked
 neutral/existing-expression views. A 1.20 U scale gave very little visible change;
-1.35 is the current comparison. These trials did not modify the source model.
+1.35 was the final rejected comparison. These trials did not modify the source model.
 
 The new `surprised` VRM preset contains **only the eye binds**. The OH mouth is a
 viewer-composed pose, not embedded in that preset. This keeps mouth motion
@@ -78,5 +78,5 @@ same VRM bytes. [Runtime evidence](results/surprise-evaluation.json) covers
 1280/600/390 px layouts. Pixel equality of retained states and weight validity
 are distinct from judging whether the new expression is cute or surprised.
 
-Next: test the owner-requested raised-ear direction in [SURPRISE_EARS.md](SURPRISE_EARS.md).
+The successor [raised-ear direction](SURPRISE_EARS.md) is now provisionally accepted.
 Skin seams, precise eye ratios and mouth/audio polish remain later work.

@@ -4,7 +4,7 @@
 
 The owner found the W change insufficient and authorized its joining band and
 the vertical line below the nose to move in depth, while explicitly retaining
-line weight. [MOUTH_FLUSH.md](MOUTH_FLUSH.md) is the current candidate. The strict
+line weight. [MOUTH_FLUSH.md](MOUTH_FLUSH.md) records the accepted normal-face refinement. The strict
 all-pink/stem protection below records the preceding trial, not the new permission.
 
 ## Owner correction and initial scope

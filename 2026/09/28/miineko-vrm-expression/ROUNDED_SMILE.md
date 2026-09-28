@@ -5,7 +5,8 @@
 The owner rejected the 100% endpoint below as too thin, with ends that did not
 match the eye size. The former 92% silhouette was preferred as the next reference,
 with its highlight and duplicated upper arc to be removed.
-[CRESCENT_SMILE.md](CRESCENT_SMILE.md) is the current continuation. The historical
+[CRESCENT_SMILE.md](CRESCENT_SMILE.md) records the next rejected trial;
+[BALANCED_SMILE.md](BALANCED_SMILE.md) contains the accepted synchronized smile. The historical
 measurements below remain evidence of the earlier experiment, not a current goal.
 
 ## Initial direction — 2026-09-29

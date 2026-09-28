@@ -1,6 +1,6 @@
 # Five cartoon mouth shapes from a rough expression reference
 
-Historical red-mouth and flat-onset experiments. The accepted result and current
+Historical red-mouth and flat-onset experiments. The earlier accepted result and
 rebuild order are in [BASELINE.md](BASELINE.md); later depth changes are recorded
 in [PROFILE.md](PROFILE.md).
 
