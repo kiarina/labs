@@ -101,7 +101,11 @@ area. The accepted-AA comparison uses its original raw response.
 
 ## Next work and limits
 
-Reconnect the existing known-audio preview to these new shapes, then calibrate
+**Priority update:** the owner requested [expression validation](SURFACE_EXPRESSIONS.md)
+first to reduce redesign risk. The mouth/audio work below is deferred until the
+facial-expression direction is evaluated.
+
+After that, reconnect the existing known-audio preview to these new shapes, then calibrate
 opening strength and timing using this model's visible onset. Do not reuse old
 amplitudes as if the old morph mouth and this reveal behaved identically.
 Keep the raw/early comparison until the response is evaluated in speech.

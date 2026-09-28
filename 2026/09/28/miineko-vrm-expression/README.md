@@ -22,7 +22,10 @@ approved that direction. A [five-vowel extension](CONNECTED_VOWELS.md) now adds
 wide/shallow and narrow/round openings plus continuous transitions. Arbitrary
 speech-to-vowel inference is still unimplemented.
 
-**Start with [CONNECTED_VOWELS.md](CONNECTED_VOWELS.md)** for the current design comparison.
+**Start with [SURFACE_EXPRESSIONS.md](SURFACE_EXPRESSIONS.md)** for the current priority:
+validate smile, blink and relaxed expressions before mouth/audio polish. The
+prototype reduces inherited eye-bulb shading but still has visible color/perimeter
+artifacts and is not an accepted finished face.
 [BASELINE.md](BASELINE.md) records the earlier accepted artifact,
 prerequisites, ordered rebuild recipe, limitations, and lessons to carry forward.
 Keep new experiments in separate output directories. Character designs, source
@@ -32,6 +35,7 @@ FBX/textures, blends, VRMs and screenshots are private and excluded from Git.
 
 | Document | Purpose |
 | --- | --- |
+| [SURFACE_EXPRESSIONS.md](SURFACE_EXPRESSIONS.md) | Current expression diagnostic, fixed lids, shading control and remaining color/perimeter issues. |
 | [CONNECTED_VOWELS.md](CONNECTED_VOWELS.md) | Current five-vowel probe, shared-surface mixtures, onset response and validation. |
 | [CONNECTED_AA.md](CONNECTED_AA.md) | Accepted AA-only opening, source-W connection, closed recovery and validation limits. |
 | [MOUTH_FLUSH.md](MOUTH_FLUSH.md) | Current mouth/vertical-line depth adjustment; original stroke weight and nose retained. |
@@ -55,7 +59,8 @@ historical routes. They are not the path to the accepted face.
 ## Remaining work
 
 The revised normal face and connected AA direction are accepted. Evaluate the new
-vowels and onset response, restore eye expressions, then integrate speech, gaze and SpringBone. Then
+eye expressions first; mouth/onset/audio polish is deferred by owner request.
+Then integrate speech, gaze and SpringBone. Then
 validate the combined result in the intended runtime and review export metadata
 before distribution. Binding reimport, screenshot checks and owner approval of
 mouth shapes do not certify all poses, all runtimes or audio synchronization.

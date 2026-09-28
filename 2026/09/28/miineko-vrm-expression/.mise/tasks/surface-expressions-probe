@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+BLENDER_BIN="${BLENDER_BIN:-blender}"
+"$BLENDER_BIN" --background --python-exit-code 1 --python scripts/build_surface_expressions.py
+STUDY_SUFFIX=-repeat "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/build_surface_expressions.py
+LID_NORMALS=source "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/build_surface_expressions.py
+"$BLENDER_BIN" --background --python-exit-code 1 --python scripts/check_surface_expressions.py
+node scripts/verify_surface_expressions.mjs
