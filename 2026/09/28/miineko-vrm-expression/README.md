@@ -2,6 +2,11 @@
 
 ## Current result — 2026-09-29
 
+**Current verification: [whole-body motion](BODY_MOTION.md).** The accepted model
+is unchanged. Large joint sweeps and a retargeted dance expose arm/head
+interpenetration and ribbon folding that need review before further polish.
+The viewer, video and contact sheet make each sampled pose reproducible.
+
 **Latest accepted update: [blink-aligned](BLINK_ALIGNED.md).** The owner accepted
 the upper-led, thicker ordinary blink on 2026-09-29. A matching blend/VRM snapshot
 is saved in the private assets repository under `miineko/tripo/v1/`; it is a
@@ -18,7 +23,8 @@ expressions; it is not a production-complete avatar.
 | --- | --- | --- |
 | Head, nose and normal face | Retain the pink head and protruding nose; fit black eyes, W and vertical mouth line to the surface without thinning their strokes. | [MOUTH_FLUSH.md](MOUTH_FLUSH.md) |
 | Mouth | Connected red interior and lower outline; five vowels on one fixed surface. Small-opening response still needs polish. | [CONNECTED_VOWELS.md](CONNECTED_VOWELS.md) |
-| Blink | Shared-onset, roughly 7:3 closure and thicker shallow line; owner accepted. | [BLINK_ALIGNED.md](BLINK_ALIGNED.md) |
+| Blink | Shared-onset, roughly 7:3 closure and thicker shallow line; owner accepted. | [BODY_MOTION.md](BODY_MOTION.md) | Whole-body checks, dance playback/recording, contact sheet and identified deformation risks. |
+| [BLINK_ALIGNED.md](BLINK_ALIGNED.md) |
 | Happy | Shared upper/lower onset, approximately 7:3 travel; white highlight stays until covered. Accepted minimum quality. | [BALANCED_SMILE.md](BALANCED_SMILE.md) |
 | Angry / relaxed / sad | Angry accepted; former curved sad reassigned to relaxed; steeper straight-looking sad provisionally accepted. | [EMOTIONS.md](EMOTIONS.md) |
 | Surprised | Normal round eyes, OH mouth plus raised ears; provisionally accepted. Ears are independent of blink and mouth. | [SURPRISE_EARS.md](SURPRISE_EARS.md) |
@@ -68,8 +74,8 @@ historical routes. They are not the path to the accepted face.
 ## Remaining work
 
 The basic emotion directions and ordinary blink update have been reviewed.
-Next check transitions and
-how quickly the ears rise, then integrate the chosen driving behavior. Fine
+First address the ribbon deformation and arm/head interference found by
+whole-body testing. Then check transitions and how quickly the ears rise. Fine
 mouth/onset/audio tuning is a separate follow-up, not a reason to reopen the
 accepted face. Skin-color/perimeter seams and exact eye ratios remain unresolved.
 Gaze, SpringBone, full-body poses, target-runtime checks and a fresh end-to-end

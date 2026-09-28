@@ -1,0 +1,7 @@
+import puppeteer from 'puppeteer-core';
+import assert from 'node:assert/strict';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const browser=await puppeteer.launch({executablePath:process.env.CHROME_BIN||'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});
+try{const page=await browser.newPage();await page.setViewport({width:1440,height:1250});await page.goto((process.env.STUDY_URL||'http://127.0.0.1:52714')+'/body-review.html');await page.waitForFunction(()=>document.querySelectorAll('img').length===12&&[...document.images].every(i=>i.complete&&i.naturalWidth));await page.waitForFunction(()=>document.querySelector('video').readyState>=2);await page.screenshot({path:path.join(root,'artifacts/body-motion-review/contact-sheet.png'),fullPage:true});await page.waitForFunction(()=>document.querySelector('video').readyState>=1);assert.ok(await page.$eval('video',v=>v.duration>18));await page.select('#motion','squat');await page.select('#angle','90');await page.waitForFunction(()=>document.querySelectorAll('img').length===5&&[...document.images].every(i=>i.complete&&i.naturalWidth));await page.click('figure:nth-child(3) a');await page.waitForFunction(()=>window.ready);assert.ok(Math.abs(await page.evaluate(()=>bodyStudy.time)-1.5)<.001);console.log('Gallery, video metadata and exact-time link verified');}finally{await browser.close();}

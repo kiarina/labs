@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Inspect full-body deformation, render a dance video and deterministic frames"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+PYTHON_BIN="${COMPARE_PYTHON:-.venv/bin/python}"
+"$PYTHON_BIN" scripts/fetch_body_motion.py
+node scripts/verify_body_motion.mjs
+node scripts/export_body_motion.mjs
+"$PYTHON_BIN" scripts/inspect_body_weights.py
+ffmpeg -hide_banner -loglevel error -y -framerate 15 -i artifacts/body-motion-review/samba-frames/%05d.jpg -vf 'pad=ceil(iw/2)*2:ceil(ih/2)*2' -c:v libx264 -crf 20 -pix_fmt yuv420p -movflags +faststart artifacts/body-motion-review/samba-45.mp4
+ffprobe -v error -show_entries stream=codec_name,width,height,avg_frame_rate,nb_frames -show_entries format=duration,size -of json artifacts/body-motion-review/samba-45.mp4 > results/body-motion-video.json
