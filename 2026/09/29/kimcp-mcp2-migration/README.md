@@ -48,6 +48,9 @@ mise -C 2026/09/29/kimcp-mcp2-migration run kimcp-e2e             # kimcp 0.1.0 
 
 ## Answer
 
+この結果をもとに、kimcp 0.2.0（2026-09-29 公開）は LangChain を外して `mcp` 2.2 だけで作り直した。接続ごとに持ち主のタスクを置く形は
+`sdk/client.py` の `OwnedSession` と同じ（kimcp の `kimcp/core/mcp_client/_schemas/mcp_session.py`）。
+
 ### LangChain を外すなら、`mcp`（SDK）だけで足りる
 
 | | v2（LangChain） | sdk | fastmcp |
