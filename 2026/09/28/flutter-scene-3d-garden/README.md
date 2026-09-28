@@ -16,7 +16,8 @@
 
 - **5 つとも描けました。** 同じ Dart のコードで、箱庭・VRM・影・ラベル（Flutter の Widget を 3D の座標に重ねたもの）が出ます
 - **操作は、試した範囲では期待どおりに動きました。** iOS Simulator で 2 本指のピンチ・ひねり、1 本指ドラッグ、タップでの選択、Chrome でクリック・ホイール・ドラッグを
-  確かめました。Android の実機と Windows では手で触っていません（下の「未確認」）
+  確かめました。さらに、この lab の持ち主が iPad Air 4 と Pixel Fold（どちらも flutter_scene の master でビルドした 5 体の版）を手で触り、
+  「この方向性で実装を進められるレベルの出来」と評価しました（2026-09-29）。Windows と macOS は手で触っていません
 - **VRM 1.0 は、普通の glTF として読み込めました。** 手元の 5 体（VRoid のサンプル 4 体と、Tripo から作った 1 体）はどれも VRM 拡張を
   `extensionsUsed` にしか載せておらず、flutter_scene は警告を出して読み飛ばします。拡張の JSON は自分で GLB から読み、**glTF のノード番号と
   flutter_scene のノードが 1 対 1 で同じ順に並ぶ**ことを使って対応づけられました（名前も一致を確認）。骨で座る・寝る、morph でまばたき・口、
@@ -184,8 +185,8 @@ Pixel 6 では、インストールのたびに Google Play プロテクトの�
 
 ## 未確認の事項と制約
 
-- **Android の実機と Windows では、人の指やマウスで操作していません。** 入力の処理は全プラットフォームで同じ Dart のコード（`GestureDetector` の
-  scale と `Listener`）ですが、実機の 2 本指の挙動は iOS Simulator でしか見ていません。macOS はキーボード・マウスを手で試していません
+- **Windows と macOS は、人の手でマウス・キーボードを試していません。** 入力の処理は全プラットフォームで同じ Dart のコード（`GestureDetector` の
+  scale と `Listener`）です。実機の手での確認は iPad Air 4 と Pixel Fold の 1 人・短時間の印象で、操作ごとの記録は取っていません
 - 各条件 1 回ずつの計測です（Windows の 5 体・影ありだけ 2 回）。ばらつきは測っていません
 - 低価格帯の Android は測っていません。Android が遅い原因はエンジン側と推測しています（master で 2〜3 倍になったことが根拠）が、内訳は測っていません
 - メモリは macOS でしか測っていません。iPad・Pixel の上限は「落ちたかどうか」だけです
