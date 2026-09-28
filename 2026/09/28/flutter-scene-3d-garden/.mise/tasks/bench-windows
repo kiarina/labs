@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+#MISE description="Ship app/ to a Windows PC over ssh, build release per CONFIGS, run each as an interactive scheduled task, append to results/windows.jsonl"
+# The Windows runner is a GUI-subsystem app: stdout is not collectable and an
+# ssh session (session 0) cannot show windows. So the app runs as an
+# interactive scheduled task and writes its BENCH line to BENCH_OUT.
+set -euo pipefail
+: "${WIN_HOST:?set WIN_HOST, e.g. user@windows-pc}"
+WIN_DIR="${WIN_DIR:-C:\\Users\\$(echo "$WIN_HOST" | cut -d@ -f1)\\labtmp_scene}"
+CONFIGS="${CONFIGS:-5 true;10 true;20 true;20 false}"
+LAB="$(cd "$(dirname "$0")/../.." && pwd)"
+ssh_() { ssh -o LogLevel=ERROR "$WIN_HOST" "$@"; }
+tgz="$(mktemp).tgz"
+(cd "$LAB" && COPYFILE_DISABLE=1 tar czf "$tgz" --exclude app/build --exclude app/.dart_tool \
+  --exclude 'app/flutter_scene_generated/*' --exclude app/ios --exclude app/android --exclude app/macos app)
+ssh_ "if exist $WIN_DIR rmdir /s /q $WIN_DIR" || true
+ssh_ "mkdir $WIN_DIR"
+scp -q -o LogLevel=ERROR "$tgz" "$WIN_HOST:$(basename "$WIN_DIR")/app.tgz"
+ssh_ "cd $WIN_DIR && tar xzf app.tgz && cd app && flutter pub get >nul"
+IFS=';' read -ra runs <<< "$CONFIGS"
+for cfg in "${runs[@]}"; do
+  read -r n sh <<< "$cfg"
+  ssh_ "cd $WIN_DIR\\app && flutter build windows --release --dart-define=BENCH=true --dart-define=AVATARS=$n --dart-define=SHADOWS=$sh >$WIN_DIR\\build.log 2>&1"
+  cmd="$(mktemp)"
+  printf 'set BENCH_OUT=%s\\bench.json\r\n"%s\\app\\build\\windows\\x64\\runner\\Release\\scene_garden.exe"\r\n' "$WIN_DIR" "$WIN_DIR" > "$cmd"
+  scp -q -o LogLevel=ERROR "$cmd" "$WIN_HOST:$(basename "$WIN_DIR")/run.cmd"
+  ssh_ "del /q $WIN_DIR\\bench.json 2>nul & schtasks /create /tn SceneBench /tr $WIN_DIR\\run.cmd /sc once /st 23:59 /it /f >nul && schtasks /run /tn SceneBench >nul"
+  out=""
+  for _ in $(seq 1 120); do
+    out="$(ssh_ "if exist $WIN_DIR\\bench.json type $WIN_DIR\\bench.json")"
+    [ -n "$out" ] && break; sleep 5
+  done
+  ssh_ "taskkill /im scene_garden.exe /f >nul 2>&1 & schtasks /delete /tn SceneBench /f >nul" || true
+  echo "$out" | python3 -c "import json,sys; d=json.load(sys.stdin); d['machine']='${MACHINE:-unspecified}'; print(json.dumps(d))" | tee -a "$LAB/results/windows.jsonl"
+done
+ssh_ "rmdir /s /q $WIN_DIR"

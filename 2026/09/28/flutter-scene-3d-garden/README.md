@@ -154,11 +154,14 @@ mise run                                         # analyze
 MIINEKO_VRM=... VROID_DIR=... MAX_EDGE=1024 mise run prepare-vrm
 MACHINE="..." COUNTS="5 10 20" mise run bench-macos   # results/macos.jsonl に追記
 MACHINE="..." mise run bench-web                      # results/web.jsonl に追記
+MACHINE="..." DEVICE=<flutter の device id> RESULTS=ios mise run bench-device       # iOS / Android（profile）
+MACHINE="..." WIN_HOST=user@windows-pc mise run bench-windows                       # ssh で Windows へ送って計測
 cd app && flutter run --dart-define=TOUR=true    # 決まった順に視点と姿勢を切り替える（画面の確認用）
 ```
 
 `--dart-define` で変えられるもの: `AVATARS`（体数）、`SHADOWS`、`BENCH`、`TOUR`、`FREEZE`、`PIXEL_RATIO`、`AA`（`none` / `msaa` / `fxaa` など）、`ROOMS`。
-iOS・Android は `flutter run --profile -d <device> --dart-define=BENCH=true ...` で、ログの `BENCH {...}` を読みました。Windows は GUI アプリの標準出力を
+iOS・Android は `flutter run --profile -d <device> --dart-define=BENCH=true ...` で、ログの `BENCH {...}` を読みました。
+`bench-device` と `bench-windows` は、計測に使った手元のスクリプトを後から task にまとめたものです（2026-09-28 の数値はまとめる前の同じ手順で測った）。Windows は GUI アプリの標準出力を
 回収できないため、結果を `BENCH_OUT`（既定は一時ディレクトリの `scene_garden_bench.json`）にも書きます。
 Pixel 6 では、インストールのたびに Google Play プロテクトの「アプリを送信しますか」が出てインストールが止まるので、「送信しない」を押しています。
 

@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+#MISE description="flutter run --profile on a phone/tablet (DEVICE) per CONFIGS and append the BENCH line to results/<RESULTS>.jsonl"
+# iOS and Android print the BENCH line through `flutter run`. On Android,
+# every install of a non-Play APK may raise a Play Protect prompt that blocks
+# the install until it is answered on the device.
+set -euo pipefail
+: "${DEVICE:?set DEVICE to a flutter device id}"
+: "${RESULTS:?set RESULTS to ios or android}"
+CONFIGS="${CONFIGS:-5 true;5 false;10 false;10 true;20 false}"
+LAB="$(cd "$(dirname "$0")/../.." && pwd)"
+cd "$LAB/app"
+IFS=';' read -ra runs <<< "$CONFIGS"
+for cfg in "${runs[@]}"; do
+  read -r n sh extra <<< "$cfg"
+  log="$(mktemp)"
+  # shellcheck disable=SC2086
+  flutter run --profile -d "$DEVICE" --dart-define=BENCH=true --dart-define=AVATARS="$n" \
+    --dart-define=SHADOWS="$sh" ${extra:-} >"$log" 2>&1 </dev/null &
+  pid=$!
+  for _ in $(seq 1 900); do
+    grep -qE 'BENCH \{|Error running|Lost connection|signal 9' "$log" && break; sleep 1
+  done
+  sleep 2; kill "$pid" 2>/dev/null || true; wait "$pid" 2>/dev/null || true
+  line="$(grep -o 'BENCH {.*' "$log" | head -1 | sed 's/^BENCH //')"
+  if [ -z "$line" ]; then
+    line="{\"avatars\": $n, \"shadows\": $sh, \"error\": \"$(grep -m1 -oE 'signal 9|Error running[^"]*|Lost connection' "$log")\"}"
+  fi
+  echo "$line" | python3 -c "import json,sys; d=json.load(sys.stdin); d['machine']='${MACHINE:-unspecified}'; print(json.dumps(d))" | tee -a "$LAB/results/$RESULTS.jsonl"
+  rm -f "$log"
+done
