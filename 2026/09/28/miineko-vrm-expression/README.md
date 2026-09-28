@@ -22,10 +22,10 @@ approved that direction. A [five-vowel extension](CONNECTED_VOWELS.md) now adds
 wide/shallow and narrow/round openings plus continuous transitions. Arbitrary
 speech-to-vowel inference is still unimplemented.
 
-**Start with [EMOTIONS.md](EMOTIONS.md)** for the current angry/sad candidates.
-The owner accepted the synchronized smile as sufficient to move on. Its appearance
-and existing expressions are preserved; the eye-band angle and curvature provide
-the next emotion comparison. Skin-color/perimeter artifacts and fine tuning remain
+**Start with [EMOTIONS.md](EMOTIONS.md)** for the current relaxed/sad comparison.
+The owner accepted the synchronized smile and angry direction, and identified
+the preceding curved sad eyes as relaxed. The current sad candidate is straighter
+while retaining raised inner corners; happy and angry are preserved. Skin-color/perimeter artifacts and fine tuning remain
 open, so this is not a production-complete avatar.
 [BASELINE.md](BASELINE.md) records the earlier accepted artifact,
 prerequisites, ordered rebuild recipe, limitations, and lessons to carry forward.
@@ -36,7 +36,7 @@ FBX/textures, blends, VRMs and screenshots are private and excluded from Git.
 
 | Document | Purpose |
 | --- | --- |
-| [EMOTIONS.md](EMOTIONS.md) | Current angry/sad candidates; accepted smile preserved, tilt and blending evaluated. |
+| [EMOTIONS.md](EMOTIONS.md) | Current curved-relaxed/straighter-sad split; accepted happy and angry preserved. |
 | [BALANCED_SMILE.md](BALANCED_SMILE.md) | Accepted minimum-quality smile baseline; shared onset, upper/lower ratio, remaining limits. |
 | [CRESCENT_SMILE.md](CRESCENT_SMILE.md) | Earlier broad smile; owner found the lower-lid lift and darkened highlight frightening. |
 | [ROUNDED_SMILE.md](ROUNDED_SMILE.md) | Earlier short-arc candidate; 100% was rejected as too thin and mismatched to eye size. |
@@ -64,7 +64,7 @@ historical routes. They are not the path to the accepted face.
 ## Remaining work
 
 The revised normal face, connected AA direction and synchronized smile are accepted
-as working baselines. Evaluate angry/sad next; mouth/onset/audio polish is deferred by owner request.
+as working baselines, as is the angry direction. Evaluate the new sad/relaxed split next; mouth/onset/audio polish is deferred by owner request.
 Then integrate speech, gaze and SpringBone. Then
 validate the combined result in the intended runtime and review export metadata
 before distribution. Binding reimport, screenshot checks and owner approval of

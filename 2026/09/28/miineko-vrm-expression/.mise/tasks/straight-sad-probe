@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+BLENDER_BIN="${BLENDER_BIN:-blender}"
+"$BLENDER_BIN" --background --python-exit-code 1 --python scripts/refine_sad_expression.py
+STUDY_SUFFIX=-repeat "$BLENDER_BIN" --background --python-exit-code 1 --python scripts/refine_sad_expression.py
+"$BLENDER_BIN" --background --python-exit-code 1 --python scripts/check_straight_sad.py
+node scripts/verify_straight_sad.mjs
+"${COMPARE_PYTHON:-python3}" scripts/measure_straight_sad.py

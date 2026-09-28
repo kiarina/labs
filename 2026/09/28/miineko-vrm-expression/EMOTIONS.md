@@ -1,105 +1,112 @@
-# Angry and sad directions from the accepted smile eyes
+# Separate relaxed curved eyes from straighter sad eyes
 
-## Direction and scope — 2026-09-29
+## Current owner feedback — 2026-09-29
 
-The owner judged `sync-smile` sufficient to move on, with possible later tuning
-of the 7:3 ratio. Its full-strength black eye shape and angle were suggested as
-a basis for angry and sad. This probe adds those two standard VRM presets while
-retaining the accepted smile as a reference. The new emotions are candidates,
-not yet owner-approved. Existing skin-color/perimeter artifacts remain deferred
-rather than being described as solved.
+The owner accepted the angry direction, with possible later angle refinement.
+The preceding sad expression read as **relaxed**, so it is reassigned to that
+preset without changing its appearance. For sadness, the owner requested raised
+inner corners with much less arc, referring to the sticker sheet's left column,
+sixth row. The current candidate is **`eye-emotions-straight`**. The new sad shape
+has not yet received owner feedback. Happy and angry remain accepted references.
 
-Open `expression-study.html?variant=emotions&angry=1&opening=0&angle=0`.
-**にっこり100% / 怒り100% / 悲しみ100%** select one expression directly. Sliders
-allow intermediate strengths and mixtures. **表情をゆっくり切替** transitions
-between neutral, happy, angry, sad and neutral. Mouth controls are independent.
-The reference model is still available under **基準：にっこり**.
+Open `expression-study.html?variant=straight-sad&sad=1&opening=0&angle=0`.
+The four 100% buttons select happy, angry, sad or relaxed individually. Sliders
+allow intermediate strengths and mixtures. The slow cycle includes all four
+emotions. Mouth control is independent. The previous `eye-emotions` model remains
+available as a comparison, including its former upper-lid-only relaxed expression.
 
-- Angry: the inner eye corner is lower than the outer corner.
-- Sad: the inner eye corner is higher than the outer corner.
+## Current change and constraints
 
-The full bands keep the smile's central vertical gap; their curvature is reduced
-and their slopes are mirrored between eyes. No eyebrows, tear marks, mouth
-frowns, geometry replacement or highlight darkening are added in this step.
-Those are not needed to test the owner's shape/angle hypothesis.
+`scripts/refine_sad_expression.py` reads `eye-emotions` and copies its former
+`sad` preset **exactly** into `relaxed`. It then lowers the sad curve coefficient
+from .024 to .008, retaining the ±.28 central slope, full central band gap, and
+raised inner corners. This is a substantially straighter appearance, not a claim
+of mathematically zero curvature. The existing parabolic reveal material is
+reused; angle and center compensation are recalculated for the lower curvature.
 
-## Construction
+Only the `sad` and `relaxed` JSON preset objects change in the exported VRM.
+The binary chunk, all other JSON fields, geometry, textures, happy, angry,
+blinking and mouth bindings remain unchanged. The matching new binds are saved
+to a copy of the authoring blend. No highlight darkening, new meshes, tear marks,
+eyebrows, or mouth frowns are added. Existing skin-color/perimeter artifacts remain
+visible and are still deferred rather than being described as fixed.
 
-`scripts/add_eye_emotions.py` reads the accepted `sync-smile` VRM and blend. The
-VRM is derived by replacing only the previously empty `angry` and `sad` preset
-objects in its JSON chunk. The binary chunk and all other JSON fields, including
-existing expressions, are preserved. This avoids re-export drift in a model whose
-smile was already evaluated. The same new binds are written into a copy of the
-authoring blend. Do not treat GUI export of that blend as identical to the
-validated VRM; the preceding export patches still apply.
+The old relaxed eye was a half-lid expression. It is preserved in the previous
+model, not deleted from the experiment history. Current relaxed means the curved
+closed-eye shape that the owner identified as relaxed.
 
-Both expressions reuse the four fixed pink lids. The two optional upper-ink binds
-remain inactive, avoiding a second line. There are no new meshes, images, morphs
-or color binds. Standard texture-transform binds translate and scale the existing
-parabolic reveal texture. The source highlight remains visible until covered.
+## Shared construction and driver contract
 
-For local eye coordinate `x`, radius `r=.104`, base rise `k0=.004`, U scale `s`
-and translated coordinate `q`, the edge contributes `-k0*(s*x/r+q)^2`.
-Using `k=.024`, `s=sqrt(k/k0)`, desired slope `m=±.28`, and
-`q=-m*r/(2*k0*s)` gives a flatter tilted band. V translation compensates the
-constant `k0*q^2` term so the full-strength central upper/lower positions stay
-those of the accepted smile. Angry uses positive m for source-left and negative
-m for source-right; sad reverses them. Front-view raster checks verify the
-intended screen-space directions rather than assuming the coordinate signs.
+The original `scripts/add_eye_emotions.py` added the first angry/sad directions to
+the accepted `sync-smile` VRM, replacing only their empty preset objects. That
+step and its artifacts remain the input to the current refinement. The accepted
+smile stays unchanged throughout both stages.
 
-This translation is not a rigid rotation of the whole original eye. It changes
-the visible band on the same face surface. At partial strength, interpolation of
-the translated parabola creates a small nonlinear center shift, up to about
-.0022 model units for this configuration. Therefore the smile's exact 7:3/onset
-measurements are not automatically claims about angry/sad. Their intermediate
-appearance must be evaluated separately.
+The four fixed pink lids use a parabolic reveal texture. For local eye coordinate
+`x`, radius `r=.104`, base rise `k0=.004`, scale `s`, and translation `q`, the edge
+contributes `-k0*(s*x/r+q)^2`. Choosing `s=sqrt(k/k0)` and
+`q=-m*r/(2*k0*s)` supplies slope `m`. V compensation removes the constant
+`k0*q^2` at full strength. Angry has lower inner corners; relaxed and sad have
+higher inner corners. Their mirrored slopes are checked in front-view images.
+The optional upper-ink binds remain inactive to avoid a duplicated line.
 
-## Driver contract
+This is not rigid rotation of the whole eye. At partial strength the translated
+parabola has a small nonlinear center shift. Reducing k increases that effect:
+for the new sad parameters its maximum is approximately .0066 model units,
+compared with .0022 for the preceding .024-rise shape. The existing smile's exact
+onset/7:3 measurements must not be attributed automatically to these emotions.
+Intermediate appearance still needs artistic evaluation.
 
-The viewer normalizes happy/angry/sad if their sum exceeds one, multiplies them
-by `(1-blink)`, and gives relaxed the remaining emotion contribution. Blink
-retains its own weight. All new overrides are `none`; mouth is independent.
-This keeps the combined eye contribution bounded and preserves the old
-happy/relaxed/blink behavior when angry and sad are zero. Other consumers must
-respect the same normalization contract. A shared material supplies one blended
-band; the implementation does not stack independent angry/sad drawing layers.
+The viewer normalizes happy/angry/sad when their sum exceeds one and multiplies
+them by `(1-blink)`. Relaxed receives the remaining emotion contribution; blink
+retains its own weight. This existing priority is unchanged, so relaxed is not
+weighted symmetrically with the other three when sliders are combined. The
+100% buttons avoid ambiguity for single-expression comparison. Other consumers
+must implement the same driver contract. New presets use `override*=none`.
 
-## Reproduce and evidence
+## Reproduce
 
-Prepare the pinned environment and accepted source following
-[BASELINE.md](BASELINE.md), [CONNECTED_VOWELS.md](CONNECTED_VOWELS.md), and
-[BALANCED_SMILE.md](BALANCED_SMILE.md).
+Use the pinned tools and source chain in [BASELINE.md](BASELINE.md),
+[CONNECTED_VOWELS.md](CONNECTED_VOWELS.md), and [BALANCED_SMILE.md](BALANCED_SMILE.md).
+Prepare the original `eye-emotions` reference first if it is absent:
 
 ```sh
 BLENDER_BIN=/path/to/Blender COMPARE_PYTHON=.venv/bin/python mise run eye-emotions-probe
+BLENDER_BIN=/path/to/Blender COMPARE_PYTHON=.venv/bin/python mise run straight-sad-probe
 ```
 
-Outputs are `artifacts/eye-emotions` and `-repeat`, with private captures in
-`artifacts/eye-emotions-review`. Existing models remain untouched.
+The current task writes `artifacts/eye-emotions-straight` and `-repeat`, with
+captures in `artifacts/straight-sad-review`. The prior task writes its separate
+`eye-emotions` folders. Private binary/bitmap artifacts remain ignored. GUI
+re-export of the blend is not the validated runtime artifact; previous export
+patches remain applicable.
 
-- [Structure/import](results/eye-emotions-structure.json): binary chunk and every
-  JSON field other than angry/sad are identical to the source. Saved and imported
-  authoring binds agree; each new preset has six texture binds and no morph/color
-  binds. Separate builds yield identical VRM bytes.
-- [Runtime](results/eye-emotions-evaluation.json): 40 existing-expression/vowel
-  comparisons match the accepted reference framebuffer exactly; 120 new
-  expression/strength/mouth/view states, 81 normalized mixtures, one-click
-  selection, live transitions, reset, and 1280/600/390 px layouts are checked.
-- [Shape](results/eye-emotions-shape.json): both angry inner corners are lower and
-  both sad inner corners higher in the fixed frontal sample. The largest dark
-  band has the expected slope sign and no bright-white highlight at full strength.
-  This is geometry/raster evidence, not automatic recognition of an emotion.
+## Current evidence
 
-Source SHA-256:
-`732548953ffc6076c32cab22991c24a8be4c43991831f538a7fea88aef28e3ca`.
-The full output hash is recorded in the structure report. The accepted smile's
-known oblique neutral residuals and lid-color boundaries are inherited, not fixed
-by this expression-only change.
+- [Structure/import](results/straight-sad-structure.json): binary chunk and JSON
+  outside sad/relaxed are unchanged. Relaxed equals the former sad preset exactly.
+  Saved/imported binds agree; separate generated VRMs match byte-for-byte.
+- [Runtime](results/straight-sad-evaluation.json): 45 retained-expression/mouth
+  views match the prior model, and 20 new-relaxed views match its former sadness
+  at the same strength. 120 new sad/relaxed states, 81 mixtures, four one-click
+  presets, live cycle, reset and 1280/600/390 px layouts are checked.
+- [Shape](results/straight-sad-shape.json): the front-view largest eye bands retain
+  raised inner corners. Estimated rise drops from about .024 to .008; deviation
+  from a fitted straight line in the central sample falls from approximately
+  3.1–3.2 px to 1.3–1.4 px. Bright-white count is zero at both full endpoints.
+  These are raster checks, not proof that the sad expression conveys the intended
+  feeling or that every view is free of the inherited edge artifacts.
+
+The preceding stage's observations remain in
+[structure](results/eye-emotions-structure.json),
+[runtime](results/eye-emotions-evaluation.json), and
+[shape](results/eye-emotions-shape.json). They apply to the earlier two tilted
+presets, not the new sad/relaxed meaning.
 
 ## Next work
 
-Evaluate whether the two directions read as Miineko's angry and sad expressions,
-including intermediate strengths and mouth combinations. Preserve the accepted
-smile when refining them. Fine changes to 7:3, source-skin seams and mouth/audio
-response can follow the basic expression set. Gaze, springs, full-body pose
-checks, target-runtime checks and end-to-end reproduction remain outstanding.
+Evaluate whether the straighter raised-inner-corner eyes read as sadness and
+remain distinct from relaxed throughout the transition. Keep accepted happy and
+angry intact. Angle refinements, 7:3 tuning, skin-color seams and mouth/audio
+response can follow the basic expression set. Gaze, springs, full-body poses,
+target-runtime checks and end-to-end generation remain open.
