@@ -131,12 +131,40 @@ fork の上では、シェーダー側の回避も試しました（`flutter_sce
 外す、カスケードを 2 段に減らす、PCF の 17 回ループを消す、の機能を削るものだけでした。ループの回数や終わり方、タップの選び方、テクスチャの
 読み方、精度の指定、カスケードを先に選んで標本化を 1〜2 回にする構造の変更は、どれも落ちたままです。
 
+## 6. fast math を切ってアプリを動かす
+
+Flutter GPU のシェーダーは Impeller が `newLibraryWithSource:options:` でコンパイルするので、アプリからは fast math を切れません。
+そこで、起動時に差し込むライブラリ（`interpose/safemath.m`）で、そのときの `MTLCompileOptions` を `mathMode = .safe` に書き換えました。
+同じライブラリが、1 秒あたりのコマンドバッファの数と GPU の実行時間の合計を 2 秒ごとに書き出します（Flutter の macOS は `CAMetalLayer` の
+drawable を使わないので、フレーム数はコマンドバッファで見ます）。
+
+```sh
+clang -dynamiclib -fobjc-arc -framework Foundation -framework Metal -framework QuartzCore \
+  interpose/safemath.m -o interpose/safemath.dylib
+SAFEMATH=1 DYLD_INSERT_LIBRARIES=$PWD/interpose/safemath.dylib <app>/Contents/MacOS/<binary>
+```
+
+flutter_vrm の example（Seed-san、既定の画面、影あり）を、M4 Max・macOS 27.0.1 の release ビルドで動かしました。自分でビルドした
+ad-hoc 署名のアプリなので差し込めます。3 つの条件を交互に 2 周、各 26 秒動かし、最初の 8 秒を除いた平均です。
+
+| 条件 | 1 周目 GPU ms/秒 | 2 周目 GPU ms/秒 | 結果 |
+| --- | ---: | ---: | --- |
+| 0.23、fast math（既定） | 35.74 | 43.58 | 動く |
+| 0.23、safe | 40.84 | 48.78 | 動く |
+| master `cff220e`、safe | 51.94 | 52.42 | **動く**（既定の fast math では起動直後に落ちる） |
+
+- **master でも fast math を切れば落ちずに動き、見た目も 0.23 と変わりませんでした。** コンパイルされた 13 個のライブラリがすべて safe で通っています
+- どの条件もコマンドバッファは毎秒 600（120 Hz × 5）で、画面の更新は落ちていません
+- 周ごとに全体が揺れました（画面共有のアプリが動いていた）。同じ周の中で比べると、0.23 で safe にした分の GPU 時間は +5.1 と +5.2 ms/秒
+  （+14% と +12%）で、1 フレームあたり約 0.04 ms です。この場面は軽い（1 体、GPU は 4〜5% しか使っていない）ので、重い場面での差は測っていません
+- master と 0.23 の差はシェーダーそのものが違うので、fast math の効果とは分けられません（master の fast math は落ちるため測れない）
+
 ## わかったこと
 
 - flutter_scene の `master`（2026-09-16 の `1fa830b2` 以降）を使うアプリは、M4 Max の Mac で、影ありの標準の材質を描いた時点で落ちる。
   0.24.0 がこのまま出ると、0.24.0 でも同じになる
 - 原因は Apple の M4 世代の Metal コンパイラ（fast math の最適化）で、flutter_scene のシェーダーに誤りがあるわけではない
-- 回避は fast math を切ることだが、それは Impeller の設定になる。シェーダーの書き方で安定して避ける方法は見つからなかった
+- 回避は fast math を切ることで、アプリも動く（GPU 時間は 1 割あまり増える）。ただしそれは Impeller の設定になる。シェーダーの書き方で安定して避ける方法は見つからなかった
   （最小まで削っても 1,528 行が残り、どこを消しても落ちなくなる）
 
 ## 次にやること
