@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Remove copied circular discoloration from the pink lid colors"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+: "${BLENDER_BIN:?Set BLENDER_BIN to the Blender executable}"
+"$BLENDER_BIN" -b --python-exit-code 1 --python scripts/refine_lid_rim.py
+STUDY_SUFFIX=-repeat "$BLENDER_BIN" -b --python-exit-code 1 --python scripts/refine_lid_rim.py
+"$BLENDER_BIN" -b --python-exit-code 1 --python scripts/check_lid_rim.py
+node scripts/verify_lid_rim.mjs
+"${COMPARE_PYTHON:-.venv/bin/python}" scripts/measure_lid_rim.py

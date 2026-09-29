@@ -2,10 +2,11 @@
 
 ## Current result — 2026-09-29
 
-**Current refinement: [right-eye highlight shading](HIGHLIGHT_CLEAN.md).** The
-owner found no large failure in the dance and moved to small quality improvements.
-The first candidate repairs the dark highlight interior on the character-right
-(screen-left) eye; its shape and all images are retained.
+**Current refinement: [closed-eye circular traces](LID_RIM_CLEAN.md).** The owner
+requested removal of the dark ring around the original eye position at blink .86.
+The new candidate changes only the pink lids' vertex RGB, retaining eye-line
+geometry and alpha. It continues from the [highlight repair](HIGHLIGHT_CLEAN.md).
+Skin-color joins and oblique slivers remain separate work.
 [Whole-body motion](BODY_MOTION.md) records the still-open arm/head interference
 and ribbon folding, with replayable timestamps, video and a contact sheet.
 
@@ -44,6 +45,7 @@ from Git; pulling this repository alone does not provide the model.
 
 | Document | Purpose |
 | --- | --- |
+| [LID_RIM_CLEAN.md](LID_RIM_CLEAN.md) | Current circular dark-trace cleanup on closed lids; cause, RGB-only fix, remaining seams. |
 | [HIGHLIGHT_CLEAN.md](HIGHLIGHT_CLEAN.md) | Current local highlight-normal cleanup, diagnostic sequence and verification limits; pending review. |
 | [BODY_MOTION.md](BODY_MOTION.md) | Whole-body checks, dance playback/recording, contact sheet and identified deformation risks. |
 | [BLINK_ALIGNED.md](BLINK_ALIGNED.md) | Current ordinary-blink correction; movement, thickness and one-shot comparison. |
@@ -77,7 +79,7 @@ historical routes. They are not the path to the accepted face.
 ## Remaining work
 
 The basic emotion directions and ordinary blink update have been reviewed.
-Continue the owner-directed local visual refinements, starting with the
+Continue the owner-directed local visual refinements, now cleaning the closed-eye rim after the
 highlight. Ribbon deformation and arm/head interference from whole-body testing
 remain open, along with transitions and ear reaction timing. Fine
 mouth/onset/audio tuning is a separate follow-up, not a reason to reopen the
