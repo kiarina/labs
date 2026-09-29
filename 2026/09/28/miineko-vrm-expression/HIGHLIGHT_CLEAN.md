@@ -73,7 +73,7 @@ not a per-pixel masking operation.
   tolerance rather than relying on list indices or float32/float64 tuple equality.
 - Keep the earlier `blink-aligned` snapshot as a historical reference.
   Documentation requests and viewer navigation alone are not approval or a request
-  to overwrite `assets/miineko/tripo/v1/`.
+  to overwrite the saved snapshot.
 
 ## Reproduce and evidence
 

@@ -3,13 +3,14 @@
 ## Current result — 2026-09-29
 
 **Version 1 is fixed.** On 2026-09-29 the owner accepted `lid-envelope` as the
-version 1 checkpoint. Its delivery files are `miineko/blender/v1/miineko.blend` and
-`miineko/blender/v1/miineko.vrm` in the private assets repository.
+version 1 checkpoint. Its delivery files are `miineko/vrm/miineko.blend` and
+`miineko/vrm/miineko.vrm` in the private assets repository.
 
 Start with [VERSION_1.md](VERSION_1.md) for the exact artifact identity, complete
 stage lineage, driving contract, lessons and verification limits. Later work
 must preserve this checkpoint and use separate experimental outputs. The earlier
-`blink-aligned` snapshot under `miineko/tripo/v1/` remains a historical reference.
+`blink-aligned` snapshot remains a historical reference in the assets history
+(`miineko/tripo/v1/` at commit `6d75075`).
 
 | Part | Current decision | Canonical detail |
 | --- | --- | --- |

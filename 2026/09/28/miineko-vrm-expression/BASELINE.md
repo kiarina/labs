@@ -33,7 +33,8 @@ it does not mean the VRM contains only blinking.
 
 The private source is the Tripo Multi-view → H3.1 HD Model → Quad Smart Mesh
 Retopo (10,000 target) → VRM 1.0 Humanoid FBX and accompanying textures. It is
-owned by `kiarina/assets`, under `miineko/tripo/v1/` (source commit `280b18f`).
+kept in the `kiarina/assets` history under `miineko/tripo/v1/` (added in `280b18f`,
+last present in `6d75075`; the current assets tree holds finished files only).
 FBX SHA-256: `1902b3712bc8de441ade04ff951123e65bd5b8d243c498fdb3bf433dfa53297b`.
 
 Tested on macOS arm64: Blender 5.1.2, VRM Add-on 4.7.2, Python 3.13.12,

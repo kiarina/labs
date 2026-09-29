@@ -7,12 +7,13 @@ checkpoint for subsequent use and comparison, not a request to keep refining the
 same files in place. The accepted output includes the earlier highlight and
 closed-lid color repairs. Those changes are no longer pending candidate review.
 
-Private distribution files are `miineko/blender/v1/miineko.blend` and `miineko/blender/v1/miineko.vrm`
+Private distribution files are `miineko/vrm/miineko.blend` and `miineko/vrm/miineko.vrm`
 in the assets repository. They are byte-identical copies of this lab's
-`artifacts/lid-envelope/continuous-blink.{blend,vrm}`. The adjacent assets README
-and `metadata.json` own the snapshot's file sizes, hashes and storage provenance.
-The earlier `miineko/tripo/v1/miineko-blink-aligned.*` files remain historical
-checkpoints, not version 1's current delivery paths.
+`artifacts/lid-envelope/continuous-blink.{blend,vrm}`. The assets repository keeps
+only the current finished files and overwrites them when the owner fixes a new
+version, so this file owns the hashes and lineage below. The earlier
+`miineko/tripo/v1/miineko-blink-aligned.*` files remain historical checkpoints in
+the assets history (commit `6d75075`), not current delivery paths.
 
 | Artifact | SHA-256 |
 | --- | --- |

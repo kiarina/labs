@@ -77,7 +77,8 @@ timing, broader transitions and mouth/audio polish follow this correction.
 
 At the owner’s request, byte-identical copies of this stage’s blend and VRM are
 saved in the private assets repository as
-`miineko/tripo/v1/miineko-blink-aligned.{blend,vrm}`. The adjacent README records
-hashes and provenance. All file-backed images in the blend are packed. This
+`miineko/tripo/v1/miineko-blink-aligned.{blend,vrm}`. Those files were removed when
+assets became a finished-files-only store; they and the adjacent README with
+hashes and provenance remain at assets commit `6d75075`. All file-backed images in the blend are packed. This
 snapshot does not automatically track later lab edits; use the lab recipe for
 rebuilding rather than treating a GUI export as equivalent to the saved VRM.
