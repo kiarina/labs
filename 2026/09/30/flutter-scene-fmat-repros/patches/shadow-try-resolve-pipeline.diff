@@ -1,0 +1,31 @@
+diff --git a/packages/flutter_scene/lib/src/render/shadow_encoder.dart b/packages/flutter_scene/lib/src/render/shadow_encoder.dart
+index 4ce5988a..d50c74b6 100644
+--- a/packages/flutter_scene/lib/src/render/shadow_encoder.dart
++++ b/packages/flutter_scene/lib/src/render/shadow_encoder.dart
+@@ -8,7 +8,7 @@ import 'package:flutter_scene/src/render/instance_packing.dart';
+ import 'package:vector_math/vector_math.dart';
+ 
+ import 'package:flutter_scene/src/render/render_scene.dart';
+-import 'package:flutter_scene/src/scene_encoder.dart' show resolvePipeline;
++import 'package:flutter_scene/src/scene_encoder.dart' show tryResolvePipeline;
+ import 'package:flutter_scene/src/shaders.dart';
+ import 'package:flutter_scene/src/render/frame_transients.dart';
+ 
+@@ -234,13 +234,16 @@ class ShadowEncoder {
+         ? item.material.instanceAttributes
+         : null;
+     final attributeFloats = instanceSchema?.floatCount ?? 0;
+-    final pipeline = resolvePipeline(
++    final pipeline = tryResolvePipeline(
+       activeVertex,
+       fragmentShader,
+       vertexLayout:
+           depthVertex?.layout ??
+           geometry.instancedVertexLayoutFor(instanceSchema),
++      debugContext: () => 'shadow: ${item.material.runtimeType} on '
++          '${geometry.runtimeType}',
+     );
++    if (pipeline == null) return;
+     if (!identical(_boundPipeline, pipeline)) {
+       _renderPass.clearBindings();
+       _renderPass.bindPipeline(pipeline);

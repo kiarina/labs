@@ -1,0 +1,27 @@
+// Reads a custom per-vertex attribute `phase` and shows what the vertex stage
+// received: green = 0.0, blue = 1.0, red = anything else. The vertex stage
+// also pushes the surface out along its normal by 0.05 * phase, so garbage
+// values show up as exploded geometry too.
+material {
+  name: "AttrProbe",
+  shading_model: unlit,
+  attributes: [ { type: float, name: phase } ],
+  varyings: [ { type: float, name: v_phase } ],
+}
+
+vertex {
+  void Vertex(inout VertexInputs vertex) {
+    v_phase = phase;
+    vertex.world_position += normalize(vertex.world_normal) * 0.05 * phase;
+  }
+}
+
+fragment {
+  void Surface(inout MaterialInputs material) {
+    vec3 c = vec3(1.0, 0.0, 0.0);
+    if (abs(v_phase) < 0.001) c = vec3(0.0, 1.0, 0.0);
+    else if (abs(v_phase - 1.0) < 0.001) c = vec3(0.0, 0.2, 1.0);
+    material.base_color = vec4(c, 1.0);
+    PrepareMaterial(material);
+  }
+}

@@ -1,0 +1,16 @@
+// Samples an unset sampler declared with `hint: default_white` and outputs it
+// unchanged, so the surface shows the placeholder the engine bound.
+material {
+  name: "HintWhite",
+  shading_model: unlit,
+  parameters: [
+    { type: sampler2d, name: probe_texture, hint: default_white },
+  ],
+}
+
+fragment {
+  void Surface(inout MaterialInputs material) {
+    material.base_color = vec4(texture(probe_texture, GetUV0()).rgb, 1.0);
+    PrepareMaterial(material);
+  }
+}
