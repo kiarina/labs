@@ -3,8 +3,8 @@
 ## Current result — 2026-09-29
 
 **Version 1 is fixed.** On 2026-09-29 the owner accepted `lid-envelope` as the
-version 1 checkpoint. Its delivery files are `miineko/miineko.blend` and
-`miineko/miineko.vrm` in the private assets repository.
+version 1 checkpoint. Its delivery files are `miineko/blender/v1/miineko.blend` and
+`miineko/blender/v1/miineko.vrm` in the private assets repository.
 
 Start with [VERSION_1.md](VERSION_1.md) for the exact artifact identity, complete
 stage lineage, driving contract, lessons and verification limits. Later work

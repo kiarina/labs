@@ -6,7 +6,7 @@ The owner found the frontal circular-trace cleanup improved, but supplied
 ±45° full-blink screenshots with small black/white fragments above the closed
 eye. `lid-envelope` addresses those gaps, building on [LID_RIM_CLEAN.md](LID_RIM_CLEAN.md).
 The owner accepted this result and fixed it as [version 1](VERSION_1.md).
-The final assets snapshot is `miineko/miineko.{blend,vrm}`.
+The final assets snapshot is `miineko/blender/v1/miineko.{blend,vrm}`.
 
 Open `expression-study.html?variant=lid-envelope&blink=1&opening=0&angle=-45`.
 The viewer now includes 15° increments through both profiles. Compare against
