@@ -21,7 +21,7 @@ M4 Max でも動きます。どのシェーダーで、flutter_scene のどの c
 
 ## 何が起きるか
 
-アプリは起動直後、最初のフレームを描くところで落ちます。
+アプリは起動直後、影ありの標準の材質を初めて描くフレームで落ちます（その材質のパイプラインを作るところ）。
 
 - Impeller のログ: `Could not create render pipeline for :Compilation failed due to an interrupted connection: XPC_ERROR_CONNECTION_INTERRUPTED. This error occurred after multiple retries.`
 - その直後にアプリが `impeller::PipelineDescriptor::GetPrimitiveType()` で segfault する（`RenderPass.drawIndexed` から。パイプラインが作れなかった）
@@ -127,9 +127,39 @@ python3 scripts/reduce_msl.py out/standard_26678127.metal out/reduced.metal --jo
 単純な量の問題でもありませんでした。通る版（カスケード 2 段）と影を外した版に、関係のないテクスチャの読み取りや演算を最大 512 個、
 末尾に足しても、`if` の中に最大 2,048 個入れて長く飛び越えさせても、落ちません。
 
-fork の上では、シェーダー側の回避も試しました（`flutter_scene_standard.frag` を書き換えて impellerc と probe に通す）。通ったのは、平行光源の影を
-外す、カスケードを 2 段に減らす、PCF の 17 回ループを消す、の機能を削るものだけでした。ループの回数や終わり方、タップの選び方、テクスチャの
-読み方、精度の指定、カスケードを先に選んで標本化を 1〜2 回にする構造の変更は、どれも落ちたままです。
+量を確かめる道具は `scripts/pad_msl.py` です（末尾に足す `end-sample`・`end-alu`、`if` の中に入れる `if-end`・`if-start`）。
+
+```sh
+python3 scripts/pad_msl.py <通る版>.metal out/padded.metal 2048 if-start && probe/probe out/padded.metal | tail -1
+```
+
+### シェーダー側で避けられるか
+
+flutter_scene の checkout（`26678127`）で `shaders/` を書き換え、`scripts/probe_standard.sh` を流しました。このスクリプトは checkout の今のファイルを
+そのまま impellerc に渡すので、commit していない書き換えでも試せます（出力は `out/standard_<HEAD>.metal` に上書き）。書き換えはすべて
+`material_shadow_sampling.glsl` の中です。
+
+| 書き換え | MSL の行数 | 結果 |
+| --- | ---: | --- |
+| なし | 8,758 | 落ちる |
+| 平行光源の影（`SampleShadow`）を空にする | 5,290 | **通る** |
+| スポットライトの影（`SampleSpotShadow`）を空にする | 8,584 | 落ちる |
+| 点光源の影（`SamplePointShadow`）を空にする | 8,514 | 落ちる |
+| カスケードを 2 段にする（`_TRY_CASCADE(2)`・`(3)` を消す） | 7,046 | **通る** |
+| カスケードを 3 段にする | 7,902 | 落ちる |
+| `SampleCascade` の PCF の 17 回ループを消す | 7,702 | **通る** |
+| PCSS（`filter_index` 2）の枝を消す | 7,766 | 落ちる |
+| bilinear（`filter_index` 3）の枝を消す | 8,414 | 落ちる |
+| 最後のカスケードの端のフェードを消す | 8,582 | 落ちる |
+| PCF のループを 16 回・`break` なし／8 回／12 回／`sample_count` を上限に | 8,718 ほか | 落ちる |
+| タップを Poisson だけ／Fixed だけ／`mix` をやめて選ぶ | 8,046〜8,814 | 落ちる |
+| `ShadowTap` の clamp・回転を外す、`textureLod`、`step` にする | 8,750 ほか | 落ちる |
+| 精度を highp にする（MSL は変わらない） | 8,758 | 落ちる |
+| カスケードを先に選び、`SampleCascade` を最大 2 回だけ呼ぶ | 7,986 | 落ちる |
+| 同じく 1 回だけ／`if` で囲まない／2 回をループで | 7,090〜7,952 | 落ちる |
+
+通ったのは、平行光源の影を外す・カスケードを減らす・PCF を消す、の**機能を削るものだけ**でした。行数が少ないほど通るわけでもありません
+（7,106 行の「1 回だけ」は落ち、7,702 行の「PCF なし」は通る）。
 
 ## 6. fast math を切ってアプリを動かす
 
@@ -159,11 +189,26 @@ ad-hoc 署名のアプリなので差し込めます。3 つの条件を交互�
   （+14% と +12%）で、1 フレームあたり約 0.04 ms です。この場面は軽い（1 体、GPU は 4〜5% しか使っていない）ので、重い場面での差は測っていません
 - master と 0.23 の差はシェーダーそのものが違うので、fast math の効果とは分けられません（master の fast math は落ちるため測れない）
 
+## 7. アプリに組み込むとき
+
+`DYLD_INSERT_LIBRARIES` は、SIP で守られたプログラム（`/usr/bin/env`、`nohup`、`#!/usr/bin/env bash` のスクリプト）を経由すると捨てられます。
+`flutter run` もスクリプトなので、外から付けてもアプリに届きません。ビルドした実行ファイルを直接起動するときだけ効きます
+（`nohup` を挟んで差し込めていなかったことに、ログに `[safemath]` が無いことで気づいた）。
+
+`flutter run` のまま M4 の Mac で動かしたいときは、アプリ側で差し替えます。macOS の Runner（`MainFlutterWindow.swift` の `awakeFromNib` の先頭、
+`FlutterViewController` を作る前）で、Metal デバイスのクラスの `newLibraryWithSource:options:error:` と
+`newLibraryWithSource:options:completionHandler:` を `method_setImplementation` で包み、渡された `MTLCompileOptions` の写しを
+`mathMode = .safe` にして元の実装へ渡します。普通の環境変数（`DYLD_` で始まらない）は SIP を通っても残るので、起動スクリプトが
+CPU 名（`sysctl -n machdep.cpu.brand_string` が `Apple M4` を含む）を見て変数を付け、アプリは debug ビルドでその変数があるときだけ差し替える、
+という分け方にすると、M1 では fast math のまま動きます。
+
 ## わかったこと
 
 - flutter_scene の `master`（2026-09-16 の `1fa830b2` 以降）を使うアプリは、M4 Max の Mac で、影ありの標準の材質を描いた時点で落ちる。
   0.24.0 がこのまま出ると、0.24.0 でも同じになる
 - 原因は Apple の M4 世代の Metal コンパイラ（fast math の最適化）で、flutter_scene のシェーダーに誤りがあるわけではない
+- 平行光源の影（カスケード 4 段・PCF 17 回）は 0.23.0 から入っている。0.23 以降に点光源の影・多数のライトの扱い・平行投影のカメラなどが
+  足されてシェーダーが育ち、`1fa830b2` で不具合を踏む側に入ったと読める。`1fa830b2` の変更に誤りがあるわけではない
 - 回避は fast math を切ることで、アプリも動く（GPU 時間は 1 割あまり増える）。ただしそれは Impeller の設定になる。シェーダーの書き方で安定して避ける方法は見つからなかった
   （最小まで削っても 1,528 行が残り、どこを消しても落ちなくなる）
 
