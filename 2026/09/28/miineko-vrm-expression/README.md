@@ -17,17 +17,15 @@ manual copy, not a synchronized working directory.
 **The current working baseline is `artifacts/blink-aligned/continuous-blink.vrm`.**
 Its preceding accepted input is `surprise-ears`.
 The owner provisionally accepted the mouth-plus-raised-ear surprise on 2026-09-29.
-Start with [SURPRISE_EARS.md](SURPRISE_EARS.md) for its construction, source chain,
-reproduction and limitations. It contains the preceding accepted face and basic
+For the working baseline, start with [BLINK_ALIGNED.md](BLINK_ALIGNED.md); its
+input chain continues from [SURPRISE_EARS.md](SURPRISE_EARS.md). It contains the preceding accepted face and basic
 expressions; it is not a production-complete avatar.
 
 | Part | Current decision | Canonical detail |
 | --- | --- | --- |
 | Head, nose and normal face | Retain the pink head and protruding nose; fit black eyes, W and vertical mouth line to the surface without thinning their strokes. | [MOUTH_FLUSH.md](MOUTH_FLUSH.md) |
 | Mouth | Connected red interior and lower outline; five vowels on one fixed surface. Small-opening response still needs polish. | [CONNECTED_VOWELS.md](CONNECTED_VOWELS.md) |
-| Blink | Shared-onset, roughly 7:3 closure and thicker shallow line; owner accepted. | [HIGHLIGHT_CLEAN.md](HIGHLIGHT_CLEAN.md) | Current local highlight-normal cleanup and lighting diagnosis; pending review. |
-| [BODY_MOTION.md](BODY_MOTION.md) | Whole-body checks, dance playback/recording, contact sheet and identified deformation risks. |
-| [BLINK_ALIGNED.md](BLINK_ALIGNED.md) |
+| Blink | Shared-onset, roughly 7:3 closure and thicker shallow line; owner accepted. | [BLINK_ALIGNED.md](BLINK_ALIGNED.md) |
 | Happy | Shared upper/lower onset, approximately 7:3 travel; white highlight stays until covered. Accepted minimum quality. | [BALANCED_SMILE.md](BALANCED_SMILE.md) |
 | Angry / relaxed / sad | Angry accepted; former curved sad reassigned to relaxed; steeper straight-looking sad provisionally accepted. | [EMOTIONS.md](EMOTIONS.md) |
 | Surprised | Normal round eyes, OH mouth plus raised ears; provisionally accepted. Ears are independent of blink and mouth. | [SURPRISE_EARS.md](SURPRISE_EARS.md) |
@@ -46,6 +44,8 @@ from Git; pulling this repository alone does not provide the model.
 
 | Document | Purpose |
 | --- | --- |
+| [HIGHLIGHT_CLEAN.md](HIGHLIGHT_CLEAN.md) | Current local highlight-normal cleanup, diagnostic sequence and verification limits; pending review. |
+| [BODY_MOTION.md](BODY_MOTION.md) | Whole-body checks, dance playback/recording, contact sheet and identified deformation risks. |
 | [BLINK_ALIGNED.md](BLINK_ALIGNED.md) | Current ordinary-blink correction; movement, thickness and one-shot comparison. |
 | [SURPRISE_EARS.md](SURPRISE_EARS.md) | Provisionally accepted raised-ear surprise; source chain, original eyes, independent mouth and blink. |
 | [SURPRISE.md](SURPRISE.md) | Rejected eye-narrowing comparison and mouth-only reference. |

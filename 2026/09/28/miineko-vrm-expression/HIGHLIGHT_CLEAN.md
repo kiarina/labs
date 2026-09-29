@@ -12,14 +12,25 @@ Do not silently apply this repair to both eyes.
 
 Open `expression-study.html?variant=highlight-clean-r&opening=0&blink=0` and
 compare with `blink-aligned` (the saved accepted source). The source `.blend`,
-VRM and assets snapshot remain unchanged. Candidate approval is pending.
+VRM and assets snapshot remain unchanged. Candidate approval and the requested side remain unconfirmed. The later request
+to document findings does not change that status.
 
 ## Diagnosis and repair
 
-An unlit base-color diagnostic removed the interior dark patch, while disabling
-the normal texture alone left the coarse shading problem. This identifies a
-vertex-normal contribution; the mark is not simply dark paint in the base-color
-image. Preserve the actual artwork rather than generatively repainting it.
+A dark mark inside a white highlight is not sufficient evidence of dirty paint.
+Use fixed camera, pose, lights and renderer settings, and distinguish these tests:
+
+| Diagnostic | What changed | Observation and justified conclusion |
+| --- | --- | --- |
+| Original shaded material | Nothing | The upper highlight has a dark patch. This alone does not identify its cause. |
+| Normal texture disabled | Eye material normal-map strength only | The coarse patch remains. Disabling the normal map is insufficient. |
+| Unlit base color | Lighting/material shading removed, base-color image retained | The interior patch disappears. Shading contributes; this test alone does not distinguish vertex normals, roughness and other lighting inputs. |
+| Local vertex-normal repair | Selected highlight normals only; original maps and material retained | The prominent patch improves. This isolates a vertex-normal contribution without changing the artwork. |
+
+These diagnostics are temporary views, not production material changes. Do not
+leave the whole eye unlit or remove its normal map as an incidental cleanup.
+Do not infer that every dark rim, texture seam or future artifact has the same
+cause. The persistent fix below is deliberately narrower than the diagnostics.
 
 `scripts/refine_highlight_normals.py` samples the existing eye texture to select
 58 bright-highlight vertices. It fits a quadratic surface to 296 surrounding
@@ -42,6 +53,27 @@ The irregular outer contour/rim and inherited eyelid seams are separate work.
 Interpolation may affect pixels immediately adjacent to the white patch; it is
 not a per-pixel masking operation.
 
+## Verification and future-edit discipline
+
+- Keep a source/candidate pair and name the side in both character and screen
+  coordinates. Material names alone can be ambiguous to the person reviewing.
+- Confirm which data actually changed. This repair changes normals, not geometry
+  or texture pixels; a visual improvement does not justify describing all eye
+  data as untouched.
+- Inspect the open eye, partial coverage, and full closure. Matching full-closure
+  renders tests that hidden highlight changes do not leak into closed-eye poses;
+  it does not prove all intermediate weights or all lighting environments match.
+- Pixel counts are tied to the recorded camera and resolution. The changed-pixel
+  bounding box reports where differences occurred; it is not an independent
+  semantic segmentation of the white circle. Adjacent black pixels can change
+  through interpolated normals even when their vertices are unmodified.
+- Check saved Blender normals separately from runtime GLB normals. Their vertex
+  and corner counts differ because of seams; compare by position with a stated
+  tolerance rather than relying on list indices or float32/float64 tuple equality.
+- Keep the accepted `blink-aligned` snapshot until the new appearance is accepted.
+  Documentation requests and viewer navigation alone are not approval or a request
+  to overwrite `assets/miineko/tripo/v1/`.
+
 ## Reproduce and evidence
 
 Use the `blink-aligned` input and pinned tools from [BLINK_ALIGNED.md](BLINK_ALIGNED.md)
@@ -53,8 +85,16 @@ BLENDER_BIN=/path/to/Blender COMPARE_PYTHON=.venv/bin/python mise run highlight-
 
 Outputs: `artifacts/highlight-clean-r`, `-repeat`, and `artifacts/highlight-review`.
 The source JPEG copied into the output for reading is byte-identical source data,
-not an edited bitmap. `inspect_highlight.mjs` is an optional lighting diagnostic
-using the existing localhost server, not a production material modification.
+not an edited bitmap. For the optional diagnostic, run from this lab directory
+after the localhost viewer is serving and `artifacts/highlight-review` exists:
+
+```sh
+node scripts/inspect_highlight.mjs
+```
+
+It writes `original.png`, `no-normal.png`, and `unlit.png` in that directory. Its
+fixed diagnostic camera differs from the main evaluation detail camera; compare
+images within each series rather than mixing their pixel measurements.
 
 - [Structure](results/highlight-normal-structure.json): 58 normal vertices differ;
   other JSON/source bytes, image/UV/geometry/expressions remain intact. Separate
