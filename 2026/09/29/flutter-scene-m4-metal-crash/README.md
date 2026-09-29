@@ -92,8 +92,8 @@ git bisect run "$LAB/scripts/probe_standard.sh"
 | Mac Studio M4 Max | `AGXMetalG16X` | 27.0.1（26A434） | 落ちる（同じ 5 つの commit で同じ結果、スタックも同じ） |
 | MacBook Pro M1 Max | Apple M1 Max | 26.6.2 | 通る |
 
-OS の版が同じで、GPU の世代だけが違います。**M4 世代（G16）の Metal コンパイラの不具合**で、執筆時点の最新の正式版（27.0.1）でも直っていません。
-M2・M3 は手元に無く、試していません。
+OS の版が同じで、GPU の世代だけが違います。**新しい世代の GPU 向けの Metal コンパイラの不具合**で、執筆時点の最新の正式版（27.0.1）でも直っていません。
+手元に M2・M3 は無く試していませんが、作者が M3 Max で `metal-tt` を使い、M3 世代と最近の iPhone の GPU でも落ちることを確かめました（8 節）。
 
 ## 4. 回避
 
@@ -199,7 +199,7 @@ ad-hoc 署名のアプリなので差し込めます。3 つの条件を交互�
 `FlutterViewController` を作る前）で、Metal デバイスのクラスの `newLibraryWithSource:options:error:` と
 `newLibraryWithSource:options:completionHandler:` を `method_setImplementation` で包み、渡された `MTLCompileOptions` の写しを
 `mathMode = .safe` にして元の実装へ渡します。普通の環境変数（`DYLD_` で始まらない）は SIP を通っても残るので、起動スクリプトが
-CPU 名（`sysctl -n machdep.cpu.brand_string` が `Apple M4` を含む）を見て変数を付け、アプリは debug ビルドでその変数があるときだけ差し替える、
+CPU 名（`sysctl -n machdep.cpu.brand_string` が `Apple M3` 以降）を見て変数を付け、アプリは debug ビルドでその変数があるときだけ差し替える、
 という分け方にすると、M1 では fast math のまま動きます。
 
 ## 8. 本家の修正（#438）
@@ -224,8 +224,8 @@ master `cff220e`。端末を識別する ID を伏せた）は `crash-reports/` 
 
 ## わかったこと
 
-- flutter_scene の `master`（2026-09-16 の `1fa830b2` 以降）を使うアプリは、M4 Max の Mac で、影ありの標準の材質を描いた時点で落ちる。
-  0.24.0 がこのまま出ると、0.24.0 でも同じになる
+- flutter_scene の `master`（2026-09-16 の `1fa830b2` 以降）を使うアプリは、M3 世代以降の GPU（M3・M4 の Mac、最近の iPhone）で、
+  影ありの標準の材質を描いた時点で落ちる。本家の #438 が入れば直る
 - 落ちるのは Apple の Metal コンパイラ（M3 世代以降の GPU の fast math の最適化）だが、flutter_scene が照明と影の処理を 2 組インライン展開して
   シェーダーを大きくしていたことが引き金。#438 で 1 組にすると、fast math のまま通る
 - 平行光源の影（カスケード 4 段・PCF 17 回）は 0.23.0 から入っている。0.23 以降に点光源の影・多数のライトの扱い・平行投影のカメラなどが
@@ -237,4 +237,4 @@ master `cff220e`。端末を識別する ID を伏せた）は `crash-reports/` 
 
 - flutter_scene の本家へは [bdero/flutter_scene#436](https://github.com/bdero/flutter_scene/issues/436) で報告し、fast math の扱いを相談した（2026-09-30）
 - Apple へは Feedback Assistant で報告した（FB24988821、2026-09-29。落ちる MSL・probe・27.0.1 のクラッシュログを添付し、30 日に削り込んだ MSL と safe math で動く結果を追記）
-- M2・M3 で起きるかは、手元に機材が無く未確認
+- #438 が master に入ったら、その commit を M4 Max でもう一度確かめる
