@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Cover oblique eye fragments with a conservative front-surface lid"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+: "${BLENDER_BIN:?Set BLENDER_BIN to the Blender executable}"
+"$BLENDER_BIN" -b --python-exit-code 1 --python scripts/refine_lid_envelope.py
+STUDY_SUFFIX=-repeat "$BLENDER_BIN" -b --python-exit-code 1 --python scripts/refine_lid_envelope.py
+"$BLENDER_BIN" -b --python-exit-code 1 --python scripts/check_lid_envelope.py
+node scripts/verify_lid_envelope.mjs
+"${COMPARE_PYTHON:-.venv/bin/python}" scripts/measure_lid_envelope.py

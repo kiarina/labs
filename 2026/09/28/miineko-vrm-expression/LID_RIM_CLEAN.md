@@ -6,7 +6,8 @@ The owner pointed to the circular dark trace where the original open eye had
 been, using blink .86 as the reference. The new `lid-rim-clean` candidate removes
 the copied dark flecks from the pink lids while retaining the intentional black
 closed-eye line. It builds on [highlight-clean-r](HIGHLIGHT_CLEAN.md) and does not
-replace the accepted private assets snapshot. Owner review is pending.
+replace the accepted private assets snapshot. The owner found the frontal result improved and requested the remaining
+oblique fragments be corrected; continue with [LID_ENVELOPE.md](LID_ENVELOPE.md).
 
 Open `expression-study.html?variant=lid-rim-clean&blink=.86&opening=0&angle=0`.
 Compare with `highlight-clean-r` at the same strength and camera. Partial closure,

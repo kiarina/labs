@@ -2,11 +2,11 @@
 
 ## Current result — 2026-09-29
 
-**Current refinement: [closed-eye circular traces](LID_RIM_CLEAN.md).** The owner
-requested removal of the dark ring around the original eye position at blink .86.
-The new candidate changes only the pink lids' vertex RGB, retaining eye-line
-geometry and alpha. It continues from the [highlight repair](HIGHLIGHT_CLEAN.md).
-Skin-color joins and oblique slivers remain separate work.
+**Current refinement: [oblique closed-eye gaps](LID_ENVELOPE.md).** After the
+frontal dark-ring cleanup, the owner requested removal of remaining fragments
+in oblique/profile views. The new candidate refits only lid depth to cover the
+foremost face surface. Front eye-line masks are retained; skin-color joins remain
+separate work. It continues from [LID_RIM_CLEAN.md](LID_RIM_CLEAN.md).
 [Whole-body motion](BODY_MOTION.md) records the still-open arm/head interference
 and ribbon folding, with replayable timestamps, video and a contact sheet.
 
@@ -45,6 +45,7 @@ from Git; pulling this repository alone does not provide the model.
 
 | Document | Purpose |
 | --- | --- |
+| [LID_ENVELOPE.md](LID_ENVELOPE.md) | Current side-view gap repair, foreground depth fitting and 13-angle checks. |
 | [LID_RIM_CLEAN.md](LID_RIM_CLEAN.md) | Current circular dark-trace cleanup on closed lids; cause, RGB-only fix, remaining seams. |
 | [HIGHLIGHT_CLEAN.md](HIGHLIGHT_CLEAN.md) | Current local highlight-normal cleanup, diagnostic sequence and verification limits; pending review. |
 | [BODY_MOTION.md](BODY_MOTION.md) | Whole-body checks, dance playback/recording, contact sheet and identified deformation risks. |
