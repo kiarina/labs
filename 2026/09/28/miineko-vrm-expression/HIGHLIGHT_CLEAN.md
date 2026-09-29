@@ -12,8 +12,9 @@ Do not silently apply this repair to both eyes.
 
 Open `expression-study.html?variant=highlight-clean-r&opening=0&blink=0` and
 compare with `blink-aligned` (the saved accepted source). The source `.blend`,
-VRM and assets snapshot remain unchanged. Candidate approval and the requested side remain unconfirmed. The later request
-to document findings does not change that status.
+VRM and earlier assets snapshot remain preserved. This repair was subsequently
+included in the owner-fixed [version 1](VERSION_1.md); its earlier pending-review
+status no longer describes the current baseline.
 
 ## Diagnosis and repair
 
@@ -70,7 +71,7 @@ not a per-pixel masking operation.
 - Check saved Blender normals separately from runtime GLB normals. Their vertex
   and corner counts differ because of seams; compare by position with a stated
   tolerance rather than relying on list indices or float32/float64 tuple equality.
-- Keep the accepted `blink-aligned` snapshot until the new appearance is accepted.
+- Keep the earlier `blink-aligned` snapshot as a historical reference.
   Documentation requests and viewer navigation alone are not approval or a request
   to overwrite `assets/miineko/tripo/v1/`.
 
@@ -106,6 +107,6 @@ images within each series rather than mixing their pixel measurements.
   that view. Opposite eye is unchanged. Twenty-five fully covered-highlight
   views across blink/happy/angry/sad/relaxed match exactly.
 
-Next: confirm the intended side and appearance with the owner, then continue
-small quality improvements. Whole-body ribbon/arm observations remain open;
+This repair is included in version 1. Additional visual improvements belong to
+a separate later revision. Whole-body ribbon/arm observations remain open;
 they were not repaired as part of this localized eye change.

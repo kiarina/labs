@@ -2,25 +2,14 @@
 
 ## Current result — 2026-09-29
 
-**Current refinement: [oblique closed-eye gaps](LID_ENVELOPE.md).** After the
-frontal dark-ring cleanup, the owner requested removal of remaining fragments
-in oblique/profile views. The new candidate refits only lid depth to cover the
-foremost face surface. Front eye-line masks are retained; skin-color joins remain
-separate work. It continues from [LID_RIM_CLEAN.md](LID_RIM_CLEAN.md).
-[Whole-body motion](BODY_MOTION.md) records the still-open arm/head interference
-and ribbon folding, with replayable timestamps, video and a contact sheet.
+**Version 1 is fixed.** On 2026-09-29 the owner accepted `lid-envelope` as the
+version 1 checkpoint. Its delivery files are `miineko/miineko.blend` and
+`miineko/miineko.vrm` in the private assets repository.
 
-**Latest accepted update: [blink-aligned](BLINK_ALIGNED.md).** The owner accepted
-the upper-led, thicker ordinary blink on 2026-09-29. A matching blend/VRM snapshot
-is saved in the private assets repository under `miineko/tripo/v1/`; it is a
-manual copy, not a synchronized working directory.
-
-**The current working baseline is `artifacts/blink-aligned/continuous-blink.vrm`.**
-Its preceding accepted input is `surprise-ears`.
-The owner provisionally accepted the mouth-plus-raised-ear surprise on 2026-09-29.
-For the working baseline, start with [BLINK_ALIGNED.md](BLINK_ALIGNED.md); its
-input chain continues from [SURPRISE_EARS.md](SURPRISE_EARS.md). It contains the preceding accepted face and basic
-expressions; it is not a production-complete avatar.
+Start with [VERSION_1.md](VERSION_1.md) for the exact artifact identity, complete
+stage lineage, driving contract, lessons and verification limits. Later work
+must preserve this checkpoint and use separate experimental outputs. The earlier
+`blink-aligned` snapshot under `miineko/tripo/v1/` remains a historical reference.
 
 | Part | Current decision | Canonical detail |
 | --- | --- | --- |
@@ -45,11 +34,12 @@ from Git; pulling this repository alone does not provide the model.
 
 | Document | Purpose |
 | --- | --- |
-| [LID_ENVELOPE.md](LID_ENVELOPE.md) | Current side-view gap repair, foreground depth fitting and 13-angle checks. |
-| [LID_RIM_CLEAN.md](LID_RIM_CLEAN.md) | Current circular dark-trace cleanup on closed lids; cause, RGB-only fix, remaining seams. |
-| [HIGHLIGHT_CLEAN.md](HIGHLIGHT_CLEAN.md) | Current local highlight-normal cleanup, diagnostic sequence and verification limits; pending review. |
+| [VERSION_1.md](VERSION_1.md) | Fixed version 1: delivery identity, source chain, behavior contract and post-v1 work. |
+| [LID_ENVELOPE.md](LID_ENVELOPE.md) | Version 1 side-view gap repair, foreground depth fitting and 13-angle checks. |
+| [LID_RIM_CLEAN.md](LID_RIM_CLEAN.md) | Version 1 circular dark-trace cleanup on closed lids; cause, RGB-only fix, remaining seams. |
+| [HIGHLIGHT_CLEAN.md](HIGHLIGHT_CLEAN.md) | Version 1 local highlight-normal cleanup, diagnostic sequence and verification limits. |
 | [BODY_MOTION.md](BODY_MOTION.md) | Whole-body checks, dance playback/recording, contact sheet and identified deformation risks. |
-| [BLINK_ALIGNED.md](BLINK_ALIGNED.md) | Current ordinary-blink correction; movement, thickness and one-shot comparison. |
+| [BLINK_ALIGNED.md](BLINK_ALIGNED.md) | Accepted ordinary-blink correction; movement, thickness and one-shot comparison. |
 | [SURPRISE_EARS.md](SURPRISE_EARS.md) | Provisionally accepted raised-ear surprise; source chain, original eyes, independent mouth and blink. |
 | [SURPRISE.md](SURPRISE.md) | Rejected eye-narrowing comparison and mouth-only reference. |
 | [EMOTIONS.md](EMOTIONS.md) | Current curved-relaxed/straighter-sad split; accepted happy and angry preserved. |
@@ -77,18 +67,13 @@ from Git; pulling this repository alone does not provide the model.
 The old `reproduce`, mask and atlas tasks are diagnostic reproductions of those
 historical routes. They are not the path to the accepted face.
 
-## Remaining work
+## After version 1
 
-The basic emotion directions and ordinary blink update have been reviewed.
-Continue the owner-directed local visual refinements, now cleaning the closed-eye rim after the
-highlight. Ribbon deformation and arm/head interference from whole-body testing
-remain open, along with transitions and ear reaction timing. Fine
-mouth/onset/audio tuning is a separate follow-up, not a reason to reopen the
-accepted face. Skin-color/perimeter seams and exact eye ratios remain unresolved.
-Gaze, SpringBone, full-body poses, target-runtime checks and a fresh end-to-end
-rebuild from the private FBX are still required. Review export metadata before
-distribution. Stage-by-stage repeatability and appearance approval do not certify
-all poses, all runtimes or audio synchronization.
+The current deliverables are frozen. [VERSION_1.md](VERSION_1.md) separates the
+checked appearance and staged repeatability from later polish, audio, gaze,
+springs, target-runtime and full-chain work. The final lid revision has not yet
+been through the earlier full-body motion test. Do not continue modifying the
+saved version 1 files to address these follow-ups implicitly.
 
 ## Documentation-only/static check
 

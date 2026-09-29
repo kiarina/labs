@@ -77,6 +77,7 @@ The optional diagnostic requires the existing local viewer server and runs with
   The dark-ink masks differ by 0–2 edge pixels across six frontal poses; the
   actual ink geometry and alpha are unchanged.
 
-Next: owner review of the circular-trace cleanup. Treat remaining skin joins
+This cleanup and its oblique-gap successor are included in [version 1](VERSION_1.md).
+Treat remaining skin joins
 and oblique gaps as distinct corrections, retaining the current eye-line shape,
 head silhouette, nose and mouth weight.

@@ -5,7 +5,8 @@
 The owner found the frontal circular-trace cleanup improved, but supplied
 ±45° full-blink screenshots with small black/white fragments above the closed
 eye. `lid-envelope` addresses those gaps, building on [LID_RIM_CLEAN.md](LID_RIM_CLEAN.md).
-This new candidate is pending owner review; the private assets snapshot is retained.
+The owner accepted this result and fixed it as [version 1](VERSION_1.md).
+The final assets snapshot is `miineko/miineko.{blend,vrm}`.
 
 Open `expression-study.html?variant=lid-envelope&blink=1&opening=0&angle=-45`.
 The viewer now includes 15° increments through both profiles. Compare against
@@ -74,7 +75,7 @@ Artifacts: `artifacts/lid-envelope`, `-repeat`, and `artifacts/lid-gap-review`.
 Open-eye front/±15°/−30° captures match exactly. Other open views differ at up to
 12 pixels, maximum 53/255, due to inherited tiny neutral coverage becoming visible
 at shifted depths. The audit explicitly bounds this residual rather than claiming
-all-view pixel parity. Assets have not been overwritten.
+all-view pixel parity. The final copy is recorded in [VERSION_1.md](VERSION_1.md); earlier snapshots are retained.
 
-Next: owner review of side-view coverage, then refine the skin-color/material
-transition independently while preserving the accepted eye-line shape and motion.
+Further skin-color/material transition work belongs to a later revision,
+preserving this version 1 checkpoint and the accepted eye-line shape and motion.

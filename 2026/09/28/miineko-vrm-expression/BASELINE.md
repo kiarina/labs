@@ -2,9 +2,8 @@
 
 ## Current design direction
 
-The current working baseline is the provisionally accepted mouth-plus-ear surprise
-in [SURPRISE_EARS.md](SURPRISE_EARS.md); [README.md](README.md) summarizes all
-current expression decisions. This document owns the earlier `mouth-aa-aligned`
+The current delivery checkpoint is [VERSION_1.md](VERSION_1.md);
+[README.md](README.md) summarizes current expression decisions. This document owns the earlier `mouth-aa-aligned`
 input chain and tool pins. Its owner acceptance and measurements below belong to
 that earlier stage; they do not require preserving the rejected protruding eyes
 or mouth in the current face. The new source chain continues from this baseline.
