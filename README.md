@@ -19,6 +19,7 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 ## Labs
 
 - 2026/09
+  - [flutter_scene master crashes the Metal shader compiler on an M4 Max Mac](2026/09/29/flutter-scene-m4-metal-crash/README.md) - [flutter-scene](tags/flutter-scene.md), [flutter-gpu](tags/flutter-gpu.md), [metal](tags/metal.md), [apple-silicon](tags/apple-silicon.md), [bug-reproduction](tags/bug-reproduction.md), [impeller](tags/impeller.md)
   - [Moving an MCP gateway from langchain-mcp-adapters (MCP 1) to MCP 2, with and without LangChain](2026/09/29/kimcp-mcp2-migration/README.md) - [mcp](tags/mcp.md), [langchain](tags/langchain.md), [fastmcp](tags/fastmcp.md), [python](tags/python.md), [migration](tags/migration.md), [compatibility](tags/compatibility.md)
   - [A human-scale 3D garden with VRM 1.0 avatars on flutter_scene, across five platforms](2026/09/28/flutter-scene-3d-garden/README.md) - [flutter](tags/flutter.md), [dart](tags/dart.md), [flutter-scene](tags/flutter-scene.md), [3d](tags/3d.md), [vrm](tags/vrm.md), [flutter-gpu](tags/flutter-gpu.md), [impeller](tags/impeller.md), [web](tags/web.md), [macos](tags/macos.md), [windows](tags/windows.md), [android](tags/android.md), [ios](tags/ios.md), [benchmark](tags/benchmark.md)
   - [Preserving a Tripo VRM face while adding expressions](2026/09/28/miineko-vrm-expression/README.md) - [vrm](tags/vrm.md), [blender](tags/blender.md), [3d](tags/3d.md)
