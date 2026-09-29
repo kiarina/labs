@@ -32,7 +32,7 @@ M4 Max でも動きます。どのシェーダーで、flutter_scene のどの c
 
 `probe/main.swift` は、MSL を 1 つずつ `MTLDevice.makeLibrary(source:)` でコンパイルし、描画パイプラインまで作る小さなツールです
 （vertex には何もしない fragment を、fragment には入力を合わせた vertex を組ませる）。アプリの `.shaderbundle` から MSL を取り出し
-（`scripts/extract_msl.py`）、112 個すべてを別々のプロセスで試しました。
+（`scripts/extract_msl.py`）、109 個すべてを別々のプロセスで試しました。
 
 ```sh
 swiftc -O probe/main.swift -o probe/probe -framework Metal
@@ -49,7 +49,7 @@ for f in out/msl/*.metal; do probe/probe "$f" | tail -1; done
 | `PhysicalOpaqueShadow` | flutter_scene の physical（`.fmat`） |
 | `PhysicalOpaqueShadowCube` | flutter_scene の physical（`.fmat`） |
 
-影なし（`*_no_shadow*`）と lightmap 付き（`*_lightmap*`）の版、MToon（flutter_vrm の `.fmat`）を含むほかの 108 個は通りました。
+影なし（`*_no_shadow*`）と lightmap 付き（`*_lightmap*`）の版、MToon（flutter_vrm の `.fmat`）を含むほかの 105 個は通りました。
 `MTOON=false` でもアプリが落ちたのは、この 4 個が flutter_scene 自身の標準の材質だからです。
 
 ## 2. 落ち始めた commit
@@ -202,15 +202,36 @@ ad-hoc 署名のアプリなので差し込めます。3 つの条件を交互�
 CPU 名（`sysctl -n machdep.cpu.brand_string` が `Apple M4` を含む）を見て変数を付け、アプリは debug ビルドでその変数があるときだけ差し替える、
 という分け方にすると、M1 では fast math のまま動きます。
 
+## 8. 本家の修正（#438）
+
+作者が M3 Max で `metal-tt`（Xcode 27.0 の Metal ツールチェーン）を使い、`applegpu_g16s` 向けにパイプラインを作って再現しました。M3 世代と
+最近の iPhone の GPU でも、macOS・iOS 26/27 のコンパイラで落ちるので、M4 だけではありません。
+
+原因は flutter_scene 側にもありました。表面のデバッグ表示を足してから、照明を返す枝が 2 つ（分割表示と通常の照明）になり、インライン展開で
+影ありの材質に照明と影の処理が 2 組入っていました。`1fa830b2` はそれを境目の向こうへ押しただけで、だから `1fa830b2` だけを戻しても
+master では直りませんでした。[bdero/flutter_scene#438](https://github.com/bdero/flutter_scene/pull/438) が照明を 1 か所で求めるようにし、
+標準のシェーダーは 8,758 行から 5,300 行になります。
+
+`#438`（`bdac5e9`）に固定した flutter_vrm の example で、M4 Max・macOS 27.0.1 で確かめました（2026-09-30）。
+
+- アプリのバンドルの 109 個すべてが、既定の fast math で probe を通りました。落ちていた 4 個も通り、標準の fragment は 5,300 行、
+  `PhysicalOpaqueShadow` は 7,660 行です
+- 差し込みなし（fast math のまま）でアプリが起動し、影のある画面を描きました。2 回起動してエラーは 0 件、見た目は 0.23 と同じです
+
+作者は Flutter 本体にも、Flutter GPU のシェーダーを safe math でコンパイルすることと、パイプラインを作れないときに segfault せず描画を
+失敗させることを報告するとのことです。そのために渡した `flutter doctor -v` と M4 のクラッシュレポート 2 つ（どちらも macOS 27.0.1、
+master `cff220e`。端末を識別する ID を伏せた）は `crash-reports/` にあります。
+
 ## わかったこと
 
 - flutter_scene の `master`（2026-09-16 の `1fa830b2` 以降）を使うアプリは、M4 Max の Mac で、影ありの標準の材質を描いた時点で落ちる。
   0.24.0 がこのまま出ると、0.24.0 でも同じになる
-- 原因は Apple の M4 世代の Metal コンパイラ（fast math の最適化）で、flutter_scene のシェーダーに誤りがあるわけではない
+- 落ちるのは Apple の Metal コンパイラ（M3 世代以降の GPU の fast math の最適化）だが、flutter_scene が照明と影の処理を 2 組インライン展開して
+  シェーダーを大きくしていたことが引き金。#438 で 1 組にすると、fast math のまま通る
 - 平行光源の影（カスケード 4 段・PCF 17 回）は 0.23.0 から入っている。0.23 以降に点光源の影・多数のライトの扱い・平行投影のカメラなどが
   足されてシェーダーが育ち、`1fa830b2` で不具合を踏む側に入ったと読める。`1fa830b2` の変更に誤りがあるわけではない
-- 回避は fast math を切ることで、アプリも動く（GPU 時間は 1 割あまり増える）。ただしそれは Impeller の設定になる。シェーダーの書き方で安定して避ける方法は見つからなかった
-  （最小まで削っても 1,528 行が残り、どこを消しても落ちなくなる）
+- fast math を切っても動く（GPU 時間は 1 割あまり増える）。ただしそれは Impeller の設定になる。影の処理の書き方をいじるだけでは避けられなかったが
+  （最小まで削っても 1,528 行が残る）、照明の呼び出しを 1 か所にまとめる（#438）ことで避けられた
 
 ## 次にやること
 
