@@ -15,7 +15,7 @@ M4 Max でも動きます。どのシェーダーで、flutter_scene のどの c
 
 ## 条件
 
-- M4 Max の Mac（Mac Studio M4 Max 128GB、macOS 26.6.2、Xcode 27.0）。比べる相手は M1 Max の Mac（MacBook Pro M1 Max 64GB、macOS 26.6.2）
+- M4 Max の Mac（Mac Studio M4 Max 128GB、macOS 26.6.2 と 27.0.1、Xcode 27.0）。比べる相手は M1 Max の Mac（MacBook Pro M1 Max 64GB、macOS 26.6.2）
 - Flutter 3.47.2（stable）。impellerc はその engine の artifact（`darwin-x64`）
 - flutter_scene は本家の `master` の `cff220e`（2026-09-28）と `26678127`（2026-09-28、執筆時の最新）、比べる相手は `0.23.0`
 
@@ -89,9 +89,11 @@ git bisect run "$LAB/scripts/probe_standard.sh"
 | Mac | GPU（Metal のドライバ） | macOS | 結果 |
 | --- | --- | --- | --- |
 | Mac Studio M4 Max | `AGXMetalG16X` | 26.6.2 | 落ちる |
+| Mac Studio M4 Max | `AGXMetalG16X` | 27.0.1（26A434） | 落ちる（同じ 5 つの commit で同じ結果、スタックも同じ） |
 | MacBook Pro M1 Max | Apple M1 Max | 26.6.2 | 通る |
 
-OS の版が同じで、GPU の世代だけが違います。**M4 世代（G16）の Metal コンパイラの不具合**です。M2・M3 は手元に無く、試していません。
+OS の版が同じで、GPU の世代だけが違います。**M4 世代（G16）の Metal コンパイラの不具合**で、執筆時点の最新の正式版（27.0.1）でも直っていません。
+M2・M3 は手元に無く、試していません。
 
 ## 4. 回避
 
@@ -117,6 +119,6 @@ fast math の最適化の中で落ちています。ただ、Flutter GPU のシ�
 
 ## 次にやること
 
-- flutter_scene の本家へ報告する（再現に要るのはこの lab の probe と MSL だけで、VRM のファイルは要らない）
-- Apple へ Feedback Assistant で報告する（落ちる MSL と probe を添える）
+- flutter_scene の本家へ報告し、シェーダー側で避けられるかを相談する（再現に要るのはこの lab の probe と MSL だけで、VRM のファイルは要らない）
+- Apple へは Feedback Assistant で報告した（FB24988821、2026-09-29。落ちる MSL・probe・27.0.1 のクラッシュログを添付）
 - M2・M3 で起きるかは、手元に機材が無く未確認
