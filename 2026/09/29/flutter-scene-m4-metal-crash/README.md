@@ -169,6 +169,6 @@ ad-hoc 署名のアプリなので差し込めます。3 つの条件を交互�
 
 ## 次にやること
 
-- flutter_scene の本家へ報告し、シェーダー側で避けられるかを相談する（再現に要るのはこの lab の probe と MSL だけで、VRM のファイルは要らない）
-- Apple へは Feedback Assistant で報告した（FB24988821、2026-09-29。落ちる MSL・probe・27.0.1 のクラッシュログを添付）
+- flutter_scene の本家へは [bdero/flutter_scene#436](https://github.com/bdero/flutter_scene/issues/436) で報告し、fast math の扱いを相談した（2026-09-30）
+- Apple へは Feedback Assistant で報告した（FB24988821、2026-09-29。落ちる MSL・probe・27.0.1 のクラッシュログを添付し、30 日に削り込んだ MSL と safe math で動く結果を追記）
 - M2・M3 で起きるかは、手元に機材が無く未確認
