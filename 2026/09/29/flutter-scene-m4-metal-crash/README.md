@@ -237,4 +237,4 @@ master `cff220e`。端末を識別する ID を伏せた）は `crash-reports/` 
 
 - flutter_scene の本家へは [bdero/flutter_scene#436](https://github.com/bdero/flutter_scene/issues/436) で報告し、fast math の扱いを相談した（2026-09-30）
 - Apple へは Feedback Assistant で報告した（FB24988821、2026-09-29。落ちる MSL・probe・27.0.1 のクラッシュログを添付し、30 日に削り込んだ MSL と safe math で動く結果を追記）
-- #438 が master に入ったら、その commit を M4 Max でもう一度確かめる
+- #438 は 2026-09-30 に master に入った（`0852630d`）。その後の `aae39f9` で、flutter_vrm の example が M4 Max・fast math のまま、差し込みなしで影ありを描けることを確かめた
