@@ -1,0 +1,16 @@
+name: flutter_only
+description: The Windows shader compile stall with plain Flutter (no flutter_scene).
+publish_to: none
+version: 0.1.0
+
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+flutter:
+  shaders:
+    - shaders/heavy.frag
+    - shaders/cheap.frag
