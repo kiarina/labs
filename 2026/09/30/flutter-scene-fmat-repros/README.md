@@ -139,3 +139,11 @@ iOS に特有ではありませんでした。macOS でも白です。flutter_vr
 
 - custom attribute: 使わない。flutter_vrm は、輪郭線の太さのテクスチャを fragment で discard するマスクにした
 - `default_black`: 頼らない。テクスチャが無いときは係数を 0 にする（flutter_vrm は matcap と shading shift）。または黒の 1×1 テクスチャを自分で設定する
+
+## 本家の修正
+
+- `default_black`: [bdero/flutter_scene#441](https://github.com/bdero/flutter_scene/pull/441)（黒と透明の仮テクスチャを使う）が取り込まれた（2026-09-30、`85f47359`）
+- custom attribute: [bdero/flutter_scene#443](https://github.com/bdero/flutter_scene/pull/443)（描画ごとの頂点レイアウトを geometry と材質の両方から決める。
+  材質が宣言して geometry に無い attribute は 0 を読み、材質が宣言しない attribute は無視する。影のパスは作れない描画を飛ばす）。
+  その head（`ff63abbb`）で、macOS（M4 Max、fast math のまま）と iOS Simulator の A〜J が全部 `ok`、影ありの C+G・G+H・G+I・G+J も全部 `ok`。
+  骨入りの D・H・J は AvatarSample_A と Seed-san でも `ok`（2026-09-30）
