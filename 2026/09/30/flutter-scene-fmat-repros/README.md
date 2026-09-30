@@ -66,6 +66,13 @@ iOS は `--dart-define` で選びます。
 flutter run -d <simulator> --dart-define=CASES=ACEFGIJ
 ```
 
+実機の iOS は、release でビルドして入れ、結果のファイルを取り出します。
+
+```sh
+DEVICE=<udid> CASES=ABCDEFGHIJ ./run_ios_device.sh
+DEVICE=<udid> CASES=CGHIJ SHADOW=1 ./run_ios_device.sh
+```
+
 ## 結果
 
 | ケース | macOS | iOS Simulator |
@@ -147,3 +154,6 @@ iOS に特有ではありませんでした。macOS でも白です。flutter_vr
   材質が宣言して geometry に無い attribute は 0 を読み、材質が宣言しない attribute は無視する。影のパスは作れない描画を飛ばす）。
   その head（`ff63abbb`）で、macOS（M4 Max、fast math のまま）と iOS Simulator の A〜J が全部 `ok`、影ありの C+G・G+H・G+I・G+J も全部 `ok`。
   骨入りの D・H・J は AvatarSample_A と Seed-san でも `ok`（2026-09-30）
+- 実機の iPad Air（第 4 世代、A14、iOS 27.0.1、release）でも確かめた（`app/run_ios_device.sh`。release はログが届かないので、アプリが結果を
+  一時フォルダのファイルにも書き、`devicectl` で取り出す）。修正前の `f706046e` は、影ありの G+J で 3D が何も描かれず、B は描き始めて落ちる。
+  #443 の `ff63abbb` は、A〜J と影ありの C・G・H・I・J が全部 `ok`
