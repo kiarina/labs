@@ -55,6 +55,8 @@ final kShadow =
     _setting('SHADOW', const String.fromEnvironment('SHADOW')) == '1';
 final kOut = _setting('OUT', const String.fromEnvironment('OUT'));
 final kExit = _setting('EXIT', const String.fromEnvironment('EXIT')) == '1';
+// Echoed in the report, so a script can tell this run's report from an old one.
+final kRunId = _setting('RUN_ID', const String.fromEnvironment('RUN_ID'));
 
 const _expected = {
   'A': 'blue',
@@ -151,7 +153,7 @@ class _ReproPageState extends State<ReproPage> {
     final report = File('${Directory.systemTemp.path}/fmat_report.txt');
     if (report.existsSync()) report.deleteSync();
     _record(
-      '[repro] ready: cases ${cases.join()}, model $kModel, shadow $kShadow',
+      '[repro] ready: cases ${cases.join()}, model $kModel, shadow $kShadow, run $kRunId',
     );
     await Future<void>.delayed(const Duration(seconds: 2));
     await _report();

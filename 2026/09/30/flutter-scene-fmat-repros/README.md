@@ -156,4 +156,5 @@ iOS に特有ではありませんでした。macOS でも白です。flutter_vr
   骨入りの D・H・J は AvatarSample_A と Seed-san でも `ok`（2026-09-30）
 - 実機の iPad Air（第 4 世代、A14、iOS 27.0.1、release）でも確かめた（`app/run_ios_device.sh`。release はログが届かないので、アプリが結果を
   一時フォルダのファイルにも書き、`devicectl` で取り出す）。修正前の `f706046e` は、影ありの G+J で 3D が何も描かれず、B は描き始めて落ちる。
-  #443 の `ff63abbb` は、A〜J と影ありの C・G・H・I・J が全部 `ok`
+  #443 の `ff63abbb` は、A〜J と影ありの C・G・H・I・J が全部 `ok`。骨入りのケース（影ありの C・D・G・H・J）は、Seed-san と AvatarSample_A を `models/` に置いて
+  `MODEL=models/<file>` で渡しても全部 `ok`
