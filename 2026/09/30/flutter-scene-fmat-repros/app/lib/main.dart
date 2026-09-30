@@ -148,10 +148,24 @@ class _ReproPageState extends State<ReproPage> {
       }
     }
     setState(() => status = 'ready');
-    debugPrint('[repro] ready: cases ${cases.join()}, model $kModel');
+    final report = File('${Directory.systemTemp.path}/fmat_report.txt');
+    if (report.existsSync()) report.deleteSync();
+    _record(
+      '[repro] ready: cases ${cases.join()}, model $kModel, shadow $kShadow',
+    );
     await Future<void>.delayed(const Duration(seconds: 2));
     await _report();
+    _record('[repro] done');
     if (kExit) exit(0);
+  }
+
+  // Also appended to <temp>/fmat_report.txt, since a release build on a
+  // device has no console to print to (copy it off with devicectl).
+  static void _record(String line) {
+    debugPrint(line);
+    File(
+      '${Directory.systemTemp.path}/fmat_report.txt',
+    ).writeAsStringSync('$line\n', mode: FileMode.append, flush: true);
   }
 
   static Material _pbr() => PhysicallyBasedMaterial()
@@ -257,7 +271,7 @@ class _ReproPageState extends State<ReproPage> {
       final r = rgba.getUint8(o), g = rgba.getUint8(o + 1);
       final b = rgba.getUint8(o + 2), a = rgba.getUint8(o + 3);
       final got = a < 128 ? 'none' : _classify(r, g, b);
-      debugPrint(
+      _record(
         '[repro] $name expected ${_expected[name]}, got $got '
         '(rgb $r,$g,$b at $px,$py) '
         '${got == _expected[name] ? 'ok' : 'UNEXPECTED'}',
