@@ -54,12 +54,36 @@ RUNS=2 WIN_HOST=... ./run_windows.sh                      # 同じビルドを 2
 - flutter_scene のパイプラインの作成の時間を測るログ（`FLUTTER_SCENE_PROFILE`）には、8 ms を超えるものが出ない。時間は `createRenderPipeline` の中ではなく、
   その後の描画で使われる
 
+## どこで時間を使っているか
+
+Windows Performance Toolkit の xperf で、1 回の実行（影あり、`aae39f9`。床 8.3 秒 + 骨入り 7.7 秒止まった）の CPU のサンプルを DLL ごとに数えました。
+
+```bat
+xperf -on PROC_THREAD+LOADER+PROFILE -stackwalk Profile
+rem ここでアプリを起動し、終わるのを待つ
+xperf -d trace.etl
+xperf -i trace.etl -o detail.txt -a profile -detail
+```
+
+アプリのプロセスの CPU 時間 20.7 秒のうち:
+
+| DLL | 時間 | 割合 |
+| --- | --- | --- |
+| `D3DCompiler_47.dll` | **15.8 秒** | **76%** |
+| `flutter_windows.dll`（Flutter と ANGLE） | 1.3 秒 | 6% |
+| `nvwgf2umx.dll`（NVIDIA のドライバー） | 0.6 秒 | 3% |
+| その他 | 3.0 秒 | 15% |
+
+止まった時間の合計（約 16 秒）が、ほぼそのまま Microsoft の HLSL コンパイラ（`D3DCompiler_47.dll`）の中で使われています。ANGLE は OpenGL ES の
+シェーダーを HLSL に書き換えて、このコンパイラでコンパイルします。GPU の速さの差ではなく、シェーダーのコンパイルの経路の差です。macOS は Metal の
+コンパイラが MSL を直接コンパイルします。
+
 ## 見立て
 
 - **25 秒のほとんどは、照明の処理の重複（本家 #436・#438）でした。** #438 で影ありの PBR の fragment シェーダーが小さくなり、25 秒が 7.5 秒になりました
 - 残る数秒は、**PBR の fragment シェーダーのコンパイルを、頂点シェーダーとの組ごとにやり直している**ように見えます。骨なしと骨入り（と、影を描くための
-  組）で、それぞれ払っています。ANGLE の D3D11 は、プログラムをリンクするときに頂点と fragment の組に合わせて HLSL を作ってコンパイルするので、
-  そのせいだと思います（確かめてはいない）
+  組）で、それぞれ払っています。時間を使っているのは `D3DCompiler_47.dll` です（上の表）。ANGLE の D3D11 は、プログラムをリンクするときに
+  頂点と fragment の組に合わせて HLSL を作ってコンパイルするので、組ごとにやり直しているのだと思います（組ごとかどうかは、DLL の内訳からは確かめていない）
 - 起動のたびに同じだけかかるので、プログラムのキャッシュ（EGL の blob cache など）も使われていないようです
 - macOS（Metal）では同じことが 0.1 秒で終わります
 
