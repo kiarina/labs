@@ -1,0 +1,45 @@
+name: first_draw
+description: Times the first draw of each kind of flutter_scene mesh.
+publish_to: none
+version: 0.1.0
+
+environment:
+  sdk: ^3.10.0
+  flutter: ">=3.47.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # The commit under test. Switch with ./set_ref.sh <ref>.
+  flutter_scene:
+    git:
+      url: https://github.com/bdero/flutter_scene
+      path: packages/flutter_scene
+      ref: aae39f978182e983d686f4bb5629f90dcdc25977
+  vector_math: ^2.2.0
+
+dependency_overrides:
+  scene:
+    git:
+      url: https://github.com/bdero/flutter_scene
+      path: packages/scene
+      ref: aae39f978182e983d686f4bb5629f90dcdc25977
+
+flutter:
+  assets:
+    - models/
+    - flutter_scene_generated/
+    - path: flutter_scene_generated/metal_ios/
+      platforms:
+        - ios
+    - path: flutter_scene_generated/metal_desktop/
+      platforms:
+        - macos
+    - path: flutter_scene_generated/opengl_es_vulkan/
+      platforms:
+        - android
+        - linux
+        - windows
+    - path: flutter_scene_generated/opengl_es/
+      platforms:
+        - web
