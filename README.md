@@ -18,6 +18,9 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 
 ## Labs
 
+- 2026/10
+  - [A Codex desktop app clone in Flutter on top of codex app-server](2026/10/01/flutter-codex-app-server/README.md) - [flutter](tags/flutter.md), [dart](tags/dart.md), [codex](tags/codex.md), [codex-app-server](tags/codex-app-server.md), [openai](tags/openai.md), [json-rpc](tags/json-rpc.md), [agent](tags/agent.md), [macos](tags/macos.md)
+
 - 2026/09
   - [flutter_scene .fmat: custom attributes on skinned meshes and the default_black placeholder](2026/09/30/flutter-scene-fmat-repros/README.md) - [flutter-scene](tags/flutter-scene.md), [flutter-gpu](tags/flutter-gpu.md), [bug-reproduction](tags/bug-reproduction.md), [impeller](tags/impeller.md), [ios](tags/ios.md), [macos](tags/macos.md)
   - [flutter_scene on Windows: the first draw of a skinned mesh stalls for seconds](2026/09/30/flutter-scene-windows-first-draw/README.md) - [flutter-scene](tags/flutter-scene.md), [flutter-gpu](tags/flutter-gpu.md), [impeller](tags/impeller.md), [windows](tags/windows.md), [angle](tags/angle.md), [bug-reproduction](tags/bug-reproduction.md), [benchmark](tags/benchmark.md)

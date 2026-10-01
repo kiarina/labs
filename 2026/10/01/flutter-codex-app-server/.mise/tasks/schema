@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#MISE description="Generate the app-server protocol (TypeScript and JSON Schema) for the installed codex into schema/"
+set -euo pipefail
+
+rm -rf schema
+codex app-server generate-ts --out schema/ts
+codex app-server generate-json-schema --out schema/json
+codex --version > schema/VERSION
+cat schema/VERSION

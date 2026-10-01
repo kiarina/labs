@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Analyze the app"
+set -euo pipefail
+
+cd app
+flutter pub get >/dev/null
+flutter analyze
