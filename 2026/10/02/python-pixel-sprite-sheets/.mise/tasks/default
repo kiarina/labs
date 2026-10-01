@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#MISE description="Generate the three sprite sheets, their previews, and the animation reviews into results/"
+set -euo pipefail
+
+for name in penguin samurai apple; do
+  uv run python "$name.py" "results/$name.png"
+  uv run python preview.py "results/$name.png" "results/$name"
+  uv run python review.py "results/$name.png" "results/review_$name.png" > "results/review_$name.txt"
+done

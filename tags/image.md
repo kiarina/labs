@@ -1,5 +1,6 @@
 # image
 
+- 2026/10/02 [Drawing walk-cycle pixel-art sprite sheets in plain Python, and reviewing the animation from stills](../2026/10/02/python-pixel-sprite-sheets/README.md)
 - 2026/09/16 [ONNX Runtime Web from Flutter Web (D-FINE)](../2026/09/16/flutter-web-onnx-runtime/README.md)
 - 2026/07/18 [MediaPipe Holistic real-time VRM retargeting](../2026/07/18/mediapipe-holistic-vrm/README.md)
 - 2026/07/16 [MoGe-2 surface normals on Apple Silicon](../2026/07/16/moge2-surface-normal-apple-silicon/README.md)
