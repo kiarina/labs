@@ -42,6 +42,11 @@ class PendingRequestCard extends StatelessWidget {
           reason: p['reason'] as String?,
         ),
         'item/permissions/requestApproval' => _permissions(),
+        // MCP tools ask through elicitation. Computer Use (the cua_repl
+        // server) asks "Allow Computer Use to use <app>?" this way.
+        'mcpServer/elicitation/request' when p['mode'] == 'url' =>
+          _unsupported(),
+        'mcpServer/elicitation/request' => _elicitation(),
         'item/tool/requestUserInput' => _UserInputForm(
           app: app,
           request: request,
@@ -148,6 +153,73 @@ class PendingRequestCard extends StatelessWidget {
                 'scope': 'turn',
               }),
               child: const Text('Deny'),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _elicitation() {
+    final p = request.params;
+    final meta = (p['_meta'] as Map?) ?? const {};
+    final params = (meta['tool_params_display'] as List? ?? const [])
+        .cast<Map>()
+        .map((e) => '${e['display_name']}: ${e['value']}')
+        .join('\n');
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          p['message'] as String? ?? '${p['serverName']} asks for input',
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          '${meta['connector_name'] ?? p['serverName']}'
+          '${meta['tool_name'] != null ? ' · ${meta['tool_name']}' : ''}',
+          style: const TextStyle(color: Palette.textDim, fontSize: 12),
+        ),
+        if (params.isNotEmpty) ...[
+          const SizedBox(height: 6),
+          SelectableText(
+            params,
+            style: const TextStyle(fontFamily: monoFamily, fontSize: 12),
+          ),
+        ],
+        const SizedBox(height: 10),
+        Wrap(
+          spacing: 8,
+          children: [
+            FilledButton(
+              onPressed: () => app.answer(request, {
+                'action': 'accept',
+                'content': <String, dynamic>{},
+                '_meta': null,
+              }),
+              child: const Text('Allow'),
+            ),
+            // `_meta.persist` lists the scopes the server can remember the
+            // answer for; without it Computer Use asks again for every key.
+            for (final scope
+                in (meta['persist'] as List? ?? const []).cast<String>())
+              OutlinedButton(
+                onPressed: () => app.answer(request, {
+                  'action': 'accept',
+                  'content': <String, dynamic>{},
+                  '_meta': {'persist': scope},
+                }),
+                child: Text(
+                  scope == 'session' ? 'Allow for session' : 'Always allow',
+                ),
+              ),
+            TextButton(
+              onPressed: () => app.answer(request, {
+                'action': 'decline',
+                'content': null,
+                '_meta': null,
+              }),
+              child: const Text('Decline'),
             ),
           ],
         ),

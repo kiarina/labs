@@ -62,11 +62,17 @@ app/lib/
 - **app-server 経由でも Chrome を操作できた**（2026-10-02）。Codex アプリが `~/.codex/config.toml` に書いた `cua_repl` の MCP（実体は Codex アプリに同梱）と
   Chrome プラグインがそのまま効き、`cua.createBrowserTab("chrome", url)` で開いて DOM を読んだ。Codex アプリが入っていない環境では使えない。
   Codex アプリの内蔵ブラウザ（`iab`）は試していない
+- **computer use（Mac のアプリの操作）も app-server 経由でできた**（2026-10-02）。同じ `cua_repl` の MCP で計算機を開いてキーを押し、結果を読んだ。
+  アプリを使ってよいかは `mcpServer/elicitation/request`（`mode: "form"`、`message: "Allow Computer Use to use \"Calculator\"?"`）で聞いてくる。
+  - 返事は `{"action": "accept", "content": {}, "_meta": null}`。承認の形（`{"decision": ...}`）で返すと断った扱いになる
+  - `_meta.persist`（`["session", "always"]`）のどれかを `_meta: {"persist": "session"}` で返すと、以後は聞かれない。返さないと **キー 1 つごとに** 聞かれる
+    （「56×78」を 1 キーずつ押させると、承認が 1 回で済んだ）
+  - 承認を待っている間に `turn/interrupt` を送っても止まらず、承認に Decline で返すまで動き続けた
 - macOS の App Sandbox の中からは子プロセスを起動できないので、entitlements で sandbox を外した。GUI から起動したアプリは
   シェルの `PATH` を継がないので、`/opt/homebrew/bin` などを探し、無ければ `zsh -lc` で起動する（`CODEX_BIN` で上書きできる）
 - 検証の自動化: computer-use の背景操作（アクセシビリティ経由の入力）は Flutter の `TextField` に届かなかった。クリックは届く。
   そのため、最初のメッセージは環境変数 `CODEX_FLUTTER_PROMPT` で渡せるようにした
-- 未検証: 中断（`turn/interrupt`）、`turn/steer`、ファイル変更の承認（`item/fileChange/requestApproval`）、`item/tool/requestUserInput`
+- 未検証: 承認待ちでない時の中断（`turn/interrupt`）、`turn/steer`、ファイル変更の承認（`item/fileChange/requestApproval`）、`item/tool/requestUserInput`
 
 ## How to run
 
