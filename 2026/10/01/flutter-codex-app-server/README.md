@@ -59,6 +59,9 @@ app/lib/
   サンドボックスや承認の方針も含め、ユーザーの `~/.codex/config.toml` が効く
 - `thread/start` はサンドボックスを文字列（`SandboxMode`: `workspace-write` など）、`turn/start` はオブジェクト（`SandboxPolicy`:
   `{type: "workspaceWrite", ...}`）で受ける。名前も形も違う
+- **app-server 経由でも Chrome を操作できた**（2026-10-02）。Codex アプリが `~/.codex/config.toml` に書いた `cua_repl` の MCP（実体は Codex アプリに同梱）と
+  Chrome プラグインがそのまま効き、`cua.createBrowserTab("chrome", url)` で開いて DOM を読んだ。Codex アプリが入っていない環境では使えない。
+  Codex アプリの内蔵ブラウザ（`iab`）は試していない
 - macOS の App Sandbox の中からは子プロセスを起動できないので、entitlements で sandbox を外した。GUI から起動したアプリは
   シェルの `PATH` を継がないので、`/opt/homebrew/bin` などを探し、無ければ `zsh -lc` で起動する（`CODEX_BIN` で上書きできる）
 - 検証の自動化: computer-use の背景操作（アクセシビリティ経由の入力）は Flutter の `TextField` に届かなかった。クリックは届く。
