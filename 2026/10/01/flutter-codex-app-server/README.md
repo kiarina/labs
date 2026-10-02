@@ -67,6 +67,8 @@ app/lib/
   - 返事は `{"action": "accept", "content": {}, "_meta": null}`。承認の形（`{"decision": ...}`）で返すと断った扱いになる
   - `_meta.persist`（`["session", "always"]`）のどれかを `_meta: {"persist": "session"}` で返すと、以後は聞かれない。返さないと **キー 1 つごとに** 聞かれる
     （「56×78」を 1 キーずつ押させると、承認が 1 回で済んだ）
+  - **`approvalPolicy: "never"`（アプリの Full access）にすると、この問い合わせも来ない。** コマンド・ファイル変更・アプリの操作のどれも聞かれずに
+    最後まで進んだ（計算機。`on-request` では同じ依頼で問い合わせが来る）
   - 承認を待っている間に `turn/interrupt` を送っても止まらず、承認に Decline で返すまで動き続けた
 - macOS の App Sandbox の中からは子プロセスを起動できないので、entitlements で sandbox を外した。GUI から起動したアプリは
   シェルの `PATH` を継がないので、`/opt/homebrew/bin` などを探し、無ければ `zsh -lc` で起動する（`CODEX_BIN` で上書きできる）
