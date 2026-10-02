@@ -7,4 +7,4 @@ args=()
 for name in CODEX_BIN CODEX_FLUTTER_CWD CODEX_FLUTTER_PROMPT CODEX_FLUTTER_ACCESS; do
   if [ -n "${!name:-}" ]; then args+=(--env "$name=${!name}"); fi
 done
-open -n "${args[@]}" app/build/macos/Build/Products/Debug/codex_flutter.app
+open -n ${args[@]+"${args[@]}"} app/build/macos/Build/Products/Debug/codex_flutter.app
