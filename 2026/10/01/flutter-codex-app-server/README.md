@@ -54,6 +54,10 @@ app/lib/
   差分として描くには add / delete の行に `+` / `-` を付ける
 - `thread/list` は `sourceKinds` を省くと「対話のソース」だけを返す。CLI・IDE・app-server（このアプリ）のスレッドを並べるには
   `['cli', 'vscode', 'appServer', 'exec']` を明示した
+- **このアプリで作ったスレッドだけを並べられる**（2026-10-04）。`initialize` の `clientInfo.name` が各スレッドの `originator` として残る
+  （このアプリは `codex_flutter`、Codex アプリは `Codex Desktop`、`codex exec` は `codex_exec`）。ただし `thread/list` の `originators` での絞り込みは
+  ローカルの app-server では `originator filtering is not supported by the local app-server` で弾かれるので、100 件ずつページを送って手元で絞る。
+  手元の 876 件を全部たどって 1.5 秒。サイドバーの「This app / All」で切り替える（既定は This app）
 - `thread/resume` は turn と item を返すが、**ターン全体の差分（`turn/diff/updated`）は再開しても戻らない**（保存されない）
 - `thread/start` の直後に、ユーザーの設定の MCP サーバー（この環境では 4 つ）の `mcpServer/startupStatus/updated` が届く。
   サンドボックスや承認の方針も含め、ユーザーの `~/.codex/config.toml` が効く

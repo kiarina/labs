@@ -46,11 +46,39 @@ class Sidebar extends StatelessWidget {
             },
           ),
           const SizedBox(height: 8),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16, 8, 16, 4),
-            child: Text(
-              'Threads',
-              style: TextStyle(fontSize: 11, color: Palette.textFaint),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 8, 4),
+            child: Row(
+              children: [
+                const Expanded(
+                  child: Text(
+                    'Threads',
+                    style: TextStyle(fontSize: 11, color: Palette.textFaint),
+                  ),
+                ),
+                Tooltip(
+                  message: app.onlyOwnThreads
+                      ? 'Showing threads started in this app'
+                      : 'Showing every local Codex thread',
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(4),
+                    onTap: () => app.setOnlyOwnThreads(!app.onlyOwnThreads),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
+                      child: Text(
+                        app.onlyOwnThreads ? 'This app' : 'All',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: Palette.textDim,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           Expanded(

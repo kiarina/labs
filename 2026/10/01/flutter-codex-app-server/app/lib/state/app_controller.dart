@@ -103,7 +103,7 @@ class AppController extends ChangeNotifier {
         }),
       );
       serverInfo = await c.initialize(
-        name: 'codex_flutter',
+        name: clientName,
         title: 'Codex Flutter (lab)',
         version: '0.1.0',
       );
@@ -150,22 +150,48 @@ class AppController extends ChangeNotifier {
     }
   }
 
-  Future<void> refreshThreads() async {
-    final r = await client!.request('thread/list', {
-      'limit': 50,
-      'sortKey': 'updated_at',
-      // Include threads started by the CLI, the IDE extension and app-server
-      // clients (this app), like the Codex app does.
-      'sourceKinds': ['cli', 'vscode', 'appServer', 'exec'],
-    }) as Map;
-    threads
-      ..clear()
-      ..addAll(
-        (r['data'] as List).cast<Map>().map(
-          (t) => ThreadSummary(t.cast<String, dynamic>()),
-        ),
-      );
+  /// Sent as `clientInfo.name`; app-server records it as each thread's
+  /// `originator`, which is how this app recognizes its own threads.
+  static const clientName = 'codex_flutter';
+
+  /// Show only threads started by this app (the default) or every local
+  /// thread (CLI, IDE, Codex app, `codex exec`, ...).
+  bool onlyOwnThreads = true;
+
+  void setOnlyOwnThreads(bool value) {
+    onlyOwnThreads = value;
     notifyListeners();
+    refreshThreads();
+  }
+
+  Future<void> refreshThreads() async {
+    const wanted = 50;
+    final found = <ThreadSummary>[];
+    String? cursor;
+    // The local app-server rejects the `originators` filter, so page through
+    // the list and keep this app's threads. Other clients (`codex exec` in
+    // particular) can start many threads, hence several pages.
+    for (var page = 0; page < 20 && found.length < wanted; page++) {
+      final r = await client!.request('thread/list', {
+        'limit': onlyOwnThreads ? 100 : wanted,
+        'sortKey': 'updated_at',
+        'cursor': ?cursor,
+        // Include threads started by the CLI, the IDE extension and app-server
+        // clients (this app), like the Codex app does.
+        'sourceKinds': ['cli', 'vscode', 'appServer', 'exec'],
+      }) as Map;
+      for (final t in (r['data'] as List).cast<Map>()) {
+        if (onlyOwnThreads && t['originator'] != clientName) continue;
+        found.add(ThreadSummary(t.cast<String, dynamic>()));
+      }
+      // Show what has been found so far; scanning many pages takes seconds.
+      threads
+        ..clear()
+        ..addAll(found.take(wanted));
+      notifyListeners();
+      cursor = r['nextCursor'] as String?;
+      if (cursor == null || !onlyOwnThreads) break;
+    }
   }
 
   Json? get currentModel => models.where((m) => m['id'] == model).firstOrNull;
