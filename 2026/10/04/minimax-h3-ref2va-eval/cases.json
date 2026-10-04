@@ -1,0 +1,129 @@
+[
+  {
+    "name": "A_image",
+    "images": [
+      "inputs/miineko.png"
+    ],
+    "duration": 5,
+    "aspect": "16:9",
+    "request": "The pink cat character from <Picture 1> waves at the camera and hops happily on a sunny park lawn."
+  },
+  {
+    "name": "B_image_audio",
+    "images": [
+      "inputs/miineko.png"
+    ],
+    "audios": [
+      "inputs/voice.wav"
+    ],
+    "audio_notes": [
+      "a 4.7-second clip of a gentle young Japanese female voice saying 「こんにちは、みぃねこだよ。今日もいっしょに、いっぱい遊ぼうね！」. Use it as the voice-timbre reference for the character."
+    ],
+    "duration": 5,
+    "aspect": "16:9",
+    "request": "The pink cat character from <Picture 1> faces the camera in a cozy room and says 「こんにちは、みぃねこだよ。今日もいっしょに、いっぱい遊ぼうね！」 in the voice of <Audio 1>."
+  },
+  {
+    "name": "C_image_video",
+    "images": [
+      "inputs/miineko.png"
+    ],
+    "silent_videos": [
+      "inputs/door.mp4"
+    ],
+    "video_frames": [
+      [
+        "frames/door_0.5.jpg",
+        "frames/door_4.jpg",
+        "frames/door_7.5.jpg"
+      ]
+    ],
+    "duration": 5,
+    "aspect": "3:2",
+    "request": "The pink cat character from <Picture 1> opens the door, following the camera framing and the door motion of <Video 1>."
+  },
+  {
+    "name": "O_official",
+    "rewrite": false,
+    "videos": [
+      "inputs/official/ref_video.mp4"
+    ],
+    "audios": [
+      "inputs/official/ref_audio.wav"
+    ],
+    "prompt_file": "inputs/official/prompt.txt",
+    "duration": 5,
+    "aspect": "16:9",
+    "request": "(official reproducible 768p Ref2VA case; use --prompt rewritten, which is the official Context-IR prompt)"
+  },
+  {
+    "name": "D_multi_image",
+    "images": [
+      "inputs/miineko.png",
+      "inputs/kiarina.png",
+      "inputs/street.jpg"
+    ],
+    "duration": 5,
+    "aspect": "16:9",
+    "request": "The pink cat character from <Picture 1> and the blonde girl from <Picture 2> walk side by side along the street in <Picture 3>, smiling at each other. No dialogue."
+  },
+  {
+    "name": "E_multi_audio",
+    "images": [
+      "inputs/miineko.png",
+      "inputs/kiarina.png"
+    ],
+    "audios": [
+      "inputs/voice_kiarina.wav",
+      "inputs/voice.wav"
+    ],
+    "audio_notes": [
+      "a 4.1-second clip of a Japanese female voice saying 「みぃねこ、今日はどこに遊びに行こうか？」. Use it as the voice-timbre reference for the blonde girl.",
+      "a 4.7-second clip of a gentle young Japanese female voice saying 「こんにちは、みぃねこだよ。今日もいっしょに、いっぱい遊ぼうね！」. Use it as the voice-timbre reference for the pink cat."
+    ],
+    "duration": 5,
+    "aspect": "16:9",
+    "request": "In a bright park, the blonde girl from <Picture 2> asks 「みぃねこ、どこに行く？」 in the voice of <Audio 1>, then the pink cat from <Picture 1> answers 「公園で遊ぼう！」 in the voice of <Audio 2>."
+  },
+  {
+    "name": "F_multi_video",
+    "images": [
+      "inputs/miineko.png"
+    ],
+    "silent_videos": [
+      "inputs/door_3s.mp4",
+      "inputs/soccer_3s.mp4"
+    ],
+    "video_frames": [
+      [
+        "frames/door_3s_0.2.jpg",
+        "frames/door_3s_1.5.jpg",
+        "frames/door_3s_2.8.jpg"
+      ],
+      [
+        "frames/soccer_3s_0.2.jpg",
+        "frames/soccer_3s_1.5.jpg",
+        "frames/soccer_3s_2.8.jpg"
+      ]
+    ],
+    "duration": 5,
+    "aspect": "16:9",
+    "request": "In the hallway and camera framing of <Video 1>, the pink cat character from <Picture 1> dribbles a soccer ball and kicks it toward the door, copying the dribble-and-shoot motion of <Video 2>."
+  },
+  {
+    "name": "G_continuation",
+    "silent_videos": [
+      "inputs/continue_src_3s.mp4"
+    ],
+    "video_frames": [
+      [
+        "frames/continue_src_3s_0.2.jpg",
+        "frames/continue_src_3s_1.5.jpg",
+        "frames/continue_src_3s_2.8.jpg"
+      ]
+    ],
+    "duration": 5,
+    "aspect": "16:9",
+    "request": "Continue <Video 1> from its last frame: the pink cat turns around, walks through the open door into the bright room, and sits down on the chair."
+  }
+]

@@ -1,5 +1,6 @@
 # benchmark
 
+- 2026/10/04 [MiniMax H3 Ref2VA (reference-to-video) on a 128 GB M4 Max: h3.c vs mlx-serve, with and without Turbo](../2026/10/04/minimax-h3-ref2va-eval/README.md)
 - 2026/09/30 [flutter_scene on Windows: the first draw of a skinned mesh stalls for seconds](../2026/09/30/flutter-scene-windows-first-draw/README.md)
 - 2026/09/28 [A human-scale 3D garden with VRM 1.0 avatars on flutter_scene, across five platforms](../2026/09/28/flutter-scene-3d-garden/README.md)
 - 2026/09/24 [Qwen3.8-Flash-Next full 4-bit with a memory-mapped PLE table on a 128 GB M4 Max](../2026/09/24/qwen38-flash-next-ple-mmap/README.md)

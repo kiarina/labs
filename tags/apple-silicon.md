@@ -1,5 +1,6 @@
 # apple-silicon
 
+- 2026/10/04 [MiniMax H3 Ref2VA (reference-to-video) on a 128 GB M4 Max: h3.c vs mlx-serve, with and without Turbo](../2026/10/04/minimax-h3-ref2va-eval/README.md)
 - 2026/09/29 [flutter_scene master crashes the Metal shader compiler on an M4 Max Mac](../2026/09/29/flutter-scene-m4-metal-crash/README.md)
 - 2026/09/24 [Qwen3.8-Flash-Next full 4-bit with a memory-mapped PLE table on a 128 GB M4 Max](../2026/09/24/qwen38-flash-next-ple-mmap/README.md)
 - 2026/09/24 [Qwen3.8-Flash-Next REAP-288 vs full 4-bit vs Qwen3.8-27B on a 128 GB M4 Max](../2026/09/24/qwen38-flash-next-reap-eval/README.md)
