@@ -83,6 +83,14 @@ app/lib/
   [公式](https://code.claude.com/docs/en/computer-use)の computer use は「interactive session」（ターミナルの対話画面）が前提で、アプリごとの許可を端末の確認画面で聞く。
   SDK のセッションには組み込みの `computer-use` サーバーが出てこず、`toggleMcpServer('computer-use', true)` は `Server not found: computer-use`
   （同ページが名指しで除外しているのは `-p` だけで、SDK のセッションで出ないのは実測）。Codex 版は app-server 経由で computer use まで使えたので、ここは差になる
+- **組み込みの computer use を SDK から呼ぶ抜け道も無い**（2026-10-05、Claude Code 2.1.289）。
+  - 組み込みの `computer-use` は、Claude Code 自身を内部の引数 `--computer-use-mcp` で起動した stdio の MCP サーバー。対話モードの CLI だけが自分で登録する
+  - 設定の `enabledMcpServers: ['computer-use']` を渡しても、サーバー自体が登録されない。`mcpServers` に `computer-use` の名前で登録すると予約名として消される
+  - 別の名前（`mac`）で `{command: <同梱の claude>, args: ['--computer-use-mcp']}` を登録すると、つながってツール一式（`request_access`・`screenshot`・`left_click`・
+    `type`・`computer_batch` など 26 個）が出る。ただし呼ぶと全部「This computer-use server instance is not wired to a session. Per-session app permissions are not
+    available on this code path.」。単体のサーバーはツールの一覧を返すだけで、呼び出しの本体は CLI の本体が `computer-use` の名前のときだけ自分の中で処理する作り。
+    外から届く経路は無い（本体を改変すれば別だが、それはしない）
+  - 残る道: 外部の macOS 操作の MCP サーバー（Peekaboo・mac-use-mcp など）を `mcpServers` に足す、SDK の `createSdkMcpServer` で自前の画面操作ツールを書く
 - 過去のセッションの履歴では、既存のファイルの上書き（Write）も「Created」に見える（履歴には `tool_use_result` が無く、新規か上書きかが分からない）
 - 最初のメッセージを送る前に、モデル一覧とアカウントが取れる（何も送らない `query()` で約 1〜4 秒）
 - `rate_limit_event` は 5 時間枠の状態（`allowed` など）と、超過分（overage）が使えるかを返す
