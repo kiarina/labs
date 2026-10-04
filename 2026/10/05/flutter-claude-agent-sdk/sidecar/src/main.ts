@@ -84,6 +84,8 @@ type SessionConfig = {
   model?: string;
   effort?: EffortLevel;
   permissionMode?: PermissionMode;
+  /// Claude in Chrome (`claude --chrome`).
+  chrome?: boolean;
 };
 
 /// One live `query()` in streaming-input mode. Messages pushed into [input]
@@ -122,6 +124,7 @@ class LiveSession {
         canUseTool: (toolName, input, options) =>
           askPermission(sessionId, toolName, input, options),
         env: sdkEnv,
+        ...(config.chrome ? { extraArgs: { chrome: null } } : {}),
         stderr: (data) => notify('bridge/stderr', { sessionId, data }),
       },
     });

@@ -73,6 +73,19 @@ class AppController extends ChangeNotifier {
   /// bypassPermissions.
   String accessMode = Platform.environment['CLAUDE_FLUTTER_MODE'] ?? 'default';
 
+  /// Claude in Chrome (`claude --chrome`). Applies when Claude Code starts,
+  /// so toggling it restarts the open session's process (if idle).
+  bool chrome = Platform.environment['CLAUDE_FLUTTER_CHROME'] == '1';
+
+  void setChrome(bool value) {
+    chrome = value;
+    notifyListeners();
+    final view = current;
+    if (view != null && !view.isRunning) {
+      client?.request('session/close', {'sessionId': view.threadId});
+    }
+  }
+
   final protocolLog = <ProtocolLogEntry>[];
   final _subscriptions = <StreamSubscription<dynamic>>[];
 
@@ -269,6 +282,7 @@ class AppController extends ChangeNotifier {
     'model': ?model,
     'effort': ?effort,
     'permissionMode': accessMode,
+    'chrome': chrome,
   };
 
   // ---- sessions -------------------------------------------------------------

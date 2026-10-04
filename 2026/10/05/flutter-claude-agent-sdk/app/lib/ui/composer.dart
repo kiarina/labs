@@ -84,45 +84,95 @@ class _ComposerState extends State<Composer> {
           const SizedBox(height: 8),
           Row(
             children: [
-              _Picker(
-                icon: Icons.auto_awesome_outlined,
-                value: app.model,
-                options: [for (final m in app.models) m['id'] as String],
-                labels: {
-                  for (final m in app.models)
-                    m['id'] as String: m['displayName'] as String,
-                },
-                onSelected: app.setModel,
+              // The pickers scroll sideways when the window is narrow (e.g.
+              // with the protocol log open) instead of overflowing.
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      _Picker(
+                        icon: Icons.auto_awesome_outlined,
+                        value: app.model,
+                        options: [
+                          for (final m in app.models) m['id'] as String,
+                        ],
+                        labels: {
+                          for (final m in app.models)
+                            m['id'] as String: m['displayName'] as String,
+                        },
+                        onSelected: app.setModel,
+                      ),
+                      const SizedBox(width: 4),
+                      _Picker(
+                        icon: Icons.speed,
+                        value: app.effort,
+                        options: app.effortOptions,
+                        onSelected: app.setEffort,
+                      ),
+                      const SizedBox(width: 4),
+                      _Picker(
+                        icon: Icons.shield_outlined,
+                        value: app.accessMode,
+                        options: const [
+                          'default',
+                          'acceptEdits',
+                          'plan',
+                          'auto',
+                          'bypassPermissions',
+                        ],
+                        // Claude Code's permission modes.
+                        labels: const {
+                          'default': 'Ask permissions',
+                          'acceptEdits': 'Accept edits',
+                          'plan': 'Plan',
+                          'auto': 'Auto',
+                          'bypassPermissions': 'Bypass permissions',
+                        },
+                        onSelected: app.setAccessMode,
+                      ),
+                      const SizedBox(width: 4),
+                      Tooltip(
+                        message: app.chrome
+                            ? 'Claude in Chrome is on'
+                            : 'Claude in Chrome is off',
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(6),
+                          onTap: () => app.setChrome(!app.chrome),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 4,
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.public,
+                                  size: 14,
+                                  color: app.chrome
+                                      ? Palette.text
+                                      : Palette.textFaint,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  'Chrome',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: app.chrome
+                                        ? Palette.text
+                                        : Palette.textFaint,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              const SizedBox(width: 4),
-              _Picker(
-                icon: Icons.speed,
-                value: app.effort,
-                options: app.effortOptions,
-                onSelected: app.setEffort,
-              ),
-              const SizedBox(width: 4),
-              _Picker(
-                icon: Icons.shield_outlined,
-                value: app.accessMode,
-                options: const [
-                  'default',
-                  'acceptEdits',
-                  'plan',
-                  'auto',
-                  'bypassPermissions',
-                ],
-                // Claude Code's permission modes.
-                labels: const {
-                  'default': 'Ask permissions',
-                  'acceptEdits': 'Accept edits',
-                  'plan': 'Plan',
-                  'auto': 'Auto',
-                  'bypassPermissions': 'Bypass permissions',
-                },
-                onSelected: app.setAccessMode,
-              ),
-              const Spacer(),
               _UsageRing(app: app),
               const SizedBox(width: 8),
               if (running && !hasText)
