@@ -94,6 +94,12 @@ Stage 1 (512×512, 22 frames, raw prompt, case A):
   against its own source video. Continuation (G) did not start from the source's
   last frame (the door was closed again). Resolution (960×544 vs 1344×768), Turbo
   and 8-bit weights are all candidates; this lab did not separate them.
+- **Dialogue is spoken as written.** Qwen3-Omni transcribed B as
+  「こんにちは、みー猫だよ。今日も一緒にいっぱい遊ぼうね。」 and E as
+  「みー猫、どこに行く？公園で遊ぼう。」, matching the prompts. Whether the two
+  voices in E follow their two references is not established: Omni heard one
+  speaker in E, but it also described both macOS reference voices the same way
+  ("young female, high"), so it cannot tell them apart.
 - **Multi-shot prompts:** the rewritten two-shot plan was ignored for A but
   followed for E (a cut at about 3 s from one speaker to the other).
 - **mlx-serve holds about 29 GB while idle** after loading the pack.
