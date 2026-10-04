@@ -225,7 +225,7 @@ class _Command extends StatelessWidget {
     final actions = (data['commandActions'] as List? ?? const []).cast<Map>();
     final label =
         _describeActions(actions) ??
-        _stripShell(data['command'] as String? ?? '');
+        _firstLine(_stripShell(data['command'] as String? ?? ''));
     final status = data['status'] as String?;
     final exit = data['exitCode'] as int?;
     final failed = status == 'failed' || (exit != null && exit != 0);
@@ -277,6 +277,12 @@ class _Command extends StatelessWidget {
     }
     return parts.join(', ');
   }
+}
+
+/// A heredoc or multi-line script is shown by its first line in the title.
+String _firstLine(String s) {
+  final lines = s.split('\n');
+  return lines.length == 1 ? s : '${lines.first} …';
 }
 
 String _stripShell(String command) {

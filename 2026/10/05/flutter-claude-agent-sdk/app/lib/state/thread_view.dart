@@ -68,7 +68,15 @@ class TurnState {
     final parts = <String>[];
     for (final i in items.where((i) => i.type == 'fileChange')) {
       for (final c in (i.data['changes'] as List).cast<Map>()) {
-        parts.add('diff --git a/${c['path']} b/${c['path']}\n${c['diff']}');
+        var diff = c['diff'] as String? ?? '';
+        // `add` carries the file content; mark every line as added.
+        if ((c['kind'] as Map?)?['type'] == 'add') {
+          diff = const LineSplitter()
+              .convert(diff)
+              .map((l) => '+$l')
+              .join('\n');
+        }
+        parts.add('diff --git a/${c['path']} b/${c['path']}\n$diff');
       }
     }
     diff = parts.join('\n');
@@ -164,10 +172,10 @@ class ThreadView extends ChangeNotifier {
       case 'result':
         _onResult(m);
       case 'system':
-        if (m['subtype'] == 'init') {
-          model = m['model'] as String? ?? model;
-          permissionMode = m['permissionMode'] as String? ?? permissionMode;
-        }
+        // init, and status after a mode change (e.g. the user accepted the
+        // "accept edits for this session" suggestion).
+        if (m['subtype'] == 'init') model = m['model'] as String? ?? model;
+        if (m['permissionMode'] case final String mode) permissionMode = mode;
       default:
         return;
     }

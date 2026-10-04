@@ -33,10 +33,21 @@ class _TranscriptState extends State<Transcript> {
     super.dispose();
   }
 
-  void _followBottom() {
+  void _followBottom([int retries = 5]) {
     if (!_stickToBottom) return;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scroll.hasClients) _scroll.jumpTo(_scroll.position.maxScrollExtent);
+      if (!_scroll.hasClients) return;
+      final before = _scroll.position.maxScrollExtent;
+      _scroll.jumpTo(before);
+      // The lazy list only estimates its extent until the rows near the end
+      // are laid out (a long history); repeat until it settles.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_scroll.hasClients &&
+            _scroll.position.maxScrollExtent != before &&
+            retries > 0) {
+          _followBottom(retries - 1);
+        }
+      });
     });
   }
 

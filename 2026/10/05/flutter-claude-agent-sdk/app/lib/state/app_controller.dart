@@ -385,6 +385,11 @@ class AppController extends ChangeNotifier {
         }
         if (sessionId != null && sessionId == current?.threadId) {
           current!.handleSdkMessage(m);
+          final mode = current!.permissionMode;
+          if (mode != null && mode != accessMode) {
+            accessMode = mode;
+            notifyListeners();
+          }
           if (m['type'] == 'result') unawaited(_afterResult(current!));
         }
         if (m['type'] == 'result') {
