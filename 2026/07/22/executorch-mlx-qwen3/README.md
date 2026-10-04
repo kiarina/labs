@@ -44,13 +44,19 @@ Metal allocatorの使用量と同義ではありません。
 
 | パッケージ | 件数 | 上げていない理由 |
 |---|---:|---|
-| `transformers` 4.56.1 | 8（high, medium） | `optimum-executorch 0.1.0` が `transformers==4.56.1` と完全固定している。上げるには optimum-executorch 1.x へ移ることになり、export 経路が変わる別の実験になる |
+| `transformers` 4.56.1 | 8（high, medium）＋ 2026-10-05 に 1（high, GHSA-x9r9-c232-4q39） | `optimum-executorch 0.1.0` が `transformers==4.56.1` と完全固定している。上げるには optimum-executorch 1.x へ移ることになり、export 経路が変わる別の実験になる。2026-10-05 の 1 件は `load_custom_generate()`（`generate(custom_generate=...)`）の経路で、この lab は `generate()` を呼ばず自前のループで生成する |
 | `torch` 2.12.1 | 2（low） | 形式上は上げられる（`executorch 1.3.1` の要求は `torch>=2.12.0a0` で上限なし）。ただし PyTorch MPS BF16 はこの lab の比較対象そのもので、上げると全体の測り直しになる |
 | `accelerate` 1.14.0 | 1（medium, CVE-2026-69112） | 修正版が存在しない |
 | `setuptools` 81.0.0 | 1（medium） | 計測には関わらないが、`uv lock --upgrade-package` では動かない |
 
 意図的に据え置いています。上げるなら、この lab を測り直すのではなく、新しい lab として
 やり直すのが筋です。
+
+`urllib3` は 2026-10-05 に **2.7.0 から 2.8.0 へ上げました**（`uv.lock` のみ。advisory 3 件、
+high 2・medium 1）。`huggingface-hub` → `requests` 経由で入ります。2.8.0 の環境で重みを
+取り直して export し、上げる前の環境で export したものと同じ benchmark を流すと、3 backend とも
+quality と performance の token 列が一致しました（Mac Studio M4 Max で確認）。PTE は同じ環境でも
+export のたびに約 2,800 バイトが変わる（サイズは下の表と同じ）ため、SHA-256 では比べていません。
 
 ## Run
 

@@ -82,6 +82,16 @@ ONNX は `simplify=False` で公式 exporter から生成し、Ultralytics の�
 前処理と元解像度への復元を行います。モデル初期化、ファイル読み込み、可視化画像の
 保存は benchmark に含めません。
 
+## Dependency advisories
+
+`urllib3` は 2026-10-05 に **2.7.0 から 2.8.0 へ上げました**（`uv.lock` のみ。advisory 3 件、
+high 2・medium 1）。`ultralytics` → `requests` 経由で入ります。
+上げる前後で `output_pytorch.png`、`output_onnx.png`、`output_disagreement.png`、
+`output_explanation.png` と、2.8.0 で取り直した `yolo26n-sem.pt` は**バイト一致**、
+画素一致率と class ごとの IoU の表も同じでした（Mac Studio M4 Max で確認）。
+`yolo26n-sem.onnx` は同じ環境でも export のたびにバイト列が変わる（サイズは同じ）ため、
+比較の対象から外しています。
+
 ## Requirements and run
 
 - [mise](https://mise.jdx.dev/)

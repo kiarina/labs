@@ -45,6 +45,13 @@ benchmark:      10 iterations
 モデルは `rapidocr` wheel に同梱されたものを使用します。PaddleOCR、OpenVINO、
 MNN、GPU backend との比較は行いません。
 
+## Dependency advisories
+
+`urllib3` は 2026-10-05 に **2.7.0 から 2.8.0 へ上げました**（`uv.lock` のみ。advisory 3 件、
+high 2・medium 1）。この lab では `rapidocr` → `requests` 経由で、フォント `japan.ttc` の
+ダウンロードに使われます。上げる前後で `output_ocr.jpg` は**バイト一致**、認識結果の表も
+同じでした。2.8.0 で `japan.ttc` を取り直しても SHA-256 は同じです（Mac Studio M4 Max で確認）。
+
 ## Requirements and run
 
 - [mise](https://mise.jdx.dev/)

@@ -232,6 +232,14 @@ YAMNet の 0.975 秒 window と 0.48 秒 hop により、検出遅延の最短�
   の正確な onset/offset 付き 30 秒 mixture で追試する
 - 実マイク入力では callback と推論 worker を分離し、queue overflow も測る
 
+## Dependency advisories
+
+`urllib3` は 2026-10-05 に **2.7.0 から 2.8.0 へ上げました**（`uv.lock` のみ。advisory 3 件、
+high 2・medium 1）。この lab のダウンロードは標準ライブラリの `urllib.request` で行い、
+`urllib3` は `tensorflow` → `requests` の依存として入るだけです。上げる前後で
+`output/report.json` は処理時間の 2 項目（`feature_extraction_elapsed_seconds`、
+`real_time_factor`）を除いて一致しました（Mac Studio M4 Max で確認）。
+
 ## Requirements and run
 
 - [mise](https://mise.jdx.dev/)

@@ -213,6 +213,18 @@ WavLM checkpointもrevisionとSHA-256を固定しました。これにより初�
 peak resident memoryは約2.8 GiBになりました。軽量な14M parameterの変換本体だけではなく、
 zero-shot target encoderが配布・メモリ量の大部分を占めます。
 
+## Dependency advisories
+
+`urllib3` 2.7.0 に advisory が 3 件あります（high 2・medium 1。修正版は 2.8.0。2026-10-05 時点）。
+`gdown` と `librosa` → `pooch` の `requests` 経由で入ります。**上げていません。**
+
+2026-10-05 に新しい環境で `mise run` すると、`vendor/MeanVC/src/runtime/run_rt.py` の
+`import torchaudio` で止まりました。2026-08-27 に `torch` を 2.13.0 へ上げたとき `torchaudio`
+を依存から外しましたが（`torchaudio` は 2.11.0 が最新で、`torch==2.11.0` に固定されている）、
+固定した MeanVC runtime は `torchaudio.compliance.kaldi` を使っています。上の 2.13.0 の
+測定は、前の環境に残った `torchaudio` で動いていた可能性があります。このため上げる前後の
+出力を比べられず、バイト一致を示せていません。
+
 ## Limitations
 
 - 1本の短い日本語会話、1組のsource/target話者だけを評価した

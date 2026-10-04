@@ -108,6 +108,16 @@ unabridged local captures are retained under the Git-ignored `output/`.
   definition or to a reading taken at another moment.
 - 64K, 128K, 256K, quality tasks, and agentic tasks are intentionally not run.
 
+## Dependency advisories
+
+As of 2026-10-05, the lock resolves `urllib3` 2.7.0 (3 advisories, high and
+medium, fixed in 2.8.0) and `datasets` 5.0.0 (1 medium advisory, fixed in
+5.0.1). They come in through `mlx-vlm` and `datasets` → `requests`. They are
+**not upgraded**: this lab records performance on one M1 Max, so there is no
+byte-comparable artifact to show unchanged after an upgrade, and rerunning it
+means a 34 GiB download on the original machine. `datasets` is not imported on
+the benchmark path.
+
 ## References
 
 - [Tanishq Dubey's Laguna S 2.1 benchmark harness](https://github.com/tanishq-dubey/macos-laguna-s2.1)
