@@ -78,9 +78,11 @@ app/lib/
   同じアカウントに複数の Chrome（拡張）がつながっていると、最初に `AskUserQuestion` でどれを使うか聞いてくる。アプリの質問カードで
   「すべての Chrome に確認画面を出す」を選び、Chrome 側で選ぶと、example.com を開いてタイトル（Example Domain）を読んだ。アプリでは入力欄の「Chrome」で切り替える
   （Claude Code の起動時に効くので、切り替えると止まっているセッションのプロセスを閉じ、次の送信で立て直す）
-- **computer use は使えない。** [公式](https://code.claude.com/docs/en/computer-use)のとおり対話型のセッションが要り、`-p`（非対話）では使えない。
-  SDK のセッションには組み込みの `computer-use` サーバーが無く、`toggleMcpServer('computer-use', true)` は `Server not found: computer-use`。
-  Codex 版は app-server 経由で computer use まで使えたので、ここは差になる
+- **computer use は使えない。** SDK は Claude Code を端末の画面（TUI）無しで、標準入出力の JSON で動かす
+  （実際の引数: `claude --output-format stream-json --verbose --input-format stream-json [--chrome]`。`-p` は付かない）。会話としては複数ターン・steer・承認ができるが、
+  [公式](https://code.claude.com/docs/en/computer-use)の computer use は「interactive session」（ターミナルの対話画面）が前提で、アプリごとの許可を端末の確認画面で聞く。
+  SDK のセッションには組み込みの `computer-use` サーバーが出てこず、`toggleMcpServer('computer-use', true)` は `Server not found: computer-use`
+  （同ページが名指しで除外しているのは `-p` だけで、SDK のセッションで出ないのは実測）。Codex 版は app-server 経由で computer use まで使えたので、ここは差になる
 - 過去のセッションの履歴では、既存のファイルの上書き（Write）も「Created」に見える（履歴には `tool_use_result` が無く、新規か上書きかが分からない）
 - 最初のメッセージを送る前に、モデル一覧とアカウントが取れる（何も送らない `query()` で約 1〜4 秒）
 - `rate_limit_event` は 5 時間枠の状態（`allowed` など）と、超過分（overage）が使えるかを返す
