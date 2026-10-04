@@ -19,6 +19,7 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 ## Labs
 
 - 2026/10
+  - [A Codex-app-like Flutter client on the Claude Agent SDK, running on a Claude subscription](2026/10/05/flutter-claude-agent-sdk/README.md) - [flutter](tags/flutter.md), [dart](tags/dart.md), [claude](tags/claude.md), [claude-agent-sdk](tags/claude-agent-sdk.md), [anthropic](tags/anthropic.md), [typescript](tags/typescript.md), [agent](tags/agent.md), [macos](tags/macos.md)
   - [MiniMax H3 Ref2VA (reference-to-video) on a 128 GB M4 Max: h3.c vs mlx-serve, with and without Turbo](2026/10/04/minimax-h3-ref2va-eval/README.md) - [video-generation](tags/video-generation.md), [minimax-h3](tags/minimax-h3.md), [mlx](tags/mlx.md), [apple-silicon](tags/apple-silicon.md), [benchmark](tags/benchmark.md), [diffusion](tags/diffusion.md)
   - [Drawing walk-cycle pixel-art sprite sheets in plain Python, and reviewing the animation from stills](2026/10/02/python-pixel-sprite-sheets/README.md) - [pixel-art](tags/pixel-art.md), [sprite](tags/sprite.md), [animation](tags/animation.md), [python](tags/python.md), [pillow](tags/pillow.md), [image](tags/image.md), [agent](tags/agent.md)
   - [A Codex desktop app clone in Flutter on top of codex app-server](2026/10/01/flutter-codex-app-server/README.md) - [flutter](tags/flutter.md), [dart](tags/dart.md), [codex](tags/codex.md), [codex-app-server](tags/codex-app-server.md), [openai](tags/openai.md), [json-rpc](tags/json-rpc.md), [agent](tags/agent.md), [macos](tags/macos.md)
