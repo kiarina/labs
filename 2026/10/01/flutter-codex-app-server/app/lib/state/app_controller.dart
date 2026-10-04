@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 import '../codex/app_server_client.dart';
+import 'thread_store.dart';
 import 'thread_view.dart';
 
 class ThreadSummary {
@@ -13,7 +14,12 @@ class ThreadSummary {
       name = t['name'] as String?,
       cwd = t['cwd'] as String? ?? '',
       updatedAt = (t['updatedAt'] as num?)?.toInt() ?? 0,
-      status = (t['status'] as Map?)?['type'] as String? ?? 'notLoaded';
+      status = (t['status'] as Map?)?['type'] as String? ?? 'notLoaded',
+      sectionId = (t['section'] as Map?)?['id'] as String?,
+      // There is no archived flag on Thread; archiving moves the rollout
+      // file to archived_sessions/ (the path is marked unstable).
+      archived =
+          (t['path'] as String?)?.contains('/archived_sessions/') ?? false;
 
   final String id;
   String preview;
@@ -21,6 +27,8 @@ class ThreadSummary {
   final String cwd;
   int updatedAt;
   String status;
+  String? sectionId;
+  final bool archived;
 
   String get title {
     if (name != null && name!.isNotEmpty) return name!;
@@ -38,6 +46,15 @@ class AppController extends ChangeNotifier {
   List<Json> models = const [];
   Json? rateLimits;
   final threads = <ThreadSummary>[];
+
+  /// Thread sections (`threadSection/*`). They live in CODEX_HOME and are
+  /// shared with the Codex app (its "Pinned" is one of them).
+  List<Json> sections = const [];
+
+  final store = ThreadStore.defaultLocation();
+
+  /// How many of this app's threads the sidebar reads; "Show more" adds 50.
+  int ownLimit = 50;
   ThreadView? current;
 
   /// The project (cwd) a new thread starts in.
@@ -108,6 +125,8 @@ class AppController extends ChangeNotifier {
         version: '0.1.0',
       );
       notifyListeners();
+      final known = await store.open(serverInfo!['codexHome'] as String);
+      if (!known) await _importOwnThreads();
       await Future.wait([
         _loadAccount(),
         _loadModels(),
@@ -158,40 +177,129 @@ class AppController extends ChangeNotifier {
   /// thread (CLI, IDE, Codex app, `codex exec`, ...).
   bool onlyOwnThreads = true;
 
+  bool get hasMoreOwnThreads => onlyOwnThreads && store.length > ownLimit;
+
   void setOnlyOwnThreads(bool value) {
     onlyOwnThreads = value;
     notifyListeners();
     refreshThreads();
   }
 
+  void showMoreThreads() {
+    ownLimit += 50;
+    refreshThreads();
+  }
+
   Future<void> refreshThreads() async {
-    const wanted = 50;
-    final found = <ThreadSummary>[];
+    await Future.wait([
+      _loadSections(),
+      onlyOwnThreads ? _loadOwnThreads() : _loadRecentThreads(),
+    ]);
+  }
+
+  /// Reads the remembered threads one by one: the cost follows how many this
+  /// app shows, not how many threads exist in CODEX_HOME.
+  Future<void> _loadOwnThreads() async {
+    final ids = store.recent(limit: ownLimit);
+    final read = await Future.wait(ids.map(_readThread));
+    final found = read.nonNulls.where((t) => !t.archived).toList()
+      ..sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+    threads
+      ..clear()
+      ..addAll(found);
+    notifyListeners();
+  }
+
+  Future<ThreadSummary?> _readThread(String id) async {
+    try {
+      final r = await client!.request('thread/read', {'threadId': id}) as Map;
+      return ThreadSummary((r['thread'] as Map).cast<String, dynamic>());
+    } on AppServerError catch (e) {
+      // Deleted elsewhere (or never persisted): forget it.
+      if (e.message.startsWith('thread not loaded')) await store.remove(id);
+      return null;
+    }
+  }
+
+  Future<void> _loadRecentThreads() async {
+    final r = await client!.request('thread/list', {
+      'limit': 50,
+      'sortKey': 'updated_at',
+      // Include threads started by the CLI, the IDE extension and app-server
+      // clients, like the Codex app does.
+      'sourceKinds': ['cli', 'vscode', 'appServer', 'exec'],
+    }) as Map;
+    threads
+      ..clear()
+      ..addAll(
+        (r['data'] as List).cast<Map>().map(
+          (t) => ThreadSummary(t.cast<String, dynamic>()),
+        ),
+      );
+    notifyListeners();
+  }
+
+  /// First run against a CODEX_HOME: adopt the threads this app started
+  /// before it kept a list, recognized by `originator` (= `clientInfo.name`).
+  /// The local app-server rejects the `originators` filter, so this pages
+  /// through every thread once.
+  Future<void> _importOwnThreads() async {
+    final found = <String, int>{};
     String? cursor;
-    // The local app-server rejects the `originators` filter, so page through
-    // the list and keep this app's threads. Other clients (`codex exec` in
-    // particular) can start many threads, hence several pages.
-    for (var page = 0; page < 20 && found.length < wanted; page++) {
+    do {
       final r = await client!.request('thread/list', {
-        'limit': onlyOwnThreads ? 100 : wanted,
-        'sortKey': 'updated_at',
+        'limit': 100,
         'cursor': ?cursor,
-        // Include threads started by the CLI, the IDE extension and app-server
-        // clients (this app), like the Codex app does.
         'sourceKinds': ['cli', 'vscode', 'appServer', 'exec'],
+        'useStateDbOnly': true,
       }) as Map;
       for (final t in (r['data'] as List).cast<Map>()) {
-        if (onlyOwnThreads && t['originator'] != clientName) continue;
-        found.add(ThreadSummary(t.cast<String, dynamic>()));
+        if (t['originator'] == clientName) {
+          found[t['id'] as String] = ((t['updatedAt'] as num) * 1000).toInt();
+        }
       }
-      // Show what has been found so far; scanning many pages takes seconds.
-      threads
-        ..clear()
-        ..addAll(found.take(wanted));
-      notifyListeners();
       cursor = r['nextCursor'] as String?;
-      if (cursor == null || !onlyOwnThreads) break;
-    }
+    } while (cursor != null);
+    await store.addAll(found);
+  }
+
+  Future<void> _loadSections() async {
+    final r = await client!.request('threadSection/list', {}) as Map;
+    sections = (r['data'] as List)
+        .cast<Map>()
+        .map((s) => s.cast<String, dynamic>())
+        .toList();
+    notifyListeners();
+  }
+
+  Future<String> createSection(String name) async {
+    final r =
+        await client!.request('threadSection/create', {'name': name}) as Map;
+    await _loadSections();
+    return (r['section'] as Map)['id'] as String;
+  }
+
+  Future<void> renameSection(String sectionId, String name) async {
+    await client!.request('threadSection/update', {
+      'sectionId': sectionId,
+      'name': name,
+    });
+    await _loadSections();
+  }
+
+  Future<void> deleteSection(String sectionId) async {
+    await client!.request('threadSection/delete', {'sectionId': sectionId});
+    await refreshThreads();
+  }
+
+  /// [sectionId] null takes the thread out of its section.
+  Future<void> moveToSection(ThreadSummary t, String? sectionId) async {
+    await client!.request('thread/section/move', {
+      'threadId': t.id,
+      'sectionId': sectionId,
+    });
+    t.sectionId = sectionId;
+    notifyListeners();
   }
 
   Json? get currentModel => models.where((m) => m['id'] == model).firstOrNull;
@@ -238,6 +346,7 @@ class AppController extends ChangeNotifier {
     );
     current = view;
     notifyListeners();
+    if (store.contains(summary.id)) unawaited(store.touch(summary.id));
     final r = await client!.request('thread/resume', {
       'threadId': summary.id,
       'approvalPolicy': approvalPolicy,
@@ -275,6 +384,7 @@ class AppController extends ChangeNotifier {
         cwd: r['cwd'] as String,
       )..model = r['model'] as String?;
       current = view;
+      await store.touch(view.threadId);
       // thread/started usually arrives before the response.
       final summary = threads.where((t) => t.id == view!.threadId).firstOrNull;
       if (summary == null) {
@@ -284,6 +394,7 @@ class AppController extends ChangeNotifier {
       }
       notifyListeners();
     }
+    if (store.contains(view.threadId)) unawaited(store.touch(view.threadId));
     final active = view.activeTurn;
     if (active != null) {
       // Same as typing while Codex is working: steer the running turn.
@@ -340,10 +451,17 @@ class AppController extends ChangeNotifier {
         ((n.params['thread'] as Map?)?['id'] as String?);
     switch (n.method) {
       case 'thread/started':
-        final t = ThreadSummary(
-          (n.params['thread'] as Map).cast<String, dynamic>(),
-        );
+        final raw = (n.params['thread'] as Map).cast<String, dynamic>();
+        // Sub-agent threads belong to their parent, not the sidebar.
+        if (raw['parentThreadId'] != null) break;
+        final t = ThreadSummary(raw);
         if (!threads.any((e) => e.id == t.id)) threads.insert(0, t);
+        notifyListeners();
+      case 'thread/archived' || 'thread/deleted':
+        threads.removeWhere((t) => t.id == threadId);
+        if (n.method == 'thread/deleted' && threadId != null) {
+          unawaited(store.remove(threadId));
+        }
         notifyListeners();
       case 'thread/name/updated':
         for (final t in threads.where((t) => t.id == threadId)) {

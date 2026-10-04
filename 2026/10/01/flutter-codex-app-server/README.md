@@ -37,6 +37,7 @@ skills / plugins の管理、レビューモード（`review/start`）、サブ�
 app/lib/
   codex/app_server_client.dart  Process.start('codex', ['app-server']) と、改行区切りの JSON-RPC（request / notify / respond）
   state/app_controller.dart     接続・アカウント・モデル・スレッド一覧・送信・中断・承認の返答
+  state/thread_store.dart       このアプリが作ったスレッドの ID と最後に使った時刻（CODEX_HOME ごと）
   state/thread_view.dart        開いているスレッドの turn → item。通知（item/started・delta・completed など）を反映
   ui/                           サイドバー、トランスクリプト、item ごとの表示、承認カード、入力欄
 ```
@@ -54,10 +55,18 @@ app/lib/
   差分として描くには add / delete の行に `+` / `-` を付ける
 - `thread/list` は `sourceKinds` を省くと「対話のソース」だけを返す。CLI・IDE・app-server（このアプリ）のスレッドを並べるには
   `['cli', 'vscode', 'appServer', 'exec']` を明示した
-- **このアプリで作ったスレッドだけを並べられる**（2026-10-04）。`initialize` の `clientInfo.name` が各スレッドの `originator` として残る
-  （このアプリは `codex_flutter`、Codex アプリは `Codex Desktop`、`codex exec` は `codex_exec`）。ただし `thread/list` の `originators` での絞り込みは
-  ローカルの app-server では `originator filtering is not supported by the local app-server` で弾かれるので、100 件ずつページを送って手元で絞る。
-  手元の 876 件を全部たどって 1.5 秒。サイドバーの「This app / All」で切り替える（既定は This app）
+- **このアプリで作ったスレッドだけを並べられる**（2026-10-04）。
+  - スレッドには `initialize` の `clientInfo.name` が `originator` として残る（このアプリは `codex_flutter`、Codex アプリは `Codex Desktop`、
+    `codex exec` は `codex_exec`）。ただし `thread/list` の `originators` での絞り込みはローカルの app-server では
+    `originator filtering is not supported by the local app-server` で弾かれ、全件をたどって手元で絞るしかない（876 件で 1.5 秒。全体の件数に比例する）
+  - そこで、このアプリが作ったスレッドの ID を手元のファイル（`~/Library/Application Support/<bundle id>/threads.json`、CODEX_HOME ごと）に覚え、
+    最近使った 50 件を `thread/read` で読む（「Show more」で 50 件ずつ増やす）。費用は表示する件数だけで決まる。ファイルが無い初回だけ、
+    `originator` で全件をたどって取り込む
+  - 外で消されたスレッドは `thread/read` が `thread not loaded: <id>` を返すので、ファイルから外す。アーカイブは Thread に印が無く、
+    `path` が `archived_sessions/` に移ることでしか分からない（`path` は UNSTABLE）
+- **スレッドのセクションはサーバー側（`threadSection/*`、`thread/section/move`）で管理する**（2026-10-04）。セクションは CODEX_HOME にあり、
+  Codex アプリと共有（Codex アプリの「Pinned」もセクション）。作成・名前の変更・削除・スレッドの出し入れを確かめた。
+  セクションを消すと中のスレッドはセクションなしに戻る。セクションの操作には通知が来ない（他のクライアントの変更は読み直すまで分からない）
 - `thread/resume` は turn と item を返すが、**ターン全体の差分（`turn/diff/updated`）は再開しても戻らない**（保存されない）
 - `thread/start` の直後に、ユーザーの設定の MCP サーバー（この環境では 4 つ）の `mcpServer/startupStatus/updated` が届く。
   サンドボックスや承認の方針も含め、ユーザーの `~/.codex/config.toml` が効く
@@ -90,6 +99,7 @@ mise run run        # macOS 版をビルドして開く
 CODEX_FLUTTER_CWD=path/to/project CODEX_FLUTTER_ACCESS=read-only \
   CODEX_FLUTTER_PROMPT="..." mise run run   # プロジェクト・モード・最初のメッセージを指定して開く
 mise run schema     # codex app-server generate-ts / generate-json-schema
+# CODEX_FLUTTER_STATE_DIR で、覚えたスレッドの保存先を変えられる
 ```
 
 ## Environment
