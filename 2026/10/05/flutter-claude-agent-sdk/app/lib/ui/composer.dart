@@ -132,6 +132,14 @@ class _ComposerState extends State<Composer> {
                         onSelected: app.setAccessMode,
                       ),
                       const SizedBox(width: 4),
+                      _Toggle(
+                        icon: Icons.mouse_outlined,
+                        label: 'Mac',
+                        on: app.peekaboo,
+                        tooltip: 'Control the Mac through Peekaboo (MCP)',
+                        onTap: () => app.setPeekaboo(!app.peekaboo),
+                      ),
+                      const SizedBox(width: 4),
                       Tooltip(
                         message: app.chrome
                             ? 'Claude in Chrome is on'
@@ -273,6 +281,45 @@ class _UsageRing extends StatelessWidget {
           strokeWidth: 2,
           color: Palette.textDim,
           backgroundColor: Palette.border,
+        ),
+      ),
+    );
+  }
+}
+
+class _Toggle extends StatelessWidget {
+  const _Toggle({
+    required this.icon,
+    required this.label,
+    required this.on,
+    required this.tooltip,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final bool on;
+  final String tooltip;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = on ? Palette.text : Palette.textFaint;
+    return Tooltip(
+      message: '$tooltip: ${on ? 'on' : 'off'}',
+      child: InkWell(
+        borderRadius: BorderRadius.circular(6),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 14, color: color),
+              const SizedBox(width: 4),
+              Text(label, style: TextStyle(fontSize: 12, color: color)),
+            ],
+          ),
         ),
       ),
     );

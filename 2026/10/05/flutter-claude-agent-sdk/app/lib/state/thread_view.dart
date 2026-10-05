@@ -118,6 +118,11 @@ class ThreadView extends ChangeNotifier {
   Json? tokenUsage;
   final errors = <String>[];
 
+  /// Set by the controller when the user presses stop, so the `result`
+  /// that follows (an error subtype with a diagnostic text) reads as an
+  /// interrupt rather than a failure.
+  bool interruptRequested = false;
+
   /// Open assistant message: content block index -> item id.
   final _blocks = <int, String>{};
   String? _messageId;
@@ -302,9 +307,13 @@ class ThreadView extends ChangeNotifier {
     final turn = activeTurn;
     if (turn == null) return;
     final aborted =
+        interruptRequested ||
         m['terminal_reason'] == 'aborted_tools' ||
         m['terminal_reason'] == 'aborted_streaming';
-    final error = m['is_error'] == true || m['subtype'] != 'success';
+    final error =
+        !interruptRequested &&
+        (m['is_error'] == true || m['subtype'] != 'success');
+    interruptRequested = false;
     turn
       ..status = error
           ? 'failed'

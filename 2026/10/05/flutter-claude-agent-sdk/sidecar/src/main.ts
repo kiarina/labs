@@ -86,7 +86,15 @@ type SessionConfig = {
   permissionMode?: PermissionMode;
   /// Claude in Chrome (`claude --chrome`).
   chrome?: boolean;
+  /// Mac control through Peekaboo's MCP server (`peekaboo mcp`). Claude
+  /// Code's own computer use is not reachable from the SDK.
+  /// `--allow-foreground`: without it Peekaboo only acts in the background
+  /// and refuses to launch apps; each action still goes through canUseTool.
+  peekaboo?: boolean;
 };
+
+// GUI apps do not get the shell PATH; Homebrew's peekaboo by default.
+const peekabooBin = process.env.PEEKABOO_BIN ?? '/opt/homebrew/bin/peekaboo';
 
 /// One live `query()` in streaming-input mode. Messages pushed into [input]
 /// start a turn when idle, or are injected into the running turn ("steer").
@@ -125,6 +133,9 @@ class LiveSession {
           askPermission(sessionId, toolName, input, options),
         env: sdkEnv,
         ...(config.chrome ? { extraArgs: { chrome: null } } : {}),
+        ...(config.peekaboo
+          ? { mcpServers: { peekaboo: { type: 'stdio' as const, command: peekabooBin, args: ['mcp', '--allow-foreground'] } } }
+          : {}),
         stderr: (data) => notify('bridge/stderr', { sessionId, data }),
       },
     });

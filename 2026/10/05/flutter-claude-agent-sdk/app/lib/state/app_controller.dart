@@ -86,6 +86,19 @@ class AppController extends ChangeNotifier {
     }
   }
 
+  /// Mac control through Peekaboo's MCP server. Like [chrome], it applies
+  /// when Claude Code starts.
+  bool peekaboo = Platform.environment['CLAUDE_FLUTTER_PEEKABOO'] == '1';
+
+  void setPeekaboo(bool value) {
+    peekaboo = value;
+    notifyListeners();
+    final view = current;
+    if (view != null && !view.isRunning) {
+      client?.request('session/close', {'sessionId': view.threadId});
+    }
+  }
+
   final protocolLog = <ProtocolLogEntry>[];
   final _subscriptions = <StreamSubscription<dynamic>>[];
 
@@ -283,6 +296,7 @@ class AppController extends ChangeNotifier {
     'effort': ?effort,
     'permissionMode': accessMode,
     'chrome': chrome,
+    'peekaboo': peekaboo,
   };
 
   // ---- sessions -------------------------------------------------------------
@@ -362,6 +376,7 @@ class AppController extends ChangeNotifier {
   Future<void> interrupt() async {
     final view = current;
     if (view == null || !view.isRunning) return;
+    view.interruptRequested = true;
     await client!.request('session/interrupt', {'sessionId': view.threadId});
   }
 
