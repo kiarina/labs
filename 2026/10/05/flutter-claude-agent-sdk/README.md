@@ -91,6 +91,15 @@ app/lib/
     available on this code path.」。単体のサーバーはツールの一覧を返すだけで、呼び出しの本体は CLI の本体が `computer-use` の名前のときだけ自分の中で処理する作り。
     外から届く経路は無い（本体を改変すれば別だが、それはしない）
   - 残る道: 外部の macOS 操作の MCP サーバー（Peekaboo・mac-use-mcp など）を `mcpServers` に足す、SDK の `createSdkMcpServer` で自前の画面操作ツールを書く
+- **Peekaboo（外部の MCP サーバー）なら Mac を操作できた**（2026-10-05、Peekaboo 4.8.0、Homebrew の `openclaw/tap/peekaboo`）。入力欄の「Mac」で
+  `mcpServers: {peekaboo: {command: 'peekaboo', args: ['mcp', '--allow-foreground']}}` を足す。計算機で AC → 1・2・×・1・2・= を押して「144」を読んだ
+  - `--allow-foreground` が無いと Peekaboo は裏での操作しかせず、起動していないアプリを開くのを拒む（「cold launch requires explicit foreground consent」）
+  - macOS の権限（画面収録・アクセシビリティ・イベントの合成）は、Peekaboo を起動したアプリ（この lab の Flutter アプリ）に付く。初回にダイアログが出て、
+    画面収録は許可の後にアプリの再起動が要った。Debug ビルドを作り直すと署名が変わり、許可が外れることがある
+  - 操作は遅い。Peekaboo は操作のたびに画面を取り直す（`see`）ことを求め、古い snapshot での操作を拒む。クリックは毎回「confirmed outcome が無い」と返るが反映はされていた。
+    12×12 の入力に約 20 回のツール呼び出し。既定のモードでは 1 回ごとに承認カードが出る
+  - Claude Code の computer use にあるアプリごとの許可・他のアプリを隠す・Esc で止める、は無い。歯止めはこのアプリの承認カード（canUseTool）と Peekaboo の前面操作の制限
+- Flutter のウィンドウが他のウィンドウの後ろに隠れている間は描き直されず、裏で撮った画面は古いままになる（クリックすると最新になる）。アプリの不具合ではない
 - 過去のセッションの履歴では、既存のファイルの上書き（Write）も「Created」に見える（履歴には `tool_use_result` が無く、新規か上書きかが分からない）
 - 最初のメッセージを送る前に、モデル一覧とアカウントが取れる（何も送らない `query()` で約 1〜4 秒）
 - `rate_limit_event` は 5 時間枠の状態（`allowed` など）と、超過分（overage）が使えるかを返す
