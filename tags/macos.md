@@ -1,5 +1,6 @@
 # macos
 
+- 2026/10/06 [An orchestrator agent that runs Codex and Claude threads as tools, in one Flutter app](../2026/10/06/flutter-agent-orchestrator/README.md)
 - 2026/10/05 [A Codex-app-like Flutter client on the Claude Agent SDK, running on a Claude subscription](../2026/10/05/flutter-claude-agent-sdk/README.md)
 - 2026/10/01 [A Codex desktop app clone in Flutter on top of codex app-server](../2026/10/01/flutter-codex-app-server/README.md)
 - 2026/09/30 [flutter_scene .fmat: custom attributes on skinned meshes and the default_black placeholder](../2026/09/30/flutter-scene-fmat-repros/README.md)
