@@ -158,10 +158,13 @@ class _Header extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            Text(
-              '${s.model ?? ''} · ${s.cwd}',
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 11, color: Palette.textFaint),
+            Expanded(
+              child: Text(
+                '${s.model ?? ''} · ${s.cwd}',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontSize: 11, color: Palette.textFaint),
+              ),
             ),
           ],
         ],

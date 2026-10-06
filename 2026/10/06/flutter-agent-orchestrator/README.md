@@ -21,6 +21,13 @@
   - Codex: `thread/start` の `dynamicTools`（実験的。`initialize` で `experimentalApi: true` が要る）。呼ばれると `item/tool/call` がアプリに届く
   - Claude: SDK の `createSdkMcpServer` + `tool()`。中継プロセスが JSON Schema を `z.fromJSONSchema()`（zod 4）で zod に変え、呼び出しを `tool/call` でアプリに送る
 
+- **画面で確かめた**（2026-10-06）
+  - 上限 2 で 3 つのワーカーを立てさせると、一覧に「2/2 running · 1 queued」と出て、1 つ終わると順番待ちの 3 つ目が自動で始まった
+  - 「wait_threads を使わずにターンを終えて」と頼むと、ワーカーが終わるたびに `[worker update]` で司令塔が起き、差分を確かめ、全部終わってからまとめた
+  - 司令塔を Claude に切り替えても同じツールで動いた（`orchestrator.start_thread` ×2 → `wait_threads`）
+  - 右の一覧の停止ボタンで動いている Codex のワーカーを止めると「interrupted」になり、司令塔の `wait_threads` もそれを受けて戻った
+  - ワーカーを開くとその会話（Claude のワーカーの差分カードなど）が見え、下に「司令塔が動かしている」旨と停止ボタンが出る
+
 ## Architecture
 
 ```text
@@ -63,6 +70,9 @@ Flutter app (Hub)
 
 - Codex の司令塔は動的ツールを、Codex の code mode の中から呼んだ（`function_call` は `wait` などの JS のセルの操作として記録され、ツールの結果はその出力になる）
 - Claude の司令塔は、自前の MCP ツールを最初に `ToolSearch` で探してから呼ぶ。`tool()` の `alwaysLoad: true` で最初から読み込ませる
+- **Codex の中断は、実行中のコマンドのプロセスまでは止めない。** `turn/interrupt` でターンは interrupted になったが、そのターンが始めた `sleep 90` は
+  app-server の子プロセスとして残り、自然に終わるまで動いていた
+- Claude Code は長い `sleep` を手前で走らせるのを拒む（`run_in_background` を勧める）。試験用に「sleep 90 を待つ」ワーカーを立てると Claude 側はすぐ終わった。アプリの不具合ではない
 - 同時実行の上限は設定（既定 4）。上限を超えた `start_thread` は順番待ちになり、ワーカーが終わるたびに先頭から始める
 
 ## How to run
