@@ -26,6 +26,10 @@
   - 「wait_threads を使わずにターンを終えて」と頼むと、ワーカーが終わるたびに `[worker update]` で司令塔が起き、差分を確かめ、全部終わってからまとめた
   - 司令塔を Claude に切り替えても同じツールで動いた（`orchestrator.start_thread` ×2 → `wait_threads`）
   - 右の一覧の停止ボタンで動いている Codex のワーカーを止めると「interrupted」になり、司令塔の `wait_threads` もそれを受けて戻った
+  - **workflow**: 「Claude に roman.py とテストを実装させ → 別の Codex にレビューさせ（編集しない）→ 指摘があれば同じ Claude のスレッドに直させ →
+    別の Codex に pytest を実行させる。各段の結果を次に渡す」と頼むと、その順に立てて待ち、結果を次の段の依頼に入れて進めた（レビューは指摘なし、pytest は 112 件成功）。
+    続けて「w1 に小文字も受け付けるよう追加で頼み、w3 で pytest をもう一度」と頼むと、既存の Claude のセッション（w1）と Codex のスレッド（w3）に `send_message` で続きを
+    頼み、138 件成功まで確かめた
   - ワーカーを開くとその会話（Claude のワーカーの差分カードなど）が見え、下に「司令塔が動かしている」旨と停止ボタンが出る
 
 ## Architecture
