@@ -87,7 +87,9 @@ app/lib/
   シェルの `PATH` を継がないので、`/opt/homebrew/bin` などを探し、無ければ `zsh -lc` で起動する（`CODEX_BIN` で上書きできる）
 - 検証の自動化: computer-use の背景操作（アクセシビリティ経由の入力）は Flutter の `TextField` に届かなかった。クリックは届く。
   そのため、最初のメッセージは環境変数 `CODEX_FLUTTER_PROMPT` で渡せるようにした
-- 未検証: 承認待ちでない時の中断（`turn/interrupt`）、`turn/steer`、ファイル変更の承認（`item/fileChange/requestApproval`）、`item/tool/requestUserInput`
+- 未検証: `turn/steer`、ファイル変更の承認（`item/fileChange/requestApproval`）、`item/tool/requestUserInput`
+- 承認待ちでない時の中断（`turn/interrupt`）は、後の [司令塔の lab](../../06/flutter-agent-orchestrator/README.md) で確かめた（ターンは interrupted になるが、
+  実行中のコマンドのプロセスは残る）
 
 ## How to run
 

@@ -17,7 +17,7 @@
 - **Max のサブスクで動きました。** SDK は同梱の Claude Code を子プロセスで動かし、その Claude Code 自身のログイン（`claude auth login`、
   macOS のキーチェーン）を使います。アプリは資格情報に触れません。`accountInfo()` は `{email, subscriptionType: "Claude Max"}` を返します
 - 題材（バグ入りの `fizzbuzz.py` を直して pytest のテストを足す）は、Bypass permissions のモードで最後まで通りました。
-  既定のモード（Ask permissions）では、ファイルを書き換える Bash の前に承認を求めて止まります（承認カードの操作は「Findings」の未確認を参照）
+  既定のモード（Ask permissions）では、ファイルを書き換える Bash の前に承認を求めて止まります。承認カードで「Allow and accept edits for this session」を選ぶと、そのセッションは以後の編集で聞かれない（画面で確認済み）
 
 ### Codex 版との対応
 
