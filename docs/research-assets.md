@@ -295,7 +295,7 @@ curl -fsS -X POST \
   http://localhost:8500/v1/video/ltx2/generate \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "distilled",
+    "model": "ltx-2.5-distilled",
     "mode": "sync",
     "prompt": "A paper pinwheel turning slowly in a gentle breeze, static close-up camera, soft daylight, natural motion",
     "width": 512,

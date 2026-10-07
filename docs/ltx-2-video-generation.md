@@ -101,7 +101,7 @@ jq -n \
   --arg audio_id "$audio_id" \
   --arg prompt 'Inside a quiet room with a smooth warm beige wall, a young woman in a plain green sweater stands on the left and a young man in a plain blue shirt stands on the right. Only these two people are present. A locked eye-level camera holds a steady waist-up profile two-shot with both faces unobstructed in soft window light. At the beginning, the woman leans forward slightly and moves her lips for one brief question while the man watches with his mouth closed. They pause and maintain eye contact. In the second half, the man nods once and moves his lips for one brief reply while the woman watches with her mouth closed. The shot remains stable, simple, and realistic throughout.' \
   '{
-    model: "distilled",
+    model: "ltx-2.5-distilled",
     mode: "async",
     prompt: $prompt,
     audio: {type: "file_id", file_id: $audio_id},
@@ -155,7 +155,7 @@ ffmpeg -nostdin -loglevel error -y -i output.mp4 \
 
 ## 観測結果
 
-2026-07-30 に kiapi 0.5.3、LTX-2 distilled、512 x 512、24 fps で比較した。
+2026-07-30 に kiapi 0.5.3、LTX-2 distilled、512 x 512、24 fps で比較した。kiapi は 2026-10-08 に LTX-2 の `distilled` を外し、いまは LTX-2.5 の `ltx-2.5-distilled` だけを持つ。
 
 | 試行 | 条件 | 観測 |
 |---|---|---|
