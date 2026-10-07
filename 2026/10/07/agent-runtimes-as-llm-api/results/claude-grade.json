@@ -1,0 +1,62 @@
+{
+  "runtime": "claude",
+  "model": "claude-opus-5-5",
+  "passed": "13/13",
+  "checks": {
+    "called tools natively (no XML/JSON tool calls written as text)": true,
+    "no built-in tools used": true,
+    "create_event called": true,
+    "create_event before send_message": true,
+    "start is 2026-10-23T19:30": true,
+    "duration is 120 minutes": true,
+    "place_id is plc_0417": true,
+    "attendees are exactly the 9 people": true,
+    "send_message called": true,
+    "message goes to the other 8 (the user optional)": true,
+    "message mentions the date, time and place": true,
+    "no stale facts (16th, 19:00, other places, 田中)": true,
+    "ends with a message to the user": true
+  },
+  "toolCalls": [
+    {
+      "name": "create_event",
+      "args": {
+        "title": "リリース打ち上げ",
+        "start": "2026-10-23T19:30",
+        "duration_minutes": 120,
+        "place_id": "plc_0417",
+        "attendees": [
+          "misaki.suzuki@example.com",
+          "kenta.yamada@example.com",
+          "sakura.ito@example.com",
+          "daisuke.watanabe@example.com",
+          "yuko.nakamura@example.com",
+          "sho.kobayashi@example.com",
+          "nana.kato@example.com",
+          "takumi.yoshida@example.com",
+          "haruka.sato@example.com"
+        ],
+        "note": "和食 こもれび 名駅店（名駅から徒歩 6 分）／個室・コース 2 時間／9 名"
+      }
+    },
+    {
+      "name": "send_message",
+      "args": {
+        "to": [
+          "misaki.suzuki@example.com",
+          "kenta.yamada@example.com",
+          "sakura.ito@example.com",
+          "daisuke.watanabe@example.com",
+          "yuko.nakamura@example.com",
+          "sho.kobayashi@example.com",
+          "nana.kato@example.com",
+          "takumi.yoshida@example.com",
+          "haruka.sato@example.com"
+        ],
+        "subject": "【ご案内】リリース打ち上げ 10/23（金）19:30〜",
+        "body": "お疲れさまです。リリースの打ち上げのご案内です。\n\n日時: 10/23（金）19:30〜21:30（コース 2 時間）\n場所: 和食 こもれび 名駅店（名駅から徒歩 6 分）個室\n\n予定表にも登録しました。よろしくお願いします！\n鈴木"
+      }
+    }
+  ],
+  "finalText": "打ち上げを予定表に登録し、参加者 9 名に案内を送りました。\n\n**予定表**\n- 内容: リリース打ち上げ\n- 日時: 10/23（金）19:30〜21:30\n- 場所: 和食 こもれび 名駅店（個室）\n\n**招待と案内を送った人（9 名）**\n鈴木さん、山田さん、伊藤さん、渡辺さん、中村さん、小林さん、加藤さん、吉田さん、佐藤さん\n田中さんは出張で来られないため外しています。\n\n**案内の本文**\n> 日時: 10/23（金）19:30〜21:30（コース 2 時間）\n> 場所: 和食 こもれび 名駅店（名駅から徒歩 6 分）個室\n> 予定表にも登録しました。\n\n鈴木さんの宛先は、チーム名簿にある misaki.suzuki@example.com にしています。\n\n**以前の私の回答の誤り**\n10/2 にリリース判定会議の議事録（doc_7790）を要約したとき、「リリースは 1 週間延期、10/20 が目標、理由はクラッシュ率の改善待ち」とお伝えしました。読み直したところ、議事録にはそうした記述がありませんでした。私の誤りです。申し訳ありません。\n\n打ち上げを 23 日にずらしたのがこの要約がきっかけなら、実際のリリース日を念のため確認してください。ほかの回答にも、議事録にない内容が混ざっていました。\n- 9/30 の「未決の論点」: 結論が出ていない論点ではなく、「保留とした」とある発言を拾っただけでした。\n- 10/5 のアジェンダ案: 各議題に付けた補足は私が考えたもので、資料に書かれていたことではありません。\n\n必要であれば、改めて正確にまとめ直します。"
+}

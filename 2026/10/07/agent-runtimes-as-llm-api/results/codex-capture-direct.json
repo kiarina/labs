@@ -1,0 +1,39 @@
+{
+  "path": "/v1/responses",
+  "model": "gpt-6.1-sol",
+  "reasoning": {
+    "effort": "low",
+    "context": "all_turns"
+  },
+  "instructionsChars": 0,
+  "tools": [],
+  "input": [
+    {
+      "type": "additional_tools",
+      "role": "developer",
+      "chars": 3642,
+      "tools": [
+        "functions.request_user_input",
+        "functions.read_document",
+        "functions.get_team_members",
+        "functions.search_places",
+        "functions.check_availability",
+        "functions.get_weather",
+        "functions.create_event",
+        "functions.send_message"
+      ]
+    },
+    {
+      "type": "message",
+      "role": "developer",
+      "chars": 290,
+      "head": "あなたは、アプリに組み込まれたユーザー（鈴木 美咲）の個人アシスタントです。 ユーザーとのこれまでの会話は <messages> に XML で渡されます。human_message はユーザー、ai_message はあなた、tool_call と tool_result はあなたが呼んだツールとその結果です。 会話…"
+    },
+    {
+      "type": "message",
+      "role": "user",
+      "chars": 54075,
+      "head": "<messages> <human_message at=\"2026-09-28T10:02\"> おはよう。今日の定例の議事録（doc_7781）を読んで、決まったことだけ箇条書きにして。 </human_message> <tool_call id=\"call_001\" name=\"read_document\" at…"
+    }
+  ]
+}

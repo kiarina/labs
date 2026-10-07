@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="The real run: one request each to Codex and Claude (uses the subscriptions), then grade"
+set -euo pipefail
+node src/codex.ts
+node src/claude.ts
+node src/grade.ts codex >/dev/null
+node src/grade.ts claude >/dev/null
+echo "grades: results/codex-grade.json results/claude-grade.json"

@@ -1,0 +1,53 @@
+{
+  "path": "/v1/responses",
+  "model": "gpt-6.1-sol",
+  "reasoning": {
+    "effort": "low",
+    "context": "all_turns"
+  },
+  "instructionsChars": 0,
+  "tools": [],
+  "input": [
+    {
+      "type": "additional_tools",
+      "role": "developer",
+      "chars": 15745,
+      "tools": [
+        "functions.exec",
+        "functions.wait",
+        "functions.request_user_input",
+        "functions.request_user_input_async",
+        "collaboration.followup_task",
+        "collaboration.interrupt_agent",
+        "collaboration.list_agents",
+        "collaboration.send_message",
+        "collaboration.spawn_agent",
+        "collaboration.wait_agent"
+      ]
+    },
+    {
+      "type": "message",
+      "role": "developer",
+      "chars": 290,
+      "head": "あなたは、アプリに組み込まれたユーザー（鈴木 美咲）の個人アシスタントです。 ユーザーとのこれまでの会話は <messages> に XML で渡されます。human_message はユーザー、ai_message はあなた、tool_call と tool_result はあなたが呼んだツールとその結果です。 会話…"
+    },
+    {
+      "type": "message",
+      "role": "developer",
+      "chars": 2498,
+      "head": "<multi_agent_role>You are `/root`, the primary agent in a team of agents collaborating to fulfill the user's goals.  At the start of your turn, you are the acti…"
+    },
+    {
+      "type": "message",
+      "role": "developer",
+      "chars": 304,
+      "head": "<multi_agent_mode>Any earlier instruction enabling proactive multi-agent delegation no longer applies. Do not spawn sub-agents unless the user or applicable AGE…"
+    },
+    {
+      "type": "message",
+      "role": "user",
+      "chars": 54076,
+      "head": "<messages> <human_message at=\"2026-09-28T10:02\"> おはよう。今日の定例の議事録（doc_7781）を読んで、決まったことだけ箇条書きにして。 </human_message> <tool_call id=\"call_001\" name=\"read_document\" at…"
+    }
+  ]
+}

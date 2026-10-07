@@ -1,0 +1,180 @@
+{
+  "runtime": "codex",
+  "mock": false,
+  "model": "gpt-6.1-sol",
+  "startupMs": 691,
+  "firstEventMs": 8165,
+  "totalMs": 15223,
+  "steps": [
+    {
+      "type": "tool_call",
+      "name": "create_event",
+      "args": {
+        "attendees": [
+          "misaki.suzuki@example.com",
+          "kenta.yamada@example.com",
+          "sakura.ito@example.com",
+          "daisuke.watanabe@example.com",
+          "yuko.nakamura@example.com",
+          "sho.kobayashi@example.com",
+          "nana.kato@example.com",
+          "takumi.yoshida@example.com",
+          "haruka.sato@example.com"
+        ],
+        "duration_minutes": 120,
+        "note": "9名・個室。お店の予約は鈴木さんが電話で確定済み。",
+        "place_id": "plc_0417",
+        "start": "2026-10-23T19:30",
+        "title": "リリース打ち上げ"
+      },
+      "ms": 8165
+    },
+    {
+      "type": "tool_call",
+      "name": "send_message",
+      "args": {
+        "to": [
+          "misaki.suzuki@example.com",
+          "kenta.yamada@example.com",
+          "sakura.ito@example.com",
+          "daisuke.watanabe@example.com",
+          "yuko.nakamura@example.com",
+          "sho.kobayashi@example.com",
+          "nana.kato@example.com",
+          "takumi.yoshida@example.com",
+          "haruka.sato@example.com"
+        ],
+        "subject": "打ち上げのご案内",
+        "body": "打ち上げは10/23（金）19:30〜21:30、和食 こもれび 名駅店（名駅から徒歩6分）です。9名・個室で予約済みです。"
+      },
+      "ms": 11768
+    },
+    {
+      "type": "message",
+      "text": "10/23（金）19:30〜21:30、和食 こもれび 名駅店で予定表に登録しました。鈴木さんを含む参加者9名全員に、短い案内を送信しました。",
+      "ms": 14656
+    }
+  ],
+  "usage": {
+    "total": {
+      "totalTokens": 107618,
+      "inputTokens": 107261,
+      "cachedInputTokens": 71040,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 357,
+      "reasoningOutputTokens": 0
+    },
+    "last": {
+      "totalTokens": 35983,
+      "inputTokens": 35925,
+      "cachedInputTokens": 35584,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 58,
+      "reasoningOutputTokens": 0
+    },
+    "modelContextWindow": 828400
+  },
+  "rateLimitsBefore": {
+    "ordinaryUsageAllowed": true,
+    "rateLimits": {
+      "limitId": "codex",
+      "limitName": null,
+      "normalModelSlug": null,
+      "primary": {
+        "usedPercent": 72,
+        "windowDurationMins": 10080,
+        "resetsAt": 1791582048
+      },
+      "secondary": null,
+      "credits": {
+        "hasCredits": false,
+        "unlimited": false,
+        "balance": "0"
+      },
+      "individualLimit": null,
+      "spendControlReached": false,
+      "planType": "prolite",
+      "rateLimitReachedType": null
+    },
+    "rateLimitsByLimitId": {
+      "codex": {
+        "limitId": "codex",
+        "limitName": null,
+        "normalModelSlug": null,
+        "primary": {
+          "usedPercent": 72,
+          "windowDurationMins": 10080,
+          "resetsAt": 1791582048
+        },
+        "secondary": null,
+        "credits": {
+          "hasCredits": false,
+          "unlimited": false,
+          "balance": "0"
+        },
+        "individualLimit": null,
+        "spendControlReached": false,
+        "planType": "prolite",
+        "rateLimitReachedType": null
+      }
+    },
+    "rateLimitResetCredits": {
+      "availableCount": 0,
+      "credits": []
+    },
+    "accountId": "d90e07e9-4df9-459e-bbcb-8d2a1d27095c",
+    "rateLimitUpsell": null
+  },
+  "rateLimitsAfter": {
+    "ordinaryUsageAllowed": true,
+    "rateLimits": {
+      "limitId": "codex",
+      "limitName": null,
+      "normalModelSlug": null,
+      "primary": {
+        "usedPercent": 72,
+        "windowDurationMins": 10080,
+        "resetsAt": 1791582047
+      },
+      "secondary": null,
+      "credits": {
+        "hasCredits": false,
+        "unlimited": false,
+        "balance": "0"
+      },
+      "individualLimit": null,
+      "spendControlReached": false,
+      "planType": "prolite",
+      "rateLimitReachedType": null
+    },
+    "rateLimitsByLimitId": {
+      "codex": {
+        "limitId": "codex",
+        "limitName": null,
+        "normalModelSlug": null,
+        "primary": {
+          "usedPercent": 72,
+          "windowDurationMins": 10080,
+          "resetsAt": 1791582047
+        },
+        "secondary": null,
+        "credits": {
+          "hasCredits": false,
+          "unlimited": false,
+          "balance": "0"
+        },
+        "individualLimit": null,
+        "spendControlReached": false,
+        "planType": "prolite",
+        "rateLimitReachedType": null
+      }
+    },
+    "rateLimitResetCredits": {
+      "availableCount": 0,
+      "credits": []
+    },
+    "accountId": "d90e07e9-4df9-459e-bbcb-8d2a1d27095c",
+    "rateLimitUpsell": null
+  },
+  "error": null
+}

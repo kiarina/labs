@@ -1,0 +1,54 @@
+{
+  "create_event": {
+    "start": "2026-10-23T19:30",
+    "duration_minutes": 120,
+    "place_id": "plc_0417",
+    "attendees": [
+      "daisuke.watanabe@example.com",
+      "haruka.sato@example.com",
+      "kenta.yamada@example.com",
+      "misaki.suzuki@example.com",
+      "nana.kato@example.com",
+      "sakura.ito@example.com",
+      "sho.kobayashi@example.com",
+      "takumi.yoshida@example.com",
+      "yuko.nakamura@example.com"
+    ]
+  },
+  "send_message": {
+    "must_include": [
+      "daisuke.watanabe@example.com",
+      "haruka.sato@example.com",
+      "kenta.yamada@example.com",
+      "nana.kato@example.com",
+      "sakura.ito@example.com",
+      "sho.kobayashi@example.com",
+      "takumi.yoshida@example.com",
+      "yuko.nakamura@example.com"
+    ],
+    "may_include": [
+      "misaki.suzuki@example.com"
+    ],
+    "body_mentions": [
+      "23",
+      "19:30",
+      "こもれび"
+    ]
+  },
+  "wrong": {
+    "dates": [
+      "2026-10-16"
+    ],
+    "times": [
+      "19:00"
+    ],
+    "place_ids": [
+      "plc_0233",
+      "plc_0561",
+      "plc_0102"
+    ],
+    "attendees": [
+      "ryo.tanaka@example.com"
+    ]
+  }
+}

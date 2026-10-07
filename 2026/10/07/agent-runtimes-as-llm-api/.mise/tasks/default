@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Type-check and dry-run both runtimes against the capture server (no tokens)"
+set -euo pipefail
+npm ci --silent
+npx tsc -p .
+node src/fixture.ts
+node src/codex.ts --mock >/dev/null && node src/summarize-capture.ts codex codex-capture-direct >/dev/null
+node src/claude.ts --mock >/dev/null && node src/summarize-capture.ts claude claude-capture >/dev/null
+rm -f results/*-mock.json
+echo "captures: results/codex-capture-direct.json results/claude-capture.json"
