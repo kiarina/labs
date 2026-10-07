@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#MISE description="One Codex process, two threads at once: OpenAI (one tiny request, uses the subscription) and the scripted server"
+set -euo pipefail
+uv run probe.py mixed

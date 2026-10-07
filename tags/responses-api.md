@@ -1,4 +1,3 @@
-# llm-api
+# responses-api
 
 - 2026/10/08 [What codex app-server sends to a custom Responses API provider, and running OpenAI and a custom provider side by side](../2026/10/08/codex-responses-provider/README.md)
-- 2026/10/07 [Using codex app-server and the Claude Agent SDK like a stateless LLM API, with the history passed as XML](../2026/10/07/agent-runtimes-as-llm-api/README.md)

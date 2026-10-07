@@ -1,0 +1,167 @@
+{
+  "scenario": "mixed",
+  "model": "gpt-5.6-luna",
+  "turns": [
+    {
+      "thread": "01a118c6-dc6a-7840-83ff-e62658b9c2fb",
+      "items": [
+        {
+          "type": "userMessage",
+          "ms": 1408
+        },
+        {
+          "type": "agentMessage",
+          "text": "SCRIPTED-DONE",
+          "ms": 1414
+        }
+      ],
+      "error": null,
+      "status": "completed",
+      "ms": 1467,
+      "provider": "scripted"
+    },
+    {
+      "thread": "01a118c6-db0e-7d81-bb47-e5274371aaca",
+      "items": [
+        {
+          "type": "userMessage",
+          "ms": 1996
+        },
+        {
+          "type": "agentMessage",
+          "text": "OK",
+          "ms": 2975
+        }
+      ],
+      "error": null,
+      "status": "completed",
+      "ms": 3064,
+      "provider": "openai"
+    }
+  ],
+  "requests": [
+    {
+      "method": "POST",
+      "path": "/v1/responses",
+      "headers": {
+        "x-codex-beta-features": "remote_compaction_v2",
+        "x-codex-window-id": "01a118c6-dc6a-7840-83ff-e62658b9c2fb:0",
+        "x-codex-turn-metadata": [
+          "agent_name",
+          "analytics_enabled",
+          "auto_review_enabled",
+          "context_window_id",
+          "installation_id",
+          "model",
+          "node_repl_auto_review_required",
+          "node_repl_disabled",
+          "reasoning_effort",
+          "request_kind",
+          "root_turn_id",
+          "sandbox",
+          "sandbox_mode",
+          "session_id",
+          "thread_id",
+          "turn_id",
+          "turn_started_at_unix_ms",
+          "window_id",
+          "window_number"
+        ],
+        "x-openai-internal-codex-responses-lite": "true",
+        "x-client-request-id": "01a118c6-dc6a-7840-83ff-e62658b9c2fb",
+        "session-id": "01a118c6-dc6a-7840-83ff-e62658b9c2fb",
+        "thread-id": "01a118c6-dc6a-7840-83ff-e62658b9c2fb",
+        "accept": "text/event-stream",
+        "content-type": "application/json",
+        "originator": "codex-responses-provider",
+        "user-agent": "codex-responses-provider/0.161.0 (Mac OS 27.0.1; arm64) unknown (codex-responses-provider; 0.161.0)"
+      },
+      "keys": [
+        "client_metadata",
+        "include",
+        "input",
+        "model",
+        "parallel_tool_calls",
+        "prompt_cache_key",
+        "reasoning",
+        "store",
+        "stream",
+        "text",
+        "tool_choice"
+      ],
+      "params": {
+        "client_metadata": [
+          "root_turn_id",
+          "session_id",
+          "thread_id",
+          "turn_id",
+          "x-codex-installation-id",
+          "x-codex-turn-metadata",
+          "x-codex-window-id"
+        ],
+        "include": [
+          "reasoning.encrypted_content"
+        ],
+        "model": "gpt-5.6-luna",
+        "parallel_tool_calls": false,
+        "prompt_cache_key": "01a118c6-dc6a-7840-83ff-e62658b9c2fb",
+        "reasoning": {
+          "effort": "low",
+          "context": "all_turns"
+        },
+        "store": false,
+        "stream": true,
+        "text": {
+          "verbosity": "low"
+        },
+        "tool_choice": "auto"
+      },
+      "instructions_chars": 0,
+      "tools": [],
+      "input": [
+        {
+          "type": "additional_tools",
+          "role": "developer",
+          "content_types": null,
+          "chars": 22564
+        },
+        {
+          "type": "message",
+          "role": "developer",
+          "content_types": [
+            "input_text"
+          ],
+          "chars": 18048
+        },
+        {
+          "type": "message",
+          "role": "developer",
+          "content_types": [
+            "input_text",
+            "input_text",
+            "input_text",
+            "input_text",
+            "input_text"
+          ],
+          "chars": 14972
+        },
+        {
+          "type": "message",
+          "role": "user",
+          "content_types": [
+            "input_text"
+          ],
+          "chars": 675
+        },
+        {
+          "type": "message",
+          "role": "user",
+          "content_types": [
+            "input_text"
+          ],
+          "chars": 156
+        }
+      ]
+    }
+  ]
+}

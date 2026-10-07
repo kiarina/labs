@@ -1,0 +1,730 @@
+{
+  "scenario": "tuned",
+  "model": "kiapi-local",
+  "turns": [
+    {
+      "thread": "01a118c7-d2e7-77b3-b25e-37903fdaa097",
+      "items": [
+        {
+          "type": "userMessage",
+          "ms": 61
+        },
+        {
+          "type": "commandExecution",
+          "command": "/bin/zsh -lc 'echo hello-from-tool'",
+          "aggregatedOutput": "hello-from-tool\n",
+          "exitCode": 0,
+          "status": "completed",
+          "ms": 129
+        },
+        {
+          "type": "agentMessage",
+          "text": "SCRIPTED-DONE (saw: Chunk ID: 281fe5\nWall time: 0.0000 seconds\nProcess exited with code 0\nOriginal token count: 4\nOutput:\nhello-from-tool\n)",
+          "ms": 132
+        }
+      ],
+      "error": null,
+      "status": "completed",
+      "ms": 132
+    },
+    {
+      "thread": "01a118c7-d2e7-77b3-b25e-37903fdaa097",
+      "items": [
+        {
+          "type": "userMessage",
+          "ms": 136
+        },
+        {
+          "type": "commandExecution",
+          "command": "/bin/zsh -lc 'echo hello-from-tool'",
+          "aggregatedOutput": "hello-from-tool\n",
+          "exitCode": 0,
+          "status": "completed",
+          "ms": 199
+        },
+        {
+          "type": "agentMessage",
+          "text": "SCRIPTED-DONE (saw: Chunk ID: af5d41\nWall time: 0.0000 seconds\nProcess exited with code 0\nOriginal token count: 4\nOutput:\nhello-from-tool\n)",
+          "ms": 203
+        }
+      ],
+      "error": null,
+      "status": "completed",
+      "ms": 203
+    }
+  ],
+  "requests": [
+    {
+      "method": "POST",
+      "path": "/v1/responses",
+      "headers": {
+        "x-codex-beta-features": "remote_compaction_v2",
+        "x-codex-window-id": "01a118c7-d2e7-77b3-b25e-37903fdaa097:0",
+        "x-codex-turn-metadata": [
+          "agent_name",
+          "analytics_enabled",
+          "auto_review_enabled",
+          "context_window_id",
+          "installation_id",
+          "model",
+          "node_repl_auto_review_required",
+          "node_repl_disabled",
+          "reasoning_effort",
+          "request_kind",
+          "root_turn_id",
+          "sandbox",
+          "sandbox_mode",
+          "session_id",
+          "thread_id",
+          "turn_id",
+          "turn_started_at_unix_ms",
+          "window_id",
+          "window_number"
+        ],
+        "x-client-request-id": "01a118c7-d2e7-77b3-b25e-37903fdaa097",
+        "session-id": "01a118c7-d2e7-77b3-b25e-37903fdaa097",
+        "thread-id": "01a118c7-d2e7-77b3-b25e-37903fdaa097",
+        "accept": "text/event-stream",
+        "content-type": "application/json",
+        "originator": "codex-responses-provider",
+        "user-agent": "codex-responses-provider/0.161.0 (Mac OS 27.0.1; arm64) unknown (codex-responses-provider; 0.161.0)"
+      },
+      "keys": [
+        "client_metadata",
+        "include",
+        "input",
+        "instructions",
+        "model",
+        "parallel_tool_calls",
+        "prompt_cache_key",
+        "reasoning",
+        "store",
+        "stream",
+        "text",
+        "tool_choice",
+        "tools"
+      ],
+      "params": {
+        "client_metadata": [
+          "root_turn_id",
+          "session_id",
+          "thread_id",
+          "turn_id",
+          "x-codex-installation-id",
+          "x-codex-turn-metadata",
+          "x-codex-window-id"
+        ],
+        "include": [
+          "reasoning.encrypted_content"
+        ],
+        "model": "kiapi-local",
+        "parallel_tool_calls": true,
+        "prompt_cache_key": "01a118c7-d2e7-77b3-b25e-37903fdaa097",
+        "reasoning": {
+          "effort": "medium"
+        },
+        "store": false,
+        "stream": true,
+        "text": {
+          "verbosity": "low"
+        },
+        "tool_choice": "auto"
+      },
+      "instructions_chars": 17730,
+      "tools": [
+        {
+          "type": "function",
+          "name": "exec_command",
+          "params": [
+            "cmd",
+            "justification",
+            "login",
+            "max_output_tokens",
+            "prefix_rule",
+            "sandbox_permissions",
+            "shell",
+            "tty",
+            "workdir",
+            "yield_time_ms"
+          ]
+        },
+        {
+          "type": "function",
+          "name": "write_stdin",
+          "params": [
+            "chars",
+            "max_output_tokens",
+            "session_id",
+            "yield_time_ms"
+          ]
+        },
+        {
+          "type": "function",
+          "name": "request_user_input",
+          "params": [
+            "questions"
+          ]
+        },
+        {
+          "type": "function",
+          "name": "view_image",
+          "params": [
+            "detail",
+            "path"
+          ]
+        }
+      ],
+      "input": [
+        {
+          "type": "message",
+          "role": "developer",
+          "content_types": [
+            "input_text",
+            "input_text"
+          ],
+          "chars": 2835
+        },
+        {
+          "type": "message",
+          "role": "user",
+          "content_types": [
+            "input_text"
+          ],
+          "chars": 1379
+        },
+        {
+          "type": "message",
+          "role": "user",
+          "content_types": [
+            "input_text"
+          ],
+          "chars": 202
+        }
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/v1/responses",
+      "headers": {
+        "x-codex-beta-features": "remote_compaction_v2",
+        "x-codex-window-id": "01a118c7-d2e7-77b3-b25e-37903fdaa097:0",
+        "x-codex-turn-metadata": [
+          "agent_name",
+          "analytics_enabled",
+          "auto_review_enabled",
+          "context_window_id",
+          "installation_id",
+          "model",
+          "node_repl_auto_review_required",
+          "node_repl_disabled",
+          "reasoning_effort",
+          "request_kind",
+          "root_turn_id",
+          "sandbox",
+          "sandbox_mode",
+          "session_id",
+          "thread_id",
+          "turn_id",
+          "turn_started_at_unix_ms",
+          "window_id",
+          "window_number"
+        ],
+        "x-client-request-id": "01a118c7-d2e7-77b3-b25e-37903fdaa097",
+        "session-id": "01a118c7-d2e7-77b3-b25e-37903fdaa097",
+        "thread-id": "01a118c7-d2e7-77b3-b25e-37903fdaa097",
+        "accept": "text/event-stream",
+        "content-type": "application/json",
+        "originator": "codex-responses-provider",
+        "user-agent": "codex-responses-provider/0.161.0 (Mac OS 27.0.1; arm64) unknown (codex-responses-provider; 0.161.0)"
+      },
+      "keys": [
+        "client_metadata",
+        "include",
+        "input",
+        "instructions",
+        "model",
+        "parallel_tool_calls",
+        "prompt_cache_key",
+        "reasoning",
+        "store",
+        "stream",
+        "text",
+        "tool_choice",
+        "tools"
+      ],
+      "params": {
+        "client_metadata": [
+          "root_turn_id",
+          "session_id",
+          "thread_id",
+          "turn_id",
+          "x-codex-installation-id",
+          "x-codex-turn-metadata",
+          "x-codex-window-id"
+        ],
+        "include": [
+          "reasoning.encrypted_content"
+        ],
+        "model": "kiapi-local",
+        "parallel_tool_calls": true,
+        "prompt_cache_key": "01a118c7-d2e7-77b3-b25e-37903fdaa097",
+        "reasoning": {
+          "effort": "medium"
+        },
+        "store": false,
+        "stream": true,
+        "text": {
+          "verbosity": "low"
+        },
+        "tool_choice": "auto"
+      },
+      "instructions_chars": 17730,
+      "tools": [
+        {
+          "type": "function",
+          "name": "exec_command",
+          "params": [
+            "cmd",
+            "justification",
+            "login",
+            "max_output_tokens",
+            "prefix_rule",
+            "sandbox_permissions",
+            "shell",
+            "tty",
+            "workdir",
+            "yield_time_ms"
+          ]
+        },
+        {
+          "type": "function",
+          "name": "write_stdin",
+          "params": [
+            "chars",
+            "max_output_tokens",
+            "session_id",
+            "yield_time_ms"
+          ]
+        },
+        {
+          "type": "function",
+          "name": "request_user_input",
+          "params": [
+            "questions"
+          ]
+        },
+        {
+          "type": "function",
+          "name": "view_image",
+          "params": [
+            "detail",
+            "path"
+          ]
+        }
+      ],
+      "input": [
+        {
+          "type": "message",
+          "role": "developer",
+          "content_types": [
+            "input_text",
+            "input_text"
+          ],
+          "chars": 2835
+        },
+        {
+          "type": "message",
+          "role": "user",
+          "content_types": [
+            "input_text"
+          ],
+          "chars": 1379
+        },
+        {
+          "type": "message",
+          "role": "user",
+          "content_types": [
+            "input_text"
+          ],
+          "chars": 202
+        },
+        {
+          "type": "function_call",
+          "role": null,
+          "content_types": null,
+          "chars": 136
+        },
+        {
+          "type": "function_call_output",
+          "role": null,
+          "content_types": null,
+          "chars": 241
+        }
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/v1/responses",
+      "headers": {
+        "x-codex-beta-features": "remote_compaction_v2",
+        "x-codex-window-id": "01a118c7-d2e7-77b3-b25e-37903fdaa097:0",
+        "x-codex-turn-metadata": [
+          "agent_name",
+          "analytics_enabled",
+          "auto_review_enabled",
+          "context_window_id",
+          "installation_id",
+          "model",
+          "node_repl_auto_review_required",
+          "node_repl_disabled",
+          "reasoning_effort",
+          "request_kind",
+          "root_turn_id",
+          "sandbox",
+          "sandbox_mode",
+          "session_id",
+          "thread_id",
+          "turn_id",
+          "turn_started_at_unix_ms",
+          "window_id",
+          "window_number"
+        ],
+        "x-client-request-id": "01a118c7-d2e7-77b3-b25e-37903fdaa097",
+        "session-id": "01a118c7-d2e7-77b3-b25e-37903fdaa097",
+        "thread-id": "01a118c7-d2e7-77b3-b25e-37903fdaa097",
+        "accept": "text/event-stream",
+        "content-type": "application/json",
+        "originator": "codex-responses-provider",
+        "user-agent": "codex-responses-provider/0.161.0 (Mac OS 27.0.1; arm64) unknown (codex-responses-provider; 0.161.0)"
+      },
+      "keys": [
+        "client_metadata",
+        "include",
+        "input",
+        "instructions",
+        "model",
+        "parallel_tool_calls",
+        "prompt_cache_key",
+        "reasoning",
+        "store",
+        "stream",
+        "text",
+        "tool_choice",
+        "tools"
+      ],
+      "params": {
+        "client_metadata": [
+          "root_turn_id",
+          "session_id",
+          "thread_id",
+          "turn_id",
+          "x-codex-installation-id",
+          "x-codex-turn-metadata",
+          "x-codex-window-id"
+        ],
+        "include": [
+          "reasoning.encrypted_content"
+        ],
+        "model": "kiapi-local",
+        "parallel_tool_calls": true,
+        "prompt_cache_key": "01a118c7-d2e7-77b3-b25e-37903fdaa097",
+        "reasoning": {
+          "effort": "medium"
+        },
+        "store": false,
+        "stream": true,
+        "text": {
+          "verbosity": "low"
+        },
+        "tool_choice": "auto"
+      },
+      "instructions_chars": 17730,
+      "tools": [
+        {
+          "type": "function",
+          "name": "exec_command",
+          "params": [
+            "cmd",
+            "justification",
+            "login",
+            "max_output_tokens",
+            "prefix_rule",
+            "sandbox_permissions",
+            "shell",
+            "tty",
+            "workdir",
+            "yield_time_ms"
+          ]
+        },
+        {
+          "type": "function",
+          "name": "write_stdin",
+          "params": [
+            "chars",
+            "max_output_tokens",
+            "session_id",
+            "yield_time_ms"
+          ]
+        },
+        {
+          "type": "function",
+          "name": "request_user_input",
+          "params": [
+            "questions"
+          ]
+        },
+        {
+          "type": "function",
+          "name": "view_image",
+          "params": [
+            "detail",
+            "path"
+          ]
+        }
+      ],
+      "input": [
+        {
+          "type": "message",
+          "role": "developer",
+          "content_types": [
+            "input_text",
+            "input_text"
+          ],
+          "chars": 2835
+        },
+        {
+          "type": "message",
+          "role": "user",
+          "content_types": [
+            "input_text"
+          ],
+          "chars": 1379
+        },
+        {
+          "type": "message",
+          "role": "user",
+          "content_types": [
+            "input_text"
+          ],
+          "chars": 202
+        },
+        {
+          "type": "function_call",
+          "role": null,
+          "content_types": null,
+          "chars": 136
+        },
+        {
+          "type": "function_call_output",
+          "role": null,
+          "content_types": null,
+          "chars": 241
+        },
+        {
+          "type": "message",
+          "role": "assistant",
+          "content_types": [
+            "output_text"
+          ],
+          "chars": 250
+        },
+        {
+          "type": "message",
+          "role": "user",
+          "content_types": [
+            "input_text"
+          ],
+          "chars": 162
+        }
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/v1/responses",
+      "headers": {
+        "x-codex-beta-features": "remote_compaction_v2",
+        "x-codex-window-id": "01a118c7-d2e7-77b3-b25e-37903fdaa097:0",
+        "x-codex-turn-metadata": [
+          "agent_name",
+          "analytics_enabled",
+          "auto_review_enabled",
+          "context_window_id",
+          "installation_id",
+          "model",
+          "node_repl_auto_review_required",
+          "node_repl_disabled",
+          "reasoning_effort",
+          "request_kind",
+          "root_turn_id",
+          "sandbox",
+          "sandbox_mode",
+          "session_id",
+          "thread_id",
+          "turn_id",
+          "turn_started_at_unix_ms",
+          "window_id",
+          "window_number"
+        ],
+        "x-client-request-id": "01a118c7-d2e7-77b3-b25e-37903fdaa097",
+        "session-id": "01a118c7-d2e7-77b3-b25e-37903fdaa097",
+        "thread-id": "01a118c7-d2e7-77b3-b25e-37903fdaa097",
+        "accept": "text/event-stream",
+        "content-type": "application/json",
+        "originator": "codex-responses-provider",
+        "user-agent": "codex-responses-provider/0.161.0 (Mac OS 27.0.1; arm64) unknown (codex-responses-provider; 0.161.0)"
+      },
+      "keys": [
+        "client_metadata",
+        "include",
+        "input",
+        "instructions",
+        "model",
+        "parallel_tool_calls",
+        "prompt_cache_key",
+        "reasoning",
+        "store",
+        "stream",
+        "text",
+        "tool_choice",
+        "tools"
+      ],
+      "params": {
+        "client_metadata": [
+          "root_turn_id",
+          "session_id",
+          "thread_id",
+          "turn_id",
+          "x-codex-installation-id",
+          "x-codex-turn-metadata",
+          "x-codex-window-id"
+        ],
+        "include": [
+          "reasoning.encrypted_content"
+        ],
+        "model": "kiapi-local",
+        "parallel_tool_calls": true,
+        "prompt_cache_key": "01a118c7-d2e7-77b3-b25e-37903fdaa097",
+        "reasoning": {
+          "effort": "medium"
+        },
+        "store": false,
+        "stream": true,
+        "text": {
+          "verbosity": "low"
+        },
+        "tool_choice": "auto"
+      },
+      "instructions_chars": 17730,
+      "tools": [
+        {
+          "type": "function",
+          "name": "exec_command",
+          "params": [
+            "cmd",
+            "justification",
+            "login",
+            "max_output_tokens",
+            "prefix_rule",
+            "sandbox_permissions",
+            "shell",
+            "tty",
+            "workdir",
+            "yield_time_ms"
+          ]
+        },
+        {
+          "type": "function",
+          "name": "write_stdin",
+          "params": [
+            "chars",
+            "max_output_tokens",
+            "session_id",
+            "yield_time_ms"
+          ]
+        },
+        {
+          "type": "function",
+          "name": "request_user_input",
+          "params": [
+            "questions"
+          ]
+        },
+        {
+          "type": "function",
+          "name": "view_image",
+          "params": [
+            "detail",
+            "path"
+          ]
+        }
+      ],
+      "input": [
+        {
+          "type": "message",
+          "role": "developer",
+          "content_types": [
+            "input_text",
+            "input_text"
+          ],
+          "chars": 2835
+        },
+        {
+          "type": "message",
+          "role": "user",
+          "content_types": [
+            "input_text"
+          ],
+          "chars": 1379
+        },
+        {
+          "type": "message",
+          "role": "user",
+          "content_types": [
+            "input_text"
+          ],
+          "chars": 202
+        },
+        {
+          "type": "function_call",
+          "role": null,
+          "content_types": null,
+          "chars": 136
+        },
+        {
+          "type": "function_call_output",
+          "role": null,
+          "content_types": null,
+          "chars": 241
+        },
+        {
+          "type": "message",
+          "role": "assistant",
+          "content_types": [
+            "output_text"
+          ],
+          "chars": 250
+        },
+        {
+          "type": "message",
+          "role": "user",
+          "content_types": [
+            "input_text"
+          ],
+          "chars": 162
+        },
+        {
+          "type": "function_call",
+          "role": null,
+          "content_types": null,
+          "chars": 136
+        },
+        {
+          "type": "function_call_output",
+          "role": null,
+          "content_types": null,
+          "chars": 241
+        }
+      ]
+    }
+  ]
+}

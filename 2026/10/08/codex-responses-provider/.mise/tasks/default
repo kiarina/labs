@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#MISE description="Dry run: a Codex process tuned for a local model against the scripted Responses server (no tokens)"
+set -euo pipefail
+uv run probe.py tuned
