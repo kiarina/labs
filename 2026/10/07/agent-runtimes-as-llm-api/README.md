@@ -47,6 +47,8 @@ src/codex.ts     codex app-server に 1 回送る（--mock で偽サーバーへ
 src/claude.ts    Agent SDK で 1 回送る（--mock で偽サーバーへ）
 src/mock.ts      偽サーバー：届いたリクエストを記録してエラーを返す
 src/grade.ts     ツールの呼び出しと最後のメッセージを判定する
+src/export-fixture.ts  題材を fixture/ に書き出す（prompt.txt・expected.json・Python 用の tools.json）
+python/probe.py  同じことを Python の SDK で（空撃ちだけ確かめた）
 ```
 
 ### 題材
@@ -91,6 +93,25 @@ src/grade.ts     ツールの呼び出しと最後のメッセージを判定す
 - Claude Code はプロンプトのキャッシュに 1 時間の TTL を使っていた（`ephemeral_1h_input_tokens`）。同じ履歴の先頭を持つリクエストを 1 時間以内に続けて送れば、毎回新しいセッションでもキャッシュが効くはず（未検証）
 - **未検証:** 1 回ずつなので、ばらつき・キャッシュの効き方・利用枠の減り方（Codex は整数でしか見えず、72% のまま動かなかった）は分からない
 
+## Python の SDK（空撃ちだけ）
+
+どちらも公式の Python SDK がある。同じ設定ができるかを偽サーバーで確かめた（本番は撃っていない）。
+
+| | Codex: `openai-codex` 0.160.1 | Claude: `claude-agent-sdk` 0.2.164 |
+| --- | --- | --- |
+| 中身 | `codex app-server` を包む（Codex 本体 0.160.1 を `openai-codex-cli-bin` として同梱） | Claude Code を起動する（同梱 2.1.292） |
+| 送られた中身 | TypeScript 版と同じ（こちらの指示・7 つのツール + `request_user_input`・履歴） | TypeScript 版と同じ（環境の説明に「Additional working directories」の 1 行が足されるだけ） |
+| 記録 | `results/codex-py-capture.json` | `results/claude-py-capture.json` |
+
+- **Codex: 高水準の `Codex().thread_start()` には `dynamicTools` の引数が無い。** 低水準の `openai_codex.client.CodexClient` を使い、`thread_start` に dict で
+  `dynamicTools` を渡す（型付きの `ThreadStartParams` は実験的な欄を持たないが、dict はそのまま送られる）。ツールの呼び出し（`item/tool/call`）は、
+  サーバーからの要求として `approval_handler(method, params)` に届くので、そこで結果を返す。`-c` の上書きは `CodexConfig(config_overrides=...)`（`--disable` は `features.<name>=false`）。
+  `CodexClient` は `start()` の後に `initialize()` を自分で呼ぶ（呼ばないと `Not initialized`）
+- **Claude: `persist_session` と `title` が無い。** CLI のフラグを `extra_args={"no-session-persistence": None, "name": "llm-api-probe"}` で渡すと同じになり、
+  `--name` でセッションの名前付けの送信も止まった。ツールは `@tool(name, description, JSON Schema の dict)` で、スキーマがそのまま送られる
+  （TypeScript 版は zod を通るので `$schema` や整数の上下限が足される）。`alwaysLoad` は無いが、`tools=[]` なら最初からツールが渡っていた
+- Python の SDK は、`os.environ` を引き継いで `env` を足す。Claude Code の中から動かすときは、`CLAUDECODE`・`CLAUDE_CODE_*`・`ANTHROPIC_*` を自分で消す（`probe.py` の冒頭）
+
 ## How to run
 
 前提: `codex login` と `claude auth login`（サブスク）、mise、Node 22。
@@ -98,6 +119,7 @@ src/grade.ts     ツールの呼び出しと最後のメッセージを判定す
 ```bash
 mise run        # 型検査と、偽サーバーへの空撃ち（トークンを使わない）
 mise run run    # 本番を 1 回ずつ撃って判定する（サブスクの利用枠を使う）
+cd python && uv run probe.py codex|claude [--mock]   # Python の SDK で（--mock なしは本番）
 ```
 
 `results/codex.json`・`results/claude.json` が実行の記録、`results/*-grade.json` が判定です。
@@ -105,7 +127,8 @@ mise run run    # 本番を 1 回ずつ撃って判定する（サブスクの�
 ## Environment
 
 - macOS 27.0.1、MacBook Pro M1 Max
-- Node 22.22
+- Node 22.22、Python 3.12（uv）
 - codex-cli 0.159.3、`@anthropic-ai/claude-agent-sdk` 0.3.292（同梱の Claude Code 2.1.292）、zod 4.6.5
+- Python: `openai-codex` 0.160.1、`claude-agent-sdk` 0.2.164
 - ChatGPT（Codex、Pro Lite）と Claude Max のサブスク
 - 2026-10-07 に実行

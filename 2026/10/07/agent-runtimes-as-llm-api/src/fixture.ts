@@ -8,11 +8,6 @@
 // right next action is a create_event call whose arguments can only be derived
 // from the whole history.
 
-import { writeFileSync, mkdirSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const here = dirname(fileURLToPath(import.meta.url));
 
 // --- deterministic random -------------------------------------------------
 
@@ -277,14 +272,4 @@ export const instruction =
 
 export function buildPrompt(): string {
   return `${buildHistory()}\n\n${instruction}`;
-}
-
-// `node src/fixture.ts` writes the prompt for inspection.
-if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
-  const dir = join(here, '..', 'fixture');
-  mkdirSync(dir, { recursive: true });
-  const p = buildPrompt();
-  writeFileSync(join(dir, 'prompt.txt'), p);
-  writeFileSync(join(dir, 'expected.json'), JSON.stringify(expected, null, 2) + '\n');
-  console.log(`prompt: ${p.length} chars`);
 }

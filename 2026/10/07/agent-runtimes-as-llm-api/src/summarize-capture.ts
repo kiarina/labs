@@ -16,7 +16,7 @@ function toolNames(ts: any[] = [], prefix = ''): string[] {
 }
 
 let summary: any;
-if (runtime === 'codex') {
+if (runtime.startsWith('codex')) {
   summary = {
     path: main.path,
     model: b.model,

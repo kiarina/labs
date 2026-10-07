@@ -3,8 +3,14 @@
 set -euo pipefail
 npm ci --silent
 npx tsc -p .
-node src/fixture.ts
+node src/export-fixture.ts
 node src/codex.ts --mock >/dev/null && node src/summarize-capture.ts codex codex-capture-direct >/dev/null
 node src/claude.ts --mock >/dev/null && node src/summarize-capture.ts claude claude-capture >/dev/null
 rm -f results/*-mock.json
 echo "captures: results/codex-capture-direct.json results/claude-capture.json"
+# The same dry runs with the Python SDKs (openai-codex, claude-agent-sdk).
+(cd python && uv run probe.py codex --mock >/dev/null && uv run probe.py claude --mock >/dev/null)
+node src/summarize-capture.ts codex-py codex-py-capture >/dev/null
+node src/summarize-capture.ts claude-py claude-py-capture >/dev/null
+rm -f results/*-mock.json
+echo "python captures: results/codex-py-capture.json results/claude-py-capture.json"
