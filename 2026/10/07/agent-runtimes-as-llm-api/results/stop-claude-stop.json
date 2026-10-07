@@ -1,0 +1,155 @@
+{
+  "runtime": "claude",
+  "answer": false,
+  "model_requests": 2,
+  "tool_use": [
+    {
+      "id": "toolu_call_a",
+      "name": "mcp__app__get_team_members",
+      "input": {}
+    },
+    {
+      "id": "toolu_call_b",
+      "name": "mcp__app__check_availability",
+      "input": {
+        "place_id": "plc_0417",
+        "date": "2026-10-23",
+        "time": "19:30",
+        "party_size": 9
+      }
+    }
+  ],
+  "handlers_called": [
+    "get_team_members"
+  ],
+  "timeline": [
+    {
+      "ms": 1025,
+      "event": "message",
+      "kind": "SystemMessage",
+      "blocks": null,
+      "stop_reason": null
+    },
+    {
+      "ms": 1059,
+      "event": "message",
+      "kind": "SystemMessage",
+      "blocks": null,
+      "stop_reason": null
+    },
+    {
+      "ms": 1061,
+      "event": "message",
+      "kind": "SystemMessage",
+      "blocks": null,
+      "stop_reason": null
+    },
+    {
+      "ms": 1170,
+      "event": "model_request",
+      "n": 1,
+      "parallel_tool_calls": null
+    },
+    {
+      "ms": 1173,
+      "event": "stream",
+      "type": "message_start",
+      "block": null,
+      "stop_reason": null
+    },
+    {
+      "ms": 1173,
+      "event": "stream",
+      "type": "content_block_start",
+      "block": "tool_use",
+      "stop_reason": null
+    },
+    {
+      "ms": 1173,
+      "event": "stream",
+      "type": "content_block_delta",
+      "block": null,
+      "stop_reason": null
+    },
+    {
+      "ms": 1175,
+      "event": "message",
+      "kind": "AssistantMessage",
+      "blocks": [
+        "ToolUseBlock"
+      ],
+      "stop_reason": null
+    },
+    {
+      "ms": 1180,
+      "event": "stream",
+      "type": "content_block_stop",
+      "block": null,
+      "stop_reason": null
+    },
+    {
+      "ms": 1180,
+      "event": "tool_handler",
+      "tool": "get_team_members"
+    },
+    {
+      "ms": 1181,
+      "event": "stream",
+      "type": "content_block_start",
+      "block": "tool_use",
+      "stop_reason": null
+    },
+    {
+      "ms": 1181,
+      "event": "stream",
+      "type": "content_block_delta",
+      "block": null,
+      "stop_reason": null
+    },
+    {
+      "ms": 1181,
+      "event": "message",
+      "kind": "AssistantMessage",
+      "blocks": [
+        "ToolUseBlock"
+      ],
+      "stop_reason": null
+    },
+    {
+      "ms": 1181,
+      "event": "stream",
+      "type": "content_block_stop",
+      "block": null,
+      "stop_reason": null
+    },
+    {
+      "ms": 1181,
+      "event": "stream",
+      "type": "message_delta",
+      "block": null,
+      "stop_reason": "tool_use"
+    },
+    {
+      "ms": 1181,
+      "event": "stream",
+      "type": "message_stop",
+      "block": null,
+      "stop_reason": null
+    },
+    {
+      "ms": 1181,
+      "event": "closing"
+    },
+    {
+      "ms": 1181,
+      "event": "closed",
+      "close_ms": 0
+    },
+    {
+      "ms": 1193,
+      "event": "model_request",
+      "n": 2,
+      "parallel_tool_calls": null
+    }
+  ]
+}

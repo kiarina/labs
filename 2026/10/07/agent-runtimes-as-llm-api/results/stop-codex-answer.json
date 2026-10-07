@@ -1,0 +1,135 @@
+{
+  "runtime": "codex",
+  "answer": true,
+  "serial": false,
+  "model_requests": 2,
+  "tool_calls": [
+    {
+      "tool": "check_availability",
+      "callId": "call_b",
+      "arguments": {
+        "place_id": "plc_0417",
+        "date": "2026-10-23",
+        "time": "19:30",
+        "party_size": 9
+      }
+    },
+    {
+      "tool": "get_team_members",
+      "callId": "call_a",
+      "arguments": {}
+    }
+  ],
+  "timeline": [
+    {
+      "ms": 859,
+      "event": "notification",
+      "method": "turn/started",
+      "item_type": null,
+      "tool": null
+    },
+    {
+      "ms": 1140,
+      "event": "notification",
+      "method": "item/started",
+      "item_type": "userMessage",
+      "tool": null
+    },
+    {
+      "ms": 1140,
+      "event": "notification",
+      "method": "item/completed",
+      "item_type": "userMessage",
+      "tool": null
+    },
+    {
+      "ms": 1146,
+      "event": "model_request",
+      "n": 1,
+      "parallel_tool_calls": false
+    },
+    {
+      "ms": 1149,
+      "event": "server_request",
+      "method": "item/tool/call",
+      "tool": "check_availability",
+      "callId": "call_b"
+    },
+    {
+      "ms": 1149,
+      "event": "notification",
+      "method": "item/started",
+      "item_type": "dynamicToolCall",
+      "tool": "check_availability"
+    },
+    {
+      "ms": 1151,
+      "event": "server_request",
+      "method": "item/tool/call",
+      "tool": "get_team_members",
+      "callId": "call_a"
+    },
+    {
+      "ms": 1151,
+      "event": "notification",
+      "method": "item/completed",
+      "item_type": "dynamicToolCall",
+      "tool": "check_availability"
+    },
+    {
+      "ms": 1151,
+      "event": "notification",
+      "method": "item/started",
+      "item_type": "dynamicToolCall",
+      "tool": "get_team_members"
+    },
+    {
+      "ms": 1152,
+      "event": "notification",
+      "method": "item/completed",
+      "item_type": "dynamicToolCall",
+      "tool": "get_team_members"
+    },
+    {
+      "ms": 1152,
+      "event": "notification",
+      "method": "thread/tokenUsage/updated",
+      "item_type": null,
+      "tool": null
+    },
+    {
+      "ms": 1154,
+      "event": "model_request",
+      "n": 2,
+      "parallel_tool_calls": false
+    },
+    {
+      "ms": 1155,
+      "event": "notification",
+      "method": "item/started",
+      "item_type": "agentMessage",
+      "tool": null
+    },
+    {
+      "ms": 1155,
+      "event": "notification",
+      "method": "item/completed",
+      "item_type": "agentMessage",
+      "tool": null
+    },
+    {
+      "ms": 1156,
+      "event": "notification",
+      "method": "thread/tokenUsage/updated",
+      "item_type": null,
+      "tool": null
+    },
+    {
+      "ms": 1231,
+      "event": "notification",
+      "method": "turn/completed",
+      "item_type": null,
+      "tool": null
+    }
+  ]
+}

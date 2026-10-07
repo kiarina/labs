@@ -1,0 +1,109 @@
+{
+  "runtime": "claude",
+  "answer": true,
+  "model_requests": 2,
+  "tool_use": [
+    {
+      "id": "toolu_call_a",
+      "name": "mcp__app__get_team_members",
+      "input": {}
+    },
+    {
+      "id": "toolu_call_b",
+      "name": "mcp__app__check_availability",
+      "input": {
+        "place_id": "plc_0417",
+        "date": "2026-10-23",
+        "time": "19:30",
+        "party_size": 9
+      }
+    }
+  ],
+  "handlers_called": [
+    "get_team_members",
+    "check_availability"
+  ],
+  "timeline": [
+    {
+      "ms": 1630,
+      "event": "message",
+      "kind": "SystemMessage",
+      "blocks": null
+    },
+    {
+      "ms": 1682,
+      "event": "message",
+      "kind": "SystemMessage",
+      "blocks": null
+    },
+    {
+      "ms": 2652,
+      "event": "model_request",
+      "n": 1,
+      "parallel_tool_calls": null
+    },
+    {
+      "ms": 2658,
+      "event": "message",
+      "kind": "AssistantMessage",
+      "blocks": [
+        "ToolUseBlock"
+      ]
+    },
+    {
+      "ms": 2669,
+      "event": "tool_handler",
+      "tool": "get_team_members"
+    },
+    {
+      "ms": 2669,
+      "event": "message",
+      "kind": "AssistantMessage",
+      "blocks": [
+        "ToolUseBlock"
+      ]
+    },
+    {
+      "ms": 2677,
+      "event": "message",
+      "kind": "UserMessage",
+      "blocks": null
+    },
+    {
+      "ms": 2679,
+      "event": "tool_handler",
+      "tool": "check_availability"
+    },
+    {
+      "ms": 2682,
+      "event": "message",
+      "kind": "UserMessage",
+      "blocks": null
+    },
+    {
+      "ms": 2688,
+      "event": "model_request",
+      "n": 2,
+      "parallel_tool_calls": null
+    },
+    {
+      "ms": 2690,
+      "event": "message",
+      "kind": "AssistantMessage",
+      "blocks": [
+        "TextBlock"
+      ]
+    },
+    {
+      "ms": 2694,
+      "event": "message",
+      "kind": "ResultMessage",
+      "blocks": null
+    },
+    {
+      "ms": 3231,
+      "event": "closed",
+      "close_ms": 0
+    }
+  ]
+}

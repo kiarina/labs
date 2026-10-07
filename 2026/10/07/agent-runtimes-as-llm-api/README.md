@@ -49,6 +49,7 @@ src/mock.ts      偽サーバー：届いたリクエストを記録してエラ
 src/grade.ts     ツールの呼び出しと最後のメッセージを判定する
 src/export-fixture.ts  題材を fixture/ に書き出す（prompt.txt・expected.json・Python 用の tools.json）
 python/probe.py  同じことを Python の SDK で
+python/stop_probe.py  最初のツール呼び出しで止める（偽サーバーがツール呼び出しを返す）
 ```
 
 ### 題材
@@ -124,6 +125,32 @@ python/probe.py  同じことを Python の SDK で
   （TypeScript 版は zod を通るので `$schema` や整数の上下限が足される）。`alwaysLoad` は無いが、`tools=[]` なら最初からツールが渡っていた
 - Python の SDK は、`os.environ` を引き継いで `env` を足す。Claude Code の中から動かすときは、`CLAUDECODE`・`CLAUDE_CODE_*`・`ANTHROPIC_*` を自分で消す（`probe.py` の冒頭）
 
+## 最初のツール呼び出しで止める
+
+LLM API の代わりにするには、モデルの 1 手（文とツール呼び出し）を受け取ったら、ツールを実行せず、モデルへ 2 回目を送らずに止める必要がある
+（ツールは呼び出し側が実行する）。`python/stop_probe.py` の偽サーバーは、1 回目のリクエストにツール呼び出しを 2 つ
+（`get_team_members` と `check_availability`）返し、2 回目以降には文を返す。トークンは使わない。
+
+| | Claude（`claude-agent-sdk`） | Codex（`openai-codex`） |
+| --- | --- | --- |
+| 止め方 | `max_turns=1`。ツールの処理には中身のない結果を返させる | `thread/start` に `experimentalRawEvents: true`。ツールの依頼（`item/tool/call`）に返事をせず、`rawResponse/completed` を待ってプロセスを閉じる |
+| モデルへのリクエスト | 1 回 | 1 回 |
+| 取れたツール呼び出し | 2 つとも（`AssistantMessage` に 1 つずつ） | 2 つとも（`rawResponseItem/completed` の `function_call`） |
+| 使用量 | `ResultMessage`（`subtype: error_max_turns`、`stop_reason: tool_use`） | `rawResponse/completed` の `usage` |
+| 記録 | `results/stop-claude-answer-turns1.json` | `results/stop-codex-stop.json` |
+
+- **Claude は、同時に呼んだツールを 1 つずつ別の `AssistantMessage` で渡し、1 つ目のツールの処理を 2 つ目が届く前に始める。**
+  そのため最初の `AssistantMessage` で止めると 2 つ目を取りこぼす。ストリームの `message_stop` を見て接続を閉じても、
+  中断されたツールの結果を付けて 2 回目のリクエストが出た（`results/stop-claude-stop.json`。本番なら全履歴をもう一度送る）。
+  `max_turns=1` なら、ツールを実行した後、モデルへ送る前に止まる。Python の SDK は `ResultMessage` の後に `ResultError` を投げるので捕まえる
+- **Codex は、ツールの依頼を 1 つずつ、前の返事を待ってから送る。** 返事を止めると 2 つ目の依頼は来ない（`results/stop-codex-answer.json` では
+  `call_b` → `call_a` の順に依頼が来た）。`experimentalRawEvents` を付けると、モデルの応答の項目（`function_call`・文・推論）が、ツールの実行より前に
+  `rawResponseItem/completed` で、応答の終わりが使用量付きの `rawResponse/completed` で届く
+- **Codex は自前のツールを `parallel_tool_calls: false` で送る。** `supports_parallel_tool_calls` は MCP サーバーごとの設定で、モデル表に書いても変わらなかった。
+  実際のモデルは 1 手に 1 つしかツールを呼ばない前提になる
+- Python の `CodexClient` は、受信のスレッドの中でツールの依頼に返事をする。返事を止めるとそのスレッドが止まり、後の通知も読めないので、
+  `stop_probe.py` は受信のループを差し替えた（依頼を記録して返事をしない）。プロセスを閉じるのに約 1 秒かかった
+
 ## How to run
 
 前提: `codex login` と `claude auth login`（サブスク）、mise、Node 22。
@@ -132,6 +159,7 @@ python/probe.py  同じことを Python の SDK で
 mise run        # 型検査と、偽サーバーへの空撃ち（トークンを使わない）
 mise run run    # 本番を 1 回ずつ撃って判定する（サブスクの利用枠を使う）
 cd python && uv run probe.py codex|claude [--mock]   # Python の SDK で（--mock なしは本番）
+cd python && uv run stop_probe.py codex|claude [--answer] [--turns 1]   # 最初のツール呼び出しで止める（偽サーバーだけ）
 ```
 
 `results/codex.json`・`results/claude.json` が実行の記録、`results/*-grade.json` が判定です。

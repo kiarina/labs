@@ -1,0 +1,164 @@
+{
+  "runtime": "codex",
+  "answer": false,
+  "serial": false,
+  "model_requests": 1,
+  "tool_calls": [
+    {
+      "tool": "get_team_members",
+      "callId": "call_a",
+      "arguments": {}
+    }
+  ],
+  "timeline": [
+    {
+      "ms": 587,
+      "event": "notification",
+      "method": "remoteControl/status/changed",
+      "item_type": null,
+      "name": null,
+      "call_id": null,
+      "keys": null
+    },
+    {
+      "ms": 656,
+      "event": "notification",
+      "method": "thread/started",
+      "item_type": null,
+      "name": null,
+      "call_id": null,
+      "keys": null
+    },
+    {
+      "ms": 659,
+      "event": "notification",
+      "method": "thread/status/changed",
+      "item_type": null,
+      "name": null,
+      "call_id": null,
+      "keys": null
+    },
+    {
+      "ms": 659,
+      "event": "notification",
+      "method": "turn/started",
+      "item_type": null,
+      "name": null,
+      "call_id": null,
+      "keys": null
+    },
+    {
+      "ms": 883,
+      "event": "notification",
+      "method": "account/updated",
+      "item_type": null,
+      "name": null,
+      "call_id": null,
+      "keys": null
+    },
+    {
+      "ms": 999,
+      "event": "notification",
+      "method": "rawResponseItem/completed",
+      "item_type": "message",
+      "name": null,
+      "call_id": null,
+      "keys": [
+        "item",
+        "threadId",
+        "turnId"
+      ]
+    },
+    {
+      "ms": 999,
+      "event": "notification",
+      "method": "item/started",
+      "item_type": "userMessage",
+      "name": null,
+      "call_id": null,
+      "keys": null
+    },
+    {
+      "ms": 999,
+      "event": "notification",
+      "method": "item/completed",
+      "item_type": "userMessage",
+      "name": null,
+      "call_id": null,
+      "keys": null
+    },
+    {
+      "ms": 1001,
+      "event": "model_request",
+      "n": 1,
+      "parallel_tool_calls": false
+    },
+    {
+      "ms": 1003,
+      "event": "notification",
+      "method": "rawResponseItem/completed",
+      "item_type": "function_call",
+      "name": "get_team_members",
+      "call_id": "call_a",
+      "keys": [
+        "item",
+        "threadId",
+        "turnId"
+      ]
+    },
+    {
+      "ms": 1003,
+      "event": "notification",
+      "method": "rawResponseItem/completed",
+      "item_type": "function_call",
+      "name": "check_availability",
+      "call_id": "call_b",
+      "keys": [
+        "item",
+        "threadId",
+        "turnId"
+      ]
+    },
+    {
+      "ms": 1003,
+      "event": "notification",
+      "method": "rawResponse/completed",
+      "item_type": null,
+      "name": null,
+      "call_id": null,
+      "keys": [
+        "responseId",
+        "threadId",
+        "turnId",
+        "usage",
+        "usageMetadata"
+      ]
+    },
+    {
+      "ms": 1003,
+      "event": "notification",
+      "method": "item/started",
+      "item_type": "dynamicToolCall",
+      "name": null,
+      "call_id": null,
+      "keys": null
+    },
+    {
+      "ms": 1003,
+      "event": "server_request",
+      "method": "item/tool/call",
+      "tool": "get_team_members",
+      "callId": "call_a",
+      "held": true
+    },
+    {
+      "ms": 2007,
+      "event": "closing"
+    },
+    {
+      "ms": 3025,
+      "event": "closed",
+      "close_ms": 1017
+    }
+  ]
+}
