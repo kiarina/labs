@@ -152,18 +152,31 @@ def run_codex(mock: bool) -> dict:
         params["config"] = {"model_providers": {"mock": {"name": "mock", "base_url": f"{url}/v1", "wire_api": "responses"}}}
         params["modelProvider"] = "mock"
     started = client.thread_start(params)
+    t1 = time.time()
     turn = client.turn_start(started.thread.id, PROMPT)
-    done = client.wait_for_turn_completed(turn.turn.id)
-    final = done.model_dump(mode="json", by_alias=True)
+    turn_id = turn.turn.id
+    usage = None
+    error = None
+    # Like wait_for_turn_completed, but keeping the messages and the token usage.
+    client.register_turn_notifications(turn_id)
+    try:
+        while True:
+            n = client.next_turn_notification(turn_id)
+            p = n.payload.model_dump(mode="json", by_alias=True) if hasattr(n.payload, "model_dump") else {}
+            if n.method == "item/completed" and p.get("item", {}).get("type") == "agentMessage":
+                steps.append({"type": "message", "text": p["item"].get("text"), "ms": int((time.time() - t0) * 1000)})
+            elif n.method == "thread/tokenUsage/updated":
+                usage = p.get("tokenUsage")
+            elif n.method == "turn/completed":
+                error = p.get("turn", {}).get("error")
+                break
+    finally:
+        client.unregister_turn_notifications(turn_id)
     client.close()
     if server:
         server.shutdown()
-    items = final.get("turn", {}).get("items") or []
-    for it in items:
-        if it.get("type") == "agentMessage":
-            steps.append({"type": "message", "text": it.get("text"), "ms": int((time.time() - t0) * 1000)})
-    return {"runtime": "codex-py", "mock": mock, "model": MODEL, "steps": steps,
-            "error": final.get("turn", {}).get("error"), "totalMs": int((time.time() - t0) * 1000)}
+    return {"runtime": "codex-py", "mock": mock, "model": MODEL, "startupMs": int((t1 - t0) * 1000), "steps": steps,
+            "usage": usage, "error": error, "totalMs": int((time.time() - t0) * 1000)}
 
 
 # --- claude -----------------------------------------------------------------

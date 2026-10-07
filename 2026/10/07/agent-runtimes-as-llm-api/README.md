@@ -48,7 +48,7 @@ src/claude.ts    Agent SDK で 1 回送る（--mock で偽サーバーへ）
 src/mock.ts      偽サーバー：届いたリクエストを記録してエラーを返す
 src/grade.ts     ツールの呼び出しと最後のメッセージを判定する
 src/export-fixture.ts  題材を fixture/ に書き出す（prompt.txt・expected.json・Python 用の tools.json）
-python/probe.py  同じことを Python の SDK で（空撃ちだけ確かめた）
+python/probe.py  同じことを Python の SDK で
 ```
 
 ### 題材
@@ -93,15 +93,27 @@ python/probe.py  同じことを Python の SDK で（空撃ちだけ確かめ�
 - Claude Code はプロンプトのキャッシュに 1 時間の TTL を使っていた（`ephemeral_1h_input_tokens`）。同じ履歴の先頭を持つリクエストを 1 時間以内に続けて送れば、毎回新しいセッションでもキャッシュが効くはず（未検証）
 - **未検証:** 1 回ずつなので、ばらつき・キャッシュの効き方・利用枠の減り方（Codex は整数でしか見えず、72% のまま動かなかった）は分からない
 
-## Python の SDK（空撃ちだけ）
+## Python の SDK
 
-どちらも公式の Python SDK がある。同じ設定ができるかを偽サーバーで確かめた（本番は撃っていない）。
+どちらも公式の Python SDK がある。同じ設定ができるかを偽サーバーで確かめ、本番も 1 回ずつ撃った。
+
+| | Codex（Python） | Claude（Python） |
+| --- | --- | --- |
+| 判定 | 13/13 | 13/13 |
+| 最初のツール呼び出し / 全体 | 5.4 秒 / 11.3 秒 | 8.0 秒 / 18.1 秒 |
+| 入力トークン（3 回の合計） | 107,277（うちキャッシュ 71,040） | 90,380（キャッシュの書き込み 45,789・読み出し 44,587） |
+| 出力トークン | 365 | 1,714（うち思考 368） |
+| API 換算 | — | $0.41 |
+
+- ツールの呼び出しと引数は TypeScript 版とほぼ同じ（文面が少し違うだけ）。トークンもほぼ同じで、SDK の言語で中身が変わらないことと合う
+- Claude は今回も、履歴の中の自分の誤った要約（「10/20 に延期」）を訂正し、さらに議事録の中で同じ議題の結論が食い違っている点も指摘した（題材の乱数で同じ議題が何度も出るため）。
+  2 回とも同じ振る舞いなので、たまたまではない
 
 | | Codex: `openai-codex` 0.160.1 | Claude: `claude-agent-sdk` 0.2.164 |
 | --- | --- | --- |
 | 中身 | `codex app-server` を包む（Codex 本体 0.160.1 を `openai-codex-cli-bin` として同梱） | Claude Code を起動する（同梱 2.1.292） |
 | 送られた中身 | TypeScript 版と同じ（こちらの指示・7 つのツール + `request_user_input`・履歴） | TypeScript 版と同じ（環境の説明に「Additional working directories」の 1 行が足されるだけ） |
-| 記録 | `results/codex-py-capture.json` | `results/claude-py-capture.json` |
+| 記録 | `results/codex-py-capture.json`・`codex-py.json`・`codex-py-grade.json` | `results/claude-py-capture.json`・`claude-py.json`・`claude-py-grade.json` |
 
 - **Codex: 高水準の `Codex().thread_start()` には `dynamicTools` の引数が無い。** 低水準の `openai_codex.client.CodexClient` を使い、`thread_start` に dict で
   `dynamicTools` を渡す（型付きの `ThreadStartParams` は実験的な欄を持たないが、dict はそのまま送られる）。ツールの呼び出し（`item/tool/call`）は、

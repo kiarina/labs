@@ -1,0 +1,77 @@
+{
+  "runtime": "codex-py",
+  "mock": false,
+  "model": "gpt-6.1-sol",
+  "startupMs": 114,
+  "steps": [
+    {
+      "type": "tool_call",
+      "name": "create_event",
+      "args": {
+        "attendees": [
+          "misaki.suzuki@example.com",
+          "kenta.yamada@example.com",
+          "sakura.ito@example.com",
+          "daisuke.watanabe@example.com",
+          "yuko.nakamura@example.com",
+          "sho.kobayashi@example.com",
+          "nana.kato@example.com",
+          "takumi.yoshida@example.com",
+          "haruka.sato@example.com"
+        ],
+        "duration_minutes": 120,
+        "note": "9名・個室。予約済み（鈴木さんが電話で予約）。2時間コース。",
+        "place_id": "plc_0417",
+        "start": "2026-10-23T19:30",
+        "title": "リリース打ち上げ"
+      },
+      "ms": 5373
+    },
+    {
+      "type": "tool_call",
+      "name": "send_message",
+      "args": {
+        "to": [
+          "misaki.suzuki@example.com",
+          "kenta.yamada@example.com",
+          "sakura.ito@example.com",
+          "daisuke.watanabe@example.com",
+          "yuko.nakamura@example.com",
+          "sho.kobayashi@example.com",
+          "nana.kato@example.com",
+          "takumi.yoshida@example.com",
+          "haruka.sato@example.com"
+        ],
+        "subject": "打ち上げのご案内",
+        "body": "打ち上げは10/23（金）19:30〜21:30、和食 こもれび 名駅店（名駅から徒歩6分）です。9名・個室、2時間コースで予約済みです。"
+      },
+      "ms": 9057
+    },
+    {
+      "type": "message",
+      "text": "10/23（金）19:30〜21:30、和食 こもれび 名駅店での打ち上げを予定表に登録し、鈴木さんを含む参加者9名全員に案内を送りました。",
+      "ms": 11207
+    }
+  ],
+  "usage": {
+    "last": {
+      "cacheWriteInputTokens": 0,
+      "cachedInputTokens": 35584,
+      "inputTokens": 35937,
+      "outputTokens": 60,
+      "reasoningOutputTokens": 0,
+      "totalTokens": 35997
+    },
+    "modelContextWindow": 828400,
+    "total": {
+      "cacheWriteInputTokens": 0,
+      "cachedInputTokens": 71040,
+      "inputTokens": 107277,
+      "outputTokens": 365,
+      "reasoningOutputTokens": 0,
+      "totalTokens": 107642
+    }
+  },
+  "error": null,
+  "totalMs": 11259
+}

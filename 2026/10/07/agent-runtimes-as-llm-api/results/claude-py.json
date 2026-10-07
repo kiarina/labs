@@ -1,0 +1,95 @@
+{
+  "runtime": "claude-py",
+  "mock": false,
+  "model": "claude-opus-5-5",
+  "steps": [
+    {
+      "type": "tool_call",
+      "name": "create_event",
+      "args": {
+        "title": "リリース打ち上げ",
+        "start": "2026-10-23T19:30",
+        "duration_minutes": 120,
+        "attendees": [
+          "misaki.suzuki@example.com",
+          "kenta.yamada@example.com",
+          "sakura.ito@example.com",
+          "daisuke.watanabe@example.com",
+          "yuko.nakamura@example.com",
+          "sho.kobayashi@example.com",
+          "nana.kato@example.com",
+          "takumi.yoshida@example.com",
+          "haruka.sato@example.com"
+        ],
+        "place_id": "plc_0417",
+        "note": "和食 こもれび 名駅店（名駅から徒歩 6 分）、個室、9 名、2 時間コース"
+      },
+      "ms": 7962
+    },
+    {
+      "type": "tool_call",
+      "name": "send_message",
+      "args": {
+        "to": [
+          "misaki.suzuki@example.com",
+          "kenta.yamada@example.com",
+          "sakura.ito@example.com",
+          "daisuke.watanabe@example.com",
+          "yuko.nakamura@example.com",
+          "sho.kobayashi@example.com",
+          "nana.kato@example.com",
+          "takumi.yoshida@example.com",
+          "haruka.sato@example.com"
+        ],
+        "subject": "【ご案内】リリース打ち上げ 10/23（金）19:30〜",
+        "body": "お疲れさまです。リリースの打ち上げのご案内です。\n\n日時: 10 月 23 日（金）19:30〜21:30（2 時間のコース）\n場所: 和食 こもれび 名駅店（名駅から徒歩 6 分）、個室\n\n予定表に招待を送りました。皆さんの参加を楽しみにしています！\n\n鈴木"
+      },
+      "ms": 10401
+    },
+    {
+      "type": "message",
+      "text": "打ち上げを予定表に登録して、参加者 9 人に案内を送りました。\n\n**予定表**\n- リリース打ち上げ：10/23（金）19:30〜21:30\n- 場所：和食 こもれび 名駅店（個室）\n- 参加者：鈴木さん、山田さん、伊藤さん、渡辺さん、中村さん、小林さん、加藤さん、吉田さん、佐藤さん\n- 田中さんは出張のため外しています。\n\n**案内メッセージ**\n- 9 人全員（鈴木さんを含む）に、日時と場所を書いた短い案内を送りました。\n\n**私の誤りのお詫び**\n10/2 にリリース判定会議の議事録（doc_7790）を要約したとき、「リリースは 1 週間延期、10/20 が目標」とお伝えしました。読み直したところ、議事録には延期も 10/20 という日付も書かれていませんでした。私が議事録にない内容を付け加えていました。申し訳ありません。\n\n打ち上げを 23 日にずらしたのは、この誤った要約が理由だった可能性があります。予約も案内も済んでいるので、このままで問題ないか、実際のリリース日を確認していただけますか。もし 16 日にリリースする予定のままなら、日程を戻すかどうか一緒に考えます。\n\nほかの回答にも不正確なところがありました。\n- **9/28 の決定事項：** 同じ議題が何度も出てくるため、同じ議題で結論が食い違っています（例：採用は「今のスプリントで対応」「現状維持」「調査だけ先に進める」）。どれが最終的な決定かは議事録からは判断できず、確認が必要です。\n- **9/30 の「未決の論点」：** 「保留とした」発言のうち 3 つだけを挙げていましたが、ほかにも保留の発言がたくさんあります。\n\n必要なら、どちらもまとめ直します。",
+      "ms": 17795
+    }
+  ],
+  "usage": {
+    "usage": {
+      "input_tokens": 4,
+      "cache_creation_input_tokens": 45789,
+      "cache_read_input_tokens": 44587,
+      "output_tokens": 1714,
+      "output_tokens_details": {
+        "thinking_tokens": 368
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 45789,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "not_available",
+      "iterations": [
+        {
+          "input_tokens": 2,
+          "output_tokens": 656,
+          "cache_read_input_tokens": 44587,
+          "cache_creation_input_tokens": 1202,
+          "cache_creation": {
+            "ephemeral_5m_input_tokens": 0,
+            "ephemeral_1h_input_tokens": 1202
+          },
+          "type": "message"
+        }
+      ],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "total_cost_usd": 0.40952540000000004,
+    "num_turns": 3
+  },
+  "error": null,
+  "totalMs": 18131
+}
