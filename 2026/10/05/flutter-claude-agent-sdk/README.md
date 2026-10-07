@@ -69,6 +69,12 @@ app/lib/
   `sleep 12` の途中で「notes.txt ではなく steer.txt に書いて」と送ると steer.txt に書いた
 - **ログインは Claude Code のもの。** `claude auth login`（claude.ai のサブスク）を一度しておく。未ログインだと `accountInfo()` が
   `tokenSource: "none"` を返し、メッセージは `Not logged in · Please run /login` で終わる
+  - トークンは macOS のキーチェーン（項目「Claude Code-credentials」）にあり、Claude Code が期限の前に自分で作り直して書き戻す。
+    アクセストークンは約 8 時間で切れ、リフレッシュトークンで作り直される（2026-10-07 に見たとき）。同じ項目に、サブスクの種類（`max`）と利用枠の段階も入っている
+  - **SDK にはログインの口が無い。** 未ログイン・リフレッシュトークンが使えなくなったとき（ログアウト・取り消し・長く使わない）・別のマシンでは、人が端末で
+    `claude auth login` を打つ。アプリにできるのは、`accountInfo()` で気づいて頼むことだけ（codex app-server には `account/login/start` がある）
+  - **API キーがあるとそちらが優先される。** 環境変数に `ANTHROPIC_API_KEY` があると、サブスクのログインより先に使われる（Claude Code が警告を出す）。
+    サブスクで動かしたいアプリは、子プロセスに渡す環境から `ANTHROPIC_*` を外す
 - **Claude Code のホストの中から起動すると、ホストの認証を借りてしまう。** macOS の `open` は呼び出した側の環境変数をアプリに渡すので、
   Claude デスクトップアプリの中のターミナルやエージェントから `open` すると、`CLAUDECODE`・`CLAUDE_CODE_*`（ホストのセッション・認証）・
   ホストを指す `ANTHROPIC_BASE_URL` がアプリ → 中継 → Claude Code へ漏れ、セッションの記録の `entrypoint` が `claude-desktop` になった。

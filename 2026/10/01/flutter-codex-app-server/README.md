@@ -87,6 +87,13 @@ app/lib/
   シェルの `PATH` を継がないので、`/opt/homebrew/bin` などを探し、無ければ `zsh -lc` で起動する（`CODEX_BIN` で上書きできる）
 - 検証の自動化: computer-use の背景操作（アクセシビリティ経由の入力）は Flutter の `TextField` に届かなかった。クリックは届く。
   そのため、最初のメッセージは環境変数 `CODEX_FLUTTER_PROMPT` で渡せるようにした
+- **ログインは Codex 本体のもの。** `codex login`（ChatGPT）でアクセストークンとリフレッシュトークンが `~/.codex/auth.json` に入り、app-server が期限の前に
+  自分で作り直して書き戻す（2026-10-07 に見たときアクセストークンの残りは約 9 日）。アプリは資格情報に触れない。ログインを求められるのは、最初の 1 回、
+  リフレッシュトークンが使えなくなったとき（ログアウト・パスワードの変更・長く使わない・取り消し）、別のマシンや別の `CODEX_HOME` で使うとき
+  - アプリから状態を読める: `account/read`（アカウント・プラン）、`account/rateLimits/read`（利用枠）
+  - 未ログインなら、アプリからログインを始められる: `account/login/start` がブラウザで開く URL を返し、終わると `account/login/completed` が届く
+    （`account/logout` もある）。Claude Agent SDK にはこの口が無い
+  - アプリがトークンを持って渡す方式もあり、そのときは期限の前に app-server からアプリへ `account/chatgptAuthTokens/refresh` が来る（この lab では使っていない）
 - 未検証: `turn/steer`、ファイル変更の承認（`item/fileChange/requestApproval`）、`item/tool/requestUserInput`
 - 承認待ちでない時の中断（`turn/interrupt`）は、後の [司令塔の lab](../../06/flutter-agent-orchestrator/README.md) で確かめた（ターンは interrupted になるが、
   実行中のコマンドのプロセスは残る）
