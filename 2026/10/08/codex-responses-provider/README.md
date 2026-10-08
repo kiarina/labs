@@ -121,6 +121,10 @@ response.completed          {response: {id, status: "completed", output, usage}}
 - ユーザーの `~/.codex/config.toml` の MCP サーバーを `-c mcp_servers.<name>.enabled=false` で止めようとすると、この版では `node_repl`（ChatGPT アプリが書き足す項目）で
   「invalid transport」と落ちた。空の `CODEX_HOME` にして持ち込まないほうが確実
 - 空の `CODEX_HOME` でも、Codex に組み込みのスキル（imagegen など）の一覧は `developer` の項目に入る
+- **作業フォルダの `.codex/config.toml` は、`CODEX_HOME` を分けても読まれる。** ホームフォルダ（＝普段の `~/.codex`）を作業フォルダにし、sandbox を
+  `danger-full-access` にすると、そこの MCP サーバーのツールが `{"type": "namespace", "name": "mcp__<server>", "tools": [...]}` の形で `tools` に入った
+  （`read-only` では入らなかった）。namespace のツールの呼び出しは、`function_call` に `namespace` と元の `name` を分けて返すと Codex が実行した
+  （`mcp__<server>__<name>` のようにつないだ名前は「unsupported call」で返された）。結果は `input_text` の部品のリストで返ってくる（追記、2026-10-08）
 
 ## Limitations
 

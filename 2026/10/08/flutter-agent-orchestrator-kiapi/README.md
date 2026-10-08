@@ -43,6 +43,10 @@ OpenAI の Codex・Claude のワーカーと同じツール（`start_thread` な
 - 専用の `CODEX_HOME` は空でも起動する（ログインなし）。中に `config.toml`・ログ・goals や memories の SQLite が作られる（機能を切っていてもファイルはできる）
 - 司令塔は kiapi のワーカーの説明（遅く弱い・1 つずつ）を読み、それでも頼まれたとおり kiapi に振った。どの仕事をどこへ振るかを司令塔に任せたときの選び方は試していない
 
+- 作業フォルダに `.codex/config.toml` があると（ホームフォルダでは普段の Codex の設定）、kiapi のワーカーにもそこの MCP サーバーのツールが渡る。
+  最初は kiapi が `namespace` のツールを受け付けず、ワーカーが「unsupported tool type: 'namespace'」で失敗した。kiapi 側で受け付けるようにした
+  （kiapi `2a1de66`。追記、2026-10-08）
+
 ## Limitations
 
 - 1 回だけ、小さな課題で試した。kiapi のワーカーに長い仕事・大きな変更をさせたときの質、履歴の圧縮は試していない
