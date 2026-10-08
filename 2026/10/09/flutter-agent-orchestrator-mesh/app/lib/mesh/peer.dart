@@ -87,7 +87,10 @@ class RtcPeer implements Peer {
     final id = '${++_seq}';
     final n = (s.length / _chunkChars).ceil();
     for (var i = 0; i < n; i++) {
-      final part = s.substring(i * _chunkChars, min(s.length, (i + 1) * _chunkChars));
+      final part = s.substring(
+        i * _chunkChars,
+        min(s.length, (i + 1) * _chunkChars),
+      );
       _raw('C$id:$i/$n:$part');
     }
   }
@@ -110,7 +113,10 @@ class RtcPeer implements Peer {
     final id = text.substring(1, head);
     final pos = text.substring(head + 1, head2).split('/');
     final index = int.parse(pos[0]), count = int.parse(pos[1]);
-    final parts = _parts.putIfAbsent(id, () => List<String?>.filled(count, null));
+    final parts = _parts.putIfAbsent(
+      id,
+      () => List<String?>.filled(count, null),
+    );
     parts[index] = text.substring(head2 + 1);
     if (parts.every((p) => p != null)) {
       _parts.remove(id);
@@ -205,7 +211,11 @@ class _Negotiation {
 /// channel opens, [onPeer] gets it. The socket stays open only to notice when
 /// the body quits.
 class SignalingServer {
-  SignalingServer({required this.name, required this.port, required this.onPeer});
+  SignalingServer({
+    required this.name,
+    required this.port,
+    required this.onPeer,
+  });
 
   final String name;
   final int port;
@@ -323,7 +333,8 @@ Future<RtcPeer> joinBrain(
       }
     };
     // The channel may already be open when it arrives.
-    if (c.state == RTCDataChannelState.RTCDataChannelOpen && !opened.isCompleted) {
+    if (c.state == RTCDataChannelState.RTCDataChannelOpen &&
+        !opened.isCompleted) {
       opened.complete();
     }
     if (!channel.isCompleted) channel.complete(c);
@@ -349,7 +360,9 @@ Future<RtcPeer> joinBrain(
           _sendSignal(ws, {'t': 'answer', 'sdp': answer.sdp});
           log?.call('answer sent');
         case 'ice':
-          log?.call('remote candidate ${(m['candidate'] as String?)?.split(' ').skip(4).take(4).join(' ')}');
+          log?.call(
+            'remote candidate ${(m['candidate'] as String?)?.split(' ').skip(4).take(4).join(' ')}',
+          );
           await negotiation.addCandidate(m);
       }
     }),
@@ -396,8 +409,9 @@ class _Loopback implements Peer {
   Future<void> get closed => _closed.future;
 
   @override
-  void send(Json message) =>
-      _out.add((jsonDecode(jsonEncode(message)) as Map).cast<String, dynamic>());
+  void send(Json message) => _out.add(
+    (jsonDecode(jsonEncode(message)) as Map).cast<String, dynamic>(),
+  );
 
   @override
   Future<void> close() async {

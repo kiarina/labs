@@ -254,7 +254,14 @@ function appToolServer(sessionId: string, specs: NonNullable<SessionConfig['appT
       const schema = z.fromJSONSchema(spec.inputSchema as any) as unknown as z.ZodObject<any>;
       return tool(spec.name, spec.description, schema.shape, async (args) => {
         const r = await requestApp('tool/call', { sessionId, tool: spec.name, arguments: args });
-        return { content: [{ type: 'text' as const, text: String(r?.text ?? '') }], isError: r?.success === false };
+        const images = (r?.images ?? []) as { mime: string; data: string }[];
+        return {
+          content: [
+            { type: 'text' as const, text: String(r?.text ?? '') },
+            ...images.map((i) => ({ type: 'image' as const, data: i.data, mimeType: i.mime })),
+          ],
+          isError: r?.success === false,
+        };
         // Load up front; otherwise Claude first spends a ToolSearch call.
       }, { alwaysLoad: true });
     }),

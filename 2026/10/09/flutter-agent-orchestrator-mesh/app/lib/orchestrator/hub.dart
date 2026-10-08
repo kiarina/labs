@@ -365,14 +365,52 @@ class Hub extends ChangeNotifier {
 
   // ---- tool calls ---------------------------------------------------------------
 
-  Future<(String, bool)> _onTool(
-    AgentThread caller,
-    String tool,
-    Json args,
-  ) async {
+  Future<ToolResult> _onTool(AgentThread caller, String tool, Json args) async {
+    if (tool == 'fetch_image') return _fetchImage(caller, args);
     final result = await callTool(tool, args);
     notifyListeners();
-    return (prettyJson(result), !result.containsKey('error'));
+    return ToolResult(prettyJson(result), !result.containsKey('error'));
+  }
+
+  /// Brings an image file from a body to the orchestrator (as an image it
+  /// can look at) and into the transcript (so every console shows it).
+  Future<ToolResult> _fetchImage(AgentThread caller, Json a) async {
+    final bodyName = a['body'] as String? ?? '';
+    final path = a['path'] as String? ?? '';
+    final body = bodies[bodyName];
+    if (body == null || !body.online) {
+      return ToolResult(
+        prettyJson({
+          'error': 'no online body "$bodyName"',
+          'bodies': [
+            for (final b in bodies.values)
+              if (b.online) b.name,
+          ],
+        }),
+        false,
+      );
+    }
+    final Json image;
+    try {
+      image = await body.readImage(path);
+    } catch (e) {
+      return ToolResult(prettyJson({'error': '$e'}), false);
+    }
+    caller.view.attachImage({...image, 'body': bodyName});
+    notifyListeners();
+    return ToolResult(
+      prettyJson({
+        'body': bodyName,
+        'path': path,
+        'width': image['width'],
+        'height': image['height'],
+        'original_width': image['originalWidth'],
+        'original_height': image['originalHeight'],
+        'shown_to_user': true,
+      }),
+      true,
+      [image],
+    );
   }
 
   Future<Json> callTool(String tool, Json a) async {
@@ -383,7 +421,10 @@ class Hub extends ChangeNotifier {
         if (body == null || !body.online) {
           return {
             'error': 'no online body "$bodyName"',
-            'bodies': [for (final b in bodies.values) if (b.online) b.name],
+            'bodies': [
+              for (final b in bodies.values)
+                if (b.online) b.name,
+            ],
           };
         }
         final p = Provider.parse(a['provider'] as String);

@@ -87,7 +87,8 @@ class _WorkersPanelState extends State<WorkersPanel> {
                 : ListView(
                     padding: const EdgeInsets.all(8),
                     children: [
-                      for (final w in workers) _WorkerTile(console: console, worker: w),
+                      for (final w in workers)
+                        _WorkerTile(console: console, worker: w),
                     ],
                   ),
           ),

@@ -275,9 +275,9 @@ Future<RpcClient> kiapiAppServer(String stateDir) async {
 /// catalog's types are strict, so only the fields that matter change.
 Future<Map<String, dynamic>> _kiapiCatalogEntry(String model) async {
   final home = Platform.environment['HOME'] ?? '';
-  final cache =
-      jsonDecode(await File('$home/.codex/models_cache.json').readAsString())
-          as Map<String, dynamic>;
+  final cache = jsonDecode(
+    await File('$home/.codex/models_cache.json').readAsString(),
+  ) as Map<String, dynamic>;
   final models = (cache['models'] as List).cast<Map<String, dynamic>>();
   final base =
       models.where((m) => m['slug'] == 'gpt-5.6-luna').firstOrNull ??

@@ -92,6 +92,7 @@ class ItemWidget extends StatelessWidget {
         icon: Icons.compress,
         text: 'Context compacted',
       ),
+      'imageAttachment' => _ImageAttachment(item),
       'imageView' => _Line(
         icon: Icons.image_outlined,
         text: 'Viewed ${item.data['path']}',
@@ -555,6 +556,73 @@ class _CodeBox extends StatelessWidget {
             color: Palette.textDim,
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// An image the orchestrator fetched from a body. Click to see it larger.
+class _ImageAttachment extends StatefulWidget {
+  const _ImageAttachment(this.item);
+
+  final ItemState item;
+
+  @override
+  State<_ImageAttachment> createState() => _ImageAttachmentState();
+}
+
+class _ImageAttachmentState extends State<_ImageAttachment> {
+  // Decoded once; the transcript rebuilds on every streamed delta.
+  late final bytes = base64Decode(widget.item.data['data'] as String);
+
+  @override
+  Widget build(BuildContext context) {
+    final d = widget.item.data;
+    final image = Image.memory(bytes, gaplessPlayback: true);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(
+                Icons.image_outlined,
+                size: 14,
+                color: Palette.textDim,
+              ),
+              const SizedBox(width: 6),
+              Flexible(
+                child: Text(
+                  '${d['body']} · ${d['path']} · ${d['width']}×${d['height']}',
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 12, color: Palette.textDim),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          MouseRegion(
+            cursor: SystemMouseCursors.zoomIn,
+            child: GestureDetector(
+              onTap: () => showDialog<void>(
+                context: context,
+                builder: (context) => Dialog(
+                  backgroundColor: Palette.surface,
+                  insetPadding: const EdgeInsets.all(24),
+                  child: InteractiveViewer(maxScale: 6, child: image),
+                ),
+              ),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxHeight: 360),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: image,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

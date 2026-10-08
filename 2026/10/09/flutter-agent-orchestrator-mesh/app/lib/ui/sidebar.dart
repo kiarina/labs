@@ -16,7 +16,8 @@ class Sidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final current = console.orchestrator?.provider ?? console.settings.orchestrator;
+    final current =
+        console.orchestrator?.provider ?? console.settings.orchestrator;
     return Container(
       width: 240,
       color: Palette.sidebar,
@@ -37,8 +38,14 @@ class Sidebar extends StatelessWidget {
             child: SegmentedButton<Provider>(
               showSelectedIcon: false,
               segments: [
-                const ButtonSegment(value: Provider.codex, label: Text('Codex')),
-                const ButtonSegment(value: Provider.claude, label: Text('Claude')),
+                const ButtonSegment(
+                  value: Provider.codex,
+                  label: Text('Codex'),
+                ),
+                const ButtonSegment(
+                  value: Provider.claude,
+                  label: Text('Claude'),
+                ),
                 ButtonSegment(
                   value: Provider.kiapi,
                   label: const Text('kiapi'),

@@ -16,8 +16,9 @@ import '../state/thread_view.dart';
 // app's console, the brain's own included, draws only what it received.
 
 int? _ms(DateTime? t) => t?.millisecondsSinceEpoch;
-DateTime? _time(Object? ms) =>
-    ms == null ? null : DateTime.fromMillisecondsSinceEpoch((ms as num).toInt());
+DateTime? _time(Object? ms) => ms == null
+    ? null
+    : DateTime.fromMillisecondsSinceEpoch((ms as num).toInt());
 
 /// The brain's side: turns the hub into console messages.
 class ConsolePublisher {
@@ -308,13 +309,17 @@ class ConsoleMirror extends ChangeNotifier {
   final _clock = Stopwatch()..start();
 
   void _logLink() {
-    linkLog.add('${(_clock.elapsedMilliseconds / 1000).toStringAsFixed(1)}s $link');
+    linkLog.add(
+      '${(_clock.elapsedMilliseconds / 1000).toStringAsFixed(1)}s $link',
+    );
     if (linkLog.length > 80) linkLog.removeAt(0);
   }
 
   /// A step of connecting (for the link log only).
   void logStep(String step) {
-    linkLog.add('${(_clock.elapsedMilliseconds / 1000).toStringAsFixed(1)}s   $step');
+    linkLog.add(
+      '${(_clock.elapsedMilliseconds / 1000).toStringAsFixed(1)}s   $step',
+    );
     if (linkLog.length > 80) linkLog.removeAt(0);
   }
 
@@ -355,7 +360,8 @@ class ConsoleMirror extends ChangeNotifier {
       _act({'a': 'answer', 'requestId': r.request.id, 'result': result});
 
   /// Sends edited settings (the brain saves them).
-  void saveSettings(HubSettings s) => _act({'a': 'settings', 'settings': s.toJson()});
+  void saveSettings(HubSettings s) =>
+      _act({'a': 'settings', 'settings': s.toJson()});
 
   /// Only the brain's console can pick a folder: the path is on its machine.
   void setProject(String dir) => _act({'a': 'project', 'dir': dir});
@@ -390,6 +396,17 @@ class ConsoleMirror extends ChangeNotifier {
           'turns': t.view.turns.length,
           'ops': t.view.ops.length,
           'opsHash': fnv1a(jsonEncode(t.view.ops)),
+          'images': [
+            for (final turn in t.view.turns)
+              for (final i in turn.items)
+                if (i.type == 'imageAttachment')
+                  {
+                    'body': i.data['body'],
+                    'path': i.data['path'],
+                    'size': '${i.data['width']}x${i.data['height']}',
+                    'hash': fnv1a(i.data['data'] as String),
+                  },
+          ],
           'lastAnswer': _lastAnswer(t.view),
         },
     ],

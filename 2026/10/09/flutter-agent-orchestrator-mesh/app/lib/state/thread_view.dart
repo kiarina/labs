@@ -191,6 +191,8 @@ class ThreadView extends ChangeNotifier {
         pending.removeWhere((r) => r.request.id == op['id']);
       case 'pendingCancel':
         pending.removeWhere((r) => r.params['requestId'] == op['requestId']);
+      case 'image':
+        _attachImage(op);
     }
     notifyListeners();
   }
@@ -671,6 +673,32 @@ class ThreadView extends ChangeNotifier {
   }
 
   void addError(String text) => apply({'t': 'error', 'text': text});
+
+  /// An image the app attached to the conversation (one the orchestrator
+  /// fetched from a body): `{body, path, mime, data (base64), width,
+  /// height}`. Shown in the transcript; it travels to every console with the
+  /// other operations.
+  void attachImage(Json image) => apply({
+    't': 'image',
+    'id': 'image-${ops.where((o) => o['t'] == 'image').length}',
+    ...image,
+  });
+
+  void _attachImage(Json op) {
+    final turn = activeTurn ?? turns.lastOrNull ?? _current();
+    turn.items.add(
+      ItemState({
+        'type': 'imageAttachment',
+        'id': op['id'],
+        'body': op['body'],
+        'path': op['path'],
+        'mime': op['mime'],
+        'data': op['data'],
+        'width': op['width'],
+        'height': op['height'],
+      })..completed = true,
+    );
+  }
 
   /// Set when the user presses stop (see [interruptRequested]).
   void requestInterrupt() => apply({'t': 'interruptRequested'});

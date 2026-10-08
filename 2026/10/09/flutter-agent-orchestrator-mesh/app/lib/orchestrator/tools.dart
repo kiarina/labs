@@ -16,8 +16,7 @@ const orchestratorTools = <ToolSpec>[
       'properties': {
         'body': {
           'type': 'string',
-          'description':
-              'Name of the body to run on (see list_bodies). The brain\'s own body is one of them.',
+          'description': 'Name of the body to run on (see list_bodies). The brain\'s own body is one of them.',
         },
         'provider': {
           'type': 'string',
@@ -38,8 +37,7 @@ const orchestratorTools = <ToolSpec>[
         },
         'cwd': {
           'type': 'string',
-          'description':
-              'Working directory on that body\'s machine. Defaults to the body\'s project directory.',
+          'description': 'Working directory on that body\'s machine. Defaults to the body\'s project directory.',
         },
         'model': {
           'type': 'string',
@@ -124,17 +122,39 @@ const orchestratorTools = <ToolSpec>[
     'inputSchema': {'type': 'object', 'properties': <String, dynamic>{}},
   },
   {
+    'name': 'fetch_image',
+    'description':
+        'Bring an image file from a body (for example a screenshot a worker saved there) so you can look '
+        'at it. The image is also shown to the user in every console. PNG, JPEG, HEIC, GIF, WebP, TIFF or '
+        'BMP; it is sent as JPEG with its long side scaled down to 1600 px.',
+    'inputSchema': {
+      'type': 'object',
+      'properties': {
+        'body': {
+          'type': 'string',
+          'description': 'The body whose machine has the file.',
+        },
+        'path': {
+          'type': 'string',
+          'description': 'Absolute path on that machine.',
+        },
+      },
+      'required': ['body', 'path'],
+    },
+  },
+  {
     'name': 'list_threads',
     'description': 'List every worker thread with its body, provider, title, status and the concurrency limit.',
     'inputSchema': {'type': 'object', 'properties': <String, dynamic>{}},
   },
 ];
 
-String orchestratorInstructions(String brain) => '''
+String orchestratorInstructions(String brain) =>
+    '''
 You are the orchestrator (the brain, running in the app "$brain"). The user talks only to you, from the
 console of any connected app. You get work done by running worker agents (OpenAI Codex, Anthropic Claude,
 and kiapi threads) on bodies through your tools: list_bodies, start_thread, send_message, wait_threads,
-read_thread, interrupt_thread, list_threads.
+read_thread, interrupt_thread, list_threads, fetch_image.
 
 - A body is one app, usually on its own machine, with its own files, logins and project directory.
   "$brain" is your own body. Call list_bodies to see which bodies are online and what they offer.
@@ -143,6 +163,9 @@ read_thread, interrupt_thread, list_threads.
 - You have no hands: you cannot run commands, read files or operate apps yourself, even on your own
   machine. Everything, including work on "$brain", is done by starting a worker there.
 - Several bodies can work at the same time; each body has its own concurrency limit.
+- To see something on a body's machine (its screen, a picture), have a worker there save it as an image
+  file and report the absolute path, then call fetch_image with that body and path. The user sees the
+  image too. Taking a screenshot: `screencapture -x <path>.png` (macOS).
 - Delegate all the actual work (reading files, editing, running commands, using apps) to workers.
 - Split work into independent threads and run them in parallel when that helps. Choose the provider
   per task. kiapi runs Codex on a local model: use it for small, well-specified tasks, or when the user

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -23,8 +24,10 @@ abstract mixin class Body {
   /// directory, models, subscription usage.
   Json get info;
 
-  List<Provider> get providers =>
-      [for (final p in (info['providers'] as List? ?? const [])) Provider.parse(p as String)];
+  List<Provider> get providers => [
+    for (final p in (info['providers'] as List? ?? const []))
+      Provider.parse(p as String),
+  ];
 
   String get projectDir => info['projectDir'] as String? ?? '/';
 
@@ -36,6 +39,10 @@ abstract mixin class Body {
 
   String? defaultModel(Provider p) =>
       (info['defaultModels'] as Map?)?[p.name] as String?;
+
+  /// An image file on this body's machine, scaled down for sending
+  /// ([loadImage]).
+  Future<Json> readImage(String path);
 
   /// A new agent on this body; it starts when [AgentThread.start] is called.
   AgentThread create(
@@ -88,9 +95,14 @@ class LocalBody extends ChangeNotifier with Body {
   @override
   bool get isLocal => true;
 
-  Future<(String, bool)> _onTool(AgentThread caller, String tool, Json args) =>
+  Future<ToolResult> _onTool(AgentThread caller, String tool, Json args) =>
       toolHandler?.call(caller, tool, args) ??
-      Future.value(('error: no orchestrator tools on body $name', false));
+      Future.value(
+        ToolResult('error: no orchestrator tools on body $name', false),
+      );
+
+  @override
+  Future<Json> readImage(String path) => loadImage(path);
 
   void _log(RpcClient c) => c.log.listen((e) {
     protocolLog.add(e);
@@ -319,6 +331,7 @@ class BodyHost {
   }
 
   Future<Object?> _call(String method, Json p) async {
+    if (method == 'file/image') return loadImage(p['path'] as String);
     final agent = _agents[p['id']];
     if (agent == null) throw StateError('no agent ${p['id']} on ${local.name}');
     switch (method) {
@@ -426,6 +439,11 @@ class RemoteBody with Body {
   }
 
   @override
+  Future<Json> readImage(String path) async =>
+      ((await rpc('file/image', {'path': path})) as Map)
+          .cast<String, dynamic>();
+
+  @override
   AgentThread create(
     Provider p, {
     required String label,
@@ -497,7 +515,8 @@ class RemoteAgent extends AgentThread {
 
   @override
   Future<void> start(String text) async {
-    final r = await remote.rpc('agent/start', {'id': label, 'text': text}) as Map?;
+    final r =
+        await remote.rpc('agent/start', {'id': label, 'text': text}) as Map?;
     view.threadId = r?['backendId'] as String? ?? label;
     model = r?['model'] as String? ?? model;
     notifyListeners();
@@ -521,5 +540,90 @@ class RemoteAgent extends AgentThread {
   Future<void> close() async {
     if (!remote.online) return;
     await remote.rpc('agent/close', {'id': label});
+  }
+}
+
+// ---- images -------------------------------------------------------------------
+
+const _imageExtensions = {
+  'png',
+  'jpg',
+  'jpeg',
+  'gif',
+  'heic',
+  'webp',
+  'tif',
+  'tiff',
+  'bmp',
+};
+
+/// Reads an image file and returns it as JPEG (`{mime, data (base64), bytes,
+/// width, height, path}`), its long side scaled down to [maxSide]. Only
+/// image files: the brain can ask any body for one, and the link has no
+/// authentication. Uses macOS's `sips`.
+Future<Json> loadImage(String path, {int maxSide = 1600}) async {
+  final ext = path.split('.').last.toLowerCase();
+  if (!_imageExtensions.contains(ext)) {
+    throw StateError('not an image file: $path');
+  }
+  final file = File(path);
+  if (!await file.exists()) throw StateError('no such file: $path');
+  if (await file.length() > 50 * 1024 * 1024) {
+    throw StateError('too large (over 50 MB): $path');
+  }
+  final tmp = await Directory.systemTemp.createTemp('orch-image');
+  try {
+    final out = '${tmp.path}/image.jpg';
+    final size = await Process.run('/usr/bin/sips', [
+      '-g',
+      'pixelWidth',
+      '-g',
+      'pixelHeight',
+      path,
+    ]);
+    int? dim(String key) => int.tryParse(
+      RegExp('$key: (\\d+)').firstMatch('${size.stdout}')?.group(1) ?? '',
+    );
+    final w = dim('pixelWidth'), h = dim('pixelHeight');
+    final shrink = w != null && h != null && (w > maxSide || h > maxSide);
+    final r = await Process.run('/usr/bin/sips', [
+      '-s',
+      'format',
+      'jpeg',
+      '-s',
+      'formatOptions',
+      '80',
+      if (shrink) ...['-Z', '$maxSide'],
+      path,
+      '--out',
+      out,
+    ]);
+    if (r.exitCode != 0) throw StateError('sips failed: ${r.stderr}');
+    final bytes = await File(out).readAsBytes();
+    if (bytes.length > 4 * 1024 * 1024) {
+      throw StateError('still over 4 MB after scaling: $path');
+    }
+    final scaled = await Process.run('/usr/bin/sips', [
+      '-g',
+      'pixelWidth',
+      '-g',
+      'pixelHeight',
+      out,
+    ]);
+    int? outDim(String key) => int.tryParse(
+      RegExp('$key: (\\d+)').firstMatch('${scaled.stdout}')?.group(1) ?? '',
+    );
+    return {
+      'mime': 'image/jpeg',
+      'data': base64Encode(bytes),
+      'bytes': bytes.length,
+      'width': outDim('pixelWidth'),
+      'height': outDim('pixelHeight'),
+      'originalWidth': w,
+      'originalHeight': h,
+      'path': path,
+    };
+  } finally {
+    await tmp.delete(recursive: true);
   }
 }

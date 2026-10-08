@@ -34,7 +34,9 @@ class _HomePageState extends State<HomePage> {
         while (!widget.console.ready && widget.console.startupError == null) {
           await Future<void>.delayed(const Duration(milliseconds: 200));
         }
-        if (widget.console.ready) await widget.console.sendToOrchestrator(prompt);
+        if (widget.console.ready) {
+          await widget.console.sendToOrchestrator(prompt);
+        }
       }
 
       unawaited(waitAndSend());
@@ -76,7 +78,10 @@ class _HomePageState extends State<HomePage> {
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(24, 0, 24, 18),
                           child: viewingWorker
-                              ? _WorkerFooter(console: console, worker: console.viewing!)
+                              ? _WorkerFooter(
+                                  console: console,
+                                  worker: console.viewing!,
+                                )
                               : Column(
                                   children: [
                                     if (console.orchestrator case final o?)
@@ -220,7 +225,8 @@ class _Empty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final name =
-        console.projectDir.split('/').where((p) => p.isNotEmpty).lastOrNull ?? '/';
+        console.projectDir.split('/').where((p) => p.isNotEmpty).lastOrNull ??
+        '/';
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,

@@ -8,8 +8,18 @@ import 'agent_thread.dart';
 /// A tool the orchestrator can call: {name, description, inputSchema}.
 typedef ToolSpec = Map<String, dynamic>;
 
-/// Runs an orchestrator tool call; returns (text, success).
-typedef ToolHandler = Future<(String, bool)> Function(
+/// What an orchestrator tool call returns: text, success, and images
+/// (`{mime, data}` with base64 data) for the model to look at.
+class ToolResult {
+  const ToolResult(this.text, this.ok, [this.images = const []]);
+
+  final String text;
+  final bool ok;
+  final List<Map<String, dynamic>> images;
+}
+
+/// Runs an orchestrator tool call.
+typedef ToolHandler = Future<ToolResult> Function(
   AgentThread caller,
   String tool,
   Map<String, dynamic> args,
@@ -140,16 +150,17 @@ class CodexBackend {
       final args = (r.params['arguments'] as Map? ?? const {})
           .cast<String, dynamic>();
       try {
-        final (text, ok) = await onTool(
-          agent,
-          r.params['tool'] as String,
-          args,
-        );
+        final result = await onTool(agent, r.params['tool'] as String, args);
         client.respond(r.id, {
           'contentItems': [
-            {'type': 'inputText', 'text': text},
+            {'type': 'inputText', 'text': result.text},
+            for (final i in result.images)
+              {
+                'type': 'inputImage',
+                'imageUrl': 'data:${i['mime']};base64,${i['data']}',
+              },
           ],
-          'success': ok,
+          'success': result.ok,
         });
       } catch (e) {
         client.respond(r.id, {
@@ -356,12 +367,12 @@ class ClaudeBackend {
       final args = (r.params['arguments'] as Map? ?? const {})
           .cast<String, dynamic>();
       try {
-        final (text, ok) = await onTool(
-          agent,
-          r.params['tool'] as String,
-          args,
-        );
-        client.respond(r.id, {'text': text, 'success': ok});
+        final result = await onTool(agent, r.params['tool'] as String, args);
+        client.respond(r.id, {
+          'text': result.text,
+          'success': result.ok,
+          'images': result.images,
+        });
       } catch (e) {
         client.respond(r.id, {'text': 'error: $e', 'success': false});
       }
