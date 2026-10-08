@@ -204,7 +204,13 @@ brain・body-b は MacBook Pro M1 Max、studio は Mac Studio M4 Max。studio �
 - brain が落ちたときの引き継ぎは無い。body はつながり直すが、前の brain の会話とワーカーの台帳は消える。body の上で動いていたワーカーは、brain が消えたときに中断する
 - 小さな課題で、それぞれ 1 回ずつ確かめた。長い仕事、大きな文字起こし（数 MB の snapshot）、データチャネルの送信バッファがあふれたときは試していない
 - 確かめたのは macOS だけ。Windows の body は、Codex と中継プロセス（Node）を Windows で動かす作業が別に要る
-- 2 台の間で、どの候補の組（LAN か VPN か）でつながったかは確かめていない
+- 2 台目の Mac の body には、brain のホストを VPN（Tailscale）の名前で渡した。シグナリングの WebSocket は VPN のアドレスどうしでつながっていた
+  （`lsof` で確認）。データチャネルの UDP は LAN・VPN・IPv6 のインターフェースごとにソケットがあり、どの候補の組が選ばれたかは確かめていない（`getStats` の選ばれた組を見れば分かる）
+- 外のネットワークでは試していない。VPN に入っているマシンどうしなら、host 候補（VPN のアドレス）でつながるはず。VPN の外の端末までつなぐには、次の 2 つが要る
+  - シグナリングを中継に移す。brain も body も中継へつなぎ、中継が宛先付きでメッセージを回す。body が抜けたことを中継が brain に知らせる
+    （今は body ごとの WebSocket が閉じたことで気づいている）
+  - `iceServers` に STUN と TURN を入れる（今は空）。TURN は短命の資格情報を発行して配る
+  - そのときは認証が必須。中継の URL を知った人は console として参加でき、全 body のワーカーを承認なしの全権限で動かせる
 - 司令塔の質問（Claude の AskUserQuestion）への答えを body の console から送る経路は作ったが、試していない
 - 作業フォルダの選択（左のフォルダ）は brain の console でだけ選べる（パスが brain のマシンのものなので）
 - kiapi はこの検証では使っていない（各 body に kiapi の app-server が立つが、ワーカーは Codex と Claude だけで確かめた）
