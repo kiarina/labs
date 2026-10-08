@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#MISE description="Build and open the macOS app. ORCH_CWD sets the project, ORCH_PROMPT sends one message to the orchestrator on start, ORCH_PROVIDER is codex|claude, KIAPI_BASE_URL and KIAPI_MODEL point the kiapi workers"
+#MISE description="Build and open the macOS app. ORCH_ROLE=brain|body (body when ORCH_BRAIN_URL=ws://host:port is set), ORCH_NAME names the app, ORCH_PORT is the brain's signaling port, ORCH_CWD sets the project, ORCH_PROMPT sends one message to the brain on start, ORCH_DUMP writes what the console shows"
 # Needs `codex login` and `claude auth login` once.
 set -euo pipefail
 
