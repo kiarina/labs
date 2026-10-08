@@ -178,14 +178,22 @@ class Hub extends ChangeNotifier {
       tools: orchestratorTools,
       instructions: orchestratorInstructions,
     );
-    final p = settings.orchestrator;
+    // kiapi falls back to Codex when its app-server did not start.
+    final p = settings.orchestrator == Provider.kiapi && kiapi == null
+        ? Provider.codex
+        : settings.orchestrator;
     final model =
         settings.orchestratorModel != null &&
             modelsFor(p).any((m) => m['id'] == settings.orchestratorModel)
         ? settings.orchestratorModel
         : _backendDefaultModel(p);
-    final agent = p == Provider.codex
-        ? codex.create(
+    final codexLike = switch (p) {
+      Provider.codex => codex,
+      Provider.kiapi => kiapi,
+      Provider.claude => null,
+    };
+    final agent = codexLike != null
+        ? codexLike.create(
             label: 'orchestrator',
             cwd: projectDir,
             role: role,

@@ -47,10 +47,14 @@ OpenAI の Codex・Claude のワーカーと同じツール（`start_thread` な
   最初は kiapi が `namespace` のツールを受け付けず、ワーカーが「unsupported tool type: 'namespace'」で失敗した。kiapi 側で受け付けるようにした
   （kiapi `2a1de66`。追記、2026-10-08）
 
+- 司令塔も Codex・Claude・kiapi から選べるようにした（左上の切り替え。kiapi の app-server が起動していなければ選べず、設定が kiapi なら Codex に戻す）。
+  kiapi の app-server に司令塔のツールを `dynamicTools` で渡すと普通の function として届き、「kiapi のワーカーに pwd を実行させて」に対して Qwen が
+  `start_thread(provider: "kiapi", prompt: …)` を呼んだ（画面なしの確認。追記、2026-10-08）
+
 ## Limitations
 
 - 1 回だけ、小さな課題で試した。kiapi のワーカーに長い仕事・大きな変更をさせたときの質、履歴の圧縮は試していない
-- 司令塔を kiapi にする（kiapi に司令塔のツールを持たせる）ことは試していない。画面の切り替えも Codex・Claude のまま
+- 司令塔を kiapi にした会話は、画面なしで 1 回だけ確かめた（下の追記）。画面からは試していない
 - kiapi のモデルは 1 つ（`qwen3.8-flash-next`）。モデルの一覧は kiapi から読まず、`KIAPI_MODEL` で決めている
 - kiapi の chat のモデルは約 74 GiB 常駐する。kiapi のワーカーが走っている間に kiapi の画像などを使うと、モデルの載せ直しで待つ
 

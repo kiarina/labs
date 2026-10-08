@@ -33,9 +33,14 @@ class Sidebar extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: SegmentedButton<Provider>(
               showSelectedIcon: false,
-              segments: const [
-                ButtonSegment(value: Provider.codex, label: Text('Codex')),
-                ButtonSegment(value: Provider.claude, label: Text('Claude')),
+              segments: [
+                const ButtonSegment(value: Provider.codex, label: Text('Codex')),
+                const ButtonSegment(value: Provider.claude, label: Text('Claude')),
+                ButtonSegment(
+                  value: Provider.kiapi,
+                  label: const Text('kiapi'),
+                  enabled: hub.kiapi != null,
+                ),
               ],
               selected: {current},
               onSelectionChanged: (s) async {
