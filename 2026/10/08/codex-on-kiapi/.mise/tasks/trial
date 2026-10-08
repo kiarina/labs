@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#MISE description="Run the task against kiapi (KIAPI_BASE_URL, default http://127.0.0.1:8500)"
+set -euo pipefail
+uv run run.py --trials "${TRIALS:-3}"

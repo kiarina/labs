@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#MISE description="Syntax check only (the real run needs a kiapi server)"
+set -euo pipefail
+uv run python -m py_compile run.py
