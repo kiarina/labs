@@ -169,12 +169,27 @@ class ThreadMirror {
     finishedAt = _time(meta['finishedAt']);
   }
 
+  /// Operations that failed to apply or arrived after a gap (should stay
+  /// empty; for `ORCH_DUMP`).
+  final problems = <String>[];
+
   void applyOps(int from, List<dynamic> ops) {
     for (var i = 0; i < ops.length; i++) {
       // A batch that overlaps what the snapshot already had.
       if (from + i < view.ops.length) continue;
-      if (from + i > view.ops.length) return; // A gap: should not happen.
-      view.apply((ops[i] as Map).cast<String, dynamic>());
+      if (from + i > view.ops.length) {
+        problems.add('gap: batch from ${from + i}, have ${view.ops.length}');
+        return;
+      }
+      final op = (ops[i] as Map).cast<String, dynamic>();
+      try {
+        view.apply(op);
+      } catch (e, st) {
+        problems.add(
+          'op ${from + i} (${op['t']} ${op['m'] is String ? op['m'] : (op['m'] as Map?)?['type'] ?? ''}): $e '
+          '${st.toString().split('\n').take(3).join(' | ')}',
+        );
+      }
     }
   }
 }
@@ -396,6 +411,7 @@ class ConsoleMirror extends ChangeNotifier {
           'turns': t.view.turns.length,
           'ops': t.view.ops.length,
           'opsHash': fnv1a(jsonEncode(t.view.ops)),
+          'problems': t.problems.take(5).toList(),
           'images': [
             for (final turn in t.view.turns)
               for (final i in turn.items)

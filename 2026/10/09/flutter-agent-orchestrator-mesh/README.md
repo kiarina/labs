@@ -74,6 +74,7 @@ Codex・Claude・kiapi のスレッドをツールとして動かす司令塔の
   - `start_thread` に `body` を足した（必須。brain の body も名前で指定する）
   - `list_bodies` を足した（名前・online・使えるエージェント・作業フォルダ・動いている数）
   - 同時実行の上限は body ごとに数える（各 body は別のマシン・別のサブスク）
+  - `fetch_image(body, path)`: body の画像ファイルを brain へ運ぶ（下の「画像」）
   - **司令塔は手を持たない。** 自分ではコマンドもファイルの読み書きもアプリの操作もせず、brain のマシンでの作業も brain の body のワーカーに頼む
     - Codex の司令塔: `thread/start` の `config` で、そのスレッドだけ機能を切る（`shell_tool`・`unified_exec`・`computer_use`・`browser_use` など。下の表）。
       同じ app-server のワーカーはそのまま使える
@@ -88,6 +89,17 @@ Codex・Claude・kiapi のスレッドをツールとして動かす司令塔の
 | body → brain | `res` / `agent` | rpc の結果 / ワーカーの文字起こしの操作（`ops`）と終わったこと（`finished`） |
 | brain → console | `console` | `snapshot`（参加したとき、全部）、`state`（変わったとき）、`ops`（スレッドごとの新しい操作。`from` で位置を示す） |
 | console → brain | `action` | `send`・`interrupt`・`new`・`stop`・`settings`・`answer`・`project` |
+
+### 画像
+
+body の画面や絵を、brain の司令塔が見てコメントし、全 console にも出す。
+
+1. 司令塔は、その body のワーカーに画面を撮らせ（`screencapture -x <path>.png`）、パスを返させる
+2. 司令塔が `fetch_image(body, path)` を呼ぶ。brain は body へ rpc `file/image` を送る
+3. body は `sips` で JPEG（品質 80、長辺 1600 px まで）にして base64 で返す。画像の拡張子のファイルだけ、元は 50 MB・変換後は 4 MB まで
+   （リンクに認証が無いので、任意のファイルは読ませない）
+4. 司令塔へはツールの結果の画像として渡す（Codex は `contentItems` の `inputImage`、Claude は MCP の結果の `image` ブロック）
+5. 同時に、司令塔の文字起こしに `image` の操作として足す。ほかの操作と同じ経路で全 console へ届き、画面はサムネイル（クリックで拡大）を出す
 
 ### 名前
 
@@ -136,6 +148,16 @@ brain・body-b は MacBook Pro M1 Max、studio は Mac Studio M4 Max。studio �
 ```
 
 ## Findings
+
+- **body の画面のスクリーンショットを、brain の司令塔が見てコメントし、全 console に出せた。**
+  - 「Mac Studio の画面のスクリーンショットを撮って、fetch_image で見て、何が映っているか具体的にコメントして」と送った。
+    司令塔は studio のワーカーに撮らせ、`fetch_image` で取り込んだ（5120×2880 → 1600×900 の JPEG）
+  - 司令塔は、Chrome の岐阜クエストのページ、司令塔の窓、後ろのシステム設定など、画面の中身を具体的に挙げた
+  - 3 つの console（brain、body-b、2 台目の Mac の studio）で、画像を含む会話のハッシュが一致した。画面には画像がサムネイルで出た
+- 画面の収録の許可が無いと、`screencapture` は `could not create image from display` で失敗する。許可を求められるのは、`open` で起動したアプリ（ここでは `agent_orchestrator`）
+  - 許可すると macOS が「終了して再度開く」でアプリを起動し直す。このときは `open --env` で渡した設定が付かない。body の設定を失い、brain として立ち上がった
+  - その後に、設定を付けて起動し直した
+- 撮影が失敗したとき、ワーカー（Codex）は `sudo screencapture` も試した（パスワードが無いので失敗）。ワーカーは承認なしの全権限で動くので、こうした試みも止まらない
 
 - **最初の作りでは、新しく起動した body の最初の接続が必ず 20 秒でタイムアウトした**（やり直すとすぐつながった）。原因はシグナリングの読み方だった
   - 1 通目（welcome）を broadcast stream の `first` で読み、次の listener は `createPeerConnection` の後に付けていた
