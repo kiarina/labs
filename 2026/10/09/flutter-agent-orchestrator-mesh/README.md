@@ -151,7 +151,7 @@ brain・body-b は MacBook Pro M1 Max、studio は Mac Studio M4 Max。studio �
 
 - **body の画面のスクリーンショットを、brain の司令塔が見てコメントし、全 console に出せた。**
   - 「Mac Studio の画面のスクリーンショットを撮って、fetch_image で見て、何が映っているか具体的にコメントして」と送った。
-    司令塔は studio のワーカーに撮らせ、`fetch_image` で取り込んだ（5120×2880 → 1600×900 の JPEG）
+    司令塔は studio のワーカーに撮らせ、`fetch_image` で取り込んだ（3840×2160・2.8 MB の PNG → 1600×900 の JPEG）
   - 司令塔は、Chrome の岐阜クエストのページ、司令塔の窓、後ろのシステム設定など、画面の中身を具体的に挙げた
   - 3 つの console（brain、body-b、2 台目の Mac の studio）で、画像を含む会話のハッシュが一致した。画面には画像がサムネイルで出た
 - 画面の収録の許可が無いと、`screencapture` は `could not create image from display` で失敗する。許可を求められるのは、`open` で起動したアプリ（ここでは `agent_orchestrator`）
