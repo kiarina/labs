@@ -3,6 +3,7 @@
 - 2026/10/08 [Adding a local-model worker (Codex on kiapi) to the Codex and Claude orchestrator](../2026/10/08/flutter-agent-orchestrator-kiapi/README.md)
 - 2026/10/06 [An orchestrator agent that runs Codex and Claude threads as tools, in one Flutter app](../2026/10/06/flutter-agent-orchestrator/README.md)
 - 2026/10/05 [A Codex-app-like Flutter client on the Claude Agent SDK, running on a Claude subscription](../2026/10/05/flutter-claude-agent-sdk/README.md)
+- 2026/10/04 [PLATEAU SDK 3.2.2 compatibility probe on UE 5.8.3 for macOS](../2026/10/04/plateau-ue58-compatibility/README.md)
 - 2026/10/01 [A Codex desktop app clone in Flutter on top of codex app-server](../2026/10/01/flutter-codex-app-server/README.md)
 - 2026/09/30 [flutter_scene .fmat: custom attributes on skinned meshes and the default_black placeholder](../2026/09/30/flutter-scene-fmat-repros/README.md)
 - 2026/09/28 [A human-scale 3D garden with VRM 1.0 avatars on flutter_scene, across five platforms](../2026/09/28/flutter-scene-3d-garden/README.md)

@@ -1,0 +1,837 @@
+Setting up bundled DotNet SDK
+<UE_ROOT>/Engine/Binaries/ThirdParty/DotNet/10.0/mac-arm64
+Running dotnet Engine/Binaries/DotNET/UnrealBuildTool/UnrealBuildTool.dll PlateauProbeEditor Mac Development -Project=<PROBE_ROOT>/PatchedProject/PlateauProbe.uproject -architecture=arm64 -NoHotReload -NoUBA -NoUBALocal -log=<PROBE_ROOT>/build-cpp-default-no-uba.log
+Log file: <PROBE_ROOT>/build-cpp-default-no-uba.log
+Determining max actions to execute in parallel (16 physical cores, 16 logical cores)
+  Executing up to 16 processes, one per physical core
+UbaSessionServer - Disable remote execution (remote sessions will finish current processes)
+Creating makefile for PlateauProbeEditor (command line arguments changed)
+Compiling with Mac SDK 27.0, minimum Target OS version 14.00
+UHT compiled-in object format Default
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Public/RoadNetwork/GeoGraph/LineUtil.h(33): Deprecation: The identifier 'UFUNCTION' was detected in a block being skipped and is now being flagged. This will be a warning in a future version of Unreal.
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUEditor/Private/ExtentEditor/PLATEAUExtentEditorVPClient.h(12): Deprecation: The identifier 'UENUM' was detected in a block being skipped and is now being flagged. This will be a warning in a future version of Unreal.
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Public/RoadNetwork/GeoGraph/LineUtil.h(37): Deprecation: The identifier 'UFUNCTION' was detected in a block being skipped and is now being flagged. This will be a warning in a future version of Unreal.
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Public/RoadNetwork/GeoGraph/LineUtil.h(40): Deprecation: The identifier 'UFUNCTION' was detected in a block being skipped and is now being flagged. This will be a warning in a future version of Unreal.
+Building PlateauProbeEditor...
+===== Toolchain Information =====
+Using Clang compiler 21.1.6 (/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++)
+  Apple clang version 21.0.0 (clang-2100.3.34.2) Target: arm64-apple-darwin27.0.0 Thread model: posix InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+Using Clang archiver (/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool)
+  Apple clang version 21.0.0 (clang-2100.3.34.2) Target: arm64-apple-darwin27.0.0 Thread model: posix InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+[Adaptive Build] Excluded from PLATEAUEditorBPLibraries unity file: PLATEAUEditorUtil.cpp, PLATEAUEditorBPLibraries.cpp, PLATEAUAttrInfoDrawGizmo.cpp, PLATEAUImportLocalFolderBtn.cpp, PLATEAUImportModelBtn.cpp, PLATEAUImportAreaSelectBtn.cpp
+[Adaptive Build] Excluded from PLATEAURuntimeBPLibraries unity file: PLATEAURuntimeBPLibraries.cpp, PLATEAURuntimeUtil.cpp, PLATEAUModelClassificationAPI.cpp, PLATEAUModelLandscapeAPI.cpp, PLATEAURoadAdjustmentAPI.cpp, PLATEAUModelAdjustmentBuilding.cpp, PLATEAUModelAdjustmentFilterAPI.cpp, PLATEAUModelAdjustmentRelief.cpp, PLATEAUModelAdjustmentVegetation.cpp, PLATEAUExportModelAPI.cpp, PLATEAUImportModelRuntimeAPI.cpp, PLATEAUModelReconstructAPI.cpp
+[Adaptive Build] Excluded from PLATEAUTests unity file: PLATEAUModelFilteringTest.cpp, PLATEAUExportModelTest.cpp, PLATEAUInstancedCityModelTest.cpp, PLATEAUPolygonMeshTest.cpp, PLATEAUFilteringTest.cpp, PLATEAUReconstructUtilTest.cpp, PLATEAUComponentUtilTest.cpp, PLATEAUGmlUtilTest.cpp, PLATEAUModelLandscapeMeshTest.cpp, PLATEAUModelClassificationByTypeTest.cpp, PLATEAUMeshLoaderHeightmapTest.cpp, PLATEAUModelClassificationByAttrTest.cpp, PLATEAUModelLandscapeTest.cpp, PLATEAUHeightmapToLandscapeTest.cpp, PLATEAUMeshLoaderReconstructTest.cpp, PLATEAUModelReconstructTest.cpp, PLATEAUMeshLoaderClassificationTest.cpp, PLATEAUMeshLoaderCloneComponentTest.cpp, PLATEAUModelClassificationTest.cpp, PLATEAUModelLandscapeAlignTest.cpp, PLATEAUCityObjectSerializeTest.cpp, PLATEAUTests.cpp
+[Adaptive Build] Excluded from PLATEAUEditor unity file: PLATEAUCityObjectGroupDetails.cpp, PLATEAUWindow.cpp, PLATEAUEditorStyle.cpp, PLATEAUBasemap.cpp, PLATEAUEditor.cpp, PLATEAUInstancedCityModelDetails.cpp, PLATEAUAsyncLoadedFeatureInfoPanel.cpp, PLATEAUExtentEditorVPClient.cpp, PLATEAUGridCodeGizmo.cpp, SPLATEAUExtentEditorViewport.cpp, PLATEAUExtentEditor.cpp, PLATEAUFeatureInfoDisplay.cpp, PLATEAUCityModelLoaderDetails.cpp, PLATEAUSDKEditorUtilityWidget.cpp
+[Adaptive Build] Excluded from PLATEAURuntime unity file: PLATEAUInstancedCityModel.cpp, PLATEAUTextureLoader.cpp, PLATEAUDllLoggerUnreal.cpp, PLATEAURuntime.cpp, PLATEAUGeometry.cpp, PLATEAUMeshExporter.cpp, PLATEAUMeshLoader.cpp, PLATEAUModelFiltering.cpp, PLATEAUCityModelLoader.cpp, PLATEAURnDef.cpp, PLATEAURnDebugEx.cpp, PLATEAURay2DEx.cpp, PLATEAUIntVectorEx.cpp, PLATEAUIntVector2Ex.cpp, PLATEAUVector2DEx.cpp, PLATEAURnEx.cpp, PLATEAUVectorEx.cpp, LineUtil.cpp, LineSegment3D.cpp, LineSegment2D.cpp, GeoGraph2d.cpp, AxisPlane.cpp, GeoGraphEx.cpp, PLATEAUSubDividedCityObjectGroup.cpp, SubDividedCityObject.cpp, SubDividedCityObjectFactory.cpp, RnRoad.cpp, PLATEAURnStructureModel.cpp, RnRoadBase.cpp, RnLineString.cpp, PLATEAURnModelDrawerDebug.cpp, RnModel.cpp, RnWay.cpp, RnPoint.cpp, RnIntersection.cpp, RnSideWalk.cpp, RnLane.cpp, RnRoadGroup.cpp, RnTrackBuilder.cpp, RoadNetworkFactory.cpp, RGraphEx.cpp, RGraph.cpp, RGraphFactory.cpp, PLATEAURGraph.cpp, PLATEAUComponentUtil.cpp, PLATEAUGmlUtil.cpp, PLATEAUReconstructUtil.cpp, PLATEAUStaticMeshComponent.cpp, PLATEAUCityObjectGroup.cpp, PLATEAUSceneComponent.cpp, PLATEAULandscapeRefComponent.cpp, PLATEAUCityObject.cpp, PLATEAUCityModel.cpp, PLATEAUAttributeValue.cpp, PLATEAUCityGmlProxy.cpp, PLATEAUCityObjectDeserialization.cpp, PLATEAUCityObjectSerialization.cpp, PLATEAUNativeCityObjectSerialization.cpp, PLATEAUModelClassificationByAttribute.cpp, PLATEAUModelAlignLand.cpp, PLATEAUMeshLoaderForClassification.cpp, PLATEAUMeshLoaderCloneComponent.cpp, PLATEAUModelClassificationByType.cpp, PLATEAUModelReconstruct.cpp, PLATEAUMeshLoaderForHeightmap.cpp, PLATEAUModelLandscape.cpp, PLATEAUMeshLoaderForLandscapeMesh.cpp, PLATEAUMeshLoaderForReconstruct.cpp, PLATEAUCrosswalkPlacementRule.cpp, PLATEAUReproducedRoad.cpp, PLATEAURoadLineType.cpp, LineSmoother.cpp, PLATEAUMarkedWay.cpp, PLATEAUDirectionalArrowComposer.cpp, PLATEAUMCLaneLine.cpp, PLATEAUMCIntersection.cpp, PLATEAUMCShoulderLine.cpp, PLATEAUCrosswalkComposer.cpp, LineGeneratorComponent.cpp, UPLATEAUStopLineComposer.cpp, PLATEAUMCCenterLine.cpp, PLATEAUMarkedWayListComposerMain.cpp, PLATEAURrTarget.cpp
+=================================
+Using Unreal Build Accelerator local executor to run 152 action(s)
+  CPU 16 physical cores, 16 logical cores
+  Memory 128 GB physical, 90.81 GB/128 GB committed
+  UBA Storage capacity 40 GB
+[1/152] Compile [Apple] SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h [NoUba]
+[2/152] Compile [Apple] LineSegment3D.cpp [NoUba]
+[3/152] Compile [Apple] AxisPlane.cpp [NoUba]
+[4/152] Compile [Apple] LineUtil.cpp [NoUba]
+[5/152] Compile [Apple] LineSegment2D.cpp [NoUba]
+[6/152] Compile [Apple] GeoGraph2d.cpp [NoUba]
+[7/152] Compile [Apple] GeoGraphEx.cpp [NoUba]
+[8/152] Compile [Apple] PLATEAUCityObject.cpp [NoUba]
+[9/152] Compile [Apple] PLATEAUCityModel.cpp [NoUba]
+[10/152] Compile [Apple] LineGeneratorComponent.cpp [NoUba]
+[11/152] Compile [Apple] PLATEAUAttributeValue.cpp [NoUba]
+[12/152] Compile [Apple] LineSmoother.cpp [NoUba]
+[13/152] Compile [Apple] PLATEAUCityObjectDeserialization.cpp [NoUba]
+[14/152] Compile [Apple] PLATEAUCityObjectGroup.cpp [NoUba]
+[15/152] Compile [Apple] PLATEAUCityGmlProxy.cpp [NoUba]
+[16/152] Compile [Apple] PLATEAUCityModelLoader.cpp [NoUba]
+[17/152] Compile [Apple] Module.PLATEAURuntime.cpp [NoUba]
+[18/152] Compile [Apple] PLATEAUDllLoggerUnreal.cpp [NoUba]
+[19/152] Compile [Apple] PLATEAUGeometry.cpp [NoUba]
+[20/152] Compile [Apple] PLATEAUIntVector2Ex.cpp [NoUba]
+[21/152] Compile [Apple] PLATEAUCityObjectSerialization.cpp [NoUba]
+[22/152] Compile [Apple] PLATEAUCrosswalkPlacementRule.cpp [NoUba]
+[23/152] Compile [Apple] PLATEAUCrosswalkComposer.cpp [NoUba]
+[24/152] Compile [Apple] PLATEAUIntVectorEx.cpp [NoUba]
+[25/152] Compile [Apple] PLATEAUDirectionalArrowComposer.cpp [NoUba]
+[26/152] Compile [Apple] PLATEAUComponentUtil.cpp [NoUba]
+[27/152] Compile [Apple] PLATEAUGmlUtil.cpp [NoUba]
+[28/152] Compile [Apple] PLATEAUMCCenterLine.cpp [NoUba]
+[29/152] Compile [Apple] PLATEAULandscapeRefComponent.cpp [NoUba]
+[30/152] Compile [Apple] PLATEAUMCIntersection.cpp [NoUba]
+[31/152] Compile [Apple] PLATEAUInstancedCityModel.cpp [NoUba]
+[32/152] Compile [Apple] PLATEAUMCLaneLine.cpp [NoUba]
+[33/152] Compile [Apple] PLATEAUMarkedWay.cpp [NoUba]
+[34/152] Compile [Apple] PLATEAUMCShoulderLine.cpp [NoUba]
+[35/152] Compile [Apple] PLATEAUMarkedWayListComposerMain.cpp [NoUba]
+[36/152] Compile [Apple] PLATEAUMeshLoaderCloneComponent.cpp [NoUba]
+[37/152] Compile [Apple] PLATEAUMeshLoaderForClassification.cpp [NoUba]
+[38/152] Compile [Apple] PLATEAUMeshLoaderForHeightmap.cpp [NoUba]
+[39/152] Compile [Apple] PLATEAUMeshExporter.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Private/PLATEAUMeshExporter.cpp:12:
+<UE_ROOT>/Engine/Source/Runtime/Engine/Public/MaterialTypes.h:5:1: warning: Materials/MaterialParameters.h Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-W#pragma-messages]
+    5 | UE_DEPRECATED_HEADER(5.6, "Materials/MaterialParameters.h")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:393:49: note: expanded from macro 'UE_DEPRECATED_HEADER'
+  393 |     #define UE_DEPRECATED_HEADER(Version, Message) _Pragma(UE_STRINGIZE(message(Message " Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")))
+      |                                                    ^
+<scratch space>:19:2: note: expanded from here
+   19 |  message("Materials/MaterialParameters.h" " Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")
+      |  ^
+1 warning generated.
+[40/152] Compile [Apple] PLATEAUMeshLoaderForLandscapeMesh.cpp [NoUba]
+[41/152] Compile [Apple] PLATEAUMeshLoaderForReconstruct.cpp [NoUba]
+[42/152] Compile [Apple] PLATEAUModelAlignLand.cpp [NoUba]
+[43/152] Compile [Apple] PLATEAUModelLandscape.cpp [NoUba]
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Private/Reconstruct/PLATEAUModelLandscape.cpp:99:16: error: no member named 'bCanHaveLayersContent' in 'ALandscape'
+   99 |     Landscape->bCanHaveLayersContent = false;
+      |     ~~~~~~~~~  ^
+1 error generated.
+[44/152] Compile [Apple] PLATEAUMeshLoader.cpp [NoUba]
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Private/PLATEAUMeshLoader.cpp:420:25: warning: 'ImportVersion' is deprecated: Please do not access this member directly, it will become private soon; use UStaticMesh::GetImportVersion() or UStaticMesh::SetImportVersion(). - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  420 |             StaticMesh->ImportVersion = EImportStaticMeshVersion::LastVersion;
+      |                         ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:711:2: note: 'ImportVersion' has been explicitly marked deprecated here
+  711 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use UStaticMesh::GetImportVersion() or UStaticMesh::SetImportVersion().")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Private/PLATEAUMeshLoader.cpp:584:45: warning: 'GetUsedTextures' is deprecated: Deprecated: Use the version with the optional parameters InSpecificQualityLevel and InSpecificShaderPlatform. If unset, we search used textures for this material for all Quality Levels and Shader Platforms. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  584 |             LoadInputData.FallbackMaterial->GetUsedTextures(UsedTextures, EMaterialQualityLevel::Epic, true, ERHIFeatureLevel::ES2_REMOVED, true);
+      |                                             ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Public/Materials/MaterialInterface.h:761:2: note: 'GetUsedTextures' has been explicitly marked deprecated here
+  761 |     UE_DEPRECATED(5.7, "Deprecated: Use the version with the optional parameters InSpecificQualityLevel and InSpecificShaderPlatform. If unset, we search used textures for this material for all Quality Levels and Shader Platforms.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[45/152] Compile [Apple] PLATEAUModelClassificationByAttribute.cpp [NoUba]
+[46/152] Compile [Apple] PLATEAUModelFiltering.cpp [NoUba]
+[47/152] Compile [Apple] PLATEAUModelClassificationByType.cpp [NoUba]
+[48/152] Compile [Apple] PLATEAURay2DEx.cpp [NoUba]
+[49/152] Compile [Apple] PLATEAURGraph.cpp [NoUba]
+[50/152] Compile [Apple] PLATEAUModelReconstruct.cpp [NoUba]
+[51/152] Compile [Apple] PLATEAUNativeCityObjectSerialization.cpp [NoUba]
+[52/152] Compile [Apple] PLATEAURnDebugEx.cpp [NoUba]
+[53/152] Compile [Apple] PLATEAURnDef.cpp [NoUba]
+[54/152] Compile [Apple] PLATEAUReconstructUtil.cpp [NoUba]
+[55/152] Compile [Apple] PLATEAUSceneComponent.cpp [NoUba]
+[56/152] Compile [Apple] PLATEAUStaticMeshComponent.cpp [NoUba]
+[57/152] Compile [Apple] PLATEAURuntime.cpp [NoUba]
+[58/152] Compile [Apple] PLATEAURnEx.cpp [NoUba]
+[59/152] Compile [Apple] PLATEAURoadLineType.cpp [NoUba]
+[60/152] Compile [Apple] PLATEAUReproducedRoad.cpp [NoUba]
+[61/152] Compile [Apple] PLATEAURnModelDrawerDebug.cpp [NoUba]
+[62/152] Compile [Apple] PLATEAUVector2DEx.cpp [NoUba]
+[63/152] Compile [Apple] PLATEAURrTarget.cpp [NoUba]
+[64/152] Compile [Apple] PLATEAUSubDividedCityObjectGroup.cpp [NoUba]
+[65/152] Compile [Apple] PLATEAUVectorEx.cpp [NoUba]
+[66/152] Compile [Apple] PLATEAUTextureLoader.cpp [NoUba]
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Private/PLATEAUTextureLoader.cpp:180:17: warning: 'RHIUpdateTextureReference' is deprecated: RHIUpdateTextureReference with an implied immediate command list is deprecated - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  180 |                 RHIUpdateTextureReference(Texture->TextureReference.TextureReferenceRHI, RHITexture2D);
+      |                 ^
+<UE_ROOT>/Engine/Source/Runtime/RHI/Public/RHICommandList.h:5327:1: note: 'RHIUpdateTextureReference' has been explicitly marked deprecated here
+ 5327 | UE_DEPRECATED(5.7, "RHIUpdateTextureReference with an implied immediate command list is deprecated")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+1 warning generated.
+[67/152] Compile [Apple] PLATEAURnStructureModel.cpp [NoUba]
+[68/152] Compile [Apple] RGraphEx.cpp [NoUba]
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Private/RoadNetwork/RGraph/RGraphEx.cpp:600:13: error: misleading indentation; statement is not part of the previous 'if' [-Werror,-Wmisleading-indentation]
+  600 |             Faces.Add(Face);
+      |             ^
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Private/RoadNetwork/RGraph/RGraphEx.cpp:598:9: note: previous statement is here
+  598 |         if (FRRoadTypeMaskEx::HasAnyFlag(FaceRoadType, RemoveRoadTypes))
+      |         ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Private/RoadNetwork/RGraph/RGraphEx.cpp:1:
+In file included from <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h:4:
+In file included from <UE_ROOT>/Engine/Source/Editor/UnrealEd/Public/UnrealEdSharedPCH.h:5:
+In file included from <UE_ROOT>/Engine/Source/Runtime/Engine/Public/EngineSharedPCH.h:5:
+In file included from <UE_ROOT>/Engine/Source/Runtime/Slate/Public/SlateSharedPCH.h:5:
+In file included from <UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/CoreUObjectSharedPCH.h:12:
+In file included from <UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/Serialization/ArchiveUObjectFromStructuredArchive.h:13:
+In file included from <UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/LazyObjectPtr.h:18:
+In file included from <UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/Templates/Casts.h:10:
+In file included from <UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/Class.h:51:
+In file included from <UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/CoreNative.h:12:
+In file included from <UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/Object.h:13:
+In file included from <UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectBaseUtility.h:24:
+In file included from <UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectArray.h:15:
+In file included from <UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectBase.h:23:
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/ObjectPtr.h:1290:10: error: no matching function for call to object of type 'const (lambda at <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Public/RoadNetwork/GeoGraph/GeoGraph2d.h:333:15)'
+ 1290 |         return Predicate(*A, *B);
+      |                ^~~~~~~~~
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Algo/IntroSort.h:75:11: note: in instantiation of member function 'TDereferenceWrapper<TObjectPtr<URVertex>, (lambda at <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Public/RoadNetwork/GeoGraph/GeoGraph2d.h:333:15)>::operator()' requested here
+   75 |                         if( Predicate( Proj( *Max ), Proj( *Item ) ) )
+      |                             ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Algo/IntroSort.h:169:13: note: in instantiation of function template specialization 'AlgoImpl::IntroSortInternal<TCheckedPointerIterator<TObjectPtr<URVertex>, int>, long, FIdentityFunctor, TDereferenceWrapper<TObjectPtr<URVertex>, (lambda at <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Public/RoadNetwork/GeoGraph/GeoGraph2d.h:333:15)>>' requested here
+  169 |         AlgoImpl::IntroSortInternal(std::begin(Range), std::end(Range) - std::begin(Range), FIdentityFunctor(), MoveTemp(Predicate));
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Algo/Sort.h:30:3: note: in instantiation of function template specialization 'Algo::IntroSort<TArray<TObjectPtr<URVertex>> &, TDereferenceWrapper<TObjectPtr<URVertex>, (lambda at <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Public/RoadNetwork/GeoGraph/GeoGraph2d.h:333:15)>>' requested here
+   30 |         IntroSort(Forward<RangeType>(Range), MoveTemp(Pred));
+      |         ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Containers/Array.h:3673:9: note: in instantiation of function template specialization 'Algo::Sort<TArray<TObjectPtr<URVertex>> &, TDereferenceWrapper<TObjectPtr<URVertex>, (lambda at <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Public/RoadNetwork/GeoGraph/GeoGraph2d.h:333:15)>>' requested here
+ 3673 |         Algo::Sort(*this, PredicateWrapper);
+      |               ^
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Public/RoadNetwork/GeoGraph/GeoGraph2d.h:333:10: note: in instantiation of function template specialization 'TArray<TObjectPtr<URVertex>>::Sort<(lambda at <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Public/RoadNetwork/GeoGraph/GeoGraph2d.h:333:15)>' requested here
+  333 |     Keys.Sort([&](const T& A, const T& B) {
+      |          ^
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Private/RoadNetwork/RGraph/RGraphEx.cpp:546:32: note: in instantiation of function template specialization 'FGeoGraph2D::ComputeOutline<TObjectPtr<URVertex>>' requested here
+  546 |     auto Result = FGeoGraph2D::ComputeOutline<TObjectPtr<URVertex>>(
+      |                                ^
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Public/RoadNetwork/GeoGraph/GeoGraph2d.h:333:15: note: candidate function not viable: no known conversion from 'URVertex' to 'const TObjectPtr<URVertex>' for 1st argument
+  333 |     Keys.Sort([&](const T& A, const T& B) {
+      |               ^   ~~~~~~~~~~
+2 errors generated.
+[69/152] Compile [Apple] RGraph.cpp [NoUba]
+[70/152] Compile [Apple] RnPoint.cpp [NoUba]
+[71/152] Compile [Apple] RGraphFactory.cpp [NoUba]
+[72/152] Compile [Apple] RnLane.cpp [NoUba]
+[73/152] Compile [Apple] RnIntersection.cpp [NoUba]
+[74/152] Compile [Apple] RnWay.cpp [NoUba]
+[75/152] Compile [Apple] RnRoad.cpp [NoUba]
+[76/152] Compile [Apple] RnModel.cpp [NoUba]
+[77/152] Compile [Apple] RnLineString.cpp [NoUba]
+[78/152] Compile [Apple] RnSideWalk.cpp [NoUba]
+[79/152] Compile [Apple] RnTrackBuilder.cpp [NoUba]
+[80/152] Compile [Apple] RnRoadBase.cpp [NoUba]
+[81/152] Compile [Apple] RnRoadGroup.cpp [NoUba]
+[82/152] Compile [Apple] SubDividedCityObject.cpp [NoUba]
+[83/152] Compile [Apple] SubDividedCityObjectFactory.cpp [NoUba]
+[84/152] Compile [Apple] UPLATEAUStopLineComposer.cpp [NoUba]
+[85/152] Compile [Apple] Module.PLATEAUEditor.cpp [NoUba]
+[86/152] Compile [Apple] PLATEAUAsyncLoadedFeatureInfoPanel.cpp [NoUba]
+[87/152] Compile [Apple] PLATEAUEditorStyle.cpp [NoUba]
+[88/152] Compile [Apple] PLATEAUBasemap.cpp [NoUba]
+[89/152] Compile [Apple] PLATEAUCityModelLoaderDetails.cpp [NoUba]
+[90/152] Compile [Apple] RoadNetworkFactory.cpp [NoUba]
+[91/152] Compile [Apple] PLATEAUGridCodeGizmo.cpp [NoUba]
+[92/152] Compile [Apple] PLATEAUFeatureInfoDisplay.cpp [NoUba]
+[93/152] Compile [Apple] PLATEAUCityObjectGroupDetails.cpp [NoUba]
+[94/152] Compile [Apple] PLATEAUExtentEditor.cpp [NoUba]
+[95/152] Compile [Apple] PLATEAUExtentEditorVPClient.cpp [NoUba]
+[96/152] Compile [Apple] PLATEAUEditor.cpp [NoUba]
+[97/152] Compile [Apple] PLATEAUInstancedCityModelDetails.cpp [NoUba]
+[98/152] Compile [Apple] PLATEAUSDKEditorUtilityWidget.cpp [NoUba]
+[99/152] Compile [Apple] PLATEAUEditorBPLibraries.cpp [NoUba]
+[100/152] Compile [Apple] Module.PLATEAUEditorBPLibraries.cpp [NoUba]
+[101/152] Compile [Apple] PLATEAUAttrInfoDrawGizmo.cpp [NoUba]
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUEditorBPLibraries/Private/AttrInfo/PLATEAUAttrInfoDrawGizmo.cpp:167:38: error: no member named 'ForegroundLineBatcher' in 'UWorld'
+  167 |                           ? InWorld->ForegroundLineBatcher
+      |                             ~~~~~~~  ^
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUEditorBPLibraries/Private/AttrInfo/PLATEAUAttrInfoDrawGizmo.cpp:169:38: error: no member named 'PersistentLineBatcher' in 'UWorld'
+  169 |                           ? InWorld->PersistentLineBatcher
+      |                             ~~~~~~~  ^
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUEditorBPLibraries/Private/AttrInfo/PLATEAUAttrInfoDrawGizmo.cpp:170:38: error: no member named 'LineBatcher' in 'UWorld'
+  170 |                           : InWorld->LineBatcher)
+      |                             ~~~~~~~  ^
+3 errors generated.
+[102/152] Compile [Apple] PLATEAUImportLocalFolderBtn.cpp [NoUba]
+[103/152] Compile [Apple] PLATEAUWindow.cpp [NoUba]
+[104/152] Compile [Apple] PLATEAUImportAreaSelectBtn.cpp [NoUba]
+[105/152] Compile [Apple] PLATEAUImportModelBtn.cpp [NoUba]
+[106/152] Compile [Apple] PLATEAUExportModelAPI.cpp [NoUba]
+[107/152] Compile [Apple] PLATEAUEditorUtil.cpp [NoUba]
+[108/152] Compile [Apple] PLATEAUImportModelRuntimeAPI.cpp [NoUba]
+[109/152] Compile [Apple] SPLATEAUExtentEditorViewport.cpp [NoUba]
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUEditor/Private/ExtentEditor/SPLATEAUExtentEditorViewport.cpp:55:20: warning: 'ChangeFeatureLevel' is deprecated: ChangeFeatureLevel is deprecated, use ShaderPlatformChanged instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+   55 |             World->ChangeFeatureLevel(GWorld->GetFeatureLevel());
+      |                    ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/World.h:1546:2: note: 'ChangeFeatureLevel' has been explicitly marked deprecated here
+ 1546 |     UE_DEPRECATED(5.8, "ChangeFeatureLevel is deprecated, use ShaderPlatformChanged instead")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+1 warning generated.
+[110/152] Compile [Apple] Module.PLATEAURuntimeBPLibraries.cpp [NoUba]
+[111/152] Compile [Apple] PLATEAUModelAdjustmentRelief.cpp [NoUba]
+[112/152] Compile [Apple] PLATEAUModelAdjustmentBuilding.cpp [NoUba]
+[113/152] Compile [Apple] PLATEAUModelAdjustmentFilterAPI.cpp [NoUba]
+[114/152] Compile [Apple] PLATEAUModelAdjustmentVegetation.cpp [NoUba]
+[115/152] Compile [Apple] PLATEAURuntimeBPLibraries.cpp [NoUba]
+[116/152] Compile [Apple] PerModuleInline.gen.cpp [NoUba]
+[117/152] Compile [Apple] PLATEAUModelClassificationAPI.cpp [NoUba]
+[118/152] Compile [Apple] PlateauProbe.cpp [NoUba]
+[119/152] Compile [Apple] PLATEAURuntimeUtil.cpp [NoUba]
+[120/152] Compile [Apple] PLATEAUModelLandscapeAPI.cpp [NoUba]
+[121/152] Link [Apple] libUnrealEditor-PlateauProbe.dylib [NoUba]
+[122/152] Compile [Apple] PLATEAUModelReconstructAPI.cpp [NoUba]
+[123/152] Compile [Apple] PLATEAURoadAdjustmentAPI.cpp [NoUba]
+[124/152] Compile [Apple] Module.PLATEAUTests.cpp [NoUba]
+[125/152] Compile [Apple] PLATEAUCityObjectSerializeTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/CityObjectGroup/PLATEAUCityObjectSerializeTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/CityObjectGroup/PLATEAUCityObjectSerializeTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[126/152] Compile [Apple] PLATEAUComponentUtilTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Utils/PLATEAUComponentUtilTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Utils/PLATEAUComponentUtilTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[127/152] Compile [Apple] PLATEAUExportModelTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUExportModelTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUExportModelTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[128/152] Compile [Apple] PLATEAUFilteringTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUFilteringTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUFilteringTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[129/152] Compile [Apple] PLATEAUGmlUtilTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Utils/PLATEAUGmlUtilTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Utils/PLATEAUGmlUtilTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[130/152] Compile [Apple] PLATEAUInstancedCityModelTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUInstancedCityModelTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUInstancedCityModelTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[131/152] Compile [Apple] PLATEAUHeightmapToLandscapeTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUHeightmapToLandscapeTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUHeightmapToLandscapeTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[132/152] Compile [Apple] PLATEAUMeshLoaderClassificationTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUMeshLoaderClassificationTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUMeshLoaderClassificationTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[133/152] Compile [Apple] PLATEAUMeshLoaderReconstructTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUMeshLoaderReconstructTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUMeshLoaderReconstructTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[134/152] Compile [Apple] PLATEAUMeshLoaderCloneComponentTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUMeshLoaderCloneComponentTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUMeshLoaderCloneComponentTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[135/152] Compile [Apple] PLATEAUMeshLoaderHeightmapTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUMeshLoaderHeightmapTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUMeshLoaderHeightmapTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[136/152] Compile [Apple] PLATEAUModelClassificationByTypeTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUModelClassificationByTypeTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUModelClassificationByTypeTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[137/152] Compile [Apple] PLATEAUModelFilteringTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUModelFilteringTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUModelFilteringTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[138/152] Compile [Apple] PLATEAUModelClassificationByAttrTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUModelClassificationByAttrTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUModelClassificationByAttrTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[139/152] Compile [Apple] PLATEAUModelClassificationTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUModelClassificationTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUModelClassificationTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[140/152] Compile [Apple] PLATEAUTests.cpp [NoUba]
+[141/152] Compile [Apple] PLATEAUModelLandscapeAlignTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUModelLandscapeAlignTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUModelLandscapeAlignTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[142/152] Compile [Apple] PLATEAUModelLandscapeMeshTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUModelLandscapeMeshTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUModelLandscapeMeshTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[143/152] Compile [Apple] PLATEAUModelLandscapeTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUModelLandscapeTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUModelLandscapeTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[144/152] Compile [Apple] PLATEAUReconstructUtilTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Utils/PLATEAUReconstructUtilTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Utils/PLATEAUReconstructUtilTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[145/152] Compile [Apple] PLATEAUModelReconstructTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUModelReconstructTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/Reconstruct/PLATEAUModelReconstructTest.cpp:4:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+[146/152] Compile [Apple] PLATEAUPolygonMeshTest.cpp [NoUba]
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUPolygonMeshTest.cpp:5:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:250:19: warning: 'NaniteSettings' is deprecated: Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions. - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  250 |             mesh->NaniteSettings.bEnabled = false;
+      |                   ^
+<UE_ROOT>/Engine/Source/Runtime/Engine/Classes/Engine/StaticMesh.h:744:2: note: 'NaniteSettings' has been explicitly marked deprecated here
+  744 |     UE_DEPRECATED(5.7, "Please do not access this member directly, it will become private soon; use the various NaniteSettings accessor functions.")
+      |     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUPolygonMeshTest.cpp:5:
+In file included from <PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestBase.h:18:
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUTests/Tests/PLATEAUAutomationTestUtil.h:580:30: warning: 'FindObject<UEnum, bool>' is deprecated: FindObject with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile. [-Wdeprecated-declarations]
+  580 |             UEnum* EnumPtr = FindObject<UEnum>(nullptr, TEXT("/Script/CoreUObject.EPixelFormat"), true);
+      |                              ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/UObjectGlobals.h:2080:1: note: 'FindObject<UEnum, bool>' has been explicitly marked deprecated here
+ 2080 | UE_EXACTCLASS_BOOL_DEPRECATED("FindObject")
+      | ^
+<UE_ROOT>/Engine/Source/Runtime/CoreUObject/Public/UObject/FindObjectFlags.h:16:53: note: expanded from macro 'UE_EXACTCLASS_BOOL_DEPRECATED'
+   16 | #define UE_EXACTCLASS_BOOL_DEPRECATED(FunctionName) UE_DEPRECATED(5.7, FunctionName " with a boolean ExactClass has been deprecated - please use the EFindObjectFlags enum instead")
+      |                                                     ^
+<UE_ROOT>/Engine/Source/Runtime/Core/Public/Misc/CoreMiscDefines.h:297:44: note: expanded from macro 'UE_DEPRECATED'
+  297 |     #define UE_DEPRECATED(Version, Message) [[deprecated(Message " - Please update your code to the new API before upgrading to the next release, otherwise your project will no longer compile.")]]
+      |                                               ^
+2 warnings generated.
+Total time in Unreal Build Accelerator local executor: 70.21 seconds
+
+Result: Failed (OtherCompilationError)
+Total execution time: 75.05 seconds
+Trace written to file <HOME>/Library/Application Support/Epic/UnrealBuildTool/Trace.uba with size 34.9kb

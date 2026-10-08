@@ -1,0 +1,616 @@
+Setting up bundled DotNet SDK
+<UE_ROOT>/Engine/Binaries/ThirdParty/DotNet/10.0/mac-arm64
+Running dotnet Engine/Binaries/DotNET/UnrealBuildTool/UnrealBuildTool.dll PlateauProbeEditor Mac Development -Project=<PROBE_ROOT>/PatchedProject/PlateauProbe.uproject -architecture=arm64 -NoHotReload -log=<PROBE_ROOT>/build-cpp-default.log
+Log file: <PROBE_ROOT>/build-cpp-default.log
+Determining max actions to execute in parallel (16 physical cores, 16 logical cores)
+  Executing up to 16 processes, one per physical core
+Creating makefile for PlateauProbeEditor (no existing makefile)
+UbaServer - Listening on 0.0.0.0:1345
+Compiling with Mac SDK 27.0, minimum Target OS version 14.00
+UHT compiled-in object format Default
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Public/RoadNetwork/GeoGraph/LineUtil.h(33): Deprecation: The identifier 'UFUNCTION' was detected in a block being skipped and is now being flagged. This will be a warning in a future version of Unreal.
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Public/RoadNetwork/GeoGraph/LineUtil.h(37): Deprecation: The identifier 'UFUNCTION' was detected in a block being skipped and is now being flagged. This will be a warning in a future version of Unreal.
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntime/Public/RoadNetwork/GeoGraph/LineUtil.h(40): Deprecation: The identifier 'UFUNCTION' was detected in a block being skipped and is now being flagged. This will be a warning in a future version of Unreal.
+<PROBE_ROOT>/PatchedProject/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAUEditor/Private/ExtentEditor/PLATEAUExtentEditorVPClient.h(12): Deprecation: The identifier 'UENUM' was detected in a block being skipped and is now being flagged. This will be a warning in a future version of Unreal.
+Building PlateauProbeEditor...
+===== Toolchain Information =====
+Using Clang compiler 21.1.6 (/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++)
+  Apple clang version 21.0.0 (clang-2100.3.34.2) Target: arm64-apple-darwin27.0.0 Thread model: posix InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+Using Clang archiver (/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool)
+  Apple clang version 21.0.0 (clang-2100.3.34.2) Target: arm64-apple-darwin27.0.0 Thread model: posix InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+[Adaptive Build] Excluded from PLATEAUEditorBPLibraries unity file: PLATEAUEditorUtil.cpp, PLATEAUEditorBPLibraries.cpp, PLATEAUAttrInfoDrawGizmo.cpp, PLATEAUImportLocalFolderBtn.cpp, PLATEAUImportModelBtn.cpp, PLATEAUImportAreaSelectBtn.cpp
+[Adaptive Build] Excluded from PLATEAURuntime unity file: PLATEAUInstancedCityModel.cpp, PLATEAUTextureLoader.cpp, PLATEAUDllLoggerUnreal.cpp, PLATEAURuntime.cpp, PLATEAUGeometry.cpp, PLATEAUMeshExporter.cpp, PLATEAUMeshLoader.cpp, PLATEAUModelFiltering.cpp, PLATEAUCityModelLoader.cpp, PLATEAURnDef.cpp, PLATEAURnDebugEx.cpp, PLATEAURay2DEx.cpp, PLATEAUIntVectorEx.cpp, PLATEAUIntVector2Ex.cpp, PLATEAUVector2DEx.cpp, PLATEAURnEx.cpp, PLATEAUVectorEx.cpp, LineUtil.cpp, LineSegment3D.cpp, LineSegment2D.cpp, GeoGraph2d.cpp, AxisPlane.cpp, GeoGraphEx.cpp, PLATEAUSubDividedCityObjectGroup.cpp, SubDividedCityObject.cpp, SubDividedCityObjectFactory.cpp, RnRoad.cpp, PLATEAURnStructureModel.cpp, RnRoadBase.cpp, RnLineString.cpp, PLATEAURnModelDrawerDebug.cpp, RnModel.cpp, RnWay.cpp, RnPoint.cpp, RnIntersection.cpp, RnSideWalk.cpp, RnLane.cpp, RnRoadGroup.cpp, RnTrackBuilder.cpp, RoadNetworkFactory.cpp, RGraphEx.cpp, RGraph.cpp, RGraphFactory.cpp, PLATEAURGraph.cpp, PLATEAUComponentUtil.cpp, PLATEAUGmlUtil.cpp, PLATEAUReconstructUtil.cpp, PLATEAUStaticMeshComponent.cpp, PLATEAUCityObjectGroup.cpp, PLATEAUSceneComponent.cpp, PLATEAULandscapeRefComponent.cpp, PLATEAUCityObject.cpp, PLATEAUCityModel.cpp, PLATEAUAttributeValue.cpp, PLATEAUCityGmlProxy.cpp, PLATEAUCityObjectDeserialization.cpp, PLATEAUCityObjectSerialization.cpp, PLATEAUNativeCityObjectSerialization.cpp, PLATEAUModelClassificationByAttribute.cpp, PLATEAUModelAlignLand.cpp, PLATEAUMeshLoaderForClassification.cpp, PLATEAUMeshLoaderCloneComponent.cpp, PLATEAUModelClassificationByType.cpp, PLATEAUModelReconstruct.cpp, PLATEAUMeshLoaderForHeightmap.cpp, PLATEAUModelLandscape.cpp, PLATEAUMeshLoaderForLandscapeMesh.cpp, PLATEAUMeshLoaderForReconstruct.cpp, PLATEAUCrosswalkPlacementRule.cpp, PLATEAUReproducedRoad.cpp, PLATEAURoadLineType.cpp, LineSmoother.cpp, PLATEAUMarkedWay.cpp, PLATEAUDirectionalArrowComposer.cpp, PLATEAUMCLaneLine.cpp, PLATEAUMCIntersection.cpp, PLATEAUMCShoulderLine.cpp, PLATEAUCrosswalkComposer.cpp, LineGeneratorComponent.cpp, UPLATEAUStopLineComposer.cpp, PLATEAUMCCenterLine.cpp, PLATEAUMarkedWayListComposerMain.cpp, PLATEAURrTarget.cpp
+[Adaptive Build] Excluded from PLATEAUEditor unity file: PLATEAUCityObjectGroupDetails.cpp, PLATEAUWindow.cpp, PLATEAUEditorStyle.cpp, PLATEAUBasemap.cpp, PLATEAUEditor.cpp, PLATEAUInstancedCityModelDetails.cpp, PLATEAUAsyncLoadedFeatureInfoPanel.cpp, PLATEAUExtentEditorVPClient.cpp, PLATEAUGridCodeGizmo.cpp, SPLATEAUExtentEditorViewport.cpp, PLATEAUExtentEditor.cpp, PLATEAUFeatureInfoDisplay.cpp, PLATEAUCityModelLoaderDetails.cpp, PLATEAUSDKEditorUtilityWidget.cpp
+[Adaptive Build] Excluded from PLATEAURuntimeBPLibraries unity file: PLATEAURuntimeBPLibraries.cpp, PLATEAURuntimeUtil.cpp, PLATEAUModelClassificationAPI.cpp, PLATEAUModelLandscapeAPI.cpp, PLATEAURoadAdjustmentAPI.cpp, PLATEAUModelAdjustmentBuilding.cpp, PLATEAUModelAdjustmentFilterAPI.cpp, PLATEAUModelAdjustmentRelief.cpp, PLATEAUModelAdjustmentVegetation.cpp, PLATEAUExportModelAPI.cpp, PLATEAUImportModelRuntimeAPI.cpp, PLATEAUModelReconstructAPI.cpp
+[Adaptive Build] Excluded from PLATEAUTests unity file: PLATEAUModelFilteringTest.cpp, PLATEAUExportModelTest.cpp, PLATEAUInstancedCityModelTest.cpp, PLATEAUPolygonMeshTest.cpp, PLATEAUFilteringTest.cpp, PLATEAUReconstructUtilTest.cpp, PLATEAUComponentUtilTest.cpp, PLATEAUGmlUtilTest.cpp, PLATEAUModelLandscapeMeshTest.cpp, PLATEAUModelClassificationByTypeTest.cpp, PLATEAUMeshLoaderHeightmapTest.cpp, PLATEAUModelClassificationByAttrTest.cpp, PLATEAUModelLandscapeTest.cpp, PLATEAUHeightmapToLandscapeTest.cpp, PLATEAUMeshLoaderReconstructTest.cpp, PLATEAUModelReconstructTest.cpp, PLATEAUMeshLoaderClassificationTest.cpp, PLATEAUMeshLoaderCloneComponentTest.cpp, PLATEAUModelClassificationTest.cpp, PLATEAUModelLandscapeAlignTest.cpp, PLATEAUCityObjectSerializeTest.cpp, PLATEAUTests.cpp
+=================================
+Using Unreal Build Accelerator local executor to run 152 action(s)
+  CPU 16 physical cores, 16 logical cores
+  Memory 128 GB physical, 90.81 GB/128 GB committed
+  UBA Storage capacity 40 GB
+Refusing to register create-for-write '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.d': dir not populated. dir='<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd' dirKey=0ca5ba503179fddd8c71503c41d7d523 populatedOffset=2 latestOffset=0 shouldWriteToDisk=1 attributes=0x81a4 fileSize=0 lastWriteTime=0 dirFilesCached=0
+Refusing to register create-for-write '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch': dir not populated. dir='<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd' dirKey=0ca5ba503179fddd8c71503c41d7d523 populatedOffset=2 latestOffset=0 shouldWriteToDisk=1 attributes=0x81a4 fileSize=0 lastWriteTime=0 dirFilesCached=0
+UbaSessionServer - Failed to get file information for <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h-8e599a31.gch.tmp while checking file added for write. This should not happen! (No such file or directory) [size=365585636 lastWriteTime=17911144199999340 attributes=0x81a4 newEntry=1]
+UbaSessionServer - Failed to get file information for <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h-ece86c71.d.tmp while checking file added for write. This should not happen! (No such file or directory) [size=256406 lastWriteTime=17911144199995470 attributes=0x81a4 newEntry=1]
+[1/152] Compile [Apple] SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h
+[2/152] Compile [Apple] PLATEAUCityModelLoader.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[3/152] Compile [Apple] LineSmoother.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[4/152] Compile [Apple] Module.PLATEAURuntime.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[5/152] Compile [Apple] LineSegment2D.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[6/152] Compile [Apple] PLATEAUCityObject.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[7/152] Compile [Apple] PLATEAUCityGmlProxy.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[8/152] Compile [Apple] LineGeneratorComponent.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[9/152] Compile [Apple] GeoGraphEx.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[10/152] Compile [Apple] LineSegment3D.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[11/152] Compile [Apple] LineUtil.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[12/152] Compile [Apple] GeoGraph2d.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[13/152] Compile [Apple] PLATEAUCityObjectDeserialization.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[14/152] Compile [Apple] PLATEAUCityObjectGroup.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[15/152] Compile [Apple] PLATEAUCityModel.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[16/152] Compile [Apple] PLATEAUAttributeValue.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[17/152] Compile [Apple] AxisPlane.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[18/152] Compile [Apple] PLATEAUCityObjectSerialization.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[19/152] Compile [Apple] PLATEAUDllLoggerUnreal.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[20/152] Compile [Apple] PLATEAUMCLaneLine.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[21/152] Compile [Apple] PLATEAUCrosswalkComposer.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[22/152] Compile [Apple] PLATEAUComponentUtil.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[23/152] Compile [Apple] PLATEAUDirectionalArrowComposer.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[24/152] Compile [Apple] PLATEAUCrosswalkPlacementRule.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[25/152] Compile [Apple] PLATEAUIntVectorEx.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[26/152] Compile [Apple] PLATEAUMCIntersection.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[27/152] Compile [Apple] PLATEAUIntVector2Ex.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[28/152] Compile [Apple] PLATEAUInstancedCityModel.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[29/152] Compile [Apple] PLATEAUGeometry.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[30/152] Compile [Apple] PLATEAUMCCenterLine.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[31/152] Compile [Apple] PLATEAULandscapeRefComponent.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[32/152] Compile [Apple] PLATEAUMCShoulderLine.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[33/152] Compile [Apple] PLATEAUGmlUtil.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[34/152] Compile [Apple] PLATEAUMarkedWay.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[35/152] Compile [Apple] PLATEAUMeshLoader.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[36/152] Compile [Apple] PLATEAUMarkedWayListComposerMain.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[37/152] Compile [Apple] PLATEAUMeshLoaderCloneComponent.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[38/152] Compile [Apple] PLATEAUMeshExporter.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[39/152] Compile [Apple] PLATEAUMeshLoaderForReconstruct.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[40/152] Compile [Apple] PLATEAUMeshLoaderForClassification.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[41/152] Compile [Apple] PLATEAUMeshLoaderForHeightmap.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[42/152] Compile [Apple] PLATEAUModelFiltering.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[43/152] Compile [Apple] PLATEAUModelClassificationByType.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[44/152] Compile [Apple] PLATEAUModelClassificationByAttribute.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[45/152] Compile [Apple] PLATEAUModelAlignLand.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[46/152] Compile [Apple] PLATEAUMeshLoaderForLandscapeMesh.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[47/152] Compile [Apple] PLATEAUModelLandscape.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[48/152] Compile [Apple] PLATEAUModelReconstruct.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[49/152] Compile [Apple] PLATEAUNativeCityObjectSerialization.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[50/152] Compile [Apple] PLATEAURay2DEx.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[51/152] Compile [Apple] PLATEAUReconstructUtil.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[52/152] Compile [Apple] PLATEAURGraph.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[53/152] Compile [Apple] PLATEAURnDebugEx.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[54/152] Compile [Apple] PLATEAUReproducedRoad.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[55/152] Compile [Apple] PLATEAURnDef.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[56/152] Compile [Apple] PLATEAUSceneComponent.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[57/152] Compile [Apple] PLATEAURrTarget.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[58/152] Compile [Apple] PLATEAURnStructureModel.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[59/152] Compile [Apple] PLATEAURnModelDrawerDebug.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[60/152] Compile [Apple] PLATEAURoadLineType.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[61/152] Compile [Apple] PLATEAURnEx.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[62/152] Compile [Apple] PLATEAURuntime.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[63/152] Compile [Apple] PLATEAUSubDividedCityObjectGroup.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[64/152] Compile [Apple] PLATEAUTextureLoader.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[65/152] Compile [Apple] PLATEAUStaticMeshComponent.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[66/152] Compile [Apple] PLATEAUVectorEx.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[67/152] Compile [Apple] PLATEAUVector2DEx.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[68/152] Compile [Apple] RGraphEx.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[69/152] Compile [Apple] RGraphFactory.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[70/152] Compile [Apple] RnModel.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[71/152] Compile [Apple] RnLineString.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[72/152] Compile [Apple] RnPoint.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[73/152] Compile [Apple] RGraph.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[74/152] Compile [Apple] RnRoad.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[75/152] Compile [Apple] RnIntersection.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[76/152] Compile [Apple] RnRoadBase.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[77/152] Compile [Apple] RnRoadGroup.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[78/152] Compile [Apple] RnTrackBuilder.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[79/152] Compile [Apple] RnWay.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[80/152] Compile [Apple] RnSideWalk.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[81/152] Compile [Apple] SubDividedCityObjectFactory.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[82/152] Compile [Apple] UPLATEAUStopLineComposer.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[83/152] Compile [Apple] RoadNetworkFactory.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[84/152] Compile [Apple] SubDividedCityObject.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[85/152] Compile [Apple] PLATEAUAsyncLoadedFeatureInfoPanel.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[86/152] Compile [Apple] PLATEAUCityObjectGroupDetails.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[87/152] Compile [Apple] PLATEAUBasemap.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[88/152] Compile [Apple] PLATEAUEditorStyle.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[89/152] Compile [Apple] PLATEAUCityModelLoaderDetails.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[90/152] Compile [Apple] Module.PLATEAUEditor.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[91/152] Compile [Apple] PLATEAUEditor.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[92/152] Compile [Apple] PLATEAUExtentEditor.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[93/152] Compile [Apple] RnLane.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[94/152] Compile [Apple] PLATEAUExtentEditorVPClient.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[95/152] Compile [Apple] PLATEAUFeatureInfoDisplay.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[96/152] Compile [Apple] PLATEAUGridCodeGizmo.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[97/152] Compile [Apple] PLATEAUSDKEditorUtilityWidget.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[98/152] Compile [Apple] PLATEAUWindow.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[99/152] Compile [Apple] SPLATEAUExtentEditorViewport.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[100/152] Compile [Apple] PLATEAUInstancedCityModelDetails.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[101/152] Compile [Apple] Module.PLATEAUEditorBPLibraries.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[102/152] Compile [Apple] PLATEAUImportAreaSelectBtn.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[103/152] Compile [Apple] PLATEAUEditorUtil.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[104/152] Compile [Apple] PLATEAUEditorBPLibraries.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[105/152] Compile [Apple] PLATEAUImportModelBtn.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[106/152] Compile [Apple] PLATEAUExportModelAPI.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[107/152] Compile [Apple] PLATEAUImportLocalFolderBtn.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[108/152] Compile [Apple] Module.PLATEAURuntimeBPLibraries.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[109/152] Compile [Apple] PLATEAUImportModelRuntimeAPI.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[110/152] Compile [Apple] PLATEAUModelAdjustmentFilterAPI.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[111/152] Compile [Apple] PLATEAUModelAdjustmentBuilding.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[112/152] Compile [Apple] PLATEAUModelAdjustmentRelief.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[113/152] Compile [Apple] PLATEAUModelClassificationAPI.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[114/152] Compile [Apple] PLATEAUModelAdjustmentVegetation.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[115/152] Compile [Apple] PLATEAUModelLandscapeAPI.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[116/152] Compile [Apple] PLATEAUAttrInfoDrawGizmo.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[117/152] Compile [Apple] PLATEAURuntimeBPLibraries.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[118/152] Compile [Apple] PLATEAURuntimeUtil.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[119/152] Compile [Apple] PLATEAUModelReconstructAPI.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[120/152] Compile [Apple] PLATEAURoadAdjustmentAPI.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[121/152] Compile [Apple] PerModuleInline.gen.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[122/152] Compile [Apple] PlateauProbe.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[123/152] Compile [Apple] PLATEAUCityObjectSerializeTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[124/152] Compile [Apple] Module.PLATEAUTests.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[125/152] Compile [Apple] PLATEAUComponentUtilTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[126/152] Compile [Apple] PLATEAUFilteringTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[127/152] Compile [Apple] PLATEAUGmlUtilTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[128/152] Compile [Apple] PLATEAUInstancedCityModelTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[129/152] Compile [Apple] PLATEAUMeshLoaderClassificationTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[130/152] Compile [Apple] PLATEAUExportModelTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[131/152] Compile [Apple] PLATEAUMeshLoaderCloneComponentTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[132/152] Compile [Apple] PLATEAUHeightmapToLandscapeTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[133/152] Compile [Apple] PLATEAUMeshLoaderReconstructTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[134/152] Compile [Apple] PLATEAUMeshLoaderHeightmapTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[135/152] Compile [Apple] PLATEAUModelClassificationTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[136/152] Compile [Apple] PLATEAUModelClassificationByTypeTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[137/152] Compile [Apple] PLATEAUModelClassificationByAttrTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[138/152] Compile [Apple] PLATEAUModelLandscapeAlignTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[139/152] Compile [Apple] PLATEAUModelLandscapeTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[140/152] Compile [Apple] PLATEAUModelFilteringTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[141/152] Compile [Apple] PLATEAUModelReconstructTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[142/152] Compile [Apple] PLATEAUModelLandscapeMeshTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[143/152] Compile [Apple] PLATEAUTests.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[144/152] Compile [Apple] PLATEAUReconstructUtilTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+[145/152] Compile [Apple] PLATEAUPolygonMeshTest.cpp
+error: unable to read PCH file <PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch: 'No such file or directory'
+fatal error: PCH file '<PROBE_ROOT>/PatchedProject/Intermediate/Build/Mac/arm64/PlateauProbeEditor/Development/UnrealEd/SharedPCH.UnrealEd.Project.ValApi.ValExpApi.Cpp20.h.gch' not found: module file not found
+2 errors generated.
+Total time in Unreal Build Accelerator local executor: 11.70 seconds
+
+Result: Failed (OtherCompilationError)
+Total execution time: 17.44 seconds
+Trace written to file <HOME>/Library/Application Support/Epic/UnrealBuildTool/Trace.uba with size 108.8kb

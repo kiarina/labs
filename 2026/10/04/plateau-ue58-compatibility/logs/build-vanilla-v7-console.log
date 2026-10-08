@@ -1,0 +1,15 @@
+Setting up bundled DotNet SDK
+<UE_ROOT>/Engine/Binaries/ThirdParty/DotNet/10.0/mac-arm64
+Running dotnet Engine/Binaries/DotNET/UnrealBuildTool/UnrealBuildTool.dll PlateauProbeEditor Mac Development -Project=<PROBE_ROOT>/Project/PlateauProbe.uproject -architecture=arm64 -NoHotReload -log=<PROBE_ROOT>/build-vanilla-v7.log
+Log file: <PROBE_ROOT>/build-vanilla-v7.log
+Determining max actions to execute in parallel (16 physical cores, 16 logical cores)
+  Executing up to 16 processes, one per physical core
+Creating makefile for PlateauProbeEditor (no existing makefile)
+UbaServer - Listening on 0.0.0.0:1345
+<PROBE_ROOT>/Project/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntimeBPLibraries/PLATEAURuntimeBPLibraries.Build.cs(70,23): warning CS0618: 'CppStandardVersion.Cpp17' is obsolete: 'Deprecated in UE5.8. C++17 is no longer allowed, code will not compile with this version'
+PLATEAURuntimeBPLibraries CppStandard CppStandardVersion.Cpp17 is no longer supported.
+Errors validating plugins or modules.
+
+Result: Failed (OtherCompilationError)
+Total execution time: 2.46 seconds
+Trace written to file <HOME>/Library/Application Support/Epic/UnrealBuildTool/Trace.uba with size 1.8kb

@@ -1,0 +1,24 @@
+Setting up bundled DotNet SDK
+<UE_ROOT>/Engine/Binaries/ThirdParty/DotNet/10.0/mac-arm64
+Running dotnet Engine/Binaries/DotNET/UnrealBuildTool/UnrealBuildTool.dll PlateauProbeEditor Mac Development -Project=<PROBE_ROOT>/Project/PlateauProbe.uproject -architecture=arm64 -NoHotReload -log=<PROBE_ROOT>/build-vanilla.log
+Log file: <PROBE_ROOT>/build-vanilla.log
+Determining max actions to execute in parallel (16 physical cores, 16 logical cores)
+  Executing up to 16 processes, one per physical core
+Creating makefile for PlateauProbeEditor (no existing makefile)
+UbaServer - Listening on 0.0.0.0:1345
+<PROBE_ROOT>/Project/Plugins/PLATEAU-SDK-for-Unreal/Source/PLATEAURuntimeBPLibraries/PLATEAURuntimeBPLibraries.Build.cs(70,23): warning CS0618: 'CppStandardVersion.Cpp17' is obsolete: 'Deprecated in UE5.8. C++17 is no longer allowed, code will not compile with this version'
+Warning: [Upgrade]
+Warning: [Upgrade] Using backward-compatible build settings. The latest version of UE sets the following values by default, which may require code changes:
+Warning: [Upgrade]     FPSemantics = Precise                              => Updates default floating point semantics for Editor and Program targets to Precise for Microsoft platforms. Game, Client, & Server default remains Imprecise. (Previously: Imprecise for MSVC, Precise for Clang)
+Warning: [Upgrade]     ReturnTypeWarningLevel = WarningLevel.Error        => Validates that non-void functions return a value. (Previously: Off for VCClang, Error for MSVC and non-VC Clang).
+Warning: [Upgrade]     DanglingWarningLevel = WarningLevel.Error          => Enables clang warnings related possible dangling references or pointers. (Previously: Off for VCClang, Error for non-VC Clang).
+Warning: [Upgrade]     UnreachableCodeWarningLevel = WarningLevel.Error   => Enables compile-time validation of unreachable code. (Previously: Error for MSVC, Off for Clang).
+Warning: [Upgrade] Suppress this message by setting 'DefaultBuildSettings = BuildSettingsVersion.V7;' in PlateauProbeEditor.Target.cs, and explicitly overriding settings that differ from the new defaults.
+Warning: [Upgrade]
+Wrote partial receipt to <PROBE_ROOT>/Project/Binaries/Mac/PlateauProbeEditor.target
+PlateauProbeEditor modifies the values of properties: [ UnreachableCodeWarningLevel: Off != Error, ReturnTypeWarningLevel: Off != Error, DanglingWarningLevel: Off != Error ]. This is not allowed, as PlateauProbeEditor has build products in common with UnrealEditor.
+Remove the modified setting, change PlateauProbeEditor to use a unique build environment by setting 'BuildEnvironment = TargetBuildEnvironment.Unique;' in the PlateauProbeEditorTarget constructor, or set bOverrideBuildEnvironment = true to force this setting on.
+
+Result: Failed (OtherCompilationError)
+Total execution time: 2.24 seconds
+Trace written to file <HOME>/Library/Application Support/Epic/UnrealBuildTool/Trace.uba with size 1.8kb
