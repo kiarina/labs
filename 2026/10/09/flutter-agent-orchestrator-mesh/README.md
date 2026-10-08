@@ -160,6 +160,7 @@ brain・body-b は MacBook Pro M1 Max、studio は Mac Studio M4 Max。studio �
       Mac Studio のワーカーがタブを開いた
     - 司令塔に「ワーカーを使わず自分で書き込んで」と頼むと、指示に従って試さずに断った
     - 「brain の body の Codex のワーカーに Computer Use で開かせて」: brain の body のワーカーは、今までどおり `cua_repl` で Chrome を操作できた
+    - 司令塔を Claude（`sonnet`）にして、名指しなしの同じ依頼を送った。こちらも `start_thread(body: "studio")` で Mac Studio のワーカーに頼んだ
 - **Codex の機能は、`thread/start` の `config: {features: {...}}` でスレッドごとに切れる。** モデル表は起動時にしか渡せないが、機能の切り替えはスレッドごとに効いた。
   偽の Responses API につなぎ、Codex が送るツールを比べた（`gpt-5.6-luna`。OpenAI のモデルはコードモードなので、ツールは JS の `exec` の中から呼ぶ形で並ぶ）
 
