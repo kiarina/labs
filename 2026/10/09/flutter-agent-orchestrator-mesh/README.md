@@ -144,6 +144,14 @@ brain・body-b は MacBook Pro M1 Max、studio は Mac Studio M4 Max。studio �
   body の向こうの状態を別に写す必要はなかった
 - body が消えたことに気づくのは、シグナリングの WebSocket が閉じるのが先だった（アプリが終わるとすぐ閉じる）。データチャネルと ICE だけに頼ると、気づくまで数十秒かかる
 - 2 台目の Mac（Mac Studio）では、最初に起動したときにローカルネットワークの許可を求められ、オーナーが許可した。1 台目の Mac では、この lab の間に求められたかを確かめていない
+- **司令塔は、自分のマシンを操作するツールを持ったままだった。** オーナーが console から試した結果は次のとおり（2026-10-09）
+  - 「Mac Studio の Chrome で gifuquest.blazeworks.jp を開いて」と頼むと、司令塔（Codex）は `start_thread` を呼ばなかった。
+    代わりに、普段の Codex の設定から渡っている Computer Use（MCP の `cua_repl`）を自分で呼んだ
+  - そのため、開いたのは brain のマシン（MacBook Pro）の Chrome だった。それでも司令塔は「Mac Studio の Chrome で開きました」と答えた
+  - 「Mac Studio の body で、Codex に Chrome で開かせて」と body とエージェントを名指しすると、司令塔は `start_thread(body: studio)` を呼んだ。
+    Mac Studio のワーカーが、そのマシンの Computer Use でタブを開いた
+  - 司令塔の読み取り専用のサンドボックスは、MCP のツールを止めない。指示の「仕事はワーカーに任せる」だけでは足りない
+- Computer Use の `createBrowserTab(..., {visible: true})` は、どちらのマシンでも「Capability is not available: visibility」で失敗した。`visible` を外すと開いた
 - バックグラウンドからのキー入力（computer use の `app_type`）は Flutter のテキスト欄に入らなかった（アクセシビリティの値は書けたが、画面の入力に反映されない）。
   画面からの入力は、窓を前に出して打ち込んで確かめた。同じ bundle ID のアプリを 3 つ起動すると、computer use からは 1 つの窓しか選べなかった
 
