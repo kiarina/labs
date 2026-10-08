@@ -71,9 +71,13 @@ Codex・Claude・kiapi のスレッドをツールとして動かす司令塔の
   - `ConsoleMirror`（全アプリ）: 受け取ったものだけで画面を描き、ユーザーの操作（送信・停止・設定など）を brain へ送り返す
   - brain 自身の console も、プロセス内の loopback で同じメッセージ（JSON を通す）を受け取る
 - `lib/orchestrator/hub.dart`・`tools.dart`: 司令塔は brain の body の上で動く
-  - `start_thread` に `body` を足した（省くと brain の body）
+  - `start_thread` に `body` を足した（必須。brain の body も名前で指定する）
   - `list_bodies` を足した（名前・online・使えるエージェント・作業フォルダ・動いている数）
   - 同時実行の上限は body ごとに数える（各 body は別のマシン・別のサブスク）
+  - **司令塔は手を持たない。** 自分ではコマンドもファイルの読み書きもアプリの操作もせず、brain のマシンでの作業も brain の body のワーカーに頼む
+    - Codex の司令塔: `thread/start` の `config` で、そのスレッドだけ機能を切る（`shell_tool`・`unified_exec`・`computer_use`・`browser_use` など。下の表）。
+      同じ app-server のワーカーはそのまま使える
+    - Claude の司令塔: 組み込みのツールを `tools: ['AskUserQuestion', 'TodoWrite']` に絞る。`strictMcpConfig` で、普段の設定の MCP サーバーを読ませない
 
 ### メッセージ
 
@@ -151,6 +155,21 @@ brain・body-b は MacBook Pro M1 Max、studio は Mac Studio M4 Max。studio �
   - 「Mac Studio の body で、Codex に Chrome で開かせて」と body とエージェントを名指しすると、司令塔は `start_thread(body: studio)` を呼んだ。
     Mac Studio のワーカーが、そのマシンの Computer Use でタブを開いた
   - 司令塔の読み取り専用のサンドボックスは、MCP のツールを止めない。指示の「仕事はワーカーに任せる」だけでは足りない
+  - **直した。** 司令塔から手を外し、`start_thread` の `body` を必須にした（上の Architecture）。直した後に次の 3 つを確かめた
+    - 名指しなしの「Mac Studio の Chrome で gifuquest.blazeworks.jp を開いて」: 司令塔は `list_bodies` の後に `start_thread(body: "studio")` を呼び、
+      Mac Studio のワーカーがタブを開いた
+    - 司令塔に「ワーカーを使わず自分で書き込んで」と頼むと、指示に従って試さずに断った
+    - 「brain の body の Codex のワーカーに Computer Use で開かせて」: brain の body のワーカーは、今までどおり `cua_repl` で Chrome を操作できた
+- **Codex の機能は、`thread/start` の `config: {features: {...}}` でスレッドごとに切れる。** モデル表は起動時にしか渡せないが、機能の切り替えはスレッドごとに効いた。
+  偽の Responses API につなぎ、Codex が送るツールを比べた（`gpt-5.6-luna`。OpenAI のモデルはコードモードなので、ツールは JS の `exec` の中から呼ぶ形で並ぶ）
+
+  | スレッド | 渡るツール |
+  | --- | --- |
+  | 設定なし | `exec`（JS）・`wait`・`request_user_input`、MCP の `cua_repl`（Computer Use）。`exec` の中に `exec_command`・`write_stdin`・`apply_patch`・goal 3 つ・`request_plugin_install`・`view_image`・MCP のリソース 3 つ |
+  | `shell_tool` だけ切る | `exec_command`・`write_stdin` が消える |
+  | 司令塔の設定（シェル・Computer Use・ブラウザ・apps・plugins・goals などを切る） | `cua_repl` も消え、`exec` の中は `apply_patch`・`view_image`・MCP のリソース 3 つだけ |
+
+  - 残る `apply_patch` は、読み取り専用のサンドボックスが「patch rejected: writing is blocked by read-only sandbox」で断り、ファイルはできなかった（偽のサーバーに呼ばせて確かめた）
 - Computer Use の `createBrowserTab(..., {visible: true})` は、どちらのマシンでも「Capability is not available: visibility」で失敗した。`visible` を外すと開いた
 - バックグラウンドからのキー入力（computer use の `app_type`）は Flutter のテキスト欄に入らなかった（アクセシビリティの値は書けたが、画面の入力に反映されない）。
   画面からの入力は、窓を前に出して打ち込んで確かめた。同じ bundle ID のアプリを 3 つ起動すると、computer use からは 1 つの窓しか選べなかった

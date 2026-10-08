@@ -103,6 +103,12 @@ type SessionConfig = {
   appendSystemPrompt?: string;
   /// Built-in tools to remove (the orchestrator does not edit files itself).
   disallowedTools?: string[];
+  /// The only built-in tools to offer (the orchestrator has no hands: no
+  /// Bash, no file tools).
+  tools?: string[];
+  /// Load MCP servers from [mcpServers] only, not from the user's or the
+  /// project's settings (Computer Use, browsers, ...).
+  strictMcpConfig?: boolean;
 };
 
 // GUI apps do not get the shell PATH; Homebrew's peekaboo by default.
@@ -152,6 +158,8 @@ class LiveSession {
           ...(config.appTools?.length ? { orchestrator: appToolServer(sessionId, config.appTools) } : {}),
         },
         ...(config.disallowedTools ? { disallowedTools: config.disallowedTools } : {}),
+        ...(config.tools ? { tools: config.tools } : {}),
+        ...(config.strictMcpConfig ? { strictMcpConfig: true } : {}),
         ...(config.appendSystemPrompt
           ? { systemPrompt: { type: 'preset' as const, preset: 'claude_code' as const, append: config.appendSystemPrompt } }
           : {}),

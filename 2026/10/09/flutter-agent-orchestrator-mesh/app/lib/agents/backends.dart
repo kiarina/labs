@@ -167,6 +167,24 @@ class CodexBackend {
   }
 }
 
+/// Codex features turned off for the orchestrator's thread: the shell
+/// (`exec_command`, `write_stdin`), Computer Use and browsers, apps and
+/// plugins, goals. What stays: its own tools, `apply_patch` (refused by the
+/// read-only sandbox), `view_image`, MCP resource reads.
+const _orchestratorFeaturesOff = {
+  'shell_tool': false,
+  'unified_exec': false,
+  'computer_use': false,
+  'browser_use': false,
+  'browser_use_external': false,
+  'in_app_browser': false,
+  'apps': false,
+  'plugins': false,
+  'goals': false,
+  'image_generation': false,
+  'multi_agent': false,
+};
+
 class CodexAgent extends AgentThread {
   CodexAgent(
     this.backend, {
@@ -199,6 +217,10 @@ class CodexAgent extends AgentThread {
           for (final t in role.tools) {'type': 'function', ...t},
         ],
         'developerInstructions': role.instructions,
+        // The orchestrator has no hands: without these it ran Computer Use on
+        // the brain's machine itself instead of starting a worker on the body
+        // the user named. Per-thread, so workers on this app-server keep them.
+        'config': {'features': _orchestratorFeaturesOff},
       },
     }) as Map;
     view.threadId = (r['thread'] as Map)['id'] as String;
@@ -391,8 +413,12 @@ class ClaudeAgent extends AgentThread {
     if (role.isOrchestrator) ...{
       'appTools': role.tools,
       'appendSystemPrompt': role.instructions,
-      // The orchestrator delegates; it does not edit files itself.
-      'disallowedTools': ['Edit', 'Write', 'MultiEdit', 'NotebookEdit'],
+      // The orchestrator has no hands: no Bash, no file tools, and none of
+      // the user's MCP servers (Computer Use, browsers). Only its own tools
+      // (the in-process MCP server) and asking the user.
+      'tools': ['AskUserQuestion', 'TodoWrite'],
+      'strictMcpConfig': true,
+      'disallowedTools': ['Edit', 'Write', 'MultiEdit', 'NotebookEdit', 'Bash'],
     },
   };
 

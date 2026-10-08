@@ -378,9 +378,7 @@ class Hub extends ChangeNotifier {
   Future<Json> callTool(String tool, Json a) async {
     switch (tool) {
       case 'start_thread':
-        final bodyName = (a['body'] as String?)?.isNotEmpty == true
-            ? a['body'] as String
-            : local.name;
+        final bodyName = a['body'] as String? ?? '';
         final body = bodies[bodyName];
         if (body == null || !body.online) {
           return {

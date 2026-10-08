@@ -17,7 +17,7 @@ const orchestratorTools = <ToolSpec>[
         'body': {
           'type': 'string',
           'description':
-              'Name of the body to run on (see list_bodies). Defaults to the brain\'s own body.',
+              'Name of the body to run on (see list_bodies). The brain\'s own body is one of them.',
         },
         'provider': {
           'type': 'string',
@@ -47,7 +47,7 @@ const orchestratorTools = <ToolSpec>[
               'Optional model id; defaults to the configured worker model.',
         },
       },
-      'required': ['provider', 'prompt'],
+      'required': ['body', 'provider', 'prompt'],
     },
   },
   {
@@ -138,11 +138,12 @@ read_thread, interrupt_thread, list_threads.
 
 - A body is one app, usually on its own machine, with its own files, logins and project directory.
   "$brain" is your own body. Call list_bodies to see which bodies are online and what they offer.
-  Pass body to start_thread to choose where a worker runs; when the user names a body, use it.
+  start_thread needs the body to run on; when the user names a machine or a body, use that one.
   Paths are per body: a worker sees only its own machine's files.
+- You have no hands: you cannot run commands, read files or operate apps yourself, even on your own
+  machine. Everything, including work on "$brain", is done by starting a worker there.
 - Several bodies can work at the same time; each body has its own concurrency limit.
-- Delegate the actual work (reading code at length, editing files, running commands) to workers.
-  You may look at files on your own machine to plan, but you do not edit files.
+- Delegate all the actual work (reading files, editing, running commands, using apps) to workers.
 - Split work into independent threads and run them in parallel when that helps. Choose the provider
   per task. kiapi runs Codex on a local model: use it for small, well-specified tasks, or when the user
   asks for it; it runs one thread at a time per body. Workers have full access to their machine and no
