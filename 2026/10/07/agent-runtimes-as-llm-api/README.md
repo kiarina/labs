@@ -86,6 +86,8 @@ python/stop_probe.py  最初のツール呼び出しで止める（偽サーバ�
   自前のモデル表（そのモデルの項目を写して `tool_mode`・`multi_agent_version`・`apply_patch_tool_type` を null にしたもの）を
   `codex app-server -c model_catalog_json=<path>` で渡すと、ツールが直接の function として渡る。モデル表は Codex の更新で変わりうる
 - **Codex の設定はプロセスの起動時に渡す。** `thread/start` の `config` に書いた `features`・`model_catalog_json` は効かなかった。`codex app-server --disable <feature>` と `-c` で渡す
+  - 訂正（2026-10-09）: codex-cli 0.159.3 では、`thread/start` の `config: {features: {...}}` でスレッドごとに `shell_tool`・`computer_use` などを切れた
+    （偽の Responses API でツールの一覧を比べた。`../../09/flutter-agent-orchestrator-mesh/README.md`）。モデル表（`model_catalog_json`）は起動時だけ
 - Codex で外したもの: `include_environment_context`・`include_permissions_instructions`・`include_apps_instructions`・`include_collaboration_mode_instructions`・
   `skills.include_instructions` を false、`config.toml` の MCP サーバーを `mcp_servers.<name>.enabled=false`、シェル・ブラウザ・画像生成などの機能を `--disable`。
   `baseInstructions` は `instructions` ではなく developer のメッセージとして送られた

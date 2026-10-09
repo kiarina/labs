@@ -98,6 +98,13 @@ app/lib/
 - 承認待ちでない時の中断（`turn/interrupt`）は、後の [司令塔の lab](../../06/flutter-agent-orchestrator/README.md) で確かめた（ターンは interrupted になるが、
   実行中のコマンドのプロセスは残る）
 
+### 追記: `AGENTS.md` の読み込み（2026-10-09、codex-cli 0.159.3）
+
+- 作業フォルダの `AGENTS.md` は自動で読まれ、`# AGENTS.md instructions for <cwd>` の見出しと `<INSTRUCTIONS>` に包まれて会話の先頭に入る
+- `-c project_doc_max_bytes=0` で読まなくなる。`project_doc_fallback_filenames` で足した名前は、`AGENTS.md` が無いときだけ読まれる
+- 基本の指示は `thread/start` の `baseInstructions` か、設定の `model_instructions_file` で差し替えられる（差し替えた結果は未確認）。`developerInstructions` は足すだけ
+- 確かめ方は `../../09/flutter-agent-orchestrator-multi-brain/README.md` の「ワーカーに自動で入るプロンプト」
+
 ## How to run
 
 前提: Codex CLI（`codex login` 済み）、mise。プロトコルは Codex の版で変わるので、`mise run schema` で手元の版のスキーマを `schema/` に出して比べてください。

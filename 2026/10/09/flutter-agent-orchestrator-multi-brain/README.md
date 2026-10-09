@@ -93,6 +93,25 @@
   - ログを見ないと気づきにくい
 - 所属は signal が持つので、brain や body を起動し直しても所属は残った（signal を起動し直すと消える）
 
+### ワーカーに自動で入るプロンプト
+
+偽の API（Anthropic の Messages、OpenAI の Responses）に向けて、送られる中身を記録した（`mise run probe-prompts`。トークンを使わない）。
+作業フォルダには目印を書いた `AGENTS.md` と `CLAUDE.md` を置いた。
+
+| | system（基本の指示） | `CLAUDE.md` | `AGENTS.md` |
+| --- | --- | --- | --- |
+| Claude、この lab のワーカーの設定（`systemPrompt` なし、`settingSources` に project） | 136 文字（SDK の 1 文だけ） | 入る | 入らない |
+| Claude、`systemPrompt: {type: 'preset', preset: 'claude_code'}` | 約 27,500 文字（Claude Code の本来のプロンプト） | 入る | 入らない |
+| Claude、`systemPrompt` に文字列、`settingSources: []` | 156 文字（SDK の 1 文 + 渡した文） | 入らない | 入らない |
+| Codex、既定 | モデル表の基本の指示 | 入らない | 入る |
+| Codex、`-c project_doc_max_bytes=0` | 同上 | 入らない | 入らない |
+
+- **この lab の Claude のワーカーには、Claude Code の本来のプロンプトが入っていない。** 中継プロセスは、司令塔にだけ preset（と `append`）を渡し、ワーカーには `systemPrompt` を渡していない。
+  ワーカーの system は「You are a Claude agent, built on Anthropic's Claude Agent SDK.」の 1 文だけで、ツールは Claude Code と同じものを持つ
+- Claude の `CLAUDE.md` は、system ではなく最初のユーザーの発言の `<system-reminder>` として入る。`AGENTS.md` は読まない（`CLAUDE.md` から `@AGENTS.md` で取り込めば読む）
+- Codex の `AGENTS.md` は、`# AGENTS.md instructions for <cwd>` の見出しと `<INSTRUCTIONS>` に包まれて会話の先頭に入る。
+  `project_doc_fallback_filenames` で足した名前（`CLAUDE.md` など）は、`AGENTS.md` が無いときだけ読まれる
+
 ## Limitations
 
 - **2 台の Mac では確かめていない。** 2 台目の Mac（Mac Studio）が VPN から外れていて、届かなかった
@@ -100,6 +119,7 @@
   - 使っている関数は、起動時の `ORCH_SELECT`・`ORCH_ASSIGN` と同じ。そちらで確かめた
   - 画面の表示（brain の選択、所属先の一覧）はスクリーンショットで確かめた
 - **認証が無い。** signal は誰でも参加でき、誰でも所属を変えられる。信頼できるネットワークの中だけで動かす
+- Claude のワーカーは、Claude Code の本来のプロンプトなしで動いている（上の Findings）。直すなら中継プロセスでワーカーにも preset を渡す
 - signal は所属をメモリだけに持つ。signal が落ちると所属は消え、brain の body 以外は所属なしに戻る
 - brain が落ちると、その brain の所属の body は所属先が offline のまま残る。console から別の brain へ移せる（offline の brain には尋ねない）
 - 全アプリが全 brain とつながるので、データチャネルの数は「アプリ数 × brain 数」程度に増える。数台でしか試していない
@@ -120,6 +140,7 @@ ORCH_NAME=body-c ORCH_SIGNAL_URL=ws://<signal のホスト>:8765 mise run run
 - `ORCH_ASSIGN=body-c=brain-a,body-d=`: 起動後に所属を変える（空は所属なし。console の一覧と同じ操作）
 - `ORCH_PROMPT`: 選んだ brain へ、起動後に 1 回送る
 - `ORCH_DUMP=path.json`: 名簿・所属・brain ごとの会話（操作の数とハッシュ）・接続の記録を書き出す
+- `mise run probe-prompts`: Codex と Claude のワーカーに自動で入るプロンプトを、偽の API で確かめる（`probes/`）
 
 ## Environment
 

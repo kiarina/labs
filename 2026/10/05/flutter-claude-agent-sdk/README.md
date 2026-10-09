@@ -115,6 +115,13 @@ app/lib/
 - 読むだけのコマンド（`ls` など）は既定のモードでも聞かれない。ファイルの書き込みでは `canUseTool` が呼ばれ、
   提案（`{type: "setMode", mode: "acceptEdits", destination: "session"}`）を返すとそのセッションは以後編集で聞かれない
 
+### 追記: `systemPrompt` を省いたときに入るもの（2026-10-09、SDK 0.3.289）
+
+- **`systemPrompt` を省くと、Claude Code の本来のプロンプトは入らない。** system は課金の 1 行と「You are a Claude agent, built on Anthropic's Claude Agent SDK.」だけになる。
+  Claude Code として振る舞わせるなら `{type: 'preset', preset: 'claude_code'}`（約 27,500 文字）を渡す。文字列を渡すと、SDK の 1 文の後ろに付く
+- `CLAUDE.md` は `settingSources` に `'project'` があると読まれ、system ではなく最初のユーザーの発言の `<system-reminder>` に入る。`AGENTS.md` は読まない
+- 確かめ方は `../../09/flutter-agent-orchestrator-multi-brain/README.md` の「ワーカーに自動で入るプロンプト」（偽の API に向けて送られる中身を記録する）
+
 ## 規約（2026-10-05 時点）
 
 - 自分の Mac で、自分のサブスクで、Claude Code 自身のログインを使う個人用なら、[Legal and compliance](https://code.claude.com/docs/en/legal-and-compliance) の
