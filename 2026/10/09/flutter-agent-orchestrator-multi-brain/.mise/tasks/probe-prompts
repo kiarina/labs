@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+#MISE description="What Codex and Claude workers get as built-in prompts, against fake APIs (no tokens): system prompt size, AGENTS.md / CLAUDE.md"
+set -euo pipefail
+cd probes
+work=$(mktemp -d); trap 'kill $(jobs -p) 2>/dev/null; rm -rf "$work"' EXIT
+mkdir -p "$work/proj"
+echo "MARKER-AGENTS-MD: say hi" > "$work/proj/AGENTS.md"
+echo "MARKER-CLAUDE-MD: say hi" > "$work/proj/CLAUDE.md"
+
+# Claude (Agent SDK): the request Claude Code sends.
+python3 fake_anthropic.py 8798 "$work/claude.jsonl" & sleep 1
+for mode in worker preset custom; do
+  rm -f "$work/claude.jsonl"
+  env -i HOME="$HOME" PATH="$(dirname "$(command -v node)"):/usr/bin:/bin" \
+    ANTHROPIC_BASE_URL=http://127.0.0.1:8798 ANTHROPIC_API_KEY=dummy-key \
+    node claude_system.mjs "$mode" "$work/proj" >/dev/null 2>&1 || true
+  python3 - "$work/claude.jsonl" "$mode" <<'PY'
+import json, sys
+r = json.loads(open(sys.argv[1]).readline())['body']
+s = r['system']; text = s if isinstance(s, str) else '\n'.join(b.get('text', '') for b in s)
+msgs = json.dumps(r.get('messages', []), ensure_ascii=False)
+print(f"claude {sys.argv[2]:7} system {len(text):6} chars | CLAUDE.md in messages: {'MARKER-CLAUDE-MD' in msgs} | AGENTS.md: {'MARKER-AGENTS-MD' in msgs + text}")
+PY
+done
+
+# Codex: whether AGENTS.md reaches the model.
+python3 fake_responses.py 8799 "$work/codex.jsonl" & sleep 1
+codex_probe() {
+  local tag=$1; shift; rm -f "$work/codex.jsonl"
+  (cd "$work/proj" && codex exec --skip-git-repo-check \
+    -c 'model_providers.fake={name="fake", base_url="http://127.0.0.1:8799/v1", wire_api="responses"}' \
+    -c model_provider=fake -c model=gpt-5.6-luna "$@" hi </dev/null >/dev/null 2>&1) || true
+  python3 - "$work/codex.jsonl" "$tag" <<'PY'
+import json, sys
+r = json.loads(open(sys.argv[1]).readline())
+body = json.dumps(r, ensure_ascii=False)
+print(f"codex  {sys.argv[2]:22} AGENTS.md: {'MARKER-AGENTS-MD' in body} | CLAUDE.md: {'MARKER-CLAUDE-MD' in body}")
+PY
+}
+codex_probe default
+codex_probe project_doc_max_bytes=0 -c project_doc_max_bytes=0
