@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Run the signaling server (roster, body ownership, WebRTC relay). PORT or the first argument sets the port (default 8765)"
+set -euo pipefail
+cd signal
+dart run bin/signal.dart "$@"
