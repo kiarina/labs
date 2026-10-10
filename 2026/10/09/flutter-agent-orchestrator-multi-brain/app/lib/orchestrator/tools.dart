@@ -146,7 +146,7 @@ const orchestratorTools = <ToolSpec>[
   },
   {
     'name': 'list_threads',
-    'description': 'List every worker thread with its body, worker type, title, status and the concurrency limit.',
+    'description': 'List every worker thread with its body, worker type, model, title, status and working directory.',
     'inputSchema': {'type': 'object', 'properties': <String, dynamic>{}},
   },
 ];

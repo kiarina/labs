@@ -67,8 +67,7 @@ class _WorkersPanelState extends State<WorkersPanel> {
                 const Spacer(),
                 Text(
                   '${console.runningCount} running'
-                  '${queued > 0 ? ' · $queued queued' : ''}'
-                  ' · ${console.settings.maxConcurrent}/body',
+                  '${queued > 0 ? ' · $queued queued' : ''}',
                   style: const TextStyle(fontSize: 11, color: Palette.textDim),
                 ),
               ],

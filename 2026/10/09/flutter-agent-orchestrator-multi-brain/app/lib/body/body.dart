@@ -43,6 +43,10 @@ abstract mixin class Body {
 
   String get projectDir => info['projectDir'] as String? ?? '/';
 
+  /// Workers allowed at once on this body (its start screen's setting).
+  int get maxWorkers =>
+      (info['maxWorkers'] as num?)?.toInt() ?? WorkerTypesConfig.defaultMaxWorkers;
+
   List<Json> modelsFor(String type) =>
       ((info['models'] as Map?)?[type] as List? ?? const [])
           .cast<Map>()
@@ -100,9 +104,25 @@ class LocalBody extends ChangeNotifier with Body {
   /// Every turned-on worker type has started or failed.
   bool ready = false;
 
+  /// The project folder set on the start screen, else ORCH_CWD, else home.
   @override
-  String projectDir =
-      Platform.environment['ORCH_CWD'] ?? Platform.environment['HOME'] ?? '/';
+  String get projectDir =>
+      expandHome(config.projectDir) ??
+      Platform.environment['ORCH_CWD'] ??
+      Platform.environment['HOME'] ??
+      '/';
+
+  /// Changes the project folder (the brain's console picks it) and keeps
+  /// it for the next start.
+  void setProjectDir(String dir) {
+    config.projectDir = dir;
+    try {
+      config.save(typesFile);
+    } catch (e) {
+      typeErrors['config'] = 'could not save ${typesFile.path}: $e';
+    }
+    notifyListeners();
+  }
 
   /// Runs orchestrator tool calls (set by the brain's hub; bodies have none).
   ToolHandler? toolHandler;
@@ -273,6 +293,7 @@ class LocalBody extends ChangeNotifier with Body {
       ],
       'typeConfigError': typeErrors['config'],
       'projectDir': projectDir,
+      'maxWorkers': config.maxWorkers,
       'models': {for (final id in workerTypes) id: modelsFor(id)},
       'defaultModels': {for (final id in workerTypes) id: defaultModel(id)},
       'usage': {

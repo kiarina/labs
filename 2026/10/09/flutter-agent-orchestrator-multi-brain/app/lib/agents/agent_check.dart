@@ -8,10 +8,14 @@ import 'worker_types.dart';
 
 /// A model a custom server lists.
 class ModelInfo {
-  const ModelInfo(this.id, this.contextWindow);
+  const ModelInfo(this.id, this.contextWindow, {this.label, this.isDefault = false});
 
   final String id;
   final int? contextWindow;
+  final String? label;
+
+  /// The backend's own default.
+  final bool isDefault;
 }
 
 /// One thing a tool needs on this machine, and whether it is there.
@@ -32,10 +36,13 @@ class Requirement {
 
 /// The outcome of checking one agent on the start screen.
 class CheckResult {
-  const CheckResult(this.ok, this.text, {this.needsLogin = false});
+  const CheckResult(this.ok, this.text, {this.needsLogin = false, this.models = const []});
 
   final bool ok;
   final String text;
+
+  /// The models it offers (for the default-model choice).
+  final List<ModelInfo> models;
 
   /// Codex is reachable but not logged in: the screen offers to log in.
   final bool needsLogin;
@@ -58,7 +65,15 @@ class AgentChecker {
       if (account == null) {
         return const CheckResult(false, 'Not logged in', needsLogin: true);
       }
-      return CheckResult(true, 'Logged in (${account['planType'] ?? account['type'] ?? 'ok'})');
+      final list = await c.request('model/list', {}) as Map;
+      return CheckResult(
+        true,
+        'Logged in (${account['planType'] ?? account['type'] ?? 'ok'})',
+        models: [
+          for (final m in (list['data'] as List).cast<Map>())
+            ModelInfo(m['id'] as String, null, label: m['displayName'] as String?, isDefault: m['isDefault'] == true),
+        ],
+      );
     } catch (e) {
       return CheckResult(false, '$e');
     } finally {
@@ -108,7 +123,14 @@ class AgentChecker {
       if (!claudeLoggedIn(account)) {
         return const CheckResult(false, 'Not logged in: run `claude auth login` in a terminal, then check again');
       }
-      return CheckResult(true, 'Logged in (${account!['subscriptionType'] ?? account['email'] ?? 'ok'})');
+      return CheckResult(
+        true,
+        'Logged in (${account!['subscriptionType'] ?? account['email'] ?? 'ok'})',
+        models: [
+          for (final m in (r['models'] as List? ?? const []).cast<Map>())
+            ModelInfo(m['value'] as String, null, label: m['displayName'] as String?),
+        ],
+      );
     } catch (e) {
       return CheckResult(false, '$e');
     } finally {

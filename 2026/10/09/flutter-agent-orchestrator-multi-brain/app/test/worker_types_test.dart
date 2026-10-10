@@ -107,4 +107,21 @@ void main() {
         [(true, false, false), (false, true, true), (true, false, false), (false, false, false)]);
     expect(WorkerTypesConfig.load(File('${tmp.path}/none.json'), const {}).types.every((t) => t.extras.isEmpty), isTrue);
   });
+
+  test('the machine: project folder and workers at once; per-type limits for Codex and Claude', () {
+    final c = WorkerTypesConfig.load(
+      write({
+        'project_dir': '~/work',
+        'max_workers': 2,
+        'codex': {'enabled': true, 'max_concurrent': 1, 'model': 'gpt-small'},
+      }),
+      const {},
+    );
+    expect((c.projectDir, c.maxWorkers), ('~/work', 2));
+    expect((c.types.first.maxConcurrent, c.types.first.model), (1, 'gpt-small'));
+    expect(WorkerTypesConfig.load(File('${tmp.path}/none.json'), const {}).maxWorkers, 4);
+    final f = File('${tmp.path}/again.json');
+    c.save(f);
+    expect(jsonDecode(f.readAsStringSync())['codex'], {'enabled': true, 'model': 'gpt-small', 'max_concurrent': 1});
+  });
 }

@@ -104,6 +104,7 @@ class _LaunchPageState extends State<LaunchPage> {
 
   @override
   void dispose() {
+    _projectDir.dispose();
     _codexCwd.dispose();
     _claudeCwd.dispose();
     for (final d in _custom) {
@@ -125,7 +126,9 @@ class _LaunchPageState extends State<LaunchPage> {
     }
     c
       ..port = port ?? c.port
-      ..url = _url.text.trim().isEmpty ? 'ws://localhost:8765' : _url.text.trim();
+      ..url = _url.text.trim().isEmpty
+          ? 'ws://localhost:8765'
+          : _url.text.trim();
     setState(() {
       _busy = true;
       _error = null;
@@ -164,7 +167,9 @@ class _LaunchPageState extends State<LaunchPage> {
     final url = c.signalUrl;
     final client = HttpClient()..connectionTimeout = const Duration(seconds: 2);
     try {
-      final req = await client.getUrl(Uri.parse(url.replaceFirst(RegExp('^ws'), 'http')));
+      final req = await client.getUrl(
+        Uri.parse(url.replaceFirst(RegExp('^ws'), 'http')),
+      );
       final res = await req.close().timeout(const Duration(seconds: 3));
       final j = jsonDecode(await res.transform(utf8.decoder).join()) as Map;
       final nodes = (j['nodes'] as List).cast<Map>();
@@ -215,11 +220,13 @@ class _LaunchPageState extends State<LaunchPage> {
   /// saved choice (it may join later).
   List<(String, String)> get _brainChoices {
     final out = <String, String>{
-      if (c.brain) LaunchConfig.self: '${c.name.isEmpty ? 'this app' : c.name} (this app)',
+      if (c.brain)
+        LaunchConfig.self: '${c.name.isEmpty ? 'this app' : c.name} (this app)',
       for (final b in _roster?.brains ?? const <String>[])
         if (!(c.brain && b == c.name)) b: b,
     };
-    if (c.owner case final o? when o != LaunchConfig.self && !out.containsKey(o)) {
+    if (c.owner case final o?
+        when o != LaunchConfig.self && !out.containsKey(o)) {
       out[o] = '$o (offline)';
     }
     return [for (final e in out.entries) (e.key, e.value)];
@@ -255,6 +262,10 @@ class _LaunchPageState extends State<LaunchPage> {
       return WorkerTypesConfig();
     }
   }();
+  late final _projectDir = TextEditingController(
+    text: _agents.projectDir ?? '',
+  );
+  late int _maxWorkers = _agents.maxWorkers;
   late final _codexCwd = TextEditingController(text: _agents.codex.cwd ?? '');
   late final _claudeCwd = TextEditingController(text: _agents.claude.cwd ?? '');
   late final List<_CustomDraft> _custom = [
@@ -278,10 +289,13 @@ class _LaunchPageState extends State<LaunchPage> {
     });
   }
 
-  String? _cwd(TextEditingController t) => t.text.trim().isEmpty ? null : t.text.trim();
+  String? _cwd(TextEditingController t) =>
+      t.text.trim().isEmpty ? null : t.text.trim();
 
-  void _checkCodex() => _check('codex', () => widget.checker.codex(_cwd(_codexCwd)));
-  void _checkClaude() => _check('claude', () => widget.checker.claude(_cwd(_claudeCwd)));
+  void _checkCodex() =>
+      _check('codex', () => widget.checker.codex(_cwd(_codexCwd)));
+  void _checkClaude() =>
+      _check('claude', () => widget.checker.claude(_cwd(_claudeCwd)));
   void _checkCustom(_CustomDraft d) {
     final t = d.build();
     if (t.$2 != null) {
@@ -307,16 +321,25 @@ class _LaunchPageState extends State<LaunchPage> {
   /// `<draft>-cu`); null while checking.
   final _reqs = <String, List<Requirement>?>{};
 
-  Future<void> _require(String key, Future<List<Requirement>> Function() run) async {
+  Future<void> _require(
+    String key,
+    Future<List<Requirement>> Function() run,
+  ) async {
     setState(() => _reqs[key] = null);
     final r = await run();
     if (mounted) setState(() => _reqs[key] = r);
   }
 
   void _checkTools() {
-    if (_agents.codex.enabled && _agents.codex.computerUse) _require('codex-cu', widget.checker.computerUse);
-    if (_agents.claude.enabled && _agents.claude.chrome) _require('claude-chrome', widget.checker.chrome);
-    if (_agents.claude.enabled && _agents.claude.mac) _require('claude-mac', widget.checker.peekaboo);
+    if (_agents.codex.enabled && _agents.codex.computerUse) {
+      _require('codex-cu', widget.checker.computerUse);
+    }
+    if (_agents.claude.enabled && _agents.claude.chrome) {
+      _require('claude-chrome', widget.checker.chrome);
+    }
+    if (_agents.claude.enabled && _agents.claude.mac) {
+      _require('claude-mac', widget.checker.peekaboo);
+    }
     for (final d in _custom) {
       if (d.computerUse) _require('${d.key}-cu', widget.checker.computerUse);
     }
@@ -359,7 +382,9 @@ class _LaunchPageState extends State<LaunchPage> {
     for (final d in _custom) {
       final (t, e) = d.build();
       if (e != null) return (null, e);
-      if (!ids.add(t!.id)) return (null, 'Two custom agents are named "${t.id}".');
+      if (!ids.add(t!.id)) {
+        return (null, 'Two custom agents are named "${t.id}".');
+      }
       custom.add(t);
     }
     final config = WorkerTypesConfig(
@@ -367,19 +392,26 @@ class _LaunchPageState extends State<LaunchPage> {
         enabled: _agents.codex.enabled,
         cwd: _cwd(_codexCwd),
         model: _agents.codex.model,
+        maxConcurrent: _agents.codex.maxConcurrent,
         computerUse: _agents.codex.computerUse,
       ),
       claude: BuiltinSetup(
         enabled: _agents.claude.enabled,
         cwd: _cwd(_claudeCwd),
         model: _agents.claude.model,
+        maxConcurrent: _agents.claude.maxConcurrent,
         chrome: _agents.claude.chrome,
         mac: _agents.claude.mac,
       ),
       custom: custom,
+      projectDir: _cwd(_projectDir),
+      maxWorkers: _maxWorkers,
     );
     if (c.brain && config.types.isEmpty) {
-      return (null, 'A brain needs at least one agent to run its orchestrator on.');
+      return (
+        null,
+        'A brain needs at least one agent to run its orchestrator on.',
+      );
     }
     return (config, null);
   }
@@ -415,13 +447,18 @@ class _LaunchPageState extends State<LaunchPage> {
                         TextSpan(
                           text: '${i > 0 ? '   ' : ''}${i + 1}. ${steps[i]}',
                           style: i == _step
-                              ? const TextStyle(color: Palette.text, fontWeight: FontWeight.w600)
+                              ? const TextStyle(
+                                  color: Palette.text,
+                                  fontWeight: FontWeight.w600,
+                                )
                               : null,
                         ),
                     ],
                   ),
                   key: const Key('steps'),
-                  style: theme.textTheme.bodySmall?.copyWith(color: Palette.textFaint),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: Palette.textFaint,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 ...switch (_stepName) {
@@ -434,7 +471,10 @@ class _LaunchPageState extends State<LaunchPage> {
                 if (_error != null)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 12),
-                    child: Text(_error!, style: TextStyle(color: theme.colorScheme.error)),
+                    child: Text(
+                      _error!,
+                      style: TextStyle(color: theme.colorScheme.error),
+                    ),
                   ),
                 Row(
                   children: [
@@ -484,13 +524,20 @@ class _LaunchPageState extends State<LaunchPage> {
       children: [
         Text(title, style: theme.textTheme.titleLarge),
         const SizedBox(height: 4),
-        Text(sub, style: theme.textTheme.bodySmall?.copyWith(color: Palette.textDim)),
+        Text(
+          sub,
+          style: theme.textTheme.bodySmall?.copyWith(color: Palette.textDim),
+        ),
       ],
     ),
   );
 
   List<Widget> _signalingStep(ThemeData theme) => [
-    _title(theme, 'Signaling server', 'Every app joins one. It keeps the roster and who owns which body.'),
+    _title(
+      theme,
+      'Signaling server',
+      'Every app joins one. It keeps the roster and who owns which body.',
+    ),
     RadioGroup<bool>(
       groupValue: c.signaling,
       onChanged: (v) => setState(() => c.signaling = v!),
@@ -547,7 +594,9 @@ class _LaunchPageState extends State<LaunchPage> {
         decoration: InputDecoration(
           labelText: 'Name (body id)',
           hintText: 'empty: host name and 4 random digits',
-          helperText: taken ? 'An app named $name is online; this one will get a suffix (-2).' : null,
+          helperText: taken
+              ? 'An app named $name is online; this one will get a suffix (-2).'
+              : null,
         ),
         onChanged: (_) => setState(() {}),
       ),
@@ -557,7 +606,9 @@ class _LaunchPageState extends State<LaunchPage> {
         value: c.brain,
         onChanged: (v) => setState(() => c.brain = v!),
         title: const Text('Brain'),
-        subtitle: const Text('Runs an orchestrator. Consoles pick a brain to talk to.'),
+        subtitle: const Text(
+          'Runs an orchestrator. Consoles pick a brain to talk to.',
+        ),
         controlAffinity: ListTileControlAffinity.leading,
       ),
       CheckboxListTile(
@@ -565,7 +616,9 @@ class _LaunchPageState extends State<LaunchPage> {
         value: c.body,
         onChanged: (v) => setState(() => c.body = v!),
         title: const Text('Body'),
-        subtitle: const Text('Lets the brain it belongs to run workers on this machine.'),
+        subtitle: const Text(
+          'Lets the brain it belongs to run workers on this machine.',
+        ),
         controlAffinity: ListTileControlAffinity.leading,
       ),
       if (!c.brain && !c.body)
@@ -592,7 +645,9 @@ class _LaunchPageState extends State<LaunchPage> {
           Expanded(
             child: DropdownButtonFormField<String?>(
               key: const Key('owner'),
-              initialValue: choices.any((e) => e.$1 == c.owner) ? c.owner : null,
+              initialValue: choices.any((e) => e.$1 == c.owner)
+                  ? c.owner
+                  : null,
               decoration: const InputDecoration(labelText: 'Brain'),
               items: [
                 const DropdownMenuItem(value: null, child: Text('No brain')),
@@ -618,14 +673,20 @@ class _LaunchPageState extends State<LaunchPage> {
 
   Widget _status(String key) {
     if (_checking.contains(key)) {
-      return const Text('Checking…', style: TextStyle(fontSize: 12, color: Palette.textDim));
+      return const Text(
+        'Checking…',
+        style: TextStyle(fontSize: 12, color: Palette.textDim),
+      );
     }
     final r = _checks[key];
     if (r == null) return const SizedBox.shrink();
     return Text(
       '${r.ok ? '✓' : '✗'} ${r.text}',
       key: Key('status-$key'),
-      style: TextStyle(fontSize: 12, color: r.ok ? Palette.added : Palette.warning),
+      style: TextStyle(
+        fontSize: 12,
+        color: r.ok ? Palette.added : Palette.warning,
+      ),
     );
   }
 
@@ -674,12 +735,49 @@ class _LaunchPageState extends State<LaunchPage> {
                         ),
                       ),
                     ),
-                    TextButton(key: Key('check-$id'), onPressed: check, child: const Text('Check')),
+                    TextButton(
+                      key: Key('check-$id'),
+                      onPressed: check,
+                      child: const Text('Check'),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 4),
                 _status(id),
                 ?extra,
+                if (_checks[id]?.models case final models?
+                    when models.isNotEmpty)
+                  DropdownButtonFormField<String?>(
+                    key: Key('model-$id'),
+                    initialValue: models.any((m) => m.id == setup.model)
+                        ? setup.model
+                        : null,
+                    isExpanded: true,
+                    decoration: const InputDecoration(
+                      labelText: 'Default model for its workers',
+                      isDense: true,
+                    ),
+                    items: [
+                      DropdownMenuItem(
+                        value: null,
+                        child: Text(
+                          'Default (${models.where((m) => m.isDefault).firstOrNull?.label ?? models.first.label ?? models.first.id})',
+                        ),
+                      ),
+                      for (final m in models)
+                        DropdownMenuItem(
+                          value: m.id,
+                          child: Text(m.label ?? m.id),
+                        ),
+                    ],
+                    onChanged: (v) => setState(() => setup.model = v),
+                  ),
+                if (c.body)
+                  _atOnce(
+                    'at-once-$id',
+                    setup.maxConcurrent ?? 0,
+                    (v) => setup.maxConcurrent = v == 0 ? null : v,
+                  ),
                 ...tools,
               ],
             ),
@@ -701,11 +799,13 @@ class _LaunchPageState extends State<LaunchPage> {
         theme,
         'Agents',
         [
-          if (c.body) 'The brain this body belongs to can start these as workers here.',
+          if (c.body)
+            'The brain this body belongs to can start these as workers here.',
           if (c.brain) 'The orchestrator runs on one of them.',
           'Each is checked when turned on (no model tokens).',
         ].join(' '),
       ),
+      ..._machine(),
       _builtin(
         id: 'codex',
         label: 'Codex',
@@ -773,23 +873,103 @@ class _LaunchPageState extends State<LaunchPage> {
       _permissionsSection(theme),
       if (ids.isEmpty)
         Text(
-          c.brain
-              ? 'Turn on at least one: the orchestrator runs on it.'
-              : 'None turned on: this body offers no workers, only its tools (fetch_image).',
+          c.brain ? 'Turn on at least one: the orchestrator runs on it.' : 'None turned on: this body offers no workers, only its tools (fetch_image).',
           style: theme.textTheme.bodySmall?.copyWith(color: Palette.textDim),
         ),
       if (c.brain && ids.isNotEmpty) ...[
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
           key: const Key('orchestrator'),
-          initialValue: ids.contains(c.orchestrator) ? c.orchestrator : ids.first,
-          decoration: const InputDecoration(labelText: 'The orchestrator runs on'),
-          items: [for (final id in ids) DropdownMenuItem(value: id, child: Text(id))],
+          initialValue: ids.contains(c.orchestrator)
+              ? c.orchestrator
+              : ids.first,
+          decoration: const InputDecoration(
+            labelText: 'The orchestrator runs on',
+          ),
+          items: [
+            for (final id in ids) DropdownMenuItem(value: id, child: Text(id)),
+          ],
           onChanged: (v) => setState(() => c.orchestrator = v),
         ),
       ],
     ];
   }
+
+  /// How many workers of one type may run at once on this body (0: only the
+  /// body's own limit).
+  Widget _atOnce(String key, int value, void Function(int) onChanged) =>
+      Padding(
+        padding: const EdgeInsets.only(top: 4, right: 8),
+        child: Row(
+          children: [
+            const Text('At once', style: TextStyle(fontSize: 13)),
+            Expanded(
+              child: Slider(
+                key: Key(key),
+                value: value.toDouble(),
+                max: 8,
+                divisions: 8,
+                label: value == 0 ? 'No limit of its own' : '$value',
+                onChanged: (v) => setState(() => onChanged(v.round())),
+              ),
+            ),
+            SizedBox(
+              width: 64,
+              child: Text(
+                value == 0 ? 'No limit' : '$value',
+                key: Key('$key-text'),
+                style: const TextStyle(fontSize: 13),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  /// This machine: its project folder, and for a body how many workers at
+  /// once (all types together).
+  List<Widget> _machine() => [
+    TextField(
+      key: const Key('project-dir'),
+      controller: _projectDir,
+      decoration: InputDecoration(
+        labelText: 'Project folder (optional)',
+        hintText: '~/src',
+        helperText:
+            'Where workers start when nothing else is set${c.brain ? ', and where the orchestrator works' : ''}. '
+            'Empty: ${Platform.environment['ORCH_CWD'] ?? 'the home folder'}.',
+        helperMaxLines: 2,
+        isDense: true,
+      ),
+    ),
+    if (c.body)
+      Padding(
+        padding: const EdgeInsets.only(top: 8, right: 8),
+        child: Row(
+          children: [
+            const Text(
+              'Workers at once on this body',
+              style: TextStyle(fontSize: 13),
+            ),
+            Expanded(
+              child: Slider(
+                key: const Key('max-workers'),
+                value: _maxWorkers.toDouble(),
+                min: 1,
+                max: 16,
+                divisions: 15,
+                label: '$_maxWorkers',
+                onChanged: (v) => setState(() => _maxWorkers = v.round()),
+              ),
+            ),
+            SizedBox(
+              width: 32,
+              child: Text('$_maxWorkers', key: const Key('max-workers-text')),
+            ),
+          ],
+        ),
+      ),
+    const SizedBox(height: 12),
+  ];
 
   /// A switch for a tool that drives the Mac or Chrome, with what it needs
   /// on this machine once it is on.
@@ -811,7 +991,9 @@ class _LaunchPageState extends State<LaunchPage> {
           contentPadding: EdgeInsets.zero,
           value: value,
           title: Text(label, style: const TextStyle(fontSize: 13)),
-          subtitle: sub == null ? null : Text(sub, style: const TextStyle(fontSize: 11)),
+          subtitle: sub == null
+              ? null
+              : Text(sub, style: const TextStyle(fontSize: 11)),
           onChanged: (v) {
             setState(() => onChanged(v));
             if (v) _require(key, check);
@@ -821,7 +1003,10 @@ class _LaunchPageState extends State<LaunchPage> {
           Padding(
             padding: const EdgeInsets.only(left: 8, bottom: 6),
             child: reqs == null
-                ? const Text('Checking…', style: TextStyle(fontSize: 12, color: Palette.textDim))
+                ? const Text(
+                    'Checking…',
+                    style: TextStyle(fontSize: 12, color: Palette.textDim),
+                  )
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -831,7 +1016,10 @@ class _LaunchPageState extends State<LaunchPage> {
                             Expanded(
                               child: Text(
                                 '${r.ok ? '✓' : '✗'} ${r.name}: ${r.detail}',
-                                style: TextStyle(fontSize: 12, color: r.ok ? Palette.added : Palette.warning),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: r.ok ? Palette.added : Palette.warning,
+                                ),
                               ),
                             ),
                             if (!r.ok && r.grant != null)
@@ -841,20 +1029,30 @@ class _LaunchPageState extends State<LaunchPage> {
                                   await _grant(r.grant!);
                                   await _require(key, check);
                                 },
-                                child: const Text('Grant', style: TextStyle(fontSize: 12)),
+                                child: const Text(
+                                  'Grant',
+                                  style: TextStyle(fontSize: 12),
+                                ),
                               ),
                             if (!r.ok && r.settingsPane != null)
                               TextButton(
                                 key: Key('open-$key-${r.settingsPane}'),
-                                onPressed: () => widget.permissions.openSettings(r.settingsPane!),
-                                child: const Text('Open Settings', style: TextStyle(fontSize: 12)),
+                                onPressed: () => widget.permissions
+                                    .openSettings(r.settingsPane!),
+                                child: const Text(
+                                  'Open Settings',
+                                  style: TextStyle(fontSize: 12),
+                                ),
                               ),
                           ],
                         ),
                       TextButton(
                         key: Key('recheck-$key'),
                         onPressed: () => _require(key, check),
-                        child: const Text('Check again', style: TextStyle(fontSize: 12)),
+                        child: const Text(
+                          'Check again',
+                          style: TextStyle(fontSize: 12),
+                        ),
                       ),
                     ],
                   ),
@@ -879,16 +1077,29 @@ class _LaunchPageState extends State<LaunchPage> {
   /// on its behalf.
   Widget _permissionsSection(ThemeData theme) {
     final p = _perms;
-    Widget row(String name, String what, bool? ok, VoidCallback grant, String pane) => Row(
+    Widget row(
+      String name,
+      String what,
+      bool? ok,
+      VoidCallback grant,
+      String pane,
+    ) => Row(
       children: [
         Expanded(
           child: Text(
             '${ok == true ? '✓' : '✗'} $name: ${ok == true ? 'granted' : 'not granted'} ($what)',
-            style: TextStyle(fontSize: 12, color: ok == true ? Palette.added : Palette.warning),
+            style: TextStyle(
+              fontSize: 12,
+              color: ok == true ? Palette.added : Palette.warning,
+            ),
           ),
         ),
         if (ok != true) ...[
-          TextButton(key: Key('grant-$pane'), onPressed: grant, child: const Text('Grant', style: TextStyle(fontSize: 12))),
+          TextButton(
+            key: Key('grant-$pane'),
+            onPressed: grant,
+            child: const Text('Grant', style: TextStyle(fontSize: 12)),
+          ),
           TextButton(
             onPressed: () => widget.permissions.openSettings(pane),
             child: const Text('Open Settings', style: TextStyle(fontSize: 12)),
@@ -902,7 +1113,10 @@ class _LaunchPageState extends State<LaunchPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Divider(),
-          Text("This app's macOS permissions", style: theme.textTheme.titleSmall),
+          Text(
+            "This app's macOS permissions",
+            style: theme.textTheme.titleSmall,
+          ),
           Text(
             'Workers run inside this app, so macOS asks this app for what they do in the shell. '
             'Grant them now, while you are here.',
@@ -910,26 +1124,48 @@ class _LaunchPageState extends State<LaunchPage> {
           ),
           const SizedBox(height: 6),
           if (!_permsRead)
-            const Text('Checking…', style: TextStyle(fontSize: 12, color: Palette.textDim))
+            const Text(
+              'Checking…',
+              style: TextStyle(fontSize: 12, color: Palette.textDim),
+            )
           else if (p == null)
-            const Text('Not available here (not macOS)', style: TextStyle(fontSize: 12, color: Palette.textDim))
+            const Text(
+              'Not available here (not macOS)',
+              style: TextStyle(fontSize: 12, color: Palette.textDim),
+            )
           else ...[
-            row('Screen Recording', 'screenshots: screencapture, Peekaboo', p['screenRecording'],
-                () => _grant('screenRecording'), 'Privacy_ScreenCapture'),
-            row('Accessibility', 'clicks and keys: AppleScript, Peekaboo', p['accessibility'],
-                () => _grant('accessibility'), 'Privacy_Accessibility'),
+            row(
+              'Screen Recording',
+              'screenshots: screencapture, Peekaboo',
+              p['screenRecording'],
+              () => _grant('screenRecording'),
+              'Privacy_ScreenCapture',
+            ),
+            row(
+              'Accessibility',
+              'clicks and keys: AppleScript, Peekaboo',
+              p['accessibility'],
+              () => _grant('accessibility'),
+              'Privacy_Accessibility',
+            ),
             Wrap(
               children: [
                 TextButton(
                   key: const Key('perm-recheck'),
                   onPressed: _readPermissions,
-                  child: const Text('Check again', style: TextStyle(fontSize: 12)),
+                  child: const Text(
+                    'Check again',
+                    style: TextStyle(fontSize: 12),
+                  ),
                 ),
                 if (_screenAsked && p['screenRecording'] != true)
                   TextButton(
                     key: const Key('restart'),
                     onPressed: _restart,
-                    child: const Text('Restart this app (Screen Recording applies after a restart)', style: TextStyle(fontSize: 12)),
+                    child: const Text(
+                      'Restart this app (Screen Recording applies after a restart)',
+                      style: TextStyle(fontSize: 12),
+                    ),
                   ),
               ],
             ),
@@ -944,14 +1180,19 @@ class _LaunchPageState extends State<LaunchPage> {
       d.loading = true;
       d.modelsError = null;
     });
-    final (list, error) = await widget.checker.models(d.baseUrl.text, d.envKey.text.trim());
+    final (list, error) = await widget.checker.models(
+      d.baseUrl.text,
+      d.envKey.text.trim(),
+    );
     if (!mounted) return;
     setState(() {
       d.loading = false;
       d.modelsError = error;
       d.models = list;
       // Keep the model if the server has it; else the first one.
-      if (list != null && list.isNotEmpty && !list.any((m) => m.id == d.model.text)) {
+      if (list != null &&
+          list.isNotEmpty &&
+          !list.any((m) => m.id == d.model.text)) {
         d.pick(list.first);
       }
     });
@@ -1031,20 +1272,29 @@ class _LaunchPageState extends State<LaunchPage> {
                   child: listed
                       ? DropdownButtonFormField<String>(
                           key: Key('custom-${d.key}-model-list'),
-                          initialValue: models.any((m) => m.id == d.model.text) ? d.model.text : null,
+                          initialValue: models.any((m) => m.id == d.model.text)
+                              ? d.model.text
+                              : null,
                           isExpanded: true,
-                          decoration: const InputDecoration(labelText: 'Model (required)', isDense: true),
+                          decoration: const InputDecoration(
+                            labelText: 'Model (required)',
+                            isDense: true,
+                          ),
                           items: [
                             for (final m in models)
                               DropdownMenuItem(
                                 value: m.id,
                                 child: Text(
-                                  m.contextWindow == null ? m.id : '${m.id}  ·  ${m.contextWindow! ~/ 1000}K context',
+                                  m.contextWindow == null
+                                      ? m.id
+                                      : '${m.id}  ·  ${m.contextWindow! ~/ 1000}K context',
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                           ],
-                          onChanged: (v) => setState(() => d.pick(models.firstWhere((m) => m.id == v))),
+                          onChanged: (v) => setState(
+                            () => d.pick(models.firstWhere((m) => m.id == v)),
+                          ),
                         )
                       : field(
                           'model',
@@ -1059,14 +1309,23 @@ class _LaunchPageState extends State<LaunchPage> {
                 TextButton(
                   key: Key('load-${d.key}'),
                   onPressed: d.loading ? null : () => _loadModels(d),
-                  child: Text(d.loading ? 'Loading…' : listed ? 'Reload' : 'Load models'),
+                  child: Text(
+                    d.loading
+                        ? 'Loading…'
+                        : listed
+                        ? 'Reload'
+                        : 'Load models',
+                  ),
                 ),
               ],
             ),
             if (d.modelsError case final e?)
               Padding(
                 padding: const EdgeInsets.only(bottom: 6),
-                child: Text('✗ $e', style: const TextStyle(fontSize: 12, color: Palette.warning)),
+                child: Text(
+                  '✗ $e',
+                  style: const TextStyle(fontSize: 12, color: Palette.warning),
+                ),
               ),
             field(
               'cwd',
@@ -1081,36 +1340,19 @@ class _LaunchPageState extends State<LaunchPage> {
               'What it is good for (optional, read by the orchestrator)',
               hint: 'Local model: free and private, but slower. Small, well-specified tasks.',
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 4, right: 8),
-              child: Row(
-                children: [
-                  const Text('At once per body', style: TextStyle(fontSize: 13)),
-                  Expanded(
-                    child: Slider(
-                      key: Key('custom-${d.key}-max'),
-                      value: d.maxConcurrent.toDouble(),
-                      max: 8,
-                      divisions: 8,
-                      label: d.maxConcurrent == 0 ? 'No limit' : '${d.maxConcurrent}',
-                      onChanged: (v) => setState(() => d.maxConcurrent = v.round()),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 64,
-                    child: Text(
-                      d.maxConcurrent == 0 ? 'No limit' : '${d.maxConcurrent}',
-                      key: Key('custom-${d.key}-max-text'),
-                      style: const TextStyle(fontSize: 13),
-                    ),
-                  ),
-                ],
-              ),
+            _atOnce(
+              'custom-${d.key}-max',
+              d.maxConcurrent,
+              (v) => d.maxConcurrent = v,
             ),
             Row(
               children: [
                 Expanded(child: _status(d.key)),
-                TextButton(key: Key('check-${d.key}'), onPressed: () => _checkCustom(d), child: const Text('Check')),
+                TextButton(
+                  key: Key('check-${d.key}'),
+                  onPressed: () => _checkCustom(d),
+                  child: const Text('Check'),
+                ),
               ],
             ),
             _tool(

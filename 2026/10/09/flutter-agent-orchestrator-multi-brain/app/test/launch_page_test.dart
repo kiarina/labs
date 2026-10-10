@@ -21,7 +21,10 @@ class FakeChecker extends AgentChecker {
   Future<CheckResult> codex(String? cwd) async {
     calls.add('codex $cwd');
     return codexLoggedIn
-        ? const CheckResult(true, 'Logged in (plus)')
+        ? const CheckResult(true, 'Logged in (plus)', models: [
+            ModelInfo('gpt-big', null, label: 'GPT Big', isDefault: true),
+            ModelInfo('gpt-small', null, label: 'GPT Small'),
+          ])
         : const CheckResult(false, 'Not logged in', needsLogin: true);
   }
 
@@ -322,6 +325,18 @@ void main() {
     expect(checker.calls.sublist(2), ['login', 'codex null']);
     expect(find.text('✓ Logged in (plus)'), findsOneWidget);
 
+    // The machine: project folder and workers at once; Codex's default model.
+    await tester.enterText(find.byKey(const Key('project-dir')), '~/work');
+    final workers = tester.getRect(find.byKey(const Key('max-workers')));
+    await tester.tapAt(Offset(workers.right - 8, workers.center.dy));
+    await tester.pumpAndSettle();
+    expect(tester.widget<Text>(find.byKey(const Key('max-workers-text'))).data, '16');
+    expect(find.text('Default (GPT Big)'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('model-codex')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('GPT Small').last);
+    await tester.pumpAndSettle();
+
     await tester.tap(find.byKey(const Key('agent-claude')));
     await tester.pumpAndSettle();
 
@@ -356,7 +371,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.textContaining('use a-z'), findsOneWidget);
     await type('id', 'local-qwen');
-    expect(find.text('No limit'), findsOneWidget);
+    expect(tester.widget<Text>(find.byKey(const Key('custom-c0-max-text'))).data, 'No limit');
     final slider = tester.getRect(find.byKey(const Key('custom-c0-max')));
     await tester.tapAt(Offset(slider.left + slider.width * 0.3, slider.center.dy));
     await tester.pumpAndSettle();
@@ -373,7 +388,9 @@ void main() {
     expect(c.orchestrator, 'codex');
     final saved = jsonDecode(File('${tmp.path}/worker-types.json').readAsStringSync());
     expect(saved, {
-      'codex': {'enabled': true},
+      'project_dir': '~/work',
+      'max_workers': 16,
+      'codex': {'enabled': true, 'model': 'gpt-small'},
       'claude': {'enabled': false},
       'custom': [
         {

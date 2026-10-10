@@ -10,43 +10,30 @@ import '../body/body.dart';
 import '../state/thread_view.dart';
 import 'tools.dart';
 
-/// Settings the user can change; kept in
-/// `~/Library/Application Support/<bundle id>/settings.json`.
+/// The brain's settings (the orchestrator's): kept in the state folder's
+/// `settings.json`, changed from any console. What runs on a body and how
+/// many at once is the body's own setting (its start screen).
 class HubSettings {
-  /// The worker type the orchestrator runs as, on the brain's own body.
+  /// The worker type the orchestrator runs as, on the brain's own machine.
   String orchestrator = 'codex';
-
-  /// Workers allowed to run at once per body; more are queued. A worker
-  /// type may have a lower limit of its own (its `maxConcurrent`).
-  int maxConcurrent = 4;
+  String? orchestratorModel;
+  String? orchestratorEffort;
 
   /// Start an orchestrator turn when a worker finishes while it is idle.
   bool wakeOnFinish = true;
 
-  String? orchestratorModel;
-  String? orchestratorEffort;
-
-  /// Default models for workers, per worker type (the orchestrator may pick).
-  final workerModel = <String, String?>{};
-
   Json toJson() => {
     'orchestrator': orchestrator,
-    'maxConcurrent': maxConcurrent,
-    'wakeOnFinish': wakeOnFinish,
     'orchestratorModel': orchestratorModel,
     'orchestratorEffort': orchestratorEffort,
-    'workerModel': {for (final e in workerModel.entries) e.key: e.value},
+    'wakeOnFinish': wakeOnFinish,
   };
 
   void load(Json j) {
     orchestrator = j['orchestrator'] as String? ?? 'codex';
-    maxConcurrent = (j['maxConcurrent'] as num?)?.toInt() ?? maxConcurrent;
-    wakeOnFinish = j['wakeOnFinish'] as bool? ?? wakeOnFinish;
     orchestratorModel = j['orchestratorModel'] as String?;
     orchestratorEffort = j['orchestratorEffort'] as String?;
-    for (final e in (j['workerModel'] as Map? ?? const {}).entries) {
-      workerModel[e.key as String] = e.value as String?;
-    }
+    wakeOnFinish = j['wakeOnFinish'] as bool? ?? wakeOnFinish;
   }
 }
 
@@ -91,7 +78,7 @@ class Hub extends ChangeNotifier {
       settings.load(jsonDecode(await _settingsFile.readAsString()) as Json);
     }
     final env = Platform.environment;
-    if (env['ORCH_PROVIDER'] case final String p when p.isNotEmpty) {
+    if (env['ORCH_ORCHESTRATOR'] case final String p when p.isNotEmpty) {
       settings.orchestrator = p;
     }
     notifyListeners();
@@ -173,7 +160,7 @@ class Hub extends ChangeNotifier {
       case 'answer':
         answer(a['requestId'] as Object, a['result']);
       case 'project':
-        local.projectDir = a['dir'] as String;
+        local.setProjectDir(a['dir'] as String);
         await newConversation();
     }
   }
@@ -309,7 +296,8 @@ class Hub extends ChangeNotifier {
   /// Whether one more worker of [w]'s type may start on its body. The
   /// limits apply per body: each body has its own subscriptions and machine.
   bool _hasSlot(AgentThread w) {
-    if (runningOn(w.body) >= settings.maxConcurrent) return false;
+    final body = bodies[w.body];
+    if (runningOn(w.body) >= (body?.maxWorkers ?? WorkerTypesConfig.defaultMaxWorkers)) return false;
     final limit = typeLimit(w.body, w.workerType);
     return limit == null || runningOn(w.body, w.workerType) < limit;
   }
@@ -331,7 +319,7 @@ class Hub extends ChangeNotifier {
       cwd: cwd,
       role: const AgentRole.worker(),
       title: title,
-      model: model ?? settings.workerModel[p] ?? body.defaultModel(p),
+      model: model ?? body.defaultModel(p),
     );
     agent.addListener(notifyListeners);
     agent.finished.listen(_onWorkerFinished);
@@ -513,7 +501,6 @@ class Hub extends ChangeNotifier {
       case 'list_bodies':
         _shownBodies = _bodySnapshot();
         return {
-          'max_concurrent_per_body': settings.maxConcurrent,
           'bodies': [
             for (final b in ownBodies)
               {
@@ -522,13 +509,14 @@ class Hub extends ChangeNotifier {
                 'is_this_brain_machine': b.isLocal,
                 'project_dir': b.projectDir,
                 'running': runningOn(b.name),
+                'max_concurrent': b.maxWorkers,
                 'worker_types': [
                   for (final id in b.workerTypes)
                     if (b.workerType(id) case final t?)
                       {
                         'id': id,
                         'kind': t['kind'],
-                        'model': settings.workerModel[id] ?? b.defaultModel(id),
+                        'model': b.defaultModel(id),
                         'description': t['description'],
                         'default_cwd': t['cwd'] ?? b.projectDir,
                         if ((t['extras'] as List?)?.isNotEmpty ?? false) 'can_also_use': t['extras'],
@@ -558,7 +546,6 @@ class Hub extends ChangeNotifier {
         return {'thread_id': w.label, 'status': await stopWorker(w)};
       case 'list_threads':
         return {
-          'max_concurrent_per_body': settings.maxConcurrent,
           'running': runningCount,
           'threads': [for (final w in workers) _summary(w)],
         };

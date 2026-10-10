@@ -39,26 +39,55 @@ class Sidebar extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: SegmentedButton<String>(
-              showSelectedIcon: false,
-              segments: [
-                for (final t in types)
-                  ButtonSegment(
-                    value: t,
-                    label: Text(console.labelOf(t), overflow: TextOverflow.ellipsis),
-                    enabled: console.workerTypes.contains(t),
+            child: types.length > 3
+                ? DropdownButton<String>(
+                    key: const Key('orchestrator-type'),
+                    value: current,
+                    isExpanded: true,
+                    dropdownColor: Palette.surfaceHigh,
+                    items: [
+                      for (final t in types)
+                        DropdownMenuItem(
+                          value: t,
+                          enabled: console.workerTypes.contains(t),
+                          child: Text(
+                            console.labelOf(t),
+                            style: const TextStyle(fontSize: 13),
+                          ),
+                        ),
+                    ],
+                    onChanged: (t) async {
+                      if (t == null || t == current) return;
+                      if (console.orchestrator != null &&
+                          !await _confirmSwitch(context, t)) {
+                        return;
+                      }
+                      await console.newConversation(workerType: t);
+                    },
+                  )
+                : SegmentedButton<String>(
+                    showSelectedIcon: false,
+                    segments: [
+                      for (final t in types)
+                        ButtonSegment(
+                          value: t,
+                          label: Text(
+                            console.labelOf(t),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          enabled: console.workerTypes.contains(t),
+                        ),
+                    ],
+                    selected: {current},
+                    onSelectionChanged: (s) async {
+                      if (s.first == current) return;
+                      if (console.orchestrator != null &&
+                          !await _confirmSwitch(context, s.first)) {
+                        return;
+                      }
+                      await console.newConversation(workerType: s.first);
+                    },
                   ),
-              ],
-              selected: {current},
-              onSelectionChanged: (s) async {
-                if (s.first == current) return;
-                if (console.orchestrator != null &&
-                    !await _confirmSwitch(context, s.first)) {
-                  return;
-                }
-                await console.newConversation(workerType: s.first);
-              },
-            ),
           ),
           const SizedBox(height: 8),
           _Nav(
@@ -243,8 +272,6 @@ class _Badge extends StatelessWidget {
   }
 }
 
-/// The bodies the brain knows: online, providers, workers running there,
-/// subscription usage.
 /// Which brain this console shows and talks to.
 class _BrainPicker extends StatelessWidget {
   const _BrainPicker({required this.console});
@@ -318,8 +345,9 @@ class _BrainPicker extends StatelessWidget {
   }
 }
 
-/// Every app on the network, the brain that owns it, and a menu to move it
-/// to another brain (refused while its workers run).
+/// Every body on the network: the brain that owns it (a menu moves it to
+/// another brain, refused while its workers run), what it runs and how many
+/// at once; its project folder and subscription usage on hover.
 class _Bodies extends StatelessWidget {
   const _Bodies({required this.console, required this.onToggleLog});
 
@@ -371,7 +399,9 @@ class _Bodies extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 6),
               child: Tooltip(
-                message: b.view?.projectDir ?? '',
+                message: [
+                  if (b.view case final v?) ...[v.projectDir, ...v.usage],
+                ].join('\n'),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -406,7 +436,15 @@ class _Bodies extends StatelessWidget {
                     _OwnerMenu(console: console, body: b, brains: brains),
                     if (b.node.online && b.view != null)
                       Text(
-                        '${b.view!.host} · ${b.view!.workerTypes.map(b.view!.labelOf).join(', ')}',
+                        [
+                          b.view!.host,
+                          b.view!.workerTypes.isEmpty
+                              ? 'no agents'
+                              : b.view!.workerTypes
+                                    .map(b.view!.labelOf)
+                                    .join(', '),
+                          if (b.view!.maxWorkers case final m?) '$m at once',
+                        ].join(' · '),
                         style: const TextStyle(
                           fontSize: 10.5,
                           color: Palette.textDim,
@@ -495,7 +533,10 @@ class _OwnerMenu extends StatelessWidget {
   }
 }
 
-/// Concurrency limit, waking the orchestrator, default worker models.
+/// The selected brain's settings: what its orchestrator runs on (worker type,
+/// model, effort; for new conversations) and whether a finished worker wakes
+/// it. What a body runs, its folders and how many workers at once are that
+/// body's own (its start screen).
 Future<void> showSettings(BuildContext context, ConsoleMirror console) async {
   // Edit a copy; the brain saves it and sends it back to every console.
   final s = HubSettings()..load(console.settings.toJson());
@@ -503,68 +544,102 @@ Future<void> showSettings(BuildContext context, ConsoleMirror console) async {
     context: context,
     builder: (context) => StatefulBuilder(
       builder: (context, setState) {
-        Widget modelPicker(String p) {
-          final models = console.ready
-              ? console.modelsFor(p)
-              : const <Map<String, dynamic>>[];
-          return DropdownButton<String>(
-            value:
-                s.workerModel[p] != null &&
-                    models.any((m) => m['id'] == s.workerModel[p])
-                ? s.workerModel[p]
-                : null,
-            hint: const Text('Default', style: TextStyle(fontSize: 13)),
-            isDense: true,
-            dropdownColor: Palette.surfaceHigh,
-            items: [
-              for (final m in models)
-                DropdownMenuItem(
-                  value: m['id'] as String,
-                  child: Text(
-                    '${m['displayName']}',
-                    style: const TextStyle(fontSize: 13),
-                  ),
-                ),
+        final types = {...console.workerTypes, s.orchestrator}.toList();
+        final models = console.ready
+            ? console.modelsFor(s.orchestrator)
+            : const <Json>[];
+        final model =
+            models.where((m) => m['id'] == s.orchestratorModel).firstOrNull ??
+            models.where((m) => m['isDefault'] == true).firstOrNull ??
+            models.firstOrNull;
+        final efforts = [
+          for (final e
+              in (model?['supportedEffortLevels'] as List? ?? const []))
+            '$e',
+        ];
+        Widget row(String label, Widget field) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(label, style: const TextStyle(fontSize: 13)),
+              ),
+              field,
             ],
-            onChanged: (v) => setState(() => s.workerModel[p] = v),
-          );
-        }
-
+          ),
+        );
+        DropdownButton<String?> pick(
+          String key,
+          String? value,
+          List<(String?, String)> items,
+          void Function(String?) onChanged,
+        ) => DropdownButton<String?>(
+          key: Key(key),
+          value: items.any((e) => e.$1 == value) ? value : null,
+          isDense: true,
+          dropdownColor: Palette.surfaceHigh,
+          items: [
+            for (final (v, l) in items)
+              DropdownMenuItem(
+                value: v,
+                child: Text(l, style: const TextStyle(fontSize: 13)),
+              ),
+          ],
+          onChanged: (v) => setState(() => onChanged(v)),
+        );
         return AlertDialog(
           backgroundColor: Palette.surface,
-          title: const Text('Settings', style: TextStyle(fontSize: 15)),
+          title: Text(
+            'Settings of ${console.brain}',
+            style: const TextStyle(fontSize: 15),
+          ),
           content: SizedBox(
-            width: 380,
+            width: 400,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    const Expanded(
-                      child: Text(
-                        'Workers running at once (per body)',
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: s.maxConcurrent > 1
-                          ? () => setState(() => s.maxConcurrent--)
-                          : null,
-                      icon: const Icon(Icons.remove, size: 16),
-                    ),
-                    Text(
-                      '${s.maxConcurrent}',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                    IconButton(
-                      onPressed: s.maxConcurrent < 32
-                          ? () => setState(() => s.maxConcurrent++)
-                          : null,
-                      icon: const Icon(Icons.add, size: 16),
-                    ),
-                  ],
+                const Text(
+                  'Orchestrator (new conversations)',
+                  style: TextStyle(fontSize: 11, color: Palette.textFaint),
                 ),
+                row(
+                  'Runs on',
+                  pick(
+                    'settings-type',
+                    s.orchestrator,
+                    [for (final t in types) (t, console.labelOf(t))],
+                    (v) {
+                      s.orchestrator = v ?? s.orchestrator;
+                      s.orchestratorModel = null;
+                      s.orchestratorEffort = null;
+                    },
+                  ),
+                ),
+                row(
+                  'Model',
+                  pick(
+                    'settings-model',
+                    s.orchestratorModel,
+                    [
+                      (null, 'Default'),
+                      for (final m in models)
+                        (m['id'] as String, '${m['displayName'] ?? m['id']}'),
+                    ],
+                    (v) {
+                      s.orchestratorModel = v;
+                      s.orchestratorEffort = null;
+                    },
+                  ),
+                ),
+                if (efforts.isNotEmpty)
+                  row(
+                    'Effort',
+                    pick('settings-effort', s.orchestratorEffort, [
+                      (null, 'Default'),
+                      for (final e in efforts) (e, e),
+                    ], (v) => s.orchestratorEffort = v),
+                  ),
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
                   title: const Text(
@@ -574,53 +649,34 @@ Future<void> showSettings(BuildContext context, ConsoleMirror console) async {
                   value: s.wakeOnFinish,
                   onChanged: (v) => setState(() => s.wakeOnFinish = v),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 8),
                 Text(
-                  'Worker types on ${console.brain}',
-                  style: const TextStyle(fontSize: 11, color: Palette.textFaint),
-                ),
-                const SizedBox(height: 4),
-                for (final t in console.brainBody?.workerTypeInfo ?? const <Json>[])
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            [
-                              t['label'] as String? ?? t['id'] as String,
-                              if (t['maxConcurrent'] != null) '${t['maxConcurrent']} at a time',
-                              if (t['error'] != null) 'unavailable: ${t['error']}',
-                            ].join(' · '),
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: t['error'] != null ? Palette.textDim : null,
-                            ),
-                          ),
-                        ),
-                        if (t['error'] == null) modelPicker(t['id'] as String),
-                      ],
-                    ),
+                  'What each body runs (agents, their models and folders, tools) and how many workers at once '
+                  'are set on that body\'s start screen.',
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: Palette.textFaint,
                   ),
-                if (console.brainBody?.typeConfigError case final e?)
-                  Text(e, style: const TextStyle(fontSize: 12, color: Palette.warning)),
-                const SizedBox(height: 4),
-                const Text(
-                  'Custom worker types come from worker-types.json in each body\'s state folder.',
-                  style: TextStyle(fontSize: 11, color: Palette.textFaint),
                 ),
               ],
             ),
           ),
           actions: [
-            FilledButton(
+            TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Done'),
+              child: const Text('Cancel'),
+            ),
+            FilledButton(
+              key: const Key('settings-save'),
+              onPressed: () {
+                console.saveSettings(s);
+                Navigator.pop(context);
+              },
+              child: const Text('Save'),
             ),
           ],
         );
       },
     ),
   );
-  console.saveSettings(s);
 }

@@ -219,6 +219,7 @@ class BodyView {
       workerTypeInfo.where((t) => t['id'] == id).firstOrNull?['label'] as String? ?? id;
   String? get typeConfigError => info['typeConfigError'] as String?;
   String get projectDir => info['projectDir'] as String? ?? '';
+  int? get maxWorkers => (info['maxWorkers'] as num?)?.toInt();
   List<String> get usage => [
     for (final v in (info['usage'] as Map? ?? const {}).values) '$v',
   ];
@@ -333,7 +334,7 @@ class BrainView {
 }
 
 /// One app in the console's body list: the roster's record, who owns it,
-/// and what a brain knows about it (providers, usage).
+/// and what a brain knows about it (worker types, usage).
 class BodyEntry {
   BodyEntry(this.node, this.owner, this.view, this.running);
 
@@ -451,8 +452,6 @@ class ConsoleMirror extends ChangeNotifier {
 
   List<Json> modelsFor(String type) => brainBody?.modelsFor(type) ?? const [];
 
-  String? defaultModelFor(String type) =>
-      settings.workerModel[type] ?? brainBody?.defaultModel(type);
 
   int get runningCount => workers.where((w) => w.isRunning).length;
 

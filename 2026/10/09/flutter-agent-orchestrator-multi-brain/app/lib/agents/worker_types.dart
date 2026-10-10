@@ -168,6 +168,7 @@ class BuiltinSetup {
     this.enabled = true,
     this.cwd,
     this.model,
+    this.maxConcurrent,
     this.computerUse = false,
     this.chrome = false,
     this.mac = false,
@@ -176,6 +177,9 @@ class BuiltinSetup {
   bool enabled;
   String? cwd;
   String? model;
+
+  /// Its workers allowed at once on this body (null: only the body's limit).
+  int? maxConcurrent;
 
   /// Codex: Computer Use (Mac apps and Chrome).
   bool computerUse;
@@ -190,6 +194,7 @@ class BuiltinSetup {
     'enabled': enabled,
     'cwd': ?cwd,
     'model': ?model,
+    'max_concurrent': ?maxConcurrent,
     if (computerUse) 'computer_use': true,
     if (chrome) 'chrome': true,
     if (mac) 'mac': true,
@@ -201,6 +206,7 @@ class BuiltinSetup {
       enabled: j['enabled'] as bool? ?? true,
       cwd: _blankToNull(j['cwd'] as String?),
       model: _blankToNull(j['model'] as String?),
+      maxConcurrent: (j['max_concurrent'] as num?)?.toInt(),
       computerUse: j['computer_use'] == true,
       chrome: j['chrome'] == true,
       mac: j['mac'] == true,
@@ -210,17 +216,34 @@ class BuiltinSetup {
 
 /// What this app can run, from `worker-types.json`:
 ///
-///     {"codex": {"enabled": true, "cwd": "~/src"},
+///     {"project_dir": "~/src", "max_workers": 4,
+///      "codex": {"enabled": true, "cwd": "~/src"},
 ///      "claude": {"enabled": false},
 ///      "custom": [{"id": "kiapi", "base_url": "http://127.0.0.1:8500/v1", "model": "..."}]}
 ///
 /// A body offers these as worker types; a brain runs its orchestrator on one
 /// of them. None at all is allowed: the body still serves its tools.
 class WorkerTypesConfig {
-  WorkerTypesConfig({BuiltinSetup? codex, BuiltinSetup? claude, List<WorkerType>? custom})
-    : codex = codex ?? BuiltinSetup(),
-      claude = claude ?? BuiltinSetup(),
-      custom = custom ?? [];
+  WorkerTypesConfig({
+    BuiltinSetup? codex,
+    BuiltinSetup? claude,
+    List<WorkerType>? custom,
+    this.projectDir,
+    this.maxWorkers = defaultMaxWorkers,
+  }) : codex = codex ?? BuiltinSetup(),
+       claude = claude ?? BuiltinSetup(),
+       custom = custom ?? [];
+
+  static const defaultMaxWorkers = 4;
+
+  /// This machine's project folder: where workers start when neither the
+  /// orchestrator nor their worker type names one (`~/` allowed; null:
+  /// ORCH_CWD, else the home folder). A brain's orchestrator works here too.
+  String? projectDir;
+
+  /// Workers allowed to run at once on this body, all types together; more
+  /// are queued. Each body has its own machine and subscriptions.
+  int maxWorkers;
 
   final BuiltinSetup codex;
   final BuiltinSetup claude;
@@ -236,6 +259,7 @@ class WorkerTypesConfig {
         description: 'OpenAI Codex on the user\'s subscription. Strong at code and at running commands.',
         model: codex.model,
         cwd: codex.cwd,
+        maxConcurrent: codex.maxConcurrent,
         computerUse: codex.computerUse,
       ),
     if (claude.enabled)
@@ -246,6 +270,7 @@ class WorkerTypesConfig {
         description: 'Anthropic Claude Code on the user\'s subscription. Strong at code, careful with long tasks.',
         model: claude.model,
         cwd: claude.cwd,
+        maxConcurrent: claude.maxConcurrent,
         chrome: claude.chrome,
         mac: claude.mac,
       ),
@@ -253,6 +278,8 @@ class WorkerTypesConfig {
   ];
 
   Json toJson() => {
+    'project_dir': ?projectDir,
+    'max_workers': maxWorkers,
     'codex': codex.toJson(),
     'claude': claude.toJson(),
     'custom': [for (final t in custom) t.customToJson()],
@@ -271,6 +298,8 @@ class WorkerTypesConfig {
       codex: BuiltinSetup.fromJson(j['codex']),
       claude: BuiltinSetup.fromJson(j['claude']),
       custom: custom,
+      projectDir: _blankToNull(j['project_dir'] as String?),
+      maxWorkers: (j['max_workers'] as num?)?.toInt() ?? defaultMaxWorkers,
     );
   }
 

@@ -121,7 +121,8 @@
 - **worker type**（`app/lib/agents/worker_types.dart`）: そのアプリで動かすエージェント。id で呼ぶ
   - `codex`・`claude` は 1 つずつで on/off（同じ種類を複数並べると、司令塔が違いを説明から読み分けることになるため）。custom はいくつでも
   - 起動画面の「Agents」で決め、状態のフォルダの `worker-types.json`（`ORCH_WORKER_TYPES` で場所を変えられる）に書く。ファイルが無ければ Codex と Claude（`KIAPI_BASE_URL` があれば kiapi も）
-  - 種類ごとに既定の作業フォルダを持てる。`start_thread` の `cwd` > worker type の作業フォルダ > body の作業フォルダの順
+  - 種類ごとに既定の作業フォルダと既定のモデルを持てる。作業フォルダは `start_thread` の `cwd` > worker type の作業フォルダ > body のプロジェクトのフォルダの順
+  - body のプロジェクトのフォルダも起動画面で決める（空なら `ORCH_CWD`、それも無ければホーム）。brain の司令塔もここで働き、console の左のフォルダから変えると保存される
   - body なら worker type として司令塔に見せる。brain なら司令塔をこのうちの 1 つで動かす。0 個でもよい（body のツール `fetch_image` だけが使える）
   - 1 つずつ起動し、どれかが失敗しても（未ログイン、サーバーに届かない）ほかは使える。失敗したものは理由付きで「使えない」と知らせる
   - Mac や Chrome を操作させる道具は、既定で off。Codex と custom は Computer Use、Claude は Chrome と Mac の操作（Peekaboo）。on のものは `list_bodies` の `can_also_use` で司令塔に見せる
@@ -129,15 +130,18 @@
     Computer Use を on にした custom だけは、ユーザーの `~/.codex` で起動する（上の Answer）
   - body は brain に、種類ごとに id・種類（codex・claude・custom）・表示名・説明・同時に動かせる数・モデル・使えない理由を知らせる。API キーは環境変数の名前（`env_key`）だけを設定に持ち、値は body のマシンから出ない
   - 司令塔の `start_thread` の `worker_type` は文字列で、tool の定義に選択肢（enum）を持たない。選択肢は会話の途中で変わり、body ごとにも違うため。司令塔は `list_bodies` の `worker_types` で知り、無い種類を指定したらその body の一覧をエラーに付けて返す
-  - 同時に動かせる数は、body ごとの上限（設定）と、種類ごとの上限（`max_concurrent`）の両方で決まる
+  - 同時に動かせる数は、body ごとの上限（起動画面の「Workers at once on this body」、既定 4）と、種類ごとの上限（`max_concurrent`）の両方で決まる。
+    どちらも body の設定で、brain は body から知らされた値を使う（マシンとサブスクは body ごとのため）
   - brain は、司令塔が最後に `list_bodies` で見た内容（body ごとの worker type）を覚え、次に司令塔へ送るメッセージ（ユーザーの発言、`[worker update]`）の頭に違いを添える。
     body の起動し直し、加わる・抜ける、所属が移る、のどれでも同じに扱う（console の操作のイベントでなく、今の内容と見せた内容の差で見る）
 - **body**（body を選んだアプリ）: つながった brain ごとに `BodyHost` を置く。rpc は、今の所属先の brain からのものだけを受ける
   （所属が変わる前に始めたエージェントの `close`・`interrupt` は受ける）
 - **console**（全アプリ）: つながった brain ごとに写し（`BrainView`）を持つ。選んだ brain の写しを中央と右に出し、送信・停止・設定はその brain へ送る
+  - 「Settings」は選んだ brain の設定だけ: 司令塔をどれで動かすか・そのモデルと effort（次の会話から）、ワーカーが終わったら司令塔を起こすか。
+    body が何を動かすか・何個まで同時に動かすかは、その body の起動画面で決める
   - 左には次を出す
     - brain の選択
-    - 全アプリの一覧。名前・所属先・使えるエージェント。所属先を押すと、brain を選ぶメニューが出る（ワーカーが動いている間は押せない）
+    - 全 body の一覧。名前・所属先・使えるエージェント・同時に動かせる数（重ねるとプロジェクトのフォルダとサブスクの使用量）。所属先を押すと、brain を選ぶメニューが出る（ワーカーが動いている間は押せない）
   - 所属の変更は signal へ送る
 
 ### 起動画面
@@ -150,7 +154,7 @@
 | 1. Signaling | このアプリで起動する（ポート）か、既存につなぐ（URL。既定 `ws://localhost:8765`）か | 起動する、または問い合わせる。ポートが使われている・読めないなら、ここで止まる。読めたら名簿を持って次へ |
 | 2. Roles | 名前（body_id。空なら「ホスト名-乱数 4 桁」）、Brain・Body（両方も可） | 名前が online のアプリとぶつかると、`-2` が付くと注意を出す。Body を選ばなければ、ここで起動する（どちらも選ばなければ console だけ） |
 | 3. Belongs to（Body のとき） | 所属する brain。候補は、自分が brain ならこのアプリ（既定）と、名簿にいる online の brain | 次へ。参加の後に所属を変える |
-| 4. Agents（Brain か Body のとき） | Codex・Claude の on/off と作業フォルダ、Mac や Chrome を操作させる道具の on/off（on にすると、要るものとその状態が出る）、このアプリの macOS の許可、custom の追加（id・URL・API キーの変数名・モデル・作業フォルダ・説明・同時に動かせる数）。custom のモデルは、URL を入れて「Load models」でサーバーの一覧を読み、そこから選ぶ（一覧の無いサーバーは手で入れる。選んだモデルのコンテキスト長も一緒に覚える）。同時に動かせる数はスライダー（0〜8、0 は「上限なし」）。brain なら司令塔をどれで動かすか | 入ったとき・on にしたとき・「Check」で確かめる。Codex が未ログインならログインのボタンが出る。Start で `worker-types.json` に書いて起動する。brain で 0 個なら止める |
+| 4. Agents（Brain か Body のとき） | このマシンのプロジェクトのフォルダと、body なら同時に動かせるワーカーの数（1〜16）。Codex・Claude の on/off・作業フォルダ・既定のモデル（確かめると一覧から選べる）・同時に動かせる数、Mac や Chrome を操作させる道具の on/off（on にすると、要るものとその状態が出る）、このアプリの macOS の許可、custom の追加（id・URL・API キーの変数名・モデル・作業フォルダ・説明・同時に動かせる数）。custom のモデルは、URL を入れて「Load models」でサーバーの一覧を読み、そこから選ぶ（一覧の無いサーバーは手で入れる。選んだモデルのコンテキスト長も一緒に覚える）。同時に動かせる数はスライダー（0〜8、0 は「上限なし」）。brain なら司令塔をどれで動かすか | 入ったとき・on にしたとき・「Check」で確かめる。Codex が未ログインならログインのボタンが出る。Start で `worker-types.json` に書いて起動する。brain で 0 個なら止める |
 
 - 「Back」で前のステップへ戻れる。ステップ 1 でアプリの中のシグナリングを始めた後に戻ってポートを変えると、起動し直す
 - 所属の変更は、前の所属先でワーカーが動いていれば断られ、所属は前のまま（理由は body の一覧の上に出る）
@@ -255,6 +259,7 @@ mise run signal             # シグナリングを単独で（:8765）。PORT �
 - `ORCH_OWNER`: 参加の後に、この body の所属先にする brain（`-` は所属なし）
 - 同じマシンで複数起動するときは、`ORCH_STATE_DIR` を分ける
 - `ORCH_SELECT=<brain>`: console が最初に出す brain
+- `ORCH_ORCHESTRATOR=<worker type>`: brain の司令塔を動かす worker type（Settings の「Runs on」と同じ）
 - `ORCH_ASSIGN=body-c=brain-a,body-d=`: 起動後に所属を変える（空は所属なし。console の一覧と同じ操作）
 - `ORCH_PROMPT`: 選んだ brain へ、起動後に 1 回送る
 - `ORCH_DUMP=path.json`: 名簿・所属・brain ごとの会話（操作の数とハッシュ、ターンの状態）・接続の記録を書き出す
@@ -270,7 +275,9 @@ mise run signal             # シグナリングを単独で（:8765）。PORT �
 
 ```json
 {
-  "codex": {"enabled": true, "cwd": "~/src", "computer_use": true},
+  "project_dir": "~/src",
+  "max_workers": 4,
+  "codex": {"enabled": true, "cwd": "~/src", "model": "gpt-5.6-luna", "max_concurrent": 2, "computer_use": true},
   "claude": {"enabled": true, "chrome": true, "mac": false},
   "custom": [
     {
@@ -293,7 +300,8 @@ mise run signal             # シグナリングを単独で（:8765）。PORT �
 }
 ```
 
-- `codex`・`claude`: `enabled`、`cwd`（既定の作業フォルダ。`~/` 可）、`model`（既定のモデル）。道具は Codex が `computer_use`、Claude が `chrome`・`mac`（Peekaboo）。custom も `computer_use` を持てる
+- `project_dir`: このマシンのプロジェクトのフォルダ（`~/` 可）。`max_workers`: この body で同時に動かせるワーカーの数（既定 4）
+- `codex`・`claude`: `enabled`、`cwd`（既定の作業フォルダ。`~/` 可）、`model`（既定のモデル）、`max_concurrent`。道具は Codex が `computer_use`、Claude が `chrome`・`mac`（Peekaboo）。custom も `computer_use` を持てる
 - custom の `id` は英小文字・数字・`_`・`-`（`codex`・`claude` は使えない）。`base_url` と `model` は必須
 - `description` は司令塔が種類を選ぶときに読む。何に向いているかを書く
 - `max_concurrent`: この種類を同じ body で同時に動かせる数（省くと body の上限だけ）
