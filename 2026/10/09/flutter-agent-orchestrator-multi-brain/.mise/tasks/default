@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-#MISE description="Type-check the sidecar and analyze the app"
+#MISE description="Type-check the sidecar, analyze the app, and test its start screen"
 set -euo pipefail
 
 (cd sidecar && npm install --silent && npm run --silent check)
 cd app
 flutter pub get >/dev/null
 flutter analyze
+flutter test

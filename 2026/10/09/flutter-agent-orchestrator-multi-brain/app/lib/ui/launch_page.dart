@@ -8,9 +8,13 @@ import 'package:orchestrator_signal/signal_server.dart';
 import '../mesh/launch.dart';
 import 'theme.dart';
 
-/// The first screen when no `ORCH_*` variables are set: what this app does
-/// (brain, body, signaling) and where it joins. Starting the signaling
-/// server fails here when its port is in use.
+/// The first screen when no `ORCH_*` variables are set, in three steps:
+///
+/// 1. Signaling: start the server in this app (fails here when the port is
+///    in use) or join one (fails here when it cannot be read).
+/// 2. Roles: the name, and brain and/or body (neither: a console only).
+/// 3. Owner, for a body: which brain it belongs to, from the roster read in
+///    step 1.
 class LaunchPage extends StatefulWidget {
   const LaunchPage({
     super.key,
@@ -31,11 +35,12 @@ class LaunchPage extends StatefulWidget {
   State<LaunchPage> createState() => _LaunchPageState();
 }
 
-/// What the signaling server at a URL reports (for the brain list).
+/// What the signaling server reports.
 class _Roster {
-  _Roster(this.brains, this.owners);
+  _Roster(this.brains, this.online, this.owners);
 
   final List<String> brains;
+  final Set<String> online;
   final Map<String, String?> owners;
 }
 
@@ -45,19 +50,14 @@ class _LaunchPageState extends State<LaunchPage> {
   late final _port = TextEditingController(text: '${c.port}');
   late final _url = TextEditingController(text: c.url);
   late String? _error = widget.error;
-  bool _starting = false;
+  bool _busy = false;
+  int _step = 0;
 
+  /// The server started in step 1 (kept while going back and forth).
+  SignalServer? _server;
+  int? _serverPort;
   _Roster? _roster;
-  String? _rosterError;
   bool _ownerTouched = false;
-
-  @override
-  void initState() {
-    super.initState();
-    // A brain that is a body runs workers on itself unless told otherwise.
-    if (c.brain && c.owner == null) c.owner = LaunchConfig.self;
-    if (!c.signaling) unawaited(_fetchRoster());
-  }
 
   @override
   void dispose() {
@@ -67,78 +67,35 @@ class _LaunchPageState extends State<LaunchPage> {
     super.dispose();
   }
 
-  Future<void> _fetchRoster() async {
-    final url = _url.text.trim();
-    setState(() => _rosterError = null);
-    try {
-      final http = Uri.parse(url.replaceFirst(RegExp('^ws'), 'http'));
-      final client = HttpClient()..connectionTimeout = const Duration(seconds: 2);
-      final req = await client.getUrl(http);
-      final res = await req.close().timeout(const Duration(seconds: 3));
-      final j = jsonDecode(await res.transform(utf8.decoder).join()) as Map;
-      client.close();
-      final brains = [
-        for (final n in (j['nodes'] as List).cast<Map>())
-          if (n['brain'] == true) n['name'] as String,
-      ]..sort();
-      final owners = (j['owners'] as Map).cast<String, String?>();
-      if (!mounted || _url.text.trim() != url) return;
-      setState(() {
-        _roster = _Roster(brains, owners);
-        // Show where this body already belongs, unless the user chose.
-        final name = _name.text.trim();
-        if (!_ownerTouched && owners.containsKey(name)) {
-          final o = owners[name];
-          c.owner = c.brain && o == name ? LaunchConfig.self : o;
-        }
-      });
-    } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        _roster = null;
-        _rosterError = 'could not read $url';
-      });
-    }
-  }
+  // ---- step 1: signaling ----------------------------------------------------
 
-  /// Brains to belong to (value, label): this app if it is a brain, the
-  /// ones the server knows, and the saved choice (it may join later).
-  List<(String, String)> get _brainChoices {
-    final name = _name.text.trim();
-    final out = <String, String>{
-      if (c.brain) LaunchConfig.self: '${name.isEmpty ? 'this app' : name} (this app)',
-      for (final b in _roster?.brains ?? const <String>[])
-        if (!(c.brain && b == name)) b: b,
-    };
-    if (c.owner case final o? when !out.containsKey(o)) {
-      if (o != LaunchConfig.self) out[o] = o;
-    }
-    return [for (final e in out.entries) (e.key, e.value)];
-  }
-
-  Future<void> _start() async {
+  Future<void> _signalingNext() async {
     final port = int.tryParse(_port.text.trim());
     if (c.signaling && (port == null || port <= 0 || port > 65535)) {
       setState(() => _error = 'The port must be a number from 1 to 65535.');
       return;
     }
     c
-      ..name = _name.text.trim()
       ..port = port ?? c.port
-      ..url = _url.text.trim().isEmpty ? 'ws://localhost:8765' : _url.text.trim()
-      ..assignOwner = c.body;
+      ..url = _url.text.trim().isEmpty ? 'ws://localhost:8765' : _url.text.trim();
     setState(() {
-      _starting = true;
+      _busy = true;
       _error = null;
     });
-    SignalServer? server;
-    if (c.signaling) {
-      server = SignalServer(port: c.port, ownersFile: widget.ownersFile);
+    // Start, restart on another port, or stop the in-app server.
+    if (_server != null && (!c.signaling || _serverPort != c.port)) {
+      await _server!.close();
+      _server = null;
+    }
+    if (c.signaling && _server == null) {
+      final server = SignalServer(port: c.port, ownersFile: widget.ownersFile);
       try {
         await server.start();
+        _server = server;
+        _serverPort = c.port;
       } on SocketException catch (e) {
         setState(() {
-          _starting = false;
+          _busy = false;
           _error =
               'Could not start signaling on port ${c.port}: it is in use '
               '(${e.osError?.message ?? e.message}).';
@@ -146,13 +103,103 @@ class _LaunchPageState extends State<LaunchPage> {
         return;
       }
     }
-    widget.onStart(c, server);
+    final error = await _readRoster();
+    setState(() {
+      _busy = false;
+      _error = error;
+      if (error == null) _step = 1;
+    });
   }
+
+  /// Reads the roster over plain HTTP; returns an error, or null.
+  Future<String?> _readRoster() async {
+    final url = c.signalUrl;
+    final client = HttpClient()..connectionTimeout = const Duration(seconds: 2);
+    try {
+      final req = await client.getUrl(Uri.parse(url.replaceFirst(RegExp('^ws'), 'http')));
+      final res = await req.close().timeout(const Duration(seconds: 3));
+      final j = jsonDecode(await res.transform(utf8.decoder).join()) as Map;
+      final nodes = (j['nodes'] as List).cast<Map>();
+      _roster = _Roster(
+        [
+          for (final n in nodes)
+            if (n['brain'] == true && n['online'] == true) n['name'] as String,
+        ]..sort(),
+        {
+          for (final n in nodes)
+            if (n['online'] == true) n['name'] as String,
+        },
+        (j['owners'] as Map).cast<String, String?>(),
+      );
+      return null;
+    } catch (e) {
+      return 'Could not read the signaling server at $url.';
+    } finally {
+      client.close();
+    }
+  }
+
+  // ---- step 2: roles --------------------------------------------------------
+
+  void _rolesNext() {
+    c.name = _name.text.trim();
+    if (!c.body) {
+      _start();
+      return;
+    }
+    // Where this body belongs: as before unless chosen on this screen.
+    if (!_ownerTouched) {
+      final known = _roster?.owners;
+      if (known != null && c.name.isNotEmpty && known.containsKey(c.name)) {
+        final o = known[c.name];
+        c.owner = c.brain && o == c.name ? LaunchConfig.self : o;
+      } else if (c.brain) {
+        c.owner = LaunchConfig.self;
+      }
+    }
+    if (!c.brain && c.owner == LaunchConfig.self) c.owner = null;
+    setState(() {
+      _error = null;
+      _step = 2;
+    });
+  }
+
+  // ---- step 3: owner --------------------------------------------------------
+
+  /// (value, label): this app if it is a brain, the brains online, and the
+  /// saved choice (it may join later).
+  List<(String, String)> get _brainChoices {
+    final out = <String, String>{
+      if (c.brain) LaunchConfig.self: '${c.name.isEmpty ? 'this app' : c.name} (this app)',
+      for (final b in _roster?.brains ?? const <String>[])
+        if (!(c.brain && b == c.name)) b: b,
+    };
+    if (c.owner case final o? when o != LaunchConfig.self && !out.containsKey(o)) {
+      out[o] = '$o (offline)';
+    }
+    return [for (final e in out.entries) (e.key, e.value)];
+  }
+
+  Future<void> _refresh() async {
+    setState(() => _busy = true);
+    final error = await _readRoster();
+    setState(() {
+      _busy = false;
+      _error = error;
+    });
+  }
+
+  void _start() {
+    c.assignOwner = c.body;
+    widget.onStart(c, _server);
+  }
+
+  // ---- view -----------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final choices = _brainChoices;
+    final steps = ['Signaling', 'Roles', if (c.body) 'Belongs to'];
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -162,116 +209,65 @@ class _LaunchPageState extends State<LaunchPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text('Start this app as', style: theme.textTheme.titleLarge),
-                const SizedBox(height: 4),
-                Text(
-                  'Every app has a console. Pick any of these.',
-                  style: theme.textTheme.bodySmall?.copyWith(color: Palette.textDim),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _name,
-                  decoration: const InputDecoration(
-                    labelText: 'Name (body id)',
-                    hintText: 'empty: host name and 4 random digits',
-                  ),
-                  onChanged: (_) => setState(() {}),
-                ),
-                const SizedBox(height: 12),
-                CheckboxListTile(
-                  key: const Key('role-brain'),
-                  value: c.brain,
-                  onChanged: (v) => setState(() {
-                    c.brain = v!;
-                    if (c.brain && c.owner == null && !_ownerTouched) c.owner = LaunchConfig.self;
-                    if (!c.brain && c.owner == LaunchConfig.self) c.owner = null;
-                  }),
-                  title: const Text('Brain'),
-                  subtitle: const Text('Runs an orchestrator. Consoles pick a brain to talk to.'),
-                  controlAffinity: ListTileControlAffinity.leading,
-                ),
-                CheckboxListTile(
-                  key: const Key('role-body'),
-                  value: c.body,
-                  onChanged: (v) => setState(() => c.body = v!),
-                  title: const Text('Body'),
-                  subtitle: const Text('Lets the brain it belongs to run workers on this machine.'),
-                  controlAffinity: ListTileControlAffinity.leading,
-                ),
-                if (c.body)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 56, right: 8, bottom: 8),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: DropdownButtonFormField<String?>(
-                            key: const Key('owner'),
-                            initialValue: choices.any((e) => e.$1 == c.owner) ? c.owner : null,
-                            decoration: const InputDecoration(labelText: 'Belongs to'),
-                            items: [
-                              const DropdownMenuItem(value: null, child: Text('No brain')),
-                              for (final (value, label) in choices)
-                                DropdownMenuItem(value: value, child: Text(label)),
-                            ],
-                            onChanged: (v) => setState(() {
-                              c.owner = v;
-                              _ownerTouched = true;
-                            }),
-                          ),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      for (var i = 0; i < steps.length; i++)
+                        TextSpan(
+                          text: '${i > 0 ? '   ' : ''}${i + 1}. ${steps[i]}',
+                          style: i == _step
+                              ? const TextStyle(color: Palette.text, fontWeight: FontWeight.w600)
+                              : null,
                         ),
-                        if (!c.signaling)
-                          IconButton(
-                            tooltip: 'Read the brains from the signaling server',
-                            onPressed: _fetchRoster,
-                            icon: const Icon(Icons.refresh, size: 18),
-                          ),
-                      ],
-                    ),
+                    ],
                   ),
-                CheckboxListTile(
-                  key: const Key('role-signal'),
-                  value: c.signaling,
-                  onChanged: (v) => setState(() {
-                    c.signaling = v!;
-                    if (!c.signaling) unawaited(_fetchRoster());
-                  }),
-                  title: const Text('Signaling'),
-                  subtitle: const Text('Runs the signaling server (roster, ownership, WebRTC relay) in this app.'),
-                  controlAffinity: ListTileControlAffinity.leading,
+                  key: const Key('steps'),
+                  style: theme.textTheme.bodySmall?.copyWith(color: Palette.textFaint),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 56, right: 8),
-                  child: c.signaling
-                      ? TextField(
-                          key: const Key('port'),
-                          controller: _port,
-                          decoration: const InputDecoration(labelText: 'Port'),
-                          keyboardType: TextInputType.number,
-                        )
-                      : TextField(
-                          key: const Key('url'),
-                          controller: _url,
-                          decoration: InputDecoration(
-                            labelText: 'Signaling URL',
-                            hintText: 'ws://localhost:8765',
-                            helperText: _rosterError ??
-                                (_roster == null
-                                    ? null
-                                    : '${_roster!.brains.length} brain(s) there'),
-                          ),
-                          onSubmitted: (_) => _fetchRoster(),
-                        ),
-                ),
+                const SizedBox(height: 8),
+                ...switch (_step) {
+                  0 => _signalingStep(theme),
+                  1 => _rolesStep(theme),
+                  _ => _ownerStep(theme),
+                },
                 const SizedBox(height: 20),
                 if (_error != null)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: Text(_error!, style: TextStyle(color: theme.colorScheme.error)),
                   ),
-                FilledButton(
-                  key: const Key('start'),
-                  onPressed: _starting ? null : _start,
-                  child: Text(_starting ? 'Starting…' : 'Start'),
+                Row(
+                  children: [
+                    if (_step > 0)
+                      TextButton(
+                        key: const Key('back'),
+                        onPressed: _busy
+                            ? null
+                            : () => setState(() {
+                                _error = null;
+                                _step--;
+                              }),
+                        child: const Text('Back'),
+                      ),
+                    const Spacer(),
+                    FilledButton(
+                      key: const Key('next'),
+                      onPressed: _busy
+                          ? null
+                          : switch (_step) {
+                              0 => _signalingNext,
+                              1 => _rolesNext,
+                              _ => _start,
+                            },
+                      child: Text(
+                        _busy
+                            ? 'Working…'
+                            : (_step == 2 || (_step == 1 && !c.body))
+                            ? 'Start'
+                            : 'Next',
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -279,5 +275,144 @@ class _LaunchPageState extends State<LaunchPage> {
         ),
       ),
     );
+  }
+
+  Widget _title(ThemeData theme, String title, String sub) => Padding(
+    padding: const EdgeInsets.only(bottom: 16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title, style: theme.textTheme.titleLarge),
+        const SizedBox(height: 4),
+        Text(sub, style: theme.textTheme.bodySmall?.copyWith(color: Palette.textDim)),
+      ],
+    ),
+  );
+
+  List<Widget> _signalingStep(ThemeData theme) => [
+    _title(theme, 'Signaling server', 'Every app joins one. It keeps the roster and who owns which body.'),
+    RadioGroup<bool>(
+      groupValue: c.signaling,
+      onChanged: (v) => setState(() => c.signaling = v!),
+      child: const Column(
+        children: [
+          RadioListTile(
+            key: Key('signal-start'),
+            value: true,
+            title: Text('Start one in this app'),
+          ),
+          RadioListTile(
+            key: Key('signal-join'),
+            value: false,
+            title: Text('Join one'),
+          ),
+        ],
+      ),
+    ),
+    Padding(
+      padding: const EdgeInsets.only(left: 56, right: 8),
+      child: c.signaling
+          ? TextField(
+              key: const Key('port'),
+              controller: _port,
+              decoration: const InputDecoration(labelText: 'Port'),
+              keyboardType: TextInputType.number,
+              onSubmitted: (_) => _signalingNext(),
+            )
+          : TextField(
+              key: const Key('url'),
+              controller: _url,
+              decoration: const InputDecoration(
+                labelText: 'Signaling URL',
+                hintText: 'ws://localhost:8765',
+              ),
+              onSubmitted: (_) => _signalingNext(),
+            ),
+    ),
+  ];
+
+  List<Widget> _rolesStep(ThemeData theme) {
+    final name = _name.text.trim();
+    final taken = name.isNotEmpty && (_roster?.online.contains(name) ?? false);
+    final brains = _roster?.brains.length ?? 0;
+    return [
+      _title(
+        theme,
+        'This app',
+        'Joined ${c.signalUrl} ($brains brain(s) there). Every app has a console; pick any of these.',
+      ),
+      TextField(
+        key: const Key('name'),
+        controller: _name,
+        decoration: InputDecoration(
+          labelText: 'Name (body id)',
+          hintText: 'empty: host name and 4 random digits',
+          helperText: taken ? 'An app named $name is online; this one will get a suffix (-2).' : null,
+        ),
+        onChanged: (_) => setState(() {}),
+      ),
+      const SizedBox(height: 12),
+      CheckboxListTile(
+        key: const Key('role-brain'),
+        value: c.brain,
+        onChanged: (v) => setState(() => c.brain = v!),
+        title: const Text('Brain'),
+        subtitle: const Text('Runs an orchestrator. Consoles pick a brain to talk to.'),
+        controlAffinity: ListTileControlAffinity.leading,
+      ),
+      CheckboxListTile(
+        key: const Key('role-body'),
+        value: c.body,
+        onChanged: (v) => setState(() => c.body = v!),
+        title: const Text('Body'),
+        subtitle: const Text('Lets the brain it belongs to run workers on this machine.'),
+        controlAffinity: ListTileControlAffinity.leading,
+      ),
+      if (!c.brain && !c.body)
+        Padding(
+          padding: const EdgeInsets.only(left: 16, top: 4),
+          child: Text(
+            'Neither: this app is a console only.',
+            style: theme.textTheme.bodySmall?.copyWith(color: Palette.textDim),
+          ),
+        ),
+    ];
+  }
+
+  List<Widget> _ownerStep(ThemeData theme) {
+    final choices = _brainChoices;
+    return [
+      _title(
+        theme,
+        'Belongs to',
+        'Only this brain runs workers on this body. Consoles can move it later, while no workers run here.',
+      ),
+      Row(
+        children: [
+          Expanded(
+            child: DropdownButtonFormField<String?>(
+              key: const Key('owner'),
+              initialValue: choices.any((e) => e.$1 == c.owner) ? c.owner : null,
+              decoration: const InputDecoration(labelText: 'Brain'),
+              items: [
+                const DropdownMenuItem(value: null, child: Text('No brain')),
+                for (final (value, label) in choices)
+                  DropdownMenuItem(value: value, child: Text(label)),
+              ],
+              onChanged: (v) => setState(() {
+                c.owner = v;
+                _ownerTouched = true;
+              }),
+            ),
+          ),
+          IconButton(
+            key: const Key('refresh'),
+            tooltip: 'Read the brains again',
+            onPressed: _busy ? null : _refresh,
+            icon: const Icon(Icons.refresh, size: 18),
+          ),
+        ],
+      ),
+    ];
   }
 }
