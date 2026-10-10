@@ -233,24 +233,9 @@ class AgentsDraft extends ChangeNotifier {
 /// models, limits and tools, custom agents, and this app's macOS
 /// permissions. Each agent is checked as it is turned on.
 class AgentsEditor extends StatefulWidget {
-  const AgentsEditor({
-    super.key,
-    required this.draft,
-    required this.brain,
-    required this.body,
-    this.orchestrator,
-    this.onOrchestrator,
-    this.onRestart,
-  });
+  const AgentsEditor({super.key, required this.draft, this.onRestart});
 
   final AgentsDraft draft;
-  final bool brain;
-  final bool body;
-
-  /// The worker type the orchestrator runs on, for a brain on its start
-  /// screen (a console sets it in the brain's Settings).
-  final String? orchestrator;
-  final void Function(String?)? onOrchestrator;
 
   /// Saves and starts this app again (Screen Recording applies after a
   /// restart); this machine only.
@@ -389,12 +374,11 @@ class _AgentsEditorState extends State<AgentsEditor> {
                     ],
                     onChanged: (v) => setState(() => setup.model = v),
                   ),
-                if (widget.body)
-                  _atOnce(
-                    'at-once-$id',
-                    setup.maxConcurrent ?? 0,
-                    (v) => setup.maxConcurrent = v == 0 ? null : v,
-                  ),
+                _atOnce(
+                  'at-once-$id',
+                  setup.maxConcurrent ?? 0,
+                  (v) => setup.maxConcurrent = v == 0 ? null : v,
+                ),
                 ...tools,
               ],
             ),
@@ -479,28 +463,9 @@ class _AgentsEditorState extends State<AgentsEditor> {
         _permissionsSection(theme),
         if (ids.isEmpty)
           Text(
-            widget.brain
-                ? 'Turn on at least one: the orchestrator runs on it.'
-                : 'None turned on: this body offers no workers, only its tools (fetch_image).',
+            'None turned on: this body offers no workers, only its tools (fetch_image).',
             style: theme.textTheme.bodySmall?.copyWith(color: Palette.textDim),
           ),
-        if (widget.onOrchestrator case final pick? when ids.isNotEmpty) ...[
-          const SizedBox(height: 8),
-          DropdownButtonFormField<String>(
-            key: const Key('orchestrator'),
-            initialValue: ids.contains(widget.orchestrator)
-                ? widget.orchestrator
-                : ids.first,
-            decoration: const InputDecoration(
-              labelText: 'The orchestrator runs on',
-            ),
-            items: [
-              for (final id in ids)
-                DropdownMenuItem(value: id, child: Text(id)),
-            ],
-            onChanged: pick,
-          ),
-        ],
       ],
     );
   }
@@ -545,42 +510,38 @@ class _AgentsEditorState extends State<AgentsEditor> {
         labelText: 'Project folder (optional)',
         hintText: '~/src',
         helperText:
-            'Where workers start when nothing else is set${widget.brain ? ', and where the orchestrator works' : ''}. '
+            'Where workers start when nothing else is set (and a brain on this app works, if it sets no folder). '
             'Empty: ${dr.projectDirDefault}.',
         helperMaxLines: 2,
         isDense: true,
       ),
     ),
-    if (widget.body)
-      Padding(
-        padding: const EdgeInsets.only(top: 8, right: 8),
-        child: Row(
-          children: [
-            const Text(
-              'Workers at once on this body',
-              style: TextStyle(fontSize: 13),
+    Padding(
+      padding: const EdgeInsets.only(top: 8, right: 8),
+      child: Row(
+        children: [
+          const Text(
+            'Workers at once on this body',
+            style: TextStyle(fontSize: 13),
+          ),
+          Expanded(
+            child: Slider(
+              key: const Key('max-workers'),
+              value: dr.maxWorkers.toDouble(),
+              min: 1,
+              max: 16,
+              divisions: 15,
+              label: '${dr.maxWorkers}',
+              onChanged: (v) => setState(() => dr.maxWorkers = v.round()),
             ),
-            Expanded(
-              child: Slider(
-                key: const Key('max-workers'),
-                value: dr.maxWorkers.toDouble(),
-                min: 1,
-                max: 16,
-                divisions: 15,
-                label: '${dr.maxWorkers}',
-                onChanged: (v) => setState(() => dr.maxWorkers = v.round()),
-              ),
-            ),
-            SizedBox(
-              width: 32,
-              child: Text(
-                '${dr.maxWorkers}',
-                key: const Key('max-workers-text'),
-              ),
-            ),
-          ],
-        ),
+          ),
+          SizedBox(
+            width: 32,
+            child: Text('${dr.maxWorkers}', key: const Key('max-workers-text')),
+          ),
+        ],
       ),
+    ),
     const SizedBox(height: 12),
   ];
 

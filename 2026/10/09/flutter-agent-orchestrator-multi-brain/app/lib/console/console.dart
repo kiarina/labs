@@ -70,7 +70,7 @@ class ConsolePublisher {
     'ready': hub.ready,
     'startupError': hub.startupError,
     'projectDir': hub.projectDir,
-    'settings': hub.settings.toJson(),
+    'brainAgent': hub.brain.info,
     'orchestrator': hub.orchestrator == null ? null : _key(hub.orchestrator!),
     'workers': [for (final w in hub.workers) _key(w)],
     'threads': [for (final t in _threads) _meta(t)],
@@ -220,7 +220,9 @@ class BodyView {
       if (t['error'] == null) t['id'] as String,
   ];
   String labelOf(String id) =>
-      workerTypeInfo.where((t) => t['id'] == id).firstOrNull?['label'] as String? ?? id;
+      workerTypeInfo.where((t) => t['id'] == id).firstOrNull?['label']
+          as String? ??
+      id;
   String? get typeConfigError => info['typeConfigError'] as String?;
   String get projectDir => info['projectDir'] as String? ?? '';
   int? get maxWorkers => (info['maxWorkers'] as num?)?.toInt();
@@ -248,7 +250,6 @@ class BrainView {
   final Future<Object?> Function(Json request) request;
   Json state = const {};
   final threads = <String, ThreadMirror>{};
-  final settings = HubSettings();
   bool get synced => state.isNotEmpty;
 
   /// Returns whether the console needs a repaint (ops repaint their thread).
@@ -263,7 +264,10 @@ class BrainView {
       case 'state':
         _setState((m['state'] as Map).cast<String, dynamic>());
       case 'ops':
-        threads[m['key']]?.applyOps((m['from'] as num).toInt(), m['ops'] as List);
+        threads[m['key']]?.applyOps(
+          (m['from'] as num).toInt(),
+          m['ops'] as List,
+        );
         return false;
     }
     return true;
@@ -271,7 +275,6 @@ class BrainView {
 
   void _setState(Json s) {
     state = s;
-    settings.load((s['settings'] as Map).cast<String, dynamic>());
     final seen = <String>{};
     for (final raw in (s['threads'] as List).cast<Map>()) {
       final meta = raw.cast<String, dynamic>();
@@ -358,7 +361,11 @@ class BodyEntry {
 /// linked to and shows the selected one; actions go to the selected brain.
 /// Body ownership goes through the signaling server.
 class ConsoleMirror extends ChangeNotifier {
-  ConsoleMirror({required this.local, required this.signal, required this.isBrain}) {
+  ConsoleMirror({
+    required this.local,
+    required this.signal,
+    required this.isBrain,
+  }) {
     signal.addListener(notifyListeners);
   }
 
@@ -374,7 +381,11 @@ class ConsoleMirror extends ChangeNotifier {
 
   /// What this app is, for the header: "brain · body · signal", "console".
   String get roles {
-    final r = [if (isBrain) 'brain', if (signal.isBody) 'body', if (signaling) 'signal'];
+    final r = [
+      if (isBrain) 'brain',
+      if (signal.isBody) 'body',
+      if (signaling) 'signal',
+    ];
     return r.isEmpty ? 'console' : r.join(' · ');
   }
 
@@ -436,7 +447,9 @@ class ConsoleMirror extends ChangeNotifier {
     final v = views[brain];
     if (v == null) return;
     final repaint = v.handle(m);
-    if (brain == selected && viewing != null && !v.threads.containsValue(viewing)) {
+    if (brain == selected &&
+        viewing != null &&
+        !v.threads.containsValue(viewing)) {
       viewing = null;
     }
     if (repaint) notifyListeners();
@@ -456,19 +469,13 @@ class ConsoleMirror extends ChangeNotifier {
   bool get ready => connected && _v?.state['ready'] == true;
   String? get startupError => _v?.state['startupError'] as String?;
   String get projectDir => _v?.state['projectDir'] as String? ?? '';
-  HubSettings get settings => _v?.settings ?? HubSettings();
+
+  /// What the selected brain's orchestrator runs on ([BrainAgent.info]).
+  Json get brainAgent =>
+      (_v?.state['brainAgent'] as Map?)?.cast<String, dynamic>() ?? const {};
   ThreadMirror? get orchestrator => _v?.orchestrator;
   List<ThreadMirror> get workers => _v?.workers ?? const [];
   List<BodyView> get bodies => _v?.bodies ?? const [];
-  BodyView? get brainBody => bodies.where((b) => b.isBrain).firstOrNull;
-
-  /// Worker types the orchestrator can run as (the selected brain's body).
-  List<String> get workerTypes => brainBody?.workerTypes ?? const [];
-
-  String labelOf(String type) => brainBody?.labelOf(type) ?? type;
-
-  List<Json> modelsFor(String type) => brainBody?.modelsFor(type) ?? const [];
-
 
   int get runningCount => workers.where((w) => w.isRunning).length;
 
@@ -486,14 +493,23 @@ class ConsoleMirror extends ChangeNotifier {
 
     int running(String name, String? owner) =>
         views[owner]?.workers
-            .where((w) => w.body == name && (w.isRunning || w.state == AgentState.queued))
+            .where(
+              (w) =>
+                  w.body == name &&
+                  (w.isRunning || w.state == AgentState.queued),
+            )
             .length ??
         0;
 
     return [
       for (final n in signal.nodes)
         if (n.body)
-          BodyEntry(n, signal.ownerOf(n.name), info(n.name), running(n.name, signal.ownerOf(n.name))),
+          BodyEntry(
+            n,
+            signal.ownerOf(n.name),
+            info(n.name),
+            running(n.name, signal.ownerOf(n.name)),
+          ),
     ];
   }
 
@@ -509,9 +525,9 @@ class ConsoleMirror extends ChangeNotifier {
 
   void interruptOrchestrator() => _act({'a': 'interrupt'});
 
-  Future<void> newConversation({String? workerType}) async {
+  Future<void> newConversation() async {
     viewing = null;
-    _act({'a': 'new', 'workerType': workerType});
+    _act({'a': 'new'});
   }
 
   void stopWorker(ThreadMirror w) => _act({'a': 'stop', 'id': w.label});
@@ -519,13 +535,34 @@ class ConsoleMirror extends ChangeNotifier {
   void answer(PendingRequest r, Object? result) =>
       _act({'a': 'answer', 'requestId': r.request.id, 'result': result});
 
-  /// Sends edited settings (the brain saves them).
-  void saveSettings(HubSettings s) =>
-      _act({'a': 'settings', 'settings': s.toJson()});
+  /// What [brain]'s orchestrator runs on ([BrainAgent.info]).
+  Json brainAgentOf(String brain) =>
+      (views[brain]?.state['brainAgent'] as Map?)?.cast<String, dynamic>() ??
+      const {};
 
-  /// Only a brain's own console can pick its folder: the path is on its
-  /// machine.
-  void setProject(String dir) => _act({'a': 'project', 'dir': dir});
+  /// Whether [brain] has an orchestrator conversation.
+  bool hasConversation(String brain) => views[brain]?.orchestrator != null;
+
+  /// Starts a new conversation on [brain] (workers keep running).
+  void newConversationOn(String brain) {
+    if (brain == selected) viewing = null;
+    views[brain]?.send({'a': 'new'});
+    notifyListeners();
+  }
+
+  /// A `brain/...` request to [brain] (`brain/config`, `brain/check`,
+  /// `brain/configure`).
+  Future<Object?> brainRequest(
+    String brain,
+    String method, [
+    Json params = const {},
+  ]) {
+    final v = views[brain];
+    if (v == null) {
+      return Future.error(StateError('$brain is not linked to this console'));
+    }
+    return v.request({'a': 'brain', 'm': method, 'p': params});
+  }
 
   /// Whether this console can pause or resume [body]: its owner is a brain
   /// this console is linked to (the owner relays it to the body).
@@ -541,12 +578,23 @@ class ConsoleMirror extends ChangeNotifier {
 
   /// A `body/...` request to [body] through the brain that owns it
   /// (`body/config`, `body/check`, `body/configure`).
-  Future<Object?> bodyRequest(BodyEntry body, String method, [Json params = const {}]) {
+  Future<Object?> bodyRequest(
+    BodyEntry body,
+    String method, [
+    Json params = const {},
+  ]) {
     final v = views[body.owner];
     if (v == null) {
-      return Future.error(StateError('${body.owner ?? 'no brain'} is not linked to this console'));
+      return Future.error(
+        StateError('${body.owner ?? 'no brain'} is not linked to this console'),
+      );
     }
-    return v.request({'a': 'body', 'body': body.name, 'm': method, 'p': params});
+    return v.request({
+      'a': 'body',
+      'body': body.name,
+      'm': method,
+      'p': params,
+    });
   }
 
   /// Moves a body to a brain (null: no owner) through the signaling server.
@@ -554,7 +602,9 @@ class ConsoleMirror extends ChangeNotifier {
     notice = 'moving $body to ${brain ?? 'no brain'}…';
     notifyListeners();
     final (ok, reason) = await signal.assign(body, brain);
-    notice = ok ? '$body → ${brain ?? 'no brain'}' : 'could not move $body: $reason';
+    notice = ok
+        ? '$body → ${brain ?? 'no brain'}'
+        : 'could not move $body: $reason';
     notifyListeners();
   }
 
@@ -582,7 +632,11 @@ class ConsoleMirror extends ChangeNotifier {
           'body': n.body,
           'online': n.online,
           'owner': signal.ownerOf(n.name),
-          'paused': ?allBodies.where((b) => b.name == n.name).firstOrNull?.view?.paused,
+          'paused': ?allBodies
+              .where((b) => b.name == n.name)
+              .firstOrNull
+              ?.view
+              ?.paused,
         },
     ],
     'brains': {for (final e in views.entries) e.key: e.value.digest()},
@@ -623,10 +677,13 @@ class RequestLink {
     final c = Completer<Object?>();
     _pending[rid] = c;
     peer.send({'t': 'request', 'rid': rid, 'a': request});
-    return c.future.timeout(timeout, onTimeout: () {
-      _pending.remove(rid);
-      throw TimeoutException('no answer from ${peer.name}', timeout);
-    });
+    return c.future.timeout(
+      timeout,
+      onTimeout: () {
+        _pending.remove(rid);
+        throw TimeoutException('no answer from ${peer.name}', timeout);
+      },
+    );
   }
 
   /// The brain's side: answers each request with [handle].
@@ -639,7 +696,11 @@ class RequestLink {
           final r = await handle((m['a'] as Map).cast<String, dynamic>());
           peer.send({'t': 'reply', 'rid': rid, 'r': r});
         } catch (e) {
-          peer.send({'t': 'reply', 'rid': rid, 'e': e is StateError ? e.message : '$e'});
+          peer.send({
+            't': 'reply',
+            'rid': rid,
+            'e': e is StateError ? e.message : '$e',
+          });
         }
       }());
     });

@@ -21,10 +21,14 @@ class FakeChecker extends AgentChecker {
   Future<CheckResult> codex(String? cwd) async {
     calls.add('codex $cwd');
     return codexLoggedIn
-        ? const CheckResult(true, 'Logged in (plus)', models: [
-            ModelInfo('gpt-big', null, label: 'GPT Big', isDefault: true),
-            ModelInfo('gpt-small', null, label: 'GPT Small'),
-          ])
+        ? const CheckResult(
+            true,
+            'Logged in (plus)',
+            models: [
+              ModelInfo('gpt-big', null, label: 'GPT Big', isDefault: true),
+              ModelInfo('gpt-small', null, label: 'GPT Small'),
+            ],
+          )
         : const CheckResult(false, 'Not logged in', needsLogin: true);
   }
 
@@ -50,7 +54,10 @@ class FakeChecker extends AgentChecker {
   @override
   Future<List<Requirement>> computerUse() async {
     calls.add('computerUse');
-    return const [Requirement('Codex Computer Use', true, 'Installed'), Requirement('Computer Use plugin', false, 'Off')];
+    return const [
+      Requirement('Codex Computer Use', true, 'Installed'),
+      Requirement('Computer Use plugin', false, 'Off'),
+    ];
   }
 
   @override
@@ -63,15 +70,29 @@ class FakeChecker extends AgentChecker {
   Future<List<Requirement>> peekaboo() async {
     calls.add('peekaboo');
     return const [
-      Requirement('Peekaboo: Accessibility', false, 'Not granted', settingsPane: 'Privacy_Accessibility', grant: 'accessibility'),
+      Requirement(
+        'Peekaboo: Accessibility',
+        false,
+        'Not granted',
+        settingsPane: 'Privacy_Accessibility',
+        grant: 'accessibility',
+      ),
     ];
   }
 
   @override
-  Future<(List<ModelInfo>?, String?)> models(String baseUrl, String? envKey) async {
+  Future<(List<ModelInfo>?, String?)> models(
+    String baseUrl,
+    String? envKey,
+  ) async {
     calls.add('models $baseUrl');
-    if (!baseUrl.startsWith('http')) return (null, 'Enter a URL like http://127.0.0.1:8500/v1');
-    return (const [ModelInfo('qwen-a', 262144), ModelInfo('qwen-b', null)], null);
+    if (!baseUrl.startsWith('http')) {
+      return (null, 'Enter a URL like http://127.0.0.1:8500/v1');
+    }
+    return (
+      const [ModelInfo('qwen-a', 262144), ModelInfo('qwen-b', null)],
+      null,
+    );
   }
 }
 
@@ -85,7 +106,10 @@ class FakePermissions extends MacPermissions {
   final opened = <String>[];
 
   @override
-  Future<Map<String, bool>?> status() async => {'accessibility': accessibility, 'screenRecording': false};
+  Future<Map<String, bool>?> status() async => {
+    'accessibility': accessibility,
+    'screenRecording': false,
+  };
 
   @override
   Future<void> requestAccessibility() async => accessibility = true;
@@ -105,10 +129,12 @@ class _NoChecks extends AgentChecker {
   Future<CheckResult> codex(String? cwd) async => const CheckResult(true, 'ok');
 
   @override
-  Future<CheckResult> claude(String? cwd) async => const CheckResult(true, 'ok');
+  Future<CheckResult> claude(String? cwd) async =>
+      const CheckResult(true, 'ok');
 
   @override
-  Future<CheckResult> custom(WorkerType t) async => const CheckResult(true, 'ok');
+  Future<CheckResult> custom(WorkerType t) async =>
+      const CheckResult(true, 'ok');
 
   @override
   Future<List<Requirement>> computerUse() async => const [];
@@ -123,7 +149,9 @@ class _NoChecks extends AgentChecker {
 /// Joins [server] as an app (a brain or a body), as the real apps do.
 Future<WebSocket> join(int port, String name, {bool brain = false}) async {
   final ws = await WebSocket.connect('ws://127.0.0.1:$port');
-  ws.add(jsonEncode({'t': 'hello', 'name': name, 'brain': brain, 'body': true}));
+  ws.add(
+    jsonEncode({'t': 'hello', 'name': name, 'brain': brain, 'body': true}),
+  );
   ws.listen((_) {});
   return ws;
 }
@@ -146,17 +174,19 @@ void main() {
     tester.view.physicalSize = const Size(1200, 2600);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
-    await tester.pumpWidget(MaterialApp(
-      home: LaunchPage(
-        initial: initial,
-        ownersFile: File('${tmp.path}/owners.json'),
-        typesFile: File('${tmp.path}/worker-types.json'),
-        stateDir: tmp.path,
-        checker: checker,
-        permissions: permissions ?? FakePermissions(),
-        onStart: (c, s) => started.complete((c, s)),
+    await tester.pumpWidget(
+      MaterialApp(
+        home: LaunchPage(
+          initial: initial,
+          ownersFile: File('${tmp.path}/owners.json'),
+          typesFile: File('${tmp.path}/worker-types.json'),
+          stateDir: tmp.path,
+          checker: checker,
+          permissions: permissions ?? FakePermissions(),
+          onStart: (c, s) => started.complete((c, s)),
+        ),
       ),
-    ));
+    );
     return started;
   }
 
@@ -166,7 +196,9 @@ void main() {
   Future<void> tapAndWait(WidgetTester tester, Finder f) async {
     await tester.tap(f);
     for (var i = 0; i < 20; i++) {
-      await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 50)));
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 50)),
+      );
       await tester.pump();
     }
     await tester.pumpAndSettle();
@@ -189,9 +221,18 @@ void main() {
       ];
       await Future<void>.delayed(const Duration(milliseconds: 200));
     });
-    final started = await pumpPage(tester, LaunchConfig(url: 'ws://127.0.0.1:$port'));
+    final started = await pumpPage(
+      tester,
+      LaunchConfig(url: 'ws://127.0.0.1:$port'),
+    );
 
-    expect(find.text('1. Signaling   2. Roles   3. Belongs to   4. Agents', findRichText: true), findsOneWidget);
+    expect(
+      find.text(
+        '1. Signaling   2. Roles   3. Belongs to   4. Body',
+        findRichText: true,
+      ),
+      findsOneWidget,
+    );
     await tester.tap(find.byKey(const Key('signal-join')));
     await tester.pump();
     await tapAndWait(tester, find.byKey(const Key('next')));
@@ -217,12 +258,20 @@ void main() {
     await tester.tap(find.byKey(const Key('next')));
     await tester.pumpAndSettle();
     // Step 4: agents; Codex and Claude are on by default.
-    expect(find.text('1. Signaling   2. Roles   3. Belongs to   4. Agents', findRichText: true), findsOneWidget);
+    expect(
+      find.text(
+        '1. Signaling   2. Roles   3. Belongs to   4. Body',
+        findRichText: true,
+      ),
+      findsOneWidget,
+    );
     expect(find.text('Start'), findsOneWidget);
     await tester.tap(find.byKey(const Key('next')));
     final (c, s) = await started.future;
-    expect((c.name, c.brain, c.body, c.signaling, c.owner, c.assignOwner, s),
-        ('body-d', false, true, false, 'brain-b', true, null));
+    expect(
+      (c.name, c.brain, c.body, c.signaling, c.owner, c.assignOwner, s),
+      ('body-d', false, true, false, 'brain-b', true, null),
+    );
 
     await tester.runAsync(() async {
       for (final a in apps) {
@@ -232,7 +281,9 @@ void main() {
     });
   });
 
-  testWidgets('start signaling: a used port stops at step 1; brain + body', (tester) async {
+  testWidgets('start signaling: a used port stops at step 1; brain + body', (
+    tester,
+  ) async {
     late ServerSocket busy;
     late int free;
     await tester.runAsync(() async {
@@ -256,14 +307,25 @@ void main() {
     await tester.pump();
     await tester.tap(find.byKey(const Key('next')));
     await tester.pumpAndSettle();
+    expect(
+      find.text(
+        '1. Signaling   2. Roles   3. Brain   4. Belongs to   5. Body',
+        findRichText: true,
+      ),
+      findsOneWidget,
+    );
+    await tester.tap(find.byKey(const Key('next'))); // brain: Codex, as it was
+    await tester.pumpAndSettle();
     // A brain that is a body belongs to itself by default.
     expect(find.text('brain-a (this app)'), findsOneWidget);
     await tester.tap(find.byKey(const Key('next')));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('next')));
     final (c, s) = await started.future;
-    expect((c.brain, c.body, c.signaling, c.port, c.owner, c.signalUrl),
-        (true, true, true, free, LaunchConfig.self, 'ws://127.0.0.1:$free'));
+    expect(
+      (c.brain, c.body, c.signaling, c.port, c.owner, c.signalUrl),
+      (true, true, true, free, LaunchConfig.self, 'ws://127.0.0.1:$free'),
+    );
     expect(s, isNotNull);
     await tester.runAsync(() async {
       await s!.close();
@@ -271,7 +333,9 @@ void main() {
     });
   });
 
-  testWidgets('neither brain nor body starts a console from step 2', (tester) async {
+  testWidgets('neither brain nor body starts a console from step 2', (
+    tester,
+  ) async {
     late SignalServer server;
     late int port;
     await tester.runAsync(() async {
@@ -281,11 +345,17 @@ void main() {
       server = SignalServer(port: port, log: (_) {});
       await server.start();
     });
-    final started = await pumpPage(tester, LaunchConfig(url: 'ws://127.0.0.1:$port'));
+    final started = await pumpPage(
+      tester,
+      LaunchConfig(url: 'ws://127.0.0.1:$port'),
+    );
     await tapAndWait(tester, find.byKey(const Key('next')));
     await tester.tap(find.byKey(const Key('role-body')));
     await tester.pump();
-    expect(find.text('1. Signaling   2. Roles', findRichText: true), findsOneWidget);
+    expect(
+      find.text('1. Signaling   2. Roles', findRichText: true),
+      findsOneWidget,
+    );
     expect(find.textContaining('console only'), findsOneWidget);
     expect(find.text('Start'), findsOneWidget);
     await tester.tap(find.byKey(const Key('next')));
@@ -294,7 +364,140 @@ void main() {
     await tester.runAsync(server.close);
   });
 
-  testWidgets('agents: log in to Codex, turn Claude off, add a custom one; saved', (tester) async {
+  testWidgets(
+    'agents: log in to Codex, turn Claude off, add a custom one; saved',
+    (tester) async {
+      late SignalServer server;
+      late int port;
+      await tester.runAsync(() async {
+        final probe = await ServerSocket.bind(InternetAddress.loopbackIPv4, 0);
+        port = probe.port;
+        await probe.close();
+        server = SignalServer(port: port, log: (_) {});
+        await server.start();
+      });
+      final checker = FakeChecker();
+      final started = await pumpPage(
+        tester,
+        LaunchConfig(url: 'ws://127.0.0.1:$port', body: true),
+        checker: checker,
+      );
+      await tapAndWait(tester, find.byKey(const Key('next'))); // signaling
+      await tester.enterText(find.byKey(const Key('name')), 'body-z');
+      await tester.tap(find.byKey(const Key('next'))); // roles
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('next'))); // belongs to
+      await tester.pumpAndSettle();
+
+      // Entering the step checks what is on.
+      expect(checker.calls, ['codex null', 'claude null']);
+      expect(find.textContaining('Not logged in'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('codex-login')));
+      await tester.pumpAndSettle();
+      expect(checker.calls.sublist(2), ['login', 'codex null']);
+      expect(find.text('✓ Logged in (plus)'), findsOneWidget);
+
+      // The machine: project folder and workers at once; Codex's default model.
+      await tester.enterText(find.byKey(const Key('project-dir')), '~/work');
+      final workers = tester.getRect(find.byKey(const Key('max-workers')));
+      await tester.tapAt(Offset(workers.right - 8, workers.center.dy));
+      await tester.pumpAndSettle();
+      expect(
+        tester.widget<Text>(find.byKey(const Key('max-workers-text'))).data,
+        '16',
+      );
+      expect(find.text('Default (GPT Big)'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('model-codex')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('GPT Small').last);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('agent-claude')));
+      await tester.pumpAndSettle();
+
+      // A custom one with a bad id is refused on Start.
+      await tester.tap(find.byKey(const Key('add-custom')));
+      await tester.pumpAndSettle();
+      final card = find.byKey(const Key('custom-c0'));
+      expect(card, findsOneWidget, reason: 'the first draft in this test run');
+      Future<void> type(String field, String text) async {
+        await tester.enterText(find.byKey(Key('custom-c0-$field')), text);
+        await tester.pump();
+      }
+
+      await type('id', 'Bad Id');
+      // Before the list is loaded, the model is typed; a bad URL says so.
+      expect(find.byKey(const Key('custom-c0-model')), findsOneWidget);
+      await type('url', 'nope');
+      await tester.tap(find.byKey(const Key('load-c0')));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('Enter a URL like'), findsOneWidget);
+      await type('url', 'http://127.0.0.1:9/v1');
+      await tester.tap(find.byKey(const Key('load-c0')));
+      await tester.pumpAndSettle();
+      // Loaded: a list with context windows; the first is picked.
+      expect(find.byKey(const Key('custom-c0-model-list')), findsOneWidget);
+      expect(find.text('qwen-a  ·  262K context'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('custom-c0-model-list')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('qwen-b').last);
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.byKey(const Key('next')));
+      await tester.tap(find.byKey(const Key('next')));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('use a-z'), findsOneWidget);
+      await type('id', 'local-qwen');
+      expect(
+        tester.widget<Text>(find.byKey(const Key('custom-c0-max-text'))).data,
+        'No limit',
+      );
+      final slider = tester.getRect(find.byKey(const Key('custom-c0-max')));
+      await tester.tapAt(
+        Offset(slider.left + slider.width * 0.3, slider.center.dy),
+      );
+      await tester.pumpAndSettle();
+      final max = int.parse(
+        tester.widget<Text>(find.byKey(const Key('custom-c0-max-text'))).data!,
+      );
+      expect(max, inInclusiveRange(1, 8));
+      await tester.ensureVisible(find.byKey(const Key('check-c0')));
+      await tester.tap(find.byKey(const Key('check-c0')));
+      await tester.pumpAndSettle();
+      expect(find.text('✓ Reachable, has qwen-b'), findsOneWidget);
+
+      await tester.ensureVisible(find.byKey(const Key('next')));
+      await tester.tap(find.byKey(const Key('next')));
+      await started.future;
+      expect(
+        File('${tmp.path}/brain.json').existsSync(),
+        false,
+        reason: 'not a brain',
+      );
+      final saved = jsonDecode(
+        File('${tmp.path}/worker-types.json').readAsStringSync(),
+      );
+      expect(saved, {
+        'project_dir': '~/work',
+        'max_workers': 16,
+        'codex': {'enabled': true, 'model': 'gpt-small'},
+        'claude': {'enabled': false},
+        'custom': [
+          {
+            'id': 'local-qwen',
+            'base_url': 'http://127.0.0.1:9/v1',
+            'model': 'qwen-b',
+            'description': '',
+            'max_concurrent': max,
+          },
+        ],
+      });
+      await tester.runAsync(server.close);
+    },
+  );
+
+  testWidgets('a brain picks one agent (brain.json); a body may offer none', (
+    tester,
+  ) async {
     late SignalServer server;
     late int port;
     await tester.runAsync(() async {
@@ -307,105 +510,54 @@ void main() {
     final checker = FakeChecker();
     final started = await pumpPage(
       tester,
-      LaunchConfig(url: 'ws://127.0.0.1:$port', brain: true, body: true),
+      LaunchConfig(url: 'ws://127.0.0.1:$port', brain: true, body: false),
       checker: checker,
     );
-    await tapAndWait(tester, find.byKey(const Key('next'))); // signaling
-    await tester.enterText(find.byKey(const Key('name')), 'brain-z');
-    await tester.tap(find.byKey(const Key('next'))); // roles
+    await tapAndWait(tester, find.byKey(const Key('next')));
+    await tester.tap(find.byKey(const Key('next'))); // roles -> brain
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('next'))); // belongs to
-    await tester.pumpAndSettle();
+    expect(
+      find.text('1. Signaling   2. Roles   3. Brain', findRichText: true),
+      findsOneWidget,
+    );
+    // Codex is checked on entering; it needs a login.
+    expect(find.text('✗ Not logged in'), findsOneWidget);
+    expect(find.byKey(const Key('brain-login')), findsOneWidget);
+    // No tools or permissions for the orchestrator.
+    expect(find.textContaining('Computer Use'), findsNothing);
+    expect(find.textContaining('macOS permissions'), findsNothing);
 
-    // Entering the step checks what is on.
-    expect(checker.calls, ['codex null', 'claude null']);
-    expect(find.textContaining('Not logged in'), findsOneWidget);
-    await tester.tap(find.byKey(const Key('codex-login')));
+    // A custom one needs a server and a model.
+    await tester.tap(find.text('Custom'));
     await tester.pumpAndSettle();
-    expect(checker.calls.sublist(2), ['login', 'codex null']);
-    expect(find.text('✓ Logged in (plus)'), findsOneWidget);
-
-    // The machine: project folder and workers at once; Codex's default model.
-    await tester.enterText(find.byKey(const Key('project-dir')), '~/work');
-    final workers = tester.getRect(find.byKey(const Key('max-workers')));
-    await tester.tapAt(Offset(workers.right - 8, workers.center.dy));
-    await tester.pumpAndSettle();
-    expect(tester.widget<Text>(find.byKey(const Key('max-workers-text'))).data, '16');
-    expect(find.text('Default (GPT Big)'), findsOneWidget);
-    await tester.tap(find.byKey(const Key('model-codex')));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('GPT Small').last);
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.byKey(const Key('agent-claude')));
-    await tester.pumpAndSettle();
-
-    // A custom one with a bad id is refused on Start.
-    await tester.tap(find.byKey(const Key('add-custom')));
-    await tester.pumpAndSettle();
-    final card = find.byKey(const Key('custom-c0'));
-    expect(card, findsOneWidget, reason: 'the first draft in this test run');
-    Future<void> type(String field, String text) async {
-      await tester.enterText(find.byKey(Key('custom-c0-$field')), text);
-      await tester.pump();
-    }
-    await type('id', 'Bad Id');
-    // Before the list is loaded, the model is typed; a bad URL says so.
-    expect(find.byKey(const Key('custom-c0-model')), findsOneWidget);
-    await type('url', 'nope');
-    await tester.tap(find.byKey(const Key('load-c0')));
-    await tester.pumpAndSettle();
-    expect(find.textContaining('Enter a URL like'), findsOneWidget);
-    await type('url', 'http://127.0.0.1:9/v1');
-    await tester.tap(find.byKey(const Key('load-c0')));
-    await tester.pumpAndSettle();
-    // Loaded: a list with context windows; the first is picked.
-    expect(find.byKey(const Key('custom-c0-model-list')), findsOneWidget);
-    expect(find.text('qwen-a  ·  262K context'), findsOneWidget);
-    await tester.tap(find.byKey(const Key('custom-c0-model-list')));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('qwen-b').last);
-    await tester.pumpAndSettle();
-    await tester.ensureVisible(find.byKey(const Key('next')));
     await tester.tap(find.byKey(const Key('next')));
     await tester.pumpAndSettle();
-    expect(find.textContaining('use a-z'), findsOneWidget);
-    await type('id', 'local-qwen');
-    expect(tester.widget<Text>(find.byKey(const Key('custom-c0-max-text'))).data, 'No limit');
-    final slider = tester.getRect(find.byKey(const Key('custom-c0-max')));
-    await tester.tapAt(Offset(slider.left + slider.width * 0.3, slider.center.dy));
-    await tester.pumpAndSettle();
-    final max = int.parse(tester.widget<Text>(find.byKey(const Key('custom-c0-max-text'))).data!);
-    expect(max, inInclusiveRange(1, 8));
-    await tester.ensureVisible(find.byKey(const Key('check-c0')));
-    await tester.tap(find.byKey(const Key('check-c0')));
-    await tester.pumpAndSettle();
-    expect(find.text('✓ Reachable, has qwen-b'), findsOneWidget);
+    expect(
+      find.text('the custom agent needs base_url and model'),
+      findsOneWidget,
+    );
 
-    await tester.ensureVisible(find.byKey(const Key('next')));
+    // Claude, its second model, a folder, no waking.
+    await tester.tap(find.text('Claude'));
+    await tester.pumpAndSettle();
+    expect(find.text('✓ Logged in (max)'), findsOneWidget);
+    await tester.enterText(find.byKey(const Key('brain-cwd')), '~/work');
+    await tester.tap(find.byKey(const Key('brain-wake')));
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('next')));
     final (c, _) = await started.future;
-    expect(c.orchestrator, 'codex');
-    final saved = jsonDecode(File('${tmp.path}/worker-types.json').readAsStringSync());
-    expect(saved, {
-      'project_dir': '~/work',
-      'max_workers': 16,
-      'codex': {'enabled': true, 'model': 'gpt-small'},
-      'claude': {'enabled': false},
-      'custom': [
-        {
-          'id': 'local-qwen',
-          'base_url': 'http://127.0.0.1:9/v1',
-          'model': 'qwen-b',
-          'description': '',
-          'max_concurrent': max,
-        },
-      ],
-    });
+    expect((c.brain, c.body), (true, false));
+    final brain = jsonDecode(File('${tmp.path}/brain.json').readAsStringSync());
+    expect(brain, {'kind': 'claude', 'cwd': '~/work', 'wake_on_finish': false});
+    expect(
+      File('${tmp.path}/worker-types.json').existsSync(),
+      false,
+      reason: 'not a body',
+    );
     await tester.runAsync(server.close);
   });
 
-  testWidgets('a brain with no agents cannot start; a body can', (tester) async {
+  testWidgets('a body may offer no agents', (tester) async {
     late SignalServer server;
     late int port;
     await tester.runAsync(() async {
@@ -417,96 +569,97 @@ void main() {
     });
     final started = await pumpPage(
       tester,
-      LaunchConfig(url: 'ws://127.0.0.1:$port', brain: true, body: false),
+      LaunchConfig(url: 'ws://127.0.0.1:$port', brain: false, body: true),
     );
     await tapAndWait(tester, find.byKey(const Key('next')));
-    await tester.tap(find.byKey(const Key('next'))); // roles -> agents
-    await tester.pumpAndSettle();
-    expect(find.text('1. Signaling   2. Roles   3. Agents', findRichText: true), findsOneWidget);
-    await tester.tap(find.byKey(const Key('agent-codex')));
-    await tester.tap(find.byKey(const Key('agent-claude')));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('next')));
-    await tester.pumpAndSettle();
-    expect(find.textContaining('A brain needs at least one agent'), findsOneWidget);
-
-    // As a body only, none is fine.
-    await tester.tap(find.byKey(const Key('back')));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('role-brain')));
-    await tester.tap(find.byKey(const Key('role-body')));
-    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('next'))); // roles -> belongs to
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('next'))); // -> agents
+    await tester.tap(find.byKey(const Key('next'))); // -> body
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('agent-codex')));
+    await tester.tap(find.byKey(const Key('agent-claude')));
     await tester.pumpAndSettle();
     expect(find.textContaining('only its tools'), findsOneWidget);
     await tester.tap(find.byKey(const Key('next')));
     final (c, _) = await started.future;
     expect((c.brain, c.body), (false, true));
-    final saved = jsonDecode(File('${tmp.path}/worker-types.json').readAsStringSync()) as Map;
+    final saved = jsonDecode(
+      File('${tmp.path}/worker-types.json').readAsStringSync(),
+    ) as Map;
     expect((saved['codex'] as Map)['enabled'], false);
     expect((saved['claude'] as Map)['enabled'], false);
     await tester.runAsync(server.close);
   });
 
-  testWidgets('tools: switches show what they need; permissions are granted here; saved', (tester) async {
-    late SignalServer server;
-    late int port;
-    await tester.runAsync(() async {
-      final probe = await ServerSocket.bind(InternetAddress.loopbackIPv4, 0);
-      port = probe.port;
-      await probe.close();
-      server = SignalServer(port: port, log: (_) {});
-      await server.start();
-    });
-    final checker = FakeChecker()..codexLoggedIn = true;
-    final perms = FakePermissions();
-    final started = await pumpPage(
-      tester,
-      LaunchConfig(url: 'ws://127.0.0.1:$port', body: true),
-      checker: checker,
-      permissions: perms,
-    );
-    await tapAndWait(tester, find.byKey(const Key('next')));
-    await tester.tap(find.byKey(const Key('next'))); // roles
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('next'))); // belongs to
-    await tester.pumpAndSettle();
+  testWidgets(
+    'tools: switches show what they need; permissions are granted here; saved',
+    (tester) async {
+      late SignalServer server;
+      late int port;
+      await tester.runAsync(() async {
+        final probe = await ServerSocket.bind(InternetAddress.loopbackIPv4, 0);
+        port = probe.port;
+        await probe.close();
+        server = SignalServer(port: port, log: (_) {});
+        await server.start();
+      });
+      final checker = FakeChecker()..codexLoggedIn = true;
+      final perms = FakePermissions();
+      final started = await pumpPage(
+        tester,
+        LaunchConfig(url: 'ws://127.0.0.1:$port', body: true),
+        checker: checker,
+        permissions: perms,
+      );
+      await tapAndWait(tester, find.byKey(const Key('next')));
+      await tester.tap(find.byKey(const Key('next'))); // roles
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('next'))); // belongs to
+      await tester.pumpAndSettle();
 
-    // This app's permissions: Accessibility is granted here.
-    expect(find.textContaining('Accessibility: not granted'), findsOneWidget);
-    await tester.ensureVisible(find.byKey(const Key('grant-Privacy_Accessibility')));
-    await tester.tap(find.byKey(const Key('grant-Privacy_Accessibility')));
-    await tester.pumpAndSettle();
-    expect(find.textContaining('Accessibility: granted'), findsOneWidget);
-    // Screen Recording asks once and then offers the restart it needs.
-    expect(find.byKey(const Key('restart')), findsNothing);
-    await tester.tap(find.byKey(const Key('grant-Privacy_ScreenCapture')));
-    await tester.pumpAndSettle();
-    expect(perms.screenAsked, isTrue);
-    expect(find.byKey(const Key('restart')), findsOneWidget);
+      // This app's permissions: Accessibility is granted here.
+      expect(find.textContaining('Accessibility: not granted'), findsOneWidget);
+      await tester.ensureVisible(
+        find.byKey(const Key('grant-Privacy_Accessibility')),
+      );
+      await tester.tap(find.byKey(const Key('grant-Privacy_Accessibility')));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('Accessibility: granted'), findsOneWidget);
+      // Screen Recording asks once and then offers the restart it needs.
+      expect(find.byKey(const Key('restart')), findsNothing);
+      await tester.tap(find.byKey(const Key('grant-Privacy_ScreenCapture')));
+      await tester.pumpAndSettle();
+      expect(perms.screenAsked, isTrue);
+      expect(find.byKey(const Key('restart')), findsOneWidget);
 
-    // Codex Computer Use: what it needs, one thing missing.
-    await tester.ensureVisible(find.byKey(const Key('tool-codex-cu')));
-    await tester.tap(find.byKey(const Key('tool-codex-cu')));
-    await tester.pumpAndSettle();
-    expect(find.text('✗ Computer Use plugin: Off'), findsOneWidget);
-    // Claude's Mac control: a missing permission opens System Settings.
-    await tester.ensureVisible(find.byKey(const Key('tool-claude-mac')));
-    await tester.tap(find.byKey(const Key('tool-claude-mac')));
-    await tester.pumpAndSettle();
-    expect(find.text('✗ Peekaboo: Accessibility: Not granted'), findsOneWidget);
-    await tester.tap(find.byKey(const Key('open-claude-mac-Privacy_Accessibility')));
-    await tester.pumpAndSettle();
-    expect(perms.opened, ['Privacy_Accessibility']);
+      // Codex Computer Use: what it needs, one thing missing.
+      await tester.ensureVisible(find.byKey(const Key('tool-codex-cu')));
+      await tester.tap(find.byKey(const Key('tool-codex-cu')));
+      await tester.pumpAndSettle();
+      expect(find.text('✗ Computer Use plugin: Off'), findsOneWidget);
+      // Claude's Mac control: a missing permission opens System Settings.
+      await tester.ensureVisible(find.byKey(const Key('tool-claude-mac')));
+      await tester.tap(find.byKey(const Key('tool-claude-mac')));
+      await tester.pumpAndSettle();
+      expect(
+        find.text('✗ Peekaboo: Accessibility: Not granted'),
+        findsOneWidget,
+      );
+      await tester.tap(
+        find.byKey(const Key('open-claude-mac-Privacy_Accessibility')),
+      );
+      await tester.pumpAndSettle();
+      expect(perms.opened, ['Privacy_Accessibility']);
 
-    await tester.ensureVisible(find.byKey(const Key('next')));
-    await tester.tap(find.byKey(const Key('next')));
-    await started.future;
-    final saved = jsonDecode(File('${tmp.path}/worker-types.json').readAsStringSync()) as Map;
-    expect(saved['codex'], {'enabled': true, 'computer_use': true});
-    expect(saved['claude'], {'enabled': true, 'mac': true});
-    await tester.runAsync(server.close);
-  });
+      await tester.ensureVisible(find.byKey(const Key('next')));
+      await tester.tap(find.byKey(const Key('next')));
+      await started.future;
+      final saved = jsonDecode(
+        File('${tmp.path}/worker-types.json').readAsStringSync(),
+      ) as Map;
+      expect(saved['codex'], {'enabled': true, 'computer_use': true});
+      expect(saved['claude'], {'enabled': true, 'mac': true});
+      await tester.runAsync(server.close);
+    },
+  );
 }

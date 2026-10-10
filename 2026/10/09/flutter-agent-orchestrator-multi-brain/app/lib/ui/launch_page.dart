@@ -8,21 +8,26 @@ import 'package:orchestrator_signal/signal_server.dart';
 import '../agents/agent_check.dart';
 import '../agents/mac_permissions.dart';
 import '../agents/worker_types.dart';
+import '../orchestrator/brain_config.dart';
 import 'agents_editor.dart';
+import 'brain_editor.dart';
 import '../mesh/launch.dart';
 import 'theme.dart';
 
-/// The first screen when no `ORCH_*` variables are set, in three steps:
+/// The first screen when no `ORCH_*` variables are set, in steps:
 ///
 /// 1. Signaling: start the server in this app (fails here when the port is
 ///    in use) or join one (fails here when it cannot be read).
 /// 2. Roles: the name, and brain and/or body (neither: a console only).
-/// 3. Owner, for a body: which brain it belongs to, from the roster read in
-///    step 1.
-/// 4. Agents, for a brain or a body: Codex and Claude on or off, custom ones
-///    (a Responses API server) added freely, each checked as it is turned on
-///    ([AgentChecker]). A body offers them as worker types; a brain runs its
-///    orchestrator on one. Kept in `worker-types.json`.
+/// 3. Brain, for a brain: the one agent its orchestrator runs on (checked
+///    as it is picked), its model, effort and folder ([BrainEditor]). Kept
+///    in `brain.json`.
+/// 4. Belongs to, for a body: which brain it belongs to, from the roster
+///    read in step 1.
+/// 5. Body, for a body: the agents it offers as workers (Codex and Claude on
+///    or off, custom ones added freely, each checked as it is turned on),
+///    their tools, and this app's macOS permissions ([AgentsEditor]). Kept
+///    in `worker-types.json`.
 class LaunchPage extends StatefulWidget {
   const LaunchPage({
     super.key,
@@ -77,8 +82,9 @@ class _LaunchPageState extends State<LaunchPage> {
   List<String> get _steps => [
     'Signaling',
     'Roles',
+    if (c.brain) 'Brain',
     if (c.body) 'Belongs to',
-    if (c.brain || c.body) 'Agents',
+    if (c.body) 'Body',
   ];
 
   String get _stepName => _steps[_step.clamp(0, _steps.length - 1)];
@@ -94,7 +100,8 @@ class _LaunchPageState extends State<LaunchPage> {
       _error = null;
       _step++;
     });
-    if (_stepName == 'Agents') _draft.checkAll();
+    if (_stepName == 'Body') _draft.checkAll();
+    if (_stepName == 'Brain' && _brain.check == null) _brain.runCheck();
   }
 
   /// The server started in step 1 (kept while going back and forth).
@@ -106,6 +113,7 @@ class _LaunchPageState extends State<LaunchPage> {
   @override
   void dispose() {
     _draft.dispose();
+    _brain.dispose();
     _name.dispose();
     _port.dispose();
     _url.dispose();
@@ -238,18 +246,46 @@ class _LaunchPageState extends State<LaunchPage> {
   }
 
   void _start() {
-    if (c.brain || c.body) {
-      final error = _saveAgents();
-      if (error != null) {
-        setState(() => _error = error);
-        return;
-      }
+    final (brain, brainError) = c.brain ? _brain.read() : (null, null);
+    final (body, bodyError) = c.body
+        ? _draft.read(needOne: false)
+        : (null, null);
+    if (brainError ?? bodyError case final e?) {
+      setState(() => _error = e);
+      return;
     }
+    brain?.save(widget.stateDir);
+    body?.save(widget.typesFile);
     c.assignOwner = c.body;
     widget.onStart(c, _server);
   }
 
-  // ---- step 4: agents -------------------------------------------------------
+  // ---- step 3: brain --------------------------------------------------------
+
+  late final _brain = BrainDraft(
+    () {
+      try {
+        return BrainConfig.load(widget.stateDir, const {});
+      } catch (_) {
+        return BrainConfig();
+      }
+    }(),
+    checker: widget.checker,
+    projectDirDefault:
+        'this machine\'s project folder (${c.body ? 'the Body step' : Platform.environment['ORCH_CWD'] ?? 'the home folder'})',
+  );
+
+  List<Widget> _brainStep(ThemeData theme) => [
+    _title(
+      theme,
+      'Brain',
+      'The agent its orchestrator runs on. It talks with you and hands work to the workers of its bodies; '
+          'it gets no tools that drive the Mac or Chrome. Checked as you pick it (no model tokens).',
+    ),
+    BrainEditor(draft: _brain),
+  ];
+
+  // ---- step 5: body ---------------------------------------------------------
 
   late final _draft = AgentsDraft(
     () {
@@ -277,36 +313,14 @@ class _LaunchPageState extends State<LaunchPage> {
     await widget.permissions.relaunch();
   }
 
-  String? _saveAgents() {
-    final (config, error) = _draft.read(needOne: c.brain);
-    if (error != null) return error;
-    config!.save(widget.typesFile);
-    final ids = [for (final t in config.types) t.id];
-    if (c.brain && !ids.contains(c.orchestrator)) c.orchestrator = ids.first;
-    return null;
-  }
-
-  List<Widget> _agentsStep(ThemeData theme) => [
+  List<Widget> _bodyStep(ThemeData theme) => [
     _title(
       theme,
-      'Agents',
-      [
-        if (c.body)
-          'The brain this body belongs to can start these as workers here.',
-        if (c.brain) 'The orchestrator runs on one of them.',
-        'Each is checked when turned on (no model tokens).',
-      ].join(' '),
+      'Body',
+      'The agents the brain this body belongs to can start here as workers, and their tools. '
+          'Each is checked when turned on (no model tokens).',
     ),
-    AgentsEditor(
-      draft: _draft,
-      brain: c.brain,
-      body: c.body,
-      orchestrator: c.orchestrator,
-      onOrchestrator: c.brain
-          ? (v) => setState(() => c.orchestrator = v)
-          : null,
-      onRestart: _restart,
-    ),
+    AgentsEditor(draft: _draft, onRestart: _restart),
   ];
 
   // ---- view -----------------------------------------------------------------
@@ -349,7 +363,8 @@ class _LaunchPageState extends State<LaunchPage> {
                   'Signaling' => _signalingStep(theme),
                   'Roles' => _rolesStep(theme),
                   'Belongs to' => _ownerStep(theme),
-                  _ => _agentsStep(theme),
+                  'Brain' => _brainStep(theme),
+                  _ => _bodyStep(theme),
                 },
                 const SizedBox(height: 20),
                 if (_error != null)

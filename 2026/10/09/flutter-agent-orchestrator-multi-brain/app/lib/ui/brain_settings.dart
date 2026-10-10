@@ -1,45 +1,44 @@
 import 'package:flutter/material.dart';
 
 import '../agents/agent_check.dart';
-import '../agents/mac_permissions.dart';
-import '../agents/worker_types.dart';
+import '../orchestrator/brain_config.dart';
 import '../state/thread_view.dart' show Json;
-import 'agents_editor.dart';
+import 'brain_editor.dart';
 import 'theme.dart';
 
-/// Sends a `body/...` request to the body (through the brain that owns it).
-typedef BodyRequest = Future<Object?> Function(String method, [Json params]);
+/// Sends a `brain/...` request to a brain.
+typedef BrainRequest = Future<Object?> Function(String method, [Json params]);
 
-/// A connected body's agents, edited from a console: the same editor as its
-/// start screen, with every check run on the body's machine. Saving restarts
-/// the body's agents, so it is offered only while the body is paused with
-/// nothing running there.
-Future<void> showBodySettings(
+/// A brain's settings, edited from any console: the Brain step of its start
+/// screen, with the checks run on the brain's machine. Saving restarts the
+/// orchestrator's agent and starts a new conversation (refused while the
+/// orchestrator is running); workers keep running.
+Future<void> showBrainSettings(
   BuildContext context, {
-  required String body,
-  required BodyRequest request,
+  required String brain,
+  required BrainRequest request,
 }) => showDialog<void>(
   context: context,
   barrierDismissible: false,
-  builder: (_) => BodySettingsDialog(body: body, request: request),
+  builder: (_) => BrainSettingsDialog(brain: brain, request: request),
 );
 
-class BodySettingsDialog extends StatefulWidget {
-  const BodySettingsDialog({
+class BrainSettingsDialog extends StatefulWidget {
+  const BrainSettingsDialog({
     super.key,
-    required this.body,
+    required this.brain,
     required this.request,
   });
 
-  final String body;
-  final BodyRequest request;
+  final String brain;
+  final BrainRequest request;
 
   @override
-  State<BodySettingsDialog> createState() => _BodySettingsDialogState();
+  State<BrainSettingsDialog> createState() => _BrainSettingsDialogState();
 }
 
-class _BodySettingsDialogState extends State<BodySettingsDialog> {
-  AgentsDraft? _draft;
+class _BrainSettingsDialogState extends State<BrainSettingsDialog> {
+  BrainDraft? _draft;
   String? _error;
   bool _saving = false;
 
@@ -51,24 +50,24 @@ class _BodySettingsDialogState extends State<BodySettingsDialog> {
 
   Future<void> _load() async {
     try {
-      final r = (await widget.request('body/config') as Map)
+      final r = (await widget.request('brain/config') as Map)
           .cast<String, dynamic>();
-      final draft = AgentsDraft(
-        WorkerTypesConfig.fromJson((r['config'] as Map).cast()),
+      final draft = BrainDraft(
+        BrainConfig.fromJson((r['config'] as Map).cast()),
         checker: RemoteAgentChecker(
           (what, args) =>
-              widget.request('body/check', {'what': what, 'args': args}),
+              widget.request('brain/check', {'what': what, 'args': args}),
         ),
-        permissions: _RemotePermissions(widget.request),
         local: false,
-        projectDirDefault: r['projectDirDefault'] as String?,
+        projectDirDefault:
+            'its project folder (${r['projectDirDefault'] ?? 'on that machine'})',
       );
       if (!mounted) {
         draft.dispose();
         return;
       }
       setState(() => _draft = draft);
-      draft.checkAll();
+      draft.runCheck();
     } catch (e) {
       if (mounted) setState(() => _error = 'Could not read its settings: $e');
     }
@@ -81,7 +80,7 @@ class _BodySettingsDialogState extends State<BodySettingsDialog> {
   }
 
   Future<void> _save() async {
-    final (config, error) = _draft!.read(needOne: false);
+    final (config, error) = _draft!.read();
     if (error != null) {
       setState(() => _error = error);
       return;
@@ -91,7 +90,7 @@ class _BodySettingsDialogState extends State<BodySettingsDialog> {
       _error = null;
     });
     try {
-      await widget.request('body/configure', {'config': config!.toJson()});
+      await widget.request('brain/configure', {'config': config!.toJson()});
       if (mounted) Navigator.of(context).pop();
     } catch (e) {
       if (mounted) {
@@ -109,16 +108,17 @@ class _BodySettingsDialogState extends State<BodySettingsDialog> {
     final draft = _draft;
     return AlertDialog(
       backgroundColor: Palette.surface,
-      title: Text('Agents of ${widget.body}'),
+      title: Text('Settings of ${widget.brain}'),
       content: SizedBox(
-        width: 480,
+        width: 460,
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Checks run on ${widget.body}\'s machine. Saving restarts its agents: the threads it had '
-                'end. It stays paused; resume it when you are done.',
+                'What its orchestrator runs on. Checks run on ${widget.brain}\'s machine. Saving restarts '
+                'the orchestrator and starts a new conversation; workers keep running. What each body '
+                'runs is that body\'s settings (⚙ in Bodies).',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: Palette.textDim,
                 ),
@@ -129,13 +129,13 @@ class _BodySettingsDialogState extends State<BodySettingsDialog> {
                   'Reading its settings…',
                   style: TextStyle(fontSize: 12, color: Palette.textDim),
                 ),
-              if (draft != null) AgentsEditor(draft: draft),
+              if (draft != null) BrainEditor(draft: draft),
               if (_error case final e?)
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
                   child: Text(
                     e,
-                    key: const Key('body-settings-error'),
+                    key: const Key('brain-settings-error'),
                     style: TextStyle(color: theme.colorScheme.error),
                   ),
                 ),
@@ -149,31 +149,11 @@ class _BodySettingsDialogState extends State<BodySettingsDialog> {
           child: const Text('Cancel'),
         ),
         FilledButton(
-          key: const Key('body-settings-save'),
+          key: const Key('brain-settings-save'),
           onPressed: draft == null || _saving ? null : _save,
-          child: Text(
-            _saving ? 'Restarting its agents…' : 'Save and restart agents',
-          ),
+          child: Text(_saving ? 'Restarting…' : 'Save and start over'),
         ),
       ],
     );
-  }
-}
-
-/// The body app's macOS permissions, read on its machine (granting them
-/// stays there).
-class _RemotePermissions extends MacPermissions {
-  const _RemotePermissions(this.request);
-
-  final BodyRequest request;
-
-  @override
-  Future<Map<String, bool>?> status() async {
-    try {
-      final r = await request('body/check', {'what': 'permissions'});
-      return (r as Map?)?.cast<String, bool>();
-    } catch (_) {
-      return null;
-    }
   }
 }

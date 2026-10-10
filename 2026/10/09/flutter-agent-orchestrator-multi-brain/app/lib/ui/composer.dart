@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../console/console.dart';
-import '../orchestrator/hub.dart' show HubSettings;
 import 'theme.dart';
 
 /// The only input: messages to the orchestrator.
@@ -50,12 +49,11 @@ class _ComposerState extends State<Composer> {
     final o = console.orchestrator;
     final running = o?.view.isRunning ?? false;
     final hasText = _controller.text.trim().isNotEmpty;
-    final type = o?.workerType ?? console.settings.orchestrator;
-    final label = console.labelOf(type);
-    final models = console.ready
-        ? console.modelsFor(type)
-        : const <Map<String, dynamic>>[];
-    final model = o?.model ?? console.settings.orchestratorModel;
+    final agent = console.brainAgent;
+    final runsOn = [
+      if (agent['label'] case final String l) l,
+      if ((o?.model ?? agent['model']) case final String m) m,
+    ].join(' · ');
     return Container(
       decoration: BoxDecoration(
         color: Palette.surface,
@@ -79,8 +77,8 @@ class _ComposerState extends State<Composer> {
                 isCollapsed: true,
                 border: InputBorder.none,
                 hintText: running
-                    ? 'Add to what the orchestrator is doing…'
-                    : 'Ask the orchestrator ($label)',
+                    ? 'Add to what ${console.brain} is doing…'
+                    : 'Ask ${console.brain}',
                 hintStyle: const TextStyle(color: Palette.textFaint),
               ),
             ),
@@ -89,53 +87,22 @@ class _ComposerState extends State<Composer> {
           Row(
             children: [
               Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      _Chip(
-                        icon: Icons.hub_outlined,
-                        text: 'Orchestrator: $label',
-                      ),
-                      const SizedBox(width: 4),
-                      // Applies to the next conversation (and is saved).
-                      PopupMenuButton<String>(
-                        tooltip: 'Orchestrator model (next conversation)',
-                        enabled: models.isNotEmpty,
-                        color: Palette.surfaceHigh,
-                        onSelected: (id) => console.saveSettings(
-                          HubSettings()
-                            ..load(console.settings.toJson())
-                            ..orchestratorModel = id,
-                        ),
-                        itemBuilder: (_) => [
-                          for (final m in models)
-                            CheckedPopupMenuItem(
-                              value: m['id'] as String,
-                              checked: m['id'] == model,
-                              child: Text('${m['displayName']}'),
-                            ),
-                        ],
-                        child: _Chip(
-                          icon: Icons.auto_awesome_outlined,
-                          text:
-                              models
-                                      .where((m) => m['id'] == model)
-                                      .firstOrNull?['displayName']
-                                  as String? ??
-                              model ??
-                              'default model',
-                          dropdown: true,
-                        ),
-                      ),
-                    ],
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  child: Text(
+                    runsOn,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Palette.textFaint,
+                    ),
                   ),
                 ),
               ),
               const SizedBox(width: 8),
               if (running && !hasText)
                 IconButton.filled(
-                  tooltip: 'Stop the orchestrator',
+                  tooltip: 'Stop ${console.brain}',
                   onPressed: console.interruptOrchestrator,
                   icon: const Icon(Icons.stop_rounded, size: 18),
                 )
@@ -147,38 +114,6 @@ class _ComposerState extends State<Composer> {
                 ),
             ],
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class _Chip extends StatelessWidget {
-  const _Chip({required this.icon, required this.text, this.dropdown = false});
-
-  final IconData icon;
-  final String text;
-  final bool dropdown;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 14, color: Palette.textDim),
-          const SizedBox(width: 4),
-          Text(
-            text,
-            style: const TextStyle(fontSize: 12, color: Palette.textDim),
-          ),
-          if (dropdown)
-            const Icon(
-              Icons.arrow_drop_down,
-              size: 16,
-              color: Palette.textFaint,
-            ),
         ],
       ),
     );

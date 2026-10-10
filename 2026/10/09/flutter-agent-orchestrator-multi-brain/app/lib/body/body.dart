@@ -152,13 +152,6 @@ class LocalBody extends ChangeNotifier with Body {
     notifyListeners();
   }
 
-  /// Runs orchestrator tool calls (set by the brain's hub; bodies have none).
-  ToolHandler? toolHandler;
-
-  /// Claude permission prompts that need the user (the orchestrator's
-  /// AskUserQuestion).
-  void Function()? onUserPrompt;
-
   final protocolLog = <ProtocolLogEntry>[];
 
   @override
@@ -167,16 +160,15 @@ class LocalBody extends ChangeNotifier with Body {
   @override
   bool get isLocal => true;
 
+  /// Workers have no orchestrator tools (the brain's agent has them).
   Future<ToolResult> _onTool(AgentThread caller, String tool, Json args) =>
-      toolHandler?.call(caller, tool, args) ??
-      Future.value(
-        ToolResult('error: no orchestrator tools on body $name', false),
-      );
+      Future.value(ToolResult('error: no orchestrator tools on body $name', false));
 
   @override
   Future<Json> readImage(String path) => loadImage(path);
 
-  void _log(RpcClient c) => c.log.listen((e) {
+  /// Keeps [c]'s traffic for the console's protocol log.
+  void logClient(RpcClient c) => c.log.listen((e) {
     protocolLog.add(e);
     if (protocolLog.length > 3000) protocolLog.removeRange(0, 1000);
   });
@@ -187,7 +179,9 @@ class LocalBody extends ChangeNotifier with Body {
     Platform.environment['ORCH_WORKER_TYPES'] ?? '$stateDir/worker-types.json',
   );
 
-  Future<void> start() async {
+  /// Reads `worker-types.json` (also for the project folder, which a brain
+  /// on this app works in when it sets none of its own).
+  void loadConfig() {
     try {
       config = WorkerTypesConfig.load(typesFile, Platform.environment);
     } catch (e) {
@@ -197,6 +191,10 @@ class LocalBody extends ChangeNotifier with Body {
         claude: BuiltinSetup(enabled: false),
       );
     }
+  }
+
+  Future<void> start() async {
+    loadConfig();
     notifyListeners();
     await Future.wait([
       if (config.codex.enabled) _startCodex(),
@@ -212,7 +210,7 @@ class LocalBody extends ChangeNotifier with Body {
       final b = CodexBackend(await codexAppServer(), onTool: _onTool)
         ..onChanged = notifyListeners
         ..workerConfig = codexComputerUse(config.codex.computerUse);
-      _log(b.client);
+      logClient(b.client);
       await b.start();
       codex = b;
       if (b.account == null) {
@@ -227,10 +225,9 @@ class LocalBody extends ChangeNotifier with Body {
     try {
       final b = ClaudeBackend(claudeBridge(), onTool: _onTool)
         ..onChanged = notifyListeners
-        ..onUserPrompt = ((_, _) => onUserPrompt?.call())
         ..workerChrome = config.claude.chrome
         ..workerMac = config.claude.mac;
-      _log(b.client);
+      logClient(b.client);
       await b.start(projectDir);
       claude = b;
       if (!claudeLoggedIn(b.account)) {
@@ -250,7 +247,7 @@ class LocalBody extends ChangeNotifier with Body {
       )
         ..onChanged = notifyListeners
         ..workerConfig = t.computerUse ? customWorkerConfig() : null;
-      _log(b.client);
+      logClient(b.client);
       await b.start();
       custom[t.id] = b;
     } catch (e) {
@@ -434,9 +431,6 @@ class LocalBody extends ChangeNotifier with Body {
       _restarting = false;
     }
   }
-
-  void answer(Object requestId, Object? result) =>
-      claude?.client.respond(requestId, result);
 
   void closeBackends() {
     for (final b in custom.values) {

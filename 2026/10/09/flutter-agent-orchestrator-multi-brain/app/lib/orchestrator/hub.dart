@@ -1,41 +1,16 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
+import '../agents/agent_check.dart';
 import '../agents/agent_thread.dart';
 import '../agents/backends.dart';
 import '../body/body.dart';
 import '../state/thread_view.dart';
+import 'brain_agent.dart';
+import 'brain_config.dart';
 import 'tools.dart';
-
-/// The brain's settings (the orchestrator's): kept in the state folder's
-/// `settings.json`, changed from any console. What runs on a body and how
-/// many at once is the body's own setting (its start screen).
-class HubSettings {
-  /// The worker type the orchestrator runs as, on the brain's own machine.
-  String orchestrator = 'codex';
-  String? orchestratorModel;
-  String? orchestratorEffort;
-
-  /// Start an orchestrator turn when a worker finishes while it is idle.
-  bool wakeOnFinish = true;
-
-  Json toJson() => {
-    'orchestrator': orchestrator,
-    'orchestratorModel': orchestratorModel,
-    'orchestratorEffort': orchestratorEffort,
-    'wakeOnFinish': wakeOnFinish,
-  };
-
-  void load(Json j) {
-    orchestrator = j['orchestrator'] as String? ?? 'codex';
-    orchestratorModel = j['orchestratorModel'] as String?;
-    orchestratorEffort = j['orchestratorEffort'] as String?;
-    wakeOnFinish = j['wakeOnFinish'] as bool? ?? wakeOnFinish;
-  }
-}
 
 /// The brain: owns the orchestrator and the ledger of workers on every body
 /// (this app's [local] one and the connected [RemoteBody]s). The user talks
@@ -43,27 +18,34 @@ class HubSettings {
 /// drives workers through [tools].
 class Hub extends ChangeNotifier {
   Hub(this.local) {
-    local
-      ..toolHandler = _onTool
-      ..onUserPrompt = notifyListeners
-      ..addListener(notifyListeners);
+    local.addListener(notifyListeners);
     bodies[local.name] = local;
+    brain = BrainAgent(
+      stateDir: local.stateDir,
+      onTool: _onTool,
+      onUserPrompt: notifyListeners,
+      log: local.logClient,
+    )..addListener(notifyListeners);
   }
 
+  /// This app's body (its workers' agents). Listed as one of the bodies
+  /// only when this app is a body ([ownerOf]).
   final LocalBody local;
-  final settings = HubSettings();
+
+  /// The orchestrator's own agent, apart from the body's.
+  late final BrainAgent brain;
+  BrainConfig get config => brain.config;
 
   /// Every body by name, the brain's own included. Bodies that went away
   /// stay listed as offline until one with the same name joins.
   final bodies = <String, Body>{};
 
-  bool get ready => local.ready;
-  String? get startupError =>
-      local.startupError ??
-      (local.ready && local.workerTypes.isEmpty
-          ? 'Nothing can run the orchestrator on ${local.name}: turn on Codex, Claude or a custom agent on its start screen.'
-          : null);
-  String get projectDir => local.projectDir;
+  bool get ready => brain.ready;
+  String? get startupError => brain.ready ? brain.error : null;
+
+  /// Where the orchestrator works: its own folder, else this machine's
+  /// project folder.
+  String get projectDir => expandHome(config.cwd) ?? local.projectDir;
 
   AgentThread? orchestrator;
   final workers = <AgentThread>[];
@@ -71,24 +53,29 @@ class Hub extends ChangeNotifier {
 
   String get _stateDir => local.stateDir;
 
-  File get _settingsFile => File('$_stateDir/settings.json');
-
   Future<void> start() async {
-    if (await _settingsFile.exists()) {
-      settings.load(jsonDecode(await _settingsFile.readAsString()) as Json);
+    local.loadConfig();
+    BrainConfig c;
+    try {
+      c = BrainConfig.load(_stateDir, Platform.environment);
+    } catch (e) {
+      c = BrainConfig();
     }
-    final env = Platform.environment;
-    if (env['ORCH_ORCHESTRATOR'] case final String p when p.isNotEmpty) {
-      settings.orchestrator = p;
-    }
-    notifyListeners();
+    brain.config = c;
+    await brain.start(c, cwd: projectDir);
   }
 
-  Future<void> saveSettings() async {
-    await _settingsFile.parent.create(recursive: true);
-    await _settingsFile.writeAsString(
-      const JsonEncoder.withIndent('  ').convert(settings.toJson()),
-    );
+  /// New settings for the brain (start screen or a console): saved, and the
+  /// orchestrator's agent restarts. Only while it is not running; the next
+  /// message starts a new conversation. Workers keep running.
+  Future<void> configure(BrainConfig c) async {
+    if (c.problem case final p?) throw StateError(p);
+    if (orchestrator case final o? when o.isRunning || o.view.isRunning) {
+      throw StateError('the orchestrator is running; wait for it or stop it');
+    }
+    await newConversation();
+    c.save(_stateDir);
+    await brain.restart(c, cwd: expandHome(c.cwd) ?? local.projectDir);
     notifyListeners();
   }
 
@@ -154,22 +141,13 @@ class Hub extends ChangeNotifier {
       case 'interrupt':
         await interruptOrchestrator();
       case 'new':
-        await newConversation(workerType: a['workerType'] as String?);
+        await newConversation();
       case 'stop':
         if (worker(a['id'] as String) case final w?) await stopWorker(w);
-      case 'settings':
-        settings.load((a['settings'] as Map).cast<String, dynamic>());
-        await saveSettings();
-        // A higher limit may let queued workers start.
-        drainQueue();
       case 'answer':
         answer(a['requestId'] as Object, a['result']);
-      case 'project':
-        local.setProjectDir(a['dir'] as String);
-        await newConversation();
       case 'pause':
         await setPaused(a['body'] as String, a['paused'] == true);
-
     }
   }
 
@@ -193,6 +171,24 @@ class Hub extends ChangeNotifier {
           a['m'] as String,
           (a['p'] as Map? ?? const {}).cast<String, dynamic>(),
         );
+      case 'brain':
+        final p = (a['p'] as Map? ?? const {}).cast<String, dynamic>();
+        switch (a['m']) {
+          case 'brain/config':
+            return {
+              'config': config.toJson(),
+              'projectDirDefault': local.projectDir,
+            };
+          case 'brain/check':
+            return runCheck(
+              const AgentChecker(),
+              p['what'] as String,
+              (p['args'] as Map? ?? const {}).cast<String, dynamic>(),
+            );
+          case 'brain/configure':
+            await configure(BrainConfig.fromJson((p['config'] as Map).cast()));
+            return null;
+        }
     }
     throw StateError('unknown request ${a['a']}');
   }
@@ -206,7 +202,9 @@ class Hub extends ChangeNotifier {
   /// of this brain's workers run or wait there: the body restarts its
   /// agents, and the threads it had end.
   Future<Object?> bodyRequest(String name, String method, Json p) async {
-    if (!method.startsWith('body/')) throw StateError('not a body request: $method');
+    if (!method.startsWith('body/')) {
+      throw StateError('not a body request: $method');
+    }
     final body = _ownBody(name);
     if (body == null) throw StateError(_noBody(name)['error'] as String);
     if (method != 'body/configure') {
@@ -217,15 +215,10 @@ class Hub extends ChangeNotifier {
       }
       return r;
     }
-    if (!body.paused) throw StateError('pause $name before changing its settings');
-    if (releaseBlocker(name) case final why?) throw StateError(why);
-    if (body.isLocal) {
-      // The orchestrator runs on this machine's agents too.
-      if (orchestrator case final o? when o.isRunning || o.view.isRunning) {
-        throw StateError('the orchestrator is running on $name; wait for it or stop it');
-      }
-      await newConversation();
+    if (!body.paused) {
+      throw StateError('pause $name before changing its settings');
     }
+    if (releaseBlocker(name) case final why?) throw StateError(why);
     final r = await body.call(method, p);
     _ended.addAll([
       for (final w in workers)
@@ -242,25 +235,7 @@ class Hub extends ChangeNotifier {
       tools: orchestratorTools,
       instructions: orchestratorInstructions(local.name),
     );
-    // Falls back to another worker type when that one cannot run here.
-    final available = local.workerTypes;
-    if (available.isEmpty) throw StateError(startupError ?? 'no agent');
-    final p = available.contains(settings.orchestrator)
-        ? settings.orchestrator
-        : available.first;
-    final model =
-        settings.orchestratorModel != null &&
-            local.modelsFor(p).any((m) => m['id'] == settings.orchestratorModel)
-        ? settings.orchestratorModel
-        : local.defaultModel(p);
-    final agent = local.create(
-      p,
-      label: 'orchestrator',
-      cwd: projectDir,
-      role: role,
-      model: model,
-      effort: settings.orchestratorEffort,
-    );
+    final agent = brain.create(cwd: projectDir, role: role);
     agent.addListener(notifyListeners);
     return agent;
   }
@@ -329,11 +304,7 @@ class Hub extends ChangeNotifier {
   Future<void> interruptOrchestrator() async => orchestrator?.interrupt();
 
   /// A new orchestrator conversation (workers keep running).
-  Future<void> newConversation({String? workerType}) async {
-    if (workerType != null) {
-      settings.orchestrator = workerType;
-      await saveSettings();
-    }
+  Future<void> newConversation() async {
     final old = orchestrator;
     orchestrator = null;
     notifyListeners();
@@ -345,7 +316,7 @@ class Hub extends ChangeNotifier {
 
   /// An answer to the orchestrator's question (Claude's AskUserQuestion).
   void answer(Object requestId, Object? result) {
-    local.answer(requestId, result);
+    brain.answer(requestId, result);
     final o = orchestrator;
     if (o == null) return;
     for (final r in List.of(o.view.pending)) {
@@ -376,7 +347,10 @@ class Hub extends ChangeNotifier {
   bool _hasSlot(AgentThread w) {
     final body = bodies[w.body];
     if (body?.paused ?? false) return false;
-    if (runningOn(w.body) >= (body?.maxWorkers ?? WorkerTypesConfig.defaultMaxWorkers)) return false;
+    if (runningOn(w.body) >=
+        (body?.maxWorkers ?? WorkerTypesConfig.defaultMaxWorkers)) {
+      return false;
+    }
     final limit = typeLimit(w.body, w.workerType);
     return limit == null || runningOn(w.body, w.workerType) < limit;
   }
@@ -494,7 +468,7 @@ class Hub extends ChangeNotifier {
         '[worker update]\n${lines.join('\n')}\nUse read_thread for the details.';
     if (o.isRunning || o.view.isRunning) {
       await o.send(_withChanges(text), afterCurrentTurn: true);
-    } else if (settings.wakeOnFinish) {
+    } else if (config.wakeOnFinish) {
       await o.send(_withChanges(text));
     }
   }
@@ -605,7 +579,8 @@ class Hub extends ChangeNotifier {
                         'model': b.defaultModel(id),
                         'description': t['description'],
                         'default_cwd': t['cwd'] ?? b.projectDir,
-                        if ((t['extras'] as List?)?.isNotEmpty ?? false) 'can_also_use': t['extras'],
+                        if ((t['extras'] as List?)?.isNotEmpty ?? false)
+                          'can_also_use': t['extras'],
                         'max_concurrent': ?t['maxConcurrent'],
                         'running': runningOn(b.name, id),
                       },
@@ -619,7 +594,8 @@ class Hub extends ChangeNotifier {
         if (_ended.contains(w.label)) {
           return {
             'thread_id': w.label,
-            'error': 'thread ${w.label} ended: the agents on ${w.body} restarted with new settings. Start a new thread.',
+            'error':
+                'thread ${w.label} ended: the agents on ${w.body} restarted with new settings. Start a new thread.',
           };
         }
         // A new turn is new work; steering a running one is not.
@@ -706,7 +682,8 @@ class Hub extends ChangeNotifier {
     'model': w.model,
     'title': w.title,
     'status': w.state.name,
-    if (_ended.contains(w.label)) 'ended': 'the agents on ${w.body} restarted with new settings',
+    if (_ended.contains(w.label))
+      'ended': 'the agents on ${w.body} restarted with new settings',
     if (w.state == AgentState.queued && (bodies[w.body]?.paused ?? false))
       'waiting_for': '${w.body} to be resumed (paused by the user)',
     'cwd': w.cwd,
@@ -765,6 +742,7 @@ class Hub extends ChangeNotifier {
   @override
   void dispose() {
     local.closeBackends();
+    brain.dispose();
     super.dispose();
   }
 }

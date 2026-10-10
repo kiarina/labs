@@ -151,7 +151,7 @@ class _Header extends StatelessWidget {
             TextButton.icon(
               onPressed: () => console.view(null),
               icon: const Icon(Icons.arrow_back, size: 14),
-              label: const Text('Orchestrator', style: TextStyle(fontSize: 12)),
+              label: Text(console.brain, style: const TextStyle(fontSize: 12)),
             ),
           const SizedBox(width: 8),
           if (s != null) ...[
@@ -159,7 +159,10 @@ class _Header extends StatelessWidget {
               child: Text(
                 viewingWorker
                     ? '${s.label} · ${s.title ?? ''}'
-                    : 'Orchestrator · ${console.labelOf(s.workerType)}',
+                    : [
+                        console.brain,
+                        ?console.brainAgent['label'] as String?,
+                      ].join(' · '),
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 13,
@@ -244,7 +247,11 @@ class _Empty extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            '$name · orchestrator: ${console.labelOf(console.settings.orchestrator)}',
+            [
+              name,
+              ?console.brainAgent['label'] as String?,
+              ?console.brainAgent['model'] as String?,
+            ].join(' · '),
             style: const TextStyle(fontSize: 14, color: Palette.textDim),
           ),
         ],

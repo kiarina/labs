@@ -45,7 +45,7 @@ ConsoleMirror _boot(LaunchConfig config, String stateDir) {
   if (env['ORCH_DUMP'] case final String path when path.isNotEmpty) {
     _dumpOnChange(console, path);
   }
-  unawaited(_run(local, signal, console, orchestrator: config.orchestrator));
+  unawaited(_run(local, signal, console));
   if (config.assignOwner && config.body) {
     final owner = config.owner;
     unawaited(() async {
@@ -58,6 +58,9 @@ ConsoleMirror _boot(LaunchConfig config, String stateDir) {
   }
   if (env['ORCH_ASSIGN'] case final String spec when spec.isNotEmpty) {
     unawaited(_assignOnStart(console, signal, spec));
+  }
+  if (env['ORCH_CONFIGURE_BRAIN'] case final String spec when spec.isNotEmpty) {
+    unawaited(_configureBrainOnStart(console, spec));
   }
   if (env['ORCH_PAUSE'] case final String spec when spec.isNotEmpty) {
     unawaited(() async {
@@ -73,9 +76,8 @@ ConsoleMirror _boot(LaunchConfig config, String stateDir) {
 Future<void> _run(
   LocalBody local,
   SignalClient signal,
-  ConsoleMirror console, {
-  String? orchestrator,
-}) async {
+  ConsoleMirror console,
+) async {
   unawaited(signal.run());
   // The server may rename this app; the hub keys its own body by name.
   while (!signal.connected) {
@@ -90,12 +92,8 @@ Future<void> _run(
     // older record says it owns itself).
     final h = hub = Hub(local)
       ..ownerOf = (b) => !signal.isBody && b == local.name ? null : signal.ownerOf(b);
-    await h.start();
-    // The worker type picked on the start screen.
-    if (orchestrator != null && orchestrator != h.settings.orchestrator) {
-      h.settings.orchestrator = orchestrator;
-      await h.saveSettings();
-    }
+    // Its agent starts in the background; consoles show it starting.
+    unawaited(h.start());
     final p = publisher = ConsolePublisher(h);
     signal.onReleaseRequest = (body) async => h.releaseBlocker(body);
     signal.addListener(h.ownershipChanged);
@@ -144,7 +142,8 @@ Future<void> _run(
     },
   );
   // A console alone runs no agents.
-  if (signal.isBrain || signal.isBody) await local.start();
+  // The body's agents (workers); a brain's own agent starts in the hub.
+  if (signal.isBody) await local.start();
 }
 
 /// `ORCH_PAUSE=body,body2` pauses bodies through their brains once this
@@ -175,6 +174,29 @@ Future<void> _configureOnStart(ConsoleMirror console, String spec) async {
     if (b != null && (b.view?.paused ?? false)) {
       try {
         await console.bodyRequest(b, 'body/configure', {
+          'config': jsonDecode(await File(path).readAsString()),
+        });
+        console.say('configured $name');
+      } catch (e) {
+        console.say('could not configure $name: $e');
+      }
+      return;
+    }
+    await Future<void>.delayed(const Duration(milliseconds: 200));
+  }
+}
+
+/// `ORCH_CONFIGURE_BRAIN=brain=path.json` gives a brain new settings (a
+/// `brain.json`) once this console sees it ready, and puts the outcome in
+/// the console's notice (for unattended checks; the brain's settings dialog
+/// does the same).
+Future<void> _configureBrainOnStart(ConsoleMirror console, String spec) async {
+  final i = spec.indexOf('=');
+  final name = spec.substring(0, i), path = spec.substring(i + 1);
+  for (var n = 0; n < 300; n++) {
+    if (console.brainAgentOf(name)['ready'] == true) {
+      try {
+        await console.brainRequest(name, 'brain/configure', {
           'config': jsonDecode(await File(path).readAsString()),
         });
         console.say('configured $name');

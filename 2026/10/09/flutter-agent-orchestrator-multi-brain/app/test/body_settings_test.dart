@@ -30,21 +30,13 @@ class _BodyChecker extends AgentChecker {
 }
 
 /// Opens the dialog the way the console's body list does.
-Future<void> open(
-  WidgetTester tester, {
-  required bool isBrain,
-  required BodyRequest request,
-}) async {
+Future<void> open(WidgetTester tester, {required BodyRequest request}) async {
   await tester.pumpWidget(
     MaterialApp(
       home: Builder(
         builder: (context) => TextButton(
-          onPressed: () => showBodySettings(
-            context,
-            body: 'body-c',
-            isBrain: isBrain,
-            request: request,
-          ),
+          onPressed: () =>
+              showBodySettings(context, body: 'body-c', request: request),
           child: const Text('open'),
         ),
       ),
@@ -88,7 +80,7 @@ void main() {
       return jsonDecode(jsonEncode(r));
     }
 
-    await open(tester, isBrain: false, request: request);
+    await open(tester, request: request);
 
     expect(find.text('Agents of body-c'), findsOneWidget);
     expect(find.textContaining('Empty: /Users/someone'), findsOneWidget);
@@ -144,7 +136,7 @@ void main() {
                 (p['args'] as Map).cast(),
               )),
     };
-    await open(tester, isBrain: true, request: request);
+    await open(tester, request: request);
     await tester.tap(find.byKey(const Key('body-settings-save')));
     await tester.pumpAndSettle();
     expect(find.textContaining('still running on body-c'), findsOneWidget);

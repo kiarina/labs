@@ -40,9 +40,6 @@ class LaunchConfig {
   String? owner;
   bool assignOwner;
 
-  /// The worker type a brain runs its orchestrator on (null: as before).
-  String? orchestrator;
-
   static const self = '@self';
 
   /// Where this app joins: its own server, or [url].
@@ -56,7 +53,6 @@ class LaunchConfig {
     'url': url,
     'name': name,
     'owner': owner,
-    'orchestrator': orchestrator,
   };
 
   static LaunchConfig fromJson(Json j) => LaunchConfig(
@@ -67,7 +63,7 @@ class LaunchConfig {
     url: j['url'] as String? ?? 'ws://localhost:8765',
     name: j['name'] as String? ?? '',
     owner: j['owner'] as String?,
-  )..orchestrator = j['orchestrator'] as String?;
+  );
 
   /// The last choice on the start screen, or defaults.
   static LaunchConfig load(String stateDir) {

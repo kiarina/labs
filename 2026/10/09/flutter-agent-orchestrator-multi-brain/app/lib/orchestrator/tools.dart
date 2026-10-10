@@ -16,7 +16,8 @@ const orchestratorTools = <ToolSpec>[
       'properties': {
         'body': {
           'type': 'string',
-          'description': 'Name of the body to run on: one of yours (see list_bodies).',
+          'description':
+              'Name of the body to run on: one of yours (see list_bodies).',
         },
         'worker_type': {
           'type': 'string',

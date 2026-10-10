@@ -5,9 +5,11 @@
 - **body の所属**: 各 body（ワーカーを動かすアプリ）は、どれか 1 つの brain に所属し、所属先の brain だけがそこでワーカーを動かします。所属は console から変えます
 - **console**: brain を選び、選んだ brain と話します
 - **シグナリング**: 独立したサーバーにし、名簿（どのアプリがいるか、どれが brain・body か）と所属（body → brain）を持たせます。単独のプロセスでも、アプリの中でも動きます
-- **起動画面**: アプリを起動すると、シグナリング → 役割（brain・body）→ 所属 → エージェントの順に選んでから、起動と接続をします
-- **worker type**: そのアプリで動かすエージェントを、起動画面で決めます。Codex と Claude は 1 つずつ on/off、別のモデルのサーバーにつないだ Codex（custom）はいくつでも。それぞれ足すときに、動くか・ログインしているかを確かめます。司令塔は、選べる種類を tool の定義でなく `list_bodies` の結果で知り、変わったら次のメッセージで知らされます
+- **起動画面**: アプリを起動すると、シグナリング → 役割（brain・body）→ brain の設定 → 所属 → body の設定の順に選んでから、起動と接続をします
+- **orchestrator と worker**: brain が使うエージェントを orchestrator、body が使うエージェントを worker と呼び、別々に設定します。orchestrator は 1 つを選び（モデル・effort・フォルダ）、Mac や Chrome を操作する道具を持ちません。同じアプリが brain と body を兼ねても、プロセスは別です
+- **worker type**: body が worker として出すエージェントを、起動画面で決めます。Codex と Claude は 1 つずつ on/off、別のモデルのサーバーにつないだ Codex（custom）はいくつでも。それぞれ足すときに、動くか・ログインしているかを確かめます。司令塔は、選べる種類を tool の定義でなく `list_bodies` の結果で知り、変わったら次のメッセージで知らされます
 - **body の一時停止**: console から、接続したまま body を止められます。止めている間、brain はその body で新しいことを始めません（実行中のものは最後まで動きます）
+- **brain の設定を console から変える**: Brains の一覧の ⚙ から、その brain の orchestrator の設定（起動画面の Brain と同じ内容）を変えます。↺ で新しい会話にします
 - **body の設定を console から変える**: 止めていて何も動いていない body の、エージェント（起動画面の Agents と同じ内容）を console から変えます。確かめはその body のマシンで動き、保存すると body がエージェントを起動し直します
 
 前提となる lab:
@@ -47,10 +49,11 @@
   - 4 つとも、起動から 0.9〜3.2 秒で両方の brain とつながった
 - **シグナリングのポートが使われていると、開始しない。** 起動画面に「in use (Address already in use)」と出して止まる
 - **起動画面のステップを、widget のテストで本物のシグナリングに対して通した**（`mise run` で流れる。エージェントの確かめと macOS の許可は偽物）
-  - 既存につなぐ → 名前がぶつかると注意が出る → Body → 名簿の brain-a・brain-b から選ぶ → Agents
+  - 既存につなぐ → 名前がぶつかると注意が出る → Body → 名簿の brain-a・brain-b から選ぶ → Body の設定
   - このアプリで起動する → 使われているポートでステップ 1 に止まる → 空いたポートで進む → Brain と Body → 所属先の既定がこのアプリ
   - どちらも選ばない → ステップ 2 で起動する（console だけ）
-  - Agents: Codex のログイン、Claude を off、custom の追加（モデルの一覧から選ぶ、不正な id で止まる）、道具の on/off と要るものの表示、許可の［Grant］と起動し直しのボタン、保存の中身
+  - Brain: エージェントを 1 つ選ぶ（Codex のログインのボタン、custom の足りない項目で止まる、Claude・フォルダ・起こさないを `brain.json` に保存。道具と許可の欄が出ない）
+  - Body: Codex のログイン、Claude を off、custom の追加（モデルの一覧から選ぶ、不正な id で止まる）、道具の on/off と要るものの表示、許可の［Grant］と起動し直しのボタン、保存の中身
 - **オーナーが本物の画面で、起動画面を最後まで通した。** Agents のステップで Codex・Claude・kiapi を確かめ、Peekaboo の画面収録をこのアプリに許可した
 - widget のテストの中の `HttpClient` は、すべて 400 を返す偽物になっている（`HttpOverrides.global = null` で外す）。
   本物の通信の結果は、実時間を待つ（`runAsync`）だけでは画面に届かず、待つことと `pump` を交互に繰り返す
@@ -67,11 +70,14 @@
     オーナーが `claude auth login` した後は「Logged in (Claude Max)」
   - custom: `GET {base_url}/models` で、届くか・指定のモデルがあるかを見る。偽のサーバーで「ある」「無い」「届かない」を確かめた
   - 作業フォルダを指定すると、アプリがその中を 1 回読む。無ければここで止まり、macOS のフォルダの許可のダイアログもこの時点で出る
-- **エージェントが 1 つも無い body を置けた。** エージェントのプロセスを 1 つも起動せず（子プロセス 0）、司令塔の `list_bodies` には「no worker types」と出た。brain は 1 つ以上が要るので、起動画面で止める
+- **エージェントが 1 つも無い body を置けた。** エージェントのプロセスを 1 つも起動せず（子プロセス 0）、司令塔の `list_bodies` には「no worker types」と出た（brain の orchestrator は body の設定と別なので、brain と兼ねる body も 0 個でよい）
 - **body の中身が変わったことを、司令塔が次のメッセージで知った。** エージェントの無い body-c を、Codex と Claude を on にして起動し直した。
   console から「tool を呼ばずに、body-c の worker type を答えて」と送ると、
   メッセージの頭に `[bodies changed since you last called list_bodies]` と `- body-c: worker types are now codex (were none)` が付いた。
   司令塔は「codex。知らせにそう書いてあった」と答えた（Claude は未ログインなので入らない）
+- **orchestrator と worker のプロセスを分けられた。** brain と body を兼ねる brain-a は、orchestrator の Codex と、body の Codex・Claude を別々のプロセスで起動した（子プロセスが 3 つ）。
+  body-c の console から brain-a の設定を Claude に変える（`ORCH_CONFIGURE_BRAIN`）と、orchestrator の Codex だけが Claude の中継に入れ替わり、body のプロセスはそのまま残った。
+  Brains の一覧に「Claude · default」と ↺・⚙ が出た（スクリーンショット）。ダイアログ（読み込み、brain のマシンでの確かめ、モデルと effort の選択、保存の中身）は widget のテスト（`test/brain_settings_test.dart`）で確かめた
 - **接続したまま body を一時停止できた。** body-c の console から body-c を止める操作が、所属先の brain-a を通って body-c に届いた。
   body-c は自分の状態を `paused` にして brain-a へ知らせ、brain-a と body-c の両方の console に「paused」と出た（`ORCH_PAUSE` と dump、スクリーンショット）。
   止めている間と再開の後の brain の振る舞い（新しい仕事を断る、実行中は続く、順番待ちは残る、知らせ）は単体のテストで確かめた（`test/pause_test.dart`、トークンは使わない）
@@ -125,14 +131,18 @@
 - **データチャネル**: 少なくとも片方が brain の組ごとに 1 本。名前の順で先のアプリが offer を出す
   - 1 本の中で、brain の役のメッセージ（`rpc`・`console`）と、相手の役のメッセージ（`hello`・`info`・`res`・`agent`・`action`）は種類が重ならない。そのため brain どうしも 1 本で足りる
 - **brain**: つながった全アプリの console へ会話を流す（前の lab の `ConsolePublisher`）。全アプリの body を名簿として知っている
+  - orchestrator は brain だけのプロセスで動く（`app/lib/orchestrator/brain_agent.dart`）。設定は状態のフォルダの `brain.json`（`brain_config.dart`）: エージェント（`codex`・`claude`・`custom`。custom は URL・鍵の変数名・モデル）、モデル、effort、フォルダ（空なら body のプロジェクトのフォルダ）、終わったら起こすか
+  - 同じアプリの body の worker とはプロセスを分ける（Codex の app-server・Claude の中継を役割ごとに起動する。ログインは `~/.codex` と Claude Code のものを共有）。
+    そのため body の設定を変えても orchestrator の会話は続き、brain の設定を変えても worker は動き続ける。custom の orchestrator は、いつも専用の `CODEX_HOME` で起動する（Computer Use を持たないため）
+  - 設定を変える（`brain/configure`）と、orchestrator が動いていないときだけ、保存してエージェントを起動し直し、新しい会話にする
   - ワーカーを動かせるのは、所属の body だけ（`list_bodies`・`start_thread`・`fetch_image`）
   - `releaseRequest` には、その body で自分のワーカーが動いている・待っているなら理由を返して断る
 - **worker type**（`app/lib/agents/worker_types.dart`）: そのアプリで動かすエージェント。id で呼ぶ
   - `codex`・`claude` は 1 つずつで on/off（同じ種類を複数並べると、司令塔が違いを説明から読み分けることになるため）。custom はいくつでも
-  - 起動画面の「Agents」で決め、状態のフォルダの `worker-types.json`（`ORCH_WORKER_TYPES` で場所を変えられる）に書く。ファイルが無ければ Codex と Claude（`KIAPI_BASE_URL` があれば kiapi も）
+  - 起動画面の「Body」で決め、状態のフォルダの `worker-types.json`（`ORCH_WORKER_TYPES` で場所を変えられる）に書く。ファイルが無ければ Codex と Claude（`KIAPI_BASE_URL` があれば kiapi も）
   - 種類ごとに既定の作業フォルダと既定のモデルを持てる。作業フォルダは `start_thread` の `cwd` > worker type の作業フォルダ > body のプロジェクトのフォルダの順
-  - body のプロジェクトのフォルダも起動画面で決める（空なら `ORCH_CWD`、それも無ければホーム）。brain の司令塔もここで働き、console の左のフォルダから変えると保存される
-  - body なら worker type として司令塔に見せる。brain なら司令塔をこのうちの 1 つで動かす。0 個でもよい（body のツール `fetch_image` だけが使える）
+  - body のプロジェクトのフォルダも起動画面で決める（空なら `ORCH_CWD`、それも無ければホーム）。同じアプリの brain は、自分のフォルダが空ならここで働く
+  - worker type として司令塔に見せる。0 個でもよい（body のツール `fetch_image` だけが使える）
   - 1 つずつ起動し、どれかが失敗しても（未ログイン、サーバーに届かない）ほかは使える。失敗したものは理由付きで「使えない」と知らせる
   - Mac や Chrome を操作させる道具は、既定で off。Codex と custom は Computer Use、Claude は Chrome と Mac の操作（Peekaboo）。on のものは `list_bodies` の `can_also_use` で司令塔に見せる
   - custom は Codex の app-server を種類ごとに 1 つ起動し、モデルの送り先をその種類の Responses API のサーバーにする（自前の `CODEX_HOME` とモデル表）。
@@ -153,17 +163,15 @@
   - 司令塔には `list_bodies` の `paused: true` と、次のメッセージの頭の `[bodies changed ...]`（「paused by the user」「resumed」）で伝える
   - 司令塔そのものはワーカーではないので止まらない
 - **設定の変更**（`app/lib/ui/body_settings.dart`）: console の body の一覧の設定のボタンから。止めていて、所属先の brain のワーカーがそこで動いても待ってもいないときだけ押せる
-  - 編集の画面は起動画面の Agents と同じ部品（`app/lib/ui/agents_editor.dart`）。確かめ（ログインの状態・モデルの一覧・道具の要るもの・macOS の許可）は body のマシンで動かす（`body/check`）。
+  - 編集の画面は起動画面の Body と同じ部品（`app/lib/ui/agents_editor.dart`）。確かめ（ログインの状態・モデルの一覧・道具の要るもの・macOS の許可）は body のマシンで動かす（`body/check`）。
     ログインと許可を出す操作は、そのマシンの起動画面でする（console には出さない）
   - console → brain は `request`／`reply`（答えの要る依頼）、brain → body は rpc `body/config`・`body/check`・`body/configure`。brain は `body/` で始まるものだけを通す
-  - brain も body も断る: 止めていない、エージェントが動いている（brain はさらに自分のワーカーが待っているとき、brain 自身の body なら司令塔が動いているとき）
-  - 保存すると body は古いエージェントを止めて起動し直す。そこにあったスレッドは終わり、`send_message` はエラー、`list_threads` に `ended` が付く。brain 自身の body なら司令塔の会話も新しくなる
+  - brain も body も断る: 止めていない、エージェントが動いている（brain はさらに自分のワーカーが待っているとき）
+  - 保存すると body は古いエージェントを止めて起動し直す。そこにあったスレッドは終わり、`send_message` はエラー、`list_threads` に `ended` が付く。同じアプリの brain の orchestrator は別のプロセスなので続く
   - 止めたままなので、終わったら再開する。worker type の変化は、司令塔に `[bodies changed ...]` で伝わる
 - **console**（全アプリ）: つながった brain ごとに写し（`BrainView`）を持つ。選んだ brain の写しを中央と右に出し、送信・停止・設定はその brain へ送る
-  - 「Settings」は選んだ brain の設定だけ: 司令塔をどれで動かすか・そのモデルと effort（次の会話から）、ワーカーが終わったら司令塔を起こすか。
-    body が何を動かすか・何個まで同時に動かすかは、その body の起動画面で決める
   - 左には次を出す
-    - brain の選択
+    - Brains: 選ぶと、その brain と話す。行に orchestrator が何で動いているか（エージェント・モデル・effort）。↺ で新しい会話（ワーカーは続く）、⚙ でその brain の設定（`app/lib/ui/brain_settings.dart`。編集は起動画面の Brain と同じ部品 `brain_editor.dart`、確かめは brain のマシンで `brain/check`）
     - 全 body の一覧。名前・所属先・使えるエージェント・同時に動かせる数（重ねるとプロジェクトのフォルダとサブスクの使用量）。所属先を押すと、brain を選ぶメニューが出る（ワーカーが動いている間は押せない）
   - 所属の変更は signal へ送る
 
@@ -176,8 +184,9 @@
 | --- | --- | --- |
 | 1. Signaling | このアプリで起動する（ポート）か、既存につなぐ（URL。既定 `ws://localhost:8765`）か | 起動する、または問い合わせる。ポートが使われている・読めないなら、ここで止まる。読めたら名簿を持って次へ |
 | 2. Roles | 名前（body_id。空なら「ホスト名-乱数 4 桁」）、Brain・Body（両方も可） | 名前が online のアプリとぶつかると、`-2` が付くと注意を出す。Body を選ばなければ、ここで起動する（どちらも選ばなければ console だけ） |
-| 3. Belongs to（Body のとき） | 所属する brain。候補は、自分が brain ならこのアプリ（既定）と、名簿にいる online の brain | 次へ。参加の後に所属を変える |
-| 4. Agents（Brain か Body のとき） | このマシンのプロジェクトのフォルダと、body なら同時に動かせるワーカーの数（1〜16）。Codex・Claude の on/off・作業フォルダ・既定のモデル（確かめると一覧から選べる）・同時に動かせる数、Mac や Chrome を操作させる道具の on/off（on にすると、要るものとその状態が出る）、このアプリの macOS の許可、custom の追加（id・URL・API キーの変数名・モデル・作業フォルダ・説明・同時に動かせる数）。custom のモデルは、URL を入れて「Load models」でサーバーの一覧を読み、そこから選ぶ（一覧の無いサーバーは手で入れる。選んだモデルのコンテキスト長も一緒に覚える）。同時に動かせる数はスライダー（0〜8、0 は「上限なし」）。brain なら司令塔をどれで動かすか | 入ったとき・on にしたとき・「Check」で確かめる。Codex が未ログインならログインのボタンが出る。Start で `worker-types.json` に書いて起動する。brain で 0 個なら止める |
+| 3. Brain（Brain のとき） | orchestrator のエージェント（Codex・Claude・custom から 1 つ。custom は URL・API キーの変数名・モデル）、モデル（確かめると一覧から選べる）、effort（そのモデルが受け付けるもの）、フォルダ、ワーカーが終わったら起こすか。道具と macOS の許可は無い | 入ったとき・選び直したとき・「Check」で確かめる。Codex が未ログインならログインのボタンが出る。Start で `brain.json` に書く |
+| 4. Belongs to（Body のとき） | 所属する brain。候補は、自分が brain ならこのアプリ（既定）と、名簿にいる online の brain | 次へ。参加の後に所属を変える |
+| 5. Body（Body のとき） | このマシンのプロジェクトのフォルダと、body なら同時に動かせるワーカーの数（1〜16）。Codex・Claude の on/off・作業フォルダ・既定のモデル（確かめると一覧から選べる）・同時に動かせる数、Mac や Chrome を操作させる道具の on/off（on にすると、要るものとその状態が出る）、このアプリの macOS の許可、custom の追加（id・URL・API キーの変数名・モデル・作業フォルダ・説明・同時に動かせる数）。custom のモデルは、URL を入れて「Load models」でサーバーの一覧を読み、そこから選ぶ（一覧の無いサーバーは手で入れる。選んだモデルのコンテキスト長も一緒に覚える）。同時に動かせる数はスライダー（0〜8、0 は「上限なし」） | 入ったとき・on にしたとき・「Check」で確かめる。Codex が未ログインならログインのボタンが出る。Start で `worker-types.json` に書いて起動する。0 個でもよい |
 
 - 「Back」で前のステップへ戻れる。ステップ 1 でアプリの中のシグナリングを始めた後に戻ってポートを変えると、起動し直す
 - 所属の変更は、前の所属先でワーカーが動いていれば断られ、所属は前のまま（理由は body の一覧の上に出る）
@@ -242,6 +251,7 @@
 ## Limitations
 
 - **console から body の設定を変える画面は、本物の画面のクリックでは開いていない。** 変える経路は `ORCH_CONFIGURE` で、画面は widget のテストで確かめた
+- **console の brain の設定のダイアログは、本物の画面のクリックでは開いていない。** 変える経路は `ORCH_CONFIGURE_BRAIN` で、画面は widget のテストで確かめた
 - **2 台の Mac では確かめていない。** 2 台目の Mac（Mac Studio）が VPN から外れていて、届かなかった
 - **console の brain の切り替えと所属先のメニューは、画面のクリックでは確かめていない**
   - 使っている関数は、起動時の `ORCH_SELECT`・`ORCH_ASSIGN`・`ORCH_PAUSE` と同じ。そちらで確かめた。表示はスクリーンショットで確かめた
@@ -252,7 +262,6 @@
 - brain が落ちると、その brain の所属の body は所属先が offline のまま残る。console から別の brain へ移せる（offline の brain には尋ねない）
 - 全アプリが全 brain とつながるので、データチャネルの数は「アプリ数 × brain 数」程度に増える。数台でしか試していない
 - custom の worker type は、Responses API のサーバーだけ。Chat Completions だけのサーバーでは試していない。鍵の要る外部の API（`env_key`）も試していない
-- worker type の設定は起動画面で決め、起動時に読む。変えるにはアプリを起動し直す（司令塔の会話は brain が起動し直さない限りそのまま使え、変わったことは次のメッセージで知らされる）
 - Codex のブラウザのログイン（起動画面から）は、本物では通していない（このマシンはログイン済み）
 - Codex の Computer Use は、使うアプリごとに「Allow Computer Use to use …」を実行中に聞いてくる（`mcpServer/elicitation/request`）。アプリの数だけあるので、起動画面では先に通せない。
   ワーカーは Full Access なので、セッションの間は許可すると答える（`{action: accept, content: {}, _meta: {persist: session}}`。前は知らない求めをすべて断っていた）。
@@ -283,10 +292,11 @@ mise run signal             # シグナリングを単独で（:8765）。PORT �
 - `ORCH_OWNER`: 参加の後に、この body の所属先にする brain（`-` は所属なし）
 - 同じマシンで複数起動するときは、`ORCH_STATE_DIR` を分ける
 - `ORCH_SELECT=<brain>`: console が最初に出す brain
-- `ORCH_ORCHESTRATOR=<worker type>`: brain の司令塔を動かす worker type（Settings の「Runs on」と同じ）
+- `ORCH_ORCHESTRATOR=codex|claude`: brain の orchestrator のエージェント（`brain.json` より優先）
 - `ORCH_ASSIGN=body-c=brain-a,body-d=`: 起動後に所属を変える（空は所属なし。console の一覧と同じ操作）
 - `ORCH_PAUSE=body-c`: 起動後に、その body を所属先の brain を通して止める（console の一時停止のボタンと同じ操作）
 - `ORCH_CONFIGURE=body-c=path.json`（`ORCH_PAUSE` と一緒に）: 止まったのを見てから、その body の設定を `worker-types.json` の形のファイルの中身にする。結果は console の知らせ（dump の `notice`）に出る
+- `ORCH_CONFIGURE_BRAIN=brain-a=path.json`: その brain の準備ができたら、設定を `brain.json` の形のファイルの中身にする（console の brain の ⚙ と同じ操作）。結果は console の知らせに出る
 - `ORCH_PROMPT`: 選んだ brain へ、起動後に 1 回送る
 - `ORCH_DUMP=path.json`: 名簿・所属・brain ごとの会話（操作の数とハッシュ、ターンの状態）・接続の記録を書き出す
 - `ORCH_WORKER_TYPES=path.json`: エージェントの設定（既定は状態のフォルダの `worker-types.json`。起動画面で書くもの）

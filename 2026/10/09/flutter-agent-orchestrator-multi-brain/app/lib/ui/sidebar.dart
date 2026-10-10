@@ -1,14 +1,12 @@
-import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 
 import '../console/console.dart';
-import '../orchestrator/hub.dart' show HubSettings;
-import '../state/thread_view.dart' show Json;
 import 'body_settings.dart';
+import 'brain_settings.dart';
 import 'theme.dart';
 
-/// Left: this app, the orchestrator's worker type, new conversation, project,
-/// settings, and the bodies connected to the brain.
+/// Left: this app, the brains (pick one to talk to; each with a new
+/// conversation and its settings), and the bodies on the network.
 class Sidebar extends StatelessWidget {
   const Sidebar({super.key, required this.console, required this.onToggleLog});
 
@@ -17,11 +15,6 @@ class Sidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final current =
-        console.orchestrator?.workerType ?? console.settings.orchestrator;
-    // The brain's own worker types; the current one stays listed even if it
-    // stopped being available.
-    final types = {...console.workerTypes, current}.toList();
     return Container(
       width: 240,
       color: Palette.sidebar,
@@ -30,98 +23,9 @@ class Sidebar extends StatelessWidget {
         children: [
           const SizedBox(height: 36),
           _ThisApp(console: console),
-          _BrainPicker(console: console),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 4, 16, 6),
-            child: Text(
-              'Orchestrator',
-              style: const TextStyle(fontSize: 11, color: Palette.textFaint),
-            ),
+          Expanded(
+            child: SingleChildScrollView(child: _BrainPicker(console: console)),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: types.length > 3
-                ? DropdownButton<String>(
-                    key: const Key('orchestrator-type'),
-                    value: current,
-                    isExpanded: true,
-                    dropdownColor: Palette.surfaceHigh,
-                    items: [
-                      for (final t in types)
-                        DropdownMenuItem(
-                          value: t,
-                          enabled: console.workerTypes.contains(t),
-                          child: Text(
-                            console.labelOf(t),
-                            style: const TextStyle(fontSize: 13),
-                          ),
-                        ),
-                    ],
-                    onChanged: (t) async {
-                      if (t == null || t == current) return;
-                      if (console.orchestrator != null &&
-                          !await _confirmSwitch(context, t)) {
-                        return;
-                      }
-                      await console.newConversation(workerType: t);
-                    },
-                  )
-                : SegmentedButton<String>(
-                    showSelectedIcon: false,
-                    segments: [
-                      for (final t in types)
-                        ButtonSegment(
-                          value: t,
-                          label: Text(
-                            console.labelOf(t),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          enabled: console.workerTypes.contains(t),
-                        ),
-                    ],
-                    selected: {current},
-                    onSelectionChanged: (s) async {
-                      if (s.first == current) return;
-                      if (console.orchestrator != null &&
-                          !await _confirmSwitch(context, s.first)) {
-                        return;
-                      }
-                      await console.newConversation(workerType: s.first);
-                    },
-                  ),
-          ),
-          const SizedBox(height: 8),
-          _Nav(
-            icon: Icons.edit_square,
-            label: 'New conversation',
-            onTap: () => console.newConversation(),
-          ),
-          _Nav(
-            icon: Icons.folder_open_outlined,
-            label:
-                console.projectDir
-                    .split('/')
-                    .where((p) => p.isNotEmpty)
-                    .lastOrNull ??
-                '/',
-            tooltip: console.selectedIsSelf
-                ? console.projectDir
-                : '${console.projectDir} (on ${console.brain}; pick it on the brain)',
-            onTap: () async {
-              // The path is on the brain's machine.
-              if (!console.selectedIsSelf) return;
-              final dir = await getDirectoryPath(
-                initialDirectory: console.projectDir,
-              );
-              if (dir != null) console.setProject(dir);
-            },
-          ),
-          _Nav(
-            icon: Icons.tune,
-            label: 'Settings',
-            onTap: () => showSettings(context, console),
-          ),
-          const Spacer(),
           const Divider(height: 1),
           Flexible(
             flex: 0,
@@ -131,76 +35,6 @@ class Sidebar extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Future<bool> _confirmSwitch(BuildContext context, String type) async {
-    return await showDialog<bool>(
-          context: context,
-          builder: (context) => AlertDialog(
-            backgroundColor: Palette.surface,
-            title: Text(
-              'Switch the orchestrator to ${console.labelOf(type)}?',
-              style: const TextStyle(fontSize: 15),
-            ),
-            content: const Text(
-              'This starts a new orchestrator conversation. Workers keep running.',
-              style: TextStyle(fontSize: 13),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: const Text('Cancel'),
-              ),
-              FilledButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: const Text('Switch'),
-              ),
-            ],
-          ),
-        ) ??
-        false;
-  }
-}
-
-class _Nav extends StatelessWidget {
-  const _Nav({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-    this.tooltip,
-  });
-
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-  final String? tooltip;
-
-  @override
-  Widget build(BuildContext context) {
-    final child = InkWell(
-      borderRadius: BorderRadius.circular(8),
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        child: Row(
-          children: [
-            Icon(icon, size: 16, color: Palette.text),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                label,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 13),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
-      child: tooltip == null ? child : Tooltip(message: tooltip!, child: child),
     );
   }
 }
@@ -273,7 +107,9 @@ class _Badge extends StatelessWidget {
   }
 }
 
-/// Which brain this console shows and talks to.
+/// The brains: pick one to talk to. Each shows what its orchestrator runs
+/// on, with a new conversation (↺) and its settings (the Brain step of its
+/// start screen).
 class _BrainPicker extends StatelessWidget {
   const _BrainPicker({required this.console});
 
@@ -283,14 +119,14 @@ class _BrainPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     final brains = console.brains;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 0, 12, 10),
+      padding: const EdgeInsets.fromLTRB(12, 0, 8, 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
             padding: EdgeInsets.fromLTRB(4, 0, 4, 4),
             child: Text(
-              'Brain',
+              'Brains',
               style: TextStyle(fontSize: 11, color: Palette.textFaint),
             ),
           ),
@@ -303,46 +139,144 @@ class _BrainPicker extends StatelessWidget {
               ),
             )
           else
-            for (final b in brains)
-              Material(
-                color: b == console.selected
-                    ? Palette.surfaceHigh
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(8),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(8),
-                  onTap: () => console.select(b),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 6,
-                    ),
-                    child: Row(
+            for (final b in brains) _BrainRow(console: console, brain: b),
+        ],
+      ),
+    );
+  }
+}
+
+class _BrainRow extends StatelessWidget {
+  const _BrainRow({required this.console, required this.brain});
+
+  final ConsoleMirror console;
+  final String brain;
+
+  @override
+  Widget build(BuildContext context) {
+    final selected = brain == console.selected;
+    final agent = console.brainAgentOf(brain);
+    final error = agent['error'] as String?;
+    final runsOn = [
+      if (agent['label'] case final String l) l,
+      if (agent['model'] case final String m) m,
+      if (agent['effort'] case final String e) e,
+    ].join(' · ');
+    Widget icon(String key, String tip, IconData i, VoidCallback onPressed) =>
+        IconButton(
+          key: ValueKey('$key-$brain'),
+          tooltip: tip,
+          iconSize: 15,
+          visualDensity: VisualDensity.compact,
+          constraints: const BoxConstraints(minWidth: 26, minHeight: 26),
+          padding: EdgeInsets.zero,
+          onPressed: onPressed,
+          icon: Icon(i, color: Palette.textDim),
+        );
+    return Material(
+      color: selected ? Palette.surfaceHigh : Colors.transparent,
+      borderRadius: BorderRadius.circular(8),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(8),
+        onTap: () => console.select(brain),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 6, 4, 6),
+          child: Row(
+            children: [
+              Icon(
+                selected
+                    ? Icons.radio_button_checked
+                    : Icons.radio_button_unchecked,
+                size: 14,
+                color: Palette.textDim,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
-                        Icon(
-                          b == console.selected
-                              ? Icons.radio_button_checked
-                              : Icons.radio_button_unchecked,
-                          size: 14,
-                          color: Palette.textDim,
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
+                        Flexible(
                           child: Text(
-                            b,
+                            brain,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(fontSize: 13),
                           ),
                         ),
-                        if (b == console.selfName) const _Badge('this app'),
+                        if (brain == console.selfName) ...[
+                          const SizedBox(width: 6),
+                          const _Badge('this app'),
+                        ],
                       ],
                     ),
-                  ),
+                    if (runsOn.isNotEmpty || error != null)
+                      Text(
+                        error ?? runsOn,
+                        key: ValueKey('brain-runs-on-$brain'),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 10.5,
+                          color: error != null
+                              ? Palette.warning
+                              : Palette.textDim,
+                        ),
+                      ),
+                  ],
                 ),
               ),
-        ],
+              icon(
+                'new-conversation',
+                'New conversation (workers keep running)',
+                Icons.restart_alt,
+                () => _newConversation(context),
+              ),
+              icon('brain-settings', 'Settings of $brain', Icons.tune, () {
+                showBrainSettings(
+                  context,
+                  brain: brain,
+                  request: (m, [p = const {}]) =>
+                      console.brainRequest(brain, m, p),
+                );
+              }),
+            ],
+          ),
+        ),
       ),
     );
+  }
+
+  Future<void> _newConversation(BuildContext context) async {
+    if (console.hasConversation(brain)) {
+      final ok = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: Palette.surface,
+          title: Text(
+            'New conversation on $brain?',
+            style: const TextStyle(fontSize: 15),
+          ),
+          content: const Text(
+            'Its orchestrator starts over. Workers keep running.',
+            style: TextStyle(fontSize: 13),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Cancel'),
+            ),
+            FilledButton(
+              key: const Key('new-conversation-ok'),
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Start over'),
+            ),
+          ],
+        ),
+      );
+      if (ok != true) return;
+    }
+    console.newConversationOn(brain);
   }
 }
 
@@ -535,7 +469,6 @@ class _BodySettingsButton extends StatelessWidget {
           ? () => showBodySettings(
               context,
               body: body.name,
-              isBrain: body.node.brain,
               request: (m, [p = const {}]) => console.bodyRequest(body, m, p),
             )
           : null,
@@ -610,152 +543,4 @@ class _OwnerMenu extends StatelessWidget {
       ),
     );
   }
-}
-
-/// The selected brain's settings: what its orchestrator runs on (worker type,
-/// model, effort; for new conversations) and whether a finished worker wakes
-/// it. What a body runs, its folders and how many workers at once are that
-/// body's own (its start screen).
-Future<void> showSettings(BuildContext context, ConsoleMirror console) async {
-  // Edit a copy; the brain saves it and sends it back to every console.
-  final s = HubSettings()..load(console.settings.toJson());
-  await showDialog<void>(
-    context: context,
-    builder: (context) => StatefulBuilder(
-      builder: (context, setState) {
-        final types = {...console.workerTypes, s.orchestrator}.toList();
-        final models = console.ready
-            ? console.modelsFor(s.orchestrator)
-            : const <Json>[];
-        final model =
-            models.where((m) => m['id'] == s.orchestratorModel).firstOrNull ??
-            models.where((m) => m['isDefault'] == true).firstOrNull ??
-            models.firstOrNull;
-        final efforts = [
-          for (final e
-              in (model?['supportedEffortLevels'] as List? ?? const []))
-            '$e',
-        ];
-        Widget row(String label, Widget field) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(label, style: const TextStyle(fontSize: 13)),
-              ),
-              field,
-            ],
-          ),
-        );
-        DropdownButton<String?> pick(
-          String key,
-          String? value,
-          List<(String?, String)> items,
-          void Function(String?) onChanged,
-        ) => DropdownButton<String?>(
-          key: Key(key),
-          value: items.any((e) => e.$1 == value) ? value : null,
-          isDense: true,
-          dropdownColor: Palette.surfaceHigh,
-          items: [
-            for (final (v, l) in items)
-              DropdownMenuItem(
-                value: v,
-                child: Text(l, style: const TextStyle(fontSize: 13)),
-              ),
-          ],
-          onChanged: (v) => setState(() => onChanged(v)),
-        );
-        return AlertDialog(
-          backgroundColor: Palette.surface,
-          title: Text(
-            'Settings of ${console.brain}',
-            style: const TextStyle(fontSize: 15),
-          ),
-          content: SizedBox(
-            width: 400,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Orchestrator (new conversations)',
-                  style: TextStyle(fontSize: 11, color: Palette.textFaint),
-                ),
-                row(
-                  'Runs on',
-                  pick(
-                    'settings-type',
-                    s.orchestrator,
-                    [for (final t in types) (t, console.labelOf(t))],
-                    (v) {
-                      s.orchestrator = v ?? s.orchestrator;
-                      s.orchestratorModel = null;
-                      s.orchestratorEffort = null;
-                    },
-                  ),
-                ),
-                row(
-                  'Model',
-                  pick(
-                    'settings-model',
-                    s.orchestratorModel,
-                    [
-                      (null, 'Default'),
-                      for (final m in models)
-                        (m['id'] as String, '${m['displayName'] ?? m['id']}'),
-                    ],
-                    (v) {
-                      s.orchestratorModel = v;
-                      s.orchestratorEffort = null;
-                    },
-                  ),
-                ),
-                if (efforts.isNotEmpty)
-                  row(
-                    'Effort',
-                    pick('settings-effort', s.orchestratorEffort, [
-                      (null, 'Default'),
-                      for (final e in efforts) (e, e),
-                    ], (v) => s.orchestratorEffort = v),
-                  ),
-                SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: const Text(
-                    'Wake the orchestrator when a worker finishes',
-                    style: TextStyle(fontSize: 13),
-                  ),
-                  value: s.wakeOnFinish,
-                  onChanged: (v) => setState(() => s.wakeOnFinish = v),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'What each body runs (agents, their models and folders, tools) and how many workers at once '
-                  'are set on that body\'s start screen.',
-                  style: const TextStyle(
-                    fontSize: 11,
-                    color: Palette.textFaint,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
-            FilledButton(
-              key: const Key('settings-save'),
-              onPressed: () {
-                console.saveSettings(s);
-                Navigator.pop(context);
-              },
-              child: const Text('Save'),
-            ),
-          ],
-        );
-      },
-    ),
-  );
 }

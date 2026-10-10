@@ -9,7 +9,13 @@ import 'worker_types.dart';
 
 /// A model a custom server lists.
 class ModelInfo {
-  const ModelInfo(this.id, this.contextWindow, {this.label, this.isDefault = false});
+  const ModelInfo(
+    this.id,
+    this.contextWindow, {
+    this.label,
+    this.isDefault = false,
+    this.efforts = const [],
+  });
 
   final String id;
   final int? contextWindow;
@@ -18,11 +24,15 @@ class ModelInfo {
   /// The backend's own default.
   final bool isDefault;
 
+  /// The reasoning efforts it takes (Codex and Claude).
+  final List<String> efforts;
+
   Json toJson() => {
     'id': id,
     'contextWindow': contextWindow,
     'label': label,
     'isDefault': isDefault,
+    'efforts': efforts,
   };
 
   static ModelInfo fromJson(Object? j) {
@@ -32,6 +42,7 @@ class ModelInfo {
       (m['contextWindow'] as num?)?.toInt(),
       label: m['label'] as String?,
       isDefault: m['isDefault'] == true,
+      efforts: [for (final e in m['efforts'] as List? ?? const []) '$e'],
     );
   }
 }
@@ -211,7 +222,16 @@ class AgentChecker {
         'Logged in (${account['planType'] ?? account['type'] ?? 'ok'})',
         models: [
           for (final m in (list['data'] as List).cast<Map>())
-            ModelInfo(m['id'] as String, null, label: m['displayName'] as String?, isDefault: m['isDefault'] == true),
+            ModelInfo(
+              m['id'] as String,
+              null,
+              label: m['displayName'] as String?,
+              isDefault: m['isDefault'] == true,
+              efforts: [
+                for (final e in (m['supportedReasoningEfforts'] as List? ?? const []).cast<Map>())
+                  '${e['reasoningEffort']}',
+              ],
+            ),
         ],
       );
     } catch (e) {
@@ -268,7 +288,12 @@ class AgentChecker {
         'Logged in (${account!['subscriptionType'] ?? account['email'] ?? 'ok'})',
         models: [
           for (final m in (r['models'] as List? ?? const []).cast<Map>())
-            ModelInfo(m['value'] as String, null, label: m['displayName'] as String?),
+            ModelInfo(
+              m['value'] as String,
+              null,
+              label: m['displayName'] as String?,
+              efforts: [for (final e in m['supportedEffortLevels'] as List? ?? const []) '$e'],
+            ),
         ],
       );
     } catch (e) {
