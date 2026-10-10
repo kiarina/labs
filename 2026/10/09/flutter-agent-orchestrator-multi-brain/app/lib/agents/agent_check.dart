@@ -16,7 +16,7 @@ class ModelInfo {
 
 /// One thing a tool needs on this machine, and whether it is there.
 class Requirement {
-  const Requirement(this.name, this.ok, this.detail, {this.settingsPane});
+  const Requirement(this.name, this.ok, this.detail, {this.settingsPane, this.grant});
 
   final String name;
   final bool ok;
@@ -24,6 +24,10 @@ class Requirement {
 
   /// System Settings › Privacy & Security pane to open to fix it.
   final String? settingsPane;
+
+  /// This app's permission that fixes it (`screenRecording`,
+  /// `accessibility`): the start screen asks macOS for it.
+  final String? grant;
 }
 
 /// The outcome of checking one agent on the start screen.
@@ -214,15 +218,17 @@ class AgentChecker {
   }
 
   /// What Mac control through Peekaboo needs: the `peekaboo` command, and
-  /// its Screen Recording and Accessibility (Peekaboo's own: it runs them
-  /// in its background service).
+  /// Screen Recording and Accessibility. Workers run it with `--no-remote`
+  /// (inside this app), so they are this app's permissions; checked the same
+  /// way, from this app.
   Future<List<Requirement>> peekaboo() async {
     final bin = Platform.environment['PEEKABOO_BIN'] ?? '/opt/homebrew/bin/peekaboo';
     if (!File(bin).existsSync()) {
       return const [Requirement('Peekaboo', false, 'Not installed: brew install openclaw/tap/peekaboo')];
     }
     try {
-      final r = await Process.run(bin, ['permissions', '--json']).timeout(const Duration(seconds: 20));
+      final r = await Process.run(bin, ['permissions', '--json', '--no-remote'])
+          .timeout(const Duration(seconds: 20));
       final data = ((jsonDecode(r.stdout as String) as Map)['data'] as Map?) ?? const {};
       return [
         const Requirement('Peekaboo', true, 'Installed'),
@@ -231,10 +237,15 @@ class AgentChecker {
             Requirement(
               'Peekaboo: ${p['name']}',
               p['isGranted'] == true,
-              p['isGranted'] == true ? 'Granted' : 'Not granted: ${p['grantInstructions'] ?? ''}',
+              p['isGranted'] == true ? 'Granted (to this app)' : 'Not granted to this app',
               settingsPane: switch (p['name']) {
                 'Screen Recording' => 'Privacy_ScreenCapture',
                 'Accessibility' => 'Privacy_Accessibility',
+                _ => null,
+              },
+              grant: switch (p['name']) {
+                'Screen Recording' => 'screenRecording',
+                'Accessibility' => 'accessibility',
                 _ => null,
               },
             ),

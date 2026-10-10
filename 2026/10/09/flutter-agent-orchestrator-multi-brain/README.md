@@ -81,7 +81,10 @@
   - このアプリの画面収録・アクセシビリティ: ワーカーはこのアプリの子プロセスなので、シェルで撮る・クリックする（`screencapture`・AppleScript）と、このアプリが聞かれる。
     状態を読み、［Grant］で macOS のダイアログを出す（runner の Swift で `CGRequestScreenCaptureAccess`・`AXIsProcessTrustedWithOptions`）。画面収録は許可の後に起動し直しが要るので、設定を保存して起動し直すボタンを出す
   - Codex の Computer Use: 実体は Codex アプリが入れる別のアプリ（`com.openai.sky.CUAService`）で、macOS の許可はそのアプリが持つ。起動画面では、それが入っているかと、プラグインが on かを見る
-  - Peekaboo: 4.9 は自分のバックグラウンドのサービスで動き、許可もそちらが持つ。`peekaboo permissions --json` で見て、足りなければシステム設定の該当の画面を開く。Claude Code から MCP がつながるか（`connected`）も確かめた
+  - Peekaboo: ワーカーには `peekaboo mcp serve --no-remote --allow-foreground` で渡し、このアプリの中で動かす。許可はこのアプリのもの（上の画面収録・アクセシビリティ）になり、
+    起動画面の［Grant］で通せる。状態は `peekaboo permissions --json --no-remote` をこのアプリから呼んで見る。Claude Code から MCP がつながるか（`connected`）も確かめた
+  - **Peekaboo 4.9 の既定は、バックグラウンドのサービス（launchd が起動する `peekaboo daemon`）経由で動き、許可もそちらに要る。** そのサービスはアプリではない素のコマンドなので、
+    自分で一度求めるまでシステム設定の画面収録の一覧に出ず、オーナーは許可のトグルを出せなかった（アクセシビリティは通せた）。`--no-remote` でこのアプリの許可に寄せた
   - Claude in Chrome: Chrome と、拡張の接続口（native messaging host）が入っているかを見る。Claude Code の MCP の状態には、最初のターンまで Chrome が出てこない。
     Chrome のプロフィールのフォルダは macOS が守っていて、読むとそれ自体が許可のダイアログになるので、拡張そのものは見ない
 

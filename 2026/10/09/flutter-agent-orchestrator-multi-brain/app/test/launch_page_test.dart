@@ -59,7 +59,9 @@ class FakeChecker extends AgentChecker {
   @override
   Future<List<Requirement>> peekaboo() async {
     calls.add('peekaboo');
-    return const [Requirement('Peekaboo: Accessibility', false, 'Not granted', settingsPane: 'Privacy_Accessibility')];
+    return const [
+      Requirement('Peekaboo: Accessibility', false, 'Not granted', settingsPane: 'Privacy_Accessibility', grant: 'accessibility'),
+    ];
   }
 
   @override

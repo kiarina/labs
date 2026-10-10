@@ -113,6 +113,11 @@ type SessionConfig = {
 
 // GUI apps do not get the shell PATH; Homebrew's peekaboo by default.
 const peekabooBin = process.env.PEEKABOO_BIN ?? '/opt/homebrew/bin/peekaboo';
+/// `--no-remote`: Peekaboo acts inside this process tree, so macOS asks this
+/// app (which the start screen can grant) instead of Peekaboo's background
+/// service, a bare command that System Settings does not list until it
+/// asks itself.
+const peekabooArgs = ['mcp', 'serve', '--no-remote', '--allow-foreground'];
 
 /// One live `query()` in streaming-input mode. Messages pushed into [input]
 /// start a turn when idle, or are injected into the running turn ("steer").
@@ -153,7 +158,7 @@ class LiveSession {
         ...(config.chrome ? { extraArgs: { chrome: null } } : {}),
         mcpServers: {
           ...(config.peekaboo
-            ? { peekaboo: { type: 'stdio' as const, command: peekabooBin, args: ['mcp', '--allow-foreground'] } }
+            ? { peekaboo: { type: 'stdio' as const, command: peekabooBin, args: peekabooArgs } }
             : {}),
           ...(config.appTools?.length ? { orchestrator: appToolServer(sessionId, config.appTools) } : {}),
         },
@@ -314,7 +319,7 @@ const handlers: Record<string, (p: Json) => Promise<any>> = {
         env: sdkEnv,
         ...(p.chrome ? { extraArgs: { chrome: null } } : {}),
         mcpServers: p.peekaboo
-          ? { peekaboo: { type: 'stdio' as const, command: peekabooBin, args: ['mcp', '--allow-foreground'] } }
+          ? { peekaboo: { type: 'stdio' as const, command: peekabooBin, args: peekabooArgs } }
           : {},
       },
     });

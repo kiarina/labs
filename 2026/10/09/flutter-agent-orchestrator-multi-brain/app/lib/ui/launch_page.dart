@@ -834,6 +834,15 @@ class _LaunchPageState extends State<LaunchPage> {
                                 style: TextStyle(fontSize: 12, color: r.ok ? Palette.added : Palette.warning),
                               ),
                             ),
+                            if (!r.ok && r.grant != null)
+                              TextButton(
+                                key: Key('grant-$key-${r.grant}'),
+                                onPressed: () async {
+                                  await _grant(r.grant!);
+                                  await _require(key, check);
+                                },
+                                child: const Text('Grant', style: TextStyle(fontSize: 12)),
+                              ),
                             if (!r.ok && r.settingsPane != null)
                               TextButton(
                                 key: Key('open-$key-${r.settingsPane}'),
@@ -852,6 +861,17 @@ class _LaunchPageState extends State<LaunchPage> {
           ),
       ],
     );
+  }
+
+  /// Asks macOS for one of this app's permissions.
+  Future<void> _grant(String which) async {
+    if (which == 'screenRecording') {
+      await widget.permissions.requestScreenRecording();
+      setState(() => _screenAsked = true);
+    } else {
+      await widget.permissions.requestAccessibility();
+    }
+    await _readPermissions();
   }
 
   /// This app's own macOS permissions: workers run as its children, so what
@@ -894,15 +914,10 @@ class _LaunchPageState extends State<LaunchPage> {
           else if (p == null)
             const Text('Not available here (not macOS)', style: TextStyle(fontSize: 12, color: Palette.textDim))
           else ...[
-            row('Screen Recording', 'screenshots, e.g. screencapture', p['screenRecording'], () async {
-              await widget.permissions.requestScreenRecording();
-              setState(() => _screenAsked = true);
-              await _readPermissions();
-            }, 'Privacy_ScreenCapture'),
-            row('Accessibility', 'clicks and keys, e.g. AppleScript', p['accessibility'], () async {
-              await widget.permissions.requestAccessibility();
-              await _readPermissions();
-            }, 'Privacy_Accessibility'),
+            row('Screen Recording', 'screenshots: screencapture, Peekaboo', p['screenRecording'],
+                () => _grant('screenRecording'), 'Privacy_ScreenCapture'),
+            row('Accessibility', 'clicks and keys: AppleScript, Peekaboo', p['accessibility'],
+                () => _grant('accessibility'), 'Privacy_Accessibility'),
             Wrap(
               children: [
                 TextButton(
