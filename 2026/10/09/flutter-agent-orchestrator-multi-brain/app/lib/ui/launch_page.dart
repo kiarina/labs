@@ -595,8 +595,9 @@ class _LaunchPageState extends State<LaunchPage> {
                         key: Key('cwd-$id'),
                         controller: cwd,
                         decoration: const InputDecoration(
-                          labelText: 'Working folder',
-                          hintText: 'empty: the project folder',
+                          labelText: 'Working folder (optional)',
+                          hintText: '~/src',
+                          helperText: 'Where its workers start. Empty: the project folder.',
                           isDense: true,
                         ),
                       ),
@@ -691,16 +692,48 @@ class _LaunchPageState extends State<LaunchPage> {
     ];
   }
 
+  Future<void> _loadModels(_CustomDraft d) async {
+    setState(() {
+      d.loading = true;
+      d.modelsError = null;
+    });
+    final (list, error) = await widget.checker.models(d.baseUrl.text, d.envKey.text.trim());
+    if (!mounted) return;
+    setState(() {
+      d.loading = false;
+      d.modelsError = error;
+      d.models = list;
+      // Keep the model if the server has it; else the first one.
+      if (list != null && list.isNotEmpty && !list.any((m) => m.id == d.model.text)) {
+        d.pick(list.first);
+      }
+    });
+  }
+
   Widget _customCard(_CustomDraft d) {
-    Widget field(String key, TextEditingController t, String label, {String? hint}) => Padding(
-      padding: const EdgeInsets.only(bottom: 4),
+    Widget field(
+      String key,
+      TextEditingController t,
+      String label, {
+      String? hint,
+      String? help,
+    }) => Padding(
+      padding: const EdgeInsets.only(bottom: 6),
       child: TextField(
         key: Key('custom-${d.key}-$key'),
         controller: t,
-        decoration: InputDecoration(labelText: label, hintText: hint, isDense: true),
+        decoration: InputDecoration(
+          labelText: label,
+          hintText: hint,
+          helperText: help,
+          helperMaxLines: 2,
+          isDense: true,
+        ),
         onChanged: (_) => setState(() {}),
       ),
     );
+    final models = d.models;
+    final listed = models != null && models.isNotEmpty;
     return Card(
       key: Key('custom-${d.key}'),
       color: Palette.surface,
@@ -712,7 +745,15 @@ class _LaunchPageState extends State<LaunchPage> {
           children: [
             Row(
               children: [
-                Expanded(child: field('id', d.id, 'Id', hint: 'kiapi, local-qwen, …')),
+                Expanded(
+                  child: field(
+                    'id',
+                    d.id,
+                    'Id (required)',
+                    hint: 'kiapi',
+                    help: 'The name the orchestrator uses. a-z, 0-9, _ and -; not codex or claude.',
+                  ),
+                ),
                 IconButton(
                   tooltip: 'Remove',
                   onPressed: () => setState(() {
@@ -723,12 +764,102 @@ class _LaunchPageState extends State<LaunchPage> {
                 ),
               ],
             ),
-            field('url', d.baseUrl, 'Base URL', hint: 'http://127.0.0.1:8500/v1'),
-            field('model', d.model, 'Model'),
-            field('key', d.envKey, 'API key variable (optional)', hint: 'OPENROUTER_API_KEY'),
-            field('cwd', d.cwd, 'Working folder (optional)', hint: 'empty: the project folder'),
-            field('desc', d.description, 'What it is good for (the orchestrator reads this)'),
-            field('max', d.maxConcurrent, 'At once per body (optional)', hint: 'empty: no limit of its own'),
+            field(
+              'url',
+              d.baseUrl,
+              'Base URL (required)',
+              hint: 'http://127.0.0.1:8500/v1',
+              help: 'An OpenAI Responses API server, with its version (…/v1).',
+            ),
+            field(
+              'key',
+              d.envKey,
+              'API key variable (optional)',
+              hint: 'OPENROUTER_API_KEY',
+              help: 'The name of an environment variable holding the key, not the key. Empty: no key.',
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: listed
+                      ? DropdownButtonFormField<String>(
+                          key: Key('custom-${d.key}-model-list'),
+                          initialValue: models.any((m) => m.id == d.model.text) ? d.model.text : null,
+                          isExpanded: true,
+                          decoration: const InputDecoration(labelText: 'Model (required)', isDense: true),
+                          items: [
+                            for (final m in models)
+                              DropdownMenuItem(
+                                value: m.id,
+                                child: Text(
+                                  m.contextWindow == null ? m.id : '${m.id}  ·  ${m.contextWindow! ~/ 1000}K context',
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                          ],
+                          onChanged: (v) => setState(() => d.pick(models.firstWhere((m) => m.id == v))),
+                        )
+                      : field(
+                          'model',
+                          d.model,
+                          'Model (required)',
+                          hint: 'qwen3.8-flash-next',
+                          help: models == null
+                              ? 'Load the list from the server, or type the id.'
+                              : 'The server has no model list: type the id.',
+                        ),
+                ),
+                TextButton(
+                  key: Key('load-${d.key}'),
+                  onPressed: d.loading ? null : () => _loadModels(d),
+                  child: Text(d.loading ? 'Loading…' : listed ? 'Reload' : 'Load models'),
+                ),
+              ],
+            ),
+            if (d.modelsError case final e?)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 6),
+                child: Text('✗ $e', style: const TextStyle(fontSize: 12, color: Palette.warning)),
+              ),
+            field(
+              'cwd',
+              d.cwd,
+              'Working folder (optional)',
+              hint: '~/src',
+              help: 'Where its workers start. Empty: the project folder.',
+            ),
+            field(
+              'desc',
+              d.description,
+              'What it is good for (optional, read by the orchestrator)',
+              hint: 'Local model: free and private, but slower. Small, well-specified tasks.',
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 4, right: 8),
+              child: Row(
+                children: [
+                  const Text('At once per body', style: TextStyle(fontSize: 13)),
+                  Expanded(
+                    child: Slider(
+                      key: Key('custom-${d.key}-max'),
+                      value: d.maxConcurrent.toDouble(),
+                      max: 8,
+                      divisions: 8,
+                      label: d.maxConcurrent == 0 ? 'No limit' : '${d.maxConcurrent}',
+                      onChanged: (v) => setState(() => d.maxConcurrent = v.round()),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 64,
+                    child: Text(
+                      d.maxConcurrent == 0 ? 'No limit' : '${d.maxConcurrent}',
+                      key: Key('custom-${d.key}-max-text'),
+                      style: const TextStyle(fontSize: 13),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Row(
               children: [
                 Expanded(child: _status(d.key)),
@@ -753,7 +884,7 @@ class _CustomDraft {
     ..envKey.text = t.envKey ?? ''
     ..cwd.text = t.cwd ?? ''
     ..description.text = t.description
-    ..maxConcurrent.text = t.maxConcurrent?.toString() ?? ''
+    ..maxConcurrent = t.maxConcurrent ?? 0
     .._label = t.label
     .._contextWindow = t.contextWindow;
 
@@ -765,15 +896,24 @@ class _CustomDraft {
   final envKey = TextEditingController();
   final cwd = TextEditingController();
   final description = TextEditingController();
-  final maxConcurrent = TextEditingController();
+
+  /// 0: no limit of its own (only the body's).
+  int maxConcurrent = 0;
   String? _label;
   int? _contextWindow;
 
+  /// The server's models once loaded (empty: it has no list).
+  List<ModelInfo>? models;
+  String? modelsError;
+  bool loading = false;
+
+  void pick(ModelInfo m) {
+    model.text = m.id;
+    // The window of the model picked (unknown: the catalog's default).
+    _contextWindow = m.contextWindow;
+  }
+
   (WorkerType?, String?) build() {
-    final max = maxConcurrent.text.trim();
-    if (max.isNotEmpty && (int.tryParse(max) ?? 0) < 1) {
-      return (null, 'Custom agent "${id.text.trim()}": "at once" must be a positive number.');
-    }
     try {
       return (
         WorkerType.customFromJson({
@@ -784,7 +924,7 @@ class _CustomDraft {
           'env_key': envKey.text.trim(),
           'cwd': cwd.text.trim(),
           'description': description.text.trim(),
-          if (max.isNotEmpty) 'max_concurrent': int.parse(max),
+          if (maxConcurrent > 0) 'max_concurrent': maxConcurrent,
           'context_window': ?_contextWindow,
         }),
         null,
@@ -795,7 +935,7 @@ class _CustomDraft {
   }
 
   void dispose() {
-    for (final t in [id, baseUrl, model, envKey, cwd, description, maxConcurrent]) {
+    for (final t in [id, baseUrl, model, envKey, cwd, description]) {
       t.dispose();
     }
   }

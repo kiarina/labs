@@ -6,6 +6,14 @@ import '../body/body.dart' show claudeLoggedIn;
 import '../rpc/rpc_client.dart';
 import 'worker_types.dart';
 
+/// A model a custom server lists.
+class ModelInfo {
+  const ModelInfo(this.id, this.contextWindow);
+
+  final String id;
+  final int? contextWindow;
+}
+
 /// The outcome of checking one agent on the start screen.
 class CheckResult {
   const CheckResult(this.ok, this.text, {this.needsLogin = false});
@@ -92,42 +100,60 @@ class AgentChecker {
     }
   }
 
-  /// Asks the server for its models (`GET {base_url}/models`), with the API
-  /// key from [WorkerType.envKey] if set.
-  Future<CheckResult> custom(WorkerType t) async {
-    if (_dir(t.cwd) case final e?) return CheckResult(false, e);
+  /// The server's models (`GET {baseUrl}/models`, with the API key from the
+  /// environment variable [envKey] if set): their ids and context windows
+  /// when the server tells. Returns the models or why there are none.
+  Future<(List<ModelInfo>?, String?)> models(String baseUrl, String? envKey) async {
     String? key;
-    if (t.envKey case final k?) {
-      key = Platform.environment[k];
+    if (envKey != null && envKey.isNotEmpty) {
+      key = Platform.environment[envKey];
       if (key == null || key.isEmpty) {
-        return CheckResult(false, '\$$k is not set in this app\'s environment (ORCH_FORWARD_ENV)');
+        return (null, '\$$envKey is not set in this app\'s environment (ORCH_FORWARD_ENV)');
       }
+    }
+    final base = baseUrl.trim().replaceAll(RegExp(r'/+$'), '');
+    final uri = Uri.tryParse('$base/models');
+    if (base.isEmpty || uri == null || !uri.hasScheme) {
+      return (null, 'Enter a URL like http://127.0.0.1:8500/v1');
     }
     final client = HttpClient()..connectionTimeout = const Duration(seconds: 3);
     try {
-      final req = await client.getUrl(Uri.parse('${t.baseUrl}/models'));
+      final req = await client.getUrl(uri);
       if (key != null) req.headers.set('authorization', 'Bearer $key');
       final res = await req.close().timeout(const Duration(seconds: 5));
       final body = await res.transform(utf8.decoder).join();
       if (res.statusCode == 401 || res.statusCode == 403) {
-        return CheckResult(false, 'The server refused the key (${res.statusCode})');
+        return (null, 'The server refused the key (${res.statusCode})');
       }
-      if (res.statusCode == 404) {
-        return const CheckResult(true, 'Reachable (it has no model list to check the model against)');
-      }
-      if (res.statusCode != 200) return CheckResult(false, 'HTTP ${res.statusCode}');
-      final ids = [
-        for (final m in ((jsonDecode(body) as Map)['data'] as List? ?? const []).cast<Map>())
-          m['id'] as String?,
-      ];
-      return ids.contains(t.model)
-          ? CheckResult(true, 'Reachable, has ${t.model}')
-          : CheckResult(false, 'Reachable, but no model ${t.model} (has: ${ids.take(5).join(', ')})');
+      if (res.statusCode == 404) return (const <ModelInfo>[], null);
+      if (res.statusCode != 200) return (null, 'HTTP ${res.statusCode} from $uri');
+      return (
+        [
+          for (final m in ((jsonDecode(body) as Map)['data'] as List? ?? const []).cast<Map>())
+            if (m['id'] is String)
+              ModelInfo(m['id'] as String, (m['context_window'] as num?)?.toInt()),
+        ],
+        null,
+      );
     } catch (e) {
-      return CheckResult(false, 'Cannot reach ${t.baseUrl}: $e');
+      return (null, 'Cannot reach $base: $e');
     } finally {
       client.close();
     }
+  }
+
+  /// The server answers and has [WorkerType.model].
+  Future<CheckResult> custom(WorkerType t) async {
+    if (_dir(t.cwd) case final e?) return CheckResult(false, e);
+    final (list, error) = await models(t.baseUrl!, t.envKey);
+    if (error != null) return CheckResult(false, error);
+    if (list!.isEmpty) {
+      return const CheckResult(true, 'Reachable (it has no model list to check the model against)');
+    }
+    final ids = [for (final m in list) m.id];
+    return ids.contains(t.model)
+        ? CheckResult(true, 'Reachable, has ${t.model}')
+        : CheckResult(false, 'Reachable, but no model ${t.model} (has: ${ids.take(5).join(', ')})');
   }
 
   Future<void> _initCodex(RpcClient c) async {

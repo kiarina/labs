@@ -42,6 +42,13 @@ class FakeChecker extends AgentChecker {
     calls.add('custom ${t.id}');
     return CheckResult(true, 'Reachable, has ${t.model}');
   }
+
+  @override
+  Future<(List<ModelInfo>?, String?)> models(String baseUrl, String? envKey) async {
+    calls.add('models $baseUrl');
+    if (!baseUrl.startsWith('http')) return (null, 'Enter a URL like http://127.0.0.1:8500/v1');
+    return (const [ModelInfo('qwen-a', 262144), ModelInfo('qwen-b', null)], null);
+  }
 }
 
 /// Every check passes (for tests about other steps).
@@ -273,18 +280,37 @@ void main() {
       await tester.pump();
     }
     await type('id', 'Bad Id');
+    // Before the list is loaded, the model is typed; a bad URL says so.
+    expect(find.byKey(const Key('custom-c0-model')), findsOneWidget);
+    await type('url', 'nope');
+    await tester.tap(find.byKey(const Key('load-c0')));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Enter a URL like'), findsOneWidget);
     await type('url', 'http://127.0.0.1:9/v1');
-    await type('model', 'qwen');
+    await tester.tap(find.byKey(const Key('load-c0')));
+    await tester.pumpAndSettle();
+    // Loaded: a list with context windows; the first is picked.
+    expect(find.byKey(const Key('custom-c0-model-list')), findsOneWidget);
+    expect(find.text('qwen-a  ·  262K context'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('custom-c0-model-list')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('qwen-b').last);
+    await tester.pumpAndSettle();
     await tester.ensureVisible(find.byKey(const Key('next')));
     await tester.tap(find.byKey(const Key('next')));
     await tester.pumpAndSettle();
     expect(find.textContaining('use a-z'), findsOneWidget);
     await type('id', 'local-qwen');
-    await type('max', '1');
+    expect(find.text('No limit'), findsOneWidget);
+    final slider = tester.getRect(find.byKey(const Key('custom-c0-max')));
+    await tester.tapAt(Offset(slider.left + slider.width * 0.3, slider.center.dy));
+    await tester.pumpAndSettle();
+    final max = int.parse(tester.widget<Text>(find.byKey(const Key('custom-c0-max-text'))).data!);
+    expect(max, inInclusiveRange(1, 8));
     await tester.ensureVisible(find.byKey(const Key('check-c0')));
     await tester.tap(find.byKey(const Key('check-c0')));
     await tester.pumpAndSettle();
-    expect(find.text('✓ Reachable, has qwen'), findsOneWidget);
+    expect(find.text('✓ Reachable, has qwen-b'), findsOneWidget);
 
     await tester.ensureVisible(find.byKey(const Key('next')));
     await tester.tap(find.byKey(const Key('next')));
@@ -298,9 +324,9 @@ void main() {
         {
           'id': 'local-qwen',
           'base_url': 'http://127.0.0.1:9/v1',
-          'model': 'qwen',
+          'model': 'qwen-b',
           'description': '',
-          'max_concurrent': 1,
+          'max_concurrent': max,
         },
       ],
     });
