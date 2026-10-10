@@ -50,6 +50,7 @@ void main() {
       'description': 'small tasks',
       'maxConcurrent': 2,
       'model': 'qwen',
+      'extras': <String>[],
     });
     expect(c.types.last.baseUrl, 'http://127.0.0.1:11434/v1');
     expect(jsonEncode(info).contains('SECRET'), isFalse);
@@ -83,5 +84,27 @@ void main() {
       ),
       throwsFormatException,
     );
+  });
+
+  test('tools that drive the Mac or Chrome: off unless turned on, and round-trip', () {
+    final c = WorkerTypesConfig.load(
+      write({
+        'codex': {'enabled': true, 'computer_use': true},
+        'claude': {'enabled': true, 'chrome': true, 'mac': true},
+        'custom': [
+          {'id': 'k', 'base_url': 'http://x/v1', 'model': 'm', 'computer_use': true},
+          {'id': 'j', 'base_url': 'http://x/v1', 'model': 'm'},
+        ],
+      }),
+      const {},
+    );
+    expect([for (final t in c.types) t.extras.length], [1, 2, 1, 0]);
+    expect(c.types[1].toInfo()['extras'], ['chrome', 'mac_control']);
+    final f = File('${tmp.path}/again.json');
+    c.save(f);
+    final again = WorkerTypesConfig.load(f, const {});
+    expect([for (final t in again.types) (t.computerUse, t.chrome, t.mac)],
+        [(true, false, false), (false, true, true), (true, false, false), (false, false, false)]);
+    expect(WorkerTypesConfig.load(File('${tmp.path}/none.json'), const {}).types.every((t) => t.extras.isEmpty), isTrue);
   });
 }

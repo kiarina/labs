@@ -37,6 +37,9 @@ class WorkerType {
     this.envKey,
     this.contextWindow,
     this.cwd,
+    this.computerUse = false,
+    this.chrome = false,
+    this.mac = false,
   }) : label = label ?? id;
 
   final String id;
@@ -67,6 +70,24 @@ class WorkerType {
   final String? envKey;
   final int? contextWindow;
 
+  /// Codex and custom: Codex's Computer Use (Mac apps and Chrome, the
+  /// `cua_repl` tool of the computer-use plugin).
+  final bool computerUse;
+
+  /// Claude: Claude in Chrome (`--chrome`).
+  final bool chrome;
+
+  /// Claude: Mac control through Peekaboo's MCP server.
+  final bool mac;
+
+  /// What its workers can use besides files and the shell, for the
+  /// orchestrator.
+  List<String> get extras => [
+    if (computerUse) 'computer_use (Mac apps and Chrome)',
+    if (chrome) 'chrome',
+    if (mac) 'mac_control',
+  ];
+
   /// [cwd] with `~/` expanded, or null.
   String? get resolvedCwd => expandHome(cwd);
 
@@ -79,6 +100,7 @@ class WorkerType {
     'maxConcurrent': maxConcurrent,
     'model': ?model,
     'cwd': ?resolvedCwd,
+    'extras': extras,
     'error': ?error,
   };
 
@@ -110,6 +132,7 @@ class WorkerType {
       envKey: _blankToNull(j['env_key'] as String?),
       contextWindow: (j['context_window'] as num?)?.toInt(),
       cwd: _blankToNull(j['cwd'] as String?),
+      computerUse: j['computer_use'] == true,
     );
   }
 
@@ -123,6 +146,7 @@ class WorkerType {
     'description': description,
     'max_concurrent': ?maxConcurrent,
     'context_window': ?contextWindow,
+    if (computerUse) 'computer_use': true,
   };
 }
 
@@ -136,16 +160,40 @@ String? expandHome(String? path) {
   return path.startsWith('~/') ? '$home${path.substring(1)}' : path;
 }
 
-/// Codex or Claude on this machine: on or off, where its workers start, and
-/// its default model.
+/// Codex or Claude on this machine: on or off, where its workers start, its
+/// default model, and the tools that drive the Mac or Chrome (off unless
+/// turned on: they need permissions granted while someone is at the screen).
 class BuiltinSetup {
-  BuiltinSetup({this.enabled = true, this.cwd, this.model});
+  BuiltinSetup({
+    this.enabled = true,
+    this.cwd,
+    this.model,
+    this.computerUse = false,
+    this.chrome = false,
+    this.mac = false,
+  });
 
   bool enabled;
   String? cwd;
   String? model;
 
-  Json toJson() => {'enabled': enabled, 'cwd': ?cwd, 'model': ?model};
+  /// Codex: Computer Use (Mac apps and Chrome).
+  bool computerUse;
+
+  /// Claude: Claude in Chrome.
+  bool chrome;
+
+  /// Claude: Mac control through Peekaboo.
+  bool mac;
+
+  Json toJson() => {
+    'enabled': enabled,
+    'cwd': ?cwd,
+    'model': ?model,
+    if (computerUse) 'computer_use': true,
+    if (chrome) 'chrome': true,
+    if (mac) 'mac': true,
+  };
 
   static BuiltinSetup fromJson(Object? j) {
     if (j is! Map) return BuiltinSetup();
@@ -153,6 +201,9 @@ class BuiltinSetup {
       enabled: j['enabled'] as bool? ?? true,
       cwd: _blankToNull(j['cwd'] as String?),
       model: _blankToNull(j['model'] as String?),
+      computerUse: j['computer_use'] == true,
+      chrome: j['chrome'] == true,
+      mac: j['mac'] == true,
     );
   }
 }
@@ -185,6 +236,7 @@ class WorkerTypesConfig {
         description: 'OpenAI Codex on the user\'s subscription. Strong at code and at running commands.',
         model: codex.model,
         cwd: codex.cwd,
+        computerUse: codex.computerUse,
       ),
     if (claude.enabled)
       WorkerType(
@@ -194,6 +246,8 @@ class WorkerTypesConfig {
         description: 'Anthropic Claude Code on the user\'s subscription. Strong at code, careful with long tasks.',
         model: claude.model,
         cwd: claude.cwd,
+        chrome: claude.chrome,
+        mac: claude.mac,
       ),
     ...custom,
   ];

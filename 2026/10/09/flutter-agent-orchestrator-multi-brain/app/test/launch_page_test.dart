@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:agent_orchestrator/agents/agent_check.dart';
+import 'package:agent_orchestrator/agents/mac_permissions.dart';
 import 'package:agent_orchestrator/agents/worker_types.dart';
 import 'package:agent_orchestrator/mesh/launch.dart';
 import 'package:agent_orchestrator/ui/launch_page.dart';
@@ -44,11 +45,51 @@ class FakeChecker extends AgentChecker {
   }
 
   @override
+  Future<List<Requirement>> computerUse() async {
+    calls.add('computerUse');
+    return const [Requirement('Codex Computer Use', true, 'Installed'), Requirement('Computer Use plugin', false, 'Off')];
+  }
+
+  @override
+  Future<List<Requirement>> chrome() async {
+    calls.add('chrome');
+    return const [Requirement('Google Chrome', true, 'Installed')];
+  }
+
+  @override
+  Future<List<Requirement>> peekaboo() async {
+    calls.add('peekaboo');
+    return const [Requirement('Peekaboo: Accessibility', false, 'Not granted', settingsPane: 'Privacy_Accessibility')];
+  }
+
+  @override
   Future<(List<ModelInfo>?, String?)> models(String baseUrl, String? envKey) async {
     calls.add('models $baseUrl');
     if (!baseUrl.startsWith('http')) return (null, 'Enter a URL like http://127.0.0.1:8500/v1');
     return (const [ModelInfo('qwen-a', 262144), ModelInfo('qwen-b', null)], null);
   }
+}
+
+/// macOS permissions without macOS: Screen Recording is granted only after
+/// a "restart".
+class FakePermissions extends MacPermissions {
+  FakePermissions();
+
+  bool accessibility = false;
+  bool screenAsked = false;
+  final opened = <String>[];
+
+  @override
+  Future<Map<String, bool>?> status() async => {'accessibility': accessibility, 'screenRecording': false};
+
+  @override
+  Future<void> requestAccessibility() async => accessibility = true;
+
+  @override
+  Future<void> requestScreenRecording() async => screenAsked = true;
+
+  @override
+  Future<void> openSettings(String pane) async => opened.add(pane);
 }
 
 /// Every check passes (for tests about other steps).
@@ -63,6 +104,15 @@ class _NoChecks extends AgentChecker {
 
   @override
   Future<CheckResult> custom(WorkerType t) async => const CheckResult(true, 'ok');
+
+  @override
+  Future<List<Requirement>> computerUse() async => const [];
+
+  @override
+  Future<List<Requirement>> chrome() async => const [];
+
+  @override
+  Future<List<Requirement>> peekaboo() async => const [];
 }
 
 /// Joins [server] as an app (a brain or a body), as the real apps do.
@@ -85,9 +135,10 @@ void main() {
     WidgetTester tester,
     LaunchConfig initial, {
     AgentChecker checker = const _NoChecks(),
+    MacPermissions? permissions,
   }) async {
     final started = Completer<(LaunchConfig, SignalServer?)>();
-    tester.view.physicalSize = const Size(1200, 1200);
+    tester.view.physicalSize = const Size(1200, 2600);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
     await tester.pumpWidget(MaterialApp(
@@ -95,7 +146,9 @@ void main() {
         initial: initial,
         ownersFile: File('${tmp.path}/owners.json'),
         typesFile: File('${tmp.path}/worker-types.json'),
+        stateDir: tmp.path,
         checker: checker,
+        permissions: permissions ?? FakePermissions(),
         onStart: (c, s) => started.complete((c, s)),
       ),
     ));
@@ -375,6 +428,66 @@ void main() {
     final saved = jsonDecode(File('${tmp.path}/worker-types.json').readAsStringSync()) as Map;
     expect((saved['codex'] as Map)['enabled'], false);
     expect((saved['claude'] as Map)['enabled'], false);
+    await tester.runAsync(server.close);
+  });
+
+  testWidgets('tools: switches show what they need; permissions are granted here; saved', (tester) async {
+    late SignalServer server;
+    late int port;
+    await tester.runAsync(() async {
+      final probe = await ServerSocket.bind(InternetAddress.loopbackIPv4, 0);
+      port = probe.port;
+      await probe.close();
+      server = SignalServer(port: port, log: (_) {});
+      await server.start();
+    });
+    final checker = FakeChecker()..codexLoggedIn = true;
+    final perms = FakePermissions();
+    final started = await pumpPage(
+      tester,
+      LaunchConfig(url: 'ws://127.0.0.1:$port', body: true),
+      checker: checker,
+      permissions: perms,
+    );
+    await tapAndWait(tester, find.byKey(const Key('next')));
+    await tester.tap(find.byKey(const Key('next'))); // roles
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('next'))); // belongs to
+    await tester.pumpAndSettle();
+
+    // This app's permissions: Accessibility is granted here.
+    expect(find.textContaining('Accessibility: not granted'), findsOneWidget);
+    await tester.ensureVisible(find.byKey(const Key('grant-Privacy_Accessibility')));
+    await tester.tap(find.byKey(const Key('grant-Privacy_Accessibility')));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Accessibility: granted'), findsOneWidget);
+    // Screen Recording asks once and then offers the restart it needs.
+    expect(find.byKey(const Key('restart')), findsNothing);
+    await tester.tap(find.byKey(const Key('grant-Privacy_ScreenCapture')));
+    await tester.pumpAndSettle();
+    expect(perms.screenAsked, isTrue);
+    expect(find.byKey(const Key('restart')), findsOneWidget);
+
+    // Codex Computer Use: what it needs, one thing missing.
+    await tester.ensureVisible(find.byKey(const Key('tool-codex-cu')));
+    await tester.tap(find.byKey(const Key('tool-codex-cu')));
+    await tester.pumpAndSettle();
+    expect(find.text('✗ Computer Use plugin: Off'), findsOneWidget);
+    // Claude's Mac control: a missing permission opens System Settings.
+    await tester.ensureVisible(find.byKey(const Key('tool-claude-mac')));
+    await tester.tap(find.byKey(const Key('tool-claude-mac')));
+    await tester.pumpAndSettle();
+    expect(find.text('✗ Peekaboo: Accessibility: Not granted'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('open-claude-mac-Privacy_Accessibility')));
+    await tester.pumpAndSettle();
+    expect(perms.opened, ['Privacy_Accessibility']);
+
+    await tester.ensureVisible(find.byKey(const Key('next')));
+    await tester.tap(find.byKey(const Key('next')));
+    await started.future;
+    final saved = jsonDecode(File('${tmp.path}/worker-types.json').readAsStringSync()) as Map;
+    expect(saved['codex'], {'enabled': true, 'computer_use': true});
+    expect(saved['claude'], {'enabled': true, 'mac': true});
     await tester.runAsync(server.close);
   });
 }

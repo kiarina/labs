@@ -162,7 +162,8 @@ class LocalBody extends ChangeNotifier with Body {
   Future<void> _startCodex() async {
     try {
       final b = CodexBackend(await codexAppServer(), onTool: _onTool)
-        ..onChanged = notifyListeners;
+        ..onChanged = notifyListeners
+        ..workerConfig = codexComputerUse(config.codex.computerUse);
       _log(b.client);
       await b.start();
       codex = b;
@@ -178,7 +179,9 @@ class LocalBody extends ChangeNotifier with Body {
     try {
       final b = ClaudeBackend(claudeBridge(), onTool: _onTool)
         ..onChanged = notifyListeners
-        ..onUserPrompt = (_, _) => onUserPrompt?.call();
+        ..onUserPrompt = ((_, _) => onUserPrompt?.call())
+        ..workerChrome = config.claude.chrome
+        ..workerMac = config.claude.mac;
       _log(b.client);
       await b.start(projectDir);
       claude = b;
@@ -196,7 +199,9 @@ class LocalBody extends ChangeNotifier with Body {
         await customAppServer(t, stateDir),
         onTool: _onTool,
         workerType: t.id,
-      )..onChanged = notifyListeners;
+      )
+        ..onChanged = notifyListeners
+        ..workerConfig = t.computerUse ? customWorkerConfig() : null;
       _log(b.client);
       await b.start();
       custom[t.id] = b;

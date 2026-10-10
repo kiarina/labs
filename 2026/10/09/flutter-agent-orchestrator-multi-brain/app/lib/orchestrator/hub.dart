@@ -531,6 +531,7 @@ class Hub extends ChangeNotifier {
                         'model': settings.workerModel[id] ?? b.defaultModel(id),
                         'description': t['description'],
                         'default_cwd': t['cwd'] ?? b.projectDir,
+                        if ((t['extras'] as List?)?.isNotEmpty ?? false) 'can_also_use': t['extras'],
                         'max_concurrent': ?t['maxConcurrent'],
                         'running': runningOn(b.name, id),
                       },

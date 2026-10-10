@@ -247,6 +247,7 @@ class _OrchestratorAppState extends State<OrchestratorApp> {
               initial: widget.fromEnv ?? LaunchConfig.load(widget.stateDir),
               ownersFile: _ownersFile,
               typesFile: _typesFile,
+              stateDir: widget.stateDir,
               error: _error,
               onStart: _started,
             ),

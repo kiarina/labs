@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:orchestrator_signal/signal_server.dart';
 
 import '../agents/agent_check.dart';
+import '../agents/mac_permissions.dart';
 import '../agents/worker_types.dart';
 import '../mesh/launch.dart';
 import 'theme.dart';
@@ -28,9 +29,15 @@ class LaunchPage extends StatefulWidget {
     required this.ownersFile,
     required this.onStart,
     required this.typesFile,
+    required this.stateDir,
     this.checker = const AgentChecker(),
+    this.permissions = const MacPermissions(),
     this.error,
   });
+
+  /// Where the start screen's choices are kept (`launch.json`).
+  final String stateDir;
+  final MacPermissions permissions;
 
   /// Where the agents chosen in step 4 are kept (`worker-types.json`).
   final File typesFile;
@@ -290,6 +297,59 @@ class _LaunchPageState extends State<LaunchPage> {
     for (final d in _custom) {
       _checkCustom(d);
     }
+    _checkTools();
+    _readPermissions();
+  }
+
+  // ---- tools that drive the Mac or Chrome ----------------------------------
+
+  /// Requirements by key (`codex-cu`, `claude-chrome`, `claude-mac`,
+  /// `<draft>-cu`); null while checking.
+  final _reqs = <String, List<Requirement>?>{};
+
+  Future<void> _require(String key, Future<List<Requirement>> Function() run) async {
+    setState(() => _reqs[key] = null);
+    final r = await run();
+    if (mounted) setState(() => _reqs[key] = r);
+  }
+
+  void _checkTools() {
+    if (_agents.codex.enabled && _agents.codex.computerUse) _require('codex-cu', widget.checker.computerUse);
+    if (_agents.claude.enabled && _agents.claude.chrome) _require('claude-chrome', widget.checker.chrome);
+    if (_agents.claude.enabled && _agents.claude.mac) _require('claude-mac', widget.checker.peekaboo);
+    for (final d in _custom) {
+      if (d.computerUse) _require('${d.key}-cu', widget.checker.computerUse);
+    }
+  }
+
+  Map<String, bool>? _perms;
+  bool _permsRead = false;
+
+  /// Asked for Screen Recording on this run: it applies after a restart.
+  bool _screenAsked = false;
+
+  Future<void> _readPermissions() async {
+    final p = await widget.permissions.status();
+    if (mounted) {
+      setState(() {
+        _perms = p;
+        _permsRead = true;
+      });
+    }
+  }
+
+  /// Saves what is on the screen and starts the app again (Screen Recording
+  /// applies to a running app only after a restart).
+  Future<void> _restart() async {
+    c
+      ..name = _name.text.trim()
+      ..port = int.tryParse(_port.text.trim()) ?? c.port
+      ..url = _url.text.trim().isEmpty ? c.url : _url.text.trim();
+    c.save(widget.stateDir);
+    final (config, _) = _readAgents();
+    config?.save(widget.typesFile);
+    await _server?.close();
+    await widget.permissions.relaunch();
   }
 
   /// The agents as typed, or why they cannot be saved.
@@ -303,8 +363,19 @@ class _LaunchPageState extends State<LaunchPage> {
       custom.add(t);
     }
     final config = WorkerTypesConfig(
-      codex: BuiltinSetup(enabled: _agents.codex.enabled, cwd: _cwd(_codexCwd), model: _agents.codex.model),
-      claude: BuiltinSetup(enabled: _agents.claude.enabled, cwd: _cwd(_claudeCwd), model: _agents.claude.model),
+      codex: BuiltinSetup(
+        enabled: _agents.codex.enabled,
+        cwd: _cwd(_codexCwd),
+        model: _agents.codex.model,
+        computerUse: _agents.codex.computerUse,
+      ),
+      claude: BuiltinSetup(
+        enabled: _agents.claude.enabled,
+        cwd: _cwd(_claudeCwd),
+        model: _agents.claude.model,
+        chrome: _agents.claude.chrome,
+        mac: _agents.claude.mac,
+      ),
       custom: custom,
     );
     if (c.brain && config.types.isEmpty) {
@@ -566,6 +637,7 @@ class _LaunchPageState extends State<LaunchPage> {
     required TextEditingController cwd,
     required VoidCallback check,
     Widget? extra,
+    List<Widget> tools = const [],
   }) => Padding(
     padding: const EdgeInsets.only(bottom: 8),
     child: Column(
@@ -608,6 +680,7 @@ class _LaunchPageState extends State<LaunchPage> {
                 const SizedBox(height: 4),
                 _status(id),
                 ?extra,
+                ...tools,
               ],
             ),
           ),
@@ -640,6 +713,15 @@ class _LaunchPageState extends State<LaunchPage> {
         setup: _agents.codex,
         cwd: _codexCwd,
         check: _checkCodex,
+        tools: [
+          _tool(
+            key: 'codex-cu',
+            label: 'Computer Use (Mac apps and Chrome)',
+            value: _agents.codex.computerUse,
+            onChanged: (v) => _agents.codex.computerUse = v,
+            check: widget.checker.computerUse,
+          ),
+        ],
         extra: codexCheck != null && codexCheck.needsLogin
             ? Align(
                 alignment: Alignment.centerLeft,
@@ -661,6 +743,22 @@ class _LaunchPageState extends State<LaunchPage> {
         setup: _agents.claude,
         cwd: _claudeCwd,
         check: _checkClaude,
+        tools: [
+          _tool(
+            key: 'claude-chrome',
+            label: 'Chrome (Claude in Chrome)',
+            value: _agents.claude.chrome,
+            onChanged: (v) => _agents.claude.chrome = v,
+            check: widget.checker.chrome,
+          ),
+          _tool(
+            key: 'claude-mac',
+            label: 'Mac apps (Peekaboo)',
+            value: _agents.claude.mac,
+            onChanged: (v) => _agents.claude.mac = v,
+            check: widget.checker.peekaboo,
+          ),
+        ],
       ),
       for (final d in _custom) _customCard(d),
       Align(
@@ -672,6 +770,7 @@ class _LaunchPageState extends State<LaunchPage> {
           label: const Text('Add a custom agent (a Responses API server)'),
         ),
       ),
+      _permissionsSection(theme),
       if (ids.isEmpty)
         Text(
           c.brain
@@ -690,6 +789,139 @@ class _LaunchPageState extends State<LaunchPage> {
         ),
       ],
     ];
+  }
+
+  /// A switch for a tool that drives the Mac or Chrome, with what it needs
+  /// on this machine once it is on.
+  Widget _tool({
+    required String key,
+    required String label,
+    String? sub,
+    required bool value,
+    required void Function(bool) onChanged,
+    required Future<List<Requirement>> Function() check,
+  }) {
+    final reqs = _reqs[key];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SwitchListTile(
+          key: Key('tool-$key'),
+          dense: true,
+          contentPadding: EdgeInsets.zero,
+          value: value,
+          title: Text(label, style: const TextStyle(fontSize: 13)),
+          subtitle: sub == null ? null : Text(sub, style: const TextStyle(fontSize: 11)),
+          onChanged: (v) {
+            setState(() => onChanged(v));
+            if (v) _require(key, check);
+          },
+        ),
+        if (value)
+          Padding(
+            padding: const EdgeInsets.only(left: 8, bottom: 6),
+            child: reqs == null
+                ? const Text('Checking…', style: TextStyle(fontSize: 12, color: Palette.textDim))
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (final r in reqs)
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                '${r.ok ? '✓' : '✗'} ${r.name}: ${r.detail}',
+                                style: TextStyle(fontSize: 12, color: r.ok ? Palette.added : Palette.warning),
+                              ),
+                            ),
+                            if (!r.ok && r.settingsPane != null)
+                              TextButton(
+                                key: Key('open-$key-${r.settingsPane}'),
+                                onPressed: () => widget.permissions.openSettings(r.settingsPane!),
+                                child: const Text('Open Settings', style: TextStyle(fontSize: 12)),
+                              ),
+                          ],
+                        ),
+                      TextButton(
+                        key: Key('recheck-$key'),
+                        onPressed: () => _require(key, check),
+                        child: const Text('Check again', style: TextStyle(fontSize: 12)),
+                      ),
+                    ],
+                  ),
+          ),
+      ],
+    );
+  }
+
+  /// This app's own macOS permissions: workers run as its children, so what
+  /// they do in the shell (`screencapture`, a clicking AppleScript) is asked
+  /// on its behalf.
+  Widget _permissionsSection(ThemeData theme) {
+    final p = _perms;
+    Widget row(String name, String what, bool? ok, VoidCallback grant, String pane) => Row(
+      children: [
+        Expanded(
+          child: Text(
+            '${ok == true ? '✓' : '✗'} $name: ${ok == true ? 'granted' : 'not granted'} ($what)',
+            style: TextStyle(fontSize: 12, color: ok == true ? Palette.added : Palette.warning),
+          ),
+        ),
+        if (ok != true) ...[
+          TextButton(key: Key('grant-$pane'), onPressed: grant, child: const Text('Grant', style: TextStyle(fontSize: 12))),
+          TextButton(
+            onPressed: () => widget.permissions.openSettings(pane),
+            child: const Text('Open Settings', style: TextStyle(fontSize: 12)),
+          ),
+        ],
+      ],
+    );
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Divider(),
+          Text("This app's macOS permissions", style: theme.textTheme.titleSmall),
+          Text(
+            'Workers run inside this app, so macOS asks this app for what they do in the shell. '
+            'Grant them now, while you are here.',
+            style: theme.textTheme.bodySmall?.copyWith(color: Palette.textDim),
+          ),
+          const SizedBox(height: 6),
+          if (!_permsRead)
+            const Text('Checking…', style: TextStyle(fontSize: 12, color: Palette.textDim))
+          else if (p == null)
+            const Text('Not available here (not macOS)', style: TextStyle(fontSize: 12, color: Palette.textDim))
+          else ...[
+            row('Screen Recording', 'screenshots, e.g. screencapture', p['screenRecording'], () async {
+              await widget.permissions.requestScreenRecording();
+              setState(() => _screenAsked = true);
+              await _readPermissions();
+            }, 'Privacy_ScreenCapture'),
+            row('Accessibility', 'clicks and keys, e.g. AppleScript', p['accessibility'], () async {
+              await widget.permissions.requestAccessibility();
+              await _readPermissions();
+            }, 'Privacy_Accessibility'),
+            Wrap(
+              children: [
+                TextButton(
+                  key: const Key('perm-recheck'),
+                  onPressed: _readPermissions,
+                  child: const Text('Check again', style: TextStyle(fontSize: 12)),
+                ),
+                if (_screenAsked && p['screenRecording'] != true)
+                  TextButton(
+                    key: const Key('restart'),
+                    onPressed: _restart,
+                    child: const Text('Restart this app (Screen Recording applies after a restart)', style: TextStyle(fontSize: 12)),
+                  ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
   }
 
   Future<void> _loadModels(_CustomDraft d) async {
@@ -866,6 +1098,14 @@ class _LaunchPageState extends State<LaunchPage> {
                 TextButton(key: Key('check-${d.key}'), onPressed: () => _checkCustom(d), child: const Text('Check')),
               ],
             ),
+            _tool(
+              key: '${d.key}-cu',
+              label: 'Computer Use (Mac apps and Chrome)',
+              sub: 'Runs on this machine\'s Codex setup (~/.codex) while on; its other servers stay off.',
+              value: d.computerUse,
+              onChanged: (v) => d.computerUse = v,
+              check: widget.checker.computerUse,
+            ),
           ],
         ),
       ),
@@ -885,6 +1125,7 @@ class _CustomDraft {
     ..cwd.text = t.cwd ?? ''
     ..description.text = t.description
     ..maxConcurrent = t.maxConcurrent ?? 0
+    ..computerUse = t.computerUse
     .._label = t.label
     .._contextWindow = t.contextWindow;
 
@@ -899,6 +1140,7 @@ class _CustomDraft {
 
   /// 0: no limit of its own (only the body's).
   int maxConcurrent = 0;
+  bool computerUse = false;
   String? _label;
   int? _contextWindow;
 
@@ -926,6 +1168,7 @@ class _CustomDraft {
           'description': description.text.trim(),
           if (maxConcurrent > 0) 'max_concurrent': maxConcurrent,
           'context_window': ?_contextWindow,
+          'computer_use': computerUse,
         }),
         null,
       );

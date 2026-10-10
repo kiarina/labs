@@ -19,6 +19,7 @@
 4. 1 つのアプリで、起動時に役割（brain・body・シグナリング）を選べるか
 5. ワーカーの種類を固定の 3 つ（Codex・Claude・kiapi）から、body ごとに設定で増やせる形にできるか。会話の途中で増えた種類を司令塔が使えるか
 6. 動かすエージェントを起動画面で決め、その場で動くか確かめられるか。エージェントが 1 つも無い body を置けるか
+7. ワーカーに Mac や Chrome を操作させる道具を worker type ごとに on/off し、要る許可を起動画面の中で通せるか
 
 ## Answer
 
@@ -67,6 +68,23 @@
   メッセージの頭に `[bodies changed since you last called list_bodies]` と `- body-c: worker types are now codex (were none)` が付いた。
   司令塔は「codex。知らせにそう書いてあった」と答えた（Claude は未ログインなので入らない）
 
+- **Mac や Chrome を操作させる道具を、worker type ごとに on/off できた。** 偽の Responses API に、ワーカーのモデルへ渡る道具を記録させて確かめた（トークンを使わない）
+  - Codex の Computer Use の正体は、computer-use のプラグインが足す `cua_repl`（Mac のアプリと Chrome の操作）。`features` の `computer_use`・`browser_use` などを切っても消えず、
+    スレッドの `config` で `plugins."computer-use@openai-bundled"`・`"unified-computer-use@openai-bundled"` を切ると消えた
+  - custom（別の `CODEX_HOME`）には、設定・プラグイン・ログインを写しても `cua_repl` が出なかった。Computer Use を on にした custom は、ユーザーの `~/.codex` のまま
+    モデルの送り先と表だけを替えて起動し、ほかの MCP サーバー・つないだアプリ・マルチエージェントなどはスレッドごとに切る。off なら `exec_command`・`write_stdin`・`request_user_input`・`view_image` だけ、
+    on なら `cua_repl` が足され、ユーザーの MCP サーバーは出ない（`app/test/worker_tools_live_test.dart`）
+  - kiapi（`qwen3.8-flash-next`）のワーカーで、Computer Use の `cua.getState()` が通った。最初は「node_repl is unavailable for this model」で全部失敗した:
+    custom の表で `node_repl_disabled` を立てていたため（Computer Use は node_repl の上で JavaScript を動かす）。on のときは外すようにした
+  - Claude の Chrome（`--chrome`）と Mac の操作（Peekaboo）は、ワーカーのセッションにだけ付ける
+- **要る許可を、起動画面の中で確かめて通せる。**
+  - このアプリの画面収録・アクセシビリティ: ワーカーはこのアプリの子プロセスなので、シェルで撮る・クリックする（`screencapture`・AppleScript）と、このアプリが聞かれる。
+    状態を読み、［Grant］で macOS のダイアログを出す（runner の Swift で `CGRequestScreenCaptureAccess`・`AXIsProcessTrustedWithOptions`）。画面収録は許可の後に起動し直しが要るので、設定を保存して起動し直すボタンを出す
+  - Codex の Computer Use: 実体は Codex アプリが入れる別のアプリ（`com.openai.sky.CUAService`）で、macOS の許可はそのアプリが持つ。起動画面では、それが入っているかと、プラグインが on かを見る
+  - Peekaboo: 4.9 は自分のバックグラウンドのサービスで動き、許可もそちらが持つ。`peekaboo permissions --json` で見て、足りなければシステム設定の該当の画面を開く。Claude Code から MCP がつながるか（`connected`）も確かめた
+  - Claude in Chrome: Chrome と、拡張の接続口（native messaging host）が入っているかを見る。Claude Code の MCP の状態には、最初のターンまで Chrome が出てこない。
+    Chrome のプロフィールのフォルダは macOS が守っていて、読むとそれ自体が許可のダイアログになるので、拡張そのものは見ない
+
 ## Architecture
 
 ```text
@@ -98,6 +116,7 @@
   - 種類ごとに既定の作業フォルダを持てる。`start_thread` の `cwd` > worker type の作業フォルダ > body の作業フォルダの順
   - body なら worker type として司令塔に見せる。brain なら司令塔をこのうちの 1 つで動かす。0 個でもよい（body のツール `fetch_image` だけが使える）
   - 1 つずつ起動し、どれかが失敗しても（未ログイン、サーバーに届かない）ほかは使える。失敗したものは理由付きで「使えない」と知らせる
+  - Mac や Chrome を操作させる道具は、既定で off。Codex と custom は Computer Use、Claude は Chrome と Mac の操作（Peekaboo）。on のものは `list_bodies` の `can_also_use` で司令塔に見せる
   - custom は Codex の app-server を種類ごとに 1 つ起動し、モデルの送り先をその種類の Responses API のサーバーにする（自前の `CODEX_HOME` とモデル表）
   - body は brain に、種類ごとに id・種類（codex・claude・custom）・表示名・説明・同時に動かせる数・モデル・使えない理由を知らせる。API キーは環境変数の名前（`env_key`）だけを設定に持ち、値は body のマシンから出ない
   - 司令塔の `start_thread` の `worker_type` は文字列で、tool の定義に選択肢（enum）を持たない。選択肢は会話の途中で変わり、body ごとにも違うため。司令塔は `list_bodies` の `worker_types` で知り、無い種類を指定したらその body の一覧をエラーに付けて返す
@@ -122,7 +141,7 @@
 | 1. Signaling | このアプリで起動する（ポート）か、既存につなぐ（URL。既定 `ws://localhost:8765`）か | 起動する、または問い合わせる。ポートが使われている・読めないなら、ここで止まる。読めたら名簿を持って次へ |
 | 2. Roles | 名前（body_id。空なら「ホスト名-乱数 4 桁」）、Brain・Body（両方も可） | 名前が online のアプリとぶつかると、`-2` が付くと注意を出す。Body を選ばなければ、ここで起動する（どちらも選ばなければ console だけ） |
 | 3. Belongs to（Body のとき） | 所属する brain。候補は、自分が brain ならこのアプリ（既定）と、名簿にいる online の brain | 次へ。参加の後に所属を変える |
-| 4. Agents（Brain か Body のとき） | Codex・Claude の on/off と作業フォルダ、custom の追加（id・URL・API キーの変数名・モデル・作業フォルダ・説明・同時に動かせる数）。custom のモデルは、URL を入れて「Load models」でサーバーの一覧を読み、そこから選ぶ（一覧の無いサーバーは手で入れる。選んだモデルのコンテキスト長も一緒に覚える）。同時に動かせる数はスライダー（0〜8、0 は「上限なし」）。brain なら司令塔をどれで動かすか | 入ったとき・on にしたとき・「Check」で確かめる。Codex が未ログインならログインのボタンが出る。Start で `worker-types.json` に書いて起動する。brain で 0 個なら止める |
+| 4. Agents（Brain か Body のとき） | Codex・Claude の on/off と作業フォルダ、Mac や Chrome を操作させる道具の on/off（on にすると、要るものとその状態が出る）、このアプリの macOS の許可、custom の追加（id・URL・API キーの変数名・モデル・作業フォルダ・説明・同時に動かせる数）。custom のモデルは、URL を入れて「Load models」でサーバーの一覧を読み、そこから選ぶ（一覧の無いサーバーは手で入れる。選んだモデルのコンテキスト長も一緒に覚える）。同時に動かせる数はスライダー（0〜8、0 は「上限なし」）。brain なら司令塔をどれで動かすか | 入ったとき・on にしたとき・「Check」で確かめる。Codex が未ログインならログインのボタンが出る。Start で `worker-types.json` に書いて起動する。brain で 0 個なら止める |
 
 - 「Back」で前のステップへ戻れる。ステップ 1 でアプリの中のシグナリングを始めた後に戻ってポートを変えると、起動し直す
 - 所属の変更は、前の所属先でワーカーが動いていれば断られ、所属は前のまま（理由は body の一覧の上に出る）
@@ -200,7 +219,9 @@
 - custom の worker type は、Responses API のサーバーだけ。Chat Completions だけのサーバーでは試していない。鍵の要る外部の API（`env_key`）も試していない
 - worker type の設定は起動画面で決め、起動時に読む。変えるにはアプリを起動し直す（司令塔の会話は brain が起動し直さない限りそのまま使え、変わったことは次のメッセージで知らされる）
 - **起動画面の 4 つ目のステップを、エージェントは画面のクリックで確かめていない。** 流れは widget のテスト（偽の確認役）、確かめ自体は本物の Codex・Claude・偽のサーバーで確かめた。Codex のブラウザのログインは、本物では通していない（このマシンはログイン済み）
-- 承認のダイアログを先に出しておくのは、今は作業フォルダを読むところまで（フォルダの許可）。画面収録・アクセシビリティなど、ツールごとの許可はまだ
+- Codex の Computer Use は、使うアプリごとに「Allow Computer Use to use …」を実行中に聞いてくる。アプリの数だけあるので、起動画面では先に通せない
+- 起動画面の許可のボタン（このアプリの画面収録・アクセシビリティ、起動し直し）は、エージェントは本物の画面では押していない。流れは widget のテスト（偽の許可）で確かめた
+- Debug のビルドを作り直すと署名が変わり、macOS の許可が外れることがある。作り直したら起動画面で確かめ直す
 - 一度だけ、ワーカーの知らせ（`[worker update]`）が司令塔の動いている途中に入った後、ターンが終わっても画面が動いている表示（停止ボタン）のまま残った。
   同じ流れを 3 回やり直して再現しなかった。原因は分かっていない（ターンの状態を `ORCH_DUMP` の `turnStates` に出すようにした）
 
@@ -234,13 +255,15 @@ mise run signal             # シグナリングを単独で（:8765）。PORT �
 - `mise run probe-prompts`: Codex と Claude のワーカーに自動で入るプロンプトを、偽の API で確かめる（`probes/`）
 - 起動画面の確かめを、このマシンの本物の Codex・Claude で流す（モデルのトークンは使わない）:
   `cd app && LIVE_CHECK=1 CLAUDE_FLUTTER_SIDECAR=$PWD/../sidecar NODE_BIN=$(command -v node) flutter test test/agent_check_live_test.dart`
+- custom のワーカーに渡る道具を、Computer Use の on/off で比べる（偽の Responses API、トークンを使わない）:
+  `cd app && LIVE_CHECK=1 flutter test test/worker_tools_live_test.dart`
 
 エージェントの設定（`worker-types.json`。起動画面で書く）:
 
 ```json
 {
-  "codex": {"enabled": true, "cwd": "~/src"},
-  "claude": {"enabled": false},
+  "codex": {"enabled": true, "cwd": "~/src", "computer_use": true},
+  "claude": {"enabled": true, "chrome": true, "mac": false},
   "custom": [
     {
       "id": "kiapi",
@@ -262,7 +285,7 @@ mise run signal             # シグナリングを単独で（:8765）。PORT �
 }
 ```
 
-- `codex`・`claude`: `enabled`、`cwd`（既定の作業フォルダ。`~/` 可）、`model`（既定のモデル）
+- `codex`・`claude`: `enabled`、`cwd`（既定の作業フォルダ。`~/` 可）、`model`（既定のモデル）。道具は Codex が `computer_use`、Claude が `chrome`・`mac`（Peekaboo）。custom も `computer_use` を持てる
 - custom の `id` は英小文字・数字・`_`・`-`（`codex`・`claude` は使えない）。`base_url` と `model` は必須
 - `description` は司令塔が種類を選ぶときに読む。何に向いているかを書く
 - `max_concurrent`: この種類を同じ body で同時に動かせる数（省くと body の上限だけ）
@@ -273,4 +296,5 @@ mise run signal             # シグナリングを単独で（:8765）。PORT �
 - Flutter 3.47.2・Dart 3.13.2、flutter_webrtc 1.6.2+hotfix.4、Node 22.22
 - codex-cli 0.159.3、`@anthropic-ai/claude-agent-sdk` 0.3.289
 - 司令塔 `gpt-5.6-luna`（effort low）、Codex のワーカー `gpt-5.6-luna`
-- 実行日: 2026-10-09（起動画面と worker type は 2026-10-10、エージェントのステップは 2026-10-11）
+- 実行日: 2026-10-09（起動画面と worker type は 2026-10-10、エージェントのステップと道具の on/off は 2026-10-11）
+- Peekaboo 4.9.0

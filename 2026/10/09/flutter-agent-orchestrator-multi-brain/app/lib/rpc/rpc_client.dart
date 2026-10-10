@@ -225,6 +225,12 @@ Future<RpcClient> codexAppServer({
 /// as plain functions: the catalog entries of OpenAI's models use code mode
 /// and `additional_tools`, which other servers do not accept. Both settings
 /// are read at process start only, hence a process per worker type.
+///
+/// With Computer Use on, it runs on the user's own `~/.codex` instead: the
+/// computer-use plugin works only there (a copy of its settings, plugins and
+/// login in another CODEX_HOME did not bring it). The model provider and the
+/// catalog are still this type's; [customWorkerConfig] turns off per thread
+/// what else `~/.codex` would give its workers.
 Future<RpcClient> customAppServer(WorkerType t, String stateDir) async {
   final home = Directory('$stateDir/custom-codex-home/${t.id}');
   await home.create(recursive: true);
@@ -234,11 +240,11 @@ Future<RpcClient> customAppServer(WorkerType t, String stateDir) async {
       'models': [await _customCatalogEntry(t)],
     }),
   );
-  const off = [
+  final off = [
     'code_mode_host',
     'multi_agent',
     'apps',
-    'plugins',
+    if (!t.computerUse) 'plugins',
     'image_generation',
     'computer_use',
     'browser_use',
@@ -265,9 +271,41 @@ Future<RpcClient> customAppServer(WorkerType t, String stateDir) async {
         for (final f in off) 'features.$f=false',
       ]) ...['-c', o],
     ],
-    environment: {'CODEX_HOME': home.path},
+    environment: t.computerUse ? null : {'CODEX_HOME': home.path},
   );
 }
+
+/// Per-thread settings for the workers of a custom type with Computer Use
+/// (its app-server runs on `~/.codex`): only the shell, files, `view_image`
+/// and Computer Use; the user's MCP servers and connected apps stay off.
+Map<String, dynamic> customWorkerConfig() => {
+  'features': {
+    for (final f in ['apps', 'multi_agent', 'goals', 'image_generation', 'tool_suggest', 'skill_search', 'memories'])
+      f: false,
+  },
+  'mcp_servers': {
+    for (final name in userMcpServers()) name: {'enabled': false},
+  },
+};
+
+/// The MCP servers in `~/.codex/config.toml` (their `[mcp_servers.<name>]`
+/// headers).
+List<String> userMcpServers() {
+  final f = File('${Platform.environment['HOME']}/.codex/config.toml');
+  if (!f.existsSync()) return const [];
+  final header = RegExp(r'^\[mcp_servers\.("?)([^"\].]+)\1\]\s*$', multiLine: true);
+  return {for (final m in header.allMatches(f.readAsStringSync())) m.group(2)!}.toList();
+}
+
+/// Computer Use for Codex workers on or off: the computer-use plugins give
+/// them `cua_repl` (Mac apps and Chrome); the `computer_use` and browser
+/// feature flags do not.
+Map<String, dynamic> codexComputerUse(bool on) => {
+  'plugins': {
+    for (final p in ['computer-use@openai-bundled', 'unified-computer-use@openai-bundled'])
+      p: {'enabled': on},
+  },
+};
 
 /// The catalog entry of an OpenAI model from ~/.codex/models_cache.json,
 /// renamed to [t]'s model and switched to plain function tools. The
@@ -297,7 +335,10 @@ Future<Map<String, dynamic>> _customCatalogEntry(WorkerType t) async {
     'include_skills_usage_instructions': false,
     'include_apps_usage_instructions': false,
     'include_plugin_usage_instructions': false,
-    'node_repl_disabled': true,
+    // Computer Use (cua_repl) runs its JavaScript on node_repl: with it
+    // disabled, every call fails with "node_repl is unavailable for this
+    // model".
+    'node_repl_disabled': !t.computerUse,
     'service_tiers': <Object>[],
     'additional_speed_tiers': <Object>[],
     'context_window': window,

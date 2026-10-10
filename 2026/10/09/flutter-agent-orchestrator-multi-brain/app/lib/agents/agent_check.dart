@@ -14,6 +14,18 @@ class ModelInfo {
   final int? contextWindow;
 }
 
+/// One thing a tool needs on this machine, and whether it is there.
+class Requirement {
+  const Requirement(this.name, this.ok, this.detail, {this.settingsPane});
+
+  final String name;
+  final bool ok;
+  final String detail;
+
+  /// System Settings › Privacy & Security pane to open to fix it.
+  final String? settingsPane;
+}
+
 /// The outcome of checking one agent on the start screen.
 class CheckResult {
   const CheckResult(this.ok, this.text, {this.needsLogin = false});
@@ -154,6 +166,82 @@ class AgentChecker {
     return ids.contains(t.model)
         ? CheckResult(true, 'Reachable, has ${t.model}')
         : CheckResult(false, 'Reachable, but no model ${t.model} (has: ${ids.take(5).join(', ')})');
+  }
+
+  /// What Codex's Computer Use needs here (Codex and custom agents): the
+  /// Codex Computer Use app, and its plugin turned on in `~/.codex`. The
+  /// app holds its own macOS permissions (set up from the Codex app).
+  Future<List<Requirement>> computerUse() async {
+    final home = Platform.environment['HOME'] ?? '';
+    final app = Directory('$home/.codex/computer-use/Codex Computer Use.app').existsSync();
+    final config = File('$home/.codex/config.toml');
+    final text = config.existsSync() ? config.readAsStringSync() : '';
+    final plugin = RegExp(
+      r'\[plugins\."computer-use@openai-bundled"\]\s*\n\s*enabled\s*=\s*true',
+    ).hasMatch(text);
+    return [
+      Requirement(
+        'Codex Computer Use',
+        app,
+        app ? 'Installed (it holds its own macOS permissions)' : 'Not installed: set up Computer Use in the Codex app',
+      ),
+      Requirement(
+        'Computer Use plugin',
+        plugin,
+        plugin ? 'On in ~/.codex' : 'Off in ~/.codex: turn on Computer Use in the Codex app',
+      ),
+    ];
+  }
+
+  /// What Claude in Chrome needs: Chrome, and the extension's connector
+  /// (its native messaging host). Whether the extension is signed in shows
+  /// only when a worker uses it.
+  Future<List<Requirement>> chrome() async {
+    final home = Platform.environment['HOME'] ?? '';
+    final chrome = ['/Applications/Google Chrome.app', '$home/Applications/Google Chrome.app']
+        .any((p) => Directory(p).existsSync());
+    final host = File(
+      '$home/Library/Application Support/Google/Chrome/NativeMessagingHosts/com.anthropic.claude_code_browser_extension.json',
+    ).existsSync();
+    return [
+      Requirement('Google Chrome', chrome, chrome ? 'Installed' : 'Not installed'),
+      Requirement(
+        'Claude in Chrome',
+        host,
+        host ? 'Connector installed' : 'Install the Claude extension in Chrome, then run `claude --chrome` once',
+      ),
+    ];
+  }
+
+  /// What Mac control through Peekaboo needs: the `peekaboo` command, and
+  /// its Screen Recording and Accessibility (Peekaboo's own: it runs them
+  /// in its background service).
+  Future<List<Requirement>> peekaboo() async {
+    final bin = Platform.environment['PEEKABOO_BIN'] ?? '/opt/homebrew/bin/peekaboo';
+    if (!File(bin).existsSync()) {
+      return const [Requirement('Peekaboo', false, 'Not installed: brew install openclaw/tap/peekaboo')];
+    }
+    try {
+      final r = await Process.run(bin, ['permissions', '--json']).timeout(const Duration(seconds: 20));
+      final data = ((jsonDecode(r.stdout as String) as Map)['data'] as Map?) ?? const {};
+      return [
+        const Requirement('Peekaboo', true, 'Installed'),
+        for (final p in (data['permissions'] as List? ?? const []).cast<Map>())
+          if (p['isRequired'] == true)
+            Requirement(
+              'Peekaboo: ${p['name']}',
+              p['isGranted'] == true,
+              p['isGranted'] == true ? 'Granted' : 'Not granted: ${p['grantInstructions'] ?? ''}',
+              settingsPane: switch (p['name']) {
+                'Screen Recording' => 'Privacy_ScreenCapture',
+                'Accessibility' => 'Privacy_Accessibility',
+                _ => null,
+              },
+            ),
+      ];
+    } catch (e) {
+      return [Requirement('Peekaboo', false, 'peekaboo permissions failed: $e')];
+    }
   }
 
   Future<void> _initCodex(RpcClient c) async {

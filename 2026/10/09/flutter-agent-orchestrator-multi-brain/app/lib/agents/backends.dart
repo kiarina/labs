@@ -55,6 +55,10 @@ class CodexBackend {
   /// The worker type this app-server runs: `codex`, or a custom one whose
   /// model provider is another server.
   final String workerType;
+
+  /// Per-thread settings for workers (`thread/start`'s `config`): which
+  /// tools they get. Null: everything the app-server has.
+  Json? workerConfig;
   final ToolHandler onTool;
   final _threads = <String, CodexAgent>{};
   List<Json> models = const [];
@@ -233,7 +237,8 @@ class CodexAgent extends AgentThread {
         // the brain's machine itself instead of starting a worker on the body
         // the user named. Per-thread, so workers on this app-server keep them.
         'config': {'features': _orchestratorFeaturesOff},
-      },
+      } else
+        'config': ?backend.workerConfig,
     }) as Map;
     view.threadId = (r['thread'] as Map)['id'] as String;
     model ??= r['model'] as String?;
@@ -299,6 +304,11 @@ class ClaudeBackend {
   final RpcClient client;
   final ToolHandler onTool;
   final _sessions = <String, ClaudeAgent>{};
+
+  /// What workers get besides files and the shell: Claude in Chrome, and
+  /// Mac control through Peekaboo.
+  bool workerChrome = false;
+  bool workerMac = false;
   List<Json> models = const [];
   Json? account;
   Json? rateLimits;
@@ -431,6 +441,9 @@ class ClaudeAgent extends AgentThread {
       'tools': ['AskUserQuestion', 'TodoWrite'],
       'strictMcpConfig': true,
       'disallowedTools': ['Edit', 'Write', 'MultiEdit', 'NotebookEdit', 'Bash'],
+    } else ...{
+      'chrome': backend.workerChrome,
+      'peekaboo': backend.workerMac,
     },
   };
 

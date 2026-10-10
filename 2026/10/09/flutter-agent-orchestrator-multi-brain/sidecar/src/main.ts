@@ -295,6 +295,43 @@ const handlers: Record<string, (p: Json) => Promise<any>> = {
     }
   },
 
+  /// Whether the optional tools a worker may get start here, without
+  /// sending anything (no tokens): Claude in Chrome (`--chrome`, the Chrome
+  /// extension) and Peekaboo's MCP server. Returns each server's status as
+  /// Claude Code reports it (`connected`, `failed`, `pending`, ...).
+  async 'check/tools'(p) {
+    // Keep the input open until the check is done: an input that ends at
+    // once shuts Claude Code down before the servers report.
+    let done!: () => void;
+    const finished = new Promise<void>((r) => (done = r));
+    const q = query({
+      prompt: (async function* () {
+        await finished;
+      })(),
+      options: {
+        cwd: p.cwd,
+        settingSources: ['user', 'project', 'local'],
+        env: sdkEnv,
+        ...(p.chrome ? { extraArgs: { chrome: null } } : {}),
+        mcpServers: p.peekaboo
+          ? { peekaboo: { type: 'stdio' as const, command: peekabooBin, args: ['mcp', '--allow-foreground'] } }
+          : {},
+      },
+    });
+    try {
+      // Servers connect after start: ask until none is pending (10 s).
+      let servers = await q.mcpServerStatus();
+      for (let i = 0; i < 20 && servers.some((x) => x.status === 'pending'); i++) {
+        await new Promise((r) => setTimeout(r, 500));
+        servers = await q.mcpServerStatus();
+      }
+      return { servers: servers.map((x) => ({ name: x.name, status: x.status, error: (x as any).error })) };
+    } finally {
+      done();
+      q.close();
+    }
+  },
+
   async 'session/start'(p) {
     const sessionId = randomUUID();
     const s = new LiveSession(sessionId, p as SessionConfig, false);
