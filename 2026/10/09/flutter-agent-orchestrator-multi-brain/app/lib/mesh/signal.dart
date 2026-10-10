@@ -11,11 +11,13 @@ class SignalNode {
   SignalNode(Json j)
     : name = j['name'] as String,
       brain = j['brain'] == true,
+      body = j['body'] as bool? ?? true,
       online = j['online'] == true,
       host = j['host'] as String? ?? '';
 
   final String name;
   final bool brain;
+  final bool body;
   final bool online;
   final String host;
 }
@@ -24,13 +26,19 @@ class SignalNode {
 /// roster, who owns which body, relayed WebRTC signals, and moving bodies
 /// between brains. Reconnects on its own.
 class SignalClient extends ChangeNotifier {
-  SignalClient({required this.url, required this.name, required this.isBrain});
+  SignalClient({
+    required this.url,
+    required this.name,
+    required this.isBrain,
+    required this.isBody,
+  });
 
   final String url;
 
   /// This app's name; the server may change it to keep names unique.
   String name;
   final bool isBrain;
+  final bool isBody;
 
   bool connected = false;
   String link = 'starting';
@@ -87,6 +95,7 @@ class SignalClient extends ChangeNotifier {
           't': 'hello',
           'name': name,
           'brain': isBrain,
+          'body': isBody,
           'host': Platform.localHostname.split('.').first,
         }));
         // One iterator, first message to last (a broadcast stream would

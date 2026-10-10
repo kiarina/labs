@@ -210,7 +210,7 @@ class _ThisApp extends StatelessWidget {
                   ),
                 ),
               ),
-              _Badge(console.isBrain ? 'brain' : 'body'),
+              _Badge(console.roles),
             ],
           ),
           const SizedBox(height: 2),

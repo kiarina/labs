@@ -4,7 +4,8 @@
 
 - **body の所属**: 各 body（ワーカーを動かすアプリ）は、どれか 1 つの brain に所属し、所属先の brain だけがそこでワーカーを動かします。所属は console から変えます
 - **console**: brain を選び、選んだ brain と話します
-- **シグナリング**: 独立したサーバーにし、名簿（どのアプリがいるか、どれが brain か）と所属（body → brain）を持たせます
+- **シグナリング**: 独立したサーバーにし、名簿（どのアプリがいるか、どれが brain・body か）と所属（body → brain）を持たせます。単独のプロセスでも、アプリの中でも動きます
+- **起動画面**: アプリを起動すると、brain・body・シグナリングのどれをやるか（複数可）を選んでから、起動と接続をします
 
 前提となる lab:
 - [N 個のアプリを WebRTC でつなぎ、1 つの brain が複数の body を使う形](../flutter-agent-orchestrator-mesh/README.md)（この lab はその写し。司令塔のツール、文字起こしの写し方、画像の運び方はそちら）
@@ -14,6 +15,7 @@
 1. 複数の brain を同時に動かし、それぞれが自分の所属の body だけを使えるか
 2. console で brain を切り替え、選んだ brain に送れるか。どの console にも全部の brain の会話が同じに出るか
 3. body の所属を console から変えられるか。ワーカーが動いている間は変えられないようにできるか
+4. 1 つのアプリで、起動時に役割（brain・body・シグナリング）を選べるか
 
 ## Answer
 
@@ -31,6 +33,14 @@
     signal が brain-a に問い合わせ、brain-a が「1 worker(s) of brain-a running or queued on body-c (w3)」と断った
   - 終わった後は移せた。brain-b は、移ってきた body-c でワーカーを動かした
 - **新しいアプリは、起動から 1.0 秒で両方の brain とつながった**（signal に入るまで 0.6 秒）
+- **役割を起動時に選べる。** 1 台の Mac で、次の 4 つを同時に動かした（環境変数で指定。起動画面と同じ起動処理を通る）
+  - brain・body・シグナリング（brain-a）: アプリの中でシグナリングを開始し、ほかの 3 つが入った
+  - body（body-c）: 所属先に brain-a を指定し、参加の後に所属が brain-a になった
+  - brain だけ（brain-b）: body の一覧に出ず、所属も作られない
+  - console だけ（con-x）: エージェントを起動せず、両方の brain の会話を見られる
+  - 4 つとも、起動から 0.9〜3.2 秒で両方の brain とつながった
+- **シグナリングのポートが使われていると、開始しない。** 起動画面に「in use (Address already in use)」と出して止まる
+- 起動画面は、シグナリングの URL に普通の HTTP で問い合わせ、そこにいる brain を所属先の候補に出す（「2 brain(s) there」）
 
 ## Architecture
 
@@ -44,9 +54,11 @@
           ╚════════╝   ╲  ╲════╪══════════╡
 ```
 
-- **signal**（`signal/bin/signal.dart`。依存なしの Dart。`mise run signal`）
-  - 名簿: 名前・brain か・online・ホスト。名前がぶつかったら `-2` などを付けて返す
-  - 所属: `body → brain`。brain は最初の参加で自分の body を所属させる。ほかの body は所属なしから始まる。アプリが抜けても所属は残る
+- **signal**（`signal/lib/signal_server.dart`。依存なしの Dart）
+  - 単独では `mise run signal`（`signal/bin/signal.dart`）。アプリの中では、起動画面で「Signaling」を選ぶと同じものが動く
+  - 名簿: 名前・brain か・body か・online・ホスト。名前がぶつかったら `-2` などを付けて返す。普通の HTTP の GET には名簿と所属を JSON で返す
+  - 所属: `body → brain`。body でもある brain は、最初の参加で自分を所属させる。ほかの body は所属なしから始まる。body でないアプリは所属を持たない。アプリが抜けても所属は残る
+  - 所属はファイルに書いて、起動し直しても残す（アプリの中では状態のフォルダの `signal-owners.json`、単独では `OWNERS_FILE`）
   - 中継: offer・answer・ICE の候補を宛先付きで回す
   - 所属の変更（`assign`）: 今の所属先が online なら、その brain に `releaseRequest` で尋ね、断られたら変えない（5 秒で答えが無ければ失敗）。
     所属先が offline・所属なしなら、すぐ変える
@@ -55,7 +67,7 @@
 - **brain**: つながった全アプリの console へ会話を流す（前の lab の `ConsolePublisher`）。全アプリの body を名簿として知っている
   - ワーカーを動かせるのは、所属の body だけ（`list_bodies`・`start_thread`・`fetch_image`）
   - `releaseRequest` には、その body で自分のワーカーが動いている・待っているなら理由を返して断る
-- **body**（全アプリ）: つながった brain ごとに `BodyHost` を置く。rpc は、今の所属先の brain からのものだけを受ける
+- **body**（body を選んだアプリ）: つながった brain ごとに `BodyHost` を置く。rpc は、今の所属先の brain からのものだけを受ける
   （所属が変わる前に始めたエージェントの `close`・`interrupt` は受ける）
 - **console**（全アプリ）: つながった brain ごとに写し（`BrainView`）を持つ。選んだ brain の写しを中央と右に出し、送信・停止・設定はその brain へ送る
   - 左には次を出す
@@ -63,11 +75,26 @@
     - 全アプリの一覧。名前・所属先・使えるエージェント。所属先を押すと、brain を選ぶメニューが出る（ワーカーが動いている間は押せない）
   - 所属の変更は signal へ送る
 
+### 起動画面
+
+`ORCH_ROLE`・`ORCH_SIGNAL_URL`・`ORCH_NAME` のどれも無いときに出る。前回の選択を状態のフォルダの `launch.json` に覚え、次の初期値にする。
+
+| 項目 | 中身 |
+| --- | --- |
+| 名前 | body_id。空なら「ホスト名-乱数 4 桁」 |
+| Brain | 司令塔を動かす |
+| Body | 所属先の brain がこのマシンでワーカーを動かせる。選ぶと所属先（`Belongs to`）を選べる。候補はシグナリングにいる brain と、自分が brain ならこのアプリ。既定は、自分が brain ならこのアプリ、そうでなければシグナリングが覚えている所属 |
+| Signaling | このアプリでシグナリングを動かす。ポートを入れる。使われていれば開始しない |
+| Signaling URL | Signaling を選ばないときに参加する先。既定は `ws://localhost:8765` |
+
+どれも選ばなければ console だけのアプリになる。「Start」で、シグナリングの開始 → 参加 → brain・body の準備 → 所属の変更の順に進む。
+所属の変更は、前の所属先でワーカーが動いていれば断られ、所属は前のまま（理由は body の一覧の上に出る）。
+
 ### メッセージ（WebSocket、signal との間）
 
 | 向き | `t` | 中身 |
 | --- | --- | --- |
-| app → signal | `hello` | 名前・brain か・ホスト |
+| app → signal | `hello` | 名前・brain か・body か・ホスト |
 | signal → app | `welcome` / `roster` | 決まった名前 / 名簿と所属（変わるたびに全員へ） |
 | app ↔ signal | `signal` | WebRTC の offer・answer・ICE（宛先付き） |
 | app → signal | `assign` | body をどの brain へ（null は所属なし） |
@@ -91,7 +118,9 @@
 - 写した lab の中継プロセス（Node）の `node_modules` を入れ忘れると、Claude だけでなく Codex も使えないと表示された
   - 起動の失敗が 1 つでもあると、本体の準備ができていない扱いになり、Codex と Claude を一覧に出さない作り
   - ログを見ないと気づきにくい
-- 所属は signal が持つので、brain や body を起動し直しても所属は残った（signal を起動し直すと消える）
+- 所属は signal が持つので、brain や body を起動し直しても所属は残った。signal はファイルにも書くので、signal を起動し直しても残った
+- 起動画面のエラーは、画面の部品の初期化（`initState`）の中だけで読むと、後から出たエラーが表示されない。エラーを key にして作り直した
+- body でもある brain の所属先の既定を「所属なし」にすると、起動のたびに自分の body を手放してしまう。既定を「このアプリ」にした
 
 ### ワーカーに自動で入るプロンプト
 
@@ -115,12 +144,12 @@
 ## Limitations
 
 - **2 台の Mac では確かめていない。** 2 台目の Mac（Mac Studio）が VPN から外れていて、届かなかった
-- **画面のクリックでの操作は、エージェントは確かめていない**（brain の切り替えと、所属先のメニュー）
-  - 使っている関数は、起動時の `ORCH_SELECT`・`ORCH_ASSIGN` と同じ。そちらで確かめた
-  - 画面の表示（brain の選択、所属先の一覧）はスクリーンショットで確かめた
+- **画面のクリックでの操作は、エージェントは確かめていない**（brain の切り替え、所属先のメニュー、起動画面の「Start」）
+  - 使っている関数は、起動時の `ORCH_SELECT`・`ORCH_ASSIGN`・`ORCH_ROLE`・`ORCH_OWNER` と同じ。そちらで確かめた
+  - 画面の表示（brain の選択、所属先の一覧、起動画面とそのエラー）はスクリーンショットで確かめた
 - **認証が無い。** signal は誰でも参加でき、誰でも所属を変えられる。信頼できるネットワークの中だけで動かす
 - Claude のワーカーは、Claude Code の本来のプロンプトなしで動いている（上の Findings）。直すなら中継プロセスでワーカーにも preset を渡す
-- signal は所属をメモリだけに持つ。signal が落ちると所属は消え、brain の body 以外は所属なしに戻る
+- シグナリングを動かしているアプリを閉じると、全員がシグナリングを失う（所属はファイルに残る）。別のアプリがシグナリングを引き継ぐ仕組みは無い
 - brain が落ちると、その brain の所属の body は所属先が offline のまま残る。console から別の brain へ移せる（offline の brain には尋ねない）
 - 全アプリが全 brain とつながるので、データチャネルの数は「アプリ数 × brain 数」程度に増える。数台でしか試していない
 
@@ -130,11 +159,20 @@
 
 ```bash
 mise run                    # sidecar の型検査と flutter analyze
-mise run signal             # signal（:8765）。PORT か引数でポートを変える
-ORCH_ROLE=brain ORCH_NAME=brain-a ORCH_SIGNAL_URL=ws://<signal のホスト>:8765 mise run run
-ORCH_NAME=body-c ORCH_SIGNAL_URL=ws://<signal のホスト>:8765 mise run run
+mise run run                # 起動画面から始める
 ```
 
+起動画面を出さずに起動するときは、環境変数で役割を指定する。
+
+```bash
+ORCH_ROLE=brain,body,signal ORCH_NAME=brain-a mise run run             # シグナリングもこのアプリで
+ORCH_ROLE=body ORCH_NAME=body-c ORCH_SIGNAL_URL=ws://<シグナリングのホスト>:8765 ORCH_OWNER=brain-a mise run run
+mise run signal             # シグナリングを単独で（:8765）。PORT か引数でポートを変える
+```
+
+- `ORCH_ROLE`: `brain`・`body`・`signal`・`console` のコンマ区切り。`brain` だけなら body も兼ねる。`console` だけなら brain も body もしない
+- `ORCH_SIGNAL_PORT`: アプリの中のシグナリングのポート（既定 8765）
+- `ORCH_OWNER`: 参加の後に、この body の所属先にする brain（`-` は所属なし）
 - 同じマシンで複数起動するときは、`ORCH_STATE_DIR` を分ける
 - `ORCH_SELECT=<brain>`: console が最初に出す brain
 - `ORCH_ASSIGN=body-c=brain-a,body-d=`: 起動後に所属を変える（空は所属なし。console の一覧と同じ操作）

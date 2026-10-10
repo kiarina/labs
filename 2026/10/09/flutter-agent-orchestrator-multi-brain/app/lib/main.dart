@@ -3,44 +3,63 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:orchestrator_signal/signal_server.dart' show SignalServer;
 
 import 'body/body.dart';
 import 'console/console.dart';
+import 'mesh/launch.dart';
 import 'mesh/peer.dart';
 import 'mesh/signal.dart';
 import 'orchestrator/hub.dart';
 import 'ui/home_page.dart';
+import 'ui/launch_page.dart';
 import 'ui/theme.dart';
 
-/// Every app has a console and a body; some are also brains
-/// (`ORCH_ROLE=brain`). All join the signaling server (`ORCH_SIGNAL_URL`,
-/// `signal/bin/signal.dart`) and link to every brain over WebRTC.
+/// Every app has a console; on the start screen (or from `ORCH_*`
+/// variables) it can also be a brain, a body, and the signaling server. All
+/// join the signaling server and link to every brain over WebRTC.
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   final env = Platform.environment;
-  final isBrain = env['ORCH_ROLE'] == 'brain';
-  final name = env['ORCH_NAME']?.isNotEmpty == true
-      ? env['ORCH_NAME']!
-      : generateName();
   final stateDir =
       env['ORCH_STATE_DIR'] ??
       '${env['HOME']}/Library/Application Support/com.kiarina.labs.agentOrchestratorMultiBrain';
+  runApp(OrchestratorApp(stateDir: stateDir, fromEnv: LaunchConfig.fromEnv(env)));
+}
+
+/// Starts this app as [config] chose, after the signaling server (if any)
+/// is up, and returns the console.
+ConsoleMirror _boot(LaunchConfig config, String stateDir) {
+  final env = Platform.environment;
+  final name = config.name.isNotEmpty ? config.name : generateName();
   final local = LocalBody(name: name, stateDir: stateDir);
   final signal = SignalClient(
-    url: env['ORCH_SIGNAL_URL'] ?? 'ws://127.0.0.1:8765',
+    url: config.signalUrl,
     name: name,
-    isBrain: isBrain,
+    isBrain: config.brain,
+    isBody: config.body,
   );
-  final console = ConsoleMirror(local: local, signal: signal, isBrain: isBrain)
-    ..preferred = env['ORCH_SELECT'];
-  runApp(OrchestratorApp(console: console));
+  final console = ConsoleMirror(local: local, signal: signal, isBrain: config.brain)
+    ..preferred = env['ORCH_SELECT']
+    ..signaling = config.signaling;
   if (env['ORCH_DUMP'] case final String path when path.isNotEmpty) {
     _dumpOnChange(console, path);
   }
   unawaited(_run(local, signal, console));
+  if (config.assignOwner && config.body) {
+    final owner = config.owner;
+    unawaited(() async {
+      while (!signal.connected) {
+        await Future<void>.delayed(const Duration(milliseconds: 100));
+      }
+      final brain = owner == LaunchConfig.self ? signal.name : owner;
+      await _assignOnStart(console, signal, '${signal.name}=${brain ?? ''}');
+    }());
+  }
   if (env['ORCH_ASSIGN'] case final String spec when spec.isNotEmpty) {
     unawaited(_assignOnStart(console, signal, spec));
   }
+  return console;
 }
 
 Future<void> _run(
@@ -58,7 +77,10 @@ Future<void> _run(
   Hub? hub;
   ConsolePublisher? publisher;
   if (signal.isBrain) {
-    final h = hub = Hub(local)..ownerOf = signal.ownerOf;
+    // A brain that is not a body never runs workers on itself (even if an
+    // older record says it owns itself).
+    final h = hub = Hub(local)
+      ..ownerOf = (b) => !signal.isBody && b == local.name ? null : signal.ownerOf(b);
     await h.start();
     final p = publisher = ConsolePublisher(h);
     signal.onReleaseRequest = (body) async => h.releaseBlocker(body);
@@ -88,12 +110,15 @@ Future<void> _run(
         peer.messages.listen((m) {
           if (m['t'] == 'console') console.handle(peer.name, (m['m'] as Map).cast());
         });
-        BodyHost(local, peer, ownerOf: () => signal.ownerOf(local.name));
+        if (signal.isBody) {
+          BodyHost(local, peer, ownerOf: () => signal.ownerOf(local.name));
+        }
         peer.closed.then((_) => console.detachBrain(peer.name));
       }
     },
   );
-  await local.start();
+  // A console alone runs no agents.
+  if (signal.isBrain || signal.isBody) await local.start();
 }
 
 /// `ORCH_ASSIGN=body=brain,body2=` moves bodies once they are in the roster
@@ -113,7 +138,9 @@ Future<void> _assignOnStart(
       if (signal.connected && known) break;
       await Future<void>.delayed(const Duration(milliseconds: 200));
     }
-    await console.assign(body, brain.isEmpty ? null : brain);
+    final target = brain.isEmpty ? null : brain;
+    if (signal.ownerOf(body) == target) continue;
+    await console.assign(body, target);
   }
 }
 
@@ -134,18 +161,77 @@ void _dumpOnChange(ConsoleMirror console, String path) {
   Timer.periodic(const Duration(seconds: 2), (_) => schedule());
 }
 
-class OrchestratorApp extends StatelessWidget {
-  const OrchestratorApp({super.key, required this.console});
+class OrchestratorApp extends StatefulWidget {
+  const OrchestratorApp({super.key, required this.stateDir, this.fromEnv});
 
-  final ConsoleMirror console;
+  final String stateDir;
+
+  /// Set by `ORCH_*` variables: start right away, without the start screen.
+  final LaunchConfig? fromEnv;
+
+  @override
+  State<OrchestratorApp> createState() => _OrchestratorAppState();
+}
+
+class _OrchestratorAppState extends State<OrchestratorApp> {
+  ConsoleMirror? _console;
+  SignalServer? _server;
+  String? _error;
+
+  File get _ownersFile => File('${widget.stateDir}/signal-owners.json');
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.fromEnv case final config?) unawaited(_startFromEnv(config));
+  }
+
+  @override
+  void dispose() {
+    unawaited(_server?.close());
+    super.dispose();
+  }
+
+  Future<void> _startFromEnv(LaunchConfig config) async {
+    SignalServer? server;
+    if (config.signaling) {
+      server = SignalServer(port: config.port, ownersFile: _ownersFile);
+      try {
+        await server.start();
+      } on SocketException catch (e) {
+        setState(() => _error =
+            'Could not start signaling on port ${config.port}: it is in use '
+            '(${e.osError?.message ?? e.message}).');
+        return;
+      }
+    }
+    _started(config, server, save: false);
+  }
+
+  void _started(LaunchConfig config, SignalServer? server, {bool save = true}) {
+    if (save) config.save(widget.stateDir);
+    setState(() {
+      _server = server;
+      _console = _boot(config, widget.stateDir);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final console = _console;
     return MaterialApp(
       title: 'Agent Orchestrator',
       debugShowCheckedModeBanner: false,
       theme: buildTheme(),
-      home: HomePage(console: console),
+      home: console != null
+          ? HomePage(console: console)
+          : LaunchPage(
+              key: ValueKey(_error),
+              initial: widget.fromEnv ?? LaunchConfig.load(widget.stateDir),
+              ownersFile: _ownersFile,
+              error: _error,
+              onStart: _started,
+            ),
     );
   }
 }

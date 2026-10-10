@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-#MISE description="Build and open the macOS app. ORCH_ROLE=brain makes it a brain, ORCH_SIGNAL_URL=ws://host:port is the signaling server (mise run signal), ORCH_NAME names the app, ORCH_SELECT picks the brain shown first, ORCH_ASSIGN=body=brain,... moves bodies on start, ORCH_CWD sets the project, ORCH_PROMPT sends one message to the selected brain, ORCH_DUMP writes what the console shows"
+#MISE description="Build and open the macOS app. Without ORCH_ROLE / ORCH_SIGNAL_URL / ORCH_NAME it shows the start screen. ORCH_ROLE=brain,body,signal,console picks the roles (brain alone also makes a body), ORCH_SIGNAL_URL=ws://host:port is the signaling server to join, ORCH_SIGNAL_PORT the in-app server's port, ORCH_NAME names the app, ORCH_SELECT picks the brain shown first, ORCH_ASSIGN=body=brain,... moves bodies on start, ORCH_CWD sets the project, ORCH_PROMPT sends one message to the selected brain, ORCH_DUMP writes what the console shows"
 # Needs `codex login` and `claude auth login` once.
 set -euo pipefail
 
 (cd sidecar && npm install --silent)
 (cd app && flutter build macos --debug)
 args=(--env "CLAUDE_FLUTTER_SIDECAR=$PWD/sidecar" --env "NODE_BIN=$(command -v node)")
-for name in ORCH_CWD ORCH_PROMPT ORCH_PROVIDER ORCH_STATE_DIR ORCH_ROLE ORCH_NAME ORCH_SIGNAL_URL ORCH_SELECT ORCH_ASSIGN ORCH_DUMP CODEX_BIN KIAPI_BASE_URL KIAPI_MODEL; do
+for name in ORCH_CWD ORCH_PROMPT ORCH_PROVIDER ORCH_STATE_DIR ORCH_ROLE ORCH_NAME ORCH_SIGNAL_URL ORCH_SIGNAL_PORT ORCH_OWNER ORCH_SELECT ORCH_ASSIGN ORCH_DUMP CODEX_BIN KIAPI_BASE_URL KIAPI_MODEL; do
   if [ -n "${!name:-}" ]; then args+=(--env "$name=${!name}"); fi
 done
 # `open` hands the caller's environment to the app. Start it from an empty

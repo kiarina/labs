@@ -353,6 +353,15 @@ class ConsoleMirror extends ChangeNotifier {
   /// Whether this app is a brain.
   final bool isBrain;
 
+  /// Whether this app runs the signaling server.
+  bool signaling = false;
+
+  /// What this app is, for the header: "brain · body · signal", "console".
+  String get roles {
+    final r = [if (isBrain) 'brain', if (signal.isBody) 'body', if (signaling) 'signal'];
+    return r.isEmpty ? 'console' : r.join(' · ');
+  }
+
   final views = <String, BrainView>{};
   String? selected;
 
@@ -439,7 +448,7 @@ class ConsoleMirror extends ChangeNotifier {
 
   List<ProtocolLogEntry> get protocolLog => local.protocolLog;
 
-  /// Every app in the roster with its owner, for the body list.
+  /// Every body in the roster with its owner, for the body list.
   List<BodyEntry> get allBodies {
     BodyView? info(String name) {
       for (final v in [?_v, ...views.values]) {
@@ -457,7 +466,8 @@ class ConsoleMirror extends ChangeNotifier {
 
     return [
       for (final n in signal.nodes)
-        BodyEntry(n, signal.ownerOf(n.name), info(n.name), running(n.name, signal.ownerOf(n.name))),
+        if (n.body)
+          BodyEntry(n, signal.ownerOf(n.name), info(n.name), running(n.name, signal.ownerOf(n.name))),
     ];
   }
 
@@ -509,6 +519,8 @@ class ConsoleMirror extends ChangeNotifier {
   Json digest() => {
     'self': selfName,
     'isBrain': isBrain,
+    'isBody': signal.isBody,
+    'roles': roles,
     'connected': connected,
     'link': link,
     'linkLog': linkLog,
@@ -516,7 +528,7 @@ class ConsoleMirror extends ChangeNotifier {
     'notice': notice,
     'roster': [
       for (final n in signal.nodes)
-        {'name': n.name, 'brain': n.brain, 'online': n.online, 'owner': signal.ownerOf(n.name)},
+        {'name': n.name, 'brain': n.brain, 'body': n.body, 'online': n.online, 'owner': signal.ownerOf(n.name)},
     ],
     'brains': {for (final e in views.entries) e.key: e.value.digest()},
   };
