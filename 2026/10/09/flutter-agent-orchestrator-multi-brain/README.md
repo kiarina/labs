@@ -7,7 +7,8 @@
 - **シグナリング**: 独立したサーバーにし、名簿（どのアプリがいるか、どれが brain・body か）と所属（body → brain）を持たせます。単独のプロセスでも、アプリの中でも動きます
 - **起動画面**: アプリを起動すると、シグナリング → 役割（brain・body）→ 所属 → エージェントの順に選んでから、起動と接続をします
 - **worker type**: そのアプリで動かすエージェントを、起動画面で決めます。Codex と Claude は 1 つずつ on/off、別のモデルのサーバーにつないだ Codex（custom）はいくつでも。それぞれ足すときに、動くか・ログインしているかを確かめます。司令塔は、選べる種類を tool の定義でなく `list_bodies` の結果で知り、変わったら次のメッセージで知らされます
-- **body の一時停止**: console から、接続したまま body を止められます。止めている間、brain はその body で新しいことを始めません（実行中のものは最後まで動きます）。body の設定を安全に変えるための準備です
+- **body の一時停止**: console から、接続したまま body を止められます。止めている間、brain はその body で新しいことを始めません（実行中のものは最後まで動きます）
+- **body の設定を console から変える**: 止めていて何も動いていない body の、エージェント（起動画面の Agents と同じ内容）を console から変えます。確かめはその body のマシンで動き、保存すると body がエージェントを起動し直します
 
 前提となる lab:
 - [N 個のアプリを WebRTC でつなぎ、1 つの brain が複数の body を使う形](../flutter-agent-orchestrator-mesh/README.md)（この lab はその写し。司令塔のツール、文字起こしの写し方、画像の運び方はそちら）
@@ -74,6 +75,10 @@
 - **接続したまま body を一時停止できた。** body-c の console から body-c を止める操作が、所属先の brain-a を通って body-c に届いた。
   body-c は自分の状態を `paused` にして brain-a へ知らせ、brain-a と body-c の両方の console に「paused」と出た（`ORCH_PAUSE` と dump、スクリーンショット）。
   止めている間と再開の後の brain の振る舞い（新しい仕事を断る、実行中は続く、順番待ちは残る、知らせ）は単体のテストで確かめた（`test/pause_test.dart`、トークンは使わない）
+- **止めた body の設定を、console から変えられた。** body-c の console から、brain-a を通して body-c の設定（Codex だけ・6 つまで → Codex と Claude・5 つまで）を送ると、
+  body-c が `worker-types.json` を書き換えてエージェントを起動し直し（古い Codex のプロセスは終わり、Codex と Claude の中継が 1 つずつ）、brain-a の一覧に「Codex, Claude · 5 at once」と出た（`ORCH_CONFIGURE` と dump、スクリーンショット）。
+  画面（読み込み、body のマシンでの確かめ、ログインと許可のボタンを出さない、保存の中身、断られたときの表示）は widget のテスト（`test/body_settings_test.dart`）、
+  brain の守り（止めていない・ワーカーが動いているか待っているなら断る、古いスレッドを終わらせる）は単体のテストで確かめた
 
 - **Mac や Chrome を操作させる道具を、worker type ごとに on/off できた。** 偽の Responses API に、ワーカーのモデルへ渡る道具を記録させて確かめた（トークンを使わない）
   - Codex の Computer Use の正体は、computer-use のプラグインが足す `cua_repl`（Mac のアプリと Chrome の操作）。`features` の `computer_use`・`browser_use` などを切っても消えず、
@@ -147,6 +152,13 @@
   - 断らないもの: 実行中のターン（その追加の指示も）。止める前から順番待ちのものは待ったまま残り、再開すると始まる（`list_threads` に `waiting_for`）
   - 司令塔には `list_bodies` の `paused: true` と、次のメッセージの頭の `[bodies changed ...]`（「paused by the user」「resumed」）で伝える
   - 司令塔そのものはワーカーではないので止まらない
+- **設定の変更**（`app/lib/ui/body_settings.dart`）: console の body の一覧の設定のボタンから。止めていて、所属先の brain のワーカーがそこで動いても待ってもいないときだけ押せる
+  - 編集の画面は起動画面の Agents と同じ部品（`app/lib/ui/agents_editor.dart`）。確かめ（ログインの状態・モデルの一覧・道具の要るもの・macOS の許可）は body のマシンで動かす（`body/check`）。
+    ログインと許可を出す操作は、そのマシンの起動画面でする（console には出さない）
+  - console → brain は `request`／`reply`（答えの要る依頼）、brain → body は rpc `body/config`・`body/check`・`body/configure`。brain は `body/` で始まるものだけを通す
+  - brain も body も断る: 止めていない、エージェントが動いている（brain はさらに自分のワーカーが待っているとき、brain 自身の body なら司令塔が動いているとき）
+  - 保存すると body は古いエージェントを止めて起動し直す。そこにあったスレッドは終わり、`send_message` はエラー、`list_threads` に `ended` が付く。brain 自身の body なら司令塔の会話も新しくなる
+  - 止めたままなので、終わったら再開する。worker type の変化は、司令塔に `[bodies changed ...]` で伝わる
 - **console**（全アプリ）: つながった brain ごとに写し（`BrainView`）を持つ。選んだ brain の写しを中央と右に出し、送信・停止・設定はその brain へ送る
   - 「Settings」は選んだ brain の設定だけ: 司令塔をどれで動かすか・そのモデルと effort（次の会話から）、ワーカーが終わったら司令塔を起こすか。
     body が何を動かすか・何個まで同時に動かすかは、その body の起動画面で決める
@@ -229,6 +241,7 @@
 
 ## Limitations
 
+- **console から body の設定を変える画面は、本物の画面のクリックでは開いていない。** 変える経路は `ORCH_CONFIGURE` で、画面は widget のテストで確かめた
 - **2 台の Mac では確かめていない。** 2 台目の Mac（Mac Studio）が VPN から外れていて、届かなかった
 - **console の brain の切り替えと所属先のメニューは、画面のクリックでは確かめていない**
   - 使っている関数は、起動時の `ORCH_SELECT`・`ORCH_ASSIGN`・`ORCH_PAUSE` と同じ。そちらで確かめた。表示はスクリーンショットで確かめた
@@ -273,6 +286,7 @@ mise run signal             # シグナリングを単独で（:8765）。PORT �
 - `ORCH_ORCHESTRATOR=<worker type>`: brain の司令塔を動かす worker type（Settings の「Runs on」と同じ）
 - `ORCH_ASSIGN=body-c=brain-a,body-d=`: 起動後に所属を変える（空は所属なし。console の一覧と同じ操作）
 - `ORCH_PAUSE=body-c`: 起動後に、その body を所属先の brain を通して止める（console の一時停止のボタンと同じ操作）
+- `ORCH_CONFIGURE=body-c=path.json`（`ORCH_PAUSE` と一緒に）: 止まったのを見てから、その body の設定を `worker-types.json` の形のファイルの中身にする。結果は console の知らせ（dump の `notice`）に出る
 - `ORCH_PROMPT`: 選んだ brain へ、起動後に 1 回送る
 - `ORCH_DUMP=path.json`: 名簿・所属・brain ごとの会話（操作の数とハッシュ、ターンの状態）・接続の記録を書き出す
 - `ORCH_WORKER_TYPES=path.json`: エージェントの設定（既定は状態のフォルダの `worker-types.json`。起動画面で書くもの）

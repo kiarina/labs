@@ -169,6 +169,7 @@ class Hub extends ChangeNotifier {
         await newConversation();
       case 'pause':
         await setPaused(a['body'] as String, a['paused'] == true);
+
     }
   }
 
@@ -178,13 +179,60 @@ class Hub extends ChangeNotifier {
   Future<void> setPaused(String name, bool paused) async {
     final body = _ownBody(name);
     if (body == null) return;
-    if (body is RemoteBody) {
-      await body.rpc('body/pause', {'paused': paused});
-    } else if (body is LocalBody) {
-      body.setPaused(paused);
-    }
+    await body.call('body/pause', {'paused': paused});
     if (!paused) drainQueue();
     notifyListeners();
+  }
+
+  /// A console's request that wants an answer (actions do not).
+  Future<Object?> request(Json a) async {
+    switch (a['a']) {
+      case 'body':
+        return bodyRequest(
+          a['body'] as String,
+          a['m'] as String,
+          (a['p'] as Map? ?? const {}).cast<String, dynamic>(),
+        );
+    }
+    throw StateError('unknown request ${a['a']}');
+  }
+
+  /// Threads whose body's agents restarted with new settings: they cannot
+  /// take another turn.
+  final _ended = <String>{};
+
+  /// Passes a console's `body/...` request to one of this brain's bodies.
+  /// New settings (`body/configure`) only while the body is paused and none
+  /// of this brain's workers run or wait there: the body restarts its
+  /// agents, and the threads it had end.
+  Future<Object?> bodyRequest(String name, String method, Json p) async {
+    if (!method.startsWith('body/')) throw StateError('not a body request: $method');
+    final body = _ownBody(name);
+    if (body == null) throw StateError(_noBody(name)['error'] as String);
+    if (method != 'body/configure') {
+      final r = await body.call(method, p);
+      if (method == 'body/pause') {
+        if (p['paused'] != true) drainQueue();
+        notifyListeners();
+      }
+      return r;
+    }
+    if (!body.paused) throw StateError('pause $name before changing its settings');
+    if (releaseBlocker(name) case final why?) throw StateError(why);
+    if (body.isLocal) {
+      // The orchestrator runs on this machine's agents too.
+      if (orchestrator case final o? when o.isRunning || o.view.isRunning) {
+        throw StateError('the orchestrator is running on $name; wait for it or stop it');
+      }
+      await newConversation();
+    }
+    final r = await body.call(method, p);
+    _ended.addAll([
+      for (final w in workers)
+        if (w.body == name) w.label,
+    ]);
+    notifyListeners();
+    return r;
   }
 
   // ---- the orchestrator -------------------------------------------------------
@@ -568,6 +616,12 @@ class Hub extends ChangeNotifier {
       case 'send_message':
         final w = worker(a['thread_id'] as String);
         if (w == null) return {'error': 'no thread ${a['thread_id']}'};
+        if (_ended.contains(w.label)) {
+          return {
+            'thread_id': w.label,
+            'error': 'thread ${w.label} ended: the agents on ${w.body} restarted with new settings. Start a new thread.',
+          };
+        }
         // A new turn is new work; steering a running one is not.
         if (!w.isRunning &&
             w.state != AgentState.queued &&
@@ -652,6 +706,7 @@ class Hub extends ChangeNotifier {
     'model': w.model,
     'title': w.title,
     'status': w.state.name,
+    if (_ended.contains(w.label)) 'ended': 'the agents on ${w.body} restarted with new settings',
     if (w.state == AgentState.queued && (bodies[w.body]?.paused ?? false))
       'waiting_for': '${w.body} to be resumed (paused by the user)',
     'cwd': w.cwd,

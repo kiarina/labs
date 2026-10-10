@@ -4,8 +4,10 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
+import '../agents/agent_check.dart';
 import '../agents/agent_thread.dart';
 import '../agents/backends.dart';
+import '../agents/mac_permissions.dart';
 import '../mesh/peer.dart';
 import '../rpc/rpc_client.dart';
 import '../state/thread_view.dart' show Json;
@@ -64,6 +66,11 @@ abstract mixin class Body {
   /// ([loadImage]).
   Future<Json> readImage(String path);
 
+  /// The body's own settings, for a console through the owning brain:
+  /// `body/pause`, `body/config` (its agents), `body/check` (a check run on
+  /// its machine), `body/configure` (new agents; restarts them).
+  Future<Object?> call(String method, Json params);
+
   /// A new agent on this body; it starts when [AgentThread.start] is called.
   AgentThread create(
     String type, {
@@ -110,6 +117,14 @@ class LocalBody extends ChangeNotifier with Body {
 
   @override
   bool paused = false;
+
+  /// Every agent made here (the orchestrator too); they end when the
+  /// agents restart ([reconfigure]).
+  final _made = <AgentThread>[];
+
+  /// Agents running a turn here.
+  int get runningAgents => _made.where((a) => a.view.isRunning).length;
+  bool _restarting = false;
 
   void setPaused(bool v) {
     if (paused == v) return;
@@ -359,7 +374,65 @@ class LocalBody extends ChangeNotifier with Body {
             model: model,
             effort: effort,
           );
+    _made.add(agent);
     return agent..body = name;
+  }
+
+  @override
+  Future<Object?> call(String method, Json p) async {
+    switch (method) {
+      case 'body/pause':
+        setPaused(p['paused'] == true);
+        return {'paused': paused};
+      case 'body/config':
+        return {
+          'config': config.toJson(),
+          'projectDirDefault':
+              Platform.environment['ORCH_CWD'] ?? Platform.environment['HOME'],
+        };
+      case 'body/check':
+        final what = p['what'] as String;
+        if (what == 'permissions') return const MacPermissions().status();
+        return runCheck(
+          const AgentChecker(),
+          what,
+          (p['args'] as Map? ?? const {}).cast<String, dynamic>(),
+        );
+      case 'body/configure':
+        await reconfigure(
+          WorkerTypesConfig.fromJson((p['config'] as Map).cast()),
+        );
+        return info;
+    }
+    throw StateError('unknown method $method');
+  }
+
+  /// Saves new agents and starts them again: only while paused with nothing
+  /// running here, since the old backends stop and their threads end.
+  Future<void> reconfigure(WorkerTypesConfig next) async {
+    if (!paused) {
+      throw StateError('pause $name before changing its settings');
+    }
+    if (runningAgents > 0) {
+      throw StateError('$runningAgents agent(s) still running on $name');
+    }
+    if (_restarting) throw StateError('$name is restarting its agents');
+    _restarting = true;
+    try {
+      next.save(typesFile);
+      _made.clear();
+      closeBackends();
+      codex = null;
+      claude = null;
+      custom.clear();
+      typeErrors.clear();
+      startupError = null;
+      ready = false;
+      notifyListeners();
+      await start();
+    } finally {
+      _restarting = false;
+    }
   }
 
   void answer(Object requestId, Object? result) =>
@@ -495,10 +568,7 @@ class BodyHost {
   }
 
   Future<Object?> _call(String method, Json p) async {
-    if (method == 'body/pause') {
-      local.setPaused(p['paused'] == true);
-      return {'paused': local.paused};
-    }
+    if (method.startsWith('body/')) return local.call(method, p);
     if (method == 'file/image') {
       if (local.paused) throw StateError(pausedMessage(local.name));
       return loadImage(p['path'] as String);
@@ -616,6 +686,9 @@ class RemoteBody with Body {
   Future<Json> readImage(String path) async =>
       ((await rpc('file/image', {'path': path})) as Map)
           .cast<String, dynamic>();
+
+  @override
+  Future<Object?> call(String method, Json params) => rpc(method, params);
 
   @override
   AgentThread create(

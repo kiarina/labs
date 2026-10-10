@@ -239,10 +239,13 @@ class BodyView {
 /// What the console shows of one brain: the state and threads that brain
 /// sent, and how to send that brain the user's actions.
 class BrainView {
-  BrainView(this.name, this.send);
+  BrainView(this.name, this.send, this.request);
 
   final String name;
   final void Function(Json action) send;
+
+  /// A request that wants an answer ([Hub.request]).
+  final Future<Object?> Function(Json request) request;
   Json state = const {};
   final threads = <String, ThreadMirror>{};
   final settings = HubSettings();
@@ -381,8 +384,14 @@ class ConsoleMirror extends ChangeNotifier {
   /// The brain to show first (`ORCH_SELECT`), when it is linked.
   String? preferred;
 
-  /// The last message about moving a body (shown in the body list).
+  /// The last message about moving or changing a body (shown in the body
+  /// list).
   String? notice;
+
+  void say(String text) {
+    notice = text;
+    notifyListeners();
+  }
 
   /// The thread shown in the center (local to this console).
   ThreadMirror? viewing;
@@ -401,8 +410,12 @@ class ConsoleMirror extends ChangeNotifier {
       if (views.containsKey(b)) b,
   ];
 
-  void attachBrain(String name, void Function(Json action) send) {
-    views[name] = BrainView(name, send);
+  void attachBrain(
+    String name,
+    void Function(Json action) send,
+    Future<Object?> Function(Json request) request,
+  ) {
+    views[name] = BrainView(name, send, request);
     if (selected == null || !views.containsKey(selected) || name == preferred) {
       selected = name;
       viewing = null;
@@ -526,6 +539,16 @@ class ConsoleMirror extends ChangeNotifier {
     'paused': paused,
   });
 
+  /// A `body/...` request to [body] through the brain that owns it
+  /// (`body/config`, `body/check`, `body/configure`).
+  Future<Object?> bodyRequest(BodyEntry body, String method, [Json params = const {}]) {
+    final v = views[body.owner];
+    if (v == null) {
+      return Future.error(StateError('${body.owner ?? 'no brain'} is not linked to this console'));
+    }
+    return v.request({'a': 'body', 'body': body.name, 'm': method, 'p': params});
+  }
+
   /// Moves a body to a brain (null: no owner) through the signaling server.
   Future<void> assign(String body, String? brain) async {
     notice = 'moving $body to ${brain ?? 'no brain'}…';
@@ -564,6 +587,63 @@ class ConsoleMirror extends ChangeNotifier {
     ],
     'brains': {for (final e in views.entries) e.key: e.value.digest()},
   };
+}
+
+/// Requests from a console to a brain over a peer, matched to their replies
+/// (`t: request` / `t: reply`; the brain answers through [Hub.request]).
+class RequestLink {
+  RequestLink(this.peer) {
+    peer.messages.listen((m) {
+      if (m['t'] != 'reply') return;
+      final c = _pending.remove(m['rid']);
+      if (c == null) return;
+      if (m['e'] != null) {
+        c.completeError(StateError(m['e'] as String));
+      } else {
+        c.complete(m['r']);
+      }
+    });
+    peer.closed.then((_) {
+      for (final c in _pending.values) {
+        c.completeError(StateError('${peer.name} disconnected'));
+      }
+      _pending.clear();
+    });
+  }
+
+  final Peer peer;
+  final _pending = <int, Completer<Object?>>{};
+  int _rid = 0;
+
+  /// Body agents may take a while to check or restart.
+  static const timeout = Duration(seconds: 90);
+
+  Future<Object?> call(Json request) {
+    final rid = ++_rid;
+    final c = Completer<Object?>();
+    _pending[rid] = c;
+    peer.send({'t': 'request', 'rid': rid, 'a': request});
+    return c.future.timeout(timeout, onTimeout: () {
+      _pending.remove(rid);
+      throw TimeoutException('no answer from ${peer.name}', timeout);
+    });
+  }
+
+  /// The brain's side: answers each request with [handle].
+  static void serve(Peer peer, Future<Object?> Function(Json request) handle) {
+    peer.messages.listen((m) {
+      if (m['t'] != 'request') return;
+      final rid = m['rid'];
+      unawaited(() async {
+        try {
+          final r = await handle((m['a'] as Map).cast<String, dynamic>());
+          peer.send({'t': 'reply', 'rid': rid, 'r': r});
+        } catch (e) {
+          peer.send({'t': 'reply', 'rid': rid, 'e': e is StateError ? e.message : '$e'});
+        }
+      }());
+    });
+  }
 }
 
 /// 32-bit FNV-1a over UTF-16 code units, as hex.

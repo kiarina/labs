@@ -59,6 +59,24 @@ class _FakeBody with Body {
   @override
   Future<Json> readImage(String path) async => {};
 
+  /// What a console asked of it.
+  final calls = <String>[];
+
+  @override
+  Future<Object?> call(String method, Json params) async {
+    calls.add(method);
+    switch (method) {
+      case 'body/pause':
+        report(paused: params['paused'] == true);
+      case 'body/configure':
+        info = {
+          ...info,
+          'maxWorkers': (params['config'] as Map)['max_workers'],
+        };
+    }
+    return null;
+  }
+
   @override
   AgentThread create(
     String type, {
@@ -158,5 +176,53 @@ void main() {
     );
     await hub.setPaused('brain', false);
     expect(hub.local.info['paused'], false);
+  });
+
+  test('new settings only while paused with nothing of this brain there; its threads end', () async {
+    Future<Object?> configure() => hub.bodyRequest('body-c', 'body/configure', {
+      'config': {'max_workers': 3},
+    });
+    await start('one');
+    final w1 = hub.worker('w1')! as _FakeAgent;
+
+    await expectLater(
+      configure(),
+      throwsA(predicate((e) => '$e'.contains('pause body-c'))),
+    );
+    await hub.bodyRequest('body-c', 'body/pause', {'paused': true});
+    expect(body.paused, true);
+    await expectLater(
+      configure(),
+      throwsA(predicate((e) => '$e'.contains('running or queued'))),
+    );
+
+    w1.finish();
+    await configure();
+    expect(body.calls, ['body/pause', 'body/configure']);
+    expect(body.maxWorkers, 3);
+
+    // Its thread is gone with the old agents.
+    final r = await hub.callTool('send_message', {
+      'thread_id': 'w1',
+      'message': 'again',
+    });
+    expect(r['error'], contains('restarted with new settings'));
+    final t =
+        ((await hub.callTool('list_threads', {}))['threads'] as List).single
+            as Map;
+    expect(t['ended'], isNotNull);
+
+    // Only body requests go through.
+    await expectLater(
+      hub.bodyRequest('body-c', 'agent/start', {}),
+      throwsA(predicate((e) => '$e'.contains('not a body request'))),
+    );
+  });
+
+  test('the brain\'s own body: settings refused unless paused', () async {
+    await expectLater(
+      hub.local.reconfigure(WorkerTypesConfig()),
+      throwsA(predicate((e) => '$e'.contains('pause brain'))),
+    );
   });
 }

@@ -4,6 +4,7 @@ import 'dart:io';
 
 import '../body/body.dart' show claudeLoggedIn;
 import '../rpc/rpc_client.dart';
+import '../state/thread_view.dart' show Json;
 import 'worker_types.dart';
 
 /// A model a custom server lists.
@@ -16,6 +17,23 @@ class ModelInfo {
 
   /// The backend's own default.
   final bool isDefault;
+
+  Json toJson() => {
+    'id': id,
+    'contextWindow': contextWindow,
+    'label': label,
+    'isDefault': isDefault,
+  };
+
+  static ModelInfo fromJson(Object? j) {
+    final m = (j as Map).cast<String, dynamic>();
+    return ModelInfo(
+      m['id'] as String,
+      (m['contextWindow'] as num?)?.toInt(),
+      label: m['label'] as String?,
+      isDefault: m['isDefault'] == true,
+    );
+  }
 }
 
 /// One thing a tool needs on this machine, and whether it is there.
@@ -32,6 +50,25 @@ class Requirement {
   /// This app's permission that fixes it (`screenRecording`,
   /// `accessibility`): the start screen asks macOS for it.
   final String? grant;
+
+  Json toJson() => {
+    'name': name,
+    'ok': ok,
+    'detail': detail,
+    'settingsPane': settingsPane,
+    'grant': grant,
+  };
+
+  static Requirement fromJson(Object? j) {
+    final m = (j as Map).cast<String, dynamic>();
+    return Requirement(
+      m['name'] as String,
+      m['ok'] == true,
+      m['detail'] as String? ?? '',
+      settingsPane: m['settingsPane'] as String?,
+      grant: m['grant'] as String?,
+    );
+  }
 }
 
 /// The outcome of checking one agent on the start screen.
@@ -46,6 +83,109 @@ class CheckResult {
 
   /// Codex is reachable but not logged in: the screen offers to log in.
   final bool needsLogin;
+
+  Json toJson() => {
+    'ok': ok,
+    'text': text,
+    'needsLogin': needsLogin,
+    'models': [for (final m in models) m.toJson()],
+  };
+
+  static CheckResult fromJson(Object? j) {
+    final m = (j as Map).cast<String, dynamic>();
+    return CheckResult(
+      m['ok'] == true,
+      m['text'] as String? ?? '',
+      needsLogin: m['needsLogin'] == true,
+      models: [for (final x in m['models'] as List? ?? const []) ModelInfo.fromJson(x)],
+    );
+  }
+}
+
+/// Runs one check by name for a console on another machine (`body/check`):
+/// what the editor would run here, run on the body's machine. Logging in and
+/// granting permissions stay on that machine's start screen.
+Future<Object?> runCheck(AgentChecker c, String what, Json a) async {
+  List<Json> reqs(List<Requirement> r) => [for (final x in r) x.toJson()];
+  switch (what) {
+    case 'codex':
+      return (await c.codex(a['cwd'] as String?)).toJson();
+    case 'claude':
+      return (await c.claude(a['cwd'] as String?)).toJson();
+    case 'custom':
+      return (await c.custom(WorkerType.customFromJson((a['type'] as Map).cast()))).toJson();
+    case 'models':
+      final (list, error) = await c.models(a['baseUrl'] as String, a['envKey'] as String?);
+      return {
+        'models': list == null ? null : [for (final m in list) m.toJson()],
+        'error': error,
+      };
+    case 'computerUse':
+      return reqs(await c.computerUse());
+    case 'chrome':
+      return reqs(await c.chrome());
+    case 'peekaboo':
+      return reqs(await c.peekaboo());
+  }
+  throw StateError('unknown check $what');
+}
+
+/// [AgentChecker] for an agent setup on another machine: each check runs
+/// there ([runCheck]) through [call].
+class RemoteAgentChecker extends AgentChecker {
+  const RemoteAgentChecker(this.call);
+
+  final Future<Object?> Function(String what, Json args) call;
+
+  @override
+  Future<CheckResult> codex(String? cwd) async =>
+      _result(() => call('codex', {'cwd': cwd}));
+
+  @override
+  Future<CheckResult> claude(String? cwd) async =>
+      _result(() => call('claude', {'cwd': cwd}));
+
+  @override
+  Future<CheckResult> custom(WorkerType t) async =>
+      _result(() => call('custom', {'type': t.customToJson()}));
+
+  @override
+  Future<CheckResult> codexLogin() async =>
+      const CheckResult(false, 'Log in on that machine (its start screen, or `codex login`)');
+
+  @override
+  Future<(List<ModelInfo>?, String?)> models(String baseUrl, String? envKey) async {
+    try {
+      final r = (await call('models', {'baseUrl': baseUrl, 'envKey': envKey}) as Map).cast<String, dynamic>();
+      final list = r['models'] as List?;
+      return (list?.map(ModelInfo.fromJson).toList(), r['error'] as String?);
+    } catch (e) {
+      return (null, '$e');
+    }
+  }
+
+  @override
+  Future<List<Requirement>> computerUse() => _reqs('computerUse');
+  @override
+  Future<List<Requirement>> chrome() => _reqs('chrome');
+  @override
+  Future<List<Requirement>> peekaboo() => _reqs('peekaboo');
+
+  Future<List<Requirement>> _reqs(String what) async {
+    try {
+      return [for (final r in await call(what, const {}) as List) Requirement.fromJson(r)];
+    } catch (e) {
+      return [Requirement(what, false, '$e')];
+    }
+  }
+
+  Future<CheckResult> _result(Future<Object?> Function() run) async {
+    try {
+      return CheckResult.fromJson(await run());
+    } catch (e) {
+      return CheckResult(false, '$e');
+    }
+  }
 }
 
 /// Checks, on the start screen, that what is turned on can run here: the

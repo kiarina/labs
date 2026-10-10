@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../console/console.dart';
 import '../orchestrator/hub.dart' show HubSettings;
 import '../state/thread_view.dart' show Json;
+import 'body_settings.dart';
 import 'theme.dart';
 
 /// Left: this app, the orchestrator's worker type, new conversation, project,
@@ -436,8 +437,10 @@ class _Bodies extends StatelessWidget {
                           const _Badge('paused', color: Palette.warning),
                         ],
                         const Spacer(),
-                        if (console.canPause(b))
+                        if (console.canPause(b)) ...[
+                          _BodySettingsButton(console: console, body: b),
                           _PauseButton(console: console, body: b),
+                        ],
                       ],
                     ),
                     _OwnerMenu(console: console, body: b, brains: brains),
@@ -499,6 +502,46 @@ class _PauseButton extends StatelessWidget {
       icon: Icon(
         paused ? Icons.play_arrow : Icons.pause,
         color: paused ? Palette.warning : Palette.textFaint,
+      ),
+    );
+  }
+}
+
+/// Opens the body's agents (the editor of its start screen), only while it
+/// is paused with no workers of its brain running or waiting there: saving
+/// restarts its agents.
+class _BodySettingsButton extends StatelessWidget {
+  const _BodySettingsButton({required this.console, required this.body});
+
+  final ConsoleMirror console;
+  final BodyEntry body;
+
+  @override
+  Widget build(BuildContext context) {
+    final paused = body.view!.paused;
+    final ready = paused && body.running == 0;
+    return IconButton(
+      key: ValueKey('body-settings-${body.name}'),
+      tooltip: !paused
+          ? 'Change its agents: pause it first'
+          : body.running > 0
+          ? 'Change its agents: wait for its ${body.running} worker(s) to finish'
+          : 'Change its agents',
+      iconSize: 15,
+      visualDensity: VisualDensity.compact,
+      constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
+      padding: EdgeInsets.zero,
+      onPressed: ready
+          ? () => showBodySettings(
+              context,
+              body: body.name,
+              isBrain: body.node.brain,
+              request: (m, [p = const {}]) => console.bodyRequest(body, m, p),
+            )
+          : null,
+      icon: Icon(
+        Icons.tune,
+        color: ready ? Palette.text : Palette.textFaint.withValues(alpha: 0.5),
       ),
     );
   }

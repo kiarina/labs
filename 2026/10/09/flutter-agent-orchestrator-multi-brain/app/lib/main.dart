@@ -60,7 +60,12 @@ ConsoleMirror _boot(LaunchConfig config, String stateDir) {
     unawaited(_assignOnStart(console, signal, spec));
   }
   if (env['ORCH_PAUSE'] case final String spec when spec.isNotEmpty) {
-    unawaited(_pauseOnStart(console, spec));
+    unawaited(() async {
+      await _pauseOnStart(console, spec);
+      if (env['ORCH_CONFIGURE'] case final String c when c.isNotEmpty) {
+        await _configureOnStart(console, c);
+      }
+    }());
   }
   return console;
 }
@@ -96,7 +101,7 @@ Future<void> _run(
     signal.addListener(h.ownershipChanged);
     // This brain's own console goes through the same messages as the others.
     final (brainEnd, consoleEnd) = loopbackPair(local.name, local.name);
-    console.attachBrain(local.name, (a) => unawaited(h.handleAction(a)));
+    console.attachBrain(local.name, (a) => unawaited(h.handleAction(a)), h.request);
     consoleEnd.messages.listen((m) {
       if (m['t'] == 'console') console.handle(local.name, (m['m'] as Map).cast());
     });
@@ -119,10 +124,15 @@ Future<void> _run(
             unawaited(hub!.handleAction((m['a'] as Map).cast<String, dynamic>()));
           }
         });
+        RequestLink.serve(peer, hub.request);
       }
       // To a brain: mirror it, send it actions, serve it this body.
       if (signal.node(peer.name)?.brain == true) {
-        console.attachBrain(peer.name, (a) => peer.send({'t': 'action', 'a': a}));
+        console.attachBrain(
+          peer.name,
+          (a) => peer.send({'t': 'action', 'a': a}),
+          RequestLink(peer).call,
+        );
         peer.messages.listen((m) {
           if (m['t'] == 'console') console.handle(peer.name, (m['m'] as Map).cast());
         });
@@ -150,6 +160,30 @@ Future<void> _pauseOnStart(ConsoleMirror console, String spec) async {
       }
       await Future<void>.delayed(const Duration(milliseconds: 200));
     }
+  }
+}
+
+/// `ORCH_CONFIGURE=body=path.json` (after `ORCH_PAUSE`) gives a paused body
+/// new agents (a `worker-types.json`) through its brain once it shows as
+/// paused, and puts the outcome in the console's notice (for unattended
+/// checks; the body's settings dialog does the same).
+Future<void> _configureOnStart(ConsoleMirror console, String spec) async {
+  final i = spec.indexOf('=');
+  final name = spec.substring(0, i), path = spec.substring(i + 1);
+  for (var n = 0; n < 300; n++) {
+    final b = console.allBodies.where((b) => b.name == name).firstOrNull;
+    if (b != null && (b.view?.paused ?? false)) {
+      try {
+        await console.bodyRequest(b, 'body/configure', {
+          'config': jsonDecode(await File(path).readAsString()),
+        });
+        console.say('configured $name');
+      } catch (e) {
+        console.say('could not configure $name: $e');
+      }
+      return;
+    }
+    await Future<void>.delayed(const Duration(milliseconds: 200));
   }
 }
 
