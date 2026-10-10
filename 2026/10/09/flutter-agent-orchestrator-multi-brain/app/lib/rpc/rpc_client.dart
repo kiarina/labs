@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import '../agents/worker_types.dart';
+
 /// A notification from a child process (no `id`).
 class ServerNotification {
   ServerNotification(this.method, this.params);
@@ -216,26 +218,20 @@ Future<RpcClient> codexAppServer({
   );
 }
 
-/// A second `codex app-server` whose model provider is kiapi
-/// (KIAPI_BASE_URL, default http://127.0.0.1:8500; KIAPI_MODEL, default
-/// qwen3.8-flash-next). It gets a CODEX_HOME of its own (no MCP servers,
+/// A `codex app-server` for a custom worker type: its model provider is
+/// [t]'s Responses API server (with the API key from [WorkerType.envKey] on
+/// this machine, if any). It gets a CODEX_HOME of its own (no MCP servers,
 /// skills or login from ~/.codex) and a model catalog entry that sends tools
 /// as plain functions: the catalog entries of OpenAI's models use code mode
-/// and `additional_tools`, which kiapi does not accept. Both settings are
-/// read at process start only, hence a process of its own.
-Future<RpcClient> kiapiAppServer(String stateDir) async {
-  final env = Platform.environment;
-  final base = (env['KIAPI_BASE_URL'] ?? 'http://127.0.0.1:8500').replaceAll(
-    RegExp(r'/+$'),
-    '',
-  );
-  final model = env['KIAPI_MODEL'] ?? 'qwen3.8-flash-next';
-  final home = Directory('$stateDir/kiapi-codex-home');
+/// and `additional_tools`, which other servers do not accept. Both settings
+/// are read at process start only, hence a process per worker type.
+Future<RpcClient> customAppServer(WorkerType t, String stateDir) async {
+  final home = Directory('$stateDir/custom-codex-home/${t.id}');
   await home.create(recursive: true);
   final catalog = File('${home.path}/models.json');
   await catalog.writeAsString(
     jsonEncode({
-      'models': [await _kiapiCatalogEntry(model)],
+      'models': [await _customCatalogEntry(t)],
     }),
   );
   const off = [
@@ -253,14 +249,17 @@ Future<RpcClient> kiapiAppServer(String stateDir) async {
     'skill_search',
     'memories',
   ];
+  // TOML strings, quoted.
+  String q(String s) => jsonEncode(s);
   return codexAppServer(
-    name: 'kiapi',
+    name: t.id,
     extraArguments: [
       for (final o in [
-        'model_providers.kiapi={name="kiapi", base_url="$base/v1", wire_api="responses"}',
-        'model_provider="kiapi"',
-        'model="$model"',
-        'model_catalog_json="${catalog.path}"',
+        'model_providers.custom={name=${q(t.label)}, base_url=${q(t.baseUrl!)}, wire_api="responses"'
+            '${t.envKey != null ? ', env_key=${q(t.envKey!)}' : ''}}',
+        'model_provider="custom"',
+        'model=${q(t.model!)}',
+        'model_catalog_json=${q(catalog.path)}',
         'web_search="disabled"',
         'skills.include_instructions=false',
         for (final f in off) 'features.$f=false',
@@ -271,9 +270,9 @@ Future<RpcClient> kiapiAppServer(String stateDir) async {
 }
 
 /// The catalog entry of an OpenAI model from ~/.codex/models_cache.json,
-/// renamed to the kiapi model and switched to plain function tools. The
+/// renamed to [t]'s model and switched to plain function tools. The
 /// catalog's types are strict, so only the fields that matter change.
-Future<Map<String, dynamic>> _kiapiCatalogEntry(String model) async {
+Future<Map<String, dynamic>> _customCatalogEntry(WorkerType t) async {
   final home = Platform.environment['HOME'] ?? '';
   final cache = jsonDecode(
     await File('$home/.codex/models_cache.json').readAsString(),
@@ -282,11 +281,12 @@ Future<Map<String, dynamic>> _kiapiCatalogEntry(String model) async {
   final base =
       models.where((m) => m['slug'] == 'gpt-5.6-luna').firstOrNull ??
       models.first;
+  final window = t.contextWindow ?? 128000;
   return {
     ...base,
-    'slug': model,
-    'display_name': model,
-    'description': 'kiapi local model',
+    'slug': t.model,
+    'display_name': t.model,
+    'description': '${t.label} (${t.baseUrl})',
     'priority': 0,
     'tool_mode': null,
     'multi_agent_version': null,
@@ -300,8 +300,8 @@ Future<Map<String, dynamic>> _kiapiCatalogEntry(String model) async {
     'node_repl_disabled': true,
     'service_tiers': <Object>[],
     'additional_speed_tiers': <Object>[],
-    'context_window': 200000,
-    'max_context_window': 200000,
+    'context_window': window,
+    'max_context_window': window,
   };
 }
 

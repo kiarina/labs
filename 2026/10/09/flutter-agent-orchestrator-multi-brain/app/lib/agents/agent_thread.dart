@@ -4,20 +4,7 @@ import 'package:flutter/foundation.dart';
 
 import '../state/thread_view.dart';
 
-enum Provider {
-  codex('Codex'),
-  claude('Claude'),
-
-  /// Codex with kiapi (a local model) as its model provider.
-  kiapi('kiapi');
-
-  const Provider(this.label);
-
-  final String label;
-
-  static Provider parse(String s) =>
-      Provider.values.firstWhere((p) => p.name == s.toLowerCase());
-}
+export 'worker_types.dart';
 
 /// Where a worker is in its life.
 enum AgentState {
@@ -40,7 +27,7 @@ enum AgentState {
 abstract class AgentThread extends ChangeNotifier {
   AgentThread({
     required this.label,
-    required this.provider,
+    required this.workerType,
     required this.cwd,
     this.title,
     this.model,
@@ -52,7 +39,9 @@ abstract class AgentThread extends ChangeNotifier {
 
   /// Name of the app (body) the agent runs on.
   String body = '';
-  final Provider provider;
+
+  /// The worker type's id on its body (`codex`, `claude`, a custom one).
+  final String workerType;
   final String cwd;
   String? title;
   String? model;

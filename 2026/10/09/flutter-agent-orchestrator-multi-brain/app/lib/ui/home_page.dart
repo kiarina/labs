@@ -159,7 +159,7 @@ class _Header extends StatelessWidget {
               child: Text(
                 viewingWorker
                     ? '${s.label} · ${s.title ?? ''}'
-                    : 'Orchestrator · ${s.provider.label}',
+                    : 'Orchestrator · ${console.labelOf(s.workerType)}',
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 13,
@@ -244,7 +244,7 @@ class _Empty extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            '$name · orchestrator: ${console.settings.orchestrator.label}',
+            '$name · orchestrator: ${console.labelOf(console.settings.orchestrator)}',
             style: const TextStyle(fontSize: 14, color: Palette.textDim),
           ),
         ],

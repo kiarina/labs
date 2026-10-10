@@ -13,14 +13,12 @@ import 'tools.dart';
 /// Settings the user can change; kept in
 /// `~/Library/Application Support/<bundle id>/settings.json`.
 class HubSettings {
-  Provider orchestrator = Provider.codex;
+  /// The worker type the orchestrator runs as, on the brain's own body.
+  String orchestrator = 'codex';
 
-  /// Workers allowed to run at once; more are queued.
+  /// Workers allowed to run at once per body; more are queued. A worker
+  /// type may have a lower limit of its own (its `maxConcurrent`).
   int maxConcurrent = 4;
-
-  /// kiapi workers allowed to run at once (kiapi serves one request at a
-  /// time, so more would only wait inside kiapi).
-  int kiapiMaxConcurrent = 1;
 
   /// Start an orchestrator turn when a worker finishes while it is idle.
   bool wakeOnFinish = true;
@@ -28,29 +26,26 @@ class HubSettings {
   String? orchestratorModel;
   String? orchestratorEffort;
 
-  /// Default models for workers, per provider (the orchestrator may pick).
-  final workerModel = <Provider, String?>{};
+  /// Default models for workers, per worker type (the orchestrator may pick).
+  final workerModel = <String, String?>{};
 
   Json toJson() => {
-    'orchestrator': orchestrator.name,
+    'orchestrator': orchestrator,
     'maxConcurrent': maxConcurrent,
-    'kiapiMaxConcurrent': kiapiMaxConcurrent,
     'wakeOnFinish': wakeOnFinish,
     'orchestratorModel': orchestratorModel,
     'orchestratorEffort': orchestratorEffort,
-    'workerModel': {for (final e in workerModel.entries) e.key.name: e.value},
+    'workerModel': {for (final e in workerModel.entries) e.key: e.value},
   };
 
   void load(Json j) {
-    orchestrator = Provider.parse(j['orchestrator'] as String? ?? 'codex');
+    orchestrator = j['orchestrator'] as String? ?? 'codex';
     maxConcurrent = (j['maxConcurrent'] as num?)?.toInt() ?? maxConcurrent;
-    kiapiMaxConcurrent =
-        (j['kiapiMaxConcurrent'] as num?)?.toInt() ?? kiapiMaxConcurrent;
     wakeOnFinish = j['wakeOnFinish'] as bool? ?? wakeOnFinish;
     orchestratorModel = j['orchestratorModel'] as String?;
     orchestratorEffort = j['orchestratorEffort'] as String?;
     for (final e in (j['workerModel'] as Map? ?? const {}).entries) {
-      workerModel[Provider.parse(e.key as String)] = e.value as String?;
+      workerModel[e.key as String] = e.value as String?;
     }
   }
 }
@@ -93,7 +88,7 @@ class Hub extends ChangeNotifier {
     }
     final env = Platform.environment;
     if (env['ORCH_PROVIDER'] case final String p when p.isNotEmpty) {
-      settings.orchestrator = Provider.parse(p);
+      settings.orchestrator = p;
     }
     notifyListeners();
   }
@@ -147,9 +142,7 @@ class Hub extends ChangeNotifier {
 
   void addRemoteBody(RemoteBody b) {
     bodies[b.name] = b;
-    b
-      ..onChanged = notifyListeners
-      ..onAction = handleAction;
+    b.onChanged = notifyListeners;
     b.peer.closed.then((_) {
       b.lost();
       notifyListeners();
@@ -165,11 +158,7 @@ class Hub extends ChangeNotifier {
       case 'interrupt':
         await interruptOrchestrator();
       case 'new':
-        await newConversation(
-          provider: a['provider'] == null
-              ? null
-              : Provider.parse(a['provider'] as String),
-        );
+        await newConversation(workerType: a['workerType'] as String?);
       case 'stop':
         if (worker(a['id'] as String) case final w?) await stopWorker(w);
       case 'settings':
@@ -192,10 +181,10 @@ class Hub extends ChangeNotifier {
       tools: orchestratorTools,
       instructions: orchestratorInstructions(local.name),
     );
-    // kiapi falls back to Codex when its app-server did not start.
-    final p = local.providers.contains(settings.orchestrator)
+    // Falls back to Codex when that worker type cannot run here.
+    final p = local.workerTypes.contains(settings.orchestrator)
         ? settings.orchestrator
-        : Provider.codex;
+        : 'codex';
     final model =
         settings.orchestratorModel != null &&
             local.modelsFor(p).any((m) => m['id'] == settings.orchestratorModel)
@@ -229,9 +218,9 @@ class Hub extends ChangeNotifier {
   Future<void> interruptOrchestrator() async => orchestrator?.interrupt();
 
   /// A new orchestrator conversation (workers keep running).
-  Future<void> newConversation({Provider? provider}) async {
-    if (provider != null) {
-      settings.orchestrator = provider;
+  Future<void> newConversation({String? workerType}) async {
+    if (workerType != null) {
+      settings.orchestrator = workerType;
       await saveSettings();
     }
     final old = orchestrator;
@@ -258,28 +247,33 @@ class Hub extends ChangeNotifier {
   int get runningCount =>
       workers.where((w) => w.state == AgentState.running).length;
 
-  int runningOn(String body, [Provider? p]) => workers
+  int runningOn(String body, [String? type]) => workers
       .where(
         (w) =>
             w.state == AgentState.running &&
             w.body == body &&
-            (p == null || w.provider == p),
+            (type == null || w.workerType == type),
       )
       .length;
 
-  /// Whether one more worker of [w]'s provider may start on its body. The
+  /// The worker type's own limit on [body] (null: only the body's).
+  int? typeLimit(String body, String type) =>
+      (bodies[body]?.workerType(type)?['maxConcurrent'] as num?)?.toInt();
+
+  /// Whether one more worker of [w]'s type may start on its body. The
   /// limits apply per body: each body has its own subscriptions and machine.
-  bool _hasSlot(AgentThread w) =>
-      runningOn(w.body) < settings.maxConcurrent &&
-      (w.provider != Provider.kiapi ||
-          runningOn(w.body, Provider.kiapi) < settings.kiapiMaxConcurrent);
+  bool _hasSlot(AgentThread w) {
+    if (runningOn(w.body) >= settings.maxConcurrent) return false;
+    final limit = typeLimit(w.body, w.workerType);
+    return limit == null || runningOn(w.body, w.workerType) < limit;
+  }
 
   AgentThread? worker(String id) =>
       workers.where((w) => w.label == id).firstOrNull;
 
   AgentThread _createWorker(
     Body body,
-    Provider p, {
+    String p, {
     required String cwd,
     String? title,
     String? model,
@@ -380,7 +374,7 @@ class Hub extends ChangeNotifier {
     final lines = [
       for (final id in _toNotify)
         if (worker(id) case final w?)
-          '- ${w.label} (${w.provider.name} on ${w.body}) ${w.state.name}: ${w.title ?? ''}',
+          '- ${w.label} (${w.workerType} on ${w.body}) ${w.state.name}: ${w.title ?? ''}',
     ];
     _toNotify.clear();
     final text =
@@ -437,11 +431,14 @@ class Hub extends ChangeNotifier {
         final bodyName = a['body'] as String? ?? '';
         final body = _ownBody(bodyName);
         if (body == null) return _noBody(bodyName);
-        final p = Provider.parse(a['provider'] as String);
-        if (!body.providers.contains(p)) {
+        final p = a['worker_type'] as String? ?? '';
+        if (!body.workerTypes.contains(p)) {
+          final t = body.workerType(p);
           return {
-            'error': '${p.name} is not available on $bodyName',
-            'providers': [for (final p in body.providers) p.name],
+            'error': t == null
+                ? 'no worker type "$p" on $bodyName'
+                : 'worker type "$p" is not available on $bodyName: ${t['error']}',
+            'worker_types_on_$bodyName': body.workerTypes,
           };
         }
         final prompt = a['prompt'] as String;
@@ -463,23 +460,33 @@ class Hub extends ChangeNotifier {
         return {
           'thread_id': w.label,
           'body': w.body,
-          'provider': p.name,
+          'worker_type': p,
           'model': w.model,
           'status': status,
         };
       case 'list_bodies':
         return {
           'max_concurrent_per_body': settings.maxConcurrent,
-          'kiapi_max_concurrent_per_body': settings.kiapiMaxConcurrent,
           'bodies': [
             for (final b in ownBodies)
               {
                 'body': b.name,
                 'host': b.info['host'],
                 'is_this_brain_machine': b.isLocal,
-                'providers': [for (final p in b.providers) p.name],
                 'project_dir': b.projectDir,
                 'running': runningOn(b.name),
+                'worker_types': [
+                  for (final id in b.workerTypes)
+                    if (b.workerType(id) case final t?)
+                      {
+                        'id': id,
+                        'kind': t['kind'],
+                        'model': settings.workerModel[id] ?? b.defaultModel(id),
+                        'description': t['description'],
+                        'max_concurrent': ?t['maxConcurrent'],
+                        'running': runningOn(b.name, id),
+                      },
+                ],
               },
           ],
         };
@@ -503,7 +510,6 @@ class Hub extends ChangeNotifier {
       case 'list_threads':
         return {
           'max_concurrent_per_body': settings.maxConcurrent,
-          'kiapi_max_concurrent_per_body': settings.kiapiMaxConcurrent,
           'running': runningCount,
           'threads': [for (final w in workers) _summary(w)],
         };
@@ -562,7 +568,7 @@ class Hub extends ChangeNotifier {
   Json _summary(AgentThread w) => {
     'thread_id': w.label,
     'body': w.body,
-    'provider': w.provider.name,
+    'worker_type': w.workerType,
     'model': w.model,
     'title': w.title,
     'status': w.state.name,

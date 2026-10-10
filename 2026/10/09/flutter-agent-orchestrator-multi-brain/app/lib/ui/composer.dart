@@ -50,9 +50,10 @@ class _ComposerState extends State<Composer> {
     final o = console.orchestrator;
     final running = o?.view.isRunning ?? false;
     final hasText = _controller.text.trim().isNotEmpty;
-    final provider = o?.provider ?? console.settings.orchestrator;
+    final type = o?.workerType ?? console.settings.orchestrator;
+    final label = console.labelOf(type);
     final models = console.ready
-        ? console.modelsFor(provider)
+        ? console.modelsFor(type)
         : const <Map<String, dynamic>>[];
     final model = o?.model ?? console.settings.orchestratorModel;
     return Container(
@@ -79,7 +80,7 @@ class _ComposerState extends State<Composer> {
                 border: InputBorder.none,
                 hintText: running
                     ? 'Add to what the orchestrator is doing…'
-                    : 'Ask the orchestrator (${provider.label})',
+                    : 'Ask the orchestrator ($label)',
                 hintStyle: const TextStyle(color: Palette.textFaint),
               ),
             ),
@@ -94,7 +95,7 @@ class _ComposerState extends State<Composer> {
                     children: [
                       _Chip(
                         icon: Icons.hub_outlined,
-                        text: 'Orchestrator: ${provider.label}',
+                        text: 'Orchestrator: $label',
                       ),
                       const SizedBox(width: 4),
                       // Applies to the next conversation (and is saved).

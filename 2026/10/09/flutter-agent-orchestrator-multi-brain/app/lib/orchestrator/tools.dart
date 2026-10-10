@@ -18,13 +18,12 @@ const orchestratorTools = <ToolSpec>[
           'type': 'string',
           'description': 'Name of the body to run on: one of yours (see list_bodies).',
         },
-        'provider': {
+        'worker_type': {
           'type': 'string',
-          'enum': ['codex', 'claude', 'kiapi'],
           'description':
-              'Which agent runs the thread: OpenAI Codex, Anthropic Claude, or kiapi '
-              '(Codex driven by a local model on this machine: free and private, but slower '
-              'and weaker; one kiapi thread runs at a time, others queue).',
+              'Which kind of worker runs the thread: the id of one of that body\'s worker types '
+              '(see list_bodies; for example "codex" or "claude"). Bodies differ, and their worker '
+              'types can change while you work.',
         },
         'prompt': {
           'type': 'string',
@@ -45,7 +44,7 @@ const orchestratorTools = <ToolSpec>[
               'Optional model id; defaults to the configured worker model.',
         },
       },
-      'required': ['body', 'provider', 'prompt'],
+      'required': ['body', 'worker_type', 'prompt'],
     },
   },
   {
@@ -117,8 +116,10 @@ const orchestratorTools = <ToolSpec>[
   {
     'name': 'list_bodies',
     'description':
-        'List the bodies (apps that run workers): name, host, online, providers available there, '
-        'project directory, and how many workers run there. Each body has its own concurrency limit.',
+        'List your bodies (apps that run workers): name, host, project directory, how many workers run '
+        'there, and the worker types it offers (id, kind, model, what it is good for, its own concurrency '
+        'limit if any). Each body has its own concurrency limit. Call it again when bodies or worker types '
+        'may have changed.',
     'inputSchema': {'type': 'object', 'properties': <String, dynamic>{}},
   },
   {
@@ -144,7 +145,7 @@ const orchestratorTools = <ToolSpec>[
   },
   {
     'name': 'list_threads',
-    'description': 'List every worker thread with its body, provider, title, status and the concurrency limit.',
+    'description': 'List every worker thread with its body, worker type, title, status and the concurrency limit.',
     'inputSchema': {'type': 'object', 'properties': <String, dynamic>{}},
   },
 ];
@@ -152,8 +153,8 @@ const orchestratorTools = <ToolSpec>[
 String orchestratorInstructions(String brain) =>
     '''
 You are the orchestrator (the brain, running in the app "$brain"). The user talks only to you, from the
-console of any connected app. You get work done by running worker agents (OpenAI Codex, Anthropic Claude,
-and kiapi threads) on bodies through your tools: list_bodies, start_thread, send_message, wait_threads,
+console of any connected app. You get work done by running worker agents (worker threads) on bodies through
+your tools: list_bodies, start_thread, send_message, wait_threads,
 read_thread, interrupt_thread, list_threads, fetch_image.
 
 - A body is one app, usually on its own machine, with its own files, logins and project directory.
@@ -169,10 +170,11 @@ read_thread, interrupt_thread, list_threads, fetch_image.
   file and report the absolute path, then call fetch_image with that body and path. The user sees the
   image too. Taking a screenshot: `screencapture -x <path>.png` (macOS).
 - Delegate all the actual work (reading files, editing, running commands, using apps) to workers.
-- Split work into independent threads and run them in parallel when that helps. Choose the provider
-  per task. kiapi runs Codex on a local model: use it for small, well-specified tasks, or when the user
-  asks for it; it runs one thread at a time per body. Workers have full access to their machine and no
-  approval prompts.
+- Each body offers worker types (list_bodies): usually "codex" (OpenAI Codex) and "claude" (Anthropic
+  Claude), and possibly custom ones (Codex driven by another model, such as a local one). Pick one per
+  task from its description; a type may run fewer threads at a time than the body allows.
+- Split work into independent threads and run them in parallel when that helps. Workers have full
+  access to their machine and no approval prompts.
 - Several workers may work in the same repository on one body. You decide whether that is safe: readers
   are fine alongside a writer; two writers only when their files do not overlap. Say which files each
   worker owns.

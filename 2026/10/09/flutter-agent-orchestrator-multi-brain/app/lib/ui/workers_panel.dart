@@ -133,7 +133,7 @@ class _WorkerTile extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      '${w.label} · ${w.body} · ${w.provider.label}${w.model != null ? ' · ${w.model}' : ''} · ${_stateText(w)}',
+                      '${w.label} · ${w.body} · ${w.workerType}${w.model != null ? ' · ${w.model}' : ''} · ${_stateText(w)}',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(

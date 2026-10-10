@@ -47,13 +47,14 @@ class CodexBackend {
   CodexBackend(
     this.client, {
     required this.onTool,
-    this.provider = Provider.codex,
+    this.workerType = 'codex',
   });
 
   final RpcClient client;
 
-  /// [Provider.kiapi] for the app-server whose model provider is kiapi.
-  final Provider provider;
+  /// The worker type this app-server runs: `codex`, or a custom one whose
+  /// model provider is another server.
+  final String workerType;
   final ToolHandler onTool;
   final _threads = <String, CodexAgent>{};
   List<Json> models = const [];
@@ -205,7 +206,7 @@ class CodexAgent extends AgentThread {
     super.title,
     super.model,
     super.effort,
-  }) : super(provider: backend.provider);
+  }) : super(workerType: backend.workerType);
 
   final CodexBackend backend;
   final AgentRole role;
@@ -409,7 +410,7 @@ class ClaudeAgent extends AgentThread {
     super.title,
     super.model,
     super.effort,
-  }) : super(provider: Provider.claude);
+  }) : super(workerType: 'claude');
 
   final ClaudeBackend backend;
   final AgentRole role;

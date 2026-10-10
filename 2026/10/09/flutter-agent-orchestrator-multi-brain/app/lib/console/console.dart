@@ -55,7 +55,7 @@ class ConsolePublisher {
     'key': _key(t),
     'label': t.label,
     'body': t.body,
-    'provider': t.provider.name,
+    'workerType': t.workerType,
     'cwd': t.cwd,
     'title': t.title,
     'model': t.model,
@@ -141,7 +141,7 @@ class ThreadMirror {
     : key = meta['key'] as String,
       label = meta['label'] as String,
       body = meta['body'] as String,
-      provider = Provider.parse(meta['provider'] as String),
+      workerType = meta['workerType'] as String,
       cwd = meta['cwd'] as String,
       createdAt = _time(meta['createdAt'])!,
       view = ThreadView(threadId: '', cwd: meta['cwd'] as String) {
@@ -151,7 +151,7 @@ class ThreadMirror {
   final String key;
   final String label;
   final String body;
-  final Provider provider;
+  final String workerType;
   final String cwd;
   final DateTime createdAt;
   final ThreadView view;
@@ -206,22 +206,29 @@ class BodyView {
   bool get online => info['online'] == true;
   bool get isBrain => info['isBrain'] == true;
   int get running => (info['running'] as num?)?.toInt() ?? 0;
-  List<Provider> get providers => [
-    for (final p in info['providers'] as List? ?? const [])
-      Provider.parse(p as String),
+  /// Every worker type the body offers, available or not (`error`).
+  List<Json> get workerTypeInfo => [
+    for (final t in info['workerTypes'] as List? ?? const [])
+      (t as Map).cast<String, dynamic>(),
   ];
+  List<String> get workerTypes => [
+    for (final t in workerTypeInfo)
+      if (t['error'] == null) t['id'] as String,
+  ];
+  String labelOf(String id) =>
+      workerTypeInfo.where((t) => t['id'] == id).firstOrNull?['label'] as String? ?? id;
+  String? get typeConfigError => info['typeConfigError'] as String?;
   String get projectDir => info['projectDir'] as String? ?? '';
   List<String> get usage => [
     for (final v in (info['usage'] as Map? ?? const {}).values) '$v',
   ];
-  List<Json> modelsFor(Provider p) =>
-      ((info['models'] as Map?)?[p.name] as List? ?? const [])
+  List<Json> modelsFor(String type) =>
+      ((info['models'] as Map?)?[type] as List? ?? const [])
           .cast<Map>()
           .map((m) => m.cast<String, dynamic>())
           .toList();
-  String? defaultModel(Provider p) =>
-      (info['defaultModels'] as Map?)?[p.name] as String?;
-  String? get kiapiError => info['kiapiError'] as String?;
+  String? defaultModel(String type) =>
+      (info['defaultModels'] as Map?)?[type] as String?;
 }
 
 /// What the console shows of one brain: the state and threads that brain
@@ -290,9 +297,10 @@ class BrainView {
         {
           'key': t.key,
           'body': t.body,
-          'provider': t.provider.name,
+          'workerType': t.workerType,
           'state': t.state.name,
           'turns': t.view.turns.length,
+          'turnStates': [for (final u in t.view.turns) '${u.id}:${u.status}'],
           'ops': t.view.ops.length,
           'opsHash': fnv1a(jsonEncode(t.view.ops)),
           'problems': t.problems.take(5).toList(),
@@ -436,13 +444,15 @@ class ConsoleMirror extends ChangeNotifier {
   List<BodyView> get bodies => _v?.bodies ?? const [];
   BodyView? get brainBody => bodies.where((b) => b.isBrain).firstOrNull;
 
-  /// Providers the orchestrator can use (the selected brain's).
-  List<Provider> get providers => brainBody?.providers ?? const [];
+  /// Worker types the orchestrator can run as (the selected brain's body).
+  List<String> get workerTypes => brainBody?.workerTypes ?? const [];
 
-  List<Json> modelsFor(Provider p) => brainBody?.modelsFor(p) ?? const [];
+  String labelOf(String type) => brainBody?.labelOf(type) ?? type;
 
-  String? defaultModelFor(Provider p) =>
-      settings.workerModel[p] ?? brainBody?.defaultModel(p);
+  List<Json> modelsFor(String type) => brainBody?.modelsFor(type) ?? const [];
+
+  String? defaultModelFor(String type) =>
+      settings.workerModel[type] ?? brainBody?.defaultModel(type);
 
   int get runningCount => workers.where((w) => w.isRunning).length;
 
@@ -453,7 +463,7 @@ class ConsoleMirror extends ChangeNotifier {
     BodyView? info(String name) {
       for (final v in [?_v, ...views.values]) {
         final b = v.bodies.where((b) => b.name == name).firstOrNull;
-        if (b != null && b.info['providers'] != null) return b;
+        if (b != null && b.info['workerTypes'] != null) return b;
       }
       return null;
     }
@@ -483,9 +493,9 @@ class ConsoleMirror extends ChangeNotifier {
 
   void interruptOrchestrator() => _act({'a': 'interrupt'});
 
-  Future<void> newConversation({Provider? provider}) async {
+  Future<void> newConversation({String? workerType}) async {
     viewing = null;
-    _act({'a': 'new', 'provider': provider?.name});
+    _act({'a': 'new', 'workerType': workerType});
   }
 
   void stopWorker(ThreadMirror w) => _act({'a': 'stop', 'id': w.label});

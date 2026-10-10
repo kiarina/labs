@@ -103,6 +103,13 @@ Future<void> _run(
         final body = RemoteBody(peer, const {});
         body.onHello = () => hub!.addRemoteBody(body);
         publisher!.subscribe(peer);
+        // Any linked app's console may act, bodies or not (a console-only
+        // app never says hello as a body).
+        peer.messages.listen((m) {
+          if (m['t'] == 'action') {
+            unawaited(hub!.handleAction((m['a'] as Map).cast<String, dynamic>()));
+          }
+        });
       }
       // To a brain: mirror it, send it actions, serve it this body.
       if (signal.node(peer.name)?.brain == true) {

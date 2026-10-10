@@ -1,12 +1,12 @@
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 
-import '../agents/agent_thread.dart';
 import '../console/console.dart';
 import '../orchestrator/hub.dart' show HubSettings;
+import '../state/thread_view.dart' show Json;
 import 'theme.dart';
 
-/// Left: this app, orchestrator provider, new conversation, project,
+/// Left: this app, the orchestrator's worker type, new conversation, project,
 /// settings, and the bodies connected to the brain.
 class Sidebar extends StatelessWidget {
   const Sidebar({super.key, required this.console, required this.onToggleLog});
@@ -17,7 +17,10 @@ class Sidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final current =
-        console.orchestrator?.provider ?? console.settings.orchestrator;
+        console.orchestrator?.workerType ?? console.settings.orchestrator;
+    // The brain's own worker types; the current one stays listed even if it
+    // stopped being available.
+    final types = {...console.workerTypes, current}.toList();
     return Container(
       width: 240,
       color: Palette.sidebar,
@@ -36,22 +39,15 @@ class Sidebar extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: SegmentedButton<Provider>(
+            child: SegmentedButton<String>(
               showSelectedIcon: false,
               segments: [
-                const ButtonSegment(
-                  value: Provider.codex,
-                  label: Text('Codex'),
-                ),
-                const ButtonSegment(
-                  value: Provider.claude,
-                  label: Text('Claude'),
-                ),
-                ButtonSegment(
-                  value: Provider.kiapi,
-                  label: const Text('kiapi'),
-                  enabled: console.providers.contains(Provider.kiapi),
-                ),
+                for (final t in types)
+                  ButtonSegment(
+                    value: t,
+                    label: Text(console.labelOf(t), overflow: TextOverflow.ellipsis),
+                    enabled: console.workerTypes.contains(t),
+                  ),
               ],
               selected: {current},
               onSelectionChanged: (s) async {
@@ -60,7 +56,7 @@ class Sidebar extends StatelessWidget {
                     !await _confirmSwitch(context, s.first)) {
                   return;
                 }
-                await console.newConversation(provider: s.first);
+                await console.newConversation(workerType: s.first);
               },
             ),
           ),
@@ -108,13 +104,13 @@ class Sidebar extends StatelessWidget {
     );
   }
 
-  Future<bool> _confirmSwitch(BuildContext context, Provider p) async {
+  Future<bool> _confirmSwitch(BuildContext context, String type) async {
     return await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
             backgroundColor: Palette.surface,
             title: Text(
-              'Switch the orchestrator to ${p.label}?',
+              'Switch the orchestrator to ${console.labelOf(type)}?',
               style: const TextStyle(fontSize: 15),
             ),
             content: const Text(
@@ -410,7 +406,7 @@ class _Bodies extends StatelessWidget {
                     _OwnerMenu(console: console, body: b, brains: brains),
                     if (b.node.online && b.view != null)
                       Text(
-                        '${b.view!.host} · ${b.view!.providers.map((p) => p.label).join(', ')}',
+                        '${b.view!.host} · ${b.view!.workerTypes.map(b.view!.labelOf).join(', ')}',
                         style: const TextStyle(
                           fontSize: 10.5,
                           color: Palette.textDim,
@@ -507,7 +503,7 @@ Future<void> showSettings(BuildContext context, ConsoleMirror console) async {
     context: context,
     builder: (context) => StatefulBuilder(
       builder: (context, setState) {
-        Widget modelPicker(Provider p) {
+        Widget modelPicker(String p) {
           final models = console.ready
               ? console.modelsFor(p)
               : const <Map<String, dynamic>>[];
@@ -578,37 +574,40 @@ Future<void> showSettings(BuildContext context, ConsoleMirror console) async {
                   value: s.wakeOnFinish,
                   onChanged: (v) => setState(() => s.wakeOnFinish = v),
                 ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    const Expanded(
-                      child: Text(
-                        'Codex worker model',
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ),
-                    modelPicker(Provider.codex),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    const Expanded(
-                      child: Text(
-                        'Claude worker model',
-                        style: TextStyle(fontSize: 13),
-                      ),
-                    ),
-                    modelPicker(Provider.claude),
-                  ],
-                ),
                 const SizedBox(height: 12),
                 Text(
-                  console.providers.contains(Provider.kiapi)
-                      ? 'kiapi worker model: ${console.defaultModelFor(Provider.kiapi) ?? '-'} '
-                            '(${s.kiapiMaxConcurrent} at a time per body)'
-                      : 'kiapi unavailable on the brain: ${console.brainBody?.kiapiError ?? 'starting'}',
-                  style: const TextStyle(fontSize: 12, color: Palette.textDim),
+                  'Worker types on ${console.brain}',
+                  style: const TextStyle(fontSize: 11, color: Palette.textFaint),
+                ),
+                const SizedBox(height: 4),
+                for (final t in console.brainBody?.workerTypeInfo ?? const <Json>[])
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            [
+                              t['label'] as String? ?? t['id'] as String,
+                              if (t['maxConcurrent'] != null) '${t['maxConcurrent']} at a time',
+                              if (t['error'] != null) 'unavailable: ${t['error']}',
+                            ].join(' · '),
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: t['error'] != null ? Palette.textDim : null,
+                            ),
+                          ),
+                        ),
+                        if (t['error'] == null) modelPicker(t['id'] as String),
+                      ],
+                    ),
+                  ),
+                if (console.brainBody?.typeConfigError case final e?)
+                  Text(e, style: const TextStyle(fontSize: 12, color: Palette.warning)),
+                const SizedBox(height: 4),
+                const Text(
+                  'Custom worker types come from worker-types.json in each body\'s state folder.',
+                  style: TextStyle(fontSize: 11, color: Palette.textFaint),
                 ),
               ],
             ),

@@ -20,25 +20,37 @@ abstract mixin class Body {
   /// This app's own backends (the brain's body, for the brain).
   bool get isLocal;
 
-  /// What the body reports about itself: host, providers, project
+  /// What the body reports about itself: host, worker types, project
   /// directory, models, subscription usage.
   Json get info;
 
-  List<Provider> get providers => [
-    for (final p in (info['providers'] as List? ?? const []))
-      Provider.parse(p as String),
+  /// Every worker type the body offers, available or not (`error`).
+  List<Json> get workerTypeInfo => [
+    for (final t in (info['workerTypes'] as List? ?? const []))
+      (t as Map).cast<String, dynamic>(),
   ];
+
+  /// The ids of the worker types that can run now.
+  List<String> get workerTypes => [
+    for (final t in workerTypeInfo)
+      if (t['error'] == null) t['id'] as String,
+  ];
+
+  Json? workerType(String id) =>
+      workerTypeInfo.where((t) => t['id'] == id).firstOrNull;
+
+  String labelOf(String id) => workerType(id)?['label'] as String? ?? id;
 
   String get projectDir => info['projectDir'] as String? ?? '/';
 
-  List<Json> modelsFor(Provider p) =>
-      ((info['models'] as Map?)?[p.name] as List? ?? const [])
+  List<Json> modelsFor(String type) =>
+      ((info['models'] as Map?)?[type] as List? ?? const [])
           .cast<Map>()
           .map((m) => m.cast<String, dynamic>())
           .toList();
 
-  String? defaultModel(Provider p) =>
-      (info['defaultModels'] as Map?)?[p.name] as String?;
+  String? defaultModel(String type) =>
+      (info['defaultModels'] as Map?)?[type] as String?;
 
   /// An image file on this body's machine, scaled down for sending
   /// ([loadImage]).
@@ -46,7 +58,7 @@ abstract mixin class Body {
 
   /// A new agent on this body; it starts when [AgentThread.start] is called.
   AgentThread create(
-    Provider p, {
+    String type, {
     required String label,
     required String cwd,
     required AgentRole role,
@@ -58,7 +70,8 @@ abstract mixin class Body {
 
 // ---- this app's backends ------------------------------------------------------
 
-/// The Codex, Claude and kiapi backends of this app.
+/// This app's worker types: Codex, Claude, and one Codex app-server per
+/// custom type (`worker-types.json` in the state directory).
 class LocalBody extends ChangeNotifier with Body {
   LocalBody({required this.name, required this.stateDir});
 
@@ -69,10 +82,15 @@ class LocalBody extends ChangeNotifier with Body {
   late final CodexBackend codex;
   late final ClaudeBackend claude;
 
-  /// A second Codex app-server whose model provider is kiapi. Null when it
-  /// failed to start ([kiapiError]); the other providers still work.
-  CodexBackend? kiapi;
-  String? kiapiError;
+  /// Every worker type configured here.
+  List<WorkerType> types = [WorkerType.codex, WorkerType.claude];
+
+  /// The custom types' app-servers that started.
+  final custom = <String, CodexBackend>{};
+
+  /// Why a worker type cannot run (its app-server failed, a bad config);
+  /// the others still work.
+  final typeErrors = <String, String>{};
   String? startupError;
   bool ready = false;
 
@@ -118,10 +136,12 @@ class LocalBody extends ChangeNotifier with Body {
         ..onUserPrompt = (_, _) => onUserPrompt?.call();
       _log(codex.client);
       _log(claude.client);
+      _loadTypes();
       await Future.wait([
         codex.start(),
         claude.start(projectDir),
-        _startKiapi(),
+        for (final t in types)
+          if (t.kind == WorkerKind.custom) _startCustom(t),
       ]);
       ready = true;
     } catch (e) {
@@ -130,44 +150,67 @@ class LocalBody extends ChangeNotifier with Body {
     notifyListeners();
   }
 
-  Future<void> _startKiapi() async {
+  /// `worker-types.json` in the state directory (`ORCH_WORKER_TYPES`
+  /// overrides the path).
+  File get typesFile => File(
+    Platform.environment['ORCH_WORKER_TYPES'] ?? '$stateDir/worker-types.json',
+  );
+
+  void _loadTypes() {
     try {
-      final k = CodexBackend(
-        await kiapiAppServer(stateDir),
-        onTool: _onTool,
-        provider: Provider.kiapi,
-      )..onChanged = notifyListeners;
-      _log(k.client);
-      await k.start();
-      kiapi = k;
+      types = WorkerType.load(typesFile, Platform.environment);
     } catch (e) {
-      kiapiError = '$e';
+      typeErrors['config'] = '${typesFile.path}: $e';
     }
   }
 
+  Future<void> _startCustom(WorkerType t) async {
+    try {
+      final b = CodexBackend(
+        await customAppServer(t, stateDir),
+        onTool: _onTool,
+        workerType: t.id,
+      )..onChanged = notifyListeners;
+      _log(b.client);
+      await b.start();
+      custom[t.id] = b;
+    } catch (e) {
+      typeErrors[t.id] = '$e';
+    }
+  }
+
+  CodexBackend? _codexFor(WorkerType t) => switch (t.kind) {
+    WorkerKind.codex => codex,
+    WorkerKind.custom => custom[t.id],
+    WorkerKind.claude => null,
+  };
+
+  WorkerType? _type(String id) => types.where((t) => t.id == id).firstOrNull;
+
+  bool _available(WorkerType t) =>
+      ready && (t.kind != WorkerKind.custom || custom.containsKey(t.id));
+
   @override
-  List<Provider> get providers => [
-    if (ready) ...[Provider.codex, Provider.claude],
-    if (kiapi != null) Provider.kiapi,
+  List<String> get workerTypes => [
+    for (final t in types)
+      if (_available(t)) t.id,
   ];
 
   @override
-  List<Json> modelsFor(Provider p) => !ready
-      ? const []
-      : switch (p) {
-          Provider.codex => codex.models,
-          Provider.claude => claude.models,
-          Provider.kiapi => kiapi?.models ?? const [],
-        };
+  List<Json> modelsFor(String type) {
+    final t = _type(type);
+    if (t == null || !_available(t)) return const [];
+    return t.kind == WorkerKind.claude ? claude.models : _codexFor(t)!.models;
+  }
 
   @override
-  String? defaultModel(Provider p) => !ready
-      ? null
-      : switch (p) {
-          Provider.codex => codex.defaultModel,
-          Provider.claude => claude.defaultModel,
-          Provider.kiapi => kiapi?.defaultModel,
-        };
+  String? defaultModel(String type) {
+    final t = _type(type);
+    if (t == null || !_available(t)) return null;
+    return t.kind == WorkerKind.claude
+        ? claude.defaultModel
+        : _codexFor(t)!.defaultModel;
+  }
 
   @override
   Json get info {
@@ -178,11 +221,18 @@ class LocalBody extends ChangeNotifier with Body {
       'host': Platform.localHostname.split('.').first,
       'ready': ready,
       'startupError': startupError,
-      'providers': [for (final p in providers) p.name],
+      'workerTypes': [
+        for (final t in types)
+          t.toInfo(
+            error: _available(t)
+                ? null
+                : typeErrors[t.id] ?? startupError ?? (ready ? 'not started' : 'starting'),
+          ),
+      ],
+      'typeConfigError': typeErrors['config'],
       'projectDir': projectDir,
-      'models': {for (final p in providers) p.name: modelsFor(p)},
-      'defaultModels': {for (final p in providers) p.name: defaultModel(p)},
-      'kiapiError': kiapiError,
+      'models': {for (final id in workerTypes) id: modelsFor(id)},
+      'defaultModels': {for (final id in workerTypes) id: defaultModel(id)},
       'usage': {
         if (ready) ...{
           'codex':
@@ -198,7 +248,7 @@ class LocalBody extends ChangeNotifier with Body {
 
   @override
   AgentThread create(
-    Provider p, {
+    String type, {
     required String label,
     required String cwd,
     required AgentRole role,
@@ -206,14 +256,14 @@ class LocalBody extends ChangeNotifier with Body {
     String? model,
     String? effort,
   }) {
-    final codexLike = switch (p) {
-      Provider.codex => codex,
-      Provider.kiapi => kiapi,
-      Provider.claude => null,
-    };
-    if (p == Provider.kiapi && codexLike == null) {
-      throw StateError('kiapi is not available on $name: $kiapiError');
+    final t = _type(type);
+    if (t == null) {
+      throw StateError('no worker type "$type" on $name (have: ${workerTypes.join(', ')})');
     }
+    if (!_available(t)) {
+      throw StateError('worker type "$type" is not available on $name: ${typeErrors[type] ?? 'not started'}');
+    }
+    final codexLike = _codexFor(t);
     final AgentThread agent = codexLike != null
         ? codexLike.create(
             label: label,
@@ -238,7 +288,9 @@ class LocalBody extends ChangeNotifier with Body {
       claude.client.respond(requestId, result);
 
   void closeBackends() {
-    kiapi?.client.dispose();
+    for (final b in custom.values) {
+      b.client.dispose();
+    }
     codex.client.dispose();
     claude.client.dispose();
   }
@@ -314,7 +366,7 @@ class BodyHost {
   void _create(Json p) {
     final id = p['id'] as String;
     final agent = local.create(
-      Provider.parse(p['provider'] as String),
+      p['workerType'] as String,
       label: id,
       cwd: p['cwd'] as String,
       role: const AgentRole.worker(),
@@ -400,8 +452,6 @@ class RemoteBody with Body {
   @override
   bool get isLocal => false;
 
-  /// Console actions (`t: action`) sent from the body app's console.
-  void Function(Json action)? onAction;
   void Function()? onChanged;
 
   /// The body introduced itself (its first message).
@@ -438,8 +488,6 @@ class RemoteBody with Body {
       case 'info':
         info = (m['info'] as Map).cast<String, dynamic>();
         onChanged?.call();
-      case 'action':
-        onAction?.call((m['a'] as Map).cast<String, dynamic>());
     }
   }
 
@@ -462,7 +510,7 @@ class RemoteBody with Body {
 
   @override
   AgentThread create(
-    Provider p, {
+    String type, {
     required String label,
     required String cwd,
     required AgentRole role,
@@ -476,7 +524,7 @@ class RemoteBody with Body {
     final agent = RemoteAgent(
       this,
       label: label,
-      provider: p,
+      workerType: type,
       cwd: cwd,
       title: title,
       model: model,
@@ -486,7 +534,7 @@ class RemoteBody with Body {
     unawaited(
       rpc('agent/create', {
         'id': label,
-        'provider': p.name,
+        'workerType': type,
         'cwd': cwd,
         'title': title,
         'model': model,
@@ -506,7 +554,7 @@ class RemoteAgent extends AgentThread {
   RemoteAgent(
     this.remote, {
     required super.label,
-    required super.provider,
+    required super.workerType,
     required super.cwd,
     super.title,
     super.model,
