@@ -177,6 +177,18 @@ class CodexBackend {
       }
       return;
     }
+    // Computer Use asks per app ("Allow Computer Use to use "Calculator"?").
+    // Workers run with full access: allow it for the rest of the session
+    // (without `persist` it asks again for every key press). The answer is
+    // an MCP elicitation result, not an approval decision.
+    if (r.method == 'mcpServer/elicitation/request' && agent != null && !agent.role.isOrchestrator) {
+      client.respond(r.id, {
+        'action': 'accept',
+        'content': <String, dynamic>{},
+        '_meta': {'persist': 'session'},
+      });
+      return;
+    }
     // Threads run with approvalPolicy "never"; anything else that asks is
     // declined so the agent does not hang.
     client.respondError(r.id, -32000, 'not supported by this client');

@@ -44,10 +44,12 @@
   - console だけ（con-x）: エージェントを起動せず、両方の brain の会話を見られる
   - 4 つとも、起動から 0.9〜3.2 秒で両方の brain とつながった
 - **シグナリングのポートが使われていると、開始しない。** 起動画面に「in use (Address already in use)」と出して止まる
-- **起動画面の 3 つのステップを、widget のテストで本物のシグナリングに対して通した**（`mise run` で流れる）
-  - 既存につなぐ → 名前がぶつかると注意が出る → Body → 名簿の brain-a・brain-b から選ぶ
+- **起動画面のステップを、widget のテストで本物のシグナリングに対して通した**（`mise run` で流れる。エージェントの確かめと macOS の許可は偽物）
+  - 既存につなぐ → 名前がぶつかると注意が出る → Body → 名簿の brain-a・brain-b から選ぶ → Agents
   - このアプリで起動する → 使われているポートでステップ 1 に止まる → 空いたポートで進む → Brain と Body → 所属先の既定がこのアプリ
   - どちらも選ばない → ステップ 2 で起動する（console だけ）
+  - Agents: Codex のログイン、Claude を off、custom の追加（モデルの一覧から選ぶ、不正な id で止まる）、道具の on/off と要るものの表示、許可の［Grant］と起動し直しのボタン、保存の中身
+- **オーナーが本物の画面で、起動画面を最後まで通した。** Agents のステップで Codex・Claude・kiapi を確かめ、Peekaboo の画面収録をこのアプリに許可した
 - widget のテストの中の `HttpClient` は、すべて 400 を返す偽物になっている（`HttpOverrides.global = null` で外す）。
   本物の通信の結果は、実時間を待つ（`runAsync`）だけでは画面に届かず、待つことと `pump` を交互に繰り返す
 - **会話の途中で body に足した worker type を、司令塔がそのまま使えた。** 司令塔は Codex（`gpt-5.6-luna`、effort low）、custom の送り先は何にでも「OK」と答える偽の Responses API（`probes/fake_responses.py`）
@@ -59,7 +61,8 @@
 
 - **エージェントを起動画面で決め、その場で確かめられた。**（モデルのトークンは使わない）
   - Codex: app-server を起動してアカウントを読む。このマシンでは「Logged in (prolite)」。未ログインなら、起動画面からブラウザのログインを始める（`account/login/start`。画面の流れは偽の確認役で確かめた）
-  - Claude: 中継プロセスを起動してアカウントを読む。このマシンでは「未ログイン」と正しく出た（`claude auth status` も `loggedIn: false`）
+  - Claude: 中継プロセスを起動してアカウントを読む。このマシンでは最初「未ログイン」と正しく出た（`claude auth status` も `loggedIn: false`）。
+    オーナーが `claude auth login` した後は「Logged in (Claude Max)」
   - custom: `GET {base_url}/models` で、届くか・指定のモデルがあるかを見る。偽のサーバーで「ある」「無い」「届かない」を確かめた
   - 作業フォルダを指定すると、アプリがその中を 1 回読む。無ければここで止まり、macOS のフォルダの許可のダイアログもこの時点で出る
 - **エージェントが 1 つも無い body を置けた。** エージェントのプロセスを 1 つも起動せず（子プロセス 0）、司令塔の `list_bodies` には「no worker types」と出た。brain は 1 つ以上が要るので、起動画面で止める
@@ -75,7 +78,9 @@
     モデルの送り先と表だけを替えて起動し、ほかの MCP サーバー・つないだアプリ・マルチエージェントなどはスレッドごとに切る。off なら `exec_command`・`write_stdin`・`request_user_input`・`view_image` だけ、
     on なら `cua_repl` が足され、ユーザーの MCP サーバーは出ない（`app/test/worker_tools_live_test.dart`）
   - kiapi（`qwen3.8-flash-next`）のワーカーで、Computer Use の `cua.getState()` が通った。最初は「node_repl is unavailable for this model」で全部失敗した:
-    custom の表で `node_repl_disabled` を立てていたため（Computer Use は node_repl の上で JavaScript を動かす）。on のときは外すようにした
+    custom の表で `node_repl_disabled` を立てていたため（Computer Use は node_repl の上で JavaScript を動かす）。on のときは外すようにした。
+    続けて kiapi のワーカーに「Computer Use で計算機を開いて表示を読んで」と頼むと、`cua.getApp("com.apple.calculator")` で開いて「144」と答えた
+    （日本語の名前 `計算機` では「Invalid app」で、bundle ID で通った）
   - Claude の Chrome（`--chrome`）と Mac の操作（Peekaboo）は、ワーカーのセッションにだけ付ける
 - **要る許可を、起動画面の中で確かめて通せる。**
   - このアプリの画面収録・アクセシビリティ: ワーカーはこのアプリの子プロセスなので、シェルで撮る・クリックする（`screencapture`・AppleScript）と、このアプリが聞かれる。
@@ -120,7 +125,8 @@
   - body なら worker type として司令塔に見せる。brain なら司令塔をこのうちの 1 つで動かす。0 個でもよい（body のツール `fetch_image` だけが使える）
   - 1 つずつ起動し、どれかが失敗しても（未ログイン、サーバーに届かない）ほかは使える。失敗したものは理由付きで「使えない」と知らせる
   - Mac や Chrome を操作させる道具は、既定で off。Codex と custom は Computer Use、Claude は Chrome と Mac の操作（Peekaboo）。on のものは `list_bodies` の `can_also_use` で司令塔に見せる
-  - custom は Codex の app-server を種類ごとに 1 つ起動し、モデルの送り先をその種類の Responses API のサーバーにする（自前の `CODEX_HOME` とモデル表）
+  - custom は Codex の app-server を種類ごとに 1 つ起動し、モデルの送り先をその種類の Responses API のサーバーにする（自前の `CODEX_HOME` とモデル表）。
+    Computer Use を on にした custom だけは、ユーザーの `~/.codex` で起動する（上の Answer）
   - body は brain に、種類ごとに id・種類（codex・claude・custom）・表示名・説明・同時に動かせる数・モデル・使えない理由を知らせる。API キーは環境変数の名前（`env_key`）だけを設定に持ち、値は body のマシンから出ない
   - 司令塔の `start_thread` の `worker_type` は文字列で、tool の定義に選択肢（enum）を持たない。選択肢は会話の途中で変わり、body ごとにも違うため。司令塔は `list_bodies` の `worker_types` で知り、無い種類を指定したらその body の一覧をエラーに付けて返す
   - 同時に動かせる数は、body ごとの上限（設定）と、種類ごとの上限（`max_concurrent`）の両方で決まる
@@ -175,9 +181,8 @@
   - 自分の offer・answer を送るまで、自分の候補を溜めるようにした
   - 受ける側は、相手ごとの信号を 1 件ずつ順に処理する。offer の処理が終わるまで、後ろの候補を待たせる
 - **`ORCH_SELECT` で brain を指定した console が、先につながった別の brain に送った。** 起動直後の送信は、指定の brain が選ばれるまで待つようにした
-- 写した lab の中継プロセス（Node）の `node_modules` を入れ忘れると、Claude だけでなく Codex も使えないと表示された
-  - 起動の失敗が 1 つでもあると、本体の準備ができていない扱いになり、Codex と Claude を一覧に出さない作り
-  - ログを見ないと気づきにくい
+- 写した lab の中継プロセス（Node）の `node_modules` を入れ忘れると、Claude だけでなく Codex も使えないと表示された。
+  起動の失敗が 1 つでもあると、本体の準備ができていない扱いにしていたため。今はエージェントごとに起動し、失敗したものだけを理由付きで「使えない」にする
 - 所属は signal が持つので、brain や body を起動し直しても所属は残った。signal はファイルにも書くので、signal を起動し直しても残った
 - 起動画面のエラーは、画面の部品の初期化（`initState`）の中だけで読むと、後から出たエラーが表示されない。エラーを key にして作り直した
 - body でもある brain の所属先の既定を「所属なし」にすると、起動のたびに自分の body を手放してしまう。既定を「このアプリ」にした
@@ -210,10 +215,9 @@
 ## Limitations
 
 - **2 台の Mac では確かめていない。** 2 台目の Mac（Mac Studio）が VPN から外れていて、届かなかった
-- **画面のクリックでの操作は、エージェントは確かめていない**（brain の切り替え、所属先のメニュー）
-  - 使っている関数は、起動時の `ORCH_SELECT`・`ORCH_ASSIGN`・`ORCH_ROLE`・`ORCH_OWNER` と同じ。そちらで確かめた
-  - 画面の表示（brain の選択、所属先の一覧、起動画面とそのエラー）はスクリーンショットで確かめた
-  - 起動画面の操作は widget のテストで確かめた（上の Answer）
+- **console の brain の切り替えと所属先のメニューは、画面のクリックでは確かめていない**
+  - 使っている関数は、起動時の `ORCH_SELECT`・`ORCH_ASSIGN` と同じ。そちらで確かめた。表示はスクリーンショットで確かめた
+  - 起動画面は、widget のテストとオーナーの操作で確かめた（上の Answer）
 - **認証が無い。** signal は誰でも参加でき、誰でも所属を変えられる。信頼できるネットワークの中だけで動かす
 - Claude のワーカーは、Claude Code の本来のプロンプトなしで動いている（上の Findings）。直すなら中継プロセスでワーカーにも preset を渡す
 - シグナリングを動かしているアプリを閉じると、全員がシグナリングを失う（所属はファイルに残る）。別のアプリがシグナリングを引き継ぐ仕組みは無い
@@ -221,9 +225,10 @@
 - 全アプリが全 brain とつながるので、データチャネルの数は「アプリ数 × brain 数」程度に増える。数台でしか試していない
 - custom の worker type は、Responses API のサーバーだけ。Chat Completions だけのサーバーでは試していない。鍵の要る外部の API（`env_key`）も試していない
 - worker type の設定は起動画面で決め、起動時に読む。変えるにはアプリを起動し直す（司令塔の会話は brain が起動し直さない限りそのまま使え、変わったことは次のメッセージで知らされる）
-- **起動画面の 4 つ目のステップを、エージェントは画面のクリックで確かめていない。** 流れは widget のテスト（偽の確認役）、確かめ自体は本物の Codex・Claude・偽のサーバーで確かめた。Codex のブラウザのログインは、本物では通していない（このマシンはログイン済み）
-- Codex の Computer Use は、使うアプリごとに「Allow Computer Use to use …」を実行中に聞いてくる。アプリの数だけあるので、起動画面では先に通せない
-- 起動画面の許可のボタン（このアプリの画面収録・アクセシビリティ、起動し直し）は、エージェントは本物の画面では押していない。流れは widget のテスト（偽の許可）で確かめた
+- Codex のブラウザのログイン（起動画面から）は、本物では通していない（このマシンはログイン済み）
+- Codex の Computer Use は、使うアプリごとに「Allow Computer Use to use …」を実行中に聞いてくる（`mcpServer/elicitation/request`）。アプリの数だけあるので、起動画面では先に通せない。
+  ワーカーは Full Access なので、セッションの間は許可すると答える（`{action: accept, content: {}, _meta: {persist: session}}`。前は知らない求めをすべて断っていた）。
+  計算機の確認では聞かれなかった（前の lab で「いつも許可」にしていたため）ので、この答えはまだ本物では通っていない
 - Debug のビルドを作り直すと署名が変わり、macOS の許可が外れることがある。作り直したら起動画面で確かめ直す
 - 一度だけ、ワーカーの知らせ（`[worker update]`）が司令塔の動いている途中に入った後、ターンが終わっても画面が動いている表示（停止ボタン）のまま残った。
   同じ流れを 3 回やり直して再現しなかった。原因は分かっていない（ターンの状態を `ORCH_DUMP` の `turnStates` に出すようにした）

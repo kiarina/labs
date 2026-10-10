@@ -124,3 +124,16 @@ mise run schema     # codex app-server generate-ts / generate-json-schema
 - Flutter 3.47.2、Dart 3.13
 - codex-cli 0.159.3（Homebrew cask）
 - markdown_widget 2.3.2+8、file_selector 1.1.0
+
+### 追記: Computer Use はプラグインになっていた（2026-10-11、codex-cli 0.159.3）
+
+上の「`~/.codex/config.toml` に書いた `cua_repl` の MCP」は、今は Codex のプラグイン（`computer-use@openai-bundled`・`unified-computer-use@openai-bundled`）が足す道具になっている。
+モデルに渡る道具の名前は変わらず `cua_repl`（`js`・`js_reset`）で、JavaScript は `~/.codex/config.toml` の `node_repl` の MCP（ChatGPT アプリに同梱）の上で動く。
+
+- スレッドごとに切るなら `thread/start` の `config` で `{plugins: {"computer-use@openai-bundled": {enabled: false}, "unified-computer-use@openai-bundled": {enabled: false}}}`。
+  `features` の `computer_use`・`browser_use`・`browser_use_external`・`in_app_browser` を切っても消えない（`features.plugins` を切ると、プラグイン全部と一緒に消える）
+- 別の `CODEX_HOME` では、設定・プラグインのキャッシュ・ログインを写しても出なかった。モデルの送り先を替えて使うなら、`~/.codex` のまま `-c model_provider=…` で替える
+- 自前のモデル表で `node_repl_disabled: true` にすると、呼び出しは全部「node_repl is unavailable for this model」で失敗する
+- macOS の許可は Codex Computer Use のアプリ（`com.openai.sky.CUAService`、`~/.codex/computer-use/`）が持ち、app-server を起動したアプリには要らない
+- 確かめ方と、自前の Responses API のモデルから使った結果は `../../09/flutter-agent-orchestrator-multi-brain/README.md`
+

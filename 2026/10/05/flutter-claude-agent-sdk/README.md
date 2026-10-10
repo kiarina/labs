@@ -151,3 +151,13 @@ CLAUDE_FLUTTER_CWD=path/to/project CLAUDE_FLUTTER_MODE=bypassPermissions \
 - Flutter 3.47.2、Dart 3.13、Node 22.22
 - `@anthropic-ai/claude-agent-sdk` 0.3.289（同梱の Claude Code 2.1.289）、TypeScript 7.0.2
 - Claude Max
+
+### 追記: Peekaboo 4.9 は既定でバックグラウンドのサービスを通す（2026-10-11、Peekaboo 4.9.0）
+
+上の「macOS の権限は、Peekaboo を起動したアプリに付く」は 4.8.0 のとき。4.9.0 は既定で、launchd が起動する `peekaboo daemon` を通して操作し、許可もそちらに要る
+（`peekaboo permissions --json` の `source` が `bridge`）。
+
+- そのサービスはアプリではない素のコマンドなので、自分で許可を求めるまでシステム設定の画面収録の一覧に出ず、許可のトグルを出せなかった（アクセシビリティは通せた）
+- `peekaboo mcp serve --no-remote --allow-foreground` にすると、起動したアプリの中で動き、許可もそのアプリのものに戻る。状態は `peekaboo permissions --json --no-remote` で見る
+- アプリの中から許可を求める形は `../../09/flutter-agent-orchestrator-multi-brain/README.md`
+
