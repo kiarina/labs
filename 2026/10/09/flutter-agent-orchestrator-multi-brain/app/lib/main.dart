@@ -45,7 +45,7 @@ ConsoleMirror _boot(LaunchConfig config, String stateDir) {
   if (env['ORCH_DUMP'] case final String path when path.isNotEmpty) {
     _dumpOnChange(console, path);
   }
-  unawaited(_run(local, signal, console));
+  unawaited(_run(local, signal, console, orchestrator: config.orchestrator));
   if (config.assignOwner && config.body) {
     final owner = config.owner;
     unawaited(() async {
@@ -65,8 +65,9 @@ ConsoleMirror _boot(LaunchConfig config, String stateDir) {
 Future<void> _run(
   LocalBody local,
   SignalClient signal,
-  ConsoleMirror console,
-) async {
+  ConsoleMirror console, {
+  String? orchestrator,
+}) async {
   unawaited(signal.run());
   // The server may rename this app; the hub keys its own body by name.
   while (!signal.connected) {
@@ -82,6 +83,11 @@ Future<void> _run(
     final h = hub = Hub(local)
       ..ownerOf = (b) => !signal.isBody && b == local.name ? null : signal.ownerOf(b);
     await h.start();
+    // The worker type picked on the start screen.
+    if (orchestrator != null && orchestrator != h.settings.orchestrator) {
+      h.settings.orchestrator = orchestrator;
+      await h.saveSettings();
+    }
     final p = publisher = ConsolePublisher(h);
     signal.onReleaseRequest = (body) async => h.releaseBlocker(body);
     signal.addListener(h.ownershipChanged);
@@ -187,6 +193,10 @@ class _OrchestratorAppState extends State<OrchestratorApp> {
 
   File get _ownersFile => File('${widget.stateDir}/signal-owners.json');
 
+  File get _typesFile => File(
+    Platform.environment['ORCH_WORKER_TYPES'] ?? '${widget.stateDir}/worker-types.json',
+  );
+
   @override
   void initState() {
     super.initState();
@@ -236,6 +246,7 @@ class _OrchestratorAppState extends State<OrchestratorApp> {
               key: ValueKey(_error),
               initial: widget.fromEnv ?? LaunchConfig.load(widget.stateDir),
               ownersFile: _ownersFile,
+              typesFile: _typesFile,
               error: _error,
               onStart: _started,
             ),

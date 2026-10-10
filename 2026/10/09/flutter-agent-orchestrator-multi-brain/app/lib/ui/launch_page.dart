@@ -5,6 +5,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:orchestrator_signal/signal_server.dart';
 
+import '../agents/agent_check.dart';
+import '../agents/worker_types.dart';
 import '../mesh/launch.dart';
 import 'theme.dart';
 
@@ -15,14 +17,24 @@ import 'theme.dart';
 /// 2. Roles: the name, and brain and/or body (neither: a console only).
 /// 3. Owner, for a body: which brain it belongs to, from the roster read in
 ///    step 1.
+/// 4. Agents, for a brain or a body: Codex and Claude on or off, custom ones
+///    (a Responses API server) added freely, each checked as it is turned on
+///    ([AgentChecker]). A body offers them as worker types; a brain runs its
+///    orchestrator on one. Kept in `worker-types.json`.
 class LaunchPage extends StatefulWidget {
   const LaunchPage({
     super.key,
     required this.initial,
     required this.ownersFile,
     required this.onStart,
+    required this.typesFile,
+    this.checker = const AgentChecker(),
     this.error,
   });
+
+  /// Where the agents chosen in step 4 are kept (`worker-types.json`).
+  final File typesFile;
+  final AgentChecker checker;
 
   final LaunchConfig initial;
 
@@ -53,6 +65,30 @@ class _LaunchPageState extends State<LaunchPage> {
   bool _busy = false;
   int _step = 0;
 
+  /// The steps for the roles chosen so far.
+  List<String> get _steps => [
+    'Signaling',
+    'Roles',
+    if (c.body) 'Belongs to',
+    if (c.brain || c.body) 'Agents',
+  ];
+
+  String get _stepName => _steps[_step.clamp(0, _steps.length - 1)];
+  bool get _lastStep => _step >= _steps.length - 1;
+
+  /// The next step, or start on the last one.
+  void _advance() {
+    if (_lastStep) {
+      _start();
+      return;
+    }
+    setState(() {
+      _error = null;
+      _step++;
+    });
+    if (_stepName == 'Agents') _checkAll();
+  }
+
   /// The server started in step 1 (kept while going back and forth).
   SignalServer? _server;
   int? _serverPort;
@@ -61,6 +97,11 @@ class _LaunchPageState extends State<LaunchPage> {
 
   @override
   void dispose() {
+    _codexCwd.dispose();
+    _claudeCwd.dispose();
+    for (final d in _custom) {
+      d.dispose();
+    }
     _name.dispose();
     _port.dispose();
     _url.dispose();
@@ -144,7 +185,7 @@ class _LaunchPageState extends State<LaunchPage> {
   void _rolesNext() {
     c.name = _name.text.trim();
     if (!c.body) {
-      _start();
+      _advance();
       return;
     }
     // Where this body belongs: as before unless chosen on this screen.
@@ -158,10 +199,7 @@ class _LaunchPageState extends State<LaunchPage> {
       }
     }
     if (!c.brain && c.owner == LaunchConfig.self) c.owner = null;
-    setState(() {
-      _error = null;
-      _step = 2;
-    });
+    _advance();
   }
 
   // ---- step 3: owner --------------------------------------------------------
@@ -190,8 +228,98 @@ class _LaunchPageState extends State<LaunchPage> {
   }
 
   void _start() {
+    if (c.brain || c.body) {
+      final error = _saveAgents();
+      if (error != null) {
+        setState(() => _error = error);
+        return;
+      }
+    }
     c.assignOwner = c.body;
     widget.onStart(c, _server);
+  }
+
+  // ---- step 4: agents -------------------------------------------------------
+
+  late final WorkerTypesConfig _agents = () {
+    try {
+      return WorkerTypesConfig.load(widget.typesFile, Platform.environment);
+    } catch (_) {
+      return WorkerTypesConfig();
+    }
+  }();
+  late final _codexCwd = TextEditingController(text: _agents.codex.cwd ?? '');
+  late final _claudeCwd = TextEditingController(text: _agents.claude.cwd ?? '');
+  late final List<_CustomDraft> _custom = [
+    for (final t in _agents.custom) _CustomDraft.from(t),
+  ];
+
+  /// Check results by id (`codex`, `claude`, a custom draft's key).
+  final _checks = <String, CheckResult?>{};
+  final _checking = <String>{};
+
+  Future<void> _check(String key, Future<CheckResult> Function() run) async {
+    setState(() {
+      _checking.add(key);
+      _checks[key] = null;
+    });
+    final r = await run();
+    if (!mounted) return;
+    setState(() {
+      _checking.remove(key);
+      _checks[key] = r;
+    });
+  }
+
+  String? _cwd(TextEditingController t) => t.text.trim().isEmpty ? null : t.text.trim();
+
+  void _checkCodex() => _check('codex', () => widget.checker.codex(_cwd(_codexCwd)));
+  void _checkClaude() => _check('claude', () => widget.checker.claude(_cwd(_claudeCwd)));
+  void _checkCustom(_CustomDraft d) {
+    final t = d.build();
+    if (t.$2 != null) {
+      setState(() => _checks[d.key] = CheckResult(false, t.$2!));
+      return;
+    }
+    _check(d.key, () => widget.checker.custom(t.$1!));
+  }
+
+  void _checkAll() {
+    if (_agents.codex.enabled) _checkCodex();
+    if (_agents.claude.enabled) _checkClaude();
+    for (final d in _custom) {
+      _checkCustom(d);
+    }
+  }
+
+  /// The agents as typed, or why they cannot be saved.
+  (WorkerTypesConfig?, String?) _readAgents() {
+    final custom = <WorkerType>[];
+    final ids = <String>{};
+    for (final d in _custom) {
+      final (t, e) = d.build();
+      if (e != null) return (null, e);
+      if (!ids.add(t!.id)) return (null, 'Two custom agents are named "${t.id}".');
+      custom.add(t);
+    }
+    final config = WorkerTypesConfig(
+      codex: BuiltinSetup(enabled: _agents.codex.enabled, cwd: _cwd(_codexCwd), model: _agents.codex.model),
+      claude: BuiltinSetup(enabled: _agents.claude.enabled, cwd: _cwd(_claudeCwd), model: _agents.claude.model),
+      custom: custom,
+    );
+    if (c.brain && config.types.isEmpty) {
+      return (null, 'A brain needs at least one agent to run its orchestrator on.');
+    }
+    return (config, null);
+  }
+
+  String? _saveAgents() {
+    final (config, error) = _readAgents();
+    if (error != null) return error;
+    config!.save(widget.typesFile);
+    final ids = [for (final t in config.types) t.id];
+    if (c.brain && !ids.contains(c.orchestrator)) c.orchestrator = ids.first;
+    return null;
   }
 
   // ---- view -----------------------------------------------------------------
@@ -199,7 +327,7 @@ class _LaunchPageState extends State<LaunchPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final steps = ['Signaling', 'Roles', if (c.body) 'Belongs to'];
+    final steps = _steps;
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -225,10 +353,11 @@ class _LaunchPageState extends State<LaunchPage> {
                   style: theme.textTheme.bodySmall?.copyWith(color: Palette.textFaint),
                 ),
                 const SizedBox(height: 8),
-                ...switch (_step) {
-                  0 => _signalingStep(theme),
-                  1 => _rolesStep(theme),
-                  _ => _ownerStep(theme),
+                ...switch (_stepName) {
+                  'Signaling' => _signalingStep(theme),
+                  'Roles' => _rolesStep(theme),
+                  'Belongs to' => _ownerStep(theme),
+                  _ => _agentsStep(theme),
                 },
                 const SizedBox(height: 20),
                 if (_error != null)
@@ -254,15 +383,15 @@ class _LaunchPageState extends State<LaunchPage> {
                       key: const Key('next'),
                       onPressed: _busy
                           ? null
-                          : switch (_step) {
-                              0 => _signalingNext,
-                              1 => _rolesNext,
-                              _ => _start,
+                          : switch (_stepName) {
+                              'Signaling' => _signalingNext,
+                              'Roles' => _rolesNext,
+                              _ => _advance,
                             },
                       child: Text(
                         _busy
                             ? 'Working…'
-                            : (_step == 2 || (_step == 1 && !c.body))
+                            : _lastStep
                             ? 'Start'
                             : 'Next',
                       ),
@@ -414,5 +543,260 @@ class _LaunchPageState extends State<LaunchPage> {
         ],
       ),
     ];
+  }
+
+  Widget _status(String key) {
+    if (_checking.contains(key)) {
+      return const Text('Checking…', style: TextStyle(fontSize: 12, color: Palette.textDim));
+    }
+    final r = _checks[key];
+    if (r == null) return const SizedBox.shrink();
+    return Text(
+      '${r.ok ? '✓' : '✗'} ${r.text}',
+      key: Key('status-$key'),
+      style: TextStyle(fontSize: 12, color: r.ok ? Palette.added : Palette.warning),
+    );
+  }
+
+  Widget _builtin({
+    required String id,
+    required String label,
+    required String sub,
+    required BuiltinSetup setup,
+    required TextEditingController cwd,
+    required VoidCallback check,
+    Widget? extra,
+  }) => Padding(
+    padding: const EdgeInsets.only(bottom: 8),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SwitchListTile(
+          key: Key('agent-$id'),
+          contentPadding: EdgeInsets.zero,
+          value: setup.enabled,
+          onChanged: (v) {
+            setState(() => setup.enabled = v);
+            if (v) check();
+          },
+          title: Text(label),
+          subtitle: Text(sub, style: const TextStyle(fontSize: 12)),
+        ),
+        if (setup.enabled)
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        key: Key('cwd-$id'),
+                        controller: cwd,
+                        decoration: const InputDecoration(
+                          labelText: 'Working folder',
+                          hintText: 'empty: the project folder',
+                          isDense: true,
+                        ),
+                      ),
+                    ),
+                    TextButton(key: Key('check-$id'), onPressed: check, child: const Text('Check')),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                _status(id),
+                ?extra,
+              ],
+            ),
+          ),
+      ],
+    ),
+  );
+
+  List<Widget> _agentsStep(ThemeData theme) {
+    final codexCheck = _checks['codex'];
+    final ids = [
+      if (_agents.codex.enabled) 'codex',
+      if (_agents.claude.enabled) 'claude',
+      for (final d in _custom)
+        if (d.id.text.trim().isNotEmpty) d.id.text.trim(),
+    ];
+    return [
+      _title(
+        theme,
+        'Agents',
+        [
+          if (c.body) 'The brain this body belongs to can start these as workers here.',
+          if (c.brain) 'The orchestrator runs on one of them.',
+          'Each is checked when turned on (no model tokens).',
+        ].join(' '),
+      ),
+      _builtin(
+        id: 'codex',
+        label: 'Codex',
+        sub: 'OpenAI Codex on your subscription.',
+        setup: _agents.codex,
+        cwd: _codexCwd,
+        check: _checkCodex,
+        extra: codexCheck != null && codexCheck.needsLogin
+            ? Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton(
+                  key: const Key('codex-login'),
+                  onPressed: () => _check('codex', () async {
+                    final r = await widget.checker.codexLogin();
+                    return r.ok ? widget.checker.codex(_cwd(_codexCwd)) : r;
+                  }),
+                  child: const Text('Log in to Codex (opens the browser)'),
+                ),
+              )
+            : null,
+      ),
+      _builtin(
+        id: 'claude',
+        label: 'Claude',
+        sub: 'Anthropic Claude Code on your subscription. To log in, run `claude auth login`.',
+        setup: _agents.claude,
+        cwd: _claudeCwd,
+        check: _checkClaude,
+      ),
+      for (final d in _custom) _customCard(d),
+      Align(
+        alignment: Alignment.centerLeft,
+        child: TextButton.icon(
+          key: const Key('add-custom'),
+          onPressed: () => setState(() => _custom.add(_CustomDraft())),
+          icon: const Icon(Icons.add, size: 16),
+          label: const Text('Add a custom agent (a Responses API server)'),
+        ),
+      ),
+      if (ids.isEmpty)
+        Text(
+          c.brain
+              ? 'Turn on at least one: the orchestrator runs on it.'
+              : 'None turned on: this body offers no workers, only its tools (fetch_image).',
+          style: theme.textTheme.bodySmall?.copyWith(color: Palette.textDim),
+        ),
+      if (c.brain && ids.isNotEmpty) ...[
+        const SizedBox(height: 8),
+        DropdownButtonFormField<String>(
+          key: const Key('orchestrator'),
+          initialValue: ids.contains(c.orchestrator) ? c.orchestrator : ids.first,
+          decoration: const InputDecoration(labelText: 'The orchestrator runs on'),
+          items: [for (final id in ids) DropdownMenuItem(value: id, child: Text(id))],
+          onChanged: (v) => setState(() => c.orchestrator = v),
+        ),
+      ],
+    ];
+  }
+
+  Widget _customCard(_CustomDraft d) {
+    Widget field(String key, TextEditingController t, String label, {String? hint}) => Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: TextField(
+        key: Key('custom-${d.key}-$key'),
+        controller: t,
+        decoration: InputDecoration(labelText: label, hintText: hint, isDense: true),
+        onChanged: (_) => setState(() {}),
+      ),
+    );
+    return Card(
+      key: Key('custom-${d.key}'),
+      color: Palette.surface,
+      margin: const EdgeInsets.only(bottom: 8),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 4, 4, 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Expanded(child: field('id', d.id, 'Id', hint: 'kiapi, local-qwen, …')),
+                IconButton(
+                  tooltip: 'Remove',
+                  onPressed: () => setState(() {
+                    _custom.remove(d);
+                    d.dispose();
+                  }),
+                  icon: const Icon(Icons.close, size: 16),
+                ),
+              ],
+            ),
+            field('url', d.baseUrl, 'Base URL', hint: 'http://127.0.0.1:8500/v1'),
+            field('model', d.model, 'Model'),
+            field('key', d.envKey, 'API key variable (optional)', hint: 'OPENROUTER_API_KEY'),
+            field('cwd', d.cwd, 'Working folder (optional)', hint: 'empty: the project folder'),
+            field('desc', d.description, 'What it is good for (the orchestrator reads this)'),
+            field('max', d.maxConcurrent, 'At once per body (optional)', hint: 'empty: no limit of its own'),
+            Row(
+              children: [
+                Expanded(child: _status(d.key)),
+                TextButton(key: Key('check-${d.key}'), onPressed: () => _checkCustom(d), child: const Text('Check')),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// A custom agent being typed on the start screen.
+class _CustomDraft {
+  _CustomDraft() : key = 'c${_seq++}';
+
+  factory _CustomDraft.from(WorkerType t) => _CustomDraft()
+    ..id.text = t.id
+    ..baseUrl.text = t.baseUrl ?? ''
+    ..model.text = t.model ?? ''
+    ..envKey.text = t.envKey ?? ''
+    ..cwd.text = t.cwd ?? ''
+    ..description.text = t.description
+    ..maxConcurrent.text = t.maxConcurrent?.toString() ?? ''
+    .._label = t.label
+    .._contextWindow = t.contextWindow;
+
+  static int _seq = 0;
+  final String key;
+  final id = TextEditingController();
+  final baseUrl = TextEditingController();
+  final model = TextEditingController();
+  final envKey = TextEditingController();
+  final cwd = TextEditingController();
+  final description = TextEditingController();
+  final maxConcurrent = TextEditingController();
+  String? _label;
+  int? _contextWindow;
+
+  (WorkerType?, String?) build() {
+    final max = maxConcurrent.text.trim();
+    if (max.isNotEmpty && (int.tryParse(max) ?? 0) < 1) {
+      return (null, 'Custom agent "${id.text.trim()}": "at once" must be a positive number.');
+    }
+    try {
+      return (
+        WorkerType.customFromJson({
+          'id': id.text.trim(),
+          'label': ?_label,
+          'base_url': baseUrl.text.trim(),
+          'model': model.text.trim(),
+          'env_key': envKey.text.trim(),
+          'cwd': cwd.text.trim(),
+          'description': description.text.trim(),
+          if (max.isNotEmpty) 'max_concurrent': int.parse(max),
+          'context_window': ?_contextWindow,
+        }),
+        null,
+      );
+    } on FormatException catch (e) {
+      return (null, e.message);
+    }
+  }
+
+  void dispose() {
+    for (final t in [id, baseUrl, model, envKey, cwd, description, maxConcurrent]) {
+      t.dispose();
+    }
   }
 }

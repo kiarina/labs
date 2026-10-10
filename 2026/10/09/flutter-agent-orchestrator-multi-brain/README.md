@@ -5,8 +5,8 @@
 - **body の所属**: 各 body（ワーカーを動かすアプリ）は、どれか 1 つの brain に所属し、所属先の brain だけがそこでワーカーを動かします。所属は console から変えます
 - **console**: brain を選び、選んだ brain と話します
 - **シグナリング**: 独立したサーバーにし、名簿（どのアプリがいるか、どれが brain・body か）と所属（body → brain）を持たせます。単独のプロセスでも、アプリの中でも動きます
-- **起動画面**: アプリを起動すると、シグナリング → 役割（brain・body）→ 所属の順に選んでから、起動と接続をします
-- **worker type**: ワーカーの種類（Codex・Claude と、別のモデルのサーバーにつないだ Codex）を body ごとに設定で増やせます。司令塔は、選べる種類を tool の定義でなく `list_bodies` の結果で知ります
+- **起動画面**: アプリを起動すると、シグナリング → 役割（brain・body）→ 所属 → エージェントの順に選んでから、起動と接続をします
+- **worker type**: そのアプリで動かすエージェントを、起動画面で決めます。Codex と Claude は 1 つずつ on/off、別のモデルのサーバーにつないだ Codex（custom）はいくつでも。それぞれ足すときに、動くか・ログインしているかを確かめます。司令塔は、選べる種類を tool の定義でなく `list_bodies` の結果で知り、変わったら次のメッセージで知らされます
 
 前提となる lab:
 - [N 個のアプリを WebRTC でつなぎ、1 つの brain が複数の body を使う形](../flutter-agent-orchestrator-mesh/README.md)（この lab はその写し。司令塔のツール、文字起こしの写し方、画像の運び方はそちら）
@@ -18,6 +18,7 @@
 3. body の所属を console から変えられるか。ワーカーが動いている間は変えられないようにできるか
 4. 1 つのアプリで、起動時に役割（brain・body・シグナリング）を選べるか
 5. ワーカーの種類を固定の 3 つ（Codex・Claude・kiapi）から、body ごとに設定で増やせる形にできるか。会話の途中で増えた種類を司令塔が使えるか
+6. 動かすエージェントを起動画面で決め、その場で動くか確かめられるか。エージェントが 1 つも無い body を置けるか
 
 ## Answer
 
@@ -55,6 +56,17 @@
   4. 司令塔の会話は作り直していない。tool の定義は会話の最初のまま
   - console だけのアプリにも、同じ会話が同じハッシュで出た
 
+- **エージェントを起動画面で決め、その場で確かめられた。**（モデルのトークンは使わない）
+  - Codex: app-server を起動してアカウントを読む。このマシンでは「Logged in (prolite)」。未ログインなら、起動画面からブラウザのログインを始める（`account/login/start`。画面の流れは偽の確認役で確かめた）
+  - Claude: 中継プロセスを起動してアカウントを読む。このマシンでは「未ログイン」と正しく出た（`claude auth status` も `loggedIn: false`）
+  - custom: `GET {base_url}/models` で、届くか・指定のモデルがあるかを見る。偽のサーバーで「ある」「無い」「届かない」を確かめた
+  - 作業フォルダを指定すると、アプリがその中を 1 回読む。無ければここで止まり、macOS のフォルダの許可のダイアログもこの時点で出る
+- **エージェントが 1 つも無い body を置けた。** エージェントのプロセスを 1 つも起動せず（子プロセス 0）、司令塔の `list_bodies` には「no worker types」と出た。brain は 1 つ以上が要るので、起動画面で止める
+- **body の中身が変わったことを、司令塔が次のメッセージで知った。** エージェントの無い body-c を、Codex と Claude を on にして起動し直した。
+  console から「tool を呼ばずに、body-c の worker type を答えて」と送ると、
+  メッセージの頭に `[bodies changed since you last called list_bodies]` と `- body-c: worker types are now codex (were none)` が付いた。
+  司令塔は「codex。知らせにそう書いてあった」と答えた（Claude は未ログインなので入らない）
+
 ## Architecture
 
 ```text
@@ -80,12 +92,18 @@
 - **brain**: つながった全アプリの console へ会話を流す（前の lab の `ConsolePublisher`）。全アプリの body を名簿として知っている
   - ワーカーを動かせるのは、所属の body だけ（`list_bodies`・`start_thread`・`fetch_image`）
   - `releaseRequest` には、その body で自分のワーカーが動いている・待っているなら理由を返して断る
-- **worker type**（`app/lib/agents/worker_types.dart`）: body が持つワーカーの種類。id で呼ぶ
-  - `codex`・`claude` は必ずある。custom は body の状態のフォルダの `worker-types.json`（`ORCH_WORKER_TYPES` で場所を変えられる）に書き、ファイルが無ければ kiapi が 1 つ入る
+- **worker type**（`app/lib/agents/worker_types.dart`）: そのアプリで動かすエージェント。id で呼ぶ
+  - `codex`・`claude` は 1 つずつで on/off（同じ種類を複数並べると、司令塔が違いを説明から読み分けることになるため）。custom はいくつでも
+  - 起動画面の「Agents」で決め、状態のフォルダの `worker-types.json`（`ORCH_WORKER_TYPES` で場所を変えられる）に書く。ファイルが無ければ Codex と Claude（`KIAPI_BASE_URL` があれば kiapi も）
+  - 種類ごとに既定の作業フォルダを持てる。`start_thread` の `cwd` > worker type の作業フォルダ > body の作業フォルダの順
+  - body なら worker type として司令塔に見せる。brain なら司令塔をこのうちの 1 つで動かす。0 個でもよい（body のツール `fetch_image` だけが使える）
+  - 1 つずつ起動し、どれかが失敗しても（未ログイン、サーバーに届かない）ほかは使える。失敗したものは理由付きで「使えない」と知らせる
   - custom は Codex の app-server を種類ごとに 1 つ起動し、モデルの送り先をその種類の Responses API のサーバーにする（自前の `CODEX_HOME` とモデル表）
   - body は brain に、種類ごとに id・種類（codex・claude・custom）・表示名・説明・同時に動かせる数・モデル・使えない理由を知らせる。API キーは環境変数の名前（`env_key`）だけを設定に持ち、値は body のマシンから出ない
   - 司令塔の `start_thread` の `worker_type` は文字列で、tool の定義に選択肢（enum）を持たない。選択肢は会話の途中で変わり、body ごとにも違うため。司令塔は `list_bodies` の `worker_types` で知り、無い種類を指定したらその body の一覧をエラーに付けて返す
   - 同時に動かせる数は、body ごとの上限（設定）と、種類ごとの上限（`max_concurrent`）の両方で決まる
+  - brain は、司令塔が最後に `list_bodies` で見た内容（body ごとの worker type）を覚え、次に司令塔へ送るメッセージ（ユーザーの発言、`[worker update]`）の頭に違いを添える。
+    body の起動し直し、加わる・抜ける、所属が移る、のどれでも同じに扱う（console の操作のイベントでなく、今の内容と見せた内容の差で見る）
 - **body**（body を選んだアプリ）: つながった brain ごとに `BodyHost` を置く。rpc は、今の所属先の brain からのものだけを受ける
   （所属が変わる前に始めたエージェントの `close`・`interrupt` は受ける）
 - **console**（全アプリ）: つながった brain ごとに写し（`BrainView`）を持つ。選んだ brain の写しを中央と右に出し、送信・停止・設定はその brain へ送る
@@ -96,14 +114,15 @@
 
 ### 起動画面
 
-`ORCH_ROLE`・`ORCH_SIGNAL_URL`・`ORCH_NAME` のどれも無いときに出る。3 つのステップに分け、前のステップで分かることを次のステップで使う。
+`ORCH_ROLE`・`ORCH_SIGNAL_URL`・`ORCH_NAME` のどれも無いときに出る。ステップに分け、前のステップで分かることを次のステップで使う。
 前回の選択を状態のフォルダの `launch.json` に覚え、次の初期値にする。
 
 | ステップ | 選ぶもの | 「次へ」で起きること |
 | --- | --- | --- |
 | 1. Signaling | このアプリで起動する（ポート）か、既存につなぐ（URL。既定 `ws://localhost:8765`）か | 起動する、または問い合わせる。ポートが使われている・読めないなら、ここで止まる。読めたら名簿を持って次へ |
 | 2. Roles | 名前（body_id。空なら「ホスト名-乱数 4 桁」）、Brain・Body（両方も可） | 名前が online のアプリとぶつかると、`-2` が付くと注意を出す。Body を選ばなければ、ここで起動する（どちらも選ばなければ console だけ） |
-| 3. Belongs to | 所属する brain。候補は、自分が brain ならこのアプリ（既定）と、名簿にいる online の brain | 起動する。参加の後に所属を変える |
+| 3. Belongs to（Body のとき） | 所属する brain。候補は、自分が brain ならこのアプリ（既定）と、名簿にいる online の brain | 次へ。参加の後に所属を変える |
+| 4. Agents（Brain か Body のとき） | Codex・Claude の on/off と作業フォルダ、custom の追加（id・URL・モデル・API キーの変数名・作業フォルダ・説明・同時に動かせる数）。brain なら司令塔をどれで動かすか | 入ったとき・on にしたとき・「Check」で確かめる。Codex が未ログインならログインのボタンが出る。Start で `worker-types.json` に書いて起動する。brain で 0 個なら止める |
 
 - 「Back」で前のステップへ戻れる。ステップ 1 でアプリの中のシグナリングを始めた後に戻ってポートを変えると、起動し直す
 - 所属の変更は、前の所属先でワーカーが動いていれば断られ、所属は前のまま（理由は body の一覧の上に出る）
@@ -142,7 +161,10 @@
 - body でもある brain の所属先の既定を「所属なし」にすると、起動のたびに自分の body を手放してしまう。既定を「このアプリ」にした
 - **console だけのアプリから送った発言を、brain が捨てていた。** brain は console の操作を、相手の body の窓口（body として名乗ったときに作る）で受けていた。
   console だけのアプリは body として名乗らないので、窓口が無かった。つながった全アプリから操作を受けるようにした
-- custom の worker type は、モデルのサーバーに届かなくても「使える」と出る。app-server はサーバーに問い合わせずに起動するため。手元に kiapi が無い状態でも、kiapi は使える種類として一覧に出た
+- custom の worker type は、モデルのサーバーに届かなくても「使える」と出る。app-server はサーバーに問い合わせずに起動するため。手元に kiapi が無い状態でも、kiapi は使える種類として一覧に出た。
+  そのため起動画面で `/models` を確かめるようにした（起動した後に届かなくなったものは、まだ「使える」と出る）
+- **Agent SDK のアカウント情報には「ログインしているか」が無い。** 未ログインだと `{"tokenSource": "none", "apiProvider": "firstParty"}` が返る。`tokenSource` が `none` 以外か、メール・契約の種類があればログイン済みと見なした
+- 起動画面の Codex・Claude の確かめは、`flutter test` からも本物で流せる。widget のテストと違い、`HttpOverrides` を外せば普通の Dart のテストとしてプロセスを起動できる
 
 ### ワーカーに自動で入るプロンプト
 
@@ -176,7 +198,9 @@
 - brain が落ちると、その brain の所属の body は所属先が offline のまま残る。console から別の brain へ移せる（offline の brain には尋ねない）
 - 全アプリが全 brain とつながるので、データチャネルの数は「アプリ数 × brain 数」程度に増える。数台でしか試していない
 - custom の worker type は、Responses API のサーバーだけ。Chat Completions だけのサーバーでは試していない。鍵の要る外部の API（`env_key`）も試していない
-- worker type の設定は body の起動時に読む。足したら body を起動し直す（司令塔の会話はそのまま使える）
+- worker type の設定は起動画面で決め、起動時に読む。変えるにはアプリを起動し直す（司令塔の会話は brain が起動し直さない限りそのまま使え、変わったことは次のメッセージで知らされる）
+- **起動画面の 4 つ目のステップを、エージェントは画面のクリックで確かめていない。** 流れは widget のテスト（偽の確認役）、確かめ自体は本物の Codex・Claude・偽のサーバーで確かめた。Codex のブラウザのログインは、本物では通していない（このマシンはログイン済み）
+- 承認のダイアログを先に出しておくのは、今は作業フォルダを読むところまで（フォルダの許可）。画面収録・アクセシビリティなど、ツールごとの許可はまだ
 - 一度だけ、ワーカーの知らせ（`[worker update]`）が司令塔の動いている途中に入った後、ターンが終わっても画面が動いている表示（停止ボタン）のまま残った。
   同じ流れを 3 回やり直して再現しなかった。原因は分かっていない（ターンの状態を `ORCH_DUMP` の `turnStates` に出すようにした）
 
@@ -205,13 +229,18 @@ mise run signal             # シグナリングを単独で（:8765）。PORT �
 - `ORCH_ASSIGN=body-c=brain-a,body-d=`: 起動後に所属を変える（空は所属なし。console の一覧と同じ操作）
 - `ORCH_PROMPT`: 選んだ brain へ、起動後に 1 回送る
 - `ORCH_DUMP=path.json`: 名簿・所属・brain ごとの会話（操作の数とハッシュ、ターンの状態）・接続の記録を書き出す
-- `ORCH_WORKER_TYPES=path.json`: custom の worker type の設定（既定は状態のフォルダの `worker-types.json`）
+- `ORCH_WORKER_TYPES=path.json`: エージェントの設定（既定は状態のフォルダの `worker-types.json`。起動画面で書くもの）
 - `ORCH_FORWARD_ENV="OPENROUTER_API_KEY ..."`: アプリへ渡す環境変数の名前（custom の `env_key` の値。アプリは空の環境で起動するため）
+- `mise run probe-prompts`: Codex と Claude のワーカーに自動で入るプロンプトを、偽の API で確かめる（`probes/`）
+- 起動画面の確かめを、このマシンの本物の Codex・Claude で流す（モデルのトークンは使わない）:
+  `cd app && LIVE_CHECK=1 CLAUDE_FLUTTER_SIDECAR=$PWD/../sidecar NODE_BIN=$(command -v node) flutter test test/agent_check_live_test.dart`
 
-custom の worker type の設定（`worker-types.json`）:
+エージェントの設定（`worker-types.json`。起動画面で書く）:
 
 ```json
 {
+  "codex": {"enabled": true, "cwd": "~/src"},
+  "claude": {"enabled": false},
   "custom": [
     {
       "id": "kiapi",
@@ -233,10 +262,10 @@ custom の worker type の設定（`worker-types.json`）:
 }
 ```
 
-- `id` は英小文字・数字・`_`・`-`（`codex`・`claude` は使えない）。`base_url` と `model` は必須
+- `codex`・`claude`: `enabled`、`cwd`（既定の作業フォルダ。`~/` 可）、`model`（既定のモデル）
+- custom の `id` は英小文字・数字・`_`・`-`（`codex`・`claude` は使えない）。`base_url` と `model` は必須
 - `description` は司令塔が種類を選ぶときに読む。何に向いているかを書く
 - `max_concurrent`: この種類を同じ body で同時に動かせる数（省くと body の上限だけ）
-- `mise run probe-prompts`: Codex と Claude のワーカーに自動で入るプロンプトを、偽の API で確かめる（`probes/`）
 
 ## Environment
 
@@ -244,4 +273,4 @@ custom の worker type の設定（`worker-types.json`）:
 - Flutter 3.47.2・Dart 3.13.2、flutter_webrtc 1.6.2+hotfix.4、Node 22.22
 - codex-cli 0.159.3、`@anthropic-ai/claude-agent-sdk` 0.3.289
 - 司令塔 `gpt-5.6-luna`（effort low）、Codex のワーカー `gpt-5.6-luna`
-- 実行日: 2026-10-09（起動画面と worker type は 2026-10-10）
+- 実行日: 2026-10-09（起動画面と worker type は 2026-10-10、エージェントのステップは 2026-10-11）

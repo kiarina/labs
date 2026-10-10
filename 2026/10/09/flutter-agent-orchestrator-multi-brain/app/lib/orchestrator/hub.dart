@@ -71,7 +71,11 @@ class Hub extends ChangeNotifier {
   final bodies = <String, Body>{};
 
   bool get ready => local.ready;
-  String? get startupError => local.startupError;
+  String? get startupError =>
+      local.startupError ??
+      (local.ready && local.workerTypes.isEmpty
+          ? 'Nothing can run the orchestrator on ${local.name}: turn on Codex, Claude or a custom agent on its start screen.'
+          : null);
   String get projectDir => local.projectDir;
 
   AgentThread? orchestrator;
@@ -181,10 +185,12 @@ class Hub extends ChangeNotifier {
       tools: orchestratorTools,
       instructions: orchestratorInstructions(local.name),
     );
-    // Falls back to Codex when that worker type cannot run here.
-    final p = local.workerTypes.contains(settings.orchestrator)
+    // Falls back to another worker type when that one cannot run here.
+    final available = local.workerTypes;
+    if (available.isEmpty) throw StateError(startupError ?? 'no agent');
+    final p = available.contains(settings.orchestrator)
         ? settings.orchestrator
-        : 'codex';
+        : available.first;
     final model =
         settings.orchestratorModel != null &&
             local.modelsFor(p).any((m) => m['id'] == settings.orchestratorModel)
@@ -207,12 +213,52 @@ class Hub extends ChangeNotifier {
     if (o == null) {
       o = _newOrchestrator();
       orchestrator = o;
+      _shownBodies = null;
       notifyListeners();
       await o.start(text);
     } else {
-      await o.send(text);
+      await o.send(_withChanges(text));
     }
     notifyListeners();
+  }
+
+  // ---- telling the orchestrator what changed ------------------------------------
+
+  /// What the orchestrator last saw of its bodies (list_bodies): body name
+  /// to its worker types. Null until it looks. Bodies change under it (a
+  /// body restarts with other worker types, joins, leaves, moves to another
+  /// brain); the next message it gets starts with what changed.
+  Map<String, String>? _shownBodies;
+
+  Map<String, String> _bodySnapshot() => {
+    for (final b in ownBodies) b.name: b.workerTypes.join(', '),
+  };
+
+  /// What changed since the orchestrator last looked, or null.
+  String? _bodiesChanged() {
+    final shown = _shownBodies;
+    if (shown == null) return null;
+    final now = _bodySnapshot();
+    String types(String t) => t.isEmpty ? 'none' : t;
+    final lines = [
+      for (final e in now.entries)
+        if (!shown.containsKey(e.key))
+          '- ${e.key} is now one of your bodies (worker types: ${types(e.value)})'
+        else if (shown[e.key] != e.value)
+          '- ${e.key}: worker types are now ${types(e.value)} (were ${types(shown[e.key]!)})',
+      for (final k in shown.keys)
+        if (!now.containsKey(k))
+          '- $k is no longer available to you (offline, or moved to another brain)',
+    ];
+    _shownBodies = now;
+    return lines.isEmpty
+        ? null
+        : '[bodies changed since you last called list_bodies]\n${lines.join('\n')}';
+  }
+
+  String _withChanges(String text) {
+    final c = _bodiesChanged();
+    return c == null ? text : '$c\n\n$text';
   }
 
   Future<void> interruptOrchestrator() async => orchestrator?.interrupt();
@@ -380,9 +426,9 @@ class Hub extends ChangeNotifier {
     final text =
         '[worker update]\n${lines.join('\n')}\nUse read_thread for the details.';
     if (o.isRunning || o.view.isRunning) {
-      await o.send(text, afterCurrentTurn: true);
+      await o.send(_withChanges(text), afterCurrentTurn: true);
     } else if (settings.wakeOnFinish) {
-      await o.send(text);
+      await o.send(_withChanges(text));
     }
   }
 
@@ -447,7 +493,7 @@ class Hub extends ChangeNotifier {
           p,
           cwd: (a['cwd'] as String?)?.isNotEmpty == true
               ? a['cwd'] as String
-              : body.projectDir,
+              : body.workerType(p)?['cwd'] as String? ?? body.projectDir,
           title: a['title'] as String? ?? _firstLine(prompt),
           model: a['model'] as String?,
         );
@@ -465,6 +511,7 @@ class Hub extends ChangeNotifier {
           'status': status,
         };
       case 'list_bodies':
+        _shownBodies = _bodySnapshot();
         return {
           'max_concurrent_per_body': settings.maxConcurrent,
           'bodies': [
@@ -483,6 +530,7 @@ class Hub extends ChangeNotifier {
                         'kind': t['kind'],
                         'model': settings.workerModel[id] ?? b.defaultModel(id),
                         'description': t['description'],
+                        'default_cwd': t['cwd'] ?? b.projectDir,
                         'max_concurrent': ?t['maxConcurrent'],
                         'running': runningOn(b.name, id),
                       },

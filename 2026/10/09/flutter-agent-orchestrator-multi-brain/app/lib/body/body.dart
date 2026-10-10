@@ -70,8 +70,11 @@ abstract mixin class Body {
 
 // ---- this app's backends ------------------------------------------------------
 
-/// This app's worker types: Codex, Claude, and one Codex app-server per
-/// custom type (`worker-types.json` in the state directory).
+/// What this app runs: Codex and Claude when turned on, and one Codex
+/// app-server per custom worker type (`worker-types.json` in the state
+/// directory, set on the start screen). Each starts on its own: one that
+/// fails (not logged in, server down) leaves the others working. None at
+/// all is fine for a body: it still serves its tools ([loadImage]).
 class LocalBody extends ChangeNotifier with Body {
   LocalBody({required this.name, required this.stateDir});
 
@@ -79,19 +82,22 @@ class LocalBody extends ChangeNotifier with Body {
   String name;
   final String stateDir;
 
-  late final CodexBackend codex;
-  late final ClaudeBackend claude;
+  CodexBackend? codex;
+  ClaudeBackend? claude;
 
-  /// Every worker type configured here.
-  List<WorkerType> types = [WorkerType.codex, WorkerType.claude];
+  /// What is turned on here.
+  WorkerTypesConfig config = WorkerTypesConfig();
+  List<WorkerType> get types => config.types;
 
   /// The custom types' app-servers that started.
   final custom = <String, CodexBackend>{};
 
-  /// Why a worker type cannot run (its app-server failed, a bad config);
-  /// the others still work.
+  /// Why a worker type cannot run (not logged in, its app-server failed, a
+  /// bad config); the others still work.
   final typeErrors = <String, String>{};
   String? startupError;
+
+  /// Every turned-on worker type has started or failed.
   bool ready = false;
 
   @override
@@ -127,40 +133,60 @@ class LocalBody extends ChangeNotifier with Body {
     if (protocolLog.length > 3000) protocolLog.removeRange(0, 1000);
   });
 
-  Future<void> start() async {
-    try {
-      codex = CodexBackend(await codexAppServer(), onTool: _onTool)
-        ..onChanged = notifyListeners;
-      claude = ClaudeBackend(claudeBridge(), onTool: _onTool)
-        ..onChanged = notifyListeners
-        ..onUserPrompt = (_, _) => onUserPrompt?.call();
-      _log(codex.client);
-      _log(claude.client);
-      _loadTypes();
-      await Future.wait([
-        codex.start(),
-        claude.start(projectDir),
-        for (final t in types)
-          if (t.kind == WorkerKind.custom) _startCustom(t),
-      ]);
-      ready = true;
-    } catch (e) {
-      startupError = '$e';
-    }
-    notifyListeners();
-  }
-
   /// `worker-types.json` in the state directory (`ORCH_WORKER_TYPES`
   /// overrides the path).
   File get typesFile => File(
     Platform.environment['ORCH_WORKER_TYPES'] ?? '$stateDir/worker-types.json',
   );
 
-  void _loadTypes() {
+  Future<void> start() async {
     try {
-      types = WorkerType.load(typesFile, Platform.environment);
+      config = WorkerTypesConfig.load(typesFile, Platform.environment);
     } catch (e) {
       typeErrors['config'] = '${typesFile.path}: $e';
+      config = WorkerTypesConfig(
+        codex: BuiltinSetup(enabled: false),
+        claude: BuiltinSetup(enabled: false),
+      );
+    }
+    notifyListeners();
+    await Future.wait([
+      if (config.codex.enabled) _startCodex(),
+      if (config.claude.enabled) _startClaude(),
+      for (final t in config.custom) _startCustom(t),
+    ]);
+    ready = true;
+    notifyListeners();
+  }
+
+  Future<void> _startCodex() async {
+    try {
+      final b = CodexBackend(await codexAppServer(), onTool: _onTool)
+        ..onChanged = notifyListeners;
+      _log(b.client);
+      await b.start();
+      codex = b;
+      if (b.account == null) {
+        typeErrors['codex'] = 'Codex is not logged in on $name (log in on its start screen, or `codex login`)';
+      }
+    } catch (e) {
+      typeErrors['codex'] = '$e';
+    }
+  }
+
+  Future<void> _startClaude() async {
+    try {
+      final b = ClaudeBackend(claudeBridge(), onTool: _onTool)
+        ..onChanged = notifyListeners
+        ..onUserPrompt = (_, _) => onUserPrompt?.call();
+      _log(b.client);
+      await b.start(projectDir);
+      claude = b;
+      if (!claudeLoggedIn(b.account)) {
+        typeErrors['claude'] = 'Claude is not logged in on $name (`claude auth login`)';
+      }
+    } catch (e) {
+      typeErrors['claude'] = '$e';
     }
   }
 
@@ -188,7 +214,12 @@ class LocalBody extends ChangeNotifier with Body {
   WorkerType? _type(String id) => types.where((t) => t.id == id).firstOrNull;
 
   bool _available(WorkerType t) =>
-      ready && (t.kind != WorkerKind.custom || custom.containsKey(t.id));
+      !typeErrors.containsKey(t.id) &&
+      switch (t.kind) {
+        WorkerKind.codex => codex != null,
+        WorkerKind.claude => claude != null,
+        WorkerKind.custom => custom.containsKey(t.id),
+      };
 
   @override
   List<String> get workerTypes => [
@@ -200,22 +231,28 @@ class LocalBody extends ChangeNotifier with Body {
   List<Json> modelsFor(String type) {
     final t = _type(type);
     if (t == null || !_available(t)) return const [];
-    return t.kind == WorkerKind.claude ? claude.models : _codexFor(t)!.models;
+    return t.kind == WorkerKind.claude ? claude!.models : _codexFor(t)!.models;
   }
 
   @override
   String? defaultModel(String type) {
     final t = _type(type);
     if (t == null || !_available(t)) return null;
+    // The model set on the start screen, if this backend has it.
+    if (t.model case final m? when modelsFor(type).any((x) => x['id'] == m)) return m;
     return t.kind == WorkerKind.claude
-        ? claude.defaultModel
+        ? claude!.defaultModel
         : _codexFor(t)!.defaultModel;
   }
 
+  /// Where a worker of [type] starts when the orchestrator names no
+  /// directory.
+  String cwdFor(String type) => _type(type)?.resolvedCwd ?? projectDir;
+
   @override
   Json get info {
-    final codexLimit = ready ? (codex.rateLimits?['primary'] as Map?) : null;
-    final claudeLimit = ready ? claude.rateLimits : null;
+    final codexLimit = codex?.rateLimits?['primary'] as Map?;
+    final claudeLimit = claude?.rateLimits;
     return {
       'name': name,
       'host': Platform.localHostname.split('.').first,
@@ -226,7 +263,7 @@ class LocalBody extends ChangeNotifier with Body {
           t.toInfo(
             error: _available(t)
                 ? null
-                : typeErrors[t.id] ?? startupError ?? (ready ? 'not started' : 'starting'),
+                : typeErrors[t.id] ?? (ready ? 'not started' : 'starting'),
           ),
       ],
       'typeConfigError': typeErrors['config'],
@@ -234,14 +271,14 @@ class LocalBody extends ChangeNotifier with Body {
       'models': {for (final id in workerTypes) id: modelsFor(id)},
       'defaultModels': {for (final id in workerTypes) id: defaultModel(id)},
       'usage': {
-        if (ready) ...{
+        if (codex case final c?)
           'codex':
-              'Codex · ${codex.account?['planType'] ?? '?'}'
+              'Codex · ${c.account?['planType'] ?? '?'}'
               '${codexLimit != null ? ' · ${codexLimit['usedPercent']}% of week' : ''}',
+        if (claude case final c?)
           'claude':
-              'Claude · ${claude.account?['subscriptionType'] ?? '?'}'
+              'Claude · ${c.account?['subscriptionType'] ?? '?'}'
               '${claudeLimit != null ? ' · ${claudeLimit['rateLimitType'] ?? ''} ${claudeLimit['status']}' : ''}',
-        },
       },
     };
   }
@@ -273,7 +310,7 @@ class LocalBody extends ChangeNotifier with Body {
             model: model,
             effort: effort,
           )
-        : claude.create(
+        : claude!.create(
             label: label,
             cwd: cwd,
             role: role,
@@ -285,15 +322,28 @@ class LocalBody extends ChangeNotifier with Body {
   }
 
   void answer(Object requestId, Object? result) =>
-      claude.client.respond(requestId, result);
+      claude?.client.respond(requestId, result);
 
   void closeBackends() {
     for (final b in custom.values) {
       b.client.dispose();
     }
-    codex.client.dispose();
-    claude.client.dispose();
+    codex?.client.dispose();
+    claude?.client.dispose();
   }
+}
+
+/// Whether the Agent SDK's account info shows a login. Logged out, it says
+/// `{tokenSource: none, apiProvider: firstParty}` (as `claude auth status`
+/// says `loggedIn: false`); a login brings a token source, an email or a
+/// subscription.
+bool claudeLoggedIn(Json? account) {
+  if (account == null) return false;
+  bool set(String k) => account[k] != null && account[k] != 'none';
+  return set('tokenSource') ||
+      set('apiKeySource') ||
+      account['email'] != null ||
+      account['subscriptionType'] != null;
 }
 
 // ---- serving this app's backends to the brain ---------------------------------
