@@ -47,13 +47,15 @@ ConsoleMirror _boot(LaunchConfig config, String stateDir) {
   }
   unawaited(_run(local, signal, console));
   if (config.assignOwner && config.body) {
-    final owner = config.owner;
+    final owners = config.owners;
     unawaited(() async {
       while (!signal.connected) {
         await Future<void>.delayed(const Duration(milliseconds: 100));
       }
-      final brain = owner == LaunchConfig.self ? signal.name : owner;
-      await _assignOnStart(console, signal, '${signal.name}=${brain ?? ''}');
+      final brains = [
+        for (final o in owners) o == LaunchConfig.self ? signal.name : o,
+      ];
+      await _assignOnStart(console, signal, '${signal.name}=${brains.join('+')}');
     }());
   }
   if (env['ORCH_ASSIGN'] case final String spec when spec.isNotEmpty) {
@@ -91,9 +93,12 @@ Future<void> _run(
     // A brain that is not a body never runs workers on itself (even if an
     // older record says it owns itself).
     final h = hub = Hub(local)
-      ..ownerOf = (b) => !signal.isBody && b == local.name ? null : signal.ownerOf(b);
+      ..ownersOf = (b) => !signal.isBody && b == local.name ? const [] : signal.ownersOf(b);
     // Its agent starts in the background; consoles show it starting.
     unawaited(h.start());
+    if (Platform.environment['ORCH_TOOLS'] case final String path when path.isNotEmpty) {
+      unawaited(_toolsOnStart(h, path));
+    }
     final p = publisher = ConsolePublisher(h);
     signal.onReleaseRequest = (body) async => h.releaseBlocker(body);
     signal.addListener(h.ownershipChanged);
@@ -135,7 +140,7 @@ Future<void> _run(
           if (m['t'] == 'console') console.handle(peer.name, (m['m'] as Map).cast());
         });
         if (signal.isBody) {
-          BodyHost(local, peer, ownerOf: () => signal.ownerOf(local.name));
+          BodyHost(local, peer, ownersOf: () => signal.ownersOf(local.name));
         }
         peer.closed.then((_) => console.detachBrain(peer.name));
       }
@@ -209,8 +214,37 @@ Future<void> _configureBrainOnStart(ConsoleMirror console, String spec) async {
   }
 }
 
-/// `ORCH_ASSIGN=body=brain,body2=` moves bodies once they are in the roster
-/// (for unattended checks; the body list in the console does the same).
+/// `ORCH_TOOLS=steps.json` makes this brain call its orchestrator tools
+/// itself, without a model (for unattended checks that spend no tokens):
+/// a list of `{tool, args, delay_ms}`, each run once the body it names is
+/// one of this brain's, after its delay. Each result is appended to
+/// `steps.json.out.jsonl`.
+Future<void> _toolsOnStart(Hub hub, String path) async {
+  final steps = (jsonDecode(await File(path).readAsString()) as List).cast<Map>();
+  final out = File('$path.out.jsonl');
+  for (final step in steps) {
+    final args = (step['args'] as Map? ?? const {}).cast<String, dynamic>();
+    if (args['body'] case final String body) {
+      for (var i = 0; i < 300 && !hub.ownBodies.any((b) => b.name == body); i++) {
+        await Future<void>.delayed(const Duration(milliseconds: 200));
+      }
+    }
+    await Future<void>.delayed(Duration(milliseconds: (step['delay_ms'] as num?)?.toInt() ?? 0));
+    final tool = step['tool'] as String;
+    final result = tool == 'fetch_image'
+        ? (await hub.toolResult(tool, args))
+        : await hub.callTool(tool, args);
+    await out.writeAsString(
+      '${jsonEncode({'at': DateTime.now().toIso8601String(), 'tool': tool, 'result': result})}\n',
+      mode: FileMode.append,
+    );
+  }
+}
+
+/// `ORCH_ASSIGN=body=brain,body2=brain-a+brain-b,body3=` sets the brains
+/// bodies belong to once they are in the roster (`+` between brains; empty:
+/// none) (for unattended checks; the body list in the console does the
+/// same).
 Future<void> _assignOnStart(
   ConsoleMirror console,
   SignalClient signal,
@@ -219,16 +253,20 @@ Future<void> _assignOnStart(
   for (final pair in spec.split(',')) {
     final parts = pair.split('=');
     if (parts.length != 2) continue;
-    final body = parts[0].trim(), brain = parts[1].trim();
+    final body = parts[0].trim();
+    final brains = [
+      for (final b in parts[1].split('+'))
+        if (b.trim().isNotEmpty) b.trim(),
+    ];
     for (var i = 0; i < 300; i++) {
       final known = signal.node(body)?.online == true &&
-          (brain.isEmpty || signal.node(brain)?.online == true);
+          brains.every((b) => signal.node(b)?.online == true);
       if (signal.connected && known) break;
       await Future<void>.delayed(const Duration(milliseconds: 200));
     }
-    final target = brain.isEmpty ? null : brain;
-    if (signal.ownerOf(body) == target) continue;
-    await console.assign(body, target);
+    final now = signal.ownersOf(body);
+    if (now.length == brains.length && now.every(brains.contains)) continue;
+    await console.assign(body, brains);
   }
 }
 

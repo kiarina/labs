@@ -95,7 +95,7 @@ void main() {
 
   setUp(() {
     hub = Hub(LocalBody(name: 'brain', stateDir: '/nonexistent'))
-      ..ownerOf = (_) => 'brain';
+      ..ownersOf = (_) => const ['brain'];
     body = _FakeBody('body-c');
     hub.bodies[body.name] = body;
   });

@@ -13,9 +13,9 @@ class LaunchConfig {
     this.port = 8765,
     this.url = 'ws://localhost:8765',
     this.name = '',
-    this.owner,
+    List<String>? owners,
     this.assignOwner = false,
-  });
+  }) : owners = owners ?? [];
 
   /// Runs an orchestrator that consoles talk to.
   bool brain;
@@ -35,9 +35,9 @@ class LaunchConfig {
   /// This app's name (the body id); empty picks one.
   String name;
 
-  /// The brain this body belongs to (null: none, [self]: this app), applied
-  /// after joining when [assignOwner].
-  String? owner;
+  /// The brains this body belongs to ([self]: this app; several: a shared
+  /// body), applied after joining when [assignOwner].
+  List<String> owners;
   bool assignOwner;
 
   static const self = '@self';
@@ -52,7 +52,7 @@ class LaunchConfig {
     'port': port,
     'url': url,
     'name': name,
-    'owner': owner,
+    'owners': owners,
   };
 
   static LaunchConfig fromJson(Json j) => LaunchConfig(
@@ -62,7 +62,9 @@ class LaunchConfig {
     port: (j['port'] as num?)?.toInt() ?? 8765,
     url: j['url'] as String? ?? 'ws://localhost:8765',
     name: j['name'] as String? ?? '',
-    owner: j['owner'] as String?,
+    owners: j.containsKey('owners')
+        ? [for (final o in j['owners'] as List) '$o']
+        : [if (j['owner'] case final String o) o],
   );
 
   /// The last choice on the start screen, or defaults.
@@ -86,7 +88,8 @@ class LaunchConfig {
 
   /// From `ORCH_ROLE` (comma list of brain, body, signal, console),
   /// `ORCH_SIGNAL_URL`, `ORCH_SIGNAL_PORT`, `ORCH_NAME` and `ORCH_OWNER`
-  /// (the brain this body belongs to, as on the start screen; `-` for none);
+  /// (the brains this body belongs to, comma-separated, as on the start
+  /// screen; `-` for none);
   /// null when none of the first three is set (show the start screen). `ORCH_ROLE=brain` alone also makes a
   /// body; `console` alone makes neither.
   static LaunchConfig? fromEnv(Map<String, String> env) {
@@ -108,7 +111,10 @@ class LaunchConfig {
       port: port,
       url: v('ORCH_SIGNAL_URL') ?? 'ws://127.0.0.1:$port',
       name: v('ORCH_NAME') ?? '',
-      owner: v('ORCH_OWNER') == '-' ? null : v('ORCH_OWNER'),
+      owners: [
+        for (final o in (v('ORCH_OWNER') ?? '').split(','))
+          if (o.trim().isNotEmpty && o.trim() != '-') o.trim(),
+      ],
       assignOwner: v('ORCH_OWNER') != null,
     );
   }

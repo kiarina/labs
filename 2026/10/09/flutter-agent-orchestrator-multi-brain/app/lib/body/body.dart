@@ -49,6 +49,17 @@ abstract mixin class Body {
   /// (what runs finishes). The body keeps it, in memory only.
   bool get paused => info['paused'] == true;
 
+  /// The brain using this body now (a shared body is used by one brain at a
+  /// time): the one whose workers run or wait to start here. Null: free.
+  String? get heldBy => info['heldBy'] as String?;
+
+  /// The workers running or waiting here, of every brain: `{brain, thread,
+  /// workerType, title, state (running, waiting), since (ms)}`.
+  List<Json> get activity => [
+    for (final a in info['activity'] as List? ?? const [])
+      (a as Map).cast<String, dynamic>(),
+  ];
+
   /// Workers allowed at once on this body (its start screen's setting).
   int get maxWorkers =>
       (info['maxWorkers'] as num?)?.toInt() ?? WorkerTypesConfig.defaultMaxWorkers;
@@ -118,12 +129,42 @@ class LocalBody extends ChangeNotifier with Body {
   @override
   bool paused = false;
 
-  /// Every agent made here (the orchestrator too); they end when the
+  /// Every agent made here, by the brain that made it; they end when the
   /// agents restart ([reconfigure]).
-  final _made = <AgentThread>[];
+  final _brainOf = <AgentThread, String>{};
 
-  /// Agents running a turn here.
-  int get runningAgents => _made.where((a) => a.view.isRunning).length;
+  /// Agents a brain closed, or whose brain went away.
+  final _released = <AgentThread>{};
+
+  /// Running a turn, or made and not started yet (waiting for a slot).
+  bool _active(AgentThread a) =>
+      !_released.contains(a) && (a.view.isRunning || a.backendId == null);
+
+  @override
+  String? get heldBy => _brainOf.entries
+      .where((e) => _active(e.key))
+      .map((e) => e.value)
+      .firstOrNull;
+
+  @override
+  List<Json> get activity => [
+    for (final e in _brainOf.entries)
+      if (_active(e.key))
+        {
+          'brain': e.value,
+          'thread': e.key.label,
+          'workerType': e.key.workerType,
+          'title': e.key.title,
+          'state': e.key.view.isRunning ? 'running' : 'waiting',
+          'since': (e.key.turnStartedAt ?? e.key.createdAt).millisecondsSinceEpoch,
+        },
+  ];
+
+  /// An agent stopped counting toward [heldBy]: its brain closed it or left.
+  void release(AgentThread a) {
+    if (_released.add(a)) notifyListeners();
+  }
+
   bool _restarting = false;
 
   void setPaused(bool v) {
@@ -308,6 +349,8 @@ class LocalBody extends ChangeNotifier with Body {
       'host': Platform.localHostname.split('.').first,
       'ready': ready,
       'paused': paused,
+      'heldBy': heldBy,
+      'activity': activity,
       'startupError': startupError,
       'workerTypes': [
         for (final t in types)
@@ -344,12 +387,16 @@ class LocalBody extends ChangeNotifier with Body {
     String? title,
     String? model,
     String? effort,
+    String? brain,
   }) {
     final t = _type(type);
     if (t == null) {
       throw StateError('no worker type "$type" on $name (have: ${workerTypes.join(', ')})');
     }
-    if (paused && !role.isOrchestrator) throw StateError(pausedMessage(name));
+    if (paused) throw StateError(pausedMessage(name));
+    // [brain] is the brain asking; null: the one on this app.
+    final by = brain ?? name;
+    if (heldBy case final h? when h != by) throw StateError(inUseMessage(name, h));
     if (!_available(t)) {
       throw StateError('worker type "$type" is not available on $name: ${typeErrors[type] ?? 'not started'}');
     }
@@ -371,7 +418,14 @@ class LocalBody extends ChangeNotifier with Body {
             model: model,
             effort: effort,
           );
-    _made.add(agent);
+    _brainOf[agent] = by;
+    // Starting and ending turns changes who holds the body.
+    var running = false;
+    agent.view.addListener(() {
+      if (agent.view.isRunning == running) return;
+      running = agent.view.isRunning;
+      notifyListeners();
+    });
     return agent..body = name;
   }
 
@@ -410,14 +464,15 @@ class LocalBody extends ChangeNotifier with Body {
     if (!paused) {
       throw StateError('pause $name before changing its settings');
     }
-    if (runningAgents > 0) {
-      throw StateError('$runningAgents agent(s) still running on $name');
+    if (heldBy case final h?) {
+      throw StateError('workers of $h still run or wait on $name');
     }
     if (_restarting) throw StateError('$name is restarting its agents');
     _restarting = true;
     try {
       next.save(typesFile);
-      _made.clear();
+      _brainOf.clear();
+      _released.clear();
       closeBackends();
       codex = null;
       claude = null;
@@ -441,6 +496,10 @@ class LocalBody extends ChangeNotifier with Body {
   }
 }
 
+String inUseMessage(String body, String brain) =>
+    'body $body is in use by $brain (its workers run or wait there). Shared bodies are used by one brain '
+    'at a time: you can only read there (list_bodies, fetch_image) until they finish. Use another body, or wait.';
+
 String pausedMessage(String body) =>
     'body $body is paused by its owner: it takes no new threads, turns or tool calls until it is resumed '
     '(what runs there finishes). Use another body, or wait.';
@@ -463,9 +522,10 @@ bool claudeLoggedIn(Json? account) {
 /// Runs a brain's requests (`agent/create`, `start`, `send`, `interrupt`,
 /// `close`, `file/image`, `body/pause`) on this app's backends and streams each agent's
 /// transcript operations back. One per brain this app is linked to; only the
-/// brain that owns this body ([ownerOf]) is served.
+/// brains this body belongs to ([ownersOf]) are served, and only one of them
+/// may start work at a time ([LocalBody.heldBy]).
 class BodyHost {
-  BodyHost(this.local, this.peer, {required this.ownerOf}) {
+  BodyHost(this.local, this.peer, {required this.ownersOf}) {
     peer.messages.listen(_onMessage);
     local.addListener(_scheduleInfo);
     peer.send({'t': 'hello', 'info': local.info});
@@ -475,8 +535,8 @@ class BodyHost {
   final LocalBody local;
   final Peer peer;
 
-  /// The brain that owns this body now (the signaling server's record).
-  final String? Function() ownerOf;
+  /// The brains this body belongs to now (the signaling server's record).
+  final List<String> Function() ownersOf;
   final _agents = <String, AgentThread>{};
   final _sent = <String, int>{};
   Timer? _infoTimer;
@@ -492,16 +552,16 @@ class BodyHost {
     if (m['t'] != 'rpc') return;
     final rid = m['rid'];
     final p = (m['p'] as Map? ?? const {}).cast<String, dynamic>();
-    final owner = ownerOf();
+    final owners = ownersOf();
     // Agents a brain already started may still be closed by it.
-    final mine = owner == peer.name ||
+    final mine = owners.contains(peer.name) ||
         (m['m'] == 'agent/close' || m['m'] == 'agent/interrupt') &&
             _agents.containsKey(p['id']);
     if (!mine) {
       peer.send({
         't': 'res',
         'rid': rid,
-        'e': 'body ${local.name} belongs to ${owner ?? 'no brain'}, not to ${peer.name}',
+        'e': 'body ${local.name} belongs to ${owners.isEmpty ? 'no brain' : owners.join(', ')}, not to ${peer.name}',
       });
       return;
     }
@@ -535,6 +595,7 @@ class BodyHost {
       title: p['title'] as String?,
       model: p['model'] as String?,
       effort: p['effort'] as String?,
+      brain: peer.name,
     );
     _agents[id] = agent;
     _sent[id] = 0;
@@ -571,14 +632,27 @@ class BodyHost {
     if (agent == null) throw StateError('no agent ${p['id']} on ${local.name}');
     // Paused: the turns that run go on (steering them too), nothing new
     // starts. The brain refuses first; this is the last guard.
-    if (local.paused &&
-        (method == 'agent/start' ||
-            method == 'agent/send' && !agent.view.isRunning)) {
+    final newWork =
+        method == 'agent/start' ||
+        method == 'agent/send' && !agent.view.isRunning;
+    if (local.paused && newWork) {
       throw StateError(pausedMessage(local.name));
+    }
+    // A new turn needs the body free, or held by this brain.
+    if (newWork && method == 'agent/send') {
+      if (local.heldBy case final h? when h != peer.name) {
+        throw StateError(inUseMessage(local.name, h));
+      }
     }
     switch (method) {
       case 'agent/start':
-        await agent.start(p['text'] as String);
+        try {
+          await agent.start(p['text'] as String);
+        } catch (_) {
+          // Never started: it no longer holds the body.
+          local.release(agent);
+          rethrow;
+        }
         return {'backendId': agent.backendId, 'model': agent.model};
       case 'agent/send':
         await agent.send(
@@ -591,6 +665,7 @@ class BodyHost {
         return null;
       case 'agent/close':
         await agent.close();
+        local.release(agent);
         return null;
     }
     throw StateError('unknown method $method');
@@ -602,6 +677,7 @@ class BodyHost {
     _infoTimer?.cancel();
     for (final a in _agents.values) {
       if (a.view.isRunning) await a.interrupt();
+      local.release(a);
     }
   }
 }

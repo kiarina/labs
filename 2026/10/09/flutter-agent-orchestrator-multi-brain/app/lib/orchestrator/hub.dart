@@ -79,33 +79,39 @@ class Hub extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Who owns each body (the signaling server's record). A brain uses only
-  /// the bodies it owns; others are listed for the consoles.
-  String? Function(String body) ownerOf = (_) => null;
+  /// The brains each body belongs to (the signaling server's record). A
+  /// brain uses only its bodies; others are listed for the consoles. A body
+  /// shared with other brains is used by one of them at a time.
+  List<String> Function(String body) ownersOf = (_) => const [];
 
-  /// Bodies this brain may use: owned and online.
+  /// Bodies this brain may use: its own and online.
   List<Body> get ownBodies => [
     for (final b in bodies.values)
-      if (b.online && ownerOf(b.name) == local.name) b,
+      if (b.online && ownersOf(b.name).contains(local.name)) b,
   ];
+
+  /// The other brain using [b] now, or null (free, or this brain's).
+  String? heldByOther(Body b) =>
+      b.heldBy != null && b.heldBy != local.name ? b.heldBy : null;
 
   Body? _ownBody(String name) =>
       ownBodies.where((b) => b.name == name).firstOrNull;
 
-  List<String> _unpaused() => [
+  /// Bodies where this brain can start work now.
+  List<String> _usable() => [
     for (final b in ownBodies)
-      if (!b.paused) b.name,
+      if (!b.paused && heldByOther(b) == null) b.name,
   ];
 
   Json _noBody(String name) => {
-    'error': ownerOf(name) != null && ownerOf(name) != local.name
-        ? 'body "$name" belongs to ${ownerOf(name)}, not to you'
+    'error': ownersOf(name).isNotEmpty && !ownersOf(name).contains(local.name)
+        ? 'body "$name" belongs to ${ownersOf(name).join(', ')}, not to you'
         : 'no online body "$name" of yours',
     'your_bodies': [for (final b in ownBodies) b.name],
   };
 
-  /// Why [body] may not go to another brain now, or null: workers of this
-  /// brain run or wait there.
+  /// Why [body] may not stop belonging to this brain now, or null: workers
+  /// of this brain run or wait there.
   String? releaseBlocker(String body) {
     final busy = workers.where(
       (w) =>
@@ -261,11 +267,15 @@ class Hub extends ChangeNotifier {
   /// Bodies change under it (a body restarts with other worker types,
   /// joins, leaves, moves to another brain, is paused or resumed); the next
   /// message it gets starts with what changed.
-  Map<String, ({String types, bool paused})>? _shownBodies;
+  Map<String, ({String types, bool paused, String? inUseBy})>? _shownBodies;
 
-  Map<String, ({String types, bool paused})> _bodySnapshot() => {
+  Map<String, ({String types, bool paused, String? inUseBy})> _bodySnapshot() => {
     for (final b in ownBodies)
-      b.name: (types: b.workerTypes.join(', '), paused: b.paused),
+      b.name: (
+        types: b.workerTypes.join(', '),
+        paused: b.paused,
+        inUseBy: heldByOther(b),
+      ),
   };
 
   /// What changed since the orchestrator last looked, or null.
@@ -284,6 +294,10 @@ class Hub extends ChangeNotifier {
             e.value.paused
                 ? '- ${e.key} is paused by the user: no new threads, turns or tool calls there until it is resumed (running ones finish)'
                 : '- ${e.key} is resumed: you can use it again',
+          if (was.inUseBy != e.value.inUseBy)
+            e.value.inUseBy != null
+                ? '- ${e.key} is now in use by ${e.value.inUseBy}: you can only read there until its workers finish'
+                : '- ${e.key} is free again: you can start work there',
         ] else
           '- ${e.key} is now one of your bodies (worker types: ${types(e.value.types)}${e.value.paused ? '; paused' : ''})',
       for (final k in shown.keys)
@@ -347,6 +361,7 @@ class Hub extends ChangeNotifier {
   bool _hasSlot(AgentThread w) {
     final body = bodies[w.body];
     if (body?.paused ?? false) return false;
+    if (body != null && heldByOther(body) != null) return false;
     if (runningOn(w.body) >=
         (body?.maxWorkers ?? WorkerTypesConfig.defaultMaxWorkers)) {
       return false;
@@ -404,9 +419,20 @@ class Hub extends ChangeNotifier {
       }
     } catch (e) {
       w.markLost('$e');
+      _letGo(w);
       rethrow;
     }
     return 'running';
+  }
+
+  /// A worker that will not run: the body stops counting it as holding the
+  /// body (a remote body hears it through `agent/close`).
+  void _letGo(AgentThread w) {
+    if (bodies[w.body] case final LocalBody b) {
+      b.release(w);
+    } else {
+      unawaited(w.close().catchError((_) {}));
+    }
   }
 
   void drainQueue() {
@@ -426,6 +452,8 @@ class Hub extends ChangeNotifier {
       w
         ..state = AgentState.cancelled
         ..pendingText = null;
+      // It was made on the body: let it go, so it no longer holds the body.
+      _letGo(w);
       notifyListeners();
       return 'cancelled';
     }
@@ -482,6 +510,25 @@ class Hub extends ChangeNotifier {
     return ToolResult(prettyJson(result), !result.containsKey('error'));
   }
 
+  /// A tool call without an orchestrator (`ORCH_TOOLS`): the result as the
+  /// orchestrator would read it, images left out.
+  Future<Json> toolResult(String tool, Json args) async {
+    final o = orchestrator;
+    if (tool == 'fetch_image' && o == null) {
+      // fetch_image shows the image in a conversation; without one, read it.
+      final body = _ownBody(args['body'] as String? ?? '');
+      if (body == null) return _noBody(args['body'] as String? ?? '');
+      if (body.paused) return {'error': pausedMessage(body.name)};
+      try {
+        final image = await body.readImage(args['path'] as String);
+        return {'width': image['width'], 'height': image['height'], 'bytes': image['bytes']};
+      } catch (e) {
+        return {'error': '$e'};
+      }
+    }
+    return callTool(tool, args);
+  }
+
   /// Brings an image file from a body to the orchestrator (as an image it
   /// can look at) and into the transcript (so every console shows it).
   Future<ToolResult> _fetchImage(AgentThread caller, Json a) async {
@@ -522,7 +569,10 @@ class Hub extends ChangeNotifier {
         final body = _ownBody(bodyName);
         if (body == null) return _noBody(bodyName);
         if (body.paused) {
-          return {'error': pausedMessage(bodyName), 'your_bodies': _unpaused()};
+          return {'error': pausedMessage(bodyName), 'usable_bodies': _usable()};
+        }
+        if (heldByOther(body) case final h?) {
+          return {'error': inUseMessage(bodyName, h), 'usable_bodies': _usable()};
         }
         final p = a['worker_type'] as String? ?? '';
         if (!body.workerTypes.contains(p)) {
@@ -569,6 +619,24 @@ class Hub extends ChangeNotifier {
                 'project_dir': b.projectDir,
                 'running': runningOn(b.name),
                 if (b.paused) 'paused': true,
+                if (ownersOf(b.name).length > 1)
+                  'shared_with': [
+                    for (final o in ownersOf(b.name))
+                      if (o != local.name) o,
+                  ],
+                if (heldByOther(b) case final h?) ...{
+                  'in_use_by': h,
+                  'their_work': [
+                    for (final a in b.activity)
+                      if (a['brain'] == h)
+                        {
+                          'thread': a['thread'],
+                          'worker_type': a['workerType'],
+                          'title': a['title'],
+                          'state': a['state'],
+                        },
+                  ],
+                },
                 'max_concurrent': b.maxWorkers,
                 'worker_types': [
                   for (final id in b.workerTypes)
@@ -599,10 +667,14 @@ class Hub extends ChangeNotifier {
           };
         }
         // A new turn is new work; steering a running one is not.
-        if (!w.isRunning &&
-            w.state != AgentState.queued &&
-            (bodies[w.body]?.paused ?? false)) {
-          return {'thread_id': w.label, 'error': pausedMessage(w.body)};
+        if (!w.isRunning && w.state != AgentState.queued) {
+          final b = bodies[w.body];
+          if (b?.paused ?? false) {
+            return {'thread_id': w.label, 'error': pausedMessage(w.body)};
+          }
+          if (b != null && heldByOther(b) != null) {
+            return {'thread_id': w.label, 'error': inUseMessage(w.body, heldByOther(b)!)};
+          }
         }
         return {
           'thread_id': w.label,
@@ -685,7 +757,11 @@ class Hub extends ChangeNotifier {
     if (_ended.contains(w.label))
       'ended': 'the agents on ${w.body} restarted with new settings',
     if (w.state == AgentState.queued && (bodies[w.body]?.paused ?? false))
-      'waiting_for': '${w.body} to be resumed (paused by the user)',
+      'waiting_for': '${w.body} to be resumed (paused by the user)'
+    else if (w.state == AgentState.queued &&
+        bodies[w.body] != null &&
+        heldByOther(bodies[w.body]!) != null)
+      'waiting_for': '${heldByOther(bodies[w.body]!)} to finish on ${w.body}',
     'cwd': w.cwd,
     if (w.turnStartedAt != null)
       'seconds':

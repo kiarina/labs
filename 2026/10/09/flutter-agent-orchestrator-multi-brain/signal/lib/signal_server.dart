@@ -1,25 +1,27 @@
 // Signaling server for the orchestrator apps: the roster (which apps are
 // online, which of them are brains and bodies), body ownership
-// (body -> brain), and relaying WebRTC offers, answers and ICE candidates
+// (body -> the brains it belongs to), and relaying WebRTC offers, answers and ICE candidates
 // between apps. Runs on its own (`bin/signal.dart`) or inside an app.
 //
 // Every app keeps one WebSocket here. Messages are JSON:
 //
 //   app -> server  {t: hello, name, brain, body, host} join (the name may be changed)
 //                  {t: signal, to, data}             relay to another app
-//                  {t: assign, id, body, brain}      move a body (brain null: no owner)
+//                  {t: assign, id, body, brains}     set the brains a body belongs to ([] none)
 //                  {t: releaseReply, id, ok, reason} a brain's answer to releaseRequest
 //   server -> app  {t: welcome, name}
-//                  {t: roster, nodes: [{name, brain, body, online, host}], owners: {body: brain}}
+//                  {t: roster, nodes: [{name, brain, body, online, host}], owners: {body: [brain]}}
 //                  {t: signal, from, data}
-//                  {t: releaseRequest, id, body}     to the current owner: may it go?
+//                  {t: releaseRequest, id, body}     to an owner being removed: may it go?
 //                  {t: assignResult, id, ok, reason}
 //
 // A plain HTTP GET returns the roster and owners as JSON (an app's start
 // screen reads it to list the brains).
 //
-// A body may change owner only when its current owner agrees (no workers
-// running or queued there) or is offline. A brain that is also a body owns
+// A body may belong to several brains (a shared body: one of them uses it at
+// a time, which the body itself arbitrates). Adding a brain needs no one's
+// consent; removing one needs that brain's (no workers of it running or
+// queued there), unless it is offline. A brain that is also a body owns
 // itself when it first joins; other bodies start with no owner.
 //
 // No authentication: run it only on a network you trust.
@@ -62,7 +64,7 @@ class SignalServer {
   final void Function(String line) log;
 
   final nodes = <String, SignalNode>{};
-  final owners = <String, String?>{};
+  final owners = <String, List<String>>{};
   final _releases = <String, Completer<(bool, String?)>>{};
   int _seq = 0;
   HttpServer? _server;
@@ -74,7 +76,9 @@ class SignalServer {
   Future<void> start() async {
     if (ownersFile case final f? when f.existsSync()) {
       try {
-        owners.addAll((jsonDecode(f.readAsStringSync()) as Map).cast<String, String?>());
+        for (final e in (jsonDecode(f.readAsStringSync()) as Map).entries) {
+          owners[e.key as String] = brainList(e.value);
+        }
       } catch (e) {
         log('ignoring ${f.path}: $e');
       }
@@ -150,7 +154,7 @@ class SignalServer {
         me = SignalNode(name, brain, body, m['host'] as String? ?? address, ws);
         nodes[name] = me;
         if (body && !owners.containsKey(name)) {
-          owners[name] = brain ? name : null;
+          owners[name] = [if (brain) name];
           _saveOwners();
         }
         log('join $name${brain ? ' (brain)' : ''}${body ? ' (body)' : ''} from $address');
@@ -176,38 +180,58 @@ class SignalServer {
 
   Future<void> _assign(SignalNode from, Json m) async {
     final body = m['body'] as String;
-    final brain = m['brain'] as String?;
+    final brains = m.containsKey('brains')
+        ? brainList(m['brains'])
+        : brainList(m['brain']);
     Future<void> reply(bool ok, [String? reason]) async {
       from.send({'t': 'assignResult', 'id': m['id'], 'ok': ok, 'reason': reason});
-      log('assign $body -> ${brain ?? '(none)'} by ${from.name}: ${ok ? 'ok' : reason}');
+      log('assign $body -> [${brains.join(', ')}] by ${from.name}: ${ok ? 'ok' : reason}');
     }
 
     final node = nodes[body];
     if (node == null) return reply(false, 'no app named $body');
     if (!node.body) return reply(false, '$body is not a body');
-    if (brain != null && nodes[brain]?.brain != true) {
-      return reply(false, '$brain is not a brain');
+    for (final b in brains) {
+      if (nodes[b]?.brain != true) return reply(false, '$b is not a brain');
     }
-    final current = owners[body];
-    if (current == brain) return reply(true);
-    final owner = current == null ? null : nodes[current];
-    if (owner != null && owner.online) {
-      final id = 'r${++_seq}';
-      final answer = Completer<(bool, String?)>();
-      _releases[id] = answer;
-      owner.send({'t': 'releaseRequest', 'id': id, 'body': body});
-      final (ok, reason) = await answer.future.timeout(
-        const Duration(seconds: 5),
-        onTimeout: () {
-          _releases.remove(id);
-          return (false, '$current did not answer');
-        },
-      );
-      if (!ok) return reply(false, reason ?? '$current refused');
+    final current = owners[body] ?? const <String>[];
+    // Each brain being removed that is online must agree.
+    final removed = [
+      for (final b in current)
+        if (!brains.contains(b) && nodes[b]?.online == true) b,
+    ];
+    final answers = await Future.wait([
+      for (final b in removed) _askRelease(b, body),
+    ]);
+    for (final (ok, reason) in answers) {
+      if (!ok) return reply(false, reason);
     }
-    owners[body] = brain;
+    owners[body] = brains;
     _saveOwners();
     _broadcastRoster();
     return reply(true);
   }
+
+  Future<(bool, String?)> _askRelease(String brain, String body) async {
+    final id = 'r${++_seq}';
+    final answer = Completer<(bool, String?)>();
+    _releases[id] = answer;
+    nodes[brain]!.send({'t': 'releaseRequest', 'id': id, 'body': body});
+    final (ok, reason) = await answer.future.timeout(
+      const Duration(seconds: 5),
+      onTimeout: () {
+        _releases.remove(id);
+        return (false, '$brain did not answer');
+      },
+    );
+    return (ok, ok ? null : reason ?? '$brain refused');
+  }
 }
+
+/// The brains a body belongs to, from a list, or a single name or null
+/// (owners files and assign messages from before shared bodies).
+List<String> brainList(Object? v) => switch (v) {
+  final List l => [for (final b in l) '$b'],
+  final String s => [s],
+  _ => const [],
+};

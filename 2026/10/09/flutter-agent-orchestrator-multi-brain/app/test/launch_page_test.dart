@@ -248,12 +248,11 @@ void main() {
     await tester.tap(find.byKey(const Key('next')));
     await tester.pumpAndSettle();
 
-    // Step 3: brains from the roster.
-    await tester.tap(find.byKey(const Key('owner')));
-    await tester.pumpAndSettle();
-    expect(find.text('brain-a').hitTestable(), findsOneWidget);
-    expect(find.text('brain-b').hitTestable(), findsOneWidget);
-    await tester.tap(find.text('brain-b').hitTestable());
+    // Step 3: brains from the roster; two make a shared body.
+    expect(find.byKey(const Key('owner-brain-a')), findsOneWidget);
+    expect(find.byKey(const Key('owner-brain-b')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('owner-brain-a')));
+    await tester.tap(find.byKey(const Key('owner-brain-b')));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('next')));
     await tester.pumpAndSettle();
@@ -269,9 +268,10 @@ void main() {
     await tester.tap(find.byKey(const Key('next')));
     final (c, s) = await started.future;
     expect(
-      (c.name, c.brain, c.body, c.signaling, c.owner, c.assignOwner, s),
-      ('body-d', false, true, false, 'brain-b', true, null),
+      (c.name, c.brain, c.body, c.signaling, c.assignOwner, s),
+      ('body-d', false, true, false, true, null),
     );
+    expect(c.owners, ['brain-a', 'brain-b']);
 
     await tester.runAsync(() async {
       for (final a in apps) {
@@ -323,9 +323,10 @@ void main() {
     await tester.tap(find.byKey(const Key('next')));
     final (c, s) = await started.future;
     expect(
-      (c.brain, c.body, c.signaling, c.port, c.owner, c.signalUrl),
-      (true, true, true, free, LaunchConfig.self, 'ws://127.0.0.1:$free'),
+      (c.brain, c.body, c.signaling, c.port, c.signalUrl),
+      (true, true, true, free, 'ws://127.0.0.1:$free'),
     );
+    expect(c.owners, [LaunchConfig.self]);
     expect(s, isNotNull);
     await tester.runAsync(() async {
       await s!.close();

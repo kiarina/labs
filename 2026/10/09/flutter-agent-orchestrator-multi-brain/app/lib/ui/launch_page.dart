@@ -66,7 +66,7 @@ class _Roster {
 
   final List<String> brains;
   final Set<String> online;
-  final Map<String, String?> owners;
+  final Map<String, List<String>> owners;
 }
 
 class _LaunchPageState extends State<LaunchPage> {
@@ -186,7 +186,10 @@ class _LaunchPageState extends State<LaunchPage> {
           for (final n in nodes)
             if (n['online'] == true) n['name'] as String,
         },
-        (j['owners'] as Map).cast<String, String?>(),
+        {
+          for (final e in (j['owners'] as Map).entries)
+            e.key as String: brainList(e.value),
+        },
       );
       return null;
     } catch (e) {
@@ -208,20 +211,22 @@ class _LaunchPageState extends State<LaunchPage> {
     if (!_ownerTouched) {
       final known = _roster?.owners;
       if (known != null && c.name.isNotEmpty && known.containsKey(c.name)) {
-        final o = known[c.name];
-        c.owner = c.brain && o == c.name ? LaunchConfig.self : o;
+        c.owners = [
+          for (final o in known[c.name]!)
+            c.brain && o == c.name ? LaunchConfig.self : o,
+        ];
       } else if (c.brain) {
-        c.owner = LaunchConfig.self;
+        c.owners = [LaunchConfig.self];
       }
     }
-    if (!c.brain && c.owner == LaunchConfig.self) c.owner = null;
+    if (!c.brain) c.owners.remove(LaunchConfig.self);
     _advance();
   }
 
   // ---- step 3: owner --------------------------------------------------------
 
   /// (value, label): this app if it is a brain, the brains online, and the
-  /// saved choice (it may join later).
+  /// saved choices (they may join later).
   List<(String, String)> get _brainChoices {
     final out = <String, String>{
       if (c.brain)
@@ -229,9 +234,8 @@ class _LaunchPageState extends State<LaunchPage> {
       for (final b in _roster?.brains ?? const <String>[])
         if (!(c.brain && b == c.name)) b: b,
     };
-    if (c.owner case final o?
-        when o != LaunchConfig.self && !out.containsKey(o)) {
-      out[o] = '$o (offline)';
+    for (final o in c.owners) {
+      if (o != LaunchConfig.self && !out.containsKey(o)) out[o] = '$o (offline)';
     }
     return [for (final e in out.entries) (e.key, e.value)];
   }
@@ -537,36 +541,37 @@ class _LaunchPageState extends State<LaunchPage> {
       _title(
         theme,
         'Belongs to',
-        'Only this brain runs workers on this body. Consoles can move it later, while no workers run here.',
+        'Only these brains run workers on this body. With several, it is shared: one brain uses it at a time, '
+            'the others can only read there until its workers finish. Consoles can change this later.',
       ),
-      Row(
-        children: [
-          Expanded(
-            child: DropdownButtonFormField<String?>(
-              key: const Key('owner'),
-              initialValue: choices.any((e) => e.$1 == c.owner)
-                  ? c.owner
-                  : null,
-              decoration: const InputDecoration(labelText: 'Brain'),
-              items: [
-                const DropdownMenuItem(value: null, child: Text('No brain')),
-                for (final (value, label) in choices)
-                  DropdownMenuItem(value: value, child: Text(label)),
-              ],
-              onChanged: (v) => setState(() {
-                c.owner = v;
-                _ownerTouched = true;
-              }),
-            ),
-          ),
-          IconButton(
-            key: const Key('refresh'),
-            tooltip: 'Read the brains again',
-            onPressed: _busy ? null : _refresh,
-            icon: const Icon(Icons.refresh, size: 18),
-          ),
-        ],
+      if (choices.isEmpty)
+        Text(
+          'No brain online yet: it can be added from a console later.',
+          style: theme.textTheme.bodySmall?.copyWith(color: Palette.textDim),
+        ),
+      for (final (value, label) in choices)
+        CheckboxListTile(
+          key: Key('owner-$value'),
+          dense: true,
+          contentPadding: EdgeInsets.zero,
+          controlAffinity: ListTileControlAffinity.leading,
+          value: c.owners.contains(value),
+          title: Text(label),
+          onChanged: (v) => setState(() {
+            v == true ? c.owners.add(value) : c.owners.remove(value);
+            _ownerTouched = true;
+          }),
+        ),
+      Align(
+        alignment: Alignment.centerLeft,
+        child: TextButton.icon(
+          key: const Key('refresh'),
+          onPressed: _busy ? null : _refresh,
+          icon: const Icon(Icons.refresh, size: 16),
+          label: const Text('Read the brains again'),
+        ),
       ),
     ];
   }
+
 }

@@ -2,7 +2,8 @@
 
 司令塔（brain）を 1 つのネットワークに複数置きます。
 
-- **body の所属**: 各 body（ワーカーを動かすアプリ）は、どれか 1 つの brain に所属し、所属先の brain だけがそこでワーカーを動かします。所属は console から変えます
+- **body の所属**: 各 body（ワーカーを動かすアプリ）は 1 つ以上の brain に所属し、所属先の brain だけがそこでワーカーを動かします。所属は console から変えます
+- **共有の body**: 複数の brain に所属する body は、一度に 1 つの brain が使います（譲り合い）。使っている brain がいる間、ほかの brain はそこで読むこと（使用中の作業の一覧、`fetch_image`）だけができ、新しい仕事は断られます
 - **console**: brain を選び、選んだ brain と話します
 - **シグナリング**: 独立したサーバーにし、名簿（どのアプリがいるか、どれが brain・body か）と所属（body → brain）を持たせます。単独のプロセスでも、アプリの中でも動きます
 - **起動画面**: アプリを起動すると、シグナリング → 役割（brain・body）→ brain の設定 → 所属 → body の設定の順に選んでから、起動と接続をします
@@ -19,7 +20,7 @@
 
 1. 複数の brain を同時に動かし、それぞれが自分の所属の body だけを使えるか
 2. console で brain を切り替え、選んだ brain に送れるか。どの console にも全部の brain の会話が同じに出るか
-3. body の所属を console から変えられるか。ワーカーが動いている間は変えられないようにできるか
+3. body の所属を console から変えられるか。ワーカーが動いている間は変えられないようにできるか。1 つの body を複数の brain で共有し、競合を防げるか
 4. 1 つのアプリで、起動時に役割（brain・body・シグナリング）を選べるか
 5. ワーカーの種類を固定の 3 つ（Codex・Claude・kiapi）から、body ごとに設定で増やせる形にできるか。会話の途中で増えた種類を司令塔が使えるか
 6. 動かすエージェントを起動画面で決め、その場で動くか確かめられるか。エージェントが 1 つも無い body を置けるか
@@ -75,6 +76,11 @@
   console から「tool を呼ばずに、body-c の worker type を答えて」と送ると、
   メッセージの頭に `[bodies changed since you last called list_bodies]` と `- body-c: worker types are now codex (were none)` が付いた。
   司令塔は「codex。知らせにそう書いてあった」と答えた（Claude は未ログインなので入らない）
+- **1 つの body を 2 つの brain で共有し、競合を防げた。**（トークンを使わない: 答えを 40 秒遅らせる偽の Responses API の custom worker と、`ORCH_TOOLS`）
+  - body-c を brain-a・brain-b の両方の所属にした。brain-a がワーカーを始めると、brain-b の `list_bodies` に `in_use_by: brain-a` と brain-a の作業（題名「hold the body」・running）が出た
+  - その間、brain-b の `start_thread` は「in use by brain-a」で断られ、`fetch_image`（読み取り）は通った
+  - brain-a のワーカーが終わると body-c が空き、brain-b の `start_thread` が通った。console には「→ brain-a, brain-b · 1 running」「shared · in use by brain-b」と出た（スクリーンショット）
+  - シグナリング（複数の所属、外される brain が断ると変えない）と、brain の振る舞い（断る・待たせる・知らせる）は単体のテストで確かめた（`test/shared_body_test.dart`）
 - **orchestrator と worker のプロセスを分けられた。** brain と body を兼ねる brain-a は、orchestrator の Codex と、body の Codex・Claude を別々のプロセスで起動した（子プロセスが 3 つ）。
   body-c の console から brain-a の設定を Claude に変える（`ORCH_CONFIGURE_BRAIN`）と、orchestrator の Codex だけが Claude の中継に入れ替わり、body のプロセスはそのまま残った。
   Brains の一覧に「Claude · default」と ↺・⚙ が出た（スクリーンショット）。ダイアログ（読み込み、brain のマシンでの確かめ、モデルと effort の選択、保存の中身）は widget のテスト（`test/brain_settings_test.dart`）で確かめた
@@ -123,11 +129,11 @@
 - **signal**（`signal/lib/signal_server.dart`。依存なしの Dart）
   - 単独では `mise run signal`（`signal/bin/signal.dart`）。アプリの中では、起動画面で「Signaling」を選ぶと同じものが動く
   - 名簿: 名前・brain か・body か・online・ホスト。名前がぶつかったら `-2` などを付けて返す。普通の HTTP の GET には名簿と所属を JSON で返す
-  - 所属: `body → brain`。body でもある brain は、最初の参加で自分を所属させる。ほかの body は所属なしから始まる。body でないアプリは所属を持たない。アプリが抜けても所属は残る
+  - 所属: `body → brain の一覧`（古い形の 1 つの名前も読める）。body でもある brain は、最初の参加で自分を所属させる。ほかの body は所属なしから始まる。body でないアプリは所属を持たない。アプリが抜けても所属は残る
   - 所属はファイルに書いて、起動し直しても残す（アプリの中では状態のフォルダの `signal-owners.json`、単独では `OWNERS_FILE`）
   - 中継: offer・answer・ICE の候補を宛先付きで回す
-  - 所属の変更（`assign`）: 今の所属先が online なら、その brain に `releaseRequest` で尋ね、断られたら変えない（5 秒で答えが無ければ失敗）。
-    所属先が offline・所属なしなら、すぐ変える
+  - 所属は「body → brain の一覧」。所属の変更（`assign`）は一覧を丸ごと送る。加えるのは誰にも尋ねない。外される brain が online なら `releaseRequest` で尋ね、どれかが断れば変えない（5 秒で答えが無ければ失敗）。
+    外される brain が offline なら尋ねない
 - **データチャネル**: 少なくとも片方が brain の組ごとに 1 本。名前の順で先のアプリが offer を出す
   - 1 本の中で、brain の役のメッセージ（`rpc`・`console`）と、相手の役のメッセージ（`hello`・`info`・`res`・`agent`・`action`）は種類が重ならない。そのため brain どうしも 1 本で足りる
 - **brain**: つながった全アプリの console へ会話を流す（前の lab の `ConsolePublisher`）。全アプリの body を名簿として知っている
@@ -137,6 +143,12 @@
   - 設定を変える（`brain/configure`）と、orchestrator が動いていないときだけ、保存してエージェントを起動し直し、新しい会話にする
   - ワーカーを動かせるのは、所属の body だけ（`list_bodies`・`start_thread`・`fetch_image`）
   - `releaseRequest` には、その body で自分のワーカーが動いている・待っているなら理由を返して断る
+- **共有の body の使用中**（`heldBy`）: 誰が使っているかは body が決める。その brain のワーカーが body で動いているか、作られて始まるのを待っている間、その brain が使用中。全部終わる（閉じる・始まらずに終わる・brain が去る）と空く
+  - body が断る: ほかの brain が使っている間の `agent/create`（新しいスレッド）と、動いていないスレッドへの `agent/send`（新しいターン）。読むもの（`file/image`）と、自分のスレッドへの追加の指示・停止は通す
+  - brain も先に断る: ほかの brain が使っている body への `start_thread` と、そこのスレッドへの新しいターン（`send_message`）はツールのエラーにする（使える body の一覧を付ける）。自分の順番待ちは待たせ、`list_threads` に `waiting_for` が付く
+  - 司令塔には `list_bodies` で `shared_with`（ほかの所属先）と、使用中なら `in_use_by` と `their_work`（その brain の作業の題名・状態）を見せる。使用中になった・空いたは `[bodies changed ...]` で伝わる
+  - 同時に動かせる数は変えない（使えるのは 1 つの brain だけなので、そこで動くのはその brain のワーカーだけ）。単位は body だけで、フォルダ単位などには分けない（ワーカーが決めたフォルダの外を触らない保証が無いため）
+  - 一時停止と設定の変更は body 全体にかかる。設定の変更は、どの brain のワーカーも無いときだけ
 - **worker type**（`app/lib/agents/worker_types.dart`）: そのアプリで動かすエージェント。id で呼ぶ
   - `codex`・`claude` は 1 つずつで on/off（同じ種類を複数並べると、司令塔が違いを説明から読み分けることになるため）。custom はいくつでも
   - 起動画面の「Body」で決め、状態のフォルダの `worker-types.json`（`ORCH_WORKER_TYPES` で場所を変えられる）に書く。ファイルが無ければ Codex と Claude（`KIAPI_BASE_URL` があれば kiapi も）
@@ -172,7 +184,7 @@
 - **console**（全アプリ）: つながった brain ごとに写し（`BrainView`）を持つ。選んだ brain の写しを中央と右に出し、送信・停止・設定はその brain へ送る
   - 左には次を出す
     - Brains: 選ぶと、その brain と話す。行に orchestrator が何で動いているか（エージェント・モデル・effort）。↺ で新しい会話（ワーカーは続く）、⚙ でその brain の設定（`app/lib/ui/brain_settings.dart`。編集は起動画面の Brain と同じ部品 `brain_editor.dart`、確かめは brain のマシンで `brain/check`）
-    - 全 body の一覧。名前・所属先・使えるエージェント・同時に動かせる数（重ねるとプロジェクトのフォルダとサブスクの使用量）。所属先を押すと、brain を選ぶメニューが出る（ワーカーが動いている間は押せない）
+    - 全 body の一覧。名前・所属先・使えるエージェント・同時に動かせる数（重ねるとプロジェクトのフォルダとサブスクの使用量）。所属先を押すと、brain を加える・外すメニューが出る（ワーカーが動いている brain は外せない）。共有の body には「shared · in use by brain-b」か「shared · free」
   - 所属の変更は signal へ送る
 
 ### 起動画面
@@ -185,7 +197,7 @@
 | 1. Signaling | このアプリで起動する（ポート）か、既存につなぐ（URL。既定 `ws://localhost:8765`）か | 起動する、または問い合わせる。ポートが使われている・読めないなら、ここで止まる。読めたら名簿を持って次へ |
 | 2. Roles | 名前（body_id。空なら「ホスト名-乱数 4 桁」）、Brain・Body（両方も可） | 名前が online のアプリとぶつかると、`-2` が付くと注意を出す。Body を選ばなければ、ここで起動する（どちらも選ばなければ console だけ） |
 | 3. Brain（Brain のとき） | orchestrator のエージェント（Codex・Claude・custom から 1 つ。custom は URL・API キーの変数名・モデル）、モデル（確かめると一覧から選べる）、effort（そのモデルが受け付けるもの）、フォルダ、ワーカーが終わったら起こすか。道具と macOS の許可は無い | 入ったとき・選び直したとき・「Check」で確かめる。Codex が未ログインならログインのボタンが出る。Start で `brain.json` に書く |
-| 4. Belongs to（Body のとき） | 所属する brain。候補は、自分が brain ならこのアプリ（既定）と、名簿にいる online の brain | 次へ。参加の後に所属を変える |
+| 4. Belongs to（Body のとき） | 所属する brain（複数選べる。複数なら共有）。候補は、自分が brain ならこのアプリ（既定）と、名簿にいる online の brain | 次へ。参加の後に所属を変える |
 | 5. Body（Body のとき） | このマシンのプロジェクトのフォルダと、body なら同時に動かせるワーカーの数（1〜16）。Codex・Claude の on/off・作業フォルダ・既定のモデル（確かめると一覧から選べる）・同時に動かせる数、Mac や Chrome を操作させる道具の on/off（on にすると、要るものとその状態が出る）、このアプリの macOS の許可、custom の追加（id・URL・API キーの変数名・モデル・作業フォルダ・説明・同時に動かせる数）。custom のモデルは、URL を入れて「Load models」でサーバーの一覧を読み、そこから選ぶ（一覧の無いサーバーは手で入れる。選んだモデルのコンテキスト長も一緒に覚える）。同時に動かせる数はスライダー（0〜8、0 は「上限なし」） | 入ったとき・on にしたとき・「Check」で確かめる。Codex が未ログインならログインのボタンが出る。Start で `worker-types.json` に書いて起動する。0 個でもよい |
 
 - 「Back」で前のステップへ戻れる。ステップ 1 でアプリの中のシグナリングを始めた後に戻ってポートを変えると、起動し直す
@@ -289,11 +301,12 @@ mise run signal             # シグナリングを単独で（:8765）。PORT �
 
 - `ORCH_ROLE`: `brain`・`body`・`signal`・`console` のコンマ区切り。`brain` だけなら body も兼ねる。`console` だけなら brain も body もしない
 - `ORCH_SIGNAL_PORT`: アプリの中のシグナリングのポート（既定 8765）
-- `ORCH_OWNER`: 参加の後に、この body の所属先にする brain（`-` は所属なし）
+- `ORCH_OWNER`: 参加の後に、この body の所属先にする brain（コンマ区切りで複数。`-` は所属なし）
 - 同じマシンで複数起動するときは、`ORCH_STATE_DIR` を分ける
 - `ORCH_SELECT=<brain>`: console が最初に出す brain
 - `ORCH_ORCHESTRATOR=codex|claude`: brain の orchestrator のエージェント（`brain.json` より優先）
-- `ORCH_ASSIGN=body-c=brain-a,body-d=`: 起動後に所属を変える（空は所属なし。console の一覧と同じ操作）
+- `ORCH_ASSIGN=body-c=brain-a,body-d=brain-a+brain-b,body-e=`: 起動後に所属を変える（`+` で複数、空は所属なし。console の一覧と同じ操作）
+- `ORCH_TOOLS=steps.json`: brain がモデルを使わずに自分のツールを呼ぶ（`[{tool, args, delay_ms}]`。args の body が所属になるまで待つ）。結果は `steps.json.out.jsonl` に追記（トークンを使わない確かめ用）
 - `ORCH_PAUSE=body-c`: 起動後に、その body を所属先の brain を通して止める（console の一時停止のボタンと同じ操作）
 - `ORCH_CONFIGURE=body-c=path.json`（`ORCH_PAUSE` と一緒に）: 止まったのを見てから、その body の設定を `worker-types.json` の形のファイルの中身にする。結果は console の知らせ（dump の `notice`）に出る
 - `ORCH_CONFIGURE_BRAIN=brain-a=path.json`: その brain の準備ができたら、設定を `brain.json` の形のファイルの中身にする（console の brain の ⚙ と同じ操作）。結果は console の知らせに出る

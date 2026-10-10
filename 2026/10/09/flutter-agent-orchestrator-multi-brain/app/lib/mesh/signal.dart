@@ -23,8 +23,8 @@ class SignalNode {
 }
 
 /// This app's link to the signaling server (`signal/bin/signal.dart`): the
-/// roster, who owns which body, relayed WebRTC signals, and moving bodies
-/// between brains. Reconnects on its own.
+/// roster, which brains each body belongs to, relayed WebRTC signals, and
+/// changing a body's brains. Reconnects on its own.
 class SignalClient extends ChangeNotifier {
   SignalClient({
     required this.url,
@@ -43,7 +43,8 @@ class SignalClient extends ChangeNotifier {
   bool connected = false;
   String link = 'starting';
   List<SignalNode> nodes = const [];
-  Map<String, String?> owners = const {};
+  /// Body -> the brains it belongs to (a shared body has several).
+  Map<String, List<String>> owners = const {};
 
   // Single-subscription: it holds signals until the peer manager listens.
   // A broadcast stream dropped the brains' offers that arrived between
@@ -54,8 +55,8 @@ class SignalClient extends ChangeNotifier {
   int _seq = 0;
   WebSocket? _ws;
 
-  /// A brain's answer to "may this body go to another brain?" (null reason:
-  /// yes). Only brains get asked.
+  /// A brain's answer to "may this body stop belonging to you?" (null
+  /// reason: yes). Only brains get asked.
   Future<String?> Function(String body)? onReleaseRequest;
 
   /// WebRTC signals from other apps: (from, data). One listener (the peer
@@ -73,7 +74,7 @@ class SignalClient extends ChangeNotifier {
 
   void logStep(String s) => _log('  $s');
 
-  String? ownerOf(String body) => owners[body];
+  List<String> ownersOf(String body) => owners[body] ?? const [];
 
   List<String> get brains => [
     for (final n in nodes)
@@ -128,7 +129,10 @@ class SignalClient extends ChangeNotifier {
           for (final n in (m['nodes'] as List).cast<Map>())
             SignalNode(n.cast<String, dynamic>()),
         ];
-        owners = (m['owners'] as Map).cast<String, String?>();
+        owners = {
+          for (final e in (m['owners'] as Map).entries)
+            e.key as String: brainList(e.value),
+        };
       case 'signal':
         _signals.add((m['from'] as String, (m['data'] as Map).cast<String, dynamic>()));
         return;
@@ -150,16 +154,23 @@ class SignalClient extends ChangeNotifier {
   void sendSignal(String to, Json data) =>
       _send({'t': 'signal', 'to': to, 'data': data});
 
-  /// Moves [body] to [brain] (null: no owner). Fails while the current owner
+  /// Sets the brains [body] belongs to. Fails while a brain being removed
   /// has workers running or queued there.
-  Future<(bool, String?)> assign(String body, String? brain) {
+  Future<(bool, String?)> assign(String body, List<String> brains) {
     final id = 'a${++_seq}';
     final c = Completer<(bool, String?)>();
     _assigns[id] = c;
-    _send({'t': 'assign', 'id': id, 'body': body, 'brain': brain});
+    _send({'t': 'assign', 'id': id, 'body': body, 'brains': brains});
     return c.future.timeout(
       const Duration(seconds: 10),
       onTimeout: () => (false, 'no answer from the signaling server'),
     );
   }
 }
+
+/// The brains a body belongs to, from a list, or a single name or null.
+List<String> brainList(Object? v) => switch (v) {
+  final List l => [for (final b in l) '$b'],
+  final String s => [s],
+  _ => const [],
+};

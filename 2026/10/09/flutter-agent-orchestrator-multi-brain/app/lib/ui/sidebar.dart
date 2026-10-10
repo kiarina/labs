@@ -378,6 +378,19 @@ class _Bodies extends StatelessWidget {
                       ],
                     ),
                     _OwnerMenu(console: console, body: b, brains: brains),
+                    if (b.owners.length > 1 && b.node.online)
+                      Text(
+                        b.view?.heldBy != null
+                            ? 'shared · in use by ${b.view!.heldBy}'
+                            : 'shared · free',
+                        key: ValueKey('body-holder-${b.name}'),
+                        style: TextStyle(
+                          fontSize: 10.5,
+                          color: b.view?.heldBy != null
+                              ? Palette.warning
+                              : Palette.textDim,
+                        ),
+                      ),
                     if (b.node.online && b.view != null)
                       Text(
                         [
@@ -426,8 +439,8 @@ class _PauseButton extends StatelessWidget {
     return IconButton(
       key: ValueKey('pause-${body.name}'),
       tooltip: paused
-          ? 'Resume: ${body.owner} may use it again'
-          : 'Pause: ${body.owner} starts nothing new here; what runs finishes',
+          ? 'Resume: its brains may use it again'
+          : 'Pause: its brains start nothing new here; what runs finishes',
       iconSize: 15,
       visualDensity: VisualDensity.compact,
       constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
@@ -453,13 +466,15 @@ class _BodySettingsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final paused = body.view!.paused;
-    final ready = paused && body.running == 0;
+    // Free: no brain's workers run or wait there.
+    final holder = body.view!.heldBy;
+    final ready = paused && holder == null && body.running == 0;
     return IconButton(
       key: ValueKey('body-settings-${body.name}'),
       tooltip: !paused
           ? 'Change its agents: pause it first'
-          : body.running > 0
-          ? 'Change its agents: wait for its ${body.running} worker(s) to finish'
+          : !ready
+          ? 'Change its agents: wait for the workers of ${holder ?? 'its brain'} to finish'
           : 'Change its agents',
       iconSize: 15,
       visualDensity: VisualDensity.compact,
@@ -480,7 +495,10 @@ class _BodySettingsButton extends StatelessWidget {
   }
 }
 
-/// "→ brain-a · 1 running"; a menu of brains to move the body to.
+/// "→ brain-a, brain-b · 1 running": the brains the body belongs to, and a
+/// menu that adds or removes one (a body shared by several brains is used
+/// by one of them at a time). Removing a brain whose workers run or wait
+/// there is refused.
 class _OwnerMenu extends StatelessWidget {
   const _OwnerMenu({
     required this.console,
@@ -494,26 +512,32 @@ class _OwnerMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final busy = body.running > 0;
+    final owners = body.owners;
     final label =
-        '→ ${body.owner ?? 'no brain'}${busy ? ' · ${body.running} running' : ''}';
+        '→ ${owners.isEmpty ? 'no brain' : owners.join(', ')}'
+        '${body.running > 0 ? ' · ${body.running} running' : ''}';
     return PopupMenuButton<String>(
-      tooltip: busy
-          ? 'Its workers are running; it can move when they finish'
-          : 'Move to another brain',
-      enabled: !busy && console.connected,
+      tooltip: 'Brains it belongs to (several: shared, used by one at a time)',
+      enabled: console.connected,
       color: Palette.surfaceHigh,
-      onSelected: (v) => console.assign(body.name, v.isEmpty ? null : v),
+      onSelected: (v) => console.assign(
+        body.name,
+        v.isEmpty
+            ? const []
+            : owners.contains(v)
+            ? [for (final o in owners) if (o != v) o]
+            : [...owners, v],
+      ),
       itemBuilder: (_) => [
-        for (final b in brains)
+        for (final b in {...brains, ...owners})
           CheckedPopupMenuItem(
             value: b,
-            checked: b == body.owner,
+            checked: owners.contains(b),
             child: Text(b, style: const TextStyle(fontSize: 13)),
           ),
         CheckedPopupMenuItem(
           value: '',
-          checked: body.owner == null,
+          checked: owners.isEmpty,
           child: const Text('No brain', style: TextStyle(fontSize: 13)),
         ),
       ],
@@ -528,16 +552,15 @@ class _OwnerMenu extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: 11,
-                  color: body.owner == null ? Palette.warning : Palette.text,
+                  color: owners.isEmpty ? Palette.warning : Palette.text,
                 ),
               ),
             ),
-            if (!busy)
-              const Icon(
-                Icons.arrow_drop_down,
-                size: 14,
-                color: Palette.textFaint,
-              ),
+            const Icon(
+              Icons.arrow_drop_down,
+              size: 14,
+              color: Palette.textFaint,
+            ),
           ],
         ),
       ),

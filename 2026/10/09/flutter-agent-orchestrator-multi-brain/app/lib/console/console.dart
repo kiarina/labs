@@ -81,7 +81,7 @@ class ConsolePublisher {
           'name': b.name,
           'online': b.online,
           'isBrain': b.isLocal,
-          'owner': hub.ownerOf(b.name),
+          'owners': hub.ownersOf(b.name),
           'running': hub.runningOn(b.name),
         },
     ],
@@ -209,6 +209,9 @@ class BodyView {
 
   /// Paused by its owner: its brain starts nothing new there.
   bool get paused => info['paused'] == true;
+
+  /// The brain using it now (null: free).
+  String? get heldBy => info['heldBy'] as String?;
 
   /// Every worker type the body offers, available or not (`error`).
   List<Json> get workerTypeInfo => [
@@ -343,16 +346,18 @@ class BrainView {
   }
 }
 
-/// One app in the console's body list: the roster's record, who owns it,
-/// and what a brain knows about it (worker types, usage).
+/// One app in the console's body list: the roster's record, the brains it
+/// belongs to, and what a brain knows about it (worker types, usage, who is
+/// using it).
 class BodyEntry {
-  BodyEntry(this.node, this.owner, this.view, this.running);
+  BodyEntry(this.node, this.owners, this.view, this.running);
 
   final SignalNode node;
-  final String? owner;
+  final List<String> owners;
   final BodyView? view;
 
-  /// Workers of its owner running there.
+  /// Workers of its brains running or queued there (all of one brain: a
+  /// shared body is used by one brain at a time).
   final int running;
   String get name => node.name;
 }
@@ -506,9 +511,11 @@ class ConsoleMirror extends ChangeNotifier {
         if (n.body)
           BodyEntry(
             n,
-            signal.ownerOf(n.name),
+            signal.ownersOf(n.name),
             info(n.name),
-            running(n.name, signal.ownerOf(n.name)),
+            [
+              for (final o in signal.ownersOf(n.name)) running(n.name, o),
+            ].fold(0, (a, b) => a + b),
           ),
     ];
   }
@@ -564,29 +571,34 @@ class ConsoleMirror extends ChangeNotifier {
     return v.request({'a': 'brain', 'm': method, 'p': params});
   }
 
-  /// Whether this console can pause or resume [body]: its owner is a brain
-  /// this console is linked to (the owner relays it to the body).
-  bool canPause(BodyEntry body) =>
-      body.node.online && body.view != null && views.containsKey(body.owner);
+  /// A brain [body] belongs to that this console is linked to: it relays
+  /// what the console asks of the body.
+  BrainView? _relay(BodyEntry body) =>
+      body.owners.map((o) => views[o]).nonNulls.firstOrNull;
 
-  /// Pauses or resumes a body through the brain that owns it.
-  void setPaused(BodyEntry body, bool paused) => views[body.owner]?.send({
+  /// Whether this console can pause or resume [body] (and change its
+  /// settings): one of its brains is linked to this console.
+  bool canPause(BodyEntry body) =>
+      body.node.online && body.view != null && _relay(body) != null;
+
+  /// Pauses or resumes a body (for all its brains) through one of them.
+  void setPaused(BodyEntry body, bool paused) => _relay(body)?.send({
     'a': 'pause',
     'body': body.name,
     'paused': paused,
   });
 
-  /// A `body/...` request to [body] through the brain that owns it
+  /// A `body/...` request to [body] through one of its brains
   /// (`body/config`, `body/check`, `body/configure`).
   Future<Object?> bodyRequest(
     BodyEntry body,
     String method, [
     Json params = const {},
   ]) {
-    final v = views[body.owner];
+    final v = _relay(body);
     if (v == null) {
       return Future.error(
-        StateError('${body.owner ?? 'no brain'} is not linked to this console'),
+        StateError('no brain of ${body.name} is linked to this console'),
       );
     }
     return v.request({
@@ -597,14 +609,13 @@ class ConsoleMirror extends ChangeNotifier {
     });
   }
 
-  /// Moves a body to a brain (null: no owner) through the signaling server.
-  Future<void> assign(String body, String? brain) async {
-    notice = 'moving $body to ${brain ?? 'no brain'}…';
+  /// Sets the brains [body] belongs to, through the signaling server.
+  Future<void> assign(String body, List<String> brains) async {
+    final to = brains.isEmpty ? 'no brain' : brains.join(', ');
+    notice = 'setting $body → $to…';
     notifyListeners();
-    final (ok, reason) = await signal.assign(body, brain);
-    notice = ok
-        ? '$body → ${brain ?? 'no brain'}'
-        : 'could not move $body: $reason';
+    final (ok, reason) = await signal.assign(body, brains);
+    notice = ok ? '$body → $to' : 'could not change $body: $reason';
     notifyListeners();
   }
 
@@ -631,7 +642,7 @@ class ConsoleMirror extends ChangeNotifier {
           'brain': n.brain,
           'body': n.body,
           'online': n.online,
-          'owner': signal.ownerOf(n.name),
+          'owners': signal.ownersOf(n.name),
           'paused': ?allBodies
               .where((b) => b.name == n.name)
               .firstOrNull
