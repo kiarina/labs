@@ -252,9 +252,10 @@ class _ThisApp extends StatelessWidget {
 }
 
 class _Badge extends StatelessWidget {
-  const _Badge(this.text);
+  const _Badge(this.text, {this.color = Palette.textDim});
 
   final String text;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -262,12 +263,11 @@ class _Badge extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: Palette.border),
+        border: Border.all(
+          color: color == Palette.textDim ? Palette.border : color,
+        ),
       ),
-      child: Text(
-        text,
-        style: const TextStyle(fontSize: 10, color: Palette.textDim),
-      ),
+      child: Text(text, style: TextStyle(fontSize: 10, color: color)),
     );
   }
 }
@@ -431,6 +431,13 @@ class _Bodies extends StatelessWidget {
                           const SizedBox(width: 6),
                           const _Badge('brain'),
                         ],
+                        if (b.view?.paused ?? false) ...[
+                          const SizedBox(width: 6),
+                          const _Badge('paused', color: Palette.warning),
+                        ],
+                        const Spacer(),
+                        if (console.canPause(b))
+                          _PauseButton(console: console, body: b),
                       ],
                     ),
                     _OwnerMenu(console: console, body: b, brains: brains),
@@ -463,6 +470,35 @@ class _Bodies extends StatelessWidget {
               ),
             ),
         ],
+      ),
+    );
+  }
+}
+
+/// Pauses the body for its brain (nothing new starts there; what runs
+/// finishes) or resumes it. The connection stays.
+class _PauseButton extends StatelessWidget {
+  const _PauseButton({required this.console, required this.body});
+
+  final ConsoleMirror console;
+  final BodyEntry body;
+
+  @override
+  Widget build(BuildContext context) {
+    final paused = body.view!.paused;
+    return IconButton(
+      key: ValueKey('pause-${body.name}'),
+      tooltip: paused
+          ? 'Resume: ${body.owner} may use it again'
+          : 'Pause: ${body.owner} starts nothing new here; what runs finishes',
+      iconSize: 15,
+      visualDensity: VisualDensity.compact,
+      constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
+      padding: EdgeInsets.zero,
+      onPressed: () => console.setPaused(body, !paused),
+      icon: Icon(
+        paused ? Icons.play_arrow : Icons.pause,
+        color: paused ? Palette.warning : Palette.textFaint,
       ),
     );
   }

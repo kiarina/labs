@@ -105,6 +105,11 @@ class Hub extends ChangeNotifier {
   Body? _ownBody(String name) =>
       ownBodies.where((b) => b.name == name).firstOrNull;
 
+  List<String> _unpaused() => [
+    for (final b in ownBodies)
+      if (!b.paused) b.name,
+  ];
+
   Json _noBody(String name) => {
     'error': ownerOf(name) != null && ownerOf(name) != local.name
         ? 'body "$name" belongs to ${ownerOf(name)}, not to you'
@@ -162,7 +167,24 @@ class Hub extends ChangeNotifier {
       case 'project':
         local.setProjectDir(a['dir'] as String);
         await newConversation();
+      case 'pause':
+        await setPaused(a['body'] as String, a['paused'] == true);
     }
+  }
+
+  /// Pauses or resumes one of this brain's bodies (the body keeps the
+  /// state). Paused, nothing new starts there: start_thread, new turns and
+  /// body tools are refused, queued workers wait; running turns finish.
+  Future<void> setPaused(String name, bool paused) async {
+    final body = _ownBody(name);
+    if (body == null) return;
+    if (body is RemoteBody) {
+      await body.rpc('body/pause', {'paused': paused});
+    } else if (body is LocalBody) {
+      body.setPaused(paused);
+    }
+    if (!paused) drainQueue();
+    notifyListeners();
   }
 
   // ---- the orchestrator -------------------------------------------------------
@@ -212,27 +234,35 @@ class Hub extends ChangeNotifier {
   // ---- telling the orchestrator what changed ------------------------------------
 
   /// What the orchestrator last saw of its bodies (list_bodies): body name
-  /// to its worker types. Null until it looks. Bodies change under it (a
-  /// body restarts with other worker types, joins, leaves, moves to another
-  /// brain); the next message it gets starts with what changed.
-  Map<String, String>? _shownBodies;
+  /// to its worker types and whether it was paused. Null until it looks.
+  /// Bodies change under it (a body restarts with other worker types,
+  /// joins, leaves, moves to another brain, is paused or resumed); the next
+  /// message it gets starts with what changed.
+  Map<String, ({String types, bool paused})>? _shownBodies;
 
-  Map<String, String> _bodySnapshot() => {
-    for (final b in ownBodies) b.name: b.workerTypes.join(', '),
+  Map<String, ({String types, bool paused})> _bodySnapshot() => {
+    for (final b in ownBodies)
+      b.name: (types: b.workerTypes.join(', '), paused: b.paused),
   };
 
   /// What changed since the orchestrator last looked, or null.
-  String? _bodiesChanged() {
+  @visibleForTesting
+  String? bodiesChanged() {
     final shown = _shownBodies;
     if (shown == null) return null;
     final now = _bodySnapshot();
     String types(String t) => t.isEmpty ? 'none' : t;
     final lines = [
       for (final e in now.entries)
-        if (!shown.containsKey(e.key))
-          '- ${e.key} is now one of your bodies (worker types: ${types(e.value)})'
-        else if (shown[e.key] != e.value)
-          '- ${e.key}: worker types are now ${types(e.value)} (were ${types(shown[e.key]!)})',
+        if (shown[e.key] case final was?) ...[
+          if (was.types != e.value.types)
+            '- ${e.key}: worker types are now ${types(e.value.types)} (were ${types(was.types)})',
+          if (was.paused != e.value.paused)
+            e.value.paused
+                ? '- ${e.key} is paused by the user: no new threads, turns or tool calls there until it is resumed (running ones finish)'
+                : '- ${e.key} is resumed: you can use it again',
+        ] else
+          '- ${e.key} is now one of your bodies (worker types: ${types(e.value.types)}${e.value.paused ? '; paused' : ''})',
       for (final k in shown.keys)
         if (!now.containsKey(k))
           '- $k is no longer available to you (offline, or moved to another brain)',
@@ -244,7 +274,7 @@ class Hub extends ChangeNotifier {
   }
 
   String _withChanges(String text) {
-    final c = _bodiesChanged();
+    final c = bodiesChanged();
     return c == null ? text : '$c\n\n$text';
   }
 
@@ -297,6 +327,7 @@ class Hub extends ChangeNotifier {
   /// limits apply per body: each body has its own subscriptions and machine.
   bool _hasSlot(AgentThread w) {
     final body = bodies[w.body];
+    if (body?.paused ?? false) return false;
     if (runningOn(w.body) >= (body?.maxWorkers ?? WorkerTypesConfig.defaultMaxWorkers)) return false;
     final limit = typeLimit(w.body, w.workerType);
     return limit == null || runningOn(w.body, w.workerType) < limit;
@@ -436,6 +467,9 @@ class Hub extends ChangeNotifier {
     final path = a['path'] as String? ?? '';
     final body = _ownBody(bodyName);
     if (body == null) return ToolResult(prettyJson(_noBody(bodyName)), false);
+    if (body.paused) {
+      return ToolResult(prettyJson({'error': pausedMessage(bodyName)}), false);
+    }
     final Json image;
     try {
       image = await body.readImage(path);
@@ -465,6 +499,9 @@ class Hub extends ChangeNotifier {
         final bodyName = a['body'] as String? ?? '';
         final body = _ownBody(bodyName);
         if (body == null) return _noBody(bodyName);
+        if (body.paused) {
+          return {'error': pausedMessage(bodyName), 'your_bodies': _unpaused()};
+        }
         final p = a['worker_type'] as String? ?? '';
         if (!body.workerTypes.contains(p)) {
           final t = body.workerType(p);
@@ -509,6 +546,7 @@ class Hub extends ChangeNotifier {
                 'is_this_brain_machine': b.isLocal,
                 'project_dir': b.projectDir,
                 'running': runningOn(b.name),
+                if (b.paused) 'paused': true,
                 'max_concurrent': b.maxWorkers,
                 'worker_types': [
                   for (final id in b.workerTypes)
@@ -530,6 +568,12 @@ class Hub extends ChangeNotifier {
       case 'send_message':
         final w = worker(a['thread_id'] as String);
         if (w == null) return {'error': 'no thread ${a['thread_id']}'};
+        // A new turn is new work; steering a running one is not.
+        if (!w.isRunning &&
+            w.state != AgentState.queued &&
+            (bodies[w.body]?.paused ?? false)) {
+          return {'thread_id': w.label, 'error': pausedMessage(w.body)};
+        }
         return {
           'thread_id': w.label,
           'status': await _run(w, a['message'] as String),
@@ -608,6 +652,8 @@ class Hub extends ChangeNotifier {
     'model': w.model,
     'title': w.title,
     'status': w.state.name,
+    if (w.state == AgentState.queued && (bodies[w.body]?.paused ?? false))
+      'waiting_for': '${w.body} to be resumed (paused by the user)',
     'cwd': w.cwd,
     if (w.turnStartedAt != null)
       'seconds':

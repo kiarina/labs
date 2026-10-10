@@ -59,6 +59,9 @@ ConsoleMirror _boot(LaunchConfig config, String stateDir) {
   if (env['ORCH_ASSIGN'] case final String spec when spec.isNotEmpty) {
     unawaited(_assignOnStart(console, signal, spec));
   }
+  if (env['ORCH_PAUSE'] case final String spec when spec.isNotEmpty) {
+    unawaited(_pauseOnStart(console, spec));
+  }
   return console;
 }
 
@@ -132,6 +135,22 @@ Future<void> _run(
   );
   // A console alone runs no agents.
   if (signal.isBrain || signal.isBody) await local.start();
+}
+
+/// `ORCH_PAUSE=body,body2` pauses bodies through their brains once this
+/// console sees them (for unattended checks; the pause button in the body
+/// list does the same).
+Future<void> _pauseOnStart(ConsoleMirror console, String spec) async {
+  for (final name in spec.split(',').map((s) => s.trim())) {
+    for (var i = 0; i < 300; i++) {
+      final b = console.allBodies.where((b) => b.name == name).firstOrNull;
+      if (b != null && console.canPause(b)) {
+        console.setPaused(b, true);
+        break;
+      }
+      await Future<void>.delayed(const Duration(milliseconds: 200));
+    }
+  }
 }
 
 /// `ORCH_ASSIGN=body=brain,body2=` moves bodies once they are in the roster

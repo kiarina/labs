@@ -7,6 +7,7 @@
 - **シグナリング**: 独立したサーバーにし、名簿（どのアプリがいるか、どれが brain・body か）と所属（body → brain）を持たせます。単独のプロセスでも、アプリの中でも動きます
 - **起動画面**: アプリを起動すると、シグナリング → 役割（brain・body）→ 所属 → エージェントの順に選んでから、起動と接続をします
 - **worker type**: そのアプリで動かすエージェントを、起動画面で決めます。Codex と Claude は 1 つずつ on/off、別のモデルのサーバーにつないだ Codex（custom）はいくつでも。それぞれ足すときに、動くか・ログインしているかを確かめます。司令塔は、選べる種類を tool の定義でなく `list_bodies` の結果で知り、変わったら次のメッセージで知らされます
+- **body の一時停止**: console から、接続したまま body を止められます。止めている間、brain はその body で新しいことを始めません（実行中のものは最後まで動きます）。body の設定を安全に変えるための準備です
 
 前提となる lab:
 - [N 個のアプリを WebRTC でつなぎ、1 つの brain が複数の body を使う形](../flutter-agent-orchestrator-mesh/README.md)（この lab はその写し。司令塔のツール、文字起こしの写し方、画像の運び方はそちら）
@@ -70,6 +71,9 @@
   console から「tool を呼ばずに、body-c の worker type を答えて」と送ると、
   メッセージの頭に `[bodies changed since you last called list_bodies]` と `- body-c: worker types are now codex (were none)` が付いた。
   司令塔は「codex。知らせにそう書いてあった」と答えた（Claude は未ログインなので入らない）
+- **接続したまま body を一時停止できた。** body-c の console から body-c を止める操作が、所属先の brain-a を通って body-c に届いた。
+  body-c は自分の状態を `paused` にして brain-a へ知らせ、brain-a と body-c の両方の console に「paused」と出た（`ORCH_PAUSE` と dump、スクリーンショット）。
+  止めている間と再開の後の brain の振る舞い（新しい仕事を断る、実行中は続く、順番待ちは残る、知らせ）は単体のテストで確かめた（`test/pause_test.dart`、トークンは使わない）
 
 - **Mac や Chrome を操作させる道具を、worker type ごとに on/off できた。** 偽の Responses API に、ワーカーのモデルへ渡る道具を記録させて確かめた（トークンを使わない）
   - Codex の Computer Use の正体は、computer-use のプラグインが足す `cua_repl`（Mac のアプリと Chrome の操作）。`features` の `computer_use`・`browser_use` などを切っても消えず、
@@ -136,6 +140,13 @@
     body の起動し直し、加わる・抜ける、所属が移る、のどれでも同じに扱う（console の操作のイベントでなく、今の内容と見せた内容の差で見る）
 - **body**（body を選んだアプリ）: つながった brain ごとに `BodyHost` を置く。rpc は、今の所属先の brain からのものだけを受ける
   （所属が変わる前に始めたエージェントの `close`・`interrupt` は受ける）
+- **一時停止**: 止めている状態は body が持ち（メモリだけ。起動し直すと止めていない状態に戻る）、`info` の `paused` で brain へ知らせる。
+  console の body の一覧のボタンから、所属先の brain を通して body へ送る（rpc `body/pause`）。所属先の brain が変わっても、止めたまま
+  - brain が先に断る: 止めている body への `start_thread`・`fetch_image`、終わったスレッドへの新しいターン（`send_message`）はツールのエラーにする
+  - body も断る（最後の守り）: `agent/start`、実行中でないエージェントへの `agent/send`、`file/image`
+  - 断らないもの: 実行中のターン（その追加の指示も）。止める前から順番待ちのものは待ったまま残り、再開すると始まる（`list_threads` に `waiting_for`）
+  - 司令塔には `list_bodies` の `paused: true` と、次のメッセージの頭の `[bodies changed ...]`（「paused by the user」「resumed」）で伝える
+  - 司令塔そのものはワーカーではないので止まらない
 - **console**（全アプリ）: つながった brain ごとに写し（`BrainView`）を持つ。選んだ brain の写しを中央と右に出し、送信・停止・設定はその brain へ送る
   - 「Settings」は選んだ brain の設定だけ: 司令塔をどれで動かすか・そのモデルと effort（次の会話から）、ワーカーが終わったら司令塔を起こすか。
     body が何を動かすか・何個まで同時に動かすかは、その body の起動画面で決める
@@ -220,7 +231,7 @@
 
 - **2 台の Mac では確かめていない。** 2 台目の Mac（Mac Studio）が VPN から外れていて、届かなかった
 - **console の brain の切り替えと所属先のメニューは、画面のクリックでは確かめていない**
-  - 使っている関数は、起動時の `ORCH_SELECT`・`ORCH_ASSIGN` と同じ。そちらで確かめた。表示はスクリーンショットで確かめた
+  - 使っている関数は、起動時の `ORCH_SELECT`・`ORCH_ASSIGN`・`ORCH_PAUSE` と同じ。そちらで確かめた。表示はスクリーンショットで確かめた
   - 起動画面は、widget のテストとオーナーの操作で確かめた（上の Answer）
 - **認証が無い。** signal は誰でも参加でき、誰でも所属を変えられる。信頼できるネットワークの中だけで動かす
 - Claude のワーカーは、Claude Code の本来のプロンプトなしで動いている（上の Findings）。直すなら中継プロセスでワーカーにも preset を渡す
@@ -261,6 +272,7 @@ mise run signal             # シグナリングを単独で（:8765）。PORT �
 - `ORCH_SELECT=<brain>`: console が最初に出す brain
 - `ORCH_ORCHESTRATOR=<worker type>`: brain の司令塔を動かす worker type（Settings の「Runs on」と同じ）
 - `ORCH_ASSIGN=body-c=brain-a,body-d=`: 起動後に所属を変える（空は所属なし。console の一覧と同じ操作）
+- `ORCH_PAUSE=body-c`: 起動後に、その body を所属先の brain を通して止める（console の一時停止のボタンと同じ操作）
 - `ORCH_PROMPT`: 選んだ brain へ、起動後に 1 回送る
 - `ORCH_DUMP=path.json`: 名簿・所属・brain ごとの会話（操作の数とハッシュ、ターンの状態）・接続の記録を書き出す
 - `ORCH_WORKER_TYPES=path.json`: エージェントの設定（既定は状態のフォルダの `worker-types.json`。起動画面で書くもの）

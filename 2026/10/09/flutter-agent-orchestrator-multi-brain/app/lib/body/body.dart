@@ -43,6 +43,10 @@ abstract mixin class Body {
 
   String get projectDir => info['projectDir'] as String? ?? '/';
 
+  /// Paused by its owner from a console: the brain starts nothing new here
+  /// (what runs finishes). The body keeps it, in memory only.
+  bool get paused => info['paused'] == true;
+
   /// Workers allowed at once on this body (its start screen's setting).
   int get maxWorkers =>
       (info['maxWorkers'] as num?)?.toInt() ?? WorkerTypesConfig.defaultMaxWorkers;
@@ -103,6 +107,15 @@ class LocalBody extends ChangeNotifier with Body {
 
   /// Every turned-on worker type has started or failed.
   bool ready = false;
+
+  @override
+  bool paused = false;
+
+  void setPaused(bool v) {
+    if (paused == v) return;
+    paused = v;
+    notifyListeners();
+  }
 
   /// The project folder set on the start screen, else ORCH_CWD, else home.
   @override
@@ -282,6 +295,7 @@ class LocalBody extends ChangeNotifier with Body {
       'name': name,
       'host': Platform.localHostname.split('.').first,
       'ready': ready,
+      'paused': paused,
       'startupError': startupError,
       'workerTypes': [
         for (final t in types)
@@ -323,6 +337,7 @@ class LocalBody extends ChangeNotifier with Body {
     if (t == null) {
       throw StateError('no worker type "$type" on $name (have: ${workerTypes.join(', ')})');
     }
+    if (paused && !role.isOrchestrator) throw StateError(pausedMessage(name));
     if (!_available(t)) {
       throw StateError('worker type "$type" is not available on $name: ${typeErrors[type] ?? 'not started'}');
     }
@@ -359,6 +374,10 @@ class LocalBody extends ChangeNotifier with Body {
   }
 }
 
+String pausedMessage(String body) =>
+    'body $body is paused by its owner: it takes no new threads, turns or tool calls until it is resumed '
+    '(what runs there finishes). Use another body, or wait.';
+
 /// Whether the Agent SDK's account info shows a login. Logged out, it says
 /// `{tokenSource: none, apiProvider: firstParty}` (as `claude auth status`
 /// says `loggedIn: false`); a login brings a token source, an email or a
@@ -375,7 +394,7 @@ bool claudeLoggedIn(Json? account) {
 // ---- serving this app's backends to the brain ---------------------------------
 
 /// Runs a brain's requests (`agent/create`, `start`, `send`, `interrupt`,
-/// `close`, `file/image`) on this app's backends and streams each agent's
+/// `close`, `file/image`, `body/pause`) on this app's backends and streams each agent's
 /// transcript operations back. One per brain this app is linked to; only the
 /// brain that owns this body ([ownerOf]) is served.
 class BodyHost {
@@ -476,9 +495,23 @@ class BodyHost {
   }
 
   Future<Object?> _call(String method, Json p) async {
-    if (method == 'file/image') return loadImage(p['path'] as String);
+    if (method == 'body/pause') {
+      local.setPaused(p['paused'] == true);
+      return {'paused': local.paused};
+    }
+    if (method == 'file/image') {
+      if (local.paused) throw StateError(pausedMessage(local.name));
+      return loadImage(p['path'] as String);
+    }
     final agent = _agents[p['id']];
     if (agent == null) throw StateError('no agent ${p['id']} on ${local.name}');
+    // Paused: the turns that run go on (steering them too), nothing new
+    // starts. The brain refuses first; this is the last guard.
+    if (local.paused &&
+        (method == 'agent/start' ||
+            method == 'agent/send' && !agent.view.isRunning)) {
+      throw StateError(pausedMessage(local.name));
+    }
     switch (method) {
       case 'agent/start':
         await agent.start(p['text'] as String);

@@ -206,6 +206,10 @@ class BodyView {
   bool get online => info['online'] == true;
   bool get isBrain => info['isBrain'] == true;
   int get running => (info['running'] as num?)?.toInt() ?? 0;
+
+  /// Paused by its owner: its brain starts nothing new there.
+  bool get paused => info['paused'] == true;
+
   /// Every worker type the body offers, available or not (`error`).
   List<Json> get workerTypeInfo => [
     for (final t in info['workerTypes'] as List? ?? const [])
@@ -510,6 +514,18 @@ class ConsoleMirror extends ChangeNotifier {
   /// machine.
   void setProject(String dir) => _act({'a': 'project', 'dir': dir});
 
+  /// Whether this console can pause or resume [body]: its owner is a brain
+  /// this console is linked to (the owner relays it to the body).
+  bool canPause(BodyEntry body) =>
+      body.node.online && body.view != null && views.containsKey(body.owner);
+
+  /// Pauses or resumes a body through the brain that owns it.
+  void setPaused(BodyEntry body, bool paused) => views[body.owner]?.send({
+    'a': 'pause',
+    'body': body.name,
+    'paused': paused,
+  });
+
   /// Moves a body to a brain (null: no owner) through the signaling server.
   Future<void> assign(String body, String? brain) async {
     notice = 'moving $body to ${brain ?? 'no brain'}…';
@@ -537,7 +553,14 @@ class ConsoleMirror extends ChangeNotifier {
     'notice': notice,
     'roster': [
       for (final n in signal.nodes)
-        {'name': n.name, 'brain': n.brain, 'body': n.body, 'online': n.online, 'owner': signal.ownerOf(n.name)},
+        {
+          'name': n.name,
+          'brain': n.brain,
+          'body': n.body,
+          'online': n.online,
+          'owner': signal.ownerOf(n.name),
+          'paused': ?allBodies.where((b) => b.name == n.name).firstOrNull?.view?.paused,
+        },
     ],
     'brains': {for (final e in views.entries) e.key: e.value.digest()},
   };
