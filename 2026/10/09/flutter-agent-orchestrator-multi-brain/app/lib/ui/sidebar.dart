@@ -204,7 +204,7 @@ class _BrainRow extends StatelessWidget {
                             style: const TextStyle(fontSize: 13),
                           ),
                         ),
-                        if (brain == console.selfName) ...[
+                        if (console.isLocalBrain(brain)) ...[
                           const SizedBox(width: 6),
                           const _Badge('this app'),
                         ],

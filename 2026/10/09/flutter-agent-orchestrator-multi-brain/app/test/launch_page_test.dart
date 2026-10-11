@@ -226,25 +226,15 @@ void main() {
       LaunchConfig(url: 'ws://127.0.0.1:$port'),
     );
 
-    expect(
-      find.text(
-        '1. Signaling   2. Roles   3. Belongs to   4. Body',
-        findRichText: true,
-      ),
-      findsOneWidget,
-    );
+    const steps = '1. Signaling   2. Brains   3. Body   4. Workers';
+    expect(find.text(steps, findRichText: true), findsOneWidget);
     await tester.tap(find.byKey(const Key('signal-join')));
+    await tester.enterText(find.byKey(const Key('name')), 'body-d');
     await tester.pump();
     await tapAndWait(tester, find.byKey(const Key('next')));
 
-    // Step 2: the roster was read; a taken name is flagged.
-    expect(find.textContaining('2 brain(s) there'), findsOneWidget);
-    await tester.enterText(find.byKey(const Key('name')), 'body-c');
-    await tester.pump();
-    expect(find.textContaining('this one will get a suffix'), findsOneWidget);
-    await tester.enterText(find.byKey(const Key('name')), 'body-d');
-    await tester.pump();
-    expect(find.text('Next'), findsOneWidget);
+    // Step 2: the roster was read; no brain on this app.
+    expect(find.textContaining('2 already on'), findsOneWidget);
     await tester.tap(find.byKey(const Key('next')));
     await tester.pumpAndSettle();
 
@@ -256,21 +246,15 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('next')));
     await tester.pumpAndSettle();
-    // Step 4: agents; Codex and Claude are on by default.
-    expect(
-      find.text(
-        '1. Signaling   2. Roles   3. Belongs to   4. Body',
-        findRichText: true,
-      ),
-      findsOneWidget,
-    );
+    // Step 4: workers; Codex and Claude are on by default.
     expect(find.text('Start'), findsOneWidget);
     await tester.tap(find.byKey(const Key('next')));
     final (c, s) = await started.future;
     expect(
-      (c.name, c.brain, c.body, c.signaling, c.assignOwner, s),
-      ('body-d', false, true, false, true, null),
+      (c.name, c.body, c.signaling, c.assignOwner, s),
+      ('body-d', true, false, true, null),
     );
+    expect(c.brains, isEmpty);
     expect(c.owners, ['brain-a', 'brain-b']);
 
     await tester.runAsync(() async {
@@ -300,33 +284,48 @@ void main() {
     expect(find.byKey(const Key('port')), findsOneWidget); // still step 1
 
     await tester.enterText(find.byKey(const Key('port')), '$free');
+    await tester.enterText(find.byKey(const Key('name')), 'mac-a');
     await tapAndWait(tester, find.byKey(const Key('next')));
-    expect(find.textContaining('0 brain(s) there'), findsOneWidget);
-    await tester.enterText(find.byKey(const Key('name')), 'brain-a');
-    await tester.tap(find.byKey(const Key('role-brain')));
-    await tester.pump();
-    await tester.tap(find.byKey(const Key('next')));
+    expect(find.textContaining('0 already on'), findsOneWidget);
+    // Two brains on this app, added one at a time.
+    await tester.tap(find.byKey(const Key('add-brain')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('brain-kind')), findsOneWidget);
+    await tester.enterText(find.byKey(const Key('brain-name-0')), 'brain-a');
+    await tester.tap(find.byKey(const Key('add-brain')));
     await tester.pumpAndSettle();
     expect(
-      find.text(
-        '1. Signaling   2. Roles   3. Brain   4. Belongs to   5. Body',
-        findRichText: true,
-      ),
+      find.text('brain-a · Codex'),
       findsOneWidget,
+      reason: 'the first folds',
     );
-    await tester.tap(find.byKey(const Key('next'))); // brain: Codex, as it was
+    expect(
+      (tester.widget(
+        find.byKey(const Key('brain-name-1')),
+      ) as TextField).controller!.text,
+      'mac-a-brain-2',
+    );
+    await tester.tap(find.text('Claude'));
     await tester.pumpAndSettle();
-    // A brain that is a body belongs to itself by default.
+    await tester.tap(find.byKey(const Key('next')));
+    await tester.pumpAndSettle();
+    // This app's brains own its body by default.
     expect(find.text('brain-a (this app)'), findsOneWidget);
+    expect(find.text('mac-a-brain-2 (this app)'), findsOneWidget);
     await tester.tap(find.byKey(const Key('next')));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('next')));
     final (c, s) = await started.future;
     expect(
-      (c.brain, c.body, c.signaling, c.port, c.signalUrl),
-      (true, true, true, free, 'ws://127.0.0.1:$free'),
+      (c.name, c.body, c.signaling, c.port, c.signalUrl),
+      ('mac-a', true, true, free, 'ws://127.0.0.1:$free'),
     );
-    expect(c.owners, [LaunchConfig.self]);
+    expect(c.brains, ['brain-a', 'mac-a-brain-2']);
+    expect(c.owners, ['brain-a', 'mac-a-brain-2']);
+    final b2 = jsonDecode(
+      File('${tmp.path}/brains/mac-a-brain-2/brain.json').readAsStringSync(),
+    );
+    expect(b2['kind'], 'claude');
     expect(s, isNotNull);
     await tester.runAsync(() async {
       await s!.close();
@@ -334,7 +333,7 @@ void main() {
     });
   });
 
-  testWidgets('neither brain nor body starts a console from step 2', (
+  testWidgets('neither brains nor a body: a console only, from step 3', (
     tester,
   ) async {
     late SignalServer server;
@@ -351,17 +350,23 @@ void main() {
       LaunchConfig(url: 'ws://127.0.0.1:$port'),
     );
     await tapAndWait(tester, find.byKey(const Key('next')));
+    await tester.tap(find.byKey(const Key('next'))); // no brains
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('role-body')));
     await tester.pump();
     expect(
-      find.text('1. Signaling   2. Roles', findRichText: true),
+      find.text('1. Signaling   2. Brains   3. Body', findRichText: true),
       findsOneWidget,
     );
-    expect(find.textContaining('console only'), findsOneWidget);
+    expect(
+      find.text('No brain and no body: this app is a console only.'),
+      findsOneWidget,
+    );
     expect(find.text('Start'), findsOneWidget);
     await tester.tap(find.byKey(const Key('next')));
     final (c, _) = await started.future;
-    expect((c.brain, c.body, c.assignOwner), (false, false, false));
+    expect((c.body, c.assignOwner), (false, false));
+    expect(c.brains, isEmpty);
     await tester.runAsync(server.close);
   });
 
@@ -383,11 +388,11 @@ void main() {
         LaunchConfig(url: 'ws://127.0.0.1:$port', body: true),
         checker: checker,
       );
-      await tapAndWait(tester, find.byKey(const Key('next'))); // signaling
       await tester.enterText(find.byKey(const Key('name')), 'body-z');
-      await tester.tap(find.byKey(const Key('next'))); // roles
+      await tapAndWait(tester, find.byKey(const Key('next'))); // signaling
+      await tester.tap(find.byKey(const Key('next'))); // no brains
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const Key('next'))); // belongs to
+      await tester.tap(find.byKey(const Key('next'))); // body: its brains
       await tester.pumpAndSettle();
 
       // Entering the step checks what is on.
@@ -511,16 +516,12 @@ void main() {
     final checker = FakeChecker();
     final started = await pumpPage(
       tester,
-      LaunchConfig(url: 'ws://127.0.0.1:$port', brain: true, body: false),
+      LaunchConfig(url: 'ws://127.0.0.1:$port', name: 'mac-a', body: false),
       checker: checker,
     );
     await tapAndWait(tester, find.byKey(const Key('next')));
-    await tester.tap(find.byKey(const Key('next'))); // roles -> brain
+    await tester.tap(find.byKey(const Key('add-brain')));
     await tester.pumpAndSettle();
-    expect(
-      find.text('1. Signaling   2. Roles   3. Brain', findRichText: true),
-      findsOneWidget,
-    );
     // Codex is checked on entering; it needs a login.
     expect(find.text('✗ Not logged in'), findsOneWidget);
     expect(find.byKey(const Key('brain-login')), findsOneWidget);
@@ -534,7 +535,7 @@ void main() {
     await tester.tap(find.byKey(const Key('next')));
     await tester.pumpAndSettle();
     expect(
-      find.text('the custom agent needs base_url and model'),
+      find.text('mac-a-brain-1: the custom agent needs base_url and model'),
       findsOneWidget,
     );
 
@@ -545,10 +546,21 @@ void main() {
     await tester.enterText(find.byKey(const Key('brain-cwd')), '~/work');
     await tester.tap(find.byKey(const Key('brain-wake')));
     await tester.pumpAndSettle();
+    await tester.tap(
+      find.byKey(const Key('next')),
+    ); // to the body step, left off
+    await tester.pumpAndSettle();
+    expect(
+      find.text('1. Signaling   2. Brains   3. Body', findRichText: true),
+      findsOneWidget,
+    );
     await tester.tap(find.byKey(const Key('next')));
     final (c, _) = await started.future;
-    expect((c.brain, c.body), (true, false));
-    final brain = jsonDecode(File('${tmp.path}/brain.json').readAsStringSync());
+    expect(c.brains, ['mac-a-brain-1']);
+    expect(c.body, false);
+    final brain = jsonDecode(
+      File('${tmp.path}/brains/mac-a-brain-1/brain.json').readAsStringSync(),
+    );
     expect(brain, {'kind': 'claude', 'cwd': '~/work', 'wake_on_finish': false});
     expect(
       File('${tmp.path}/worker-types.json').existsSync(),
@@ -570,12 +582,12 @@ void main() {
     });
     final started = await pumpPage(
       tester,
-      LaunchConfig(url: 'ws://127.0.0.1:$port', brain: false, body: true),
+      LaunchConfig(url: 'ws://127.0.0.1:$port', body: true),
     );
     await tapAndWait(tester, find.byKey(const Key('next')));
-    await tester.tap(find.byKey(const Key('next'))); // roles -> belongs to
+    await tester.tap(find.byKey(const Key('next'))); // no brains -> body
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('next'))); // -> body
+    await tester.tap(find.byKey(const Key('next'))); // -> workers
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('agent-codex')));
     await tester.tap(find.byKey(const Key('agent-claude')));
@@ -583,7 +595,8 @@ void main() {
     expect(find.textContaining('only its tools'), findsOneWidget);
     await tester.tap(find.byKey(const Key('next')));
     final (c, _) = await started.future;
-    expect((c.brain, c.body), (false, true));
+    expect(c.brains, isEmpty);
+    expect(c.body, true);
     final saved = jsonDecode(
       File('${tmp.path}/worker-types.json').readAsStringSync(),
     ) as Map;
@@ -613,9 +626,9 @@ void main() {
         permissions: perms,
       );
       await tapAndWait(tester, find.byKey(const Key('next')));
-      await tester.tap(find.byKey(const Key('next'))); // roles
+      await tester.tap(find.byKey(const Key('next'))); // no brains
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const Key('next'))); // belongs to
+      await tester.tap(find.byKey(const Key('next'))); // body: its brains
       await tester.pumpAndSettle();
 
       // This app's permissions: Accessibility is granted here.

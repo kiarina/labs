@@ -199,8 +199,11 @@ class PeerManager {
   final _started = <String, DateTime>{};
   late final Timer _timer;
 
+  /// A brain links to every app that is not a brain (its bodies and
+  /// consoles); an app links to every brain. Each brain of an app has its own
+  /// links, and brains do not link to each other.
   bool _wanted(SignalNode n) =>
-      n.online && n.name != signal.name && (signal.isBrain || n.brain);
+      n.online && n.name != signal.name && signal.isBrain != n.brain;
 
   void _reconcile() {
     if (!signal.connected) return;

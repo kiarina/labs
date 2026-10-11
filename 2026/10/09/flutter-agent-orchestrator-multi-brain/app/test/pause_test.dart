@@ -94,7 +94,7 @@ void main() {
   late _FakeBody body;
 
   setUp(() {
-    hub = Hub(LocalBody(name: 'brain', stateDir: '/nonexistent'))
+    hub = Hub(name: 'brain', stateDir: '/nonexistent')
       ..ownersOf = (_) => const ['brain'];
     body = _FakeBody('body-c');
     hub.bodies[body.name] = body;
@@ -161,12 +161,13 @@ void main() {
     expect(hub.bodiesChanged(), contains('body-c is resumed'));
   });
 
-  test('the brain\'s own body: paused through the hub, reported in its info; the orchestrator is not a worker', () async {
-    await hub.setPaused('brain', true);
-    expect(hub.local.paused, true);
-    expect(hub.local.info['paused'], true);
+  test('an app\'s body: paused by a request, reported in its info, takes no new worker', () async {
+    final local = LocalBody(name: 'body-a', stateDir: '/nonexistent');
+    await local.call('body/pause', {'paused': true});
+    expect(local.paused, true);
+    expect(local.info['paused'], true);
     expect(
-      () => hub.local.create(
+      () => local.create(
         'codex',
         label: 'w9',
         cwd: '/',
@@ -174,8 +175,8 @@ void main() {
       ),
       throwsA(predicate((e) => '$e'.contains('paused'))),
     );
-    await hub.setPaused('brain', false);
-    expect(hub.local.info['paused'], false);
+    await local.call('body/pause', {'paused': false});
+    expect(local.info['paused'], false);
   });
 
   test('new settings only while paused with nothing of this brain there; its threads end', () async {
@@ -219,10 +220,13 @@ void main() {
     );
   });
 
-  test('the brain\'s own body: settings refused unless paused', () async {
+  test('an app\'s body: settings refused unless paused', () async {
     await expectLater(
-      hub.local.reconfigure(WorkerTypesConfig()),
-      throwsA(predicate((e) => '$e'.contains('pause brain'))),
+      LocalBody(
+        name: 'body-a',
+        stateDir: '/nonexistent',
+      ).reconfigure(WorkerTypesConfig()),
+      throwsA(predicate((e) => '$e'.contains('pause body-a'))),
     );
   });
 }

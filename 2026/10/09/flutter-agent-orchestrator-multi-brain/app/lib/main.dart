@@ -16,8 +16,10 @@ import 'ui/launch_page.dart';
 import 'ui/theme.dart';
 
 /// Every app has a console; on the start screen (or from `ORCH_*`
-/// variables) it can also be a brain, a body, and the signaling server. All
-/// join the signaling server and link to every brain over WebRTC.
+/// variables) it can also run brains (any number), be a body, and run the
+/// signaling server. The app and each of its brains join the signaling
+/// server on their own and have their own WebRTC links: an app links to
+/// every brain, its own included, the same way.
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   final env = Platform.environment;
@@ -33,29 +35,34 @@ ConsoleMirror _boot(LaunchConfig config, String stateDir) {
   final env = Platform.environment;
   final name = config.name.isNotEmpty ? config.name : generateName();
   final local = LocalBody(name: name, stateDir: stateDir);
+  // Its project folder is where this app's brains work by default.
+  if (config.body) local.loadConfig();
   final signal = SignalClient(
     url: config.signalUrl,
     name: name,
-    isBrain: config.brain,
+    isBrain: false,
     isBody: config.body,
   );
-  final console = ConsoleMirror(local: local, signal: signal, isBrain: config.brain)
-    ..preferred = env['ORCH_SELECT']
+  final console = ConsoleMirror(local: local, signal: signal, localBrains: config.brains)
+    ..preferred = env['ORCH_SELECT'] ?? config.brains.firstOrNull
     ..signaling = config.signaling;
   if (env['ORCH_DUMP'] case final String path when path.isNotEmpty) {
     _dumpOnChange(console, path);
   }
-  unawaited(_run(local, signal, console));
+  unawaited(_runApp(local, signal, console));
+  final hubs = [
+    for (final b in config.brains)
+      _runBrain(b, config, stateDir, local, console),
+  ];
+  if (env['ORCH_TOOLS'] case final String path when path.isNotEmpty) {
+    unawaited(Future.wait(hubs).then((h) => _toolsOnStart(h, path)));
+  }
   if (config.assignOwner && config.body) {
-    final owners = config.owners;
     unawaited(() async {
       while (!signal.connected) {
         await Future<void>.delayed(const Duration(milliseconds: 100));
       }
-      final brains = [
-        for (final o in owners) o == LaunchConfig.self ? signal.name : o,
-      ];
-      await _assignOnStart(console, signal, '${signal.name}=${brains.join('+')}');
+      await _assignOnStart(console, signal, '${signal.name}=${config.owners.join('+')}');
     }());
   }
   if (env['ORCH_ASSIGN'] case final String spec when spec.isNotEmpty) {
@@ -75,80 +82,88 @@ ConsoleMirror _boot(LaunchConfig config, String stateDir) {
   return console;
 }
 
-Future<void> _run(
-  LocalBody local,
-  SignalClient signal,
-  ConsoleMirror console,
-) async {
+/// The app itself: its console (mirrors every brain it links to) and, if a
+/// body, its workers (served to the brains it belongs to).
+Future<void> _runApp(LocalBody local, SignalClient signal, ConsoleMirror console) async {
   unawaited(signal.run());
-  // The server may rename this app; the hub keys its own body by name.
+  // The server may rename this app.
   while (!signal.connected) {
     await Future<void>.delayed(const Duration(milliseconds: 100));
   }
   local.name = signal.name;
-
-  Hub? hub;
-  ConsolePublisher? publisher;
-  if (signal.isBrain) {
-    // A brain that is not a body never runs workers on itself (even if an
-    // older record says it owns itself).
-    final h = hub = Hub(local)
-      ..ownersOf = (b) => !signal.isBody && b == local.name ? const [] : signal.ownersOf(b);
-    // Its agent starts in the background; consoles show it starting.
-    unawaited(h.start());
-    if (Platform.environment['ORCH_TOOLS'] case final String path when path.isNotEmpty) {
-      unawaited(_toolsOnStart(h, path));
-    }
-    final p = publisher = ConsolePublisher(h);
-    signal.onReleaseRequest = (body) async => h.releaseBlocker(body);
-    signal.addListener(h.ownershipChanged);
-    // This brain's own console goes through the same messages as the others.
-    final (brainEnd, consoleEnd) = loopbackPair(local.name, local.name);
-    console.attachBrain(local.name, (a) => unawaited(h.handleAction(a)), h.request);
-    consoleEnd.messages.listen((m) {
-      if (m['t'] == 'console') console.handle(local.name, (m['m'] as Map).cast());
-    });
-    p.subscribe(brainEnd);
-  }
-
   PeerManager(
     signal,
     log: signal.logStep,
     onPeer: (peer) {
-      // As a brain: every linked app has a console, and a body to list.
-      if (hub != null) {
-        final body = RemoteBody(peer, const {});
-        body.onHello = () => hub!.addRemoteBody(body);
-        publisher!.subscribe(peer);
-        // Any linked app's console may act, bodies or not (a console-only
-        // app never says hello as a body).
-        peer.messages.listen((m) {
-          if (m['t'] == 'action') {
-            unawaited(hub!.handleAction((m['a'] as Map).cast<String, dynamic>()));
-          }
-        });
-        RequestLink.serve(peer, hub.request);
+      // Every peer of an app is a brain: mirror it, send it actions, serve
+      // it this body.
+      console.attachBrain(
+        peer.name,
+        (a) => peer.send({'t': 'action', 'a': a}),
+        RequestLink(peer).call,
+      );
+      peer.messages.listen((m) {
+        if (m['t'] == 'console') console.handle(peer.name, (m['m'] as Map).cast());
+      });
+      if (signal.isBody) {
+        BodyHost(local, peer, ownersOf: () => signal.ownersOf(local.name));
       }
-      // To a brain: mirror it, send it actions, serve it this body.
-      if (signal.node(peer.name)?.brain == true) {
-        console.attachBrain(
-          peer.name,
-          (a) => peer.send({'t': 'action', 'a': a}),
-          RequestLink(peer).call,
-        );
-        peer.messages.listen((m) {
-          if (m['t'] == 'console') console.handle(peer.name, (m['m'] as Map).cast());
-        });
-        if (signal.isBody) {
-          BodyHost(local, peer, ownersOf: () => signal.ownersOf(local.name));
-        }
-        peer.closed.then((_) => console.detachBrain(peer.name));
-      }
+      peer.closed.then((_) => console.detachBrain(peer.name));
     },
   );
   // A console alone runs no agents.
-  // The body's agents (workers); a brain's own agent starts in the hub.
   if (signal.isBody) await local.start();
+}
+
+/// One brain of this app: joins the signaling server under its own name,
+/// links to every app (bodies and consoles, its own app included) and runs
+/// its orchestrator in a process of its own.
+Future<Hub> _runBrain(
+  String name,
+  LaunchConfig config,
+  String stateDir,
+  LocalBody local,
+  ConsoleMirror console,
+) async {
+  final signal = SignalClient(
+    url: config.signalUrl,
+    name: name,
+    isBrain: true,
+    isBody: false,
+  );
+  unawaited(signal.run());
+  while (!signal.connected) {
+    await Future<void>.delayed(const Duration(milliseconds: 100));
+  }
+  final hub = Hub(
+    name: signal.name,
+    stateDir: LaunchConfig.brainDir(stateDir, name),
+    defaultDir: config.body ? () => local.projectDir : null,
+    log: local.logClient,
+  )..ownersOf = signal.ownersOf;
+  console.brainLinks[signal.name] = signal;
+  // Its agent starts in the background; consoles show it starting.
+  unawaited(hub.start());
+  final publisher = ConsolePublisher(hub);
+  signal.onReleaseRequest = (body) async => hub.releaseBlocker(body);
+  signal.addListener(hub.ownershipChanged);
+  PeerManager(
+    signal,
+    log: signal.logStep,
+    onPeer: (peer) {
+      // Every linked app has a console; a body says hello as one.
+      final body = RemoteBody(peer, const {});
+      body.onHello = () => hub.addRemoteBody(body);
+      publisher.subscribe(peer);
+      peer.messages.listen((m) {
+        if (m['t'] == 'action') {
+          unawaited(hub.handleAction((m['a'] as Map).cast<String, dynamic>()));
+        }
+      });
+      RequestLink.serve(peer, hub.request);
+    },
+  );
+  return hub;
 }
 
 /// `ORCH_PAUSE=body,body2` pauses bodies through their brains once this
@@ -214,15 +229,16 @@ Future<void> _configureBrainOnStart(ConsoleMirror console, String spec) async {
   }
 }
 
-/// `ORCH_TOOLS=steps.json` makes this brain call its orchestrator tools
-/// itself, without a model (for unattended checks that spend no tokens):
-/// a list of `{tool, args, delay_ms}`, each run once the body it names is
-/// one of this brain's, after its delay. Each result is appended to
+/// `ORCH_TOOLS=steps.json` makes this app's brains call their orchestrator
+/// tools themselves, without a model (for unattended checks that spend no
+/// tokens): a list of `{brain, tool, args, delay_ms}` (no brain: the first),
+/// each run once the body it names is one of that brain's, after its delay. Each result is appended to
 /// `steps.json.out.jsonl`.
-Future<void> _toolsOnStart(Hub hub, String path) async {
+Future<void> _toolsOnStart(List<Hub> hubs, String path) async {
   final steps = (jsonDecode(await File(path).readAsString()) as List).cast<Map>();
   final out = File('$path.out.jsonl');
   for (final step in steps) {
+    final hub = hubs.where((h) => h.name == step['brain']).firstOrNull ?? hubs.first;
     final args = (step['args'] as Map? ?? const {}).cast<String, dynamic>();
     if (args['body'] case final String body) {
       for (var i = 0; i < 300 && !hub.ownBodies.any((b) => b.name == body); i++) {
@@ -235,7 +251,7 @@ Future<void> _toolsOnStart(Hub hub, String path) async {
         ? (await hub.toolResult(tool, args))
         : await hub.callTool(tool, args);
     await out.writeAsString(
-      '${jsonEncode({'at': DateTime.now().toIso8601String(), 'tool': tool, 'result': result})}\n',
+      '${jsonEncode({'at': DateTime.now().toIso8601String(), 'brain': hub.name, 'tool': tool, 'result': result})}\n',
       mode: FileMode.append,
     );
   }

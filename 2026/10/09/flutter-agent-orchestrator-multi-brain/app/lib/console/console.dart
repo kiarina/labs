@@ -66,7 +66,7 @@ class ConsolePublisher {
   };
 
   Json _state() => {
-    'brain': hub.local.name,
+    'brain': hub.name,
     'ready': hub.ready,
     'startupError': hub.startupError,
     'projectDir': hub.projectDir,
@@ -80,7 +80,6 @@ class ConsolePublisher {
           ...b.info,
           'name': b.name,
           'online': b.online,
-          'isBrain': b.isLocal,
           'owners': hub.ownersOf(b.name),
           'running': hub.runningOn(b.name),
         },
@@ -369,7 +368,7 @@ class ConsoleMirror extends ChangeNotifier {
   ConsoleMirror({
     required this.local,
     required this.signal,
-    required this.isBrain,
+    this.localBrains = const [],
   }) {
     signal.addListener(notifyListeners);
   }
@@ -379,7 +378,16 @@ class ConsoleMirror extends ChangeNotifier {
   final SignalClient signal;
 
   /// Whether this app is a brain.
-  final bool isBrain;
+  /// The brains this app runs (each joins the signaling server and links on
+  /// its own; the console reaches them like any other brain).
+  final List<String> localBrains;
+
+  /// Their links to the signaling server, by the name they got (for the
+  /// header and the dump).
+  final brainLinks = <String, SignalClient>{};
+
+  bool isLocalBrain(String name) =>
+      localBrains.contains(name) || brainLinks.containsKey(name);
 
   /// Whether this app runs the signaling server.
   bool signaling = false;
@@ -387,7 +395,8 @@ class ConsoleMirror extends ChangeNotifier {
   /// What this app is, for the header: "brain · body · signal", "console".
   String get roles {
     final r = [
-      if (isBrain) 'brain',
+      if (localBrains.isNotEmpty)
+        localBrains.length == 1 ? 'brain' : '${localBrains.length} brains',
       if (signal.isBody) 'body',
       if (signaling) 'signal',
     ];
@@ -625,7 +634,7 @@ class ConsoleMirror extends ChangeNotifier {
   /// What this console shows, for comparing consoles (`ORCH_DUMP`).
   Json digest() => {
     'self': selfName,
-    'isBrain': isBrain,
+    'localBrains': localBrains,
     'isBody': signal.isBody,
     'roles': roles,
     'connected': connected,

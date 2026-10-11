@@ -114,7 +114,7 @@ void main() {
   late _SharedBody body;
 
   setUp(() {
-    hub = Hub(LocalBody(name: 'brain-a', stateDir: '/nonexistent'))
+    hub = Hub(name: 'brain-a', stateDir: '/nonexistent')
       ..ownersOf = (b) =>
           b == 'body-c' ? const ['brain-a', 'brain-b'] : const [];
     body = _SharedBody();

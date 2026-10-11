@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:agent_orchestrator/agents/agent_check.dart';
 import 'package:agent_orchestrator/agents/worker_types.dart';
-import 'package:agent_orchestrator/body/body.dart';
 import 'package:agent_orchestrator/orchestrator/brain_config.dart';
 import 'package:agent_orchestrator/orchestrator/hub.dart';
 import 'package:agent_orchestrator/state/thread_view.dart' show Json;
@@ -78,7 +77,7 @@ void main() {
     () async {
       final dir = Directory.systemTemp.createTempSync('hub');
       addTearDown(() => dir.deleteSync(recursive: true));
-      final hub = Hub(LocalBody(name: 'brain-a', stateDir: dir.path));
+      final hub = Hub(name: 'brain-a', stateDir: dir.path);
       final r = await hub.request({'a': 'brain', 'm': 'brain/config'}) as Map;
       expect((r['config'] as Map)['kind'], 'codex');
       await expectLater(

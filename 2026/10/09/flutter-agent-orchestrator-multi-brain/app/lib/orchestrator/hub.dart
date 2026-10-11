@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 import '../agents/agent_check.dart';
+import '../rpc/rpc_client.dart' show RpcClient;
 import '../agents/agent_thread.dart';
 import '../agents/backends.dart';
 import '../body/body.dart';
@@ -12,31 +13,47 @@ import 'brain_agent.dart';
 import 'brain_config.dart';
 import 'tools.dart';
 
-/// The brain: owns the orchestrator and the ledger of workers on every body
-/// (this app's [local] one and the connected [RemoteBody]s). The user talks
-/// to the orchestrator only (from any app's console); the orchestrator
-/// drives workers through [tools].
+/// A brain: owns the orchestrator and the ledger of workers on the bodies
+/// it is linked to ([RemoteBody]s, its own app's body among them: every body
+/// is reached over its link). An app may run several. The user talks to the
+/// orchestrator only (from any app's console); the orchestrator drives
+/// workers through [tools].
 class Hub extends ChangeNotifier {
-  Hub(this.local) {
-    local.addListener(notifyListeners);
-    bodies[local.name] = local;
+  Hub({
+    required this.name,
+    required this.stateDir,
+    this.defaultDir,
+    void Function(RpcClient client)? log,
+  }) {
     brain = BrainAgent(
-      stateDir: local.stateDir,
+      stateDir: stateDir,
       onTool: _onTool,
       onUserPrompt: notifyListeners,
-      log: local.logClient,
+      log: log,
     )..addListener(notifyListeners);
   }
 
-  /// This app's body (its workers' agents). Listed as one of the bodies
-  /// only when this app is a body ([ownerOf]).
-  final LocalBody local;
+  /// This brain's name in the roster.
+  String name;
+
+  /// Its own folder: `brain.json`, its custom agent's CODEX_HOME.
+  final String stateDir;
+
+  /// Where the orchestrator works when it sets no folder (the app's project
+  /// folder, if the app is a body).
+  final String Function()? defaultDir;
+
+  String get _defaultDir =>
+      defaultDir?.call() ??
+      Platform.environment['ORCH_CWD'] ??
+      Platform.environment['HOME'] ??
+      '/';
 
   /// The orchestrator's own agent, apart from the body's.
   late final BrainAgent brain;
   BrainConfig get config => brain.config;
 
-  /// Every body by name, the brain's own included. Bodies that went away
+  /// Every body by name. Bodies that went away
   /// stay listed as offline until one with the same name joins.
   final bodies = <String, Body>{};
 
@@ -45,16 +62,15 @@ class Hub extends ChangeNotifier {
 
   /// Where the orchestrator works: its own folder, else this machine's
   /// project folder.
-  String get projectDir => expandHome(config.cwd) ?? local.projectDir;
+  String get projectDir => expandHome(config.cwd) ?? _defaultDir;
 
   AgentThread? orchestrator;
   final workers = <AgentThread>[];
   int _seq = 0;
 
-  String get _stateDir => local.stateDir;
+  String get _stateDir => stateDir;
 
   Future<void> start() async {
-    local.loadConfig();
     BrainConfig c;
     try {
       c = BrainConfig.load(_stateDir, Platform.environment);
@@ -75,7 +91,7 @@ class Hub extends ChangeNotifier {
     }
     await newConversation();
     c.save(_stateDir);
-    await brain.restart(c, cwd: expandHome(c.cwd) ?? local.projectDir);
+    await brain.restart(c, cwd: expandHome(c.cwd) ?? _defaultDir);
     notifyListeners();
   }
 
@@ -87,12 +103,12 @@ class Hub extends ChangeNotifier {
   /// Bodies this brain may use: its own and online.
   List<Body> get ownBodies => [
     for (final b in bodies.values)
-      if (b.online && ownersOf(b.name).contains(local.name)) b,
+      if (b.online && ownersOf(b.name).contains(name)) b,
   ];
 
   /// The other brain using [b] now, or null (free, or this brain's).
   String? heldByOther(Body b) =>
-      b.heldBy != null && b.heldBy != local.name ? b.heldBy : null;
+      b.heldBy != null && b.heldBy != name ? b.heldBy : null;
 
   Body? _ownBody(String name) =>
       ownBodies.where((b) => b.name == name).firstOrNull;
@@ -104,7 +120,7 @@ class Hub extends ChangeNotifier {
   ];
 
   Json _noBody(String name) => {
-    'error': ownersOf(name).isNotEmpty && !ownersOf(name).contains(local.name)
+    'error': ownersOf(name).isNotEmpty && !ownersOf(name).contains(name)
         ? 'body "$name" belongs to ${ownersOf(name).join(', ')}, not to you'
         : 'no online body "$name" of yours',
     'your_bodies': [for (final b in ownBodies) b.name],
@@ -120,7 +136,7 @@ class Hub extends ChangeNotifier {
     );
     return busy.isEmpty
         ? null
-        : '${busy.length} worker(s) of ${local.name} running or queued on $body (${busy.map((w) => w.label).join(', ')})';
+        : '${busy.length} worker(s) of $name running or queued on $body (${busy.map((w) => w.label).join(', ')})';
   }
 
   /// The roster or the owners changed.
@@ -183,7 +199,7 @@ class Hub extends ChangeNotifier {
           case 'brain/config':
             return {
               'config': config.toJson(),
-              'projectDirDefault': local.projectDir,
+              'projectDirDefault': _defaultDir,
             };
           case 'brain/check':
             return runCheck(
@@ -239,7 +255,7 @@ class Hub extends ChangeNotifier {
   AgentThread _newOrchestrator() {
     final role = AgentRole.orchestrator(
       tools: orchestratorTools,
-      instructions: orchestratorInstructions(local.name),
+      instructions: orchestratorInstructions(name),
     );
     final agent = brain.create(cwd: projectDir, role: role);
     agent.addListener(notifyListeners);
@@ -615,14 +631,14 @@ class Hub extends ChangeNotifier {
               {
                 'body': b.name,
                 'host': b.info['host'],
-                'is_this_brain_machine': b.isLocal,
+                'is_this_brain_machine': b.info['host'] == thisHost,
                 'project_dir': b.projectDir,
                 'running': runningOn(b.name),
                 if (b.paused) 'paused': true,
                 if (ownersOf(b.name).length > 1)
                   'shared_with': [
                     for (final o in ownersOf(b.name))
-                      if (o != local.name) o,
+                      if (o != name) o,
                   ],
                 if (heldByOther(b) case final h?) ...{
                   'in_use_by': h,
@@ -817,8 +833,10 @@ class Hub extends ChangeNotifier {
 
   @override
   void dispose() {
-    local.closeBackends();
     brain.dispose();
     super.dispose();
   }
 }
+
+/// This machine's short host name (bodies report theirs).
+final thisHost = Platform.localHostname.split('.').first;

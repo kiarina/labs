@@ -9,6 +9,7 @@ import '../agents/agent_check.dart';
 import '../agents/mac_permissions.dart';
 import '../agents/worker_types.dart';
 import '../orchestrator/brain_config.dart';
+import '../mesh/peer.dart' show generateName;
 import 'agents_editor.dart';
 import 'brain_editor.dart';
 import '../mesh/launch.dart';
@@ -78,13 +79,12 @@ class _LaunchPageState extends State<LaunchPage> {
   bool _busy = false;
   int _step = 0;
 
-  /// The steps for the roles chosen so far.
+  /// The steps: brains and a body are each optional.
   List<String> get _steps => [
     'Signaling',
-    'Roles',
-    if (c.brain) 'Brain',
-    if (c.body) 'Belongs to',
-    if (c.body) 'Body',
+    'Brains',
+    'Body',
+    if (c.body) 'Workers',
   ];
 
   String get _stepName => _steps[_step.clamp(0, _steps.length - 1)];
@@ -100,8 +100,7 @@ class _LaunchPageState extends State<LaunchPage> {
       _error = null;
       _step++;
     });
-    if (_stepName == 'Body') _draft.checkAll();
-    if (_stepName == 'Brain' && _brain.check == null) _brain.runCheck();
+    if (_stepName == 'Workers') _draft.checkAll();
   }
 
   /// The server started in step 1 (kept while going back and forth).
@@ -113,7 +112,9 @@ class _LaunchPageState extends State<LaunchPage> {
   @override
   void dispose() {
     _draft.dispose();
-    _brain.dispose();
+    for (final b in _brains) {
+      b.dispose();
+    }
     _name.dispose();
     _port.dispose();
     _url.dispose();
@@ -162,7 +163,15 @@ class _LaunchPageState extends State<LaunchPage> {
     setState(() {
       _busy = false;
       _error = error;
-      if (error == null) _step = 1;
+      if (error == null) {
+        c.name = _name.text.trim().isEmpty ? generateName() : _name.text.trim();
+        _name.text = c.name;
+        _step = 1;
+        // Where this body belongs: as before, unless chosen here.
+        if (!_ownerTouched) {
+          c.owners = [...?_roster?.owners[c.name]];
+        }
+      }
     });
   }
 
@@ -199,43 +208,104 @@ class _LaunchPageState extends State<LaunchPage> {
     }
   }
 
-  // ---- step 2: roles --------------------------------------------------------
+  // ---- step 2: brains -------------------------------------------------------
 
-  void _rolesNext() {
-    c.name = _name.text.trim();
-    if (!c.body) {
-      _advance();
+  /// The brains this app will run, each edited on its own card.
+  late final List<_BrainEntry> _brains = [
+    for (final name in c.brains)
+      _BrainEntry(
+        name,
+        BrainDraft(
+          _loadBrain(name),
+          checker: widget.checker,
+          projectDirDefault: _brainDirDefault,
+        ),
+      ),
+  ];
+
+  /// The card being edited (the others show a summary).
+  _BrainEntry? _open;
+
+  String get _brainDirDefault =>
+      'this machine\'s project folder (if this app is a body), else ${Platform.environment['ORCH_CWD'] ?? 'the home folder'}';
+
+  BrainConfig _loadBrain(String name) {
+    try {
+      return BrainConfig.load(
+        LaunchConfig.brainDir(widget.stateDir, name),
+        const {},
+      );
+    } catch (_) {
+      return BrainConfig();
+    }
+  }
+
+  void _addBrain() {
+    var n = _brains.length + 1;
+    final taken = {
+      for (final b in _brains) b.name.text.trim(),
+      ...?_roster?.online,
+    };
+    while (taken.contains('${c.name}-brain-$n')) {
+      n++;
+    }
+    final name = '${c.name}-brain-$n';
+    final entry = _BrainEntry(
+      name,
+      BrainDraft(
+        _loadBrain(name),
+        checker: widget.checker,
+        projectDirDefault: _brainDirDefault,
+      ),
+    );
+    setState(() {
+      _brains.add(entry);
+      _open = entry;
+    });
+    entry.draft.runCheck();
+  }
+
+  /// Why the brains cannot be used, or null.
+  String? _brainsProblem() {
+    final names = <String>{};
+    for (final b in _brains) {
+      final name = b.name.text.trim();
+      if (name.isEmpty) return 'Every brain needs a name.';
+      if (name == c.name) {
+        return 'A brain cannot have this app\'s name ($name).';
+      }
+      if (!names.add(name)) return 'Two brains are named $name.';
+      if (_roster?.online.contains(name) ?? false) {
+        return 'An app named $name is online: pick another name.';
+      }
+      if (b.draft.read().$2 case final e?) return '$name: $e';
+    }
+    return null;
+  }
+
+  void _brainsNext() {
+    if (_brainsProblem() case final e?) {
+      setState(() => _error = e);
       return;
     }
-    // Where this body belongs: as before unless chosen on this screen.
-    if (!_ownerTouched) {
-      final known = _roster?.owners;
-      if (known != null && c.name.isNotEmpty && known.containsKey(c.name)) {
-        c.owners = [
-          for (final o in known[c.name]!)
-            c.brain && o == c.name ? LaunchConfig.self : o,
-        ];
-      } else if (c.brain) {
-        c.owners = [LaunchConfig.self];
-      }
-    }
-    if (!c.brain) c.owners.remove(LaunchConfig.self);
+    c.brains = [for (final b in _brains) b.name.text.trim()];
+    // A new body belongs to this app's brains unless chosen otherwise.
+    if (!_ownerTouched && c.owners.isEmpty) c.owners = [...c.brains];
     _advance();
   }
 
-  // ---- step 3: owner --------------------------------------------------------
+  // ---- step 3: body ---------------------------------------------------------
 
-  /// (value, label): this app if it is a brain, the brains online, and the
-  /// saved choices (they may join later).
+  /// (value, label): this app's brains, the brains online, and the saved
+  /// choices (they may join later).
   List<(String, String)> get _brainChoices {
     final out = <String, String>{
-      if (c.brain)
-        LaunchConfig.self: '${c.name.isEmpty ? 'this app' : c.name} (this app)',
+      for (final b in c.brains) b: '$b (this app)',
       for (final b in _roster?.brains ?? const <String>[])
-        if (!(c.brain && b == c.name)) b: b,
+        if (!c.brains.contains(b)) b: b,
     };
     for (final o in c.owners) {
-      if (o != LaunchConfig.self && !out.containsKey(o)) out[o] = '$o (offline)';
+      if (!out.containsKey(o)) out[o] = '$o (offline)';
     }
     return [for (final e in out.entries) (e.key, e.value)];
   }
@@ -250,44 +320,102 @@ class _LaunchPageState extends State<LaunchPage> {
   }
 
   void _start() {
-    final (brain, brainError) = c.brain ? _brain.read() : (null, null);
     final (body, bodyError) = c.body
         ? _draft.read(needOne: false)
         : (null, null);
-    if (brainError ?? bodyError case final e?) {
+    if (_brainsProblem() ?? bodyError case final e?) {
       setState(() => _error = e);
       return;
     }
-    brain?.save(widget.stateDir);
+    for (final b in _brains) {
+      b.draft.read().$1!.save(
+        LaunchConfig.brainDir(widget.stateDir, b.name.text.trim()),
+      );
+    }
     body?.save(widget.typesFile);
     c.assignOwner = c.body;
     widget.onStart(c, _server);
   }
 
-  // ---- step 3: brain --------------------------------------------------------
-
-  late final _brain = BrainDraft(
-    () {
-      try {
-        return BrainConfig.load(widget.stateDir, const {});
-      } catch (_) {
-        return BrainConfig();
-      }
-    }(),
-    checker: widget.checker,
-    projectDirDefault:
-        'this machine\'s project folder (${c.body ? 'the Body step' : Platform.environment['ORCH_CWD'] ?? 'the home folder'})',
-  );
-
-  List<Widget> _brainStep(ThemeData theme) => [
-    _title(
-      theme,
-      'Brain',
-      'The agent its orchestrator runs on. It talks with you and hands work to the workers of its bodies; '
-          'it gets no tools that drive the Mac or Chrome. Checked as you pick it (no model tokens).',
-    ),
-    BrainEditor(draft: _brain),
-  ];
+  List<Widget> _brainsStep(ThemeData theme) {
+    final online = _roster?.brains.length ?? 0;
+    return [
+      _title(
+        theme,
+        'Brains',
+        'The brains this app runs ($online already on ${c.signalUrl}). Each talks with you and hands work to the '
+            'workers of its bodies; each gets its own name and links, like a brain on another app. None is fine.',
+      ),
+      for (final (i, b) in _brains.indexed)
+        Card(
+          key: Key('brain-card-$i'),
+          color: Palette.surface,
+          margin: const EdgeInsets.only(bottom: 8),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 4, 4, 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: _open == b
+                          ? TextField(
+                              key: Key('brain-name-$i'),
+                              controller: b.name,
+                              decoration: const InputDecoration(
+                                labelText: 'Name',
+                                isDense: true,
+                              ),
+                              onChanged: (_) => setState(() {}),
+                            )
+                          : Text(
+                              '${b.name.text} · ${[b.draft.config.label, ?b.draft.config.model].join(' · ')}',
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                    ),
+                    if (_open != b)
+                      TextButton(
+                        key: Key('brain-edit-$i'),
+                        onPressed: () => setState(() => _open = b),
+                        child: const Text('Edit'),
+                      ),
+                    IconButton(
+                      key: Key('brain-remove-$i'),
+                      tooltip: 'Remove',
+                      onPressed: () => setState(() {
+                        _brains.remove(b);
+                        if (_open == b) _open = null;
+                        b.dispose();
+                      }),
+                      icon: const Icon(Icons.close, size: 16),
+                    ),
+                  ],
+                ),
+                if (_open == b) ...[
+                  const SizedBox(height: 8),
+                  BrainEditor(draft: b.draft),
+                ],
+              ],
+            ),
+          ),
+        ),
+      Align(
+        alignment: Alignment.centerLeft,
+        child: TextButton.icon(
+          key: const Key('add-brain'),
+          onPressed: _addBrain,
+          icon: const Icon(Icons.add, size: 16),
+          label: const Text('Add a brain'),
+        ),
+      ),
+      if (_brains.isEmpty)
+        Text(
+          'No brain on this app: its console talks to brains on other apps.',
+          style: theme.textTheme.bodySmall?.copyWith(color: Palette.textDim),
+        ),
+    ];
+  }
 
   // ---- step 5: body ---------------------------------------------------------
 
@@ -317,11 +445,11 @@ class _LaunchPageState extends State<LaunchPage> {
     await widget.permissions.relaunch();
   }
 
-  List<Widget> _bodyStep(ThemeData theme) => [
+  List<Widget> _workersStep(ThemeData theme) => [
     _title(
       theme,
-      'Body',
-      'The agents the brain this body belongs to can start here as workers, and their tools. '
+      'Workers',
+      'The agents the brains of this body can start here as workers, and their tools. '
           'Each is checked when turned on (no model tokens).',
     ),
     AgentsEditor(draft: _draft, onRestart: _restart),
@@ -365,10 +493,9 @@ class _LaunchPageState extends State<LaunchPage> {
                 const SizedBox(height: 8),
                 ...switch (_stepName) {
                   'Signaling' => _signalingStep(theme),
-                  'Roles' => _rolesStep(theme),
-                  'Belongs to' => _ownerStep(theme),
-                  'Brain' => _brainStep(theme),
-                  _ => _bodyStep(theme),
+                  'Brains' => _brainsStep(theme),
+                  'Body' => _bodyStep(theme),
+                  _ => _workersStep(theme),
                 },
                 const SizedBox(height: 20),
                 if (_error != null)
@@ -399,7 +526,7 @@ class _LaunchPageState extends State<LaunchPage> {
                           ? null
                           : switch (_stepName) {
                               'Signaling' => _signalingNext,
-                              'Roles' => _rolesNext,
+                              'Brains' => _brainsNext,
                               _ => _advance,
                             },
                       child: Text(
@@ -479,99 +606,87 @@ class _LaunchPageState extends State<LaunchPage> {
               onSubmitted: (_) => _signalingNext(),
             ),
     ),
+    const SizedBox(height: 16),
+    TextField(
+      key: const Key('name'),
+      controller: _name,
+      decoration: const InputDecoration(
+        labelText: 'This app\'s name (its console, and its body id)',
+        hintText: 'empty: host name and 4 random digits',
+      ),
+    ),
   ];
 
-  List<Widget> _rolesStep(ThemeData theme) {
-    final name = _name.text.trim();
-    final taken = name.isNotEmpty && (_roster?.online.contains(name) ?? false);
-    final brains = _roster?.brains.length ?? 0;
-    return [
-      _title(
-        theme,
-        'This app',
-        'Joined ${c.signalUrl} ($brains brain(s) there). Every app has a console; pick any of these.',
-      ),
-      TextField(
-        key: const Key('name'),
-        controller: _name,
-        decoration: InputDecoration(
-          labelText: 'Name (body id)',
-          hintText: 'empty: host name and 4 random digits',
-          helperText: taken
-              ? 'An app named $name is online; this one will get a suffix (-2).'
-              : null,
-        ),
-        onChanged: (_) => setState(() {}),
-      ),
-      const SizedBox(height: 12),
-      CheckboxListTile(
-        key: const Key('role-brain'),
-        value: c.brain,
-        onChanged: (v) => setState(() => c.brain = v!),
-        title: const Text('Brain'),
-        subtitle: const Text(
-          'Runs an orchestrator. Consoles pick a brain to talk to.',
-        ),
-        controlAffinity: ListTileControlAffinity.leading,
-      ),
-      CheckboxListTile(
-        key: const Key('role-body'),
-        value: c.body,
-        onChanged: (v) => setState(() => c.body = v!),
-        title: const Text('Body'),
-        subtitle: const Text(
-          'Lets the brain it belongs to run workers on this machine.',
-        ),
-        controlAffinity: ListTileControlAffinity.leading,
-      ),
-      if (!c.brain && !c.body)
-        Padding(
-          padding: const EdgeInsets.only(left: 16, top: 4),
-          child: Text(
-            'Neither: this app is a console only.',
-            style: theme.textTheme.bodySmall?.copyWith(color: Palette.textDim),
-          ),
-        ),
-    ];
-  }
-
-  List<Widget> _ownerStep(ThemeData theme) {
+  List<Widget> _bodyStep(ThemeData theme) {
     final choices = _brainChoices;
     return [
       _title(
         theme,
-        'Belongs to',
-        'Only these brains run workers on this body. With several, it is shared: one brain uses it at a time, '
-            'the others can only read there until its workers finish. Consoles can change this later.',
+        'Body',
+        'Lets brains run workers on this machine (${c.name}). Skip it for a console only, or brains only.',
       ),
-      if (choices.isEmpty)
+      SwitchListTile(
+        key: const Key('role-body'),
+        contentPadding: EdgeInsets.zero,
+        value: c.body,
+        onChanged: (v) => setState(() => c.body = v),
+        title: const Text('Use this app as a body'),
+      ),
+      if (c.body) ...[
+        const SizedBox(height: 8),
+        Text('Belongs to', style: theme.textTheme.titleSmall),
         Text(
-          'No brain online yet: it can be added from a console later.',
+          'Only these brains run workers here. With several it is shared: one brain uses it at a time, '
+          'the others can only read there until its workers finish. Consoles can change this later.',
           style: theme.textTheme.bodySmall?.copyWith(color: Palette.textDim),
         ),
-      for (final (value, label) in choices)
-        CheckboxListTile(
-          key: Key('owner-$value'),
-          dense: true,
-          contentPadding: EdgeInsets.zero,
-          controlAffinity: ListTileControlAffinity.leading,
-          value: c.owners.contains(value),
-          title: Text(label),
-          onChanged: (v) => setState(() {
-            v == true ? c.owners.add(value) : c.owners.remove(value);
-            _ownerTouched = true;
-          }),
+        if (choices.isEmpty)
+          Text(
+            'No brain online yet: it can be added from a console later.',
+            style: theme.textTheme.bodySmall?.copyWith(color: Palette.textDim),
+          ),
+        for (final (value, label) in choices)
+          CheckboxListTile(
+            key: Key('owner-$value'),
+            dense: true,
+            contentPadding: EdgeInsets.zero,
+            controlAffinity: ListTileControlAffinity.leading,
+            value: c.owners.contains(value),
+            title: Text(label),
+            onChanged: (v) => setState(() {
+              v == true ? c.owners.add(value) : c.owners.remove(value);
+              _ownerTouched = true;
+            }),
+          ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: TextButton.icon(
+            key: const Key('refresh'),
+            onPressed: _busy ? null : _refresh,
+            icon: const Icon(Icons.refresh, size: 16),
+            label: const Text('Read the brains again'),
+          ),
         ),
-      Align(
-        alignment: Alignment.centerLeft,
-        child: TextButton.icon(
-          key: const Key('refresh'),
-          onPressed: _busy ? null : _refresh,
-          icon: const Icon(Icons.refresh, size: 16),
-          label: const Text('Read the brains again'),
+      ],
+      if (!c.body && _brains.isEmpty)
+        Text(
+          'No brain and no body: this app is a console only.',
+          style: theme.textTheme.bodySmall?.copyWith(color: Palette.textDim),
         ),
-      ),
     ];
   }
+}
 
+/// A brain being set up on the start screen: its name and settings.
+class _BrainEntry {
+  _BrainEntry(String name, this.draft)
+    : name = TextEditingController(text: name);
+
+  final TextEditingController name;
+  final BrainDraft draft;
+
+  void dispose() {
+    name.dispose();
+    draft.dispose();
+  }
 }

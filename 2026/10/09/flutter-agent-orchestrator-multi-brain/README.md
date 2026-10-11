@@ -6,7 +6,8 @@
 - **共有の body**: 複数の brain に所属する body は、一度に 1 つの brain が使います（譲り合い）。使っている brain がいる間、ほかの brain はそこで読むこと（使用中の作業の一覧、`fetch_image`）だけができ、新しい仕事は断られます
 - **console**: brain を選び、選んだ brain と話します
 - **シグナリング**: 独立したサーバーにし、名簿（どのアプリがいるか、どれが brain・body か）と所属（body → brain）を持たせます。単独のプロセスでも、アプリの中でも動きます
-- **起動画面**: アプリを起動すると、シグナリング → 役割（brain・body）→ brain の設定 → 所属 → body の設定の順に選んでから、起動と接続をします
+- **1 つのアプリに複数の brain**: アプリは brain を 0 個以上持てます。それぞれが自分の名前でシグナリングに参加し、自分の WebRTC の経路を持つので、ほかのアプリからは別々の brain に見えます（外部の brain と同じ扱い）
+- **起動画面**: アプリを起動すると、シグナリング（とアプリの名前）→ brain を 1 つずつ追加（しなくてもよい）→ body（しなくてもよい。するなら所属先の brain → worker）の順に選んでから、起動と接続をします
 - **orchestrator と worker**: brain が使うエージェントを orchestrator、body が使うエージェントを worker と呼び、別々に設定します。orchestrator は 1 つを選び（モデル・effort・フォルダ）、Mac や Chrome を操作する道具を持ちません。同じアプリが brain と body を兼ねても、プロセスは別です
 - **worker type**: body が worker として出すエージェントを、起動画面で決めます。Codex と Claude は 1 つずつ on/off、別のモデルのサーバーにつないだ Codex（custom）はいくつでも。それぞれ足すときに、動くか・ログインしているかを確かめます。司令塔は、選べる種類を tool の定義でなく `list_bodies` の結果で知り、変わったら次のメッセージで知らされます
 - **body の一時停止**: console から、接続したまま body を止められます。止めている間、brain はその body で新しいことを始めません（実行中のものは最後まで動きます）
@@ -76,6 +77,11 @@
   console から「tool を呼ばずに、body-c の worker type を答えて」と送ると、
   メッセージの頭に `[bodies changed since you last called list_bodies]` と `- body-c: worker types are now codex (were none)` が付いた。
   司令塔は「codex。知らせにそう書いてあった」と答えた（Claude は未ログインなので入らない）
+- **1 つのアプリで 2 つの brain を動かし、外部の brain とも並べられた。**（トークンを使わない: 答えを遅らせる偽の Responses API と `ORCH_TOOLS`）
+  - mac-a は brain-a・brain-b と自分の body を持ち、brain-x だけを持つ mac-x と、body だけの body-c を並べた。mac-a の body は 3 つの brain の、body-c は brain-a・brain-b の所属
+  - brain ごとに名前・シグナリングへの接続・経路を持ち、同じアプリの body にも WebRTC でつながった。body-c の console には brain-a・brain-b・brain-x の 3 つが並んだ
+  - brain-a が mac-a でワーカーを始めると、同じアプリの brain-b も外部の brain-x も「in use by brain-a」で断られ、brain-b は body-c で始められた
+  - mac-a の console に「2 brains · body · signal」、brain-a・brain-b に「this app」、外部の brain-x も同じ一覧に出た（スクリーンショット）
 - **1 つの body を 2 つの brain で共有し、競合を防げた。**（トークンを使わない: 答えを 40 秒遅らせる偽の Responses API の custom worker と、`ORCH_TOOLS`）
   - body-c を brain-a・brain-b の両方の所属にした。brain-a がワーカーを始めると、brain-b の `list_bodies` に `in_use_by: brain-a` と brain-a の作業（題名「hold the body」・running）が出た
   - その間、brain-b の `start_thread` は「in use by brain-a」で断られ、`fetch_image`（読み取り）は通った
@@ -130,15 +136,17 @@
 - **signal**（`signal/lib/signal_server.dart`。依存なしの Dart）
   - 単独では `mise run signal`（`signal/bin/signal.dart`）。アプリの中では、起動画面で「Signaling」を選ぶと同じものが動く
   - 名簿: 名前・brain か・body か・online・ホスト。名前がぶつかったら `-2` などを付けて返す。普通の HTTP の GET には名簿と所属を JSON で返す
-  - 所属: `body → brain の一覧`（古い形の 1 つの名前も読める）。body でもある brain は、最初の参加で自分を所属させる。ほかの body は所属なしから始まる。body でないアプリは所属を持たない。アプリが抜けても所属は残る
+  - 所属: `body → brain の一覧`（古い形の 1 つの名前も読める）。body は所属なしから始まり、起動画面で選んだ brain（既定はそのアプリの brain）へ参加の後に所属する。body でないアプリは所属を持たない。アプリが抜けても所属は残る
   - 所属はファイルに書いて、起動し直しても残す（アプリの中では状態のフォルダの `signal-owners.json`、単独では `OWNERS_FILE`）
   - 中継: offer・answer・ICE の候補を宛先付きで回す
   - 所属は「body → brain の一覧」。所属の変更（`assign`）は一覧を丸ごと送る。加えるのは誰にも尋ねない。外される brain が online なら `releaseRequest` で尋ね、どれかが断れば変えない（5 秒で答えが無ければ失敗）。
     外される brain が offline なら尋ねない
-- **データチャネル**: 少なくとも片方が brain の組ごとに 1 本。名前の順で先のアプリが offer を出す
+- **データチャネル**: brain と、brain でない参加者（アプリ）の組ごとに 1 本。brain どうしはつながない。名前の順で先のほうが offer を出す
+  - アプリの brain は、それぞれ別の参加者（自分の名前・シグナリングへの接続・経路）。同じアプリの body・console とも、外部の brain と同じく WebRTC でつながる（同じアプリの中でも近道をしない）
+  - アプリ自身も参加者（console と、body なら body）。brain が無く body でもなければ console だけ
   - 1 本の中で、brain の役のメッセージ（`rpc`・`console`）と、相手の役のメッセージ（`hello`・`info`・`res`・`agent`・`action`）は種類が重ならない。そのため brain どうしも 1 本で足りる
 - **brain**: つながった全アプリの console へ会話を流す（前の lab の `ConsolePublisher`）。全アプリの body を名簿として知っている
-  - orchestrator は brain だけのプロセスで動く（`app/lib/orchestrator/brain_agent.dart`）。設定は状態のフォルダの `brain.json`（`brain_config.dart`）: エージェント（`codex`・`claude`・`custom`。custom は URL・鍵の変数名・モデル）、モデル、effort、フォルダ（空なら body のプロジェクトのフォルダ）、終わったら起こすか
+  - orchestrator は brain だけのプロセスで動く（`app/lib/orchestrator/brain_agent.dart`）。設定は状態のフォルダの `brains/<名前>/brain.json`（`brain_config.dart`）: エージェント（`codex`・`claude`・`custom`。custom は URL・鍵の変数名・モデル）、モデル、effort、フォルダ（空なら body のプロジェクトのフォルダ）、終わったら起こすか
   - 同じアプリの body の worker とはプロセスを分ける（Codex の app-server・Claude の中継を役割ごとに起動する。ログインは `~/.codex` と Claude Code のものを共有）。
     そのため body の設定を変えても orchestrator の会話は続き、brain の設定を変えても worker は動き続ける。custom の orchestrator は、いつも専用の `CODEX_HOME` で起動する（Computer Use を持たないため）
   - 設定を変える（`brain/configure`）と、orchestrator が動いていないときだけ、保存してエージェントを起動し直し、新しい会話にする
@@ -194,16 +202,15 @@
 
 ### 起動画面
 
-`ORCH_ROLE`・`ORCH_SIGNAL_URL`・`ORCH_NAME` のどれも無いときに出る。ステップに分け、前のステップで分かることを次のステップで使う。
+`ORCH_BRAINS`・`ORCH_ROLE`・`ORCH_SIGNAL_URL`・`ORCH_NAME` のどれも無いときに出る。ステップに分け、前のステップで分かることを次のステップで使う。
 前回の選択を状態のフォルダの `launch.json` に覚え、次の初期値にする。
 
 | ステップ | 選ぶもの | 「次へ」で起きること |
 | --- | --- | --- |
-| 1. Signaling | このアプリで起動する（ポート）か、既存につなぐ（URL。既定 `ws://localhost:8765`）か | 起動する、または問い合わせる。ポートが使われている・読めないなら、ここで止まる。読めたら名簿を持って次へ |
-| 2. Roles | 名前（body_id。空なら「ホスト名-乱数 4 桁」）、Brain・Body（両方も可） | 名前が online のアプリとぶつかると、`-2` が付くと注意を出す。Body を選ばなければ、ここで起動する（どちらも選ばなければ console だけ） |
-| 3. Brain（Brain のとき） | orchestrator のエージェント（Codex・Claude・custom から 1 つ。custom は URL・API キーの変数名・モデル）、モデル（確かめると一覧から選べる）、effort（そのモデルが受け付けるもの）、フォルダ、ワーカーが終わったら起こすか。道具と macOS の許可は無い | 入ったとき・選び直したとき・「Check」で確かめる。Codex が未ログインならログインのボタンが出る。Start で `brain.json` に書く |
-| 4. Belongs to（Body のとき） | 所属する brain（複数選べる。複数なら共有）。候補は、自分が brain ならこのアプリ（既定）と、名簿にいる online の brain | 次へ。参加の後に所属を変える |
-| 5. Body（Body のとき） | このマシンのプロジェクトのフォルダと、body なら同時に動かせるワーカーの数（1〜16）。Codex・Claude の on/off・作業フォルダ・既定のモデル（確かめると一覧から選べる）・同時に動かせる数、Mac や Chrome を操作させる道具の on/off（on にすると、要るものとその状態が出る）、このアプリの macOS の許可、custom の追加（id・URL・API キーの変数名・モデル・作業フォルダ・説明・同時に動かせる数）。custom のモデルは、URL を入れて「Load models」でサーバーの一覧を読み、そこから選ぶ（一覧の無いサーバーは手で入れる。選んだモデルのコンテキスト長も一緒に覚える）。同時に動かせる数はスライダー（0〜8、0 は「上限なし」） | 入ったとき・on にしたとき・「Check」で確かめる。Codex が未ログインならログインのボタンが出る。Start で `worker-types.json` に書いて起動する。0 個でもよい |
+| 1. Signaling | このアプリで起動する（ポート）か、既存につなぐ（URL。既定 `ws://localhost:8765`）か。アプリの名前（console と body の名前。空なら「ホスト名-乱数 4 桁」） | 起動する、または問い合わせる。ポートが使われている・読めないなら、ここで止まる。読めたら名簿を持って次へ |
+| 2. Brains | このアプリの brain。「Add a brain」で 1 つずつ足し、カードごとに名前（既定「アプリの名前-brain-N」）と orchestrator のエージェント（Codex・Claude・custom から 1 つ。custom は URL・API キーの変数名・モデル）、モデル（確かめると一覧から選べる）、effort（そのモデルが受け付けるもの）、フォルダ、ワーカーが終わったら起こすか。道具と macOS の許可は無い。0 個でもよい | 足したとき・選び直したとき・「Check」で確かめる。Codex が未ログインならログインのボタンが出る。名前の重複・名簿に既にいる名前・設定の不足で止まる。Start で `brains/<名前>/brain.json` に書く |
+| 3. Body | このアプリを body にするか。するなら所属する brain（複数選べる。複数なら共有）。候補はこのアプリの brain（既定）と、名簿にいる online の brain | しないなら、ここで起動する（brain も無ければ console だけ）。参加の後に所属を変える |
+| 4. Workers（Body のとき） | このマシンのプロジェクトのフォルダと、body なら同時に動かせるワーカーの数（1〜16）。Codex・Claude の on/off・作業フォルダ・既定のモデル（確かめると一覧から選べる）・同時に動かせる数、Mac や Chrome を操作させる道具の on/off（on にすると、要るものとその状態が出る）、このアプリの macOS の許可、custom の追加（id・URL・API キーの変数名・モデル・作業フォルダ・説明・同時に動かせる数）。custom のモデルは、URL を入れて「Load models」でサーバーの一覧を読み、そこから選ぶ（一覧の無いサーバーは手で入れる。選んだモデルのコンテキスト長も一緒に覚える）。同時に動かせる数はスライダー（0〜8、0 は「上限なし」） | 入ったとき・on にしたとき・「Check」で確かめる。Codex が未ログインならログインのボタンが出る。Start で `worker-types.json` に書いて起動する。0 個でもよい |
 
 - 「Back」で前のステップへ戻れる。ステップ 1 でアプリの中のシグナリングを始めた後に戻ってポートを変えると、起動し直す
 - 所属の変更は、前の所属先でワーカーが動いていれば断られ、所属は前のまま（理由は body の一覧の上に出る）
@@ -296,22 +303,23 @@ mise run                    # sidecar の型検査、flutter analyze、起動画
 mise run run                # 起動画面から始める
 ```
 
-起動画面を出さずに起動するときは、環境変数で役割を指定する。
+起動画面を出さずに起動するときは、環境変数で brain と役割を指定する。
 
 ```bash
-ORCH_ROLE=brain,body,signal ORCH_NAME=brain-a mise run run             # シグナリングもこのアプリで
+ORCH_BRAINS=brain-a,brain-b ORCH_ROLE=body,signal ORCH_NAME=mac-a ORCH_OWNER=brain-a,brain-b mise run run   # brain 2 つと body、シグナリングもこのアプリで
 ORCH_ROLE=body ORCH_NAME=body-c ORCH_SIGNAL_URL=ws://<シグナリングのホスト>:8765 ORCH_OWNER=brain-a mise run run
 mise run signal             # シグナリングを単独で（:8765）。PORT か引数でポートを変える
 ```
 
-- `ORCH_ROLE`: `brain`・`body`・`signal`・`console` のコンマ区切り。`brain` だけなら body も兼ねる。`console` だけなら brain も body もしない
+- `ORCH_BRAINS`: このアプリで動かす brain の名前（コンマ区切り。設定は `brains/<名前>/brain.json`）
+- `ORCH_ROLE`: `body`・`signal`・`console` のコンマ区切り。役割も brain も無ければ body。`console` だけなら body もしない
 - `ORCH_SIGNAL_PORT`: アプリの中のシグナリングのポート（既定 8765）
 - `ORCH_OWNER`: 参加の後に、この body の所属先にする brain（コンマ区切りで複数。`-` は所属なし）
 - 同じマシンで複数起動するときは、`ORCH_STATE_DIR` を分ける
 - `ORCH_SELECT=<brain>`: console が最初に出す brain
-- `ORCH_ORCHESTRATOR=codex|claude`: brain の orchestrator のエージェント（`brain.json` より優先）
+- `ORCH_ORCHESTRATOR=codex|claude`: このアプリの brain の orchestrator のエージェント（`brain.json` より優先）
 - `ORCH_ASSIGN=body-c=brain-a,body-d=brain-a+brain-b,body-e=`: 起動後に所属を変える（`+` で複数、空は所属なし。console の一覧と同じ操作）
-- `ORCH_TOOLS=steps.json`: brain がモデルを使わずに自分のツールを呼ぶ（`[{tool, args, delay_ms}]`。args の body が所属になるまで待つ）。結果は `steps.json.out.jsonl` に追記（トークンを使わない確かめ用）
+- `ORCH_TOOLS=steps.json`: このアプリの brain がモデルを使わずに自分のツールを呼ぶ（`[{brain, tool, args, delay_ms}]`。brain を省くと最初の brain。args の body が所属になるまで待つ）。結果は `steps.json.out.jsonl` に追記（トークンを使わない確かめ用）
 - `ORCH_PAUSE=body-c`: 起動後に、その body を所属先の brain を通して止める（console の一時停止のボタンと同じ操作）
 - `ORCH_CONFIGURE=body-c=path.json`（`ORCH_PAUSE` と一緒に）: 止まったのを見てから、その body の設定を `worker-types.json` の形のファイルの中身にする。結果は console の知らせ（dump の `notice`）に出る
 - `ORCH_CONFIGURE_BRAIN=brain-a=path.json`: その brain の準備ができたら、設定を `brain.json` の形のファイルの中身にする（console の brain の ⚙ と同じ操作）。結果は console の知らせに出る
