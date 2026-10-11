@@ -280,9 +280,12 @@ class _BrainRow extends StatelessWidget {
   }
 }
 
-/// Every body on the network: the brain that owns it (a menu moves it to
-/// another brain, refused while its workers run), what it runs and how many
-/// at once; its project folder and subscription usage on hover.
+/// Every body on the network, in two groups: the selected brain's bodies,
+/// and the others (other brains' and those of no brain). Each shows how many
+/// brains it belongs to (one: its own; several: shared), what it runs and
+/// how many at once, and "in use by" when another brain is using it; its
+/// project folder, usage and brains on hover. Its brains are changed in its
+/// settings (⚙).
 class _Bodies extends StatelessWidget {
   const _Bodies({required this.console, required this.onToggleLog});
 
@@ -292,30 +295,42 @@ class _Bodies extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bodies = console.allBodies;
-    final brains = [
-      for (final n in console.signal.nodes)
-        if (n.brain && n.online) n.name,
+    final selected = console.selected;
+    final mine = [
+      for (final b in bodies)
+        if (selected != null && b.owners.contains(selected)) b,
     ];
+    final others = [
+      for (final b in bodies)
+        if (!mine.contains(b)) b,
+    ];
+    Widget heading(String text, {Widget? trailing}) => Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: Row(
+        children: [
+          Text(
+            text,
+            style: const TextStyle(fontSize: 11, color: Palette.textFaint),
+          ),
+          const Spacer(),
+          ?trailing,
+        ],
+      ),
+    );
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 10, 8, 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Text(
-                'Bodies · ${bodies.where((b) => b.node.online).length}',
-                style: const TextStyle(fontSize: 11, color: Palette.textFaint),
-              ),
-              const Spacer(),
-              IconButton(
-                tooltip: 'Protocol log (this app)',
-                iconSize: 16,
-                visualDensity: VisualDensity.compact,
-                onPressed: onToggleLog,
-                icon: const Icon(Icons.data_object, color: Palette.textFaint),
-              ),
-            ],
+          heading(
+            selected == null ? 'Bodies' : 'Bodies of $selected',
+            trailing: IconButton(
+              tooltip: 'Protocol log (this app)',
+              iconSize: 16,
+              visualDensity: VisualDensity.compact,
+              onPressed: onToggleLog,
+              icon: const Icon(Icons.data_object, color: Palette.textFaint),
+            ),
           ),
           if (!console.connected)
             Text(
@@ -330,96 +345,101 @@ class _Bodies extends StatelessWidget {
                 style: const TextStyle(fontSize: 11, color: Palette.warning),
               ),
             ),
-          for (final b in bodies)
-            Padding(
-              padding: const EdgeInsets.only(top: 6),
-              child: Tooltip(
-                message: [
-                  if (b.view case final v?) ...[v.projectDir, ...v.usage],
-                ].join('\n'),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.circle,
-                          size: 7,
-                          color: b.node.online
-                              ? Palette.added
-                              : Palette.textFaint,
-                        ),
-                        const SizedBox(width: 6),
-                        Flexible(
-                          child: Text(
-                            b.name,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: b.name == console.selfName
-                                  ? FontWeight.w600
-                                  : FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                        if (b.node.brain) ...[
-                          const SizedBox(width: 6),
-                          const _Badge('brain'),
-                        ],
-                        if (b.view?.paused ?? false) ...[
-                          const SizedBox(width: 6),
-                          const _Badge('paused', color: Palette.warning),
-                        ],
-                        const Spacer(),
-                        if (console.canPause(b)) ...[
-                          _BodySettingsButton(console: console, body: b),
-                          _PauseButton(console: console, body: b),
-                        ],
-                      ],
-                    ),
-                    _OwnerMenu(console: console, body: b, brains: brains),
-                    if (b.owners.length > 1 && b.node.online)
-                      Text(
-                        b.view?.heldBy != null
-                            ? 'shared · in use by ${b.view!.heldBy}'
-                            : 'shared · free',
-                        key: ValueKey('body-holder-${b.name}'),
-                        style: TextStyle(
-                          fontSize: 10.5,
-                          color: b.view?.heldBy != null
-                              ? Palette.warning
-                              : Palette.textDim,
-                        ),
-                      ),
-                    if (b.node.online && b.view != null)
-                      Text(
-                        [
-                          b.view!.host,
-                          b.view!.workerTypes.isEmpty
-                              ? 'no agents'
-                              : b.view!.workerTypes
-                                    .map(b.view!.labelOf)
-                                    .join(', '),
-                          if (b.view!.maxWorkers case final m?) '$m at once',
-                        ].join(' · '),
-                        style: const TextStyle(
-                          fontSize: 10.5,
-                          color: Palette.textDim,
-                        ),
-                      ),
-                    if (!b.node.online)
-                      const Text(
-                        'offline',
-                        style: TextStyle(
-                          fontSize: 10.5,
-                          color: Palette.textFaint,
-                        ),
-                      ),
-                  ],
-                ),
-              ),
+          if (mine.isEmpty)
+            const Text(
+              'None.',
+              style: TextStyle(fontSize: 11, color: Palette.textDim),
             ),
+          for (final b in mine) _BodyRow(console: console, body: b),
+          if (others.isNotEmpty) ...[
+            const SizedBox(height: 10),
+            heading('Other bodies'),
+            for (final b in others) _BodyRow(console: console, body: b),
+          ],
         ],
+      ),
+    );
+  }
+}
+
+class _BodyRow extends StatelessWidget {
+  const _BodyRow({required this.console, required this.body});
+
+  final ConsoleMirror console;
+  final BodyEntry body;
+
+  @override
+  Widget build(BuildContext context) {
+    final b = body;
+    final v = b.view;
+    final holder = v?.heldBy;
+    final inUseByOther = holder != null && holder != console.selected;
+    return Padding(
+      padding: const EdgeInsets.only(top: 6),
+      child: Tooltip(
+        message: [
+          'belongs to ${b.owners.isEmpty ? 'no brain' : b.owners.join(', ')}',
+          if (v != null) ...[v.projectDir, ...v.usage],
+        ].join('\n'),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.circle,
+                  size: 7,
+                  color: b.node.online ? Palette.added : Palette.textFaint,
+                ),
+                const SizedBox(width: 6),
+                Flexible(
+                  child: Text(
+                    '${b.name} (${b.owners.length})',
+                    key: ValueKey('body-name-${b.name}'),
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: b.name == console.selfName
+                          ? FontWeight.w600
+                          : FontWeight.normal,
+                    ),
+                  ),
+                ),
+                if (v?.paused ?? false) ...[
+                  const SizedBox(width: 6),
+                  const _Badge('paused', color: Palette.warning),
+                ],
+                const Spacer(),
+                if (b.node.online && v != null)
+                  _BodySettingsButton(console: console, body: b),
+                if (console.canPause(b))
+                  _PauseButton(console: console, body: b),
+              ],
+            ),
+            if (b.node.online && v != null)
+              Text(
+                [
+                  v.host,
+                  v.workerTypes.isEmpty
+                      ? 'no agents'
+                      : v.workerTypes.map(v.labelOf).join(', '),
+                  if (v.maxWorkers case final m?) '$m at once',
+                ].join(' · '),
+                style: const TextStyle(fontSize: 10.5, color: Palette.textDim),
+              ),
+            if (inUseByOther)
+              Text(
+                'in use by $holder',
+                key: ValueKey('body-holder-${b.name}'),
+                style: const TextStyle(fontSize: 10.5, color: Palette.warning),
+              ),
+            if (!b.node.online)
+              const Text(
+                'offline',
+                style: TextStyle(fontSize: 10.5, color: Palette.textFaint),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -454,9 +474,10 @@ class _PauseButton extends StatelessWidget {
   }
 }
 
-/// Opens the body's agents (the editor of its start screen), only while it
-/// is paused with no workers of its brain running or waiting there: saving
-/// restarts its agents.
+/// Opens the body's settings (its brains and agents), only while it is
+/// paused with no brain's workers there. A body of no brain cannot be paused
+/// (no brain relays it) and runs nothing: its settings open any time, with
+/// its brains only.
 class _BodySettingsButton extends StatelessWidget {
   const _BodySettingsButton({required this.console, required this.body});
 
@@ -465,17 +486,21 @@ class _BodySettingsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final unowned = body.owners.isEmpty;
+    final relay = console.canPause(body);
     final paused = body.view!.paused;
-    // Free: no brain's workers run or wait there.
     final holder = body.view!.heldBy;
-    final ready = paused && holder == null && body.running == 0;
+    final ready =
+        unowned || (relay && paused && holder == null && body.running == 0);
     return IconButton(
       key: ValueKey('body-settings-${body.name}'),
-      tooltip: !paused
-          ? 'Change its agents: pause it first'
-          : !ready
-          ? 'Change its agents: wait for the workers of ${holder ?? 'its brain'} to finish'
-          : 'Change its agents',
+      tooltip: ready
+          ? 'Settings of ${body.name}'
+          : !relay
+          ? 'Settings: none of its brains is linked to this console'
+          : !paused
+          ? 'Settings: pause it first'
+          : 'Settings: wait for the workers of ${holder ?? 'its brain'} to finish',
       iconSize: 15,
       visualDensity: VisualDensity.compact,
       constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
@@ -484,85 +509,17 @@ class _BodySettingsButton extends StatelessWidget {
           ? () => showBodySettings(
               context,
               body: body.name,
-              request: (m, [p = const {}]) => console.bodyRequest(body, m, p),
+              owners: body.owners,
+              brains: console.signal.brains,
+              assign: (brains) => console.assign(body.name, brains),
+              request: unowned
+                  ? null
+                  : (m, [p = const {}]) => console.bodyRequest(body, m, p),
             )
           : null,
       icon: Icon(
         Icons.tune,
         color: ready ? Palette.text : Palette.textFaint.withValues(alpha: 0.5),
-      ),
-    );
-  }
-}
-
-/// "→ brain-a, brain-b · 1 running": the brains the body belongs to, and a
-/// menu that adds or removes one (a body shared by several brains is used
-/// by one of them at a time). Removing a brain whose workers run or wait
-/// there is refused.
-class _OwnerMenu extends StatelessWidget {
-  const _OwnerMenu({
-    required this.console,
-    required this.body,
-    required this.brains,
-  });
-
-  final ConsoleMirror console;
-  final BodyEntry body;
-  final List<String> brains;
-
-  @override
-  Widget build(BuildContext context) {
-    final owners = body.owners;
-    final label =
-        '→ ${owners.isEmpty ? 'no brain' : owners.join(', ')}'
-        '${body.running > 0 ? ' · ${body.running} running' : ''}';
-    return PopupMenuButton<String>(
-      tooltip: 'Brains it belongs to (several: shared, used by one at a time)',
-      enabled: console.connected,
-      color: Palette.surfaceHigh,
-      onSelected: (v) => console.assign(
-        body.name,
-        v.isEmpty
-            ? const []
-            : owners.contains(v)
-            ? [for (final o in owners) if (o != v) o]
-            : [...owners, v],
-      ),
-      itemBuilder: (_) => [
-        for (final b in {...brains, ...owners})
-          CheckedPopupMenuItem(
-            value: b,
-            checked: owners.contains(b),
-            child: Text(b, style: const TextStyle(fontSize: 13)),
-          ),
-        CheckedPopupMenuItem(
-          value: '',
-          checked: owners.isEmpty,
-          child: const Text('No brain', style: TextStyle(fontSize: 13)),
-        ),
-      ],
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 2),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              child: Text(
-                label,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 11,
-                  color: owners.isEmpty ? Palette.warning : Palette.text,
-                ),
-              ),
-            ),
-            const Icon(
-              Icons.arrow_drop_down,
-              size: 14,
-              color: Palette.textFaint,
-            ),
-          ],
-        ),
       ),
     );
   }

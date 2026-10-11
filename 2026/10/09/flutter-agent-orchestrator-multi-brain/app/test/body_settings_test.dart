@@ -30,13 +30,30 @@ class _BodyChecker extends AgentChecker {
 }
 
 /// Opens the dialog the way the console's body list does.
-Future<void> open(WidgetTester tester, {required BodyRequest request}) async {
+/// Brains [open] passed `assign` (null: not called).
+List<String>? assigned;
+
+Future<void> open(
+  WidgetTester tester, {
+  BodyRequest? request,
+  List<String> owners = const ['brain-a'],
+}) async {
+  assigned = null;
   await tester.pumpWidget(
     MaterialApp(
       home: Builder(
         builder: (context) => TextButton(
-          onPressed: () =>
-              showBodySettings(context, body: 'body-c', request: request),
+          onPressed: () => showBodySettings(
+            context,
+            body: 'body-c',
+            owners: owners,
+            brains: const ['brain-a', 'brain-b'],
+            assign: (b) async {
+              assigned = b;
+              return (true, null);
+            },
+            request: request,
+          ),
           child: const Text('open'),
         ),
       ),
@@ -82,7 +99,7 @@ void main() {
 
     await open(tester, request: request);
 
-    expect(find.text('Agents of body-c'), findsOneWidget);
+    expect(find.text('Settings of body-c'), findsOneWidget);
     expect(find.textContaining('Empty: /Users/someone'), findsOneWidget);
     expect(find.text('✓ Logged in (pro)'), findsOneWidget);
     expect(find.text('✗ Not logged in'), findsOneWidget);
@@ -110,7 +127,7 @@ void main() {
     expect(config.codex.computerUse, true);
     expect(config.maxWorkers, 2);
     expect(
-      find.text('Agents of body-c'),
+      find.text('Settings of body-c'),
       findsNothing,
       reason: 'closed after saving',
     );
@@ -137,9 +154,58 @@ void main() {
               )),
     };
     await open(tester, request: request);
+    await tester.tap(find.byKey(const Key('agent-claude')));
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('body-settings-save')));
     await tester.pumpAndSettle();
     expect(find.textContaining('still running on body-c'), findsOneWidget);
-    expect(find.text('Agents of body-c'), findsOneWidget);
+    expect(find.text('Settings of body-c'), findsOneWidget);
+  });
+
+  testWidgets(
+    'its brains: shared with another brain; agents unchanged are not restarted',
+    (tester) async {
+      tester.view.physicalSize = const Size(1200, 2600);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+      final asked = <String>[];
+      Future<Object?> request(String m, [Json p = const {}]) async {
+        asked.add(m);
+        return switch (m) {
+          'body/config' => {'config': WorkerTypesConfig().toJson()},
+          _ =>
+            p['what'] == 'permissions'
+                ? null
+                : await runCheck(
+                    _BodyChecker(),
+                    p['what'] as String,
+                    (p['args'] as Map).cast(),
+                  ),
+        };
+      }
+
+      await open(tester, request: request);
+      expect(find.text('Belongs to'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('belongs-brain-b')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('body-settings-save')));
+      await tester.pumpAndSettle();
+      expect(assigned, ['brain-a', 'brain-b']);
+      expect(asked, isNot(contains('body/configure')));
+      expect(find.text('Settings of body-c'), findsNothing);
+    },
+  );
+
+  testWidgets('a body of no brain: only its brains, no relay needed', (
+    tester,
+  ) async {
+    await open(tester, owners: const []);
+    expect(find.textContaining('belongs to no brain yet'), findsOneWidget);
+    expect(find.byKey(const Key('agent-codex')), findsNothing);
+    await tester.tap(find.byKey(const Key('belongs-brain-a')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('body-settings-save')));
+    await tester.pumpAndSettle();
+    expect(assigned, ['brain-a']);
   });
 }

@@ -400,8 +400,7 @@ class ConsoleMirror extends ChangeNotifier {
   /// The brain to show first (`ORCH_SELECT`), when it is linked.
   String? preferred;
 
-  /// The last message about moving or changing a body (shown in the body
-  /// list).
+  /// The last failure of changing a body (shown in the body list).
   String? notice;
 
   void say(String text) {
@@ -609,14 +608,13 @@ class ConsoleMirror extends ChangeNotifier {
     });
   }
 
-  /// Sets the brains [body] belongs to, through the signaling server.
-  Future<void> assign(String body, List<String> brains) async {
-    final to = brains.isEmpty ? 'no brain' : brains.join(', ');
-    notice = 'setting $body → $to…';
-    notifyListeners();
+  /// Sets the brains [body] belongs to, through the signaling server. A
+  /// failure is also kept in [notice].
+  Future<(bool, String?)> assign(String body, List<String> brains) async {
     final (ok, reason) = await signal.assign(body, brains);
-    notice = ok ? '$body → $to' : 'could not change $body: $reason';
+    notice = ok ? null : 'could not change $body: $reason';
     notifyListeners();
+    return (ok, reason);
   }
 
   void view(ThreadMirror? t) {

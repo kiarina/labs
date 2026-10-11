@@ -2,7 +2,7 @@
 
 司令塔（brain）を 1 つのネットワークに複数置きます。
 
-- **body の所属**: 各 body（ワーカーを動かすアプリ）は 1 つ以上の brain に所属し、所属先の brain だけがそこでワーカーを動かします。所属は console から変えます
+- **body の所属**: 各 body（ワーカーを動かすアプリ）は 1 つ以上の brain に所属し、所属先の brain だけがそこでワーカーを動かします。所属は console の body の設定（⚙）で変えます
 - **共有の body**: 複数の brain に所属する body は、一度に 1 つの brain が使います（譲り合い）。使っている brain がいる間、ほかの brain はそこで読むこと（使用中の作業の一覧、`fetch_image`）だけができ、新しい仕事は断られます
 - **console**: brain を選び、選んだ brain と話します
 - **シグナリング**: 独立したサーバーにし、名簿（どのアプリがいるか、どれが brain・body か）と所属（body → brain）を持たせます。単独のプロセスでも、アプリの中でも動きます
@@ -79,7 +79,8 @@
 - **1 つの body を 2 つの brain で共有し、競合を防げた。**（トークンを使わない: 答えを 40 秒遅らせる偽の Responses API の custom worker と、`ORCH_TOOLS`）
   - body-c を brain-a・brain-b の両方の所属にした。brain-a がワーカーを始めると、brain-b の `list_bodies` に `in_use_by: brain-a` と brain-a の作業（題名「hold the body」・running）が出た
   - その間、brain-b の `start_thread` は「in use by brain-a」で断られ、`fetch_image`（読み取り）は通った
-  - brain-a のワーカーが終わると body-c が空き、brain-b の `start_thread` が通った。console には「→ brain-a, brain-b · 1 running」「shared · in use by brain-b」と出た（スクリーンショット）
+  - brain-a のワーカーが終わると body-c が空き、brain-b の `start_thread` が通った。brain-a の console には、共用の「body-c (2)」に「in use by brain-b」、専用の「body-d (1)」、その他に所属なしの「body-e (0)」が出た（スクリーンショット）
+  - 本物のモデルの司令塔（brain-b、Codex）も、使用中の body-c で `start_thread` が断られると「別の brain の処理で使用中のため実行できません」と答えた（オーナーの操作）
   - シグナリング（複数の所属、外される brain が断ると変えない）と、brain の振る舞い（断る・待たせる・知らせる）は単体のテストで確かめた（`test/shared_body_test.dart`）
 - **orchestrator と worker のプロセスを分けられた。** brain と body を兼ねる brain-a は、orchestrator の Codex と、body の Codex・Claude を別々のプロセスで起動した（子プロセスが 3 つ）。
   body-c の console から brain-a の設定を Claude に変える（`ORCH_CONFIGURE_BRAIN`）と、orchestrator の Codex だけが Claude の中継に入れ替わり、body のプロセスはそのまま残った。
@@ -184,7 +185,11 @@
 - **console**（全アプリ）: つながった brain ごとに写し（`BrainView`）を持つ。選んだ brain の写しを中央と右に出し、送信・停止・設定はその brain へ送る
   - 左には次を出す
     - Brains: 選ぶと、その brain と話す。行に orchestrator が何で動いているか（エージェント・モデル・effort）。↺ で新しい会話（ワーカーは続く）、⚙ でその brain の設定（`app/lib/ui/brain_settings.dart`。編集は起動画面の Brain と同じ部品 `brain_editor.dart`、確かめは brain のマシンで `brain/check`）
-    - 全 body の一覧。名前・所属先・使えるエージェント・同時に動かせる数（重ねるとプロジェクトのフォルダとサブスクの使用量）。所属先を押すと、brain を加える・外すメニューが出る（ワーカーが動いている brain は外せない）。共有の body には「shared · in use by brain-b」か「shared · free」
+    - body の一覧を「Bodies of <選んでいる brain>」と「Other bodies」（ほかの brain のもの・所属なし）に分ける。名前の後ろに所属する brain の数（1 なら専用、2 以上なら共用）、使えるエージェント・同時に動かせる数。
+      ほかの brain が使っているときだけ「in use by brain-b」。重ねると所属先・プロジェクトのフォルダ・サブスクの使用量
+    - 所属先は body の設定のダイアログ（⚙）の「Belongs to」で変える。ダイアログは止めていて、どの brain のワーカーもいないときだけ開けるので、所属先の変更も同じ条件になる。
+      所属なしの body は止める操作を中継できる brain がいない（ワーカーも動いていない）ので、いつでも開け、中身は「Belongs to」だけ。エージェントは変わったときだけ保存して起動し直す
+    - 知らせ（所属の変更など）は失敗したときだけ出す
   - 所属の変更は signal へ送る
 
 ### 起動画面
