@@ -1,16 +1,18 @@
 # Preserving a Tripo VRM face while adding expressions
 
-## Current result — 2026-09-29
+## Current result
 
-**Version 1 is fixed.** On 2026-09-29 the owner accepted `lid-envelope` as the
-version 1 checkpoint. Its delivery files are `miineko/vrm/miineko.blend` and
-`miineko/vrm/miineko.vrm` in the private assets repository.
+**K production is finished.** The accepted delivery, recovery references and
+remaining limits are recorded in [FINAL_2026_10_12.md](FINAL_2026_10_12.md).
+[RIBBON_RECONSTRUCTION.md](RIBBON_RECONSTRUCTION.md) owns the reconstruction
+lessons. The private assets files still contain version 1; this documentation
+closure does not replace them.
 
-Start with [VERSION_1.md](VERSION_1.md) for the exact artifact identity, complete
-stage lineage, driving contract, lessons and verification limits. Later work
-must preserve this checkpoint and use separate experimental outputs. The earlier
-`blink-aligned` snapshot remains a historical reference in the assets history
-(`miineko/tripo/v1/` at commit `6d75075`).
+Version 1 (`lid-envelope`) remains the earlier accepted checkpoint.
+[VERSION_1.md](VERSION_1.md) records its identity, lineage and behavior contract.
+The table below describes that checkpoint rather than claiming new K checks
+for every part. The earlier `blink-aligned` snapshot remains in the assets
+history (`miineko/tripo/v1/` at commit `6d75075`).
 
 | Part | Current decision | Canonical detail |
 | --- | --- | --- |
@@ -35,6 +37,8 @@ from Git; pulling this repository alone does not provide the model.
 
 | Document | Purpose |
 | --- | --- |
+| [FINAL_2026_10_12.md](FINAL_2026_10_12.md) | Accepted K delivery, recovery identity, checked scope and remaining limits. |
+| [RIBBON_RECONSTRUCTION.md](RIBBON_RECONSTRUCTION.md) | Ribbon reconstruction lessons and independent checks. |
 | [VERSION_1.md](VERSION_1.md) | Fixed version 1: delivery identity, source chain, behavior contract and post-v1 work. |
 | [LID_ENVELOPE.md](LID_ENVELOPE.md) | Version 1 side-view gap repair, foreground depth fitting and 13-angle checks. |
 | [LID_RIM_CLEAN.md](LID_RIM_CLEAN.md) | Version 1 circular dark-trace cleanup on closed lids; cause, RGB-only fix, remaining seams. |
@@ -70,7 +74,7 @@ historical routes. They are not the path to the accepted face.
 
 ## After version 1
 
-The current deliverables are frozen. [VERSION_1.md](VERSION_1.md) separates the
+The version 1 checkpoint is frozen. K delivery is described separately above. [VERSION_1.md](VERSION_1.md) separates the
 checked appearance and staged repeatability from later polish, audio, gaze,
 springs, target-runtime and full-chain work. The final lid revision has not yet
 been through the earlier full-body motion test. Do not continue modifying the

@@ -106,3 +106,6 @@ Known follow-ups belong to a later revision or integration task:
 Freezing version 1 is a concrete accepted milestone, not a claim that these
 remaining items are complete. Preserve the checkpoint and branch experiments by
 output name until the owner chooses a replacement version.
+
+The later accepted K production closure is recorded in
+[FINAL_2026_10_12.md](FINAL_2026_10_12.md); this checkpoint record is retained.
