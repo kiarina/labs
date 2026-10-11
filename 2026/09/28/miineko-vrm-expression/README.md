@@ -8,9 +8,10 @@ remaining limits are recorded in [FINAL_2026_10_12.md](FINAL_2026_10_12.md).
 lessons. The private assets files contain the accepted K delivery and its
 newly rendered portrait; version 1 remains available in Git history.
 
-A separate [polygon-reduction trial](POLYGON_REDUCTION_TRIAL.md) records a
-23.15% triangle reduction and bounded cloud-runtime checks. It has not replaced
-the accepted K assets.
+Separate [first](POLYGON_REDUCTION_TRIAL.md) and
+[second](POLYGON_REDUCTION_SECOND_TRIAL.md) polygon-reduction trials record
+23.15% and 33.83% fewer triangles than K, with bounded cloud-runtime checks.
+Neither trial has replaced the accepted K assets.
 
 Version 1 (`lid-envelope`) remains the earlier accepted checkpoint.
 [VERSION_1.md](VERSION_1.md) records its identity, lineage and behavior contract.
