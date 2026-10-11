@@ -5,8 +5,8 @@
 **K production is finished.** The accepted delivery, recovery references and
 remaining limits are recorded in [FINAL_2026_10_12.md](FINAL_2026_10_12.md).
 [RIBBON_RECONSTRUCTION.md](RIBBON_RECONSTRUCTION.md) owns the reconstruction
-lessons. The private assets files still contain version 1; this documentation
-closure does not replace them.
+lessons. The private assets files contain the accepted K delivery and its
+newly rendered portrait; version 1 remains available in Git history.
 
 Version 1 (`lid-envelope`) remains the earlier accepted checkpoint.
 [VERSION_1.md](VERSION_1.md) records its identity, lineage and behavior contract.
