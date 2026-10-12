@@ -30,6 +30,11 @@ wings/tails with sampled vertices and preserves high-gradient shading features.
 It reaches 87,058 triangles (4.38% below v6); a smaller branch was rejected for
 visible tail-root shading drift. Position and normalized-field checks, inherited
 contacts/shadow risks, and runtime/native reproduction remain separately scoped.
+The [v7 vertex-data cleanup](VERTEX_COMPACTION_TRIAL.md) then removes 23,377
+unreferenced stored rows while retaining loader-bound support. Stored rows fall
+29.01% and file bytes 9.20%; the 87,058 triangles and all drawn attributes stay
+exact. Finite loader/pose/image parity and the unchanged editable source are
+documented separately from geometry reduction or performance claims.
 
 Version 1 (`lid-envelope`) remains the earlier accepted checkpoint.
 [VERSION_1.md](VERSION_1.md) records its identity, lineage and behavior contract.
