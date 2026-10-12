@@ -119,6 +119,9 @@ Delivered privately on 2026-10-12 at 15:53 JST:
 - Comparison: `libfile_4304c319220c8191804b97de2672eead`.
 - Existing editable Blend reattached: `libfile_ef58e3ebbe28819197baa32d21b6e878`.
 
-Owner target-application confirmation is pending for this storage variant.
+The owner confirmed this storage variant worked without problems in their
+application on 2026-10-12 at 20:09 JST, then authorized a separate small body
+reconstruction trial. The application and arbitrary-motion coverage remain
+unspecified; this does not broaden the finite cloud-test claims.
 No geometry binaries or evidence images are published in this repository. Private artifacts retain exact input hashes,
 compact reports and executable reproduction instructions.

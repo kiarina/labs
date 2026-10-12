@@ -35,6 +35,12 @@ unreferenced stored rows while retaining loader-bound support. Stored rows fall
 29.01% and file bytes 9.20%; the 87,058 triangles and all drawn attributes stay
 exact. Finite loader/pose/image parity and the unchanged editable source are
 documented separately from geometry reduction or performance claims.
+The owner subsequently accepted that compact variant. A separate
+[body-patch pilot](BODY_PATCH_PILOT.md) tested 147 fixed placements across three
+small regions; all twelve structurally measured cases failed conservative new
+shape/field gates, independently reproduced. No new model was selected, and
+browser-render QA was blocked by the fresh executor. The accepted compact v7
+remains unchanged; this is a bounded negative result, not a general limit.
 
 Version 1 (`lid-envelope`) remains the earlier accepted checkpoint.
 [VERSION_1.md](VERSION_1.md) records its identity, lineage and behavior contract.
