@@ -25,6 +25,11 @@ sampled vertices and reaches 91,048 triangles (3.93% below v5). It remains short
 of 80k; referenced vertices fall, while stored rows and VRM bytes rise. The record
 separates incremental geometry/edge differences, inherited shadow risks and
 verified runtime/native reproduction.
+The [seventh trial](POLYGON_REDUCTION_SEVENTH_TRIAL.md) reconstructs ribbon
+wings/tails with sampled vertices and preserves high-gradient shading features.
+It reaches 87,058 triangles (4.38% below v6); a smaller branch was rejected for
+visible tail-root shading drift. Position and normalized-field checks, inherited
+contacts/shadow risks, and runtime/native reproduction remain separately scoped.
 
 Version 1 (`lid-envelope`) remains the earlier accepted checkpoint.
 [VERSION_1.md](VERSION_1.md) records its identity, lineage and behavior contract.
