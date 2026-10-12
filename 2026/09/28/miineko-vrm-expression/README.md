@@ -20,6 +20,11 @@ it is conditional, not a general replacement for the third trial. The
 [fifth trial](POLYGON_REDUCTION_FIFTH_TRIAL.md) prioritizes quality at 94,770
 triangles (9.95% below v4; 52.95% below K), short of its exploratory 80k target.
 It retains the shadow caveat and documents small interpolation differences.
+The [sixth trial](POLYGON_REDUCTION_SIXTH_TRIAL.md) rebuilds lid patches with new
+sampled vertices and reaches 91,048 triangles (3.93% below v5). It remains short
+of 80k; referenced vertices fall, while stored rows and VRM bytes rise. The record
+separates incremental geometry/edge differences, inherited shadow risks and
+verified runtime/native reproduction.
 
 Version 1 (`lid-envelope`) remains the earlier accepted checkpoint.
 [VERSION_1.md](VERSION_1.md) records its identity, lineage and behavior contract.
