@@ -122,4 +122,3 @@ Delivered privately on 2026-10-12 at 15:53 JST:
 Owner target-application confirmation is pending for this storage variant.
 No geometry binaries or evidence images are published in this repository. Private artifacts retain exact input hashes,
 compact reports and executable reproduction instructions.
-
