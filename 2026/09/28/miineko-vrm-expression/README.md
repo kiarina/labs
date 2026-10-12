@@ -13,7 +13,10 @@ Separate [first](POLYGON_REDUCTION_TRIAL.md),
 [third](POLYGON_REDUCTION_THIRD_TRIAL.md) polygon-reduction trials record
 23.15%, 33.83% and 34.34% fewer triangles than K. The third is a small additional
 reduction with dense expression/pose checks and a stronger surface-sampling
-scope correction. None has replaced the accepted K assets.
+scope correction. None has replaced the accepted K assets. A separately requested
+[fourth experiment](POLYGON_REDUCTION_FOURTH_EXPERIMENT.md) reaches 47.75% fewer
+triangles by pruning zero-alpha lid faces, with known host-shadow differences;
+it is conditional, not a general replacement for the third trial.
 
 Version 1 (`lid-envelope`) remains the earlier accepted checkpoint.
 [VERSION_1.md](VERSION_1.md) records its identity, lineage and behavior contract.
