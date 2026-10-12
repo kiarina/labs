@@ -16,7 +16,10 @@ reduction with dense expression/pose checks and a stronger surface-sampling
 scope correction. None has replaced the accepted K assets. A separately requested
 [fourth experiment](POLYGON_REDUCTION_FOURTH_EXPERIMENT.md) reaches 47.75% fewer
 triangles by pruning zero-alpha lid faces, with known host-shadow differences;
-it is conditional, not a general replacement for the third trial.
+it is conditional, not a general replacement for the third trial. The
+[fifth trial](POLYGON_REDUCTION_FIFTH_TRIAL.md) prioritizes quality at 94,770
+triangles (9.95% below v4; 52.95% below K), short of its exploratory 80k target.
+It retains the shadow caveat and documents small interpolation differences.
 
 Version 1 (`lid-envelope`) remains the earlier accepted checkpoint.
 [VERSION_1.md](VERSION_1.md) records its identity, lineage and behavior contract.
