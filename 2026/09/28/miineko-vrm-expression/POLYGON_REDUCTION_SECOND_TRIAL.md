@@ -26,7 +26,10 @@ Three source-vertex layout changes account for the result:
   smaller 75–150 µm probes to reduce typical error.
 - Ribbon: 21,082 triangles across five parts. Angular density varies per ring,
   while all 35 rings, caps, material bands and retained attributes remain.
-  Sampled bidirectional surface difference from K is below 0.170 mm.
+  The original bidirectional sample set measured below 0.170 mm. A later
+  [denser reverse-direction check](POLYGON_REDUCTION_THIRD_TRIAL.md#stronger-sampling-corrects-the-earlier-scope)
+  including edge midpoints finds 0.185797 mm already in this file; the earlier
+  sampled result must not be read as a global surface bound.
 - Chest repair: 12,411 triangles. Selectively reverse the last midpoint
   refinement, preserving every seam edge/attribute, local repair, a 10 mm seam
   collar, restored cage and the whole knot-contact neighborhood. The final
