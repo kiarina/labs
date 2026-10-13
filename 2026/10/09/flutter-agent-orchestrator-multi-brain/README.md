@@ -340,10 +340,15 @@ mise run signal             # シグナリングを単独で（:8765）。PORT �
 - `ORCH_CONFIGURE=body-c=path.json`（`ORCH_PAUSE` と一緒に）: 止まったのを見てから、その body の設定を `worker-types.json` の形のファイルの中身にする。結果は console の知らせ（dump の `notice`）に出る
 - `ORCH_CONFIGURE_BRAIN=brain-a=path.json`: その brain の準備ができたら、設定を `brain.json` の形のファイルの中身にする（console の brain の ⚙ と同じ操作）。結果は console の知らせに出る
 - `ORCH_PROMPT`: 選んだ brain へ、起動後に 1 回送る
-- `ORCH_DUMP=path.json`: 名簿・所属・brain ごとの会話（操作の数とハッシュ、ターンの状態）・接続の記録を書き出す
+- `ORCH_DUMP=path.json`: 名簿・所属・brain ごとの会話（操作の数とハッシュ、ターンの状態、Codex のトークン量）・接続の記録を書き出す
 - `ORCH_WORKER_TYPES=path.json`: エージェントの設定（既定は状態のフォルダの `worker-types.json`。起動画面で書くもの）
 - `ORCH_FORWARD_ENV="OPENROUTER_API_KEY ..."`: アプリへ渡す環境変数の名前（custom の `env_key` の値。アプリは空の環境で起動するため）
 - `mise run probe-prompts`: Codex と Claude のワーカーに自動で入るプロンプトを、偽の API で確かめる（`probes/`）
+- 1 台の Mac で複数のアプリを並べて確かめる（`probes/`。作業用のフォルダは `PROBE_DIR`、既定 `$TMPDIR/orch-probe`）:
+  - `probes/launch.sh <名前> VAR=値 ...`: ビルド済みのアプリを状態のフォルダを分けて 1 つ起動し、PID を `pids/<名前>` に記録する。止めるときは記録した PID で選ぶ
+  - `probes/shot.sh <名前>`: その窓を、後ろに隠れていても撮る（`screencapture -l`）
+  - `python3 probes/slow_responses.py <ポート> <秒>`: 決めた秒数の後に「OK」と答える偽の Responses API。custom の worker の送り先にすると、worker が動いている状態（共有の body の使用中、Thinker の仕事）を観察できる
+  - モデルを使わずに brain のツールを呼ぶのは `ORCH_TOOLS`、画面の状態の書き出しは `ORCH_DUMP`（会話ごとのターンの状態とトークン量も入る）
 - 起動画面の確かめを、このマシンの本物の Codex・Claude で流す（モデルのトークンは使わない）:
   `cd app && LIVE_CHECK=1 CLAUDE_FLUTTER_SIDECAR=$PWD/../sidecar NODE_BIN=$(command -v node) flutter test test/agent_check_live_test.dart`
 - custom のワーカーに渡る道具を Computer Use の on/off で比べ、brain の Thinker・Talker に渡る道具（Web 検索の有無）を見る（偽の Responses API、トークンを使わない）:
