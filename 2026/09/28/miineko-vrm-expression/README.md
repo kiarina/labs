@@ -2,6 +2,15 @@
 
 ## Current result
 
+**Runtime compatibility limit (2026-10-14).** K follows the VRM 1.0 specification,
+but it depends on vertex colors (`COLOR_0`) for lid color and hiding, non-MToon
+glTF materials, a second UV set and `textureTransformBinds` expressions.
+three-vrm renders it; VRM4U 20260622 (Unreal Engine) supports none of these and
+shows white lid bands, flat shading and no blink. The owner chose to remake the
+character as an ordinary VRM (MToon, morph-target expressions, one UV set, no
+vertex colors) instead of extending each runtime. K stays the current asset
+until the remake is accepted.
+
 **K production is finished.** The accepted delivery, recovery references and
 remaining limits are recorded in [FINAL_2026_10_12.md](FINAL_2026_10_12.md).
 [RIBBON_RECONSTRUCTION.md](RIBBON_RECONSTRUCTION.md) owns the reconstruction
