@@ -18,17 +18,18 @@ import 'theme.dart';
 /// The first screen when no `ORCH_*` variables are set, in steps:
 ///
 /// 1. Signaling: start the server in this app (fails here when the port is
-///    in use) or join one (fails here when it cannot be read).
-/// 2. Roles: the name, and brain and/or body (neither: a console only).
-/// 3. Brain, for a brain: the one agent its orchestrator runs on (checked
-///    as it is picked), its model, effort and folder ([BrainEditor]). Kept
-///    in `brain.json`.
-/// 4. Belongs to, for a body: which brain it belongs to, from the roster
-///    read in step 1.
-/// 5. Body, for a body: the agents it offers as workers (Codex and Claude on
-///    or off, custom ones added freely, each checked as it is turned on),
-///    their tools, and this app's macOS permissions ([AgentsEditor]). Kept
-///    in `worker-types.json`.
+///    in use) or join one (fails here when it cannot be read), and this
+///    app's name.
+/// 2. Brains: the brains this app runs, added one at a time (none is fine):
+///    each one's name, mode (single, or talker + thinker) and agents,
+///    checked as they are picked ([BrainEditor]). Kept in
+///    `brains/<name>/brain.json`.
+/// 3. Body: whether this app is a body (no: start here), and the brains it
+///    belongs to (this app's and those in the roster read in step 1).
+/// 4. Workers, for a body: the agents it offers as workers (Codex and Claude
+///    on or off, custom ones added freely, each checked as it is turned
+///    on), their tools, and this app's macOS permissions ([AgentsEditor]).
+///    Kept in `worker-types.json`.
 class LaunchPage extends StatefulWidget {
   const LaunchPage({
     super.key,

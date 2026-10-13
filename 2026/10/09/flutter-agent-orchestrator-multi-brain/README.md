@@ -5,15 +5,15 @@
 - **body の所属**: 各 body（ワーカーを動かすアプリ）は 1 つ以上の brain に所属し、所属先の brain だけがそこでワーカーを動かします。所属は console の body の設定（⚙）で変えます
 - **共有の body**: 複数の brain に所属する body は、一度に 1 つの brain が使います（譲り合い）。使っている brain がいる間、ほかの brain はそこで読むこと（使用中の作業の一覧、`fetch_image`）だけができ、新しい仕事は断られます
 - **console**: brain を選び、選んだ brain と話します
-- **シグナリング**: 独立したサーバーにし、名簿（どのアプリがいるか、どれが brain・body か）と所属（body → brain）を持たせます。単独のプロセスでも、アプリの中でも動きます
+- **シグナリング**: 独立したサーバーにし、名簿（どの参加者がいるか、どれが brain・body か）と所属（body → brain の一覧）を持たせます。単独のプロセスでも、アプリの中でも動きます
 - **brain の動き方を 2 つから選べる**: Single（1 つのエージェントが話し、決め、動く）と Talker + Thinker（聞き役の Talker がユーザーと話し、決めることやることは決め役の Thinker に頼む。Thinker が動いている間も Talker は話し続け、結果は Talker が自分から伝える）
 - **1 つのアプリに複数の brain**: アプリは brain を 0 個以上持てます。それぞれが自分の名前でシグナリングに参加し、自分の WebRTC の経路を持つので、ほかのアプリからは別々の brain に見えます（外部の brain と同じ扱い）
 - **起動画面**: アプリを起動すると、シグナリング（とアプリの名前）→ brain を 1 つずつ追加（しなくてもよい）→ body（しなくてもよい。するなら所属先の brain → worker）の順に選んでから、起動と接続をします
-- **orchestrator と worker**: brain が使うエージェントを orchestrator、body が使うエージェントを worker と呼び、別々に設定します。orchestrator は 1 つを選び（モデル・effort・フォルダ）、Mac や Chrome を操作する道具を持ちません。同じアプリが brain と body を兼ねても、プロセスは別です
+- **orchestrator と worker**: brain が使うエージェントを orchestrator（Talker + Thinker では Talker と Thinker）、body が使うエージェントを worker と呼び、別々に設定します。orchestrator はエージェント・モデル・effort・フォルダを選び、Mac や Chrome を操作する道具を持ちません。同じアプリが brain と body を兼ねても、プロセスは別です
 - **worker type**: body が worker として出すエージェントを、起動画面で決めます。Codex と Claude は 1 つずつ on/off、別のモデルのサーバーにつないだ Codex（custom）はいくつでも。それぞれ足すときに、動くか・ログインしているかを確かめます。司令塔は、選べる種類を tool の定義でなく `list_bodies` の結果で知り、変わったら次のメッセージで知らされます
 - **body の一時停止**: console から、接続したまま body を止められます。止めている間、brain はその body で新しいことを始めません（実行中のものは最後まで動きます）
-- **brain の設定を console から変える**: Brains の一覧の ⚙ から、その brain の orchestrator の設定（起動画面の Brain と同じ内容）を変えます。↺ で新しい会話にします
-- **body の設定を console から変える**: 止めていて何も動いていない body の、エージェント（起動画面の Agents と同じ内容）を console から変えます。確かめはその body のマシンで動き、保存すると body がエージェントを起動し直します
+- **brain の設定を console から変える**: Brains の一覧の ⚙ から、その brain の設定（起動画面の Brains のカードと同じ内容）を変えます。↺ で新しい会話にします
+- **body の設定を console から変える**: 止めていて何も動いていない body の、所属先と worker（起動画面の Body・Workers と同じ内容）を console から変えます。確かめはその body のマシンで動き、worker を変えたときは body がエージェントを起動し直します
 
 前提となる lab:
 - [N 個のアプリを WebRTC でつなぎ、1 つの brain が複数の body を使う形](../flutter-agent-orchestrator-mesh/README.md)（この lab はその写し。司令塔のツール、文字起こしの写し方、画像の運び方はそちら）
@@ -23,10 +23,11 @@
 1. 複数の brain を同時に動かし、それぞれが自分の所属の body だけを使えるか
 2. console で brain を切り替え、選んだ brain に送れるか。どの console にも全部の brain の会話が同じに出るか
 3. body の所属を console から変えられるか。ワーカーが動いている間は変えられないようにできるか。1 つの body を複数の brain で共有し、競合を防げるか
-4. 1 つのアプリで、起動時に役割（brain・body・シグナリング）を選べるか
+4. 1 つのアプリで、起動時に brain（いくつでも）・body・シグナリングを選べるか
 5. ワーカーの種類を固定の 3 つ（Codex・Claude・kiapi）から、body ごとに設定で増やせる形にできるか。会話の途中で増えた種類を司令塔が使えるか
 6. 動かすエージェントを起動画面で決め、その場で動くか確かめられるか。エージェントが 1 つも無い body を置けるか
 7. ワーカーに Mac や Chrome を操作させる道具を worker type ごとに on/off し、要る許可を起動画面の中で通せるか
+8. brain の中を聞き役（Talker）と決め役（Thinker）の 2 つのエージェントに分け、Thinker が動いている間も会話を続けられるか
 
 ## Answer
 
@@ -39,25 +40,23 @@
   - brain-a は自分の body（brain-a・body-c）で、brain-b は自分の body（brain-b・body-d）で、ワーカーを動かした
   - 相手の body は、どちらも「別の brain の所属なので使えない」と答えた
 - **どの console にも、両方の brain の会話が同じに出た。** brain 2 つ・body 2 つ・console 1 つの計 5 つで、両方の brain の全スレッドの操作の数とハッシュが一致した
-- **ワーカーが動いている body は移せなかった。**
+- **ワーカーが動いている brain から、その body を外せなかった。**
   - brain-a が body-c で `sleep 45` を走らせている間に、body-c を brain-b へ移そうとした。
     signal が brain-a に問い合わせ、brain-a が「1 worker(s) of brain-a running or queued on body-c (w3)」と断った
-  - 終わった後は移せた。brain-b は、移ってきた body-c でワーカーを動かした
+  - 終わった後は外せた（所属を brain-b に替えた）。brain-b は、その body-c でワーカーを動かした
 - **新しいアプリは、起動から 1.0 秒で両方の brain とつながった**（signal に入るまで 0.6 秒）
-- **役割を起動時に選べる。** 1 台の Mac で、次の 4 つを同時に動かした（環境変数で指定。起動画面と同じ起動処理を通る）
-  - brain・body・シグナリング（brain-a）: アプリの中でシグナリングを開始し、ほかの 3 つが入った
-  - body（body-c）: 所属先に brain-a を指定し、参加の後に所属が brain-a になった
-  - brain だけ（brain-b）: body の一覧に出ず、所属も作られない
-  - console だけ（con-x）: エージェントを起動せず、両方の brain の会話を見られる
-  - 4 つとも、起動から 0.9〜3.2 秒で両方の brain とつながった
+- **アプリごとに、起動時に brain・body・シグナリングを選べる。** 環境変数で指定し、起動画面と同じ起動処理を通る
+  - brain とシグナリングを持つアプリ、所属先を指定した body だけのアプリ、brain だけのアプリ（body の一覧に出ない）、console だけのアプリ（エージェントを起動せず、全 brain の会話を見られる）を同時に動かした。
+    どれも起動から 0.9〜3.2 秒で全 brain とつながった
+  - 1 つのアプリに brain を 2 つ置く形は、下の「1 つのアプリで 2 つの brain」
 - **シグナリングのポートが使われていると、開始しない。** 起動画面に「in use (Address already in use)」と出して止まる
 - **起動画面のステップを、widget のテストで本物のシグナリングに対して通した**（`mise run` で流れる。エージェントの確かめと macOS の許可は偽物）
-  - 既存につなぐ → 名前がぶつかると注意が出る → Body → 名簿の brain-a・brain-b から選ぶ → Body の設定
-  - このアプリで起動する → 使われているポートでステップ 1 に止まる → 空いたポートで進む → Brain と Body → 所属先の既定がこのアプリ
-  - どちらも選ばない → ステップ 2 で起動する（console だけ）
-  - Brain: エージェントを 1 つ選ぶ（Codex のログインのボタン、custom の足りない項目で止まる、Claude・フォルダ・起こさないを `brain.json` に保存。道具と許可の欄が出ない）
-  - Body: Codex のログイン、Claude を off、custom の追加（モデルの一覧から選ぶ、不正な id で止まる）、道具の on/off と要るものの表示、許可の［Grant］と起動し直しのボタン、保存の中身
-- **オーナーが本物の画面で、起動画面を最後まで通した。** Agents のステップで Codex・Claude・kiapi を確かめ、Peekaboo の画面収録をこのアプリに許可した
+  - 既存につなぐ → brain なし → Body で名簿の brain-a・brain-b の両方を選ぶ（共有）→ Workers
+  - このアプリで起動する → 使われているポートでステップ 1 に止まる → 空いたポートで進む → brain を 2 つ足す（1 つ目はたたまれ、2 つ目の名前の既定は「アプリの名前-brain-2」）→ 所属先の既定がこのアプリの 2 つの brain
+  - brain も body も無し → ステップ 3 で起動する（console だけ）
+  - Brains: エージェントを 1 つ選ぶ（Codex のログインのボタン、custom の足りない項目で止まる、Claude・フォルダ・起こさないを `brains/<名前>/brain.json` に保存。道具と許可の欄が出ない）
+  - Workers: Codex のログイン、Claude を off、custom の追加（モデルの一覧から選ぶ、不正な id で止まる）、道具の on/off と要るものの表示、許可の［Grant］と起動し直しのボタン、保存の中身
+- **オーナーが本物の画面で、起動画面を最後まで通した。** worker の設定のステップ（今の Workers）で Codex・Claude・kiapi を確かめ、Peekaboo の画面収録をこのアプリに許可した
 - widget のテストの中の `HttpClient` は、すべて 400 を返す偽物になっている（`HttpOverrides.global = null` で外す）。
   本物の通信の結果は、実時間を待つ（`runAsync`）だけでは画面に届かず、待つことと `pump` を交互に繰り返す
 - **会話の途中で body に足した worker type を、司令塔がそのまま使えた。** 司令塔は Codex（`gpt-5.6-luna`、effort low）、custom の送り先は何にでも「OK」と答える偽の Responses API（`probes/fake_responses.py`）
@@ -136,7 +135,7 @@
           ┌──────────┬──────────┼──────────┬──────────┐
        brain-a    brain-b    body-c     body-d    con-x      ← 全アプリが WebSocket でつなぐ
           ║ ╲      ║ ╲  ╲      │          │         │
-          ║  ╲═════╬══╲══╲═════╪══════════╪═════════╡      ← brain が絡む組ごとにデータチャネル 1 本
+          ║  ╲═════╬══╲══╲═════╪══════════╪═════════╡      ← brain と brain でない参加者の組ごとにデータチャネル 1 本
           ╚════════╝   ╲  ╲════╪══════════╡
 ```
 
@@ -151,7 +150,7 @@
 - **データチャネル**: brain と、brain でない参加者（アプリ）の組ごとに 1 本。brain どうしはつながない。名前の順で先のほうが offer を出す
   - アプリの brain は、それぞれ別の参加者（自分の名前・シグナリングへの接続・経路）。同じアプリの body・console とも、外部の brain と同じく WebRTC でつながる（同じアプリの中でも近道をしない）
   - アプリ自身も参加者（console と、body なら body）。brain が無く body でもなければ console だけ
-  - 1 本の中で、brain の役のメッセージ（`rpc`・`console`）と、相手の役のメッセージ（`hello`・`info`・`res`・`agent`・`action`）は種類が重ならない。そのため brain どうしも 1 本で足りる
+  - 1 本の中で、brain の役のメッセージ（`rpc`・`console`・`reply`）と、相手の役のメッセージ（`hello`・`info`・`res`・`agent`・`action`・`request`）は種類が重ならない
 - **brain**: つながった全アプリの console へ会話を流す（前の lab の `ConsolePublisher`）。全アプリの body を名簿として知っている
   - orchestrator は brain だけのプロセスで動く（`app/lib/orchestrator/brain_agent.dart`）。設定は状態のフォルダの `brains/<名前>/brain.json`（`brain_config.dart`）: エージェント（`codex`・`claude`・`custom`。custom は URL・鍵の変数名・モデル）、モデル、effort、フォルダ（空なら body のプロジェクトのフォルダ）、終わったら起こすか
   - 同じアプリの body の worker とはプロセスを分ける（Codex の app-server・Claude の中継を役割ごとに起動する。ログインは `~/.codex` と Claude Code のものを共有）。
@@ -174,7 +173,7 @@
   - 一時停止と設定の変更は body 全体にかかる。設定の変更は、どの brain のワーカーも無いときだけ
 - **worker type**（`app/lib/agents/worker_types.dart`）: そのアプリで動かすエージェント。id で呼ぶ
   - `codex`・`claude` は 1 つずつで on/off（同じ種類を複数並べると、司令塔が違いを説明から読み分けることになるため）。custom はいくつでも
-  - 起動画面の「Body」で決め、状態のフォルダの `worker-types.json`（`ORCH_WORKER_TYPES` で場所を変えられる）に書く。ファイルが無ければ Codex と Claude（`KIAPI_BASE_URL` があれば kiapi も）
+  - 起動画面の「Workers」で決め、状態のフォルダの `worker-types.json`（`ORCH_WORKER_TYPES` で場所を変えられる）に書く。ファイルが無ければ Codex と Claude（`KIAPI_BASE_URL` があれば kiapi も）
   - 種類ごとに既定の作業フォルダと既定のモデルを持てる。作業フォルダは `start_thread` の `cwd` > worker type の作業フォルダ > body のプロジェクトのフォルダの順
   - body のプロジェクトのフォルダも起動画面で決める（空なら `ORCH_CWD`、それも無ければホーム）。同じアプリの brain は、自分のフォルダが空ならここで働く
   - worker type として司令塔に見せる。0 個でもよい（body のツール `fetch_image` だけが使える）
@@ -198,7 +197,7 @@
   - 司令塔には `list_bodies` の `paused: true` と、次のメッセージの頭の `[bodies changed ...]`（「paused by the user」「resumed」）で伝える
   - 司令塔そのものはワーカーではないので止まらない
 - **設定の変更**（`app/lib/ui/body_settings.dart`）: console の body の一覧の設定のボタンから。止めていて、所属先の brain のワーカーがそこで動いても待ってもいないときだけ押せる
-  - 編集の画面は起動画面の Body と同じ部品（`app/lib/ui/agents_editor.dart`）。確かめ（ログインの状態・モデルの一覧・道具の要るもの・macOS の許可）は body のマシンで動かす（`body/check`）。
+  - 先頭に所属先（Belongs to）、続けて起動画面の Workers と同じ部品（`app/lib/ui/agents_editor.dart`）。確かめ（ログインの状態・モデルの一覧・道具の要るもの・macOS の許可）は body のマシンで動かす（`body/check`）。
     ログインと許可を出す操作は、そのマシンの起動画面でする（console には出さない）
   - console → brain は `request`／`reply`（答えの要る依頼）、brain → body は rpc `body/config`・`body/check`・`body/configure`。brain は `body/` で始まるものだけを通す
   - brain も body も断る: 止めていない、エージェントが動いている（brain はさらに自分のワーカーが待っているとき）
@@ -206,7 +205,7 @@
   - 止めたままなので、終わったら再開する。worker type の変化は、司令塔に `[bodies changed ...]` で伝わる
 - **console**（全アプリ）: つながった brain ごとに写し（`BrainView`）を持つ。選んだ brain の写しを中央と右に出し、送信・停止・設定はその brain へ送る
   - 左には次を出す
-    - Brains: 選ぶと、その brain と話す。行に orchestrator が何で動いているか（エージェント・モデル・effort）。↺ で新しい会話（ワーカーは続く）、⚙ でその brain の設定（`app/lib/ui/brain_settings.dart`。編集は起動画面の Brain と同じ部品 `brain_editor.dart`、確かめは brain のマシンで `brain/check`）
+    - Brains: 選ぶと、その brain と話す。このアプリの brain には「this app」。行に何で動いているか（エージェント・モデル・effort。Talker + Thinker なら「Talker: … / Thinker: …」）。↺ で新しい会話（ワーカーは続く）、⚙ でその brain の設定（`app/lib/ui/brain_settings.dart`。編集は起動画面の Brains のカードと同じ部品 `brain_editor.dart`、確かめは brain のマシンで `brain/check`）
     - body の一覧を「Bodies of <選んでいる brain>」と「Other bodies」（ほかの brain のもの・所属なし）に分ける。名前の後ろに所属する brain の数（1 なら専用、2 以上なら共用）、使えるエージェント・同時に動かせる数。
       ほかの brain が使っているときだけ「in use by brain-b」。重ねると所属先・プロジェクトのフォルダ・サブスクの使用量
     - 所属先は body の設定のダイアログ（⚙）の「Belongs to」で変える。ダイアログは止めていて、どの brain のワーカーもいないときだけ開けるので、所属先の変更も同じ条件になる。
@@ -237,7 +236,7 @@
 | app → signal | `hello` | 名前・brain か・body か・ホスト |
 | signal → app | `welcome` / `roster` | 決まった名前 / 名簿と所属（変わるたびに全員へ） |
 | app ↔ signal | `signal` | WebRTC の offer・answer・ICE（宛先付き） |
-| app → signal | `assign` | body をどの brain へ（null は所属なし） |
+| app → signal | `assign` | body の所属先の brain の一覧（空は所属なし） |
 | signal → brain | `releaseRequest` | その body を手放してよいか |
 | brain → signal | `releaseReply` | よい / 理由付きで断る |
 | signal → app | `assignResult` | 結果 |
@@ -259,7 +258,7 @@
   起動の失敗が 1 つでもあると、本体の準備ができていない扱いにしていたため。今はエージェントごとに起動し、失敗したものだけを理由付きで「使えない」にする
 - 所属は signal が持つので、brain や body を起動し直しても所属は残った。signal はファイルにも書くので、signal を起動し直しても残った
 - 起動画面のエラーは、画面の部品の初期化（`initState`）の中だけで読むと、後から出たエラーが表示されない。エラーを key にして作り直した
-- body でもある brain の所属先の既定を「所属なし」にすると、起動のたびに自分の body を手放してしまう。既定を「このアプリ」にした
+- body の所属先の既定は、前に記録された所属（名簿にあれば）、無ければこのアプリの brain。「所属なし」を既定にすると、起動のたびに自分の body を手放してしまう
 - **console だけのアプリから送った発言を、brain が捨てていた。** brain は console の操作を、相手の body の窓口（body として名乗ったときに作る）で受けていた。
   console だけのアプリは body として名乗らないので、窓口が無かった。つながった全アプリから操作を受けるようにした
 - custom の worker type は、モデルのサーバーに届かなくても「使える」と出る。app-server はサーバーに問い合わせずに起動するため。手元に kiapi が無い状態でも、kiapi は使える種類として一覧に出た。
@@ -291,13 +290,16 @@
 - **console から body の設定を変える画面は、本物の画面のクリックでは開いていない。** 変える経路は `ORCH_CONFIGURE` で、画面は widget のテストで確かめた
 - **console の brain の設定のダイアログは、本物の画面のクリックでは開いていない。** 変える経路は `ORCH_CONFIGURE_BRAIN` で、画面は widget のテストで確かめた
 - **2 台の Mac では確かめていない。** 2 台目の Mac（Mac Studio）が VPN から外れていて、届かなかった
-- **console の brain の切り替えと所属先のメニューは、画面のクリックでは確かめていない**
+- **console の brain の切り替えと、body の設定のダイアログでの所属先の変更は、画面のクリックでは確かめていない**
   - 使っている関数は、起動時の `ORCH_SELECT`・`ORCH_ASSIGN`・`ORCH_PAUSE` と同じ。そちらで確かめた。表示はスクリーンショットで確かめた
-  - 起動画面は、widget のテストとオーナーの操作で確かめた（上の Answer）
+  - 起動画面の Brains・Body の新しい流れは widget のテストだけ（前の形の起動画面はオーナーが通した）
+- **1 つのアプリの brain の追加・削除は起動時だけ。** 動いている最中には足せない
+- **Talker + Thinker で確かめていないこと**: Thinker が働いている間に本物の Talker がユーザーと話し続ける場面、本物のモデルが `next`・`add` を使い分けるか、Claude の Talker・Thinker、Talker を軽いモデルにしたときのトークン
+- **会話（スレッド）は保存しない。** アプリを起動し直すと、orchestrator・Talker・Thinker の会話は消える
 - **認証が無い。** signal は誰でも参加でき、誰でも所属を変えられる。信頼できるネットワークの中だけで動かす
 - Claude のワーカーは、Claude Code の本来のプロンプトなしで動いている（上の Findings）。直すなら中継プロセスでワーカーにも preset を渡す
 - シグナリングを動かしているアプリを閉じると、全員がシグナリングを失う（所属はファイルに残る）。別のアプリがシグナリングを引き継ぐ仕組みは無い
-- brain が落ちると、その brain の所属の body は所属先が offline のまま残る。console から別の brain へ移せる（offline の brain には尋ねない）
+- brain が落ちると、その brain の所属の body は所属先が offline のまま残る。console から所属先を変えられる（offline の brain には尋ねない）
 - 全アプリが全 brain とつながるので、データチャネルの数は「アプリ数 × brain 数」程度に増える。数台でしか試していない
 - custom の worker type は、Responses API のサーバーだけ。Chat Completions だけのサーバーでは試していない。鍵の要る外部の API（`env_key`）も試していない
 - Codex のブラウザのログイン（起動画面から）は、本物では通していない（このマシンはログイン済み）
@@ -344,7 +346,7 @@ mise run signal             # シグナリングを単独で（:8765）。PORT �
 - `mise run probe-prompts`: Codex と Claude のワーカーに自動で入るプロンプトを、偽の API で確かめる（`probes/`）
 - 起動画面の確かめを、このマシンの本物の Codex・Claude で流す（モデルのトークンは使わない）:
   `cd app && LIVE_CHECK=1 CLAUDE_FLUTTER_SIDECAR=$PWD/../sidecar NODE_BIN=$(command -v node) flutter test test/agent_check_live_test.dart`
-- custom のワーカーに渡る道具を、Computer Use の on/off で比べる（偽の Responses API、トークンを使わない）:
+- custom のワーカーに渡る道具を Computer Use の on/off で比べ、brain の Thinker・Talker に渡る道具（Web 検索の有無）を見る（偽の Responses API、トークンを使わない）:
   `cd app && LIVE_CHECK=1 flutter test test/worker_tools_live_test.dart`
 
 エージェントの設定（`worker-types.json`。起動画面で書く）:
@@ -387,6 +389,6 @@ mise run signal             # シグナリングを単独で（:8765）。PORT �
 - macOS 27.0.1、MacBook Pro M1 Max
 - Flutter 3.47.2・Dart 3.13.2、flutter_webrtc 1.6.2+hotfix.4、Node 22.22
 - codex-cli 0.159.3、`@anthropic-ai/claude-agent-sdk` 0.3.289
-- 司令塔 `gpt-5.6-luna`（effort low）、Codex のワーカー `gpt-5.6-luna`
-- 実行日: 2026-10-09（起動画面と worker type は 2026-10-10、エージェントのステップと道具の on/off は 2026-10-11）
+- 司令塔 `gpt-5.6-luna`（effort low）、Codex のワーカー `gpt-5.6-luna`。Talker + Thinker の確認は Codex の既定のモデル（`gpt-6.1-sol`、effort low）
+- 実行日: 2026-10-09（起動画面と worker type は 2026-10-10、エージェントのステップと道具の on/off・共有の body・1 つのアプリの複数の brain は 2026-10-11、Talker + Thinker は 2026-10-12〜13）
 - Peekaboo 4.9.0

@@ -9,7 +9,7 @@ import 'theme.dart';
 /// Sends a `brain/...` request to a brain.
 typedef BrainRequest = Future<Object?> Function(String method, [Json params]);
 
-/// A brain's settings, edited from any console: the Brain step of its start
+/// A brain's settings, edited from any console: the card of the Brains step of its start
 /// screen, with the checks run on the brain's machine. Saving restarts the
 /// orchestrator's agent and starts a new conversation (refused while the
 /// orchestrator is running); workers keep running.

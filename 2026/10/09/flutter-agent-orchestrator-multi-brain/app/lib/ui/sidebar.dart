@@ -108,7 +108,7 @@ class _Badge extends StatelessWidget {
 }
 
 /// The brains: pick one to talk to. Each shows what its orchestrator runs
-/// on, with a new conversation (↺) and its settings (the Brain step of its
+/// on, with a new conversation (↺) and its settings (a card of the Brains step of its
 /// start screen).
 class _BrainPicker extends StatelessWidget {
   const _BrainPicker({required this.console});
