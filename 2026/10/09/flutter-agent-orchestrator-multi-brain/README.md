@@ -158,10 +158,12 @@
     そのため body の設定を変えても orchestrator の会話は続き、brain の設定を変えても worker は動き続ける。custom の orchestrator は、いつも専用の `CODEX_HOME` で起動する（Computer Use を持たないため）
   - 設定を変える（`brain/configure`）と、orchestrator が動いていないときだけ、保存してエージェントを起動し直し、新しい会話にする
   - 動き方（`mode`）: `single` は 1 つのエージェントが話し・決め・動く。`dual` は Talker と Thinker の 2 つ（`brain.json` の `talker` に Talker のエージェント・モデル・effort）。Talker は専用の空のフォルダで、手を外して（読み取り専用のサンドボックス）動く
+    - Talker は Web 検索も持たない（会話に専念させる。Codex は thread の `config` の `web_search: disabled`）。Thinker と Single の orchestrator は Codex の Web 検索を持つ（調べものは brain でも body でも同じなので、worker に回さなくてよい）。
+      偽の API に送られる道具の一覧で確かめた（`LIVE_CHECK=1 flutter test test/worker_tools_live_test.dart`）: Thinker は `request_user_input`・`view_image`・自分の道具・`web_search`、Talker はそこから `web_search` が無いだけ。どちらにも shell は無い
     - Talker の道具は `ask_thinker`（頼む。Thinker が動いていれば `next` で順番待ち、`add` で今の仕事へ足す。すぐ返る）と `thinker_status`（今の頼みごと・経過・最近のツール・動いている worker・順番待ち）だけ
     - Thinker は orchestrator の道具をすべて持ち、頼みごとは `[request from the talker]` で届く。ターンが終わるたびに最後の答えを `[thinker result for: ...]` として Talker へ送る（Talker が話している途中なら、そのターンの後）。Talker は聞かれていなくても伝える
     - worker の知らせと body の変化は Thinker へ。Talker は body を知らない
-    - console では中央が Talker との会話、Thinker の会話は Workers の一番上に「Thinker」として出る。停止は両方を止め、新しい会話は両方を捨てる
+    - console では中央が Talker との会話。右の欄は「Thinker」と「Workers」に分け、Thinker の会話を開ける。会話の中のアプリからのメッセージ（Thinker の結果、Talker の頼みごと、worker の知らせ）は、ユーザーの吹き出しでなく送り手の付いた枠で出す。停止は両方を止め、新しい会話は両方を捨てる
   - ワーカーを動かせるのは、所属の body だけ（`list_bodies`・`start_thread`・`fetch_image`）
   - `releaseRequest` には、その body で自分のワーカーが動いている・待っているなら理由を返して断る
 - **共有の body の使用中**（`heldBy`）: 誰が使っているかは body が決める。その brain のワーカーが body で動いているか、作られて始まるのを待っている間、その brain が使用中。全部終わる（閉じる・始まらずに終わる・brain が去る）と空く

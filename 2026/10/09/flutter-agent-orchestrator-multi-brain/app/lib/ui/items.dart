@@ -130,6 +130,7 @@ class _UserMessage extends StatelessWidget {
           },
         )
         .join('\n');
+    if (_AppNote.parse(text) case final note?) return note;
     return Align(
       alignment: Alignment.centerRight,
       child: Container(
@@ -144,6 +145,101 @@ class _UserMessage extends StatelessWidget {
           text,
           style: const TextStyle(fontSize: 14, height: 1.5),
         ),
+      ),
+    );
+  }
+}
+
+/// A message the app (not the user) put into a conversation: a thinker's
+/// result for the talker, a talker's request for the thinker, a worker
+/// update. Shown as a note from that sender, not as the user's bubble.
+class _AppNote extends StatelessWidget {
+  const _AppNote(this.from, this.about, this.body, this.icon);
+
+  final String from;
+  final String? about;
+  final String body;
+  final IconData icon;
+
+  static _AppNote? parse(String text) {
+    final m = RegExp(r'^\[([^\]\n]+)\]\n?').firstMatch(text);
+    if (m == null) return null;
+    final tag = m.group(1)!;
+    final body = text.substring(m.end).trim();
+    if (tag.startsWith('thinker result for: ')) {
+      return _AppNote(
+        'From the thinker',
+        tag.substring(20),
+        body,
+        Icons.lightbulb_outline,
+      );
+    }
+    return switch (tag) {
+      'request from the talker' => _AppNote(
+        'From the talker',
+        null,
+        body,
+        Icons.forum_outlined,
+      ),
+      'worker update' => _AppNote(
+        'Worker update',
+        null,
+        body,
+        Icons.engineering_outlined,
+      ),
+      _ => null,
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      key: const Key('app-note'),
+      margin: const EdgeInsets.only(top: 12, bottom: 4),
+      padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Palette.border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, size: 14, color: Palette.textDim),
+              const SizedBox(width: 6),
+              Text(
+                from,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Palette.textDim,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              if (about != null) ...[
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    '· $about',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Palette.textFaint,
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+          if (body.isNotEmpty) ...[
+            const SizedBox(height: 6),
+            Opacity(
+              opacity: 0.85,
+              child: MarkdownBlock(data: body, config: _markdownConfig),
+            ),
+          ],
+        ],
       ),
     );
   }

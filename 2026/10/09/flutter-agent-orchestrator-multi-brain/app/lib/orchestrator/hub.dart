@@ -307,6 +307,7 @@ class Hub extends ChangeNotifier {
         role: AgentRole.orchestrator(
           tools: talkerTools,
           instructions: talkerInstructions(name),
+          webSearch: false,
         ),
       );
     } else {

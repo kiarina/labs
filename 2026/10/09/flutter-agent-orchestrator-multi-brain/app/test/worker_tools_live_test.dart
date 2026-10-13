@@ -99,4 +99,68 @@ void main() {
     }
     expect(names.where((n) => n.startsWith('mcp__codex_apps')), isEmpty);
   }, skip: !live, timeout: const Timeout(Duration(seconds: 90)));
+
+  // The brain's threads on an app-server whose web search is on: the
+  // orchestrator (or thinker) keeps it, the talker does not.
+  Future<List<String>> brainTools({required bool webSearch}) async {
+    final (server, first) = await fakeResponses();
+    final tmp = Directory.systemTemp.createTempSync('brain');
+    final home = Directory('${tmp.path}/home')..createSync();
+    File('${home.path}/models.json').writeAsStringSync(
+      jsonEncode({
+        'models': [
+          {
+            'slug': 'fake-model', 'display_name': 'fake', 'context_window': 128000,
+            'shell_type': 'shell_command', 'visibility': 'list', 'supported_in_api': true,
+            'priority': 0, 'supported_reasoning_levels': [], 'base_instructions': 'x',
+          },
+        ],
+      }),
+    );
+    final client = await codexAppServer(
+      name: 'brain-probe',
+      extraArguments: [
+        for (final o in [
+          'model_providers.fake={name="fake", base_url="http://127.0.0.1:${server.port}/v1", wire_api="responses"}',
+          'model_provider="fake"',
+          'model="fake-model"',
+          'web_search="live"',
+        ]) ...['-c', o],
+      ],
+      environment: {'CODEX_HOME': home.path},
+    );
+    final backend = CodexBackend(client, onTool: (_, _, _) async => ToolResult('', true));
+    try {
+      await backend.start();
+      final agent = backend.create(
+        label: 'o',
+        cwd: tmp.path,
+        role: AgentRole.orchestrator(
+          tools: const [
+            {'name': 'ask_thinker', 'description': 'x', 'inputSchema': {'type': 'object', 'properties': <String, dynamic>{}}},
+          ],
+          instructions: 'x',
+          webSearch: webSearch,
+        ),
+      );
+      await agent.start('hi');
+      return toolNames(await first.future.timeout(const Duration(seconds: 60)));
+    } finally {
+      client.dispose();
+      await server.close(force: true);
+      tmp.deleteSync(recursive: true);
+    }
+  }
+
+  test('brain threads: the thinker keeps web search, the talker has none', () async {
+    final thinker = await brainTools(webSearch: true);
+    final talker = await brainTools(webSearch: false);
+    // ignore: avoid_print
+    print('thinker: $thinker\ntalker: $talker');
+    expect(thinker.where((n) => n.contains('web_search')), isNotEmpty);
+    expect(talker.where((n) => n.contains('web_search')), isEmpty);
+    for (final names in [thinker, talker]) {
+      expect(names, isNot(contains('exec_command')), reason: 'no hands');
+    }
+  }, skip: !live, timeout: const Timeout(Duration(seconds: 150)));
 }

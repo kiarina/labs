@@ -56,6 +56,24 @@ class _WorkersPanelState extends State<WorkersPanel> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: 36),
+          // A dual brain's thinker (the brain's own agent that decides and
+          // acts), apart from the workers it runs on bodies.
+          if (console.thinker case final t?) ...[
+            const Padding(
+              padding: EdgeInsets.fromLTRB(16, 4, 12, 8),
+              child: Text(
+                'Thinker',
+                key: Key('thinker-section'),
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              ),
+            ),
+            const Divider(height: 1),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: _WorkerTile(console: console, worker: t),
+            ),
+            const SizedBox(height: 8),
+          ],
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 4, 12, 8),
             child: Row(
@@ -74,12 +92,7 @@ class _WorkersPanelState extends State<WorkersPanel> {
             ),
           ),
           const Divider(height: 1),
-          // A dual brain's thinker: what it decides and does, above its workers.
-          if (console.thinker case final t?)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-              child: _WorkerTile(console: console, worker: t),
-            ),
+
           Expanded(
             child: workers.isEmpty
                 ? const Center(

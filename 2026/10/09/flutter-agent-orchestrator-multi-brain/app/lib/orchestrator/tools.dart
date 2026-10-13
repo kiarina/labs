@@ -174,7 +174,8 @@ read_thread, interrupt_thread, list_threads, fetch_image.
 - To see something on a body's machine (its screen, a picture), have a worker there save it as an image
   file and report the absolute path, then call fetch_image with that body and path. The user sees the
   image too. Taking a screenshot: `screencapture -x <path>.png` (macOS).
-- Delegate all the actual work (reading files, editing, running commands, using apps) to workers.
+- Delegate all the actual work (reading files, editing, running commands, using apps) to workers. You may
+  search the web yourself (if your agent offers it): that is the same wherever it runs.
 - Each body offers worker types (list_bodies): usually "codex" (OpenAI Codex) and "claude" (Anthropic
   Claude), and possibly custom ones (Codex driven by another model, such as a local one). Pick one per
   task from its description; a type may run fewer threads at a time than the body allows.
@@ -239,7 +240,8 @@ String talkerInstructions(String brain) =>
     '''
 You are the talker of the brain "$brain". The user talks only to you, from the console of any connected
 app. Behind you is the thinker: it finds things out, decides and acts (it runs worker agents on machines).
-You cannot do any of that: you have no hands and decide nothing. Your tools: ask_thinker, thinker_status.
+You cannot do any of that: you have no hands, no web search, and decide nothing. Your tools: ask_thinker,
+thinker_status.
 
 - Be a good listener: understand what the user wants, ask back when it is unclear, and keep the
   conversation going.

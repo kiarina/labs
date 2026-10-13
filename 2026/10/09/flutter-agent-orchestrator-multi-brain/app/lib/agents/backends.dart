@@ -28,15 +28,23 @@ typedef ToolHandler = Future<ToolResult> Function(
 /// What a thread is for: the orchestrator gets the tools and a read-only
 /// sandbox; workers run with full access and no prompts.
 class AgentRole {
-  const AgentRole.worker() : tools = const [], instructions = null;
+  const AgentRole.worker()
+    : tools = const [],
+      instructions = null,
+      webSearch = true;
 
   const AgentRole.orchestrator({
     required this.tools,
     required this.instructions,
+    this.webSearch = true,
   });
 
   final List<ToolSpec> tools;
   final String? instructions;
+
+  /// Codex's own web search. The talker (dual mode) gets none: it only
+  /// talks; looking things up is the thinker's.
+  final bool webSearch;
 
   bool get isOrchestrator => instructions != null;
 }
@@ -248,7 +256,10 @@ class CodexAgent extends AgentThread {
         // The orchestrator has no hands: without these it ran Computer Use on
         // the brain's machine itself instead of starting a worker on the body
         // the user named. Per-thread, so workers on this app-server keep them.
-        'config': {'features': _orchestratorFeaturesOff},
+        'config': {
+          'features': _orchestratorFeaturesOff,
+          if (!role.webSearch) 'web_search': 'disabled',
+        },
       } else
         'config': ?backend.workerConfig,
     }) as Map;

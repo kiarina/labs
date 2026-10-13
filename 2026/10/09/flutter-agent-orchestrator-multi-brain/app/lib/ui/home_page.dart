@@ -208,8 +208,11 @@ class _WorkerFooter extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              '${worker.label} is run by the orchestrator (${worker.state.name}). '
-              'Talk to the orchestrator to change what it does.',
+              worker.label == 'thinker'
+                  ? 'The thinker works on what the talker hands it (${worker.state.name}). '
+                        'Talk to ${console.brain} to change what it does.'
+                  : '${worker.label} is run by ${console.brain} (${worker.state.name}). '
+                        'Talk to ${console.brain} to change what it does.',
               style: const TextStyle(fontSize: 12, color: Palette.textDim),
             ),
           ),
