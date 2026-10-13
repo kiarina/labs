@@ -92,7 +92,7 @@ Codex・Claude・kiapi のスレッドをツールとして動かす司令塔の
 
 ### 画像
 
-body の画面や絵を、brain の司令塔が見てコメントし、全 console にも出す。
+body の画面や絵を、brain の司令塔が見てコメントし、全 console にも出す。（Codex の司令塔には画像として届かない。Findings の訂正）
 
 1. 司令塔は、その body のワーカーに画面を撮らせ（`screencapture -x <path>.png`）、パスを返させる
 2. 司令塔が `fetch_image(body, path)` を呼ぶ。brain は body へ rpc `file/image` を送る
@@ -149,10 +149,13 @@ brain・body-b は MacBook Pro M1 Max、studio は Mac Studio M4 Max。studio �
 
 ## Findings
 
-- **body の画面のスクリーンショットを、brain の司令塔が見てコメントし、全 console に出せた。**
+- **body の画面のスクリーンショットを全 console に出せた。ただし Codex の司令塔は画像を見ていない**（下の訂正）
   - 「Mac Studio の画面のスクリーンショットを撮って、fetch_image で見て、何が映っているか具体的にコメントして」と送った。
     司令塔は studio のワーカーに撮らせ、`fetch_image` で取り込んだ（3840×2160・2.8 MB の PNG → 1600×900 の JPEG）
-  - 司令塔は、Chrome の岐阜クエストのページ、司令塔の窓、後ろのシステム設定など、画面の中身を具体的に挙げた
+  - 答えは、Chrome の岐阜クエストのページ、司令塔の窓、後ろのシステム設定など、画面の中身を具体的に挙げた
+  - **訂正（後日、Codex の会話のログで確かめた）**: その中身を見たのは司令塔でなく worker だった。司令塔（`gpt-5.6-luna`）は道具を `exec` の JavaScript の中から呼び、そこでは `fetch_image` の結果が 1 本の文字列で返る。
+    画像の `inputImage` も `data:image/jpeg;base64,...` の文字になり、`image()` で見ようとして空振りし、文字のまま表示すると約 9.5 万トークンで打ち切られた。司令塔はそこで worker を立て、画像のファイルを見て説明させた。
+    Claude の司令塔（Agent SDK の MCP）は画像のブロックで受け取り、画像として見る
   - 3 つの console（brain、body-b、2 台目の Mac の studio）で、画像を含む会話のハッシュが一致した。画面には画像がサムネイルで出た
 - 画面の収録の許可が無いと、`screencapture` は `could not create image from display` で失敗する。許可を求められるのは、`open` で起動したアプリ（ここでは `agent_orchestrator`）
   - 許可すると macOS が「終了して再度開く」でアプリを起動し直す。このときは `open --env` で渡した設定が付かない。body の設定を失い、brain として立ち上がった
