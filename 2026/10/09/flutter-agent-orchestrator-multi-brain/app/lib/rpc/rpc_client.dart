@@ -350,8 +350,8 @@ Future<Map<String, dynamic>> _customCatalogEntry(WorkerType t) async {
 /// CLAUDE_FLUTTER_SIDECAR points at the sidecar directory; NODE_BIN at node.
 RpcClient claudeBridge() {
   final env = Platform.environment;
-  final sidecar = env['CLAUDE_FLUTTER_SIDECAR'];
-  if (sidecar == null || sidecar.isEmpty) {
+  final sidecar = sidecarDir(env, Platform.resolvedExecutable);
+  if (sidecar == null) {
     throw StateError('Set CLAUDE_FLUTTER_SIDECAR to the sidecar directory');
   }
   final node = env['NODE_BIN'];
@@ -369,4 +369,19 @@ RpcClient claudeBridge() {
     arguments: ['-lc', r'exec node "$@"', 'node', 'src/main.ts'],
     workingDirectory: sidecar,
   );
+}
+
+/// The sidecar directory: CLAUDE_FLUTTER_SIDECAR, or else the lab's
+/// `sidecar/` above the app [executable] (built in `app/build/...`). macOS
+/// reopens the app without its environment after a permission change
+/// ("Quit & Reopen"), so the app finds it on its own too.
+String? sidecarDir(Map<String, String> env, String executable) {
+  final set = env['CLAUDE_FLUTTER_SIDECAR'];
+  if (set != null && set.isNotEmpty) return set;
+  for (var d = File(executable).parent; d.parent.path != d.path; d = d.parent) {
+    if (File('${d.path}/sidecar/src/main.ts').existsSync()) {
+      return '${d.path}/sidecar';
+    }
+  }
+  return null;
 }
