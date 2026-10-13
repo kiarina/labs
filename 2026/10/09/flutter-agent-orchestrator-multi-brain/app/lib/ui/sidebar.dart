@@ -157,11 +157,7 @@ class _BrainRow extends StatelessWidget {
     final selected = brain == console.selected;
     final agent = console.brainAgentOf(brain);
     final error = agent['error'] as String?;
-    final runsOn = [
-      if (agent['label'] case final String l) l,
-      if (agent['model'] case final String m) m,
-      if (agent['effort'] case final String e) e,
-    ].join(' · ');
+    final runsOn = runsOnLabel(agent);
     Widget icon(String key, String tip, IconData i, VoidCallback onPressed) =>
         IconButton(
           key: ValueKey('$key-$brain'),

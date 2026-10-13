@@ -4,14 +4,31 @@ import 'dart:io';
 import '../agents/worker_types.dart';
 import '../state/thread_view.dart' show Json;
 
+/// How a brain runs its orchestrator.
+enum BrainMode {
+  /// One agent talks with the user and decides and acts.
+  single,
+
+  /// Two agents: the talker talks with the user and hands what needs
+  /// deciding or doing to the thinker, which decides, acts (the
+  /// orchestrator's tools) and reports back to the talker.
+  dual;
+
+  static BrainMode parse(String? s) =>
+      values.firstWhere((m) => m.name == s, orElse: () => single);
+}
+
 /// What a brain's orchestrator runs on and how (`brain.json` in the state
 /// folder): one agent (Codex, Claude, or Codex on another Responses API
 /// server), its model and effort, the folder it works in, and whether a
-/// finished worker wakes it. Set on the start screen's Brain step and from
-/// any console. The orchestrator has no tools that drive the Mac or Chrome:
-/// those are for workers (a body's settings).
+/// finished worker wakes it. In [BrainMode.dual] that agent is the thinker,
+/// and [talker] is the agent the user talks with. Set on the start screen's
+/// Brains step and from any console. Neither has tools that drive the Mac or
+/// Chrome: those are for workers (a body's settings).
 class BrainConfig {
   BrainConfig({
+    this.mode = BrainMode.single,
+    this.talker,
     this.kind = WorkerKind.codex,
     this.model,
     this.effort,
@@ -21,6 +38,12 @@ class BrainConfig {
     this.envKey,
     this.contextWindow,
   });
+
+  BrainMode mode;
+
+  /// The talker's agent, model and effort (dual mode; its folder and waking
+  /// are unused).
+  BrainConfig? talker;
 
   WorkerKind kind;
 
@@ -72,9 +95,21 @@ class BrainConfig {
   }
 
   /// Why it cannot be used, or null.
-  String? get problem => kind == WorkerKind.custom ? customType().$2 : null;
+  String? get problem =>
+      (kind == WorkerKind.custom ? customType().$2 : null) ??
+      (mode == BrainMode.dual
+          ? talker == null
+                ? 'the talker has no agent'
+                : talker!.problem
+          : null);
 
   Json toJson() => {
+    if (mode != BrainMode.single) 'mode': mode.name,
+    if (mode == BrainMode.dual && talker != null)
+      'talker': {
+        for (final e in talker!.toJson().entries)
+          if (e.key != 'cwd' && e.key != 'wake_on_finish') e.key: e.value,
+      },
     'kind': kind.name,
     'model': ?model,
     'effort': ?effort,
@@ -94,6 +129,10 @@ class BrainConfig {
     }
 
     return BrainConfig(
+      mode: BrainMode.parse(j['mode'] as String?),
+      talker: j['talker'] is Map
+          ? fromJson((j['talker'] as Map).cast<String, dynamic>())
+          : null,
       kind: WorkerKind.parse(j['kind'] as String? ?? 'codex'),
       model: s('model'),
       effort: s('effort'),

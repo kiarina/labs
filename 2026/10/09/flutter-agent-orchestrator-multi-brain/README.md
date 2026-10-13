@@ -6,6 +6,7 @@
 - **共有の body**: 複数の brain に所属する body は、一度に 1 つの brain が使います（譲り合い）。使っている brain がいる間、ほかの brain はそこで読むこと（使用中の作業の一覧、`fetch_image`）だけができ、新しい仕事は断られます
 - **console**: brain を選び、選んだ brain と話します
 - **シグナリング**: 独立したサーバーにし、名簿（どのアプリがいるか、どれが brain・body か）と所属（body → brain）を持たせます。単独のプロセスでも、アプリの中でも動きます
+- **brain の動き方を 2 つから選べる**: Single（1 つのエージェントが話し、決め、動く）と Talker + Thinker（聞き役の Talker がユーザーと話し、決めることやることは決め役の Thinker に頼む。Thinker が動いている間も Talker は話し続け、結果は Talker が自分から伝える）
 - **1 つのアプリに複数の brain**: アプリは brain を 0 個以上持てます。それぞれが自分の名前でシグナリングに参加し、自分の WebRTC の経路を持つので、ほかのアプリからは別々の brain に見えます（外部の brain と同じ扱い）
 - **起動画面**: アプリを起動すると、シグナリング（とアプリの名前）→ brain を 1 つずつ追加（しなくてもよい）→ body（しなくてもよい。するなら所属先の brain → worker）の順に選んでから、起動と接続をします
 - **orchestrator と worker**: brain が使うエージェントを orchestrator、body が使うエージェントを worker と呼び、別々に設定します。orchestrator は 1 つを選び（モデル・effort・フォルダ）、Mac や Chrome を操作する道具を持ちません。同じアプリが brain と body を兼ねても、プロセスは別です
@@ -77,6 +78,12 @@
   console から「tool を呼ばずに、body-c の worker type を答えて」と送ると、
   メッセージの頭に `[bodies changed since you last called list_bodies]` と `- body-c: worker types are now codex (were none)` が付いた。
   司令塔は「codex。知らせにそう書いてあった」と答えた（Claude は未ログインなので入らない）
+- **Talker + Thinker の brain が、頼む → 結果を伝える、の流れで動いた。**（本物の Codex。既定のモデル・effort low。worker は偽の Responses API）
+  - 「自分の body で fake のワーカーを 1 つ動かして hello と頼み、答えをそのまま教えて」に、Talker は `ask_thinker` で頼んでターンを終え、Thinker が worker を動かし、結果が Talker に届いて「OK」と答えた（Talker 2 ターン・Thinker 1 ターン）
+  - 最初は Talker が頼んだ後に `thinker_status` で待ち続け、自分のターンを終えなかった。指示と `ask_thinker` の返り値に「伝えてターンを終える。結果は後からメッセージで届く」と書いて直った
+  - 同じ依頼のトークン（入力）: Single は orchestrator 約 5.6 万。Talker + Thinker は Talker 約 3.8 万 + Thinker 約 5.6 万で約 1.7 倍。Thinker は Single の orchestrator とほぼ同じで、増えた分は Talker の 3 回の呼び出し（Codex の前提のプロンプトが毎回 1 万強）。
+    ツールを使う依頼では増え、会話だけなら Talker だけが動く。Talker を軽いモデルにすると下がる（未計測）
+  - 送り先の振り分け（Talker には頼む道具だけ、Thinker は 1 つずつ、順番待ち・今の仕事への追加、結果を Talker へ、新しい会話で両方を捨てる）は単体のテスト（`test/dual_brain_test.dart`）
 - **1 つのアプリで 2 つの brain を動かし、外部の brain とも並べられた。**（トークンを使わない: 答えを遅らせる偽の Responses API と `ORCH_TOOLS`）
   - mac-a は brain-a・brain-b と自分の body を持ち、brain-x だけを持つ mac-x と、body だけの body-c を並べた。mac-a の body は 3 つの brain の、body-c は brain-a・brain-b の所属
   - brain ごとに名前・シグナリングへの接続・経路を持ち、同じアプリの body にも WebRTC でつながった。body-c の console には brain-a・brain-b・brain-x の 3 つが並んだ
@@ -150,6 +157,11 @@
   - 同じアプリの body の worker とはプロセスを分ける（Codex の app-server・Claude の中継を役割ごとに起動する。ログインは `~/.codex` と Claude Code のものを共有）。
     そのため body の設定を変えても orchestrator の会話は続き、brain の設定を変えても worker は動き続ける。custom の orchestrator は、いつも専用の `CODEX_HOME` で起動する（Computer Use を持たないため）
   - 設定を変える（`brain/configure`）と、orchestrator が動いていないときだけ、保存してエージェントを起動し直し、新しい会話にする
+  - 動き方（`mode`）: `single` は 1 つのエージェントが話し・決め・動く。`dual` は Talker と Thinker の 2 つ（`brain.json` の `talker` に Talker のエージェント・モデル・effort）。Talker は専用の空のフォルダで、手を外して（読み取り専用のサンドボックス）動く
+    - Talker の道具は `ask_thinker`（頼む。Thinker が動いていれば `next` で順番待ち、`add` で今の仕事へ足す。すぐ返る）と `thinker_status`（今の頼みごと・経過・最近のツール・動いている worker・順番待ち）だけ
+    - Thinker は orchestrator の道具をすべて持ち、頼みごとは `[request from the talker]` で届く。ターンが終わるたびに最後の答えを `[thinker result for: ...]` として Talker へ送る（Talker が話している途中なら、そのターンの後）。Talker は聞かれていなくても伝える
+    - worker の知らせと body の変化は Thinker へ。Talker は body を知らない
+    - console では中央が Talker との会話、Thinker の会話は Workers の一番上に「Thinker」として出る。停止は両方を止め、新しい会話は両方を捨てる
   - ワーカーを動かせるのは、所属の body だけ（`list_bodies`・`start_thread`・`fetch_image`）
   - `releaseRequest` には、その body で自分のワーカーが動いている・待っているなら理由を返して断る
 - **共有の body の使用中**（`heldBy`）: 誰が使っているかは body が決める。その brain のワーカーが body で動いているか、作られて始まるのを待っている間、その brain が使用中。全部終わる（閉じる・始まらずに終わる・brain が去る）と空く
@@ -208,7 +220,7 @@
 | ステップ | 選ぶもの | 「次へ」で起きること |
 | --- | --- | --- |
 | 1. Signaling | このアプリで起動する（ポート）か、既存につなぐ（URL。既定 `ws://localhost:8765`）か。アプリの名前（console と body の名前。空なら「ホスト名-乱数 4 桁」） | 起動する、または問い合わせる。ポートが使われている・読めないなら、ここで止まる。読めたら名簿を持って次へ |
-| 2. Brains | このアプリの brain。「Add a brain」で 1 つずつ足し、カードごとに名前（既定「アプリの名前-brain-N」）と orchestrator のエージェント（Codex・Claude・custom から 1 つ。custom は URL・API キーの変数名・モデル）、モデル（確かめると一覧から選べる）、effort（そのモデルが受け付けるもの）、フォルダ、ワーカーが終わったら起こすか。道具と macOS の許可は無い。0 個でもよい | 足したとき・選び直したとき・「Check」で確かめる。Codex が未ログインならログインのボタンが出る。名前の重複・名簿に既にいる名前・設定の不足で止まる。Start で `brains/<名前>/brain.json` に書く |
+| 2. Brains | このアプリの brain。「Add a brain」で 1 つずつ足し、カードごとに名前（既定「アプリの名前-brain-N」）、動き方（Single か Talker + Thinker。後者なら Talker のエージェント・モデル・effort も）と orchestrator（Thinker）のエージェント（Codex・Claude・custom から 1 つ。custom は URL・API キーの変数名・モデル）、モデル（確かめると一覧から選べる）、effort（そのモデルが受け付けるもの）、フォルダ、ワーカーが終わったら起こすか。道具と macOS の許可は無い。0 個でもよい | 足したとき・選び直したとき・「Check」で確かめる。Codex が未ログインならログインのボタンが出る。名前の重複・名簿に既にいる名前・設定の不足で止まる。Start で `brains/<名前>/brain.json` に書く |
 | 3. Body | このアプリを body にするか。するなら所属する brain（複数選べる。複数なら共有）。候補はこのアプリの brain（既定）と、名簿にいる online の brain | しないなら、ここで起動する（brain も無ければ console だけ）。参加の後に所属を変える |
 | 4. Workers（Body のとき） | このマシンのプロジェクトのフォルダと、body なら同時に動かせるワーカーの数（1〜16）。Codex・Claude の on/off・作業フォルダ・既定のモデル（確かめると一覧から選べる）・同時に動かせる数、Mac や Chrome を操作させる道具の on/off（on にすると、要るものとその状態が出る）、このアプリの macOS の許可、custom の追加（id・URL・API キーの変数名・モデル・作業フォルダ・説明・同時に動かせる数）。custom のモデルは、URL を入れて「Load models」でサーバーの一覧を読み、そこから選ぶ（一覧の無いサーバーは手で入れる。選んだモデルのコンテキスト長も一緒に覚える）。同時に動かせる数はスライダー（0〜8、0 は「上限なし」） | 入ったとき・on にしたとき・「Check」で確かめる。Codex が未ログインならログインのボタンが出る。Start で `worker-types.json` に書いて起動する。0 個でもよい |
 

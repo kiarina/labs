@@ -31,6 +31,12 @@ class Hub extends ChangeNotifier {
       onUserPrompt: notifyListeners,
       log: log,
     )..addListener(notifyListeners);
+    talkerAgent = BrainAgent(
+      stateDir: '$stateDir/talker',
+      onTool: _onTalkerTool,
+      onUserPrompt: notifyListeners,
+      log: log,
+    )..addListener(notifyListeners);
   }
 
   /// This brain's name in the roster.
@@ -49,22 +55,47 @@ class Hub extends ChangeNotifier {
       Platform.environment['HOME'] ??
       '/';
 
-  /// The orchestrator's own agent, apart from the body's.
+  /// The orchestrator's own agent, apart from the body's. In dual mode it
+  /// is the thinker's.
   late final BrainAgent brain;
+
+  /// The talker's agent (dual mode; idle otherwise).
+  late final BrainAgent talkerAgent;
   BrainConfig get config => brain.config;
+
+  /// Two agents: the talker talks with the user, the thinker decides and
+  /// acts ([BrainMode.dual]).
+  bool get dual => config.mode == BrainMode.dual;
 
   /// Every body by name. Bodies that went away
   /// stay listed as offline until one with the same name joins.
   final bodies = <String, Body>{};
 
-  bool get ready => brain.ready;
-  String? get startupError => brain.ready ? brain.error : null;
+  bool get ready => brain.ready && (!dual || talkerAgent.ready);
+  String? get startupError =>
+      (brain.ready ? brain.error : null) ??
+      (dual && talkerAgent.ready && talkerAgent.error != null
+          ? 'the talker: ${talkerAgent.error}'
+          : null);
 
   /// Where the orchestrator works: its own folder, else this machine's
   /// project folder.
   String get projectDir => expandHome(config.cwd) ?? _defaultDir;
 
+  /// The conversation the user has: the orchestrator's, or the talker's in
+  /// dual mode.
   AgentThread? orchestrator;
+
+  /// The thinker's conversation (dual mode): requests from the talker, the
+  /// orchestrator's tools, worker updates.
+  AgentThread? thinker;
+
+  /// The thread that acts: gets worker updates and body changes.
+  AgentThread? get _actor => dual ? thinker : orchestrator;
+
+  /// What the thinker works on now, and the requests waiting after it.
+  String? _thinkerRequest;
+  final _thinkerQueue = <String>[];
   final workers = <AgentThread>[];
   int _seq = 0;
 
@@ -78,7 +109,16 @@ class Hub extends ChangeNotifier {
       c = BrainConfig();
     }
     brain.config = c;
-    await brain.start(c, cwd: projectDir);
+    await Future.wait([
+      brain.start(c, cwd: projectDir),
+      if (c.mode == BrainMode.dual) talkerAgent.start(c.talker!, cwd: _talkerDir),
+    ]);
+  }
+
+  /// The talker works in an empty folder of its own: it has no hands.
+  String get _talkerDir {
+    final d = Directory('$stateDir/talker/cwd')..createSync(recursive: true);
+    return d.path;
   }
 
   /// New settings for the brain (start screen or a console): saved, and the
@@ -86,12 +126,18 @@ class Hub extends ChangeNotifier {
   /// message starts a new conversation. Workers keep running.
   Future<void> configure(BrainConfig c) async {
     if (c.problem case final p?) throw StateError(p);
-    if (orchestrator case final o? when o.isRunning || o.view.isRunning) {
-      throw StateError('the orchestrator is running; wait for it or stop it');
+    for (final t in [orchestrator, thinker]) {
+      if (t case final o? when o.isRunning || o.view.isRunning) {
+        throw StateError('the brain is working; wait for it or stop it');
+      }
     }
     await newConversation();
     c.save(_stateDir);
-    await brain.restart(c, cwd: expandHome(c.cwd) ?? _defaultDir);
+    talkerAgent.close();
+    await Future.wait([
+      brain.restart(c, cwd: expandHome(c.cwd) ?? _defaultDir),
+      if (c.mode == BrainMode.dual) talkerAgent.start(c.talker!, cwd: _talkerDir),
+    ]);
     notifyListeners();
   }
 
@@ -253,27 +299,163 @@ class Hub extends ChangeNotifier {
   // ---- the orchestrator -------------------------------------------------------
 
   AgentThread _newOrchestrator() {
-    final role = AgentRole.orchestrator(
-      tools: orchestratorTools,
-      instructions: orchestratorInstructions(name),
-    );
-    final agent = brain.create(cwd: projectDir, role: role);
+    final AgentThread agent;
+    if (dual) {
+      agent = talkerAgent.create(
+        cwd: _talkerDir,
+        label: 'talker',
+        role: AgentRole.orchestrator(
+          tools: talkerTools,
+          instructions: talkerInstructions(name),
+        ),
+      );
+    } else {
+      agent = brain.create(
+        cwd: projectDir,
+        role: AgentRole.orchestrator(
+          tools: orchestratorTools,
+          instructions: orchestratorInstructions(name),
+        ),
+      );
+    }
     agent.addListener(notifyListeners);
     return agent;
   }
 
+  /// A message from the user (any console).
   Future<void> sendToOrchestrator(String text) async {
     var o = orchestrator;
     if (o == null) {
       o = _newOrchestrator();
       orchestrator = o;
-      _shownBodies = null;
+      if (!dual) _shownBodies = null;
       notifyListeners();
       await o.start(text);
     } else {
-      await o.send(_withChanges(text));
+      // The talker knows nothing of bodies: body changes go to the thinker.
+      await o.send(dual ? text : _withChanges(text));
     }
     notifyListeners();
+  }
+
+  // ---- the thinker (dual mode) ---------------------------------------------------
+
+  AgentThread _newThinker() {
+    final agent = brain.create(
+      cwd: projectDir,
+      label: 'thinker',
+      role: AgentRole.orchestrator(
+        tools: orchestratorTools,
+        instructions: orchestratorInstructions(name) + thinkerAddendum,
+      ),
+    )..title = 'Thinker';
+    agent.addListener(notifyListeners);
+    agent.finished.listen((_) => unawaited(_onThinkerFinished()));
+    return agent;
+  }
+
+  bool get _thinkerBusy =>
+      thinker != null && (thinker!.isRunning || thinker!.view.isRunning);
+
+  /// The talker hands something to the thinker: it starts now, joins the
+  /// current work ([add]), or waits for it.
+  Future<Json> askThinker(String request, {bool add = false}) async {
+    final text = '[request from the talker]\n$request';
+    var t = thinker;
+    if (t == null) {
+      t = thinker = _newThinker();
+      _shownBodies = null;
+      _thinkerRequest = request;
+      notifyListeners();
+      await t.start(text);
+      return {'status': 'started', 'note': _endTurn};
+    }
+    if (!_thinkerBusy) {
+      _thinkerRequest = request;
+      await t.send(_withChanges(text));
+      return {'status': 'started', 'note': _endTurn};
+    }
+    if (add) {
+      await t.send(text);
+      return {'status': 'added to its current work', 'current': _thinkerRequest};
+    }
+    _thinkerQueue.add(request);
+    notifyListeners();
+    return {
+      'status': 'queued',
+      'current': _thinkerRequest,
+      'position': _thinkerQueue.length,
+    };
+  }
+
+  static const _endTurn =
+      'Tell the user briefly and end your turn. The result comes to you as a "[thinker result ...]" message.';
+
+  /// What the thinker is doing, for the talker.
+  Json thinkerStatus() {
+    final t = thinker;
+    final tools = <String>[];
+    for (final turn in t?.view.turns.reversed.take(1) ?? const <TurnState>[]) {
+      for (final i in turn.items.reversed) {
+        if (i.type == 'dynamicToolCall' || i.type == 'mcpToolCall' || i.type == 'toolCall') {
+          final args = i.data['arguments'];
+          tools.add('${i.data['tool']}${args is Map && args['body'] != null ? ' on ${args['body']}' : ''}');
+          if (tools.length == 5) break;
+        }
+      }
+    }
+    return {
+      'busy': _thinkerBusy,
+      if (_thinkerBusy) 'working_on': _thinkerRequest,
+      if (_thinkerBusy && t?.turnStartedAt != null)
+        'seconds': DateTime.now().difference(t!.turnStartedAt!).inSeconds,
+      'recent_tools': tools.reversed.toList(),
+      'running_workers': [
+        for (final w in workers)
+          if (w.state == AgentState.running) '${w.label} on ${w.body}: ${w.title ?? ''}',
+      ],
+      'waiting_requests': _thinkerQueue,
+    };
+  }
+
+  /// A thinker turn ended: its answer goes to the talker (which tells the
+  /// user), then the next request starts.
+  Future<void> _onThinkerFinished() async {
+    final t = thinker;
+    if (t == null) return;
+    final answer = t.lastAnswer.trim();
+    final about = _thinkerRequest ?? 'its own work';
+    _thinkerRequest = null;
+    if (answer.isNotEmpty) {
+      final text = '[thinker result for: ${_firstLine(about)}]\n$answer';
+      final o = orchestrator;
+      if (o != null) {
+        if (o.isRunning || o.view.isRunning) {
+          await o.send(text, afterCurrentTurn: true);
+        } else {
+          await o.send(text);
+        }
+      }
+    }
+    if (_thinkerQueue.isNotEmpty) {
+      final next = _thinkerQueue.removeAt(0);
+      _thinkerRequest = next;
+      await t.send(_withChanges('[request from the talker]\n$next'));
+    }
+    notifyListeners();
+  }
+
+  Future<ToolResult> _onTalkerTool(AgentThread caller, String tool, Json args) async {
+    final Json result = switch (tool) {
+      'ask_thinker' => await askThinker(
+        args['request'] as String? ?? '',
+        add: args['when_busy'] == 'add',
+      ),
+      'thinker_status' => thinkerStatus(),
+      _ => {'error': 'unknown tool $tool'},
+    };
+    notifyListeners();
+    return ToolResult(prettyJson(result), !result.containsKey('error'));
   }
 
   // ---- telling the orchestrator what changed ------------------------------------
@@ -331,26 +513,39 @@ class Hub extends ChangeNotifier {
     return c == null ? text : '$c\n\n$text';
   }
 
-  Future<void> interruptOrchestrator() async => orchestrator?.interrupt();
+  /// Stops what the brain is doing (the talker and the thinker).
+  Future<void> interruptOrchestrator() async {
+    _thinkerQueue.clear();
+    await Future.wait([
+      for (final t in [orchestrator, thinker])
+        if (t != null) t.interrupt(),
+    ]);
+  }
 
-  /// A new orchestrator conversation (workers keep running).
+  /// A new conversation (workers keep running).
   Future<void> newConversation() async {
-    final old = orchestrator;
+    final old = [orchestrator, thinker];
     orchestrator = null;
+    thinker = null;
+    _thinkerRequest = null;
+    _thinkerQueue.clear();
     notifyListeners();
-    if (old != null) {
-      await old.interrupt();
-      await old.close();
+    for (final t in old) {
+      if (t == null) continue;
+      await t.interrupt();
+      await t.close();
     }
   }
 
-  /// An answer to the orchestrator's question (Claude's AskUserQuestion).
+  /// An answer to a Claude agent's question (AskUserQuestion).
   void answer(Object requestId, Object? result) {
     brain.answer(requestId, result);
-    final o = orchestrator;
-    if (o == null) return;
-    for (final r in List.of(o.view.pending)) {
-      if (r.request.id == requestId) o.view.removePending(r);
+    talkerAgent.answer(requestId, result);
+    for (final o in [orchestrator, thinker]) {
+      if (o == null) continue;
+      for (final r in List.of(o.view.pending)) {
+        if (r.request.id == requestId) o.view.removePending(r);
+      }
     }
   }
 
@@ -500,7 +695,7 @@ class Hub extends ChangeNotifier {
   }
 
   Future<void> _flushNotices() async {
-    final o = orchestrator;
+    final o = _actor;
     if (o == null || _toNotify.isEmpty) return;
     final lines = [
       for (final id in _toNotify)
@@ -513,6 +708,7 @@ class Hub extends ChangeNotifier {
     if (o.isRunning || o.view.isRunning) {
       await o.send(_withChanges(text), afterCurrentTurn: true);
     } else if (config.wakeOnFinish) {
+      if (dual) _thinkerRequest = 'a worker update';
       await o.send(_withChanges(text));
     }
   }
@@ -834,6 +1030,7 @@ class Hub extends ChangeNotifier {
   @override
   void dispose() {
     brain.dispose();
+    talkerAgent.dispose();
     super.dispose();
   }
 }

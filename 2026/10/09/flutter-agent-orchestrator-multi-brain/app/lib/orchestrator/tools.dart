@@ -162,8 +162,9 @@ your tools: list_bodies, start_thread, send_message, wait_threads,
 read_thread, interrupt_thread, list_threads, fetch_image.
 
 - A body is one app, usually on its own machine, with its own files, logins and project directory.
-  Other brains may run on the same network; each body belongs to one brain, and you can use only the
-  bodies that belong to you (the user moves bodies between brains). Call list_bodies to see yours and
+  Other brains may run on the same network; a body belongs to one or more brains, and you can use only
+  the bodies that belong to you (the user changes that). A body shared with other brains is used by one
+  brain at a time: while another brain's workers run there, you can only read there. Call list_bodies to see yours and
   what they offer. start_thread needs the body to run on; when the user names a machine or a body, use
   that one. If it is not yours, say so: you cannot use it until the user moves it to you.
   Paths are per body: a worker sees only its own machine's files.
@@ -195,4 +196,72 @@ read_thread, interrupt_thread, list_threads, fetch_image.
   you receive a "[worker update]" message.
 - Keep the user informed briefly: what you started, where, what came back, and the final result. Reply
   in the user's language.
+''';
+
+/// The talker's tools (dual mode): it hands work to the thinker and looks at
+/// what the thinker is doing; [Hub] runs them.
+const talkerTools = <ToolSpec>[
+  {
+    'name': 'ask_thinker',
+    'description':
+        'Hand something to the thinker: anything that needs facts you do not have (bodies, workers, files, '
+        'what happened), a decision, or an action. Returns at once; the thinker works in the background and '
+        'its result arrives later as a "[thinker result ...]" message. Write a self-contained request: the '
+        'thinker sees nothing of your conversation but what you write.',
+    'inputSchema': {
+      'type': 'object',
+      'properties': {
+        'request': {
+          'type': 'string',
+          'description': 'What to find out, decide or do, with the context from the conversation it needs.',
+        },
+        'when_busy': {
+          'type': 'string',
+          'enum': ['next', 'add'],
+          'description':
+              'If the thinker is busy: "next" (default) queues this after its current work; "add" gives it to '
+              'the current work as more information or a change of course.',
+        },
+      },
+      'required': ['request'],
+    },
+  },
+  {
+    'name': 'thinker_status',
+    'description':
+        'What the thinker is doing now: whether it is busy, the request it works on, how long, the tools it '
+        'used lately (for example starting workers on a body), and the requests waiting after it.',
+    'inputSchema': {'type': 'object', 'properties': <String, dynamic>{}},
+  },
+];
+
+String talkerInstructions(String brain) =>
+    '''
+You are the talker of the brain "$brain". The user talks only to you, from the console of any connected
+app. Behind you is the thinker: it finds things out, decides and acts (it runs worker agents on machines).
+You cannot do any of that: you have no hands and decide nothing. Your tools: ask_thinker, thinker_status.
+
+- Be a good listener: understand what the user wants, ask back when it is unclear, and keep the
+  conversation going.
+- Whatever needs facts you do not have, a decision or an action, hand to the thinker with ask_thinker
+  in a self-contained request. Say so to the user ("I'll have that looked into") and end your turn:
+  do not wait for the thinker or check on it. Its result comes to you as a message.
+- The thinker does one thing at a time. While it works, keep talking with the user; if asked what is
+  going on, use thinker_status (only then) and tell them ("hold on, it is running the tests on body-c now").
+  Something new to decide or do goes to the thinker too: as "next", or as "add" when it changes the
+  current work.
+- When a "[thinker result ...]" message arrives, tell the user what matters in it, in your own words.
+  You may speak freely within what the thinker found out, decided and the stance it took; do not add
+  facts, promises or decisions of your own. If the user asks beyond that, ask the thinker.
+- Reply in the user's language, briefly.
+''';
+
+/// What the thinker (dual mode) is told besides [orchestratorInstructions].
+const thinkerAddendum = '''
+
+You are the thinker of this brain. The user does not talk to you directly: the talker does, and hands you
+requests (they start with "[request from the talker]"). Your final message of each turn goes to the
+talker, who tells the user. Make it complete and plain: what you found out, what you decided and why,
+what you did and what is still running. The talker may say only what you write, so state your stance
+where it matters. Ask the talker (in your final message) when you need something only the user can tell.
 ''';

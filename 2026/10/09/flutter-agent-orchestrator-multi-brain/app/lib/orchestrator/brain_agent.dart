@@ -107,13 +107,22 @@ class BrainAgent extends ChangeNotifier {
   }
 
   /// A new orchestrator conversation.
-  AgentThread create({required String cwd, required AgentRole role}) {
+  /// Makes the threads instead of a backend (tests).
+  @visibleForTesting
+  AgentThread Function(String label, AgentRole role)? fake;
+
+  AgentThread create({
+    required String cwd,
+    required AgentRole role,
+    String label = 'orchestrator',
+  }) {
+    if (fake case final f?) return f(label, role);
     if (error != null) throw StateError(error!);
     final model = this.model;
     final effort = config.effort;
     if (_codex case final b?) {
       return b.create(
-        label: 'orchestrator',
+        label: label,
         cwd: cwd,
         role: role,
         model: model,
@@ -122,7 +131,7 @@ class BrainAgent extends ChangeNotifier {
     }
     if (_claude case final b?) {
       return b.create(
-        label: 'orchestrator',
+        label: label,
         cwd: cwd,
         role: role,
         model: model,

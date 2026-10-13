@@ -74,11 +74,17 @@ class _WorkersPanelState extends State<WorkersPanel> {
             ),
           ),
           const Divider(height: 1),
+          // A dual brain's thinker: what it decides and does, above its workers.
+          if (console.thinker case final t?)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+              child: _WorkerTile(console: console, worker: t),
+            ),
           Expanded(
             child: workers.isEmpty
                 ? const Center(
                     child: Text(
-                      'No workers yet.\nThe orchestrator starts them.',
+                      'No workers yet.\nThe brain starts them.',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 12, color: Palette.textFaint),
                     ),

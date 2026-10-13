@@ -25,6 +25,22 @@ class BrainDraft extends ChangeNotifier {
   /// Where the orchestrator works when its folder is empty.
   final String projectDirDefault;
 
+  /// The talker's agent (dual mode): edited like this one, without a folder
+  /// or waking.
+  BrainDraft get talker => _talker ??= BrainDraft(
+    config.talker ?? BrainConfig(kind: WorkerKind.claude),
+    checker: checker,
+    local: local,
+  )..addListener(_changed);
+  BrainDraft? _talker;
+
+  void pickMode(BrainMode m) {
+    if (config.mode == m) return;
+    config.mode = m;
+    _changed();
+    if (m == BrainMode.dual && talker.check == null) talker.runCheck();
+  }
+
   late final cwd = TextEditingController(text: config.cwd ?? '');
   late final baseUrl = TextEditingController(text: config.baseUrl ?? '');
   late final envKey = TextEditingController(text: config.envKey ?? '');
@@ -146,6 +162,13 @@ class BrainDraft extends ChangeNotifier {
         ..envKey = null
         ..contextWindow = null;
     }
+    if (c.mode == BrainMode.dual) {
+      final (t, e) = talker.read();
+      if (e != null) return (null, 'the talker: $e');
+      c.talker = t;
+    } else {
+      c.talker = null;
+    }
     if (c.problem case final p?) return (null, p);
     return (c, null);
   }
@@ -156,14 +179,26 @@ class BrainDraft extends ChangeNotifier {
     for (final t in [cwd, baseUrl, envKey, customModel]) {
       t.dispose();
     }
+    _talker?.dispose();
     super.dispose();
   }
 }
 
 class BrainEditor extends StatefulWidget {
-  const BrainEditor({super.key, required this.draft});
+  const BrainEditor({
+    super.key,
+    required this.draft,
+    this.keyPrefix = 'brain',
+    this.agentOnly = false,
+  });
 
   final BrainDraft draft;
+
+  /// Widget keys start with it (`brain-…`, `talker-…`).
+  final String keyPrefix;
+
+  /// Only the agent, model and effort (the talker's part of a dual brain).
+  final bool agentOnly;
 
   @override
   State<BrainEditor> createState() => _BrainEditorState();
@@ -206,7 +241,7 @@ class _BrainEditorState extends State<BrainEditor> {
   }) => Padding(
     padding: const EdgeInsets.only(bottom: 8),
     child: TextField(
-      key: Key('brain-$key'),
+      key: Key('${widget.keyPrefix}-$key'),
       controller: t,
       decoration: InputDecoration(
         labelText: label,
@@ -230,7 +265,7 @@ class _BrainEditorState extends State<BrainEditor> {
     if (r == null) return const SizedBox.shrink();
     return Text(
       '${r.ok ? '✓' : '✗'} ${r.text}',
-      key: const Key('brain-status'),
+      key: Key('${widget.keyPrefix}-status'),
       style: TextStyle(
         fontSize: 12,
         color: r.ok ? Palette.added : Palette.warning,
@@ -251,11 +286,45 @@ class _BrainEditorState extends State<BrainEditor> {
                 models.firstOrNull)
             ?.efforts ??
         const <String>[];
+    final dual = !widget.agentOnly && c.mode == BrainMode.dual;
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if (!widget.agentOnly) ...[
+          SegmentedButton<BrainMode>(
+            key: Key('${widget.keyPrefix}-mode'),
+            segments: const [
+              ButtonSegment(value: BrainMode.single, label: Text('Single')),
+              ButtonSegment(
+                value: BrainMode.dual,
+                label: Text('Talker + Thinker'),
+              ),
+            ],
+            selected: {c.mode},
+            onSelectionChanged: (s) => d.pickMode(s.first),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            dual
+                ? 'Two agents. The talker talks with you and hands what needs deciding or doing to the thinker; '
+                      'the thinker decides and acts (workers, tools) and reports back. The talker keeps talking while '
+                      'the thinker works.'
+                : 'One agent talks with you, decides and acts.',
+            style: const TextStyle(fontSize: 12, color: Palette.textDim),
+          ),
+          const SizedBox(height: 12),
+          if (dual) ...[
+            Text('Thinker', style: theme.textTheme.titleSmall),
+            const Text(
+              'Decides and acts: runs workers on bodies, uses the tools.',
+              style: TextStyle(fontSize: 12, color: Palette.textDim),
+            ),
+            const SizedBox(height: 6),
+          ],
+        ],
         SegmentedButton<WorkerKind>(
-          key: const Key('brain-kind'),
+          key: Key('${widget.keyPrefix}-kind'),
           segments: const [
             ButtonSegment(value: WorkerKind.codex, label: Text('Codex')),
             ButtonSegment(value: WorkerKind.claude, label: Text('Claude')),
@@ -293,12 +362,12 @@ class _BrainEditorState extends State<BrainEditor> {
             Expanded(child: _status()),
             if (custom)
               TextButton(
-                key: const Key('brain-load-models'),
+                key: Key('${widget.keyPrefix}-load-models'),
                 onPressed: d.loadingModels ? null : d.loadModels,
                 child: Text(d.loadingModels ? 'Loading…' : 'Load models'),
               ),
             TextButton(
-              key: const Key('brain-check'),
+              key: Key('${widget.keyPrefix}-check'),
               onPressed: d.checking ? null : d.runCheck,
               child: const Text('Check'),
             ),
@@ -308,7 +377,7 @@ class _BrainEditorState extends State<BrainEditor> {
           Align(
             alignment: Alignment.centerLeft,
             child: TextButton(
-              key: const Key('brain-login'),
+              key: Key('${widget.keyPrefix}-login'),
               onPressed: d.login,
               child: const Text('Log in to Codex (opens the browser)'),
             ),
@@ -332,7 +401,9 @@ class _BrainEditorState extends State<BrainEditor> {
         else if (models.isNotEmpty)
           DropdownButtonFormField<String?>(
             // A new list (another agent, reloaded) starts from its value.
-            key: ValueKey('brain-model-${c.kind.name}-${models.length}'),
+            key: ValueKey(
+              '${widget.keyPrefix}-model-${c.kind.name}-${models.length}',
+            ),
             initialValue: model?.id,
             isExpanded: true,
             decoration: InputDecoration(
@@ -355,7 +426,7 @@ class _BrainEditorState extends State<BrainEditor> {
           ),
         if (efforts.isNotEmpty)
           DropdownButtonFormField<String?>(
-            key: ValueKey('brain-effort-${model?.id}'),
+            key: ValueKey('${widget.keyPrefix}-effort-${model?.id}'),
             initialValue: efforts.contains(c.effort) ? c.effort : null,
             decoration: const InputDecoration(
               labelText: 'Effort',
@@ -371,31 +442,44 @@ class _BrainEditorState extends State<BrainEditor> {
               d.changed();
             },
           ),
-        const SizedBox(height: 8),
-        _field(
-          'cwd',
-          d.cwd,
-          'Folder (optional)',
-          hint: '~/src',
-          help: 'Where the orchestrator works. Empty: ${d.projectDirDefault}.',
-        ),
-        SwitchListTile(
-          key: const Key('brain-wake'),
-          contentPadding: EdgeInsets.zero,
-          value: c.wakeOnFinish,
-          title: const Text(
-            'Wake it when a worker finishes',
-            style: TextStyle(fontSize: 14),
+        if (!widget.agentOnly) ...[
+          const SizedBox(height: 8),
+          _field(
+            'cwd',
+            d.cwd,
+            'Folder (optional)',
+            hint: '~/src',
+            help:
+                'Where the orchestrator works. Empty: ${d.projectDirDefault}.',
           ),
-          subtitle: const Text(
-            'Off: it hears about finished workers the next time you write.',
-            style: TextStyle(fontSize: 12),
+          SwitchListTile(
+            key: Key('${widget.keyPrefix}-wake'),
+            contentPadding: EdgeInsets.zero,
+            value: c.wakeOnFinish,
+            title: const Text(
+              'Wake it when a worker finishes',
+              style: TextStyle(fontSize: 14),
+            ),
+            subtitle: const Text(
+              'Off: it hears about finished workers the next time you write.',
+              style: TextStyle(fontSize: 12),
+            ),
+            onChanged: (v) {
+              c.wakeOnFinish = v;
+              d.changed();
+            },
           ),
-          onChanged: (v) {
-            c.wakeOnFinish = v;
-            d.changed();
-          },
-        ),
+        ],
+        if (dual) ...[
+          const Divider(height: 24),
+          Text('Talker', style: theme.textTheme.titleSmall),
+          const Text(
+            'Talks with you: listens, asks back, tells you what the thinker found and did. A quick model fits.',
+            style: TextStyle(fontSize: 12, color: Palette.textDim),
+          ),
+          const SizedBox(height: 6),
+          BrainEditor(draft: d.talker, keyPrefix: 'talker', agentOnly: true),
+        ],
       ],
     );
   }

@@ -43,12 +43,17 @@ class ConsolePublisher {
     _timer ??= Timer(const Duration(milliseconds: 30), flush);
   }
 
-  List<AgentThread> get _threads => [?hub.orchestrator, ...hub.workers];
+  List<AgentThread> get _threads => [
+    ?hub.orchestrator,
+    ?hub.thinker,
+    ...hub.workers,
+  ];
 
   String _key(AgentThread t) => _keys.putIfAbsent(t, () {
     t.view.addListener(_schedule);
     _sent[t] = 0;
-    return t.label == 'orchestrator' ? 'o${++_seq}' : t.label;
+    // The brain's own threads come and go with conversations.
+    return hub.workers.contains(t) ? t.label : '${t.label}-${++_seq}';
   });
 
   Json _meta(AgentThread t) => {
@@ -70,7 +75,12 @@ class ConsolePublisher {
     'ready': hub.ready,
     'startupError': hub.startupError,
     'projectDir': hub.projectDir,
-    'brainAgent': hub.brain.info,
+    'brainAgent': {
+      ...hub.brain.info,
+      'mode': hub.config.mode.name,
+      if (hub.dual) 'talker': hub.talkerAgent.info,
+    },
+    'thinker': hub.thinker == null ? null : _key(hub.thinker!),
     'orchestrator': hub.orchestrator == null ? null : _key(hub.orchestrator!),
     'workers': [for (final w in hub.workers) _key(w)],
     'threads': [for (final t in _threads) _meta(t)],
@@ -294,6 +304,9 @@ class BrainView {
 
   ThreadMirror? get orchestrator => threads[state['orchestrator']];
 
+  /// The thinker's conversation (a brain in dual mode).
+  ThreadMirror? get thinker => threads[state['thinker']];
+
   List<ThreadMirror> get workers => [
     for (final k in state['workers'] as List? ?? const []) ?threads[k],
   ];
@@ -315,6 +328,7 @@ class BrainView {
           'turns': t.view.turns.length,
           'turnStates': [for (final u in t.view.turns) '${u.id}:${u.status}'],
           'ops': t.view.ops.length,
+          'tokens': t.view.tokenUsage?['total'],
           'opsHash': fnv1a(jsonEncode(t.view.ops)),
           'problems': t.problems.take(5).toList(),
           'images': [
@@ -487,6 +501,7 @@ class ConsoleMirror extends ChangeNotifier {
   Json get brainAgent =>
       (_v?.state['brainAgent'] as Map?)?.cast<String, dynamic>() ?? const {};
   ThreadMirror? get orchestrator => _v?.orchestrator;
+  ThreadMirror? get thinker => _v?.thinker;
   List<ThreadMirror> get workers => _v?.workers ?? const [];
   List<BodyView> get bodies => _v?.bodies ?? const [];
 
@@ -659,6 +674,20 @@ class ConsoleMirror extends ChangeNotifier {
     ],
     'brains': {for (final e in views.entries) e.key: e.value.digest()},
   };
+}
+
+/// What a brain runs on, for its row and the input: "Codex · model · effort",
+/// or "Talker: Claude · model / Thinker: Codex · model" in dual mode.
+String runsOnLabel(Json agent) {
+  String one(Json a) => [
+    if (a['label'] case final String l) l,
+    if (a['model'] case final String m) m,
+    if (a['effort'] case final String e) e,
+  ].join(' · ');
+  if (agent['mode'] == 'dual' && agent['talker'] is Map) {
+    return 'Talker: ${one((agent['talker'] as Map).cast())} / Thinker: ${one(agent)}';
+  }
+  return one(agent);
 }
 
 /// Requests from a console to a brain over a peer, matched to their replies

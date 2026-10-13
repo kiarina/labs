@@ -50,10 +50,7 @@ class _ComposerState extends State<Composer> {
     final running = o?.view.isRunning ?? false;
     final hasText = _controller.text.trim().isNotEmpty;
     final agent = console.brainAgent;
-    final runsOn = [
-      if (agent['label'] case final String l) l,
-      if ((o?.model ?? agent['model']) case final String m) m,
-    ].join(' · ');
+    final runsOn = runsOnLabel(agent);
     return Container(
       decoration: BoxDecoration(
         color: Palette.surface,
