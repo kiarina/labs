@@ -43,6 +43,23 @@ class _ComposerState extends State<Composer> {
     }
   }
 
+  /// Enter sends, except while an input method is composing (Japanese
+  /// conversion): then the Enter confirms the conversion and goes to it.
+  KeyEventResult _onKey(FocusNode node, KeyEvent event) {
+    if (event is! KeyDownEvent ||
+        event.logicalKey != LogicalKeyboardKey.enter ||
+        HardwareKeyboard.instance.isShiftPressed ||
+        HardwareKeyboard.instance.isAltPressed ||
+        HardwareKeyboard.instance.isControlPressed ||
+        HardwareKeyboard.instance.isMetaPressed ||
+        _controller.value.composing.isValid &&
+            !_controller.value.composing.isCollapsed) {
+      return KeyEventResult.ignored;
+    }
+    _submit();
+    return KeyEventResult.handled;
+  }
+
   @override
   Widget build(BuildContext context) {
     final console = widget.console;
@@ -60,10 +77,8 @@ class _ComposerState extends State<Composer> {
       padding: const EdgeInsets.fromLTRB(14, 10, 10, 8),
       child: Column(
         children: [
-          CallbackShortcuts(
-            bindings: {
-              const SingleActivator(LogicalKeyboardKey.enter): _submit,
-            },
+          Focus(
+            onKeyEvent: _onKey,
             child: TextField(
               controller: _controller,
               autofocus: true,
