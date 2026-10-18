@@ -57,6 +57,13 @@ for mode in ['spoken-control','listen-only']:assert load(f'transcript-only-initi
 checks.append('listen-only prompt yields two input transcripts and zero nonzero PCM samples; spoken control validates meter; v3 text rejected')
 assert load('real-microphone-validation.json')['ok']is True
 checks.append('five-minute real microphone metrics pass the separate continuity and silence validator')
+r=load('backend-sideband-roundtrip.json');assert r['auth_type']=='chatgpt'and not r['api_key_fallback']and not r['proxy_used']
+assert r['peer_connected']and not r['physical_microphone_used']and not r['normal_turn_started']
+text=''.join(x['params']['delta']for x in r['events']if x['method']=='thread/realtime/transcript/delta'and x['params'].get('role')=='assistant')
+assert ('42'in text or '四十二'in text)and '番号'in text
+assert '42'in r['context']and '42'not in r['announcement']
+assert r['audio_stats']['nonzero_samples']>0 and 'meter_error'not in r['audio_stats']
+checks.append('ChatGPT sideband backend context and speech request yield the supplied result number and nonzero audio')
 for p in (root/'results').glob('*.json'):
  s=p.read_text();assert '/Users/'not in s and 'sk-'not in s and 'Bearer 'not in s,p
 print(json.dumps({'ok':True,'checks':checks,'live_runs_repeated':False},indent=2))
