@@ -8,6 +8,8 @@
 
 前提の [司令塔と app-server の lab](../08/flutter-agent-orchestrator-kiapi/README.md) とは独立した小さい Python クライアントを使う。
 
+接続を維持して送るASR・表示遅延・暫定話者IDの試験は [PERSISTENT_ASR.md](PERSISTENT_ASR.md) を参照。実マイクの文字表示は改善したが、話者の再登場・境界・時計の推定には制約がある。
+
 VAD・話者分割後の区間だけを送るASR試験は [SEGMENTED_ASR.md](SEGMENTED_ASR.md) を参照。区間対応は確認したが、無発声は失敗し、本人の実マイク試験でも待ち時間が実用に不向きと評価された。この区間ごとの新規接続方式は採用しない。
 
 Mac で会話を体験する小型アプリは [DEMO.md](DEMO.md) を参照。

@@ -1,0 +1,102 @@
+{
+  "ok": true,
+  "checks": {
+    "chatgpt_legacy_timestamps_observed": true,
+    "first_failed_timer_run_retained": true,
+    "persistent_single_connection": true,
+    "native_clock_has_no_late_or_dropped_frames": true,
+    "all_fragments_visible_while_capturing": true,
+    "silence_suppressed": true,
+    "no_audio_response_in_this_run": true,
+    "all_intervals_have_timestamps": true,
+    "native_source_ledger_is_linear": true,
+    "no_runtime_errors": true,
+    "recorded_source_intervals_reconstruct": true,
+    "delayed_delivery_does_not_move_source_interval": true,
+    "speaker_reentry_failure_not_hidden": true
+  },
+  "real_microphone": {
+    "evidence_valid": true,
+    "checks": {
+      "one_connection": true,
+      "real_record_capture": true,
+      "no_human_transcript_or_embedding_saved": true,
+      "visible_during_capture": true,
+      "no_response_this_run": true,
+      "one_speaker_cluster": true,
+      "one_late_frame_retained": true,
+      "uncertain_fragments_not_forced": true,
+      "no_runtime_errors": true
+    },
+    "fragment_count": 43,
+    "assigned_provisionally": 40,
+    "held": 3,
+    "estimated_latency_ms_median": 1628.0,
+    "estimated_latency_ms_p95": 1875.0,
+    "human_practicality": "pending"
+  },
+  "latency_scope": "estimated source intervals: first-VAD/first-transcript clock-origin assumption, not exact word timing",
+  "estimated_display_latency_ms": {
+    "median": 2158.0,
+    "p95": 2450.0
+  },
+  "first_caption_after_vad_start_ms": 2660.0,
+  "gate_processing_ms": {
+    "median": 96.065,
+    "max": 155.664
+  },
+  "reference_anchors": [
+    {
+      "text_marker": "もし",
+      "expected_speaker": "speaker-1",
+      "observed_speakers": [
+        "speaker-1"
+      ],
+      "matches": true
+    },
+    {
+      "text_marker": "改札",
+      "expected_speaker": "speaker-2",
+      "observed_speakers": [
+        "speaker-2"
+      ],
+      "matches": true
+    },
+    {
+      "text_marker": "電車",
+      "expected_speaker": "speaker-1",
+      "observed_speakers": [
+        "speaker-3"
+      ],
+      "matches": false
+    },
+    {
+      "text_marker": "カフェ",
+      "expected_speaker": "speaker-2",
+      "observed_speakers": [
+        "speaker-2"
+      ],
+      "matches": true
+    },
+    {
+      "text_marker": "寒い",
+      "expected_speaker": "speaker-1",
+      "observed_speakers": [
+        "speaker-3"
+      ],
+      "matches": false
+    },
+    {
+      "text_marker": "マフ",
+      "expected_speaker": "speaker-2",
+      "observed_speakers": [
+        "speaker-2"
+      ],
+      "matches": true
+    }
+  ],
+  "speaker_identity_complete": false,
+  "clock_alignment_exact": false,
+  "human_practicality": "pending",
+  "live_runs_repeated": false
+}

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+#MISE description="Persistent ChatGPT WebRTC with VAD / speaker gating and latency measurement"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+if [[ "${PERSISTENT_SKIP_BUILD:-0}" != 1 ]]; then
+ mise run //:test-assets:download
+ python3 tools/prepare_asr.py
+ (cd asr/app && flutter pub get && flutter build macos --release -t lib/persistent_main.dart)
+fi
+rm -f work/persistent-control.json
+uv run --with-requirements tools/requirements.txt python tools/persistent_asr_server.py > work/persistent-server.log 2>&1 &
+backend=$!
+trap 'kill "$backend" 2>/dev/null || true' EXIT INT TERM
+for ((n=0;n<100;n++)); do
+ [[ -f work/persistent-control.json ]] && break
+ kill -0 "$backend" || exit 1
+ sleep 0.1
+done
+export PERSISTENT_LAB_URL="$(python3 -c 'import json; print(json.load(open("work/persistent-control.json"))["url"])')"
+if [[ "${PERSISTENT_AUTOTEST:-0}" == 1 ]]; then
+ "asr/app/build/macos/Build/Products/Release/Speaker ASR Lab.app/Contents/MacOS/Speaker ASR Lab"
+else
+ /usr/bin/open -W -n --env "PERSISTENT_LAB_URL=$PERSISTENT_LAB_URL" --stdout "$PWD/work/persistent-app.log" --stderr "$PWD/work/persistent-app-stderr.log" "$PWD/asr/app/build/macos/Build/Products/Release/Speaker ASR Lab.app"
+fi
