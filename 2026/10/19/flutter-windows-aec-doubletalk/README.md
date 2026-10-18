@@ -5,6 +5,16 @@ WebRTC only when needed. AEC owns no capture device. The Windows transport SDK
 must report zero additional recording operations. This independent lab adapts the
 [five-platform experiment](../flutter-external-capture-aec/README.md).
 
+## Physical human speech
+
+The [human double-talk protocol](HUMAN.md) extends this lab with real participant
+speech, on-screen cues and decoded WebRTC receiver recordings. One short physical
+near-voice trial passed the predeclared checks and participant listening: far-only
+reduction20.6–23.1dB, clarity4–5/5, no missing words, echo none-to-slight, normal
+near recovery. This is limited to the measured setup, baseline AEC and recorded
+far fixture; live DT source separation and long-session practicality are not proved. It uses
+`app/lib/human_probe.dart`; synthetic-near results below remain a separate test.
+
 ## Result and adoption
 
 **No candidate established better acoustic double-talk suppression than baseline.**

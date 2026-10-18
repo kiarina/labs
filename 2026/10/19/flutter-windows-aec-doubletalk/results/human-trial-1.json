@@ -1,0 +1,4135 @@
+{
+  "kind": "physical-human-doubletalk-diagnostics",
+  "sampleRate": 48000,
+  "outputLatencyAssumptionSamples": 432,
+  "rawRenderLagSamples": 6169,
+  "calibrationBins": 164,
+  "eligibleBins": 271,
+  "calibrationValid": true,
+  "phases": [
+    {
+      "name": "baseline",
+      "physicalHumanNearExpected": false,
+      "rawRmsDbfs": -38.25964030957292,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -38.669424098383146,
+          "clipSamples": 0
+        },
+        "candidate80": {
+          "rmsDbfs": -38.669424098383146,
+          "clipSamples": 0
+        },
+        "linear80": {
+          "rmsDbfs": -38.66942245371612,
+          "clipSamples": 0
+        },
+        "longRefined100": {
+          "rmsDbfs": -38.669424098383146,
+          "clipSamples": 0
+        },
+        "longRefined120": {
+          "rmsDbfs": -38.669424098383146,
+          "clipSamples": 0
+        }
+      }
+    },
+    {
+      "name": "near-only",
+      "physicalHumanNearExpected": true,
+      "rawRmsDbfs": -35.06972130248893,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -35.45188757655882,
+          "clipSamples": 0
+        },
+        "candidate80": {
+          "rmsDbfs": -35.45188757655882,
+          "clipSamples": 0
+        },
+        "linear80": {
+          "rmsDbfs": -35.451887695949345,
+          "clipSamples": 0
+        },
+        "longRefined100": {
+          "rmsDbfs": -35.45188757655882,
+          "clipSamples": 0
+        },
+        "longRefined120": {
+          "rmsDbfs": -35.45188757655882,
+          "clipSamples": 0
+        }
+      }
+    },
+    {
+      "name": "far-1-warmup",
+      "physicalHumanNearExpected": false,
+      "rawRmsDbfs": -42.5697486205146,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -48.20483188967959,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 19.060433820348997
+        },
+        "candidate80": {
+          "rmsDbfs": -49.45439826642365,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 20.17414422719826
+        },
+        "linear80": {
+          "rmsDbfs": -43.840112857117774,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 6.115901215592167
+        },
+        "longRefined100": {
+          "rmsDbfs": -49.51462934207644,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 21.591540084723484
+        },
+        "longRefined120": {
+          "rmsDbfs": -48.96746029230866,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 7.120962428877002
+        }
+      },
+      "identifiable": true,
+      "validWindowFraction": 0.9090909090909091,
+      "windows": [
+        {
+          "coverage": 0.3874538745387454,
+          "valid": true,
+          "rawRmsDbfs": -42.63192804883186
+        },
+        {
+          "coverage": 0.05166051660516605,
+          "valid": false,
+          "rawRmsDbfs": -43.25425973081765
+        },
+        {
+          "coverage": 0.5830258302583026,
+          "valid": true,
+          "rawRmsDbfs": -38.45538838825582
+        },
+        {
+          "coverage": 0.46863468634686345,
+          "valid": true,
+          "rawRmsDbfs": -43.72879802373204
+        },
+        {
+          "coverage": 0.4575645756457565,
+          "valid": true,
+          "rawRmsDbfs": -42.604588494125224
+        },
+        {
+          "coverage": 0.4797047970479705,
+          "valid": true,
+          "rawRmsDbfs": -44.220231358736264
+        },
+        {
+          "coverage": 0.5608856088560885,
+          "valid": true,
+          "rawRmsDbfs": -43.91019211765462
+        },
+        {
+          "coverage": 0.5682656826568265,
+          "valid": true,
+          "rawRmsDbfs": -43.20412922016696
+        },
+        {
+          "coverage": 0.47232472324723246,
+          "valid": true,
+          "rawRmsDbfs": -42.090684849477654
+        },
+        {
+          "coverage": 0.6715867158671587,
+          "valid": true,
+          "rawRmsDbfs": -44.34946518251475
+        },
+        {
+          "coverage": 0.5830258302583026,
+          "valid": true,
+          "rawRmsDbfs": -43.67749027372109
+        }
+      ],
+      "metricCaveat": "DT real-near cross spectral leakage/distortion is not bounded; not source-separated echo or clean-near retention."
+    },
+    {
+      "name": "far-1",
+      "physicalHumanNearExpected": false,
+      "rawRmsDbfs": -40.61488138530622,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -49.35829456275958,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 20.614017419655152
+        },
+        "candidate80": {
+          "rmsDbfs": -49.710731935238755,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 20.85889076483623
+        },
+        "linear80": {
+          "rmsDbfs": -43.96139400231177,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 6.788156619768577
+        },
+        "longRefined100": {
+          "rmsDbfs": -48.95350559401525,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 21.024898700680478
+        },
+        "longRefined120": {
+          "rmsDbfs": -48.7758469089848,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 9.120218902340211
+        }
+      },
+      "identifiable": true,
+      "validWindowFraction": 0.8,
+      "windows": [
+        {
+          "coverage": 0.6309963099630996,
+          "valid": true,
+          "rawRmsDbfs": -38.33757794993815
+        },
+        {
+          "coverage": 0.4833948339483395,
+          "valid": true,
+          "rawRmsDbfs": -43.749315084882355
+        },
+        {
+          "coverage": 0.3726937269372694,
+          "valid": true,
+          "rawRmsDbfs": -42.42200546428727
+        },
+        {
+          "coverage": 0.12546125461254612,
+          "valid": false,
+          "rawRmsDbfs": -43.071316809265284
+        },
+        {
+          "coverage": 0.5018450184501845,
+          "valid": true,
+          "rawRmsDbfs": -38.55867232305749
+        }
+      ],
+      "metricCaveat": "DT real-near cross spectral leakage/distortion is not bounded; not source-separated echo or clean-near retention."
+    },
+    {
+      "name": "doubletalk",
+      "physicalHumanNearExpected": true,
+      "rawRmsDbfs": -33.079918729408206,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -34.478503991113584,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 18.68375208756525
+        },
+        "candidate80": {
+          "rmsDbfs": -35.048624948646236,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 21.208330830234704
+        },
+        "linear80": {
+          "rmsDbfs": -33.619797951660296,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 8.12251934372949
+        },
+        "longRefined100": {
+          "rmsDbfs": -34.23172231661022,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 17.77884436942204
+        },
+        "longRefined120": {
+          "rmsDbfs": -34.226424684620504,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 8.4689983072223
+        }
+      },
+      "identifiable": false,
+      "validWindowFraction": 0.6,
+      "windows": [
+        {
+          "coverage": 0.4132841328413284,
+          "valid": true,
+          "rawRmsDbfs": -42.76303319457171
+        },
+        {
+          "coverage": 0.18450184501845018,
+          "valid": false,
+          "rawRmsDbfs": -28.423162745643474
+        },
+        {
+          "coverage": 0.16605166051660517,
+          "valid": false,
+          "rawRmsDbfs": -33.60572588232347
+        },
+        {
+          "coverage": 0.12546125461254612,
+          "valid": false,
+          "rawRmsDbfs": -31.195463767036987
+        },
+        {
+          "coverage": 0.14760147601476015,
+          "valid": false,
+          "rawRmsDbfs": -31.846415899337003
+        },
+        {
+          "coverage": 0.30996309963099633,
+          "valid": true,
+          "rawRmsDbfs": -32.796229397240204
+        },
+        {
+          "coverage": 0.25461254612546125,
+          "valid": true,
+          "rawRmsDbfs": -31.397632657486803
+        },
+        {
+          "coverage": 0.12546125461254612,
+          "valid": false,
+          "rawRmsDbfs": -32.24301906029218
+        },
+        {
+          "coverage": 0.13653136531365315,
+          "valid": false,
+          "rawRmsDbfs": -31.11233383843596
+        },
+        {
+          "coverage": 0.4907749077490775,
+          "valid": true,
+          "rawRmsDbfs": -41.16256447790511
+        },
+        {
+          "coverage": 0.3173431734317343,
+          "valid": true,
+          "rawRmsDbfs": -42.12172139902131
+        },
+        {
+          "coverage": 0.25461254612546125,
+          "valid": true,
+          "rawRmsDbfs": -42.91179116286621
+        },
+        {
+          "coverage": 0.4022140221402214,
+          "valid": true,
+          "rawRmsDbfs": -38.66501106962028
+        },
+        {
+          "coverage": 0.2988929889298893,
+          "valid": true,
+          "rawRmsDbfs": -29.790918898945172
+        },
+        {
+          "coverage": 0.3948339483394834,
+          "valid": true,
+          "rawRmsDbfs": -42.35643022007294
+        }
+      ],
+      "metricCaveat": "DT real-near cross spectral leakage/distortion is not bounded; not source-separated echo or clean-near retention."
+    },
+    {
+      "name": "quiet-between",
+      "physicalHumanNearExpected": false,
+      "rawRmsDbfs": -48.197167269789816,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -48.54059931125656,
+          "clipSamples": 0
+        },
+        "candidate80": {
+          "rmsDbfs": -48.54059931125656,
+          "clipSamples": 0
+        },
+        "linear80": {
+          "rmsDbfs": -48.54059931125656,
+          "clipSamples": 0
+        },
+        "longRefined100": {
+          "rmsDbfs": -48.54059931125656,
+          "clipSamples": 0
+        },
+        "longRefined120": {
+          "rmsDbfs": -48.54059931125656,
+          "clipSamples": 0
+        }
+      }
+    },
+    {
+      "name": "far-2",
+      "physicalHumanNearExpected": false,
+      "rawRmsDbfs": -42.65215873491557,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -50.17028962686907,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 23.080074794453868
+        },
+        "candidate80": {
+          "rmsDbfs": -50.234426842618134,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 21.136239056215338
+        },
+        "linear80": {
+          "rmsDbfs": -44.910968556254545,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 7.690474652736708
+        },
+        "longRefined100": {
+          "rmsDbfs": -49.80317833919946,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 23.02175855205514
+        },
+        "longRefined120": {
+          "rmsDbfs": -49.450982384172605,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 9.797912139874295
+        }
+      },
+      "identifiable": true,
+      "validWindowFraction": 1.0,
+      "windows": [
+        {
+          "coverage": 0.6974169741697417,
+          "valid": true,
+          "rawRmsDbfs": -45.09805746857802
+        },
+        {
+          "coverage": 0.5830258302583026,
+          "valid": true,
+          "rawRmsDbfs": -44.793946711568495
+        },
+        {
+          "coverage": 0.42435424354243545,
+          "valid": true,
+          "rawRmsDbfs": -44.5804956831481
+        },
+        {
+          "coverage": 0.7269372693726938,
+          "valid": true,
+          "rawRmsDbfs": -38.58256540329805
+        },
+        {
+          "coverage": 0.6273062730627307,
+          "valid": true,
+          "rawRmsDbfs": -44.647598305965026
+        }
+      ],
+      "metricCaveat": "DT real-near cross spectral leakage/distortion is not bounded; not source-separated echo or clean-near retention."
+    },
+    {
+      "name": "near-recovery",
+      "physicalHumanNearExpected": true,
+      "rawRmsDbfs": -34.46517503745169,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -34.91637978339133,
+          "clipSamples": 0
+        },
+        "candidate80": {
+          "rmsDbfs": -34.91637978339133,
+          "clipSamples": 0
+        },
+        "linear80": {
+          "rmsDbfs": -34.91637947025099,
+          "clipSamples": 0
+        },
+        "longRefined100": {
+          "rmsDbfs": -34.91637978339133,
+          "clipSamples": 0
+        },
+        "longRefined120": {
+          "rmsDbfs": -34.91637978339133,
+          "clipSamples": 0
+        }
+      }
+    },
+    {
+      "name": "quiet-after",
+      "physicalHumanNearExpected": false,
+      "rawRmsDbfs": -48.55154412934793,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -48.909710586838614,
+          "clipSamples": 0
+        },
+        "candidate80": {
+          "rmsDbfs": -48.909710586838614,
+          "clipSamples": 0
+        },
+        "linear80": {
+          "rmsDbfs": -48.9097108379746,
+          "clipSamples": 0
+        },
+        "longRefined100": {
+          "rmsDbfs": -48.909710586838614,
+          "clipSamples": 0
+        },
+        "longRefined120": {
+          "rmsDbfs": -48.909710586838614,
+          "clipSamples": 0
+        }
+      }
+    },
+    {
+      "name": "rtc-far-playback",
+      "physicalHumanNearExpected": false,
+      "rawRmsDbfs": -42.23636636551912,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -50.04759121429636,
+          "clipSamples": 0
+        },
+        "candidate80": {
+          "rmsDbfs": -50.21150526738164,
+          "clipSamples": 0
+        },
+        "linear80": {
+          "rmsDbfs": -45.26202058772068,
+          "clipSamples": 0
+        },
+        "longRefined100": {
+          "rmsDbfs": -49.78327416154394,
+          "clipSamples": 0
+        },
+        "longRefined120": {
+          "rmsDbfs": -49.398304274799756,
+          "clipSamples": 0
+        }
+      }
+    }
+  ],
+  "syntheticNearPcmNonzeroSamples": 0,
+  "outputClippedSamples": 0,
+  "receivedFarPass": true,
+  "receiverDroppedToDartMax": 0,
+  "rawClippedSamples": 0,
+  "recordingAuditZero": true,
+  "rawOwnershipPass": true,
+  "transportPass": true,
+  "aborted": false,
+  "farOnlyCriterionPass": true,
+  "maxAudioGapMs": 20.976,
+  "maxVideoGapMs": 45.482,
+  "captureStarts": {
+    "microphone": 1,
+    "camera": 0
+  },
+  "videoSource": "synthetic fallback: Bad state: explicit synthetic fixture; physical camera unavailable",
+  "errors": [],
+  "receiverFormat": {
+    "sampleRate": 48000,
+    "channels": 1
+  },
+  "receiverSamples": 588960,
+  "listeningCommonGain": 0.9452322189813775,
+  "humanListeningAssessment": "separate participant assessment; see human-assessment-1.json",
+  "practicalAcceptance": null,
+  "practicalAcceptanceNote": "Diagnostics alone cannot establish practicality; run assess_human.py with the participant listening record.",
+  "pcmSha256": {
+    "raw": "27c2233e98b01e23366ba521c91011f25e95d244e7d8f0bd38ccc101294bc30c",
+    "baseline": "9cfe07d5138c65a1ffa41c9ff6b3ed3496e9040fce0c54338ea3f9bd5ca0ddd8",
+    "candidate80": "9a532979b440950c2cd9871c03b43f0476ca80f33022cb469cddad0e312db88f",
+    "linear80": "24c1e26d894b9d51b2788ad75a9aaeabc095c542071ab48c2ab6abd28c3de83e",
+    "longRefined100": "06621a88ccfda29c1df1132f791bd7133cae3a55ad9ff84c29f5636ab412eb9d",
+    "longRefined120": "5f90fa634a1928968b35264eb47b95de8ed0fb56c274e9853ec0dc4ff8656875",
+    "actual_render": "96262ed61258ec95acaa972488de7691990385e9970923dc27ed50fc777609f2"
+  },
+  "report": {
+    "kind": "physical-human-doubletalk",
+    "platform": "windows",
+    "syntheticNearInjection": false,
+    "participantAborted": false,
+    "receiverChunks": [
+      {
+        "clockUs": 36139656,
+        "startByte": 0,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 36241795,
+        "startByte": 9600,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 36344089,
+        "startByte": 19200,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 36447506,
+        "startByte": 29760,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 36549755,
+        "startByte": 39360,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 36651706,
+        "startByte": 48960,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 36753226,
+        "startByte": 58560,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 36854146,
+        "startByte": 69120,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 36955754,
+        "startByte": 78720,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 37057128,
+        "startByte": 88320,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 37159525,
+        "startByte": 97920,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 37263031,
+        "startByte": 107520,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 37366797,
+        "startByte": 117120,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 37469605,
+        "startByte": 127680,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 37571627,
+        "startByte": 137280,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 37673345,
+        "startByte": 146880,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 37774344,
+        "startByte": 157440,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 37874874,
+        "startByte": 167040,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 37978464,
+        "startByte": 176640,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 38079654,
+        "startByte": 186240,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 38182123,
+        "startByte": 195840,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 38285933,
+        "startByte": 205440,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 38388643,
+        "startByte": 216000,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 38491843,
+        "startByte": 225600,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 38593640,
+        "startByte": 235200,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 38695758,
+        "startByte": 245760,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 38798965,
+        "startByte": 255360,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 38901704,
+        "startByte": 264960,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 39005718,
+        "startByte": 274560,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 39106833,
+        "startByte": 285120,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 39208438,
+        "startByte": 294720,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 39310149,
+        "startByte": 304320,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 39411808,
+        "startByte": 313920,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 39513774,
+        "startByte": 323520,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 39615861,
+        "startByte": 334080,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 39717349,
+        "startByte": 343680,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 39818882,
+        "startByte": 353280,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 39920677,
+        "startByte": 362880,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 40022064,
+        "startByte": 372480,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 40126305,
+        "startByte": 382080,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 40226981,
+        "startByte": 392640,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 40328479,
+        "startByte": 402240,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 40430489,
+        "startByte": 411840,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 40531724,
+        "startByte": 421440,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 40633196,
+        "startByte": 431040,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 40734917,
+        "startByte": 441600,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 40836659,
+        "startByte": 451200,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 40938059,
+        "startByte": 460800,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 41040528,
+        "startByte": 470400,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 41142753,
+        "startByte": 480000,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 41245779,
+        "startByte": 489600,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 41351427,
+        "startByte": 500160,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 41451925,
+        "startByte": 509760,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 41553617,
+        "startByte": 519360,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 41655922,
+        "startByte": 529920,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 41757420,
+        "startByte": 539520,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 41859130,
+        "startByte": 549120,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 41960632,
+        "startByte": 558720,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 42062712,
+        "startByte": 568320,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 42166994,
+        "startByte": 577920,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 46126401,
+        "startByte": 588480,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 46229203,
+        "startByte": 599040,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 46331268,
+        "startByte": 608640,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 46433087,
+        "startByte": 618240,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 46535450,
+        "startByte": 628800,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 46639333,
+        "startByte": 638400,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 46741161,
+        "startByte": 648000,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 46842088,
+        "startByte": 657600,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 46943558,
+        "startByte": 667200,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 47046746,
+        "startByte": 676800,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 47149926,
+        "startByte": 687360,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 47251842,
+        "startByte": 696960,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 47353253,
+        "startByte": 706560,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 47454793,
+        "startByte": 717120,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 47557320,
+        "startByte": 726720,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 47658386,
+        "startByte": 736320,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 47759581,
+        "startByte": 745920,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 47862068,
+        "startByte": 755520,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 47965253,
+        "startByte": 765120,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 48066631,
+        "startByte": 775680,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 48168120,
+        "startByte": 785280,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 48271686,
+        "startByte": 794880,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 48372771,
+        "startByte": 804480,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 48475365,
+        "startByte": 815040,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 48578791,
+        "startByte": 824640,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 48681366,
+        "startByte": 834240,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 48782731,
+        "startByte": 843840,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 48885356,
+        "startByte": 853440,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 48985936,
+        "startByte": 864000,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 49087237,
+        "startByte": 873600,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 49188525,
+        "startByte": 883200,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 49293670,
+        "startByte": 892800,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 49396394,
+        "startByte": 903360,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 49498535,
+        "startByte": 912960,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 49603058,
+        "startByte": 922560,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 49704566,
+        "startByte": 933120,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 49806215,
+        "startByte": 942720,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 49908141,
+        "startByte": 952320,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 50011979,
+        "startByte": 961920,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 50112681,
+        "startByte": 971520,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 50213675,
+        "startByte": 982080,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 50314765,
+        "startByte": 991680,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 50416466,
+        "startByte": 1001280,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 50517845,
+        "startByte": 1010880,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 50621793,
+        "startByte": 1020480,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 50723485,
+        "startByte": 1030080,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 50824503,
+        "startByte": 1040640,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 50928057,
+        "startByte": 1050240,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 51034005,
+        "startByte": 1059840,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 51136322,
+        "startByte": 1069440,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 51238016,
+        "startByte": 1080000,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 51340734,
+        "startByte": 1089600,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 51442926,
+        "startByte": 1099200,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 51545070,
+        "startByte": 1108800,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 51646139,
+        "startByte": 1119360,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 51747169,
+        "startByte": 1128960,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 51848056,
+        "startByte": 1138560,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 51949518,
+        "startByte": 1148160,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 52052120,
+        "startByte": 1157760,
+        "bytes": 9600,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      },
+      {
+        "clockUs": 52153717,
+        "startByte": 1167360,
+        "bytes": 10560,
+        "sampleRate": 48000,
+        "channels": 1,
+        "droppedToDart": null
+      }
+    ],
+    "recordingSource": "record_windows WASAPI shared RAW requested; fixed endpoint",
+    "captureStoppedStats": {
+      "baselineExternalDelayEstimator": false,
+      "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+      "captureBytes": 7168320,
+      "comparisonExternalDelayMs": [
+        80,
+        80,
+        100,
+        120
+      ],
+      "comparisonNames": [
+        "candidate80",
+        "linear80",
+        "longRefined100",
+        "longRefined120"
+      ],
+      "delayMs": 80,
+      "dspErrors": 0,
+      "nativePlayoutEnabled": false,
+      "nativePlayoutFailures": 0,
+      "nativePlayoutPulls": 7473,
+      "outputBytes": 7168320,
+      "playbackHeadFrames": 3585137,
+      "queuedRenderBytes": 6539520,
+      "recordRawAudit": {
+        "activeRawCaptures": 0,
+        "lastHresult": 0,
+        "mfCreateRequests": 0,
+        "nativeCaptureFrames": 3584160,
+        "rawPropertiesAccepted": 1,
+        "rawRequests": 1,
+        "rawStarts": 1
+      },
+      "recordingAudit": {
+        "admInitRecording": 0,
+        "admStartRecording": 0,
+        "dmoInitRecording": 0,
+        "peerConnections": 6,
+        "suppressedPeerConnections": 6,
+        "wasapiCaptureService": 0,
+        "wasapiInitialize": 0,
+        "windowsInitRecording": 0,
+        "windowsStartRecording": 0
+      },
+      "renderBytes": 7174080,
+      "renderDeviceClockFrequency": 768000,
+      "renderFirstClockUs": 2077,
+      "renderLastClockUs": 74716197,
+      "renderTraceBytes": 7174080,
+      "renderTraceOverflow": false,
+      "reverseFrames": 7473,
+      "speakerBits": 32,
+      "speakerBufferFrames": 2112,
+      "speakerChannels": 2,
+      "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+      "speakerDiscardedSamples": 0,
+      "speakerError": "",
+      "speakerFloat": true,
+      "speakerLatencyMs": 20.0,
+      "speakerSampleRate": 96000,
+      "speakerSilenceBlocks": 2857,
+      "speakerWrittenBytes": 7174080
+    },
+    "sentVariant": "baseline",
+    "farPcmPeakBound": 18000,
+    "farSpeechGain": 2,
+    "fixture": "shared conversation_2speaker_14s_16k resampled48k base peak9000; farSpeechGain applied",
+    "selectedMicrophone": "\u30d8\u30c3\u30c9\u30bb\u30c3\u30c8 \u30de\u30a4\u30af (2- DualSense Wireless Controller)",
+    "comparison": "same input: baseline, external80, linear80, longRefined100/120; selected EXTERNAL_OUTPUT (default baseline) sent to WebRTC",
+    "digitalNearPeakBound": 0,
+    "mixedClippedSamples": 0,
+    "sampleRate": 48000,
+    "captureStarts": {
+      "microphone": 1,
+      "camera": 0
+    },
+    "videoSource": "synthetic fallback: Bad state: explicit synthetic fixture; physical camera unavailable",
+    "maxAudioGapMs": 20.976,
+    "maxVideoGapMs": 45.482,
+    "phases": [
+      {
+        "name": "baseline",
+        "speakerSignal": false,
+        "digitalNearEnd": false,
+        "physicalHumanNearExpected": false,
+        "seconds": 4,
+        "start": {
+          "rawByte": 0,
+          "cleanByte": 0,
+          "renderByte": 0,
+          "video": 0
+        },
+        "end": {
+          "rawByte": 383040,
+          "cleanByte": 383040,
+          "renderByte": 384000,
+          "video": 100
+        },
+        "startStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 0,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 5,
+          "outputBytes": 0,
+          "playbackHeadFrames": 485,
+          "queuedRenderBytes": 0,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 0,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 0,
+            "suppressedPeerConnections": 0,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 4800,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 36111,
+          "renderTraceBytes": 4800,
+          "renderTraceOverflow": false,
+          "reverseFrames": 5,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 5,
+          "speakerWrittenBytes": 4800
+        },
+        "endStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 383040,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 405,
+          "outputBytes": 383040,
+          "playbackHeadFrames": 192498,
+          "queuedRenderBytes": 384000,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 192000,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 0,
+            "suppressedPeerConnections": 0,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 388800,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 4036175,
+          "renderTraceBytes": 388800,
+          "renderTraceOverflow": false,
+          "reverseFrames": 405,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 405,
+          "speakerWrittenBytes": 388800
+        }
+      },
+      {
+        "name": "near-only",
+        "speakerSignal": false,
+        "digitalNearEnd": false,
+        "physicalHumanNearExpected": true,
+        "seconds": 10,
+        "start": {
+          "rawByte": 384000,
+          "cleanByte": 383040,
+          "renderByte": 384000,
+          "video": 100
+        },
+        "end": {
+          "rawByte": 1344960,
+          "cleanByte": 1344960,
+          "renderByte": 1345920,
+          "video": 350
+        },
+        "startStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 384000,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 405,
+          "outputBytes": 384000,
+          "playbackHeadFrames": 192498,
+          "queuedRenderBytes": 384000,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 192000,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 0,
+            "suppressedPeerConnections": 0,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 388800,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 4036175,
+          "renderTraceBytes": 388800,
+          "renderTraceOverflow": false,
+          "reverseFrames": 405,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 405,
+          "speakerWrittenBytes": 388800
+        },
+        "endStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 1344960,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 1407,
+          "outputBytes": 1344960,
+          "playbackHeadFrames": 673462,
+          "queuedRenderBytes": 1345920,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 672960,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 0,
+            "suppressedPeerConnections": 0,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 1350720,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 14056275,
+          "renderTraceBytes": 1350720,
+          "renderTraceOverflow": false,
+          "reverseFrames": 1407,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1407,
+          "speakerWrittenBytes": 1350720
+        }
+      },
+      {
+        "name": "far-1-warmup",
+        "speakerSignal": true,
+        "digitalNearEnd": false,
+        "physicalHumanNearExpected": false,
+        "seconds": 12,
+        "start": {
+          "rawByte": 1345920,
+          "cleanByte": 1344960,
+          "renderByte": 1345920,
+          "video": 350
+        },
+        "end": {
+          "rawByte": 2499840,
+          "cleanByte": 2499840,
+          "renderByte": 2499840,
+          "video": 651
+        },
+        "startStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 1345920,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 1407,
+          "outputBytes": 1345920,
+          "playbackHeadFrames": 673462,
+          "queuedRenderBytes": 1345920,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 672960,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 0,
+            "suppressedPeerConnections": 0,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 1350720,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 14056275,
+          "renderTraceBytes": 1350720,
+          "renderTraceOverflow": false,
+          "reverseFrames": 1407,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1407,
+          "speakerWrittenBytes": 1350720
+        },
+        "endStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 2499840,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 2609,
+          "outputBytes": 2499840,
+          "playbackHeadFrames": 1250425,
+          "queuedRenderBytes": 2499840,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 1249920,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 0,
+            "suppressedPeerConnections": 0,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 2504640,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 26076347,
+          "renderTraceBytes": 2504640,
+          "renderTraceOverflow": false,
+          "reverseFrames": 2609,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1408,
+          "speakerWrittenBytes": 2504640
+        }
+      },
+      {
+        "name": "far-1",
+        "speakerSignal": true,
+        "digitalNearEnd": false,
+        "physicalHumanNearExpected": false,
+        "seconds": 6,
+        "start": {
+          "rawByte": 2499840,
+          "cleanByte": 2499840,
+          "renderByte": 2499840,
+          "video": 651
+        },
+        "end": {
+          "rawByte": 3076800,
+          "cleanByte": 3076800,
+          "renderByte": 3076800,
+          "video": 801
+        },
+        "startStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 2499840,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 2610,
+          "outputBytes": 2499840,
+          "playbackHeadFrames": 1250891,
+          "queuedRenderBytes": 2499840,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 1249920,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 0,
+            "suppressedPeerConnections": 0,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 2505600,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 26085676,
+          "renderTraceBytes": 2505600,
+          "renderTraceOverflow": false,
+          "reverseFrames": 2610,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1408,
+          "speakerWrittenBytes": 2505600
+        },
+        "endStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 3076800,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 3210,
+          "outputBytes": 3076800,
+          "playbackHeadFrames": 1538891,
+          "queuedRenderBytes": 3076800,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 1538400,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 0,
+            "suppressedPeerConnections": 0,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 3081600,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 32085736,
+          "renderTraceBytes": 3081600,
+          "renderTraceOverflow": false,
+          "reverseFrames": 3210,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1408,
+          "speakerWrittenBytes": 3081600
+        }
+      },
+      {
+        "name": "doubletalk",
+        "speakerSignal": true,
+        "digitalNearEnd": false,
+        "physicalHumanNearExpected": true,
+        "seconds": 16,
+        "start": {
+          "rawByte": 3076800,
+          "cleanByte": 3076800,
+          "renderByte": 3076800,
+          "video": 801
+        },
+        "end": {
+          "rawByte": 4615680,
+          "cleanByte": 4615680,
+          "renderByte": 4616640,
+          "video": 1202
+        },
+        "startStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 3076800,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 3210,
+          "outputBytes": 3076800,
+          "playbackHeadFrames": 1538891,
+          "queuedRenderBytes": 3076800,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 1538400,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 0,
+            "suppressedPeerConnections": 0,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 3081600,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 32085736,
+          "renderTraceBytes": 3081600,
+          "renderTraceOverflow": false,
+          "reverseFrames": 3210,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1408,
+          "speakerWrittenBytes": 3081600
+        },
+        "endStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 4615680,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 4814,
+          "outputBytes": 4615680,
+          "playbackHeadFrames": 2308816,
+          "queuedRenderBytes": 4616640,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 2307840,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 4,
+            "suppressedPeerConnections": 4,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 4621440,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 48125779,
+          "renderTraceBytes": 4621440,
+          "renderTraceOverflow": false,
+          "reverseFrames": 4814,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1408,
+          "speakerWrittenBytes": 4621440
+        }
+      },
+      {
+        "name": "quiet-between",
+        "speakerSignal": false,
+        "digitalNearEnd": false,
+        "physicalHumanNearExpected": false,
+        "seconds": 3,
+        "start": {
+          "rawByte": 4615680,
+          "cleanByte": 4615680,
+          "renderByte": 4616640,
+          "video": 1202
+        },
+        "end": {
+          "rawByte": 4904640,
+          "cleanByte": 4904640,
+          "renderByte": 4905600,
+          "video": 1277
+        },
+        "startStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 4615680,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 4814,
+          "outputBytes": 4615680,
+          "playbackHeadFrames": 2308816,
+          "queuedRenderBytes": 4616640,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 2308320,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 4,
+            "suppressedPeerConnections": 4,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 4621440,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 48125779,
+          "renderTraceBytes": 4621440,
+          "renderTraceOverflow": false,
+          "reverseFrames": 4814,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1408,
+          "speakerWrittenBytes": 4621440
+        },
+        "endStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 4904640,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 5115,
+          "outputBytes": 4904640,
+          "playbackHeadFrames": 2453294,
+          "queuedRenderBytes": 4904640,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 2452320,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 4,
+            "suppressedPeerConnections": 4,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 4910400,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 51136133,
+          "renderTraceBytes": 4910400,
+          "renderTraceOverflow": false,
+          "reverseFrames": 5115,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1708,
+          "speakerWrittenBytes": 4910400
+        }
+      },
+      {
+        "name": "far-2",
+        "speakerSignal": true,
+        "digitalNearEnd": false,
+        "physicalHumanNearExpected": false,
+        "seconds": 6,
+        "start": {
+          "rawByte": 4904640,
+          "cleanByte": 4904640,
+          "renderByte": 4905600,
+          "video": 1277
+        },
+        "end": {
+          "rawByte": 5481600,
+          "cleanByte": 5481600,
+          "renderByte": 5481600,
+          "video": 1427
+        },
+        "startStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 4904640,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 5115,
+          "outputBytes": 4904640,
+          "playbackHeadFrames": 2453294,
+          "queuedRenderBytes": 4905600,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 2452320,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 4,
+            "suppressedPeerConnections": 4,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 4910400,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 51136133,
+          "renderTraceBytes": 4910400,
+          "renderTraceOverflow": false,
+          "reverseFrames": 5115,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1708,
+          "speakerWrittenBytes": 4910400
+        },
+        "endStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 5481600,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 5715,
+          "outputBytes": 5481600,
+          "playbackHeadFrames": 2741293,
+          "queuedRenderBytes": 5481600,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 2740800,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 4,
+            "suppressedPeerConnections": 4,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 5486400,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 57136109,
+          "renderTraceBytes": 5486400,
+          "renderTraceOverflow": false,
+          "reverseFrames": 5715,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1709,
+          "speakerWrittenBytes": 5486400
+        }
+      },
+      {
+        "name": "near-recovery",
+        "speakerSignal": false,
+        "digitalNearEnd": false,
+        "physicalHumanNearExpected": true,
+        "seconds": 8,
+        "start": {
+          "rawByte": 5481600,
+          "cleanByte": 5481600,
+          "renderByte": 5481600,
+          "video": 1427
+        },
+        "end": {
+          "rawByte": 6250560,
+          "cleanByte": 6250560,
+          "renderByte": 6251520,
+          "video": 1628
+        },
+        "startStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 5481600,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 5715,
+          "outputBytes": 5481600,
+          "playbackHeadFrames": 2741293,
+          "queuedRenderBytes": 5481600,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 2740800,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 4,
+            "suppressedPeerConnections": 4,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 5486400,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 57136109,
+          "renderTraceBytes": 5486400,
+          "renderTraceOverflow": false,
+          "reverseFrames": 5715,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1709,
+          "speakerWrittenBytes": 5486400
+        },
+        "endStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 6250560,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 6517,
+          "outputBytes": 6250560,
+          "playbackHeadFrames": 3126253,
+          "queuedRenderBytes": 6251520,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 3125280,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 4,
+            "suppressedPeerConnections": 4,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 6256320,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 65156108,
+          "renderTraceBytes": 6256320,
+          "renderTraceOverflow": false,
+          "reverseFrames": 6517,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 2510,
+          "speakerWrittenBytes": 6256320
+        }
+      },
+      {
+        "name": "quiet-after",
+        "speakerSignal": false,
+        "digitalNearEnd": false,
+        "physicalHumanNearExpected": false,
+        "seconds": 3,
+        "start": {
+          "rawByte": 6250560,
+          "cleanByte": 6250560,
+          "renderByte": 6251520,
+          "video": 1628
+        },
+        "end": {
+          "rawByte": 6539520,
+          "cleanByte": 6539520,
+          "renderByte": 6539520,
+          "video": 1703
+        },
+        "startStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 6250560,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 6517,
+          "outputBytes": 6250560,
+          "playbackHeadFrames": 3126253,
+          "queuedRenderBytes": 6251520,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 3125280,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 4,
+            "suppressedPeerConnections": 4,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 6256320,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 65156108,
+          "renderTraceBytes": 6256320,
+          "renderTraceOverflow": false,
+          "reverseFrames": 6517,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 2510,
+          "speakerWrittenBytes": 6256320
+        },
+        "endStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 6539520,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 6818,
+          "outputBytes": 6539520,
+          "playbackHeadFrames": 3270771,
+          "queuedRenderBytes": 6539520,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 3269760,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 4,
+            "suppressedPeerConnections": 4,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 6545280,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 68166471,
+          "renderTraceBytes": 6545280,
+          "renderTraceOverflow": false,
+          "reverseFrames": 6818,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 2811,
+          "speakerWrittenBytes": 6545280
+        }
+      },
+      {
+        "name": "rtc-far-playback",
+        "speakerSignal": true,
+        "digitalNearEnd": false,
+        "seconds": 6,
+        "start": {
+          "rawByte": 6539520,
+          "cleanByte": 6539520,
+          "renderByte": 6539520,
+          "video": 1703
+        },
+        "end": {
+          "rawByte": 7168320,
+          "cleanByte": 7168320,
+          "renderByte": 6539520,
+          "video": 1866
+        },
+        "startStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 6539520,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 6818,
+          "outputBytes": 6539520,
+          "playbackHeadFrames": 3270771,
+          "queuedRenderBytes": 6539520,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 3269760,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 4,
+            "suppressedPeerConnections": 4,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 6545280,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 68166471,
+          "renderTraceBytes": 6545280,
+          "renderTraceOverflow": false,
+          "reverseFrames": 6818,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 2811,
+          "speakerWrittenBytes": 6545280
+        },
+        "endStats": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 7168320,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 7472,
+          "outputBytes": 7168320,
+          "playbackHeadFrames": 3584653,
+          "queuedRenderBytes": 6539520,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 3584160,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 6,
+            "suppressedPeerConnections": 6,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 7173120,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 74705727,
+          "renderTraceBytes": 7173120,
+          "renderTraceOverflow": false,
+          "reverseFrames": 7472,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 2856,
+          "speakerWrittenBytes": 7173120
+        },
+        "receivedFar": {
+          "source": "auxiliary custom far source -> Opus/RTP -> native receiver mixer -> WASAPI -> AEC reverse",
+          "injectedBytes": 575040,
+          "audioPacketsReceived": 302.0,
+          "audioSamplesReceived": 296640.0,
+          "beforeStats": [],
+          "afterStats": [
+            {
+              "id": "IT01A2518718336",
+              "audioLevel": 0.022461622974333934,
+              "bytesReceived": 23695,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 8817,
+              "concealmentEvents": 1,
+              "delayedPacketOutageSamples": 1920,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 8594,
+              "insertedSamplesForDeceleration": 1150,
+              "interruptionCount": 0,
+              "jitter": 0.001,
+              "jitterBufferDelay": 8198.4,
+              "jitterBufferEmittedCount": 287040,
+              "jitterBufferFlushes": 1,
+              "jitterBufferMinimumDelay": 7353.6,
+              "jitterBufferTargetDelay": 7353.6,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792366171738.0,
+              "mid": "0",
+              "packetsDiscarded": 0,
+              "packetsLost": 0,
+              "packetsReceived": 302,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 0.0,
+              "remoteId": "ROA2518718336",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 0,
+              "ssrc": 2518718336,
+              "totalAudioEnergy": 0.41970819718828806,
+              "totalInterruptionDuration": 0.0,
+              "totalProcessingDelay": 7915.2,
+              "totalSamplesDuration": 6.30999999999991,
+              "totalSamplesReceived": 296640,
+              "trackIdentifier": "external-4409147622100-2-audio",
+              "transportId": "T01"
+            }
+          ],
+          "deviceBefore": {
+            "baselineExternalDelayEstimator": false,
+            "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+            "captureBytes": 6572160,
+            "comparisonExternalDelayMs": [
+              80,
+              80,
+              100,
+              120
+            ],
+            "comparisonNames": [
+              "candidate80",
+              "linear80",
+              "longRefined100",
+              "longRefined120"
+            ],
+            "delayMs": 80,
+            "dspErrors": 0,
+            "nativePlayoutEnabled": true,
+            "nativePlayoutFailures": 0,
+            "nativePlayoutPulls": 6852,
+            "outputBytes": 6572160,
+            "playbackHeadFrames": 3287044,
+            "queuedRenderBytes": 6539520,
+            "recordRawAudit": {
+              "activeRawCaptures": 1,
+              "lastHresult": 0,
+              "mfCreateRequests": 0,
+              "nativeCaptureFrames": 3286080,
+              "rawPropertiesAccepted": 1,
+              "rawRequests": 1,
+              "rawStarts": 1
+            },
+            "recordingAudit": {
+              "admInitRecording": 0,
+              "admStartRecording": 0,
+              "dmoInitRecording": 0,
+              "peerConnections": 6,
+              "suppressedPeerConnections": 6,
+              "wasapiCaptureService": 0,
+              "wasapiInitialize": 0,
+              "windowsInitRecording": 0,
+              "windowsStartRecording": 0
+            },
+            "renderBytes": 6577920,
+            "renderDeviceClockFrequency": 768000,
+            "renderFirstClockUs": 2077,
+            "renderLastClockUs": 68505497,
+            "renderTraceBytes": 6577920,
+            "renderTraceOverflow": false,
+            "reverseFrames": 6852,
+            "speakerBits": 32,
+            "speakerBufferFrames": 2112,
+            "speakerChannels": 2,
+            "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+            "speakerDiscardedSamples": 0,
+            "speakerError": "",
+            "speakerFloat": true,
+            "speakerLatencyMs": 20.0,
+            "speakerSampleRate": 96000,
+            "speakerSilenceBlocks": 2845,
+            "speakerWrittenBytes": 6577920
+          },
+          "deviceAfter": {
+            "baselineExternalDelayEstimator": false,
+            "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+            "captureBytes": 7167360,
+            "comparisonExternalDelayMs": [
+              80,
+              80,
+              100,
+              120
+            ],
+            "comparisonNames": [
+              "candidate80",
+              "linear80",
+              "longRefined100",
+              "longRefined120"
+            ],
+            "delayMs": 80,
+            "dspErrors": 0,
+            "nativePlayoutEnabled": true,
+            "nativePlayoutFailures": 0,
+            "nativePlayoutPulls": 7472,
+            "outputBytes": 7167360,
+            "playbackHeadFrames": 3584653,
+            "queuedRenderBytes": 6539520,
+            "recordRawAudit": {
+              "activeRawCaptures": 1,
+              "lastHresult": 0,
+              "mfCreateRequests": 0,
+              "nativeCaptureFrames": 3583680,
+              "rawPropertiesAccepted": 1,
+              "rawRequests": 1,
+              "rawStarts": 1
+            },
+            "recordingAudit": {
+              "admInitRecording": 0,
+              "admStartRecording": 0,
+              "dmoInitRecording": 0,
+              "peerConnections": 6,
+              "suppressedPeerConnections": 6,
+              "wasapiCaptureService": 0,
+              "wasapiInitialize": 0,
+              "windowsInitRecording": 0,
+              "windowsStartRecording": 0
+            },
+            "renderBytes": 7173120,
+            "renderDeviceClockFrequency": 768000,
+            "renderFirstClockUs": 2077,
+            "renderLastClockUs": 74705727,
+            "renderTraceBytes": 7173120,
+            "renderTraceOverflow": false,
+            "reverseFrames": 7472,
+            "speakerBits": 32,
+            "speakerBufferFrames": 2112,
+            "speakerChannels": 2,
+            "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+            "speakerDiscardedSamples": 0,
+            "speakerError": "",
+            "speakerFloat": true,
+            "speakerLatencyMs": 20.0,
+            "speakerSampleRate": 96000,
+            "speakerSilenceBlocks": 2856,
+            "speakerWrittenBytes": 7173120
+          },
+          "errors": [],
+          "pass": true
+        }
+      }
+    ],
+    "transportPhases": [
+      {
+        "name": "idle-before",
+        "seconds": 3,
+        "deviceBefore": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 3076800,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 3210,
+          "outputBytes": 3076800,
+          "playbackHeadFrames": 1538891,
+          "queuedRenderBytes": 3076800,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 1538400,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 0,
+            "suppressedPeerConnections": 0,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 3081600,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 32085736,
+          "renderTraceBytes": 3081600,
+          "renderTraceOverflow": false,
+          "reverseFrames": 3210,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1408,
+          "speakerWrittenBytes": 3081600
+        },
+        "deviceAfter": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 3364800,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 3511,
+          "outputBytes": 3364800,
+          "playbackHeadFrames": 1683421,
+          "queuedRenderBytes": 3364800,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 1682400,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 0,
+            "suppressedPeerConnections": 0,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 3370560,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 35097100,
+          "renderTraceBytes": 3370560,
+          "renderTraceOverflow": false,
+          "reverseFrames": 3511,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1408,
+          "speakerWrittenBytes": 3370560
+        },
+        "sourceRawAudioBytes": 288000,
+        "sourceCleanAudioBytes": 288000,
+        "sourceVideoFrames": 75,
+        "injectedCleanAudioBytes": 0,
+        "injectedVideoFrames": 0,
+        "droppedCleanAudioBytes": 0,
+        "droppedVideoFrames": 0,
+        "pass": true
+      },
+      {
+        "name": "send-1",
+        "minimumSeconds": 6,
+        "deviceBefore": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 3446400,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 3596,
+          "outputBytes": 3446400,
+          "playbackHeadFrames": 1724177,
+          "queuedRenderBytes": 3447360,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 1723200,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 2,
+            "suppressedPeerConnections": 2,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 3452160,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 35945826,
+          "renderTraceBytes": 3452160,
+          "renderTraceOverflow": false,
+          "reverseFrames": 3596,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1408,
+          "speakerWrittenBytes": 3452160
+        },
+        "deviceAfter": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 4035840,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 4210,
+          "outputBytes": 4035840,
+          "playbackHeadFrames": 2018893,
+          "queuedRenderBytes": 4036800,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 2017920,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 2,
+            "suppressedPeerConnections": 2,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 4041600,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 42085688,
+          "renderTraceBytes": 4041600,
+          "renderTraceOverflow": false,
+          "reverseFrames": 4210,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1408,
+          "speakerWrittenBytes": 4041600
+        },
+        "sourceRawAudioBytes": 589440,
+        "sourceCleanAudioBytes": 589440,
+        "sourceVideoFrames": 154,
+        "injectedCleanAudioBytes": 588480,
+        "injectedVideoFrames": 154,
+        "droppedCleanAudioBytes": 0,
+        "droppedVideoFrames": 0,
+        "receiver": {
+          "pcmSamples": 294240,
+          "pcmStartByte": 0,
+          "pcmEndByte": 588480,
+          "videoFrames": 153,
+          "rms": 0.02169523999714893
+        },
+        "inboundBefore": [],
+        "inboundAfter": [
+          {
+            "id": "IT01A2965444644",
+            "audioLevel": 0.13122959074678792,
+            "bytesReceived": 24124,
+            "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+            "concealedSamples": 0,
+            "concealmentEvents": 0,
+            "delayedPacketOutageSamples": 1920,
+            "fecPacketsDiscarded": 0,
+            "fecPacketsReceived": 0,
+            "headerBytesReceived": 8568,
+            "insertedSamplesForDeceleration": 2929,
+            "interruptionCount": 0,
+            "jitter": 0.001,
+            "jitterBufferDelay": 9340.8,
+            "jitterBufferEmittedCount": 293760,
+            "jitterBufferFlushes": 1,
+            "jitterBufferMinimumDelay": 7315.2,
+            "jitterBufferTargetDelay": 7315.2,
+            "kind": "audio",
+            "lastPacketReceivedTimestamp": 1792366139316.0,
+            "mid": "0",
+            "packetsDiscarded": 0,
+            "packetsLost": 0,
+            "packetsReceived": 306,
+            "packetsReceivedWithCe": 0,
+            "packetsReceivedWithEct1": 0,
+            "relativePacketArrivalDelay": 0.26,
+            "remoteId": "ROA2965444644",
+            "removedSamplesForAcceleration": 2238,
+            "silentConcealedSamples": 0,
+            "ssrc": 2965444644,
+            "totalAudioEnergy": 0.03427926737981648,
+            "totalInterruptionDuration": 0.0,
+            "totalProcessingDelay": 7163.52,
+            "totalSamplesDuration": 6.7599999999999,
+            "totalSamplesReceived": 293760,
+            "trackIdentifier": "external-4340948239900-1-audio",
+            "transportId": "T01"
+          },
+          {
+            "id": "IT01V2004519113",
+            "bytesReceived": 31223,
+            "codecId": "CIT01_96",
+            "decoderImplementation": "libvpx",
+            "firCount": 0,
+            "frameHeight": 240,
+            "frameWidth": 320,
+            "framesAssembledFromMultiplePackets": 0,
+            "framesDecoded": 153,
+            "framesDropped": 0,
+            "framesPerSecond": 25.0,
+            "framesReceived": 154,
+            "freezeCount": 0,
+            "googTimingFrameInfo": "3295077478,-2,-2,-1,-1,-1,-2,-2,4382189,4382189,4382201,4382201,4382210,0,1",
+            "headerBytesReceived": 7156,
+            "jitter": 0.0,
+            "jitterBufferDelay": 1.7349999999999999,
+            "jitterBufferEmittedCount": 153,
+            "jitterBufferMinimumDelay": 1.732708,
+            "jitterBufferTargetDelay": 1.732708,
+            "keyFramesDecoded": 1,
+            "kind": "video",
+            "lastPacketReceivedTimestamp": 1792366139331.0,
+            "mid": "1",
+            "minPlayoutDelay": 0.0,
+            "nackCount": 0,
+            "packetsLost": 0,
+            "packetsReceived": 179,
+            "packetsReceivedWithCe": 0,
+            "packetsReceivedWithEct1": 0,
+            "pauseCount": 0,
+            "pliCount": 0,
+            "powerEfficientDecoder": false,
+            "qpSum": 1023,
+            "remoteId": "ROV2004519113",
+            "retransmittedBytesReceived": 3200,
+            "retransmittedPacketsReceived": 24,
+            "rtxSsrc": 1286670563,
+            "ssrc": 2004519113,
+            "totalAssemblyTime": 0.0,
+            "totalDecodeTime": 0.0,
+            "totalFreezesDuration": 0.0,
+            "totalInterFrameDelay": 6.09,
+            "totalPausesDuration": 0.0,
+            "totalProcessingDelay": 1.7349999999999999,
+            "totalSquaredInterFrameDelay": 0.24512999999999943,
+            "trackIdentifier": "external-4340948239900-1-video",
+            "transportId": "T01"
+          }
+        ],
+        "inboundDelta": {
+          "audioPacketsReceived": 306.0,
+          "audioSamplesReceived": 293760.0,
+          "videoFramesDecoded": 153.0
+        },
+        "pass": true
+      },
+      {
+        "name": "idle-after-1",
+        "seconds": 3,
+        "deviceBefore": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 4036800,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 4210,
+          "outputBytes": 4036800,
+          "playbackHeadFrames": 2018893,
+          "queuedRenderBytes": 4036800,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 2018400,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 2,
+            "suppressedPeerConnections": 2,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 4041600,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 42085688,
+          "renderTraceBytes": 4041600,
+          "renderTraceOverflow": false,
+          "reverseFrames": 4210,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1408,
+          "speakerWrittenBytes": 4041600
+        },
+        "deviceAfter": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 4324800,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 4511,
+          "outputBytes": 4324800,
+          "playbackHeadFrames": 2163373,
+          "queuedRenderBytes": 4324800,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 2162400,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 2,
+            "suppressedPeerConnections": 2,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 4330560,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 45096100,
+          "renderTraceBytes": 4330560,
+          "renderTraceOverflow": false,
+          "reverseFrames": 4511,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1408,
+          "speakerWrittenBytes": 4330560
+        },
+        "sourceRawAudioBytes": 288000,
+        "sourceCleanAudioBytes": 288000,
+        "sourceVideoFrames": 75,
+        "injectedCleanAudioBytes": 0,
+        "injectedVideoFrames": 0,
+        "droppedCleanAudioBytes": 0,
+        "droppedVideoFrames": 0,
+        "pass": true
+      },
+      {
+        "name": "send-2",
+        "minimumSeconds": 6,
+        "deviceBefore": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 4405440,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 4594,
+          "outputBytes": 4405440,
+          "playbackHeadFrames": 2203217,
+          "queuedRenderBytes": 4405440,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 2202720,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 4,
+            "suppressedPeerConnections": 4,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 4410240,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 45925817,
+          "renderTraceBytes": 4410240,
+          "renderTraceOverflow": false,
+          "reverseFrames": 4594,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1408,
+          "speakerWrittenBytes": 4410240
+        },
+        "deviceAfter": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 4993920,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 5208,
+          "outputBytes": 4993920,
+          "playbackHeadFrames": 2497936,
+          "queuedRenderBytes": 4994880,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 2496960,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 4,
+            "suppressedPeerConnections": 4,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 4999680,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 52065808,
+          "renderTraceBytes": 4999680,
+          "renderTraceOverflow": false,
+          "reverseFrames": 5208,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1709,
+          "speakerWrittenBytes": 4999680
+        },
+        "sourceRawAudioBytes": 588480,
+        "sourceCleanAudioBytes": 588480,
+        "sourceVideoFrames": 153,
+        "injectedCleanAudioBytes": 588480,
+        "injectedVideoFrames": 153,
+        "droppedCleanAudioBytes": 0,
+        "droppedVideoFrames": 0,
+        "receiver": {
+          "pcmSamples": 294720,
+          "pcmStartByte": 588480,
+          "pcmEndByte": 1177920,
+          "videoFrames": 153,
+          "rms": 0.008566779458918584
+        },
+        "inboundBefore": [],
+        "inboundAfter": [
+          {
+            "id": "IT01A1876836901",
+            "audioLevel": 0.008026367992187262,
+            "bytesReceived": 21411,
+            "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+            "concealedSamples": 0,
+            "concealmentEvents": 0,
+            "delayedPacketOutageSamples": 1920,
+            "estimatedPlayoutTimestamp": 4001354949296.0,
+            "fecPacketsDiscarded": 0,
+            "fecPacketsReceived": 0,
+            "headerBytesReceived": 8568,
+            "insertedSamplesForDeceleration": 3748,
+            "interruptionCount": 0,
+            "jitter": 0.001,
+            "jitterBufferDelay": 9273.6,
+            "jitterBufferEmittedCount": 292800,
+            "jitterBufferFlushes": 1,
+            "jitterBufferMinimumDelay": 7296.0,
+            "jitterBufferTargetDelay": 7296.0,
+            "kind": "audio",
+            "lastPacketReceivedTimestamp": 1792366149304.0,
+            "mid": "0",
+            "packetsDiscarded": 0,
+            "packetsLost": 0,
+            "packetsReceived": 306,
+            "packetsReceivedWithCe": 0,
+            "packetsReceivedWithEct1": 0,
+            "relativePacketArrivalDelay": 0.1,
+            "remoteId": "ROA1876836901",
+            "removedSamplesForAcceleration": 2674,
+            "silentConcealedSamples": 0,
+            "ssrc": 1876836901,
+            "totalAudioEnergy": 0.028647511000403594,
+            "totalInterruptionDuration": 0.0,
+            "totalProcessingDelay": 7115.52,
+            "totalSamplesDuration": 6.7499999999999005,
+            "totalSamplesReceived": 293760,
+            "trackIdentifier": "external-4340948239900-1-audio",
+            "transportId": "T01"
+          },
+          {
+            "id": "IT01V3082997079",
+            "bytesReceived": 32674,
+            "codecId": "CIT01_96",
+            "decoderImplementation": "libvpx",
+            "estimatedPlayoutTimestamp": 4001354949294.0,
+            "firCount": 0,
+            "frameHeight": 240,
+            "frameWidth": 320,
+            "framesAssembledFromMultiplePackets": 0,
+            "framesDecoded": 153,
+            "framesDropped": 0,
+            "framesPerSecond": 25.0,
+            "framesReceived": 153,
+            "freezeCount": 0,
+            "googTimingFrameInfo": "3363883717,-2,-2,-1,-1,-1,-2,-2,4392108,4392108,4392121,4392121,4392130,0,1",
+            "headerBytesReceived": 6658,
+            "jitter": 0.0,
+            "jitterBufferDelay": 1.825,
+            "jitterBufferEmittedCount": 153,
+            "jitterBufferMinimumDelay": 1.7610899999999998,
+            "jitterBufferTargetDelay": 1.7610899999999998,
+            "keyFramesDecoded": 1,
+            "kind": "video",
+            "lastPacketReceivedTimestamp": 1792366149291.0,
+            "mid": "1",
+            "minPlayoutDelay": 0.0,
+            "nackCount": 0,
+            "packetsLost": 0,
+            "packetsReceived": 178,
+            "packetsReceivedWithCe": 0,
+            "packetsReceivedWithEct1": 0,
+            "pauseCount": 0,
+            "pliCount": 0,
+            "powerEfficientDecoder": false,
+            "qpSum": 1023,
+            "remoteId": "ROV3082997079",
+            "retransmittedBytesReceived": 4042,
+            "retransmittedPacketsReceived": 24,
+            "rtxSsrc": 1563152751,
+            "ssrc": 3082997079,
+            "totalAssemblyTime": 0.0,
+            "totalDecodeTime": 0.002,
+            "totalFreezesDuration": 0.0,
+            "totalInterFrameDelay": 6.086,
+            "totalPausesDuration": 0.0,
+            "totalProcessingDelay": 1.8279999999999998,
+            "totalSquaredInterFrameDelay": 0.24416999999999942,
+            "trackIdentifier": "external-4340948239900-1-video",
+            "transportId": "T01"
+          }
+        ],
+        "inboundDelta": {
+          "audioPacketsReceived": 306.0,
+          "audioSamplesReceived": 293760.0,
+          "videoFramesDecoded": 153.0
+        },
+        "pass": true
+      },
+      {
+        "name": "idle-after-2",
+        "seconds": 3,
+        "deviceBefore": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 4994880,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 5209,
+          "outputBytes": 4994880,
+          "playbackHeadFrames": 2498415,
+          "queuedRenderBytes": 4994880,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 2497440,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 4,
+            "suppressedPeerConnections": 4,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 5000640,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 52076147,
+          "renderTraceBytes": 5000640,
+          "renderTraceOverflow": false,
+          "reverseFrames": 5209,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1709,
+          "speakerWrittenBytes": 5000640
+        },
+        "deviceAfter": {
+          "baselineExternalDelayEstimator": false,
+          "captureBackend": "record_windows WASAPI shared RAW requested; AEC render only",
+          "captureBytes": 5282880,
+          "comparisonExternalDelayMs": [
+            80,
+            80,
+            100,
+            120
+          ],
+          "comparisonNames": [
+            "candidate80",
+            "linear80",
+            "longRefined100",
+            "longRefined120"
+          ],
+          "delayMs": 80,
+          "dspErrors": 0,
+          "nativePlayoutEnabled": false,
+          "nativePlayoutFailures": 0,
+          "nativePlayoutPulls": 5509,
+          "outputBytes": 5282880,
+          "playbackHeadFrames": 2642432,
+          "queuedRenderBytes": 5282880,
+          "recordRawAudit": {
+            "activeRawCaptures": 1,
+            "lastHresult": 0,
+            "mfCreateRequests": 0,
+            "nativeCaptureFrames": 2641440,
+            "rawPropertiesAccepted": 1,
+            "rawRequests": 1,
+            "rawStarts": 1
+          },
+          "recordingAudit": {
+            "admInitRecording": 0,
+            "admStartRecording": 0,
+            "dmoInitRecording": 0,
+            "peerConnections": 4,
+            "suppressedPeerConnections": 4,
+            "wasapiCaptureService": 0,
+            "wasapiInitialize": 0,
+            "windowsInitRecording": 0,
+            "windowsStartRecording": 0
+          },
+          "renderBytes": 5288640,
+          "renderDeviceClockFrequency": 768000,
+          "renderFirstClockUs": 2077,
+          "renderLastClockUs": 55076510,
+          "renderTraceBytes": 5288640,
+          "renderTraceOverflow": false,
+          "reverseFrames": 5509,
+          "speakerBits": 32,
+          "speakerBufferFrames": 2112,
+          "speakerChannels": 2,
+          "speakerDevice": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+          "speakerDiscardedSamples": 0,
+          "speakerError": "",
+          "speakerFloat": true,
+          "speakerLatencyMs": 20.0,
+          "speakerSampleRate": 96000,
+          "speakerSilenceBlocks": 1709,
+          "speakerWrittenBytes": 5288640
+        },
+        "sourceRawAudioBytes": 288000,
+        "sourceCleanAudioBytes": 288000,
+        "sourceVideoFrames": 75,
+        "injectedCleanAudioBytes": 0,
+        "injectedVideoFrames": 0,
+        "droppedCleanAudioBytes": 0,
+        "droppedVideoFrames": 0,
+        "pass": true
+      }
+    ],
+    "transport": {
+      "input": "standalone AEC cleaned PCM and the same camera BGRA frames",
+      "totals": {
+        "sourceRawAudioBytes": 7168320,
+        "sourceCleanAudioBytes": 7168320,
+        "sourceVideoFrames": 1866,
+        "injectedCleanAudioBytes": 1176960,
+        "injectedVideoFrames": 307,
+        "droppedCleanAudioBytes": 0,
+        "droppedVideoFrames": 0
+      },
+      "rawRecordingContainsTransportTail": true,
+      "nearEndDuringTransport": "physical participant voice; no synthetic near signal",
+      "receiverPlayback": "manual SDK mixer pull; discarded during transport gate, explicitly routed to WASAPI in received-far phase",
+      "acousticAnalysisExcludesTransport": true,
+      "pass": true
+    },
+    "errors": []
+  }
+}

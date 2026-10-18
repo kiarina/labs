@@ -1,0 +1,35 @@
+{
+  "kind": "physical-human-practicality-assessment",
+  "checks": {
+    "singleRecord": true,
+    "noSyntheticNear": true,
+    "sdkNoExtraRecording": true,
+    "rawOwnershipAndShutdown": true,
+    "senderGates": true,
+    "receivedFarPlayback": true,
+    "noAbortOrErrors": true,
+    "noNativeErrors": true,
+    "noClipping": true,
+    "captureGapWithin100ms": true,
+    "noReceiverTapDrops": true,
+    "farOnlyCriterion": true,
+    "participantReceiverClarity": true,
+    "participantNoMissingWords": true,
+    "participantEchoTolerable": true,
+    "participantNearRecovery": true
+  },
+  "limitedPracticalAcceptance": true,
+  "scope": "One physical near participant at the normal microphone position, controller microphone + stereo speaker, RAW record, baseline standalone AEC, local WebRTC receiver, recorded far fixture. Camera remains synthetic. Short prompted reading only.",
+  "dtEchoMetric": "Inconclusive for source separation; real-near clean reference absent. DT spectral diagnostics do not establish near preservation.",
+  "notEstablished": [
+    "second live conversation partner",
+    "independent second listener",
+    "other microphones",
+    "physical Windows camera",
+    "Bluetooth",
+    "long sessions",
+    "other operating systems"
+  ],
+  "metrics": "human-trial-1.json",
+  "listening": "human-listening-1.json"
+}

@@ -1,0 +1,90 @@
+{
+  "kind": "physical-human-decoded-delivery",
+  "gates": [
+    {
+      "inboundStatsDelta": {
+        "packetsLost": 0.0,
+        "concealedSamples": 0.0,
+        "concealmentEvents": 0.0,
+        "insertedSamplesForDeceleration": 2929.0,
+        "removedSamplesForAcceleration": 2238.0
+      },
+      "bandLimitedOneSecondDiagnostics": [
+        {
+          "startSeconds": 0.0,
+          "localDelayDifferenceSamples": -549,
+          "bandCorrelation": 0.6415410152049656,
+          "rmsRatioDb": -0.4545939077234651
+        },
+        {
+          "startSeconds": 1.0,
+          "localDelayDifferenceSamples": -3,
+          "bandCorrelation": 0.9719550457263045,
+          "rmsRatioDb": -0.21142731128942074
+        },
+        {
+          "startSeconds": 2.0,
+          "localDelayDifferenceSamples": -4,
+          "bandCorrelation": 0.9662246369532771,
+          "rmsRatioDb": -0.1751018960608071
+        },
+        {
+          "startSeconds": 3.0,
+          "localDelayDifferenceSamples": -2,
+          "bandCorrelation": 0.9772896459121185,
+          "rmsRatioDb": -0.4249931911169269
+        },
+        {
+          "startSeconds": 4.0,
+          "localDelayDifferenceSamples": -2,
+          "bandCorrelation": 0.9822360910808099,
+          "rmsRatioDb": -0.36436245053873595
+        }
+      ],
+      "wholeWindowRmsRatioDb": -0.3736027381050502,
+      "gate": "send-1",
+      "sourceAlignmentSample": 1735613,
+      "receiverTrimSamples": 14400,
+      "comparedSamples": 275040,
+      "correlation": 0.7549011633478949,
+      "signedTransferGain": 0.7231193079335391,
+      "transferGainDb": -2.8158008451890244,
+      "active20msWindows": 279,
+      "receiverEnergyLossOver20dBWindows": 0,
+      "longestConsecutiveActiveWindowLossMs": 0,
+      "meaning": "Opus/transport transfer relative to AEC output; does not establish AEC near preservation."
+    },
+    {
+      "inboundStatsDelta": {
+        "packetsLost": 0.0,
+        "concealedSamples": 0.0,
+        "concealmentEvents": 0.0,
+        "insertedSamplesForDeceleration": 3748.0,
+        "removedSamplesForAcceleration": 2674.0
+      },
+      "bandLimitedOneSecondDiagnostics": [
+        {
+          "startSeconds": 0.0,
+          "localDelayDifferenceSamples": -175,
+          "bandCorrelation": 0.7948203551039359,
+          "rmsRatioDb": -0.6203414776848384
+        }
+      ],
+      "wholeWindowRmsRatioDb": -0.8685947828374739,
+      "gate": "send-2",
+      "sourceAlignmentSample": 2214745,
+      "receiverTrimSamples": 14400,
+      "comparedSamples": 275520,
+      "correlation": 0.45015555058152334,
+      "signedTransferGain": 0.40731731322420467,
+      "transferGainDb": -7.801342592390846,
+      "active20msWindows": 207,
+      "receiverEnergyLossOver20dBWindows": 0,
+      "longestConsecutiveActiveWindowLossMs": 0,
+      "meaning": "Opus/transport transfer relative to AEC output; does not establish AEC near preservation."
+    }
+  ],
+  "simpleWaveformMatchPass": false,
+  "useForPracticalAcceptance": false,
+  "limitation": "Receiver RTP stats record inserted/removed samples for adaptive time scaling, so fixed global sample alignment is inappropriate. This explains why waveform identity is not an acceptance criterion, without claiming all residual distortion is explained. Exploratory global waveform correlation/projection gain are sensitive to codec phase and adaptive jitter delay; projection gain is not volume attenuation. Band-limited blocks search +/-40ms diagnostically, not as a new acceptance threshold. Full-timeline waveform match can match repeated phrases; it is delivery consistency evidence, not absolute clock/word-boundary accuracy."
+}
