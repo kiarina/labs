@@ -1,0 +1,101 @@
+{
+  "kind": "digital-rebuild-parity",
+  "sourceRevision": "2cec2f52e26646f93bd2d5498bbabf59cba18da9",
+  "includesMsvcPortabilityPatches": true,
+  "native": {
+    "kind": "digital-aec3-native",
+    "sampleRate": 48000,
+    "seconds": 18,
+    "echoDelayMs": 80,
+    "echoGain": 0.5,
+    "farOnly": {
+      "inputRms": 860.598168362499,
+      "outputRms": 0.730244441570386,
+      "erleDb": 61.4266431500607,
+      "correlation": 0,
+      "gain": 0,
+      "lag": 0,
+      "echoGain": 0,
+      "echoImprovementDb": 0
+    },
+    "nearOnly": {
+      "inputRms": 1271.07166384042,
+      "outputRms": 1252.62171361653,
+      "erleDb": 0.127002026467531,
+      "correlation": 0.960879748406798,
+      "gain": 0.945238882625147,
+      "lag": 430,
+      "echoGain": 0,
+      "echoImprovementDb": 0
+    },
+    "doubleTalk": {
+      "inputRms": 1543.32585375482,
+      "outputRms": 898.515129065572,
+      "erleDb": 4.69864474888606,
+      "correlation": 0.787229591898996,
+      "gain": 0.556010365168448,
+      "lag": 430,
+      "echoGain": 0.00774823590123302,
+      "echoImprovementDb": 36.1953433929029
+    },
+    "pass": true
+  },
+  "wasm": {
+    "done": true,
+    "kind": "digital-aec3-wasm",
+    "acousticValidated": false,
+    "seed": 123456789,
+    "sampleRate": 48000,
+    "seconds": 18,
+    "echoDelayMs": 80,
+    "echoGain": 0.5,
+    "farOnly": {
+      "name": "far-only",
+      "echoGain": null,
+      "echoImprovementDb": null,
+      "inputRms": 860.5981683624995,
+      "outputRms": 0.7302444415703857,
+      "erleDb": 61.42664315006066,
+      "correlation": 0,
+      "lag": 0,
+      "gain": 0
+    },
+    "nearOnly": {
+      "name": "near-only",
+      "echoGain": null,
+      "echoImprovementDb": null,
+      "inputRms": 1271.0716638404208,
+      "outputRms": 1252.6217381594981,
+      "erleDb": 0.12700185628246174,
+      "correlation": 0.9608797567714851,
+      "lag": 430,
+      "gain": 0.945238909445941
+    },
+    "doubleTalk": {
+      "name": "double-talk",
+      "echoGain": 0.007748207554731944,
+      "echoImprovementDb": 36.19537516981748,
+      "inputRms": 1543.3258537548236,
+      "outputRms": 898.5152281835727,
+      "erleDb": 4.698643790718593,
+      "correlation": 0.7872295532050155,
+      "lag": 430,
+      "gain": 0.5560103992985321
+    },
+    "checks": {
+      "farOnlyReduction": true,
+      "nearOnlyPreserved": true,
+      "doubleTalkPreserved": true
+    },
+    "pass": true
+  },
+  "absoluteDifferences": {
+    "farOnly.erleDb": 3.552713678800501e-14,
+    "nearOnly.correlation": 8.364687054118747e-09,
+    "nearOnly.gain": 2.6820794030157913e-08,
+    "doubleTalk.gain": 3.4130084092254265e-08,
+    "doubleTalk.echoImprovementDb": 3.177691458233767e-05
+  },
+  "maximumAllowedDifference": 0.001,
+  "pass": true
+}

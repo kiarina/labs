@@ -1,5 +1,6 @@
 # webrtc
 
+- 2026/10/19 [Always-on Flutter camera and record capture with speaker playback and standalone AEC3](../2026/10/19/flutter-external-capture-aec/README.md)
 - 2026/10/19 [Always-on camera and record capture into on-demand WebRTC media tracks](../2026/10/19/flutter-webrtc-external-capture/README.md)
 - 2026/10/09 [Connecting N orchestrator apps over WebRTC: one brain drives workers on many bodies, every console shows the same state](../2026/10/09/flutter-agent-orchestrator-mesh/README.md)
 - 2026/10/09 [Several orchestrators on one network: a signaling server with a roster and body ownership](../2026/10/09/flutter-agent-orchestrator-multi-brain/README.md)

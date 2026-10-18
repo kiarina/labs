@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.16)
+project(aec_audio LANGUAGES CXX)
+set(PLUGIN_NAME aec_audio_plugin)
+# Lab-local native source is relative to the Flutter application, not its plugin symlink.
+get_filename_component(AEC_LAB_ROOT "${CMAKE_SOURCE_DIR}/../.." ABSOLUTE)
+add_subdirectory("${AEC_LAB_ROOT}/native" "${CMAKE_CURRENT_BINARY_DIR}/aec_engine")
+add_library(${PLUGIN_NAME} SHARED
+ aec_audio_plugin.cpp aec_audio_plugin.h aec_audio_plugin_c_api.cpp
+ windows_playout.cpp windows_playout.h
+ include/aec_audio/aec_audio_plugin_c_api.h)
+apply_standard_settings(${PLUGIN_NAME})
+target_compile_definitions(${PLUGIN_NAME} PRIVATE FLUTTER_PLUGIN_IMPL NOMINMAX LIB_WEBRTC_API_DLL RTC_DESKTOP_DEVICE)
+target_include_directories(${PLUGIN_NAME} INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+target_link_libraries(${PLUGIN_NAME} PRIVATE flutter flutter_wrapper_plugin flutter_webrtc_plugin aec_engine ole32 avrt uuid propsys)
+set(aec_audio_bundled_libraries "$<TARGET_FILE:aec_engine>" PARENT_SCOPE)

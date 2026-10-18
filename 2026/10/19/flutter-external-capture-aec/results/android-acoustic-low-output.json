@@ -1,0 +1,659 @@
+{
+  "platform": "android",
+  "farPcmPeakBound": 2250,
+  "digitalNearPeakBound": 6000,
+  "mixedClippedSamples": 0,
+  "sampleRate": 48000,
+  "captureStarts": {
+    "microphone": 1,
+    "camera": 1
+  },
+  "maxAudioGapMs": 81.313,
+  "maxVideoGapMs": 84.384,
+  "phases": [
+    {
+      "name": "baseline",
+      "speakerSignal": false,
+      "digitalNearEnd": false,
+      "seconds": 3,
+      "start": {
+        "rawByte": 11520,
+        "cleanByte": 7680,
+        "renderByte": 0,
+        "video": 0
+      },
+      "end": {
+        "rawByte": 303360,
+        "cleanByte": 303360,
+        "renderByte": 286080,
+        "video": 85
+      },
+      "startStats": {
+        "delayMs": 80,
+        "speakerDeviceType": 2,
+        "voiceCallVolume": 7,
+        "captureBackend": "record owns microphone; this plugin only opens AudioTrack",
+        "voiceCallVolumeMax": 15,
+        "captureBytes": 11520,
+        "speakerWrittenBytes": 36480,
+        "writerError": null,
+        "outputBytes": 11520,
+        "speakerSampleRate": 48000,
+        "queuedSpeakerBytes": 0,
+        "renderBytes": 0,
+        "speakerUnderruns": 0,
+        "activeRecordingConfigurations": [
+          {
+            "silenced": false,
+            "sessionId": 49049,
+            "source": 1
+          }
+        ],
+        "speakerSilenceBytes": 37440,
+        "playbackHeadFrames": 17280
+      },
+      "endStats": {
+        "delayMs": 80,
+        "speakerDeviceType": 2,
+        "voiceCallVolume": 7,
+        "captureBackend": "record owns microphone; this plugin only opens AudioTrack",
+        "voiceCallVolumeMax": 15,
+        "captureBytes": 303360,
+        "speakerWrittenBytes": 334080,
+        "writerError": null,
+        "outputBytes": 303360,
+        "speakerSampleRate": 48000,
+        "queuedSpeakerBytes": 0,
+        "renderBytes": 284160,
+        "speakerUnderruns": 0,
+        "activeRecordingConfigurations": [
+          {
+            "silenced": false,
+            "sessionId": 49049,
+            "source": 1
+          }
+        ],
+        "speakerSilenceBytes": 50880,
+        "playbackHeadFrames": 163200
+      }
+    },
+    {
+      "name": "near-only",
+      "speakerSignal": false,
+      "digitalNearEnd": true,
+      "seconds": 6,
+      "start": {
+        "rawByte": 307200,
+        "cleanByte": 303360,
+        "renderByte": 286080,
+        "video": 85
+      },
+      "end": {
+        "rawByte": 883200,
+        "cleanByte": 883200,
+        "renderByte": 847680,
+        "video": 265
+      },
+      "startStats": {
+        "delayMs": 80,
+        "speakerDeviceType": 2,
+        "voiceCallVolume": 7,
+        "captureBackend": "record owns microphone; this plugin only opens AudioTrack",
+        "voiceCallVolumeMax": 15,
+        "captureBytes": 307200,
+        "speakerWrittenBytes": 334080,
+        "writerError": null,
+        "outputBytes": 307200,
+        "speakerSampleRate": 48000,
+        "queuedSpeakerBytes": 960,
+        "renderBytes": 285120,
+        "speakerUnderruns": 0,
+        "activeRecordingConfigurations": [
+          {
+            "silenced": false,
+            "sessionId": 49049,
+            "source": 1
+          }
+        ],
+        "speakerSilenceBytes": 50880,
+        "playbackHeadFrames": 164160
+      },
+      "endStats": {
+        "delayMs": 80,
+        "speakerDeviceType": 2,
+        "voiceCallVolume": 7,
+        "captureBackend": "record owns microphone; this plugin only opens AudioTrack",
+        "voiceCallVolumeMax": 15,
+        "captureBytes": 883200,
+        "speakerWrittenBytes": 912000,
+        "writerError": null,
+        "outputBytes": 883200,
+        "speakerSampleRate": 48000,
+        "queuedSpeakerBytes": 1920,
+        "renderBytes": 846720,
+        "speakerUnderruns": 0,
+        "activeRecordingConfigurations": [
+          {
+            "silenced": false,
+            "sessionId": 49049,
+            "source": 1
+          }
+        ],
+        "speakerSilenceBytes": 68160,
+        "playbackHeadFrames": 452160
+      }
+    },
+    {
+      "name": "far-1-warmup",
+      "speakerSignal": true,
+      "digitalNearEnd": false,
+      "seconds": 6,
+      "start": {
+        "rawByte": 883200,
+        "cleanByte": 883200,
+        "renderByte": 847680,
+        "video": 265
+      },
+      "end": {
+        "rawByte": 1463040,
+        "cleanByte": 1463040,
+        "renderByte": 1415040,
+        "video": 445
+      },
+      "startStats": {
+        "delayMs": 80,
+        "speakerDeviceType": 2,
+        "voiceCallVolume": 7,
+        "captureBackend": "record owns microphone; this plugin only opens AudioTrack",
+        "voiceCallVolumeMax": 15,
+        "captureBytes": 883200,
+        "speakerWrittenBytes": 912000,
+        "writerError": null,
+        "outputBytes": 883200,
+        "speakerSampleRate": 48000,
+        "queuedSpeakerBytes": 2880,
+        "renderBytes": 847680,
+        "speakerUnderruns": 0,
+        "activeRecordingConfigurations": [
+          {
+            "silenced": false,
+            "sessionId": 49049,
+            "source": 1
+          }
+        ],
+        "speakerSilenceBytes": 68160,
+        "playbackHeadFrames": 452160
+      },
+      "endStats": {
+        "delayMs": 80,
+        "speakerDeviceType": 2,
+        "voiceCallVolume": 7,
+        "captureBackend": "record owns microphone; this plugin only opens AudioTrack",
+        "voiceCallVolumeMax": 15,
+        "captureBytes": 1463040,
+        "speakerWrittenBytes": 1491840,
+        "writerError": null,
+        "outputBytes": 1463040,
+        "speakerSampleRate": 48000,
+        "queuedSpeakerBytes": 0,
+        "renderBytes": 1413120,
+        "speakerUnderruns": 0,
+        "activeRecordingConfigurations": [
+          {
+            "silenced": false,
+            "sessionId": 49049,
+            "source": 1
+          }
+        ],
+        "speakerSilenceBytes": 79680,
+        "playbackHeadFrames": 742080
+      }
+    },
+    {
+      "name": "far-1",
+      "speakerSignal": true,
+      "digitalNearEnd": false,
+      "seconds": 6,
+      "start": {
+        "rawByte": 1463040,
+        "cleanByte": 1463040,
+        "renderByte": 1416000,
+        "video": 446
+      },
+      "end": {
+        "rawByte": 2042880,
+        "cleanByte": 2042880,
+        "renderByte": 1983360,
+        "video": 625
+      },
+      "startStats": {
+        "delayMs": 80,
+        "speakerDeviceType": 2,
+        "voiceCallVolume": 7,
+        "captureBackend": "record owns microphone; this plugin only opens AudioTrack",
+        "voiceCallVolumeMax": 15,
+        "captureBytes": 1463040,
+        "speakerWrittenBytes": 1491840,
+        "writerError": null,
+        "outputBytes": 1463040,
+        "speakerSampleRate": 48000,
+        "queuedSpeakerBytes": 960,
+        "renderBytes": 1414080,
+        "speakerUnderruns": 0,
+        "activeRecordingConfigurations": [
+          {
+            "silenced": false,
+            "sessionId": 49049,
+            "source": 1
+          }
+        ],
+        "speakerSilenceBytes": 79680,
+        "playbackHeadFrames": 742080
+      },
+      "endStats": {
+        "delayMs": 80,
+        "speakerDeviceType": 2,
+        "voiceCallVolume": 7,
+        "captureBackend": "record owns microphone; this plugin only opens AudioTrack",
+        "voiceCallVolumeMax": 15,
+        "captureBytes": 2042880,
+        "speakerWrittenBytes": 2064000,
+        "writerError": null,
+        "outputBytes": 2042880,
+        "speakerSampleRate": 48000,
+        "queuedSpeakerBytes": 9600,
+        "renderBytes": 1982400,
+        "speakerUnderruns": 1,
+        "activeRecordingConfigurations": [
+          {
+            "silenced": false,
+            "sessionId": 49049,
+            "source": 1
+          }
+        ],
+        "speakerSilenceBytes": 92160,
+        "playbackHeadFrames": 1030080
+      }
+    },
+    {
+      "name": "doubletalk",
+      "speakerSignal": true,
+      "digitalNearEnd": true,
+      "seconds": 6,
+      "start": {
+        "rawByte": 2042880,
+        "cleanByte": 2042880,
+        "renderByte": 1983360,
+        "video": 625
+      },
+      "end": {
+        "rawByte": 2618880,
+        "cleanByte": 2618880,
+        "renderByte": 2551680,
+        "video": 806
+      },
+      "startStats": {
+        "delayMs": 80,
+        "speakerDeviceType": 2,
+        "voiceCallVolume": 7,
+        "captureBackend": "record owns microphone; this plugin only opens AudioTrack",
+        "voiceCallVolumeMax": 15,
+        "captureBytes": 2042880,
+        "speakerWrittenBytes": 2064000,
+        "writerError": null,
+        "outputBytes": 2042880,
+        "speakerSampleRate": 48000,
+        "queuedSpeakerBytes": 10560,
+        "renderBytes": 1983360,
+        "speakerUnderruns": 1,
+        "activeRecordingConfigurations": [
+          {
+            "silenced": false,
+            "sessionId": 49049,
+            "source": 1
+          }
+        ],
+        "speakerSilenceBytes": 92160,
+        "playbackHeadFrames": 1030080
+      },
+      "endStats": {
+        "delayMs": 80,
+        "speakerDeviceType": 2,
+        "voiceCallVolume": 7,
+        "captureBackend": "record owns microphone; this plugin only opens AudioTrack",
+        "voiceCallVolumeMax": 15,
+        "captureBytes": 2618880,
+        "speakerWrittenBytes": 2645760,
+        "writerError": null,
+        "outputBytes": 2618880,
+        "speakerSampleRate": 48000,
+        "queuedSpeakerBytes": 1920,
+        "renderBytes": 2550720,
+        "speakerUnderruns": 1,
+        "activeRecordingConfigurations": [
+          {
+            "silenced": false,
+            "sessionId": 49049,
+            "source": 1
+          }
+        ],
+        "speakerSilenceBytes": 97920,
+        "playbackHeadFrames": 1319040
+      }
+    },
+    {
+      "name": "quiet-between",
+      "speakerSignal": false,
+      "digitalNearEnd": false,
+      "seconds": 3,
+      "start": {
+        "rawByte": 2618880,
+        "cleanByte": 2618880,
+        "renderByte": 2552640,
+        "video": 806
+      },
+      "end": {
+        "rawByte": 2906880,
+        "cleanByte": 2906880,
+        "renderByte": 2838720,
+        "video": 896
+      },
+      "startStats": {
+        "delayMs": 80,
+        "speakerDeviceType": 2,
+        "voiceCallVolume": 7,
+        "captureBackend": "record owns microphone; this plugin only opens AudioTrack",
+        "voiceCallVolumeMax": 15,
+        "captureBytes": 2618880,
+        "speakerWrittenBytes": 2645760,
+        "writerError": null,
+        "outputBytes": 2618880,
+        "speakerSampleRate": 48000,
+        "queuedSpeakerBytes": 2880,
+        "renderBytes": 2551680,
+        "speakerUnderruns": 1,
+        "activeRecordingConfigurations": [
+          {
+            "silenced": false,
+            "sessionId": 49049,
+            "source": 1
+          }
+        ],
+        "speakerSilenceBytes": 97920,
+        "playbackHeadFrames": 1319040
+      },
+      "endStats": {
+        "delayMs": 80,
+        "speakerDeviceType": 2,
+        "voiceCallVolume": 7,
+        "captureBackend": "record owns microphone; this plugin only opens AudioTrack",
+        "voiceCallVolumeMax": 15,
+        "captureBytes": 2906880,
+        "speakerWrittenBytes": 2930880,
+        "writerError": null,
+        "outputBytes": 2906880,
+        "speakerSampleRate": 48000,
+        "queuedSpeakerBytes": 5760,
+        "renderBytes": 2838720,
+        "speakerUnderruns": 1,
+        "activeRecordingConfigurations": [
+          {
+            "silenced": false,
+            "sessionId": 49049,
+            "source": 1
+          }
+        ],
+        "speakerSilenceBytes": 98880,
+        "playbackHeadFrames": 1463040
+      }
+    },
+    {
+      "name": "far-2",
+      "speakerSignal": true,
+      "digitalNearEnd": false,
+      "seconds": 6,
+      "start": {
+        "rawByte": 2906880,
+        "cleanByte": 2906880,
+        "renderByte": 2838720,
+        "video": 896
+      },
+      "end": {
+        "rawByte": 3482880,
+        "cleanByte": 3482880,
+        "renderByte": 3403200,
+        "video": 1076
+      },
+      "startStats": {
+        "delayMs": 80,
+        "speakerDeviceType": 2,
+        "voiceCallVolume": 7,
+        "captureBackend": "record owns microphone; this plugin only opens AudioTrack",
+        "voiceCallVolumeMax": 15,
+        "captureBytes": 2906880,
+        "speakerWrittenBytes": 2931840,
+        "writerError": null,
+        "outputBytes": 2906880,
+        "speakerSampleRate": 48000,
+        "queuedSpeakerBytes": 4800,
+        "renderBytes": 2838720,
+        "speakerUnderruns": 1,
+        "activeRecordingConfigurations": [
+          {
+            "silenced": false,
+            "sessionId": 49049,
+            "source": 1
+          }
+        ],
+        "speakerSilenceBytes": 98880,
+        "playbackHeadFrames": 1463040
+      },
+      "endStats": {
+        "delayMs": 80,
+        "speakerDeviceType": 2,
+        "voiceCallVolume": 7,
+        "captureBackend": "record owns microphone; this plugin only opens AudioTrack",
+        "voiceCallVolumeMax": 15,
+        "captureBytes": 3482880,
+        "speakerWrittenBytes": 3509760,
+        "writerError": null,
+        "outputBytes": 3482880,
+        "speakerSampleRate": 48000,
+        "queuedSpeakerBytes": 3840,
+        "renderBytes": 3403200,
+        "speakerUnderruns": 1,
+        "activeRecordingConfigurations": [
+          {
+            "silenced": false,
+            "sessionId": 49049,
+            "source": 1
+          }
+        ],
+        "speakerSilenceBytes": 111360,
+        "playbackHeadFrames": 1751040
+      }
+    },
+    {
+      "name": "quiet-after",
+      "speakerSignal": false,
+      "digitalNearEnd": false,
+      "seconds": 3,
+      "start": {
+        "rawByte": 3482880,
+        "cleanByte": 3482880,
+        "renderByte": 3404160,
+        "video": 1076
+      },
+      "end": {
+        "rawByte": 3774720,
+        "cleanByte": 3774720,
+        "renderByte": 3689280,
+        "video": 1167
+      },
+      "startStats": {
+        "delayMs": 80,
+        "speakerDeviceType": 2,
+        "voiceCallVolume": 7,
+        "captureBackend": "record owns microphone; this plugin only opens AudioTrack",
+        "voiceCallVolumeMax": 15,
+        "captureBytes": 3482880,
+        "speakerWrittenBytes": 3509760,
+        "writerError": null,
+        "outputBytes": 3482880,
+        "speakerSampleRate": 48000,
+        "queuedSpeakerBytes": 4800,
+        "renderBytes": 3404160,
+        "speakerUnderruns": 1,
+        "activeRecordingConfigurations": [
+          {
+            "silenced": false,
+            "sessionId": 49049,
+            "source": 1
+          }
+        ],
+        "speakerSilenceBytes": 111360,
+        "playbackHeadFrames": 1751040
+      },
+      "endStats": {
+        "delayMs": 80,
+        "speakerDeviceType": 2,
+        "voiceCallVolume": 7,
+        "captureBackend": "record owns microphone; this plugin only opens AudioTrack",
+        "voiceCallVolumeMax": 15,
+        "captureBytes": 3774720,
+        "speakerWrittenBytes": 3797760,
+        "writerError": null,
+        "outputBytes": 3774720,
+        "speakerSampleRate": 48000,
+        "queuedSpeakerBytes": 3840,
+        "renderBytes": 3687360,
+        "speakerUnderruns": 1,
+        "activeRecordingConfigurations": [
+          {
+            "silenced": false,
+            "sessionId": 49049,
+            "source": 1
+          }
+        ],
+        "speakerSilenceBytes": 115200,
+        "playbackHeadFrames": 1896960
+      }
+    }
+  ],
+  "errors": [],
+  "analysis": {
+    "method": "RMS comparison excludes first second; near matched projection uses near-only alignment for doubletalk. Physical RMS attenuation is not ERLE and includes ambient noise.",
+    "phases": [
+      {
+        "name": "baseline",
+        "secondsAnalyzed": 2.04,
+        "rawRmsDbfs": -11.787782880782515,
+        "cleanRmsDbfs": -12.216074887494607,
+        "rmsAttenuationDb": 0.42829200671208956,
+        "rawDcMean": -114.95070465686274,
+        "rawPeak": 26027.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0003880718954248366,
+        "estimatedHardwareQueuedMs": 80.0
+      },
+      {
+        "name": "near-only",
+        "secondsAnalyzed": 5.0,
+        "rawRmsDbfs": -22.444450054046385,
+        "cleanRmsDbfs": -20.698836236883693,
+        "rmsAttenuationDb": -1.7456138171626927,
+        "rawDcMean": -47.4078875,
+        "rawPeak": 13096.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0,
+        "nearAlignmentSamples": 432,
+        "nearSignedGain": 0.9681519550632319,
+        "nearGainDb": -0.2811294640336802,
+        "nearReferenceRmsDbfs": -24.655255055115255,
+        "estimatedHardwareQueuedMs": 80.0
+      },
+      {
+        "name": "far-1-warmup",
+        "secondsAnalyzed": 5.04,
+        "rawRmsDbfs": -10.695955731865535,
+        "cleanRmsDbfs": -17.317962466527725,
+        "rmsAttenuationDb": 6.622006734662188,
+        "rawDcMean": -40.09048032407407,
+        "rawPeak": 26027.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0003348214285714286,
+        "estimatedHardwareQueuedMs": 80.0
+      },
+      {
+        "name": "far-1",
+        "secondsAnalyzed": 5.04,
+        "rawRmsDbfs": -10.578825861148932,
+        "cleanRmsDbfs": -16.241272680582245,
+        "rmsAttenuationDb": 5.6624468194333115,
+        "rawDcMean": -44.55322007275132,
+        "rawPeak": 26027.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0004918981481481481,
+        "estimatedHardwareQueuedMs": 40.0
+      },
+      {
+        "name": "doubletalk",
+        "secondsAnalyzed": 5.0,
+        "rawRmsDbfs": -9.764545413637864,
+        "cleanRmsDbfs": -16.538552581972976,
+        "rmsAttenuationDb": 6.774007168335112,
+        "rawDcMean": -29.461370833333334,
+        "rawPeak": 26027.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0005541666666666667,
+        "nearAlignmentSamples": 432,
+        "nearSignedGain": 0.5446710505548473,
+        "nearGainDb": -5.277314140155003,
+        "nearReferenceRmsDbfs": -24.667165987006868,
+        "estimatedHardwareQueuedMs": 80.0
+      },
+      {
+        "name": "quiet-between",
+        "secondsAnalyzed": 2.0,
+        "rawRmsDbfs": -14.092526553520415,
+        "cleanRmsDbfs": -14.515503499562985,
+        "rmsAttenuationDb": 0.4229769460425706,
+        "rawDcMean": -59.91022916666667,
+        "rawPeak": 26027.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 1.0416666666666666e-05,
+        "estimatedHardwareQueuedMs": 50.0
+      },
+      {
+        "name": "far-2",
+        "secondsAnalyzed": 5.0,
+        "rawRmsDbfs": -9.56092734907534,
+        "cleanRmsDbfs": -19.189847607846055,
+        "rmsAttenuationDb": 9.628920258770716,
+        "rawDcMean": -34.24185,
+        "rawPeak": 26027.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0007,
+        "estimatedHardwareQueuedMs": 80.0
+      },
+      {
+        "name": "quiet-after",
+        "secondsAnalyzed": 2.04,
+        "rawRmsDbfs": -17.612485763563384,
+        "cleanRmsDbfs": -17.899014313070822,
+        "rmsAttenuationDb": 0.2865285495074344,
+        "rawDcMean": -51.72319240196079,
+        "rawPeak": 26027.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 1.0212418300653594e-05,
+        "estimatedHardwareQueuedMs": 40.0
+      }
+    ],
+    "artifactsSha256": {
+      "near.pcm": "8c1512c40d7f26700103ab86f69c7b0c652e0b60984451e00579495be80c238b",
+      "mixed.pcm": "885ce5fd25c38f3d5ef9eca179db4a0dffe404803a65c6ea764e1b211a69973b",
+      "clean.pcm": "9db226607ebb93d5d63bfbb0887d9571e1c23c5dca66655873886355bb8f6c94",
+      "raw.pcm": "ef3509415aee40ee23834aa60f122441cf44ff999df735d55543d24cc66844df"
+    }
+  }
+}

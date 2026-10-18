@@ -1,0 +1,150 @@
+{
+  "method": "Repeat projection search at +/-24000 samples (500 ms), rather than +/-2400; existing local PCM, no new speaker run. Multiple chirp aliases can have similar correlation.",
+  "globalRenderLagSamples": 6213,
+  "searchRadiusSamples": 24000,
+  "phases": [
+    {
+      "name": "far-1-warmup",
+      "secondsAnalyzed": 5.01,
+      "rawRmsDbfs": -53.376519193174175,
+      "cleanRmsDbfs": -75.97792988903846,
+      "rmsAttenuationDb": 22.601410695864296,
+      "rawDcMean": -0.19906852960745175,
+      "rawPeak": 2552.0,
+      "rawClipped32700Fraction": 0.0,
+      "rawPeak26027Fraction": 0.0,
+      "rawRenderProjection": {
+        "lagSamples": -17754,
+        "gain": 0.0026208756393217014,
+        "correlation": 0.02961964810160025,
+        "projectedRmsDbfs": -83.94492130220571
+      },
+      "cleanRenderProjection": {
+        "lagSamples": -9092,
+        "gain": 2.0162219368431658e-05,
+        "correlation": 0.0030710770103282822,
+        "projectedRmsDbfs": -126.2321157500743
+      },
+      "correlatedEchoReductionDb": 42.27816157019328,
+      "estimatedHardwareQueuedMs": 39.958333333333336
+    },
+    {
+      "name": "far-1",
+      "secondsAnalyzed": 5.02,
+      "rawRmsDbfs": -50.43312418826301,
+      "cleanRmsDbfs": -51.333264185364285,
+      "rmsAttenuationDb": 0.900139997101276,
+      "rawDcMean": -0.2860184262948207,
+      "rawPeak": 1089.0,
+      "rawClipped32700Fraction": 0.0,
+      "rawPeak26027Fraction": 0.0,
+      "rawRenderProjection": {
+        "lagSamples": -16415,
+        "gain": -0.007022133471157644,
+        "correlation": -0.05700935859758839,
+        "projectedRmsDbfs": -75.31420109106935
+      },
+      "cleanRenderProjection": {
+        "lagSamples": -5780,
+        "gain": -0.001941577790692953,
+        "correlation": -0.0175202652485958,
+        "projectedRmsDbfs": -86.46245064743368
+      },
+      "correlatedEchoReductionDb": 11.16628568772477,
+      "estimatedHardwareQueuedMs": 39.979166666666664
+    },
+    {
+      "name": "doubletalk",
+      "secondsAnalyzed": 4.97,
+      "rawRmsDbfs": -41.2878088697316,
+      "cleanRmsDbfs": -24.74545925608198,
+      "rmsAttenuationDb": -16.542349613649616,
+      "rawDcMean": -0.2703512743125419,
+      "rawPeak": 7326.0,
+      "rawClipped32700Fraction": 0.0,
+      "rawPeak26027Fraction": 0.0,
+      "rawRenderProjection": {
+        "lagSamples": 6213,
+        "gain": 0.015004216031148232,
+        "correlation": 0.042232591354366335,
+        "projectedRmsDbfs": -68.77485426639369
+      },
+      "cleanRenderProjection": {
+        "lagSamples": 6643,
+        "gain": 0.01293788614035882,
+        "correlation": 0.00542509872322962,
+        "projectedRmsDbfs": -70.05730634276281
+      },
+      "correlatedEchoReductionDb": 1.2869996737655347,
+      "nearAlignmentSamples": 432,
+      "nearSignedGain": 0.9762856499365148,
+      "nearGainDb": -0.20846188353690653,
+      "nearReferenceRmsDbfs": -24.675739994841834,
+      "estimatedHardwareQueuedMs": 39.875
+    },
+    {
+      "name": "far-2",
+      "secondsAnalyzed": 5.02,
+      "rawRmsDbfs": -52.20032920969529,
+      "cleanRmsDbfs": -53.79727613289756,
+      "rmsAttenuationDb": 1.5969469232022668,
+      "rawDcMean": -0.3032121513944223,
+      "rawPeak": 2136.0,
+      "rawClipped32700Fraction": 0.0,
+      "rawPeak26027Fraction": 0.0,
+      "rawRenderProjection": {
+        "lagSamples": 6213,
+        "gain": 0.01225734225726068,
+        "correlation": 0.12206975707873789,
+        "projectedRmsDbfs": -70.46816760331353
+      },
+      "cleanRenderProjection": {
+        "lagSamples": 6643,
+        "gain": 0.005114618090786282,
+        "correlation": 0.06129979085625647,
+        "projectedRmsDbfs": -78.04809627715527
+      },
+      "correlatedEchoReductionDb": 7.591662049601214,
+      "estimatedHardwareQueuedMs": 40.0
+    },
+    {
+      "name": "rtc-far-playback",
+      "secondsAnalyzed": 5.57,
+      "rawRmsDbfs": -43.96923889942363,
+      "cleanRmsDbfs": -44.98767890624903,
+      "rmsAttenuationDb": 1.0184400068253983,
+      "rawDcMean": -0.3516008378216637,
+      "rawPeak": 1003.0,
+      "rawClipped32700Fraction": 0.0,
+      "rawPeak26027Fraction": 0.0,
+      "rawRenderProjection": {
+        "lagSamples": 6213,
+        "gain": 0.018039618215534365,
+        "correlation": 0.06916918622435413,
+        "projectedRmsDbfs": -67.17098557476181
+      },
+      "cleanRenderProjection": {
+        "lagSamples": 6643,
+        "gain": 0.007120825171264632,
+        "correlation": 0.030744404076096906,
+        "projectedRmsDbfs": -75.23235731704906
+      },
+      "correlatedEchoReductionDb": 8.07394037658774,
+      "estimatedHardwareQueuedMs": 38.229166666666664
+    }
+  ],
+  "artifactsSha256": {
+    "near.pcm": "db27819a7afae622d6af2ee0488f9d000b237898f28ccb1a9428ae68b68112cc",
+    "aec_clean.pcm": "cf9f78b8677946e0d4492863ba77844d82f417f0e9da58730ba395db3990d6b1",
+    "aec_mixed.pcm": "2d09299fc2158778e75b31e807978bd4840ad80a87f329368ed5fda67ab27886",
+    "aec_reference.pcm": "6114a5161535b15e237f3a6cb6ccba6951a78525684b8d48e2cca2e693178762",
+    "mixed.pcm": "2d09299fc2158778e75b31e807978bd4840ad80a87f329368ed5fda67ab27886",
+    "aec_actual_render.pcm": "9e32d6baa9e223fe727b339f9ef05a5384f4aa8a5a83fbd9ef0574a5406d73e2",
+    "aec_near.pcm": "db27819a7afae622d6af2ee0488f9d000b237898f28ccb1a9428ae68b68112cc",
+    "aec_raw.pcm": "d5d7cefa8f55bbd64a1caf9afb9c94c3f4408fce93799d3ba146de2685aff4c8",
+    "clean.pcm": "cf9f78b8677946e0d4492863ba77844d82f417f0e9da58730ba395db3990d6b1",
+    "reference.pcm": "6114a5161535b15e237f3a6cb6ccba6951a78525684b8d48e2cca2e693178762",
+    "raw.pcm": "d5d7cefa8f55bbd64a1caf9afb9c94c3f4408fce93799d3ba146de2685aff4c8",
+    "actual_render.pcm": "9e32d6baa9e223fe727b339f9ef05a5384f4aa8a5a83fbd9ef0574a5406d73e2"
+  }
+}

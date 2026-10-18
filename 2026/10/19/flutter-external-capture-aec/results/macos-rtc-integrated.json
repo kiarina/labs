@@ -1,0 +1,1072 @@
+{
+  "platform": "macos",
+  "recordingSource": "mic-fallback-unprocessed-unsupported",
+  "farPcmPeakBound": 2250,
+  "digitalNearPeakBound": 6000,
+  "mixedClippedSamples": 0,
+  "sampleRate": 48000,
+  "captureStarts": {
+    "microphone": 1,
+    "camera": 1
+  },
+  "maxAudioGapMs": 111.333,
+  "maxVideoGapMs": 61.007,
+  "phases": [
+    {
+      "name": "baseline",
+      "speakerSignal": false,
+      "digitalNearEnd": false,
+      "seconds": 3,
+      "start": {
+        "rawByte": 355200,
+        "cleanByte": 355200,
+        "renderByte": 0,
+        "video": 0
+      },
+      "end": {
+        "rawByte": 643200,
+        "cleanByte": 643200,
+        "renderByte": 288000,
+        "video": 89
+      },
+      "startStats": {
+        "reverseFrames": 379,
+        "captureSamples": 177600,
+        "channels": 1,
+        "playedFrames": 182272,
+        "underflowSamples": 182272,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "endStats": {
+        "reverseFrames": 680,
+        "captureSamples": 321600,
+        "channels": 1,
+        "playedFrames": 326656,
+        "underflowSamples": 183648,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      }
+    },
+    {
+      "name": "near-only",
+      "speakerSignal": false,
+      "digitalNearEnd": true,
+      "seconds": 6,
+      "start": {
+        "rawByte": 643200,
+        "cleanByte": 643200,
+        "renderByte": 288000,
+        "video": 90
+      },
+      "end": {
+        "rawByte": 1219200,
+        "cleanByte": 1219200,
+        "renderByte": 861120,
+        "video": 271
+      },
+      "startStats": {
+        "reverseFrames": 680,
+        "captureSamples": 321600,
+        "channels": 1,
+        "playedFrames": 326656,
+        "underflowSamples": 183648,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "endStats": {
+        "reverseFrames": 1281,
+        "captureSamples": 609600,
+        "channels": 1,
+        "playedFrames": 614912,
+        "underflowSamples": 185120,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      }
+    },
+    {
+      "name": "far-1-warmup",
+      "speakerSignal": true,
+      "digitalNearEnd": false,
+      "seconds": 6,
+      "start": {
+        "rawByte": 1219200,
+        "cleanByte": 1219200,
+        "renderByte": 862080,
+        "video": 271
+      },
+      "end": {
+        "rawByte": 1795200,
+        "cleanByte": 1795200,
+        "renderByte": 1434240,
+        "video": 451
+      },
+      "startStats": {
+        "reverseFrames": 1281,
+        "captureSamples": 609600,
+        "channels": 1,
+        "playedFrames": 614912,
+        "underflowSamples": 185120,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "endStats": {
+        "reverseFrames": 1881,
+        "captureSamples": 897600,
+        "channels": 1,
+        "playedFrames": 903168,
+        "underflowSamples": 186528,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      }
+    },
+    {
+      "name": "far-1",
+      "speakerSignal": true,
+      "digitalNearEnd": false,
+      "seconds": 6,
+      "start": {
+        "rawByte": 1795200,
+        "cleanByte": 1795200,
+        "renderByte": 1434240,
+        "video": 451
+      },
+      "end": {
+        "rawByte": 2371200,
+        "cleanByte": 2371200,
+        "renderByte": 2003520,
+        "video": 630
+      },
+      "startStats": {
+        "reverseFrames": 1881,
+        "captureSamples": 897600,
+        "channels": 1,
+        "playedFrames": 903168,
+        "underflowSamples": 186528,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "endStats": {
+        "reverseFrames": 2482,
+        "captureSamples": 1185600,
+        "channels": 1,
+        "playedFrames": 1191424,
+        "underflowSamples": 190144,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      }
+    },
+    {
+      "name": "doubletalk",
+      "speakerSignal": true,
+      "digitalNearEnd": true,
+      "seconds": 6,
+      "start": {
+        "rawByte": 2371200,
+        "cleanByte": 2371200,
+        "renderByte": 2003520,
+        "video": 630
+      },
+      "end": {
+        "rawByte": 2947200,
+        "cleanByte": 2947200,
+        "renderByte": 2576640,
+        "video": 810
+      },
+      "startStats": {
+        "reverseFrames": 2482,
+        "captureSamples": 1185600,
+        "channels": 1,
+        "playedFrames": 1191424,
+        "underflowSamples": 190144,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "endStats": {
+        "reverseFrames": 3082,
+        "captureSamples": 1473600,
+        "channels": 1,
+        "playedFrames": 1479680,
+        "underflowSamples": 192544,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      }
+    },
+    {
+      "name": "quiet-between",
+      "speakerSignal": false,
+      "digitalNearEnd": false,
+      "seconds": 3,
+      "start": {
+        "rawByte": 2947200,
+        "cleanByte": 2947200,
+        "renderByte": 2576640,
+        "video": 810
+      },
+      "end": {
+        "rawByte": 3235200,
+        "cleanByte": 3235200,
+        "renderByte": 2863680,
+        "video": 901
+      },
+      "startStats": {
+        "reverseFrames": 3082,
+        "captureSamples": 1473600,
+        "channels": 1,
+        "playedFrames": 1479680,
+        "underflowSamples": 192544,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "endStats": {
+        "reverseFrames": 3382,
+        "captureSamples": 1617600,
+        "channels": 1,
+        "playedFrames": 1623552,
+        "underflowSamples": 192544,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      }
+    },
+    {
+      "name": "far-2",
+      "speakerSignal": true,
+      "digitalNearEnd": false,
+      "seconds": 6,
+      "start": {
+        "rawByte": 3235200,
+        "cleanByte": 3235200,
+        "renderByte": 2863680,
+        "video": 901
+      },
+      "end": {
+        "rawByte": 3811200,
+        "cleanByte": 3811200,
+        "renderByte": 3437760,
+        "video": 1080
+      },
+      "startStats": {
+        "reverseFrames": 3382,
+        "captureSamples": 1617600,
+        "channels": 1,
+        "playedFrames": 1623552,
+        "underflowSamples": 192544,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "endStats": {
+        "reverseFrames": 3982,
+        "captureSamples": 1905600,
+        "channels": 1,
+        "playedFrames": 1911808,
+        "underflowSamples": 193856,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      }
+    },
+    {
+      "name": "quiet-after",
+      "speakerSignal": false,
+      "digitalNearEnd": false,
+      "seconds": 3,
+      "start": {
+        "rawByte": 3811200,
+        "cleanByte": 3811200,
+        "renderByte": 3438720,
+        "video": 1080
+      },
+      "end": {
+        "rawByte": 4099200,
+        "cleanByte": 4099200,
+        "renderByte": 3724800,
+        "video": 1171
+      },
+      "startStats": {
+        "reverseFrames": 3984,
+        "captureSamples": 1905600,
+        "channels": 1,
+        "playedFrames": 1912320,
+        "underflowSamples": 193856,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "endStats": {
+        "reverseFrames": 4283,
+        "captureSamples": 2049600,
+        "channels": 1,
+        "playedFrames": 2056192,
+        "underflowSamples": 194464,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      }
+    }
+  ],
+  "diagnosticSkips": {
+    "acoustic": false,
+    "remoteFar": false
+  },
+  "remoteFarPhase": {
+    "name": "remote-far-fixture",
+    "fixtureSeconds": 6,
+    "collectionSeconds": 6.532,
+    "route": "fixture-only external track \u2192 dedicated peer pair \u2192 remote tap PCM \u2192 aec_audio.render",
+    "microphoneInjected": false,
+    "nativeReceiverPlayout": "disabled on Android; discarded by Darwin lab ADM",
+    "rawByteStart": 4166400,
+    "rawByteEnd": 4790400,
+    "cleanByteStart": 4166400,
+    "cleanByteEnd": 4790400,
+    "sourceDelta": {
+      "sourceRawAudioBytes": 624000,
+      "sourceCleanAudioBytes": 624000,
+      "sourceVideoFrames": 196,
+      "injectedCleanAudioBytes": 0,
+      "injectedVideoFrames": 0,
+      "droppedCleanAudioBytes": 0,
+      "droppedVideoFrames": 0
+    },
+    "fixtureInjectedBytes": 576000,
+    "receivedSamples": 313920,
+    "receivedRms": 0.022120699680120762,
+    "inboundBefore": [
+      {
+        "id": "IT01A3583915560",
+        "ssrc": 3583915560,
+        "lastPacketReceivedTimestamp": 1792359665868.978,
+        "bytesReceived": 521,
+        "packetsDiscarded": 0,
+        "trackIdentifier": "external-audio",
+        "insertedSamplesForDeceleration": 480,
+        "totalSamplesDuration": 0.4300000000000002,
+        "concealmentEvents": 1,
+        "jitterBufferMinimumDelay": 998.4,
+        "silentConcealedSamples": 0,
+        "fecPacketsDiscarded": 0,
+        "packetsReceived": 15,
+        "packetsReceivedWithEct1": 0,
+        "fecPacketsReceived": 0,
+        "delayedPacketOutageSamples": 3120,
+        "jitterBufferDelay": 259.2,
+        "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+        "jitter": 0.003,
+        "removedSamplesForAcceleration": 0,
+        "jitterBufferFlushes": 1,
+        "packetsReceivedWithCe": 0,
+        "jitterBufferTargetDelay": 998.4,
+        "jitterBufferEmittedCount": 12480,
+        "audioLevel": 3.051850947599719e-05,
+        "kind": "audio",
+        "transportId": "T01",
+        "concealedSamples": 1200,
+        "relativePacketArrivalDelay": 0.02,
+        "mid": "0",
+        "totalInterruptionDuration": 0.0,
+        "totalAudioEnergy": 5.122586813500916e-10,
+        "totalProcessingDelay": 260.90304,
+        "totalSamplesReceived": 13440,
+        "packetsLost": 0,
+        "interruptionCount": 0,
+        "headerBytesReceived": 420
+      }
+    ],
+    "inboundAfter": [
+      {
+        "id": "IT01A3583915560",
+        "ssrc": 3583915560,
+        "lastPacketReceivedTimestamp": 1792359672408.906,
+        "bytesReceived": 25935,
+        "packetsDiscarded": 0,
+        "trackIdentifier": "external-audio",
+        "insertedSamplesForDeceleration": 1232,
+        "totalSamplesDuration": 6.969999999999896,
+        "concealmentEvents": 1,
+        "jitterBufferMinimumDelay": 8025.6,
+        "silentConcealedSamples": 0,
+        "fecPacketsDiscarded": 0,
+        "packetsReceived": 345,
+        "packetsReceivedWithEct1": 0,
+        "fecPacketsReceived": 0,
+        "delayedPacketOutageSamples": 3120,
+        "jitterBufferDelay": 12729.6,
+        "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+        "jitter": 0.004,
+        "removedSamplesForAcceleration": 612,
+        "jitterBufferFlushes": 1,
+        "packetsReceivedWithCe": 0,
+        "jitterBufferTargetDelay": 8025.6,
+        "jitterBufferEmittedCount": 326400,
+        "audioLevel": 0.0010071108127079073,
+        "kind": "audio",
+        "transportId": "T01",
+        "concealedSamples": 1200,
+        "relativePacketArrivalDelay": 0.19,
+        "mid": "0",
+        "remoteId": "ROA3583915560",
+        "totalInterruptionDuration": 0.0,
+        "totalAudioEnergy": 0.0245034435420973,
+        "totalProcessingDelay": 12446.17152,
+        "totalSamplesReceived": 327360,
+        "packetsLost": 0,
+        "interruptionCount": 0,
+        "headerBytesReceived": 9798
+      }
+    ],
+    "inboundDelta": {
+      "audioPacketsReceived": 330.0,
+      "audioSamplesReceived": 313920.0
+    },
+    "deviceBefore": {
+      "reverseFrames": 4286,
+      "captureSamples": 2049600,
+      "channels": 1,
+      "playedFrames": 2057728,
+      "underflowSamples": 196000,
+      "route": "AVAudioEngine output",
+      "sampleRate": 48000
+    },
+    "deviceAfter": {
+      "reverseFrames": 5006,
+      "captureSamples": 2395200,
+      "channels": 1,
+      "playedFrames": 2403328,
+      "underflowSamples": 231104,
+      "route": "AVAudioEngine output",
+      "sampleRate": 48000
+    },
+    "pass": true
+  },
+  "transportPhases": [
+    {
+      "name": "idle-before",
+      "seconds": 3,
+      "deviceBefore": {
+        "reverseFrames": 5008,
+        "captureSamples": 2395200,
+        "channels": 1,
+        "playedFrames": 2403840,
+        "underflowSamples": 231104,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "deviceAfter": {
+        "reverseFrames": 5307,
+        "captureSamples": 2539200,
+        "channels": 1,
+        "playedFrames": 2547712,
+        "underflowSamples": 374976,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "sourceRawAudioBytes": 288000,
+      "sourceCleanAudioBytes": 288000,
+      "sourceVideoFrames": 90,
+      "injectedCleanAudioBytes": 0,
+      "injectedVideoFrames": 0,
+      "droppedCleanAudioBytes": 0,
+      "droppedVideoFrames": 0,
+      "pass": true
+    },
+    {
+      "name": "send-1",
+      "minimumSeconds": 6,
+      "deviceBefore": {
+        "reverseFrames": 5396,
+        "captureSamples": 2582400,
+        "channels": 1,
+        "playedFrames": 2590208,
+        "underflowSamples": 417472,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "deviceAfter": {
+        "reverseFrames": 6013,
+        "captureSamples": 2880000,
+        "channels": 1,
+        "playedFrames": 2886656,
+        "underflowSamples": 713920,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "sourceRawAudioBytes": 595200,
+      "sourceCleanAudioBytes": 595200,
+      "sourceVideoFrames": 185,
+      "injectedCleanAudioBytes": 595200,
+      "injectedVideoFrames": 185,
+      "droppedCleanAudioBytes": 0,
+      "droppedVideoFrames": 0,
+      "receiver": {
+        "pcmSamples": 295680,
+        "videoFrames": 179,
+        "rms": 0.05456212019354756
+      },
+      "inboundBefore": [
+        {
+          "id": "IT01A2125929184",
+          "ssrc": 2125929184,
+          "lastPacketReceivedTimestamp": 1792359676303.816,
+          "bytesReceived": 871,
+          "packetsDiscarded": 0,
+          "trackIdentifier": "external-audio",
+          "insertedSamplesForDeceleration": 840,
+          "totalSamplesDuration": 0.6300000000000003,
+          "concealmentEvents": 1,
+          "jitterBufferMinimumDelay": 1689.6,
+          "silentConcealedSamples": 0,
+          "fecPacketsDiscarded": 0,
+          "packetsReceived": 25,
+          "packetsReceivedWithEct1": 0,
+          "fecPacketsReceived": 0,
+          "delayedPacketOutageSamples": 3240,
+          "jitterBufferDelay": 662.4,
+          "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+          "jitter": 0.003,
+          "removedSamplesForAcceleration": 0,
+          "jitterBufferFlushes": 1,
+          "packetsReceivedWithCe": 0,
+          "jitterBufferTargetDelay": 1689.6,
+          "jitterBufferEmittedCount": 21120,
+          "audioLevel": 3.051850947599719e-05,
+          "kind": "audio",
+          "transportId": "T01",
+          "concealedSamples": 1320,
+          "relativePacketArrivalDelay": 0.02,
+          "mid": "0",
+          "totalInterruptionDuration": 0.0,
+          "totalAudioEnergy": 6.985345654773971e-10,
+          "totalProcessingDelay": 651.41952,
+          "totalSamplesReceived": 23040,
+          "packetsLost": 0,
+          "interruptionCount": 0,
+          "headerBytesReceived": 700
+        }
+      ],
+      "inboundAfter": [
+        {
+          "id": "IT01A2125929184",
+          "ssrc": 2125929184,
+          "lastPacketReceivedTimestamp": 1792359682456.697,
+          "bytesReceived": 25915,
+          "packetsDiscarded": 0,
+          "trackIdentifier": "external-audio",
+          "insertedSamplesForDeceleration": 960,
+          "totalSamplesDuration": 6.7999999999998995,
+          "concealmentEvents": 1,
+          "jitterBufferMinimumDelay": 7852.8,
+          "silentConcealedSamples": 0,
+          "fecPacketsDiscarded": 0,
+          "packetsReceived": 333,
+          "packetsReceivedWithEct1": 0,
+          "fecPacketsReceived": 0,
+          "delayedPacketOutageSamples": 3240,
+          "jitterBufferDelay": 12480.0,
+          "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+          "jitter": 0.003,
+          "removedSamplesForAcceleration": 529,
+          "jitterBufferFlushes": 1,
+          "packetsReceivedWithCe": 0,
+          "jitterBufferTargetDelay": 7852.8,
+          "jitterBufferEmittedCount": 317760,
+          "audioLevel": 0.17233802301095613,
+          "kind": "audio",
+          "transportId": "T01",
+          "concealedSamples": 1320,
+          "relativePacketArrivalDelay": 0.12,
+          "mid": "0",
+          "remoteId": "ROA2125929184",
+          "totalInterruptionDuration": 0.0,
+          "totalAudioEnergy": 0.1693157825710345,
+          "totalProcessingDelay": 12136.59648,
+          "totalSamplesReceived": 319200,
+          "packetsLost": 0,
+          "interruptionCount": 0,
+          "headerBytesReceived": 9324
+        },
+        {
+          "id": "IT01V964378955",
+          "ssrc": 964378955,
+          "googTimingFrameInfo": "1703890746,-8,-6,-1,-1,-1,-8,-8,66631597,66631597,66631609,66631612,66631621,0,1",
+          "lastPacketReceivedTimestamp": 1792359682473.123,
+          "pauseCount": 0,
+          "bytesReceived": 424148,
+          "trackIdentifier": "external-video",
+          "powerEfficientDecoder": false,
+          "framesDecoded": 179,
+          "jitterBufferMinimumDelay": 2.073662,
+          "framesDropped": 0,
+          "framesAssembledFromMultiplePackets": 174,
+          "retransmittedPacketsReceived": 15,
+          "packetsReceived": 440,
+          "firCount": 0,
+          "retransmittedBytesReceived": 3255,
+          "packetsReceivedWithEct1": 0,
+          "keyFramesDecoded": 1,
+          "frameWidth": 320,
+          "framesReceived": 180,
+          "jitterBufferDelay": 2.1520539999999997,
+          "codecId": "CIT01_96_level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=640c34",
+          "totalSquaredInterFrameDelay": 0.201176,
+          "jitter": 0.003,
+          "frameHeight": 240,
+          "packetsReceivedWithCe": 0,
+          "jitterBufferTargetDelay": 2.073662,
+          "jitterBufferEmittedCount": 179,
+          "framesPerSecond": 29.0,
+          "totalInterFrameDelay": 5.868,
+          "kind": "video",
+          "transportId": "T01",
+          "totalFreezesDuration": 0.0,
+          "mid": "1",
+          "remoteId": "ROV964378955",
+          "totalDecodeTime": 0.45546,
+          "totalPausesDuration": 0.0,
+          "rtxSsrc": 4025930232,
+          "pliCount": 0,
+          "decoderImplementation": "VideoToolbox",
+          "totalProcessingDelay": 2.614007,
+          "freezeCount": 0,
+          "packetsLost": 0,
+          "totalAssemblyTime": 0.027141,
+          "nackCount": 0,
+          "headerBytesReceived": 14404,
+          "minPlayoutDelay": 0.0
+        }
+      ],
+      "inboundDelta": {
+        "audioPacketsReceived": 308.0,
+        "audioSamplesReceived": 296160.0,
+        "videoFramesDecoded": 179.0
+      },
+      "pass": true
+    },
+    {
+      "name": "idle-after-1",
+      "seconds": 3,
+      "deviceBefore": {
+        "reverseFrames": 6014,
+        "captureSamples": 2880000,
+        "channels": 1,
+        "playedFrames": 2887168,
+        "underflowSamples": 714432,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "deviceAfter": {
+        "reverseFrames": 6315,
+        "captureSamples": 3024000,
+        "channels": 1,
+        "playedFrames": 3031552,
+        "underflowSamples": 858816,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "sourceRawAudioBytes": 288000,
+      "sourceCleanAudioBytes": 288000,
+      "sourceVideoFrames": 90,
+      "injectedCleanAudioBytes": 0,
+      "injectedVideoFrames": 0,
+      "droppedCleanAudioBytes": 0,
+      "droppedVideoFrames": 0,
+      "pass": true
+    },
+    {
+      "name": "send-2",
+      "minimumSeconds": 6,
+      "deviceBefore": {
+        "reverseFrames": 6406,
+        "captureSamples": 3067200,
+        "channels": 1,
+        "playedFrames": 3075072,
+        "underflowSamples": 902336,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "deviceAfter": {
+        "reverseFrames": 7026,
+        "captureSamples": 3364800,
+        "channels": 1,
+        "playedFrames": 3372544,
+        "underflowSamples": 1199808,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "sourceRawAudioBytes": 595200,
+      "sourceCleanAudioBytes": 595200,
+      "sourceVideoFrames": 184,
+      "injectedCleanAudioBytes": 595200,
+      "injectedVideoFrames": 184,
+      "droppedCleanAudioBytes": 0,
+      "droppedVideoFrames": 0,
+      "receiver": {
+        "pcmSamples": 297120,
+        "videoFrames": 178,
+        "rms": 0.054480642217857624
+      },
+      "inboundBefore": [
+        {
+          "id": "IT01A569816720",
+          "ssrc": 569816720,
+          "lastPacketReceivedTimestamp": 1792359686383.518,
+          "bytesReceived": 871,
+          "packetsDiscarded": 0,
+          "trackIdentifier": "external-audio",
+          "insertedSamplesForDeceleration": 960,
+          "totalSamplesDuration": 0.6400000000000003,
+          "concealmentEvents": 0,
+          "jitterBufferMinimumDelay": 1920.0,
+          "silentConcealedSamples": 0,
+          "fecPacketsDiscarded": 0,
+          "packetsReceived": 25,
+          "packetsReceivedWithEct1": 0,
+          "fecPacketsReceived": 0,
+          "delayedPacketOutageSamples": 1920,
+          "jitterBufferDelay": 316.8,
+          "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+          "jitter": 0.002,
+          "removedSamplesForAcceleration": 0,
+          "jitterBufferFlushes": 1,
+          "packetsReceivedWithCe": 0,
+          "jitterBufferTargetDelay": 1920.0,
+          "jitterBufferEmittedCount": 24000,
+          "audioLevel": 3.051850947599719e-05,
+          "kind": "audio",
+          "transportId": "T01",
+          "concealedSamples": 0,
+          "relativePacketArrivalDelay": 0.0,
+          "mid": "0",
+          "totalInterruptionDuration": 0.0,
+          "totalAudioEnergy": 7.078483596837624e-10,
+          "totalProcessingDelay": 254.49888,
+          "totalSamplesReceived": 23520,
+          "packetsLost": 0,
+          "interruptionCount": 0,
+          "headerBytesReceived": 700
+        }
+      ],
+      "inboundAfter": [
+        {
+          "id": "IT01A569816720",
+          "ssrc": 569816720,
+          "lastPacketReceivedTimestamp": 1792359692581.865,
+          "bytesReceived": 26085,
+          "packetsDiscarded": 0,
+          "trackIdentifier": "external-audio",
+          "insertedSamplesForDeceleration": 1608,
+          "totalSamplesDuration": 6.849999999999898,
+          "concealmentEvents": 2,
+          "jitterBufferMinimumDelay": 19776.0,
+          "silentConcealedSamples": 0,
+          "fecPacketsDiscarded": 0,
+          "packetsReceived": 335,
+          "packetsReceivedWithEct1": 0,
+          "fecPacketsReceived": 0,
+          "delayedPacketOutageSamples": 3944,
+          "jitterBufferDelay": 20419.2,
+          "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+          "jitter": 0.003,
+          "removedSamplesForAcceleration": 1056,
+          "jitterBufferFlushes": 1,
+          "packetsReceivedWithCe": 0,
+          "jitterBufferTargetDelay": 19776.0,
+          "jitterBufferEmittedCount": 319680,
+          "audioLevel": 0.1640369884334849,
+          "kind": "audio",
+          "transportId": "T01",
+          "concealedSamples": 2024,
+          "relativePacketArrivalDelay": 0.38,
+          "mid": "0",
+          "remoteId": "ROA569816720",
+          "totalInterruptionDuration": 0.0,
+          "totalAudioEnergy": 0.1710368897044719,
+          "totalProcessingDelay": 20144.72064,
+          "totalSamplesReceived": 321600,
+          "packetsLost": 0,
+          "interruptionCount": 0,
+          "headerBytesReceived": 9380
+        },
+        {
+          "id": "IT01V3781492962",
+          "ssrc": 3781492962,
+          "googTimingFrameInfo": "2252551963,-12,-11,-5,-5,-1,-12,-12,66641699,66641699,66641703,66641705,66641716,0,1",
+          "lastPacketReceivedTimestamp": 1792359692602.707,
+          "pauseCount": 0,
+          "bytesReceived": 434371,
+          "trackIdentifier": "external-video",
+          "powerEfficientDecoder": false,
+          "framesDecoded": 178,
+          "jitterBufferMinimumDelay": 1.9907359999999998,
+          "framesDropped": 0,
+          "framesAssembledFromMultiplePackets": 174,
+          "retransmittedPacketsReceived": 13,
+          "packetsReceived": 447,
+          "firCount": 0,
+          "retransmittedBytesReceived": 5761,
+          "packetsReceivedWithEct1": 0,
+          "keyFramesDecoded": 1,
+          "frameWidth": 320,
+          "framesReceived": 179,
+          "jitterBufferDelay": 2.000409,
+          "codecId": "CIT01_96_level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=640c34",
+          "totalSquaredInterFrameDelay": 0.22023200000000007,
+          "jitter": 0.003,
+          "frameHeight": 240,
+          "packetsReceivedWithCe": 0,
+          "jitterBufferTargetDelay": 1.9907359999999998,
+          "jitterBufferEmittedCount": 178,
+          "framesPerSecond": 29.0,
+          "totalInterFrameDelay": 6.054,
+          "kind": "video",
+          "transportId": "T01",
+          "totalFreezesDuration": 0.0,
+          "mid": "1",
+          "remoteId": "ROV3781492962",
+          "totalDecodeTime": 0.382098,
+          "totalPausesDuration": 0.0,
+          "rtxSsrc": 1857353024,
+          "pliCount": 0,
+          "decoderImplementation": "VideoToolbox",
+          "totalProcessingDelay": 2.3926369999999997,
+          "freezeCount": 0,
+          "packetsLost": 0,
+          "totalAssemblyTime": 0.032403999999999995,
+          "nackCount": 0,
+          "headerBytesReceived": 12986,
+          "minPlayoutDelay": 0.0
+        }
+      ],
+      "inboundDelta": {
+        "audioPacketsReceived": 310.0,
+        "audioSamplesReceived": 298080.0,
+        "videoFramesDecoded": 178.0
+      },
+      "pass": true
+    },
+    {
+      "name": "idle-after-2",
+      "seconds": 3,
+      "deviceBefore": {
+        "reverseFrames": 7028,
+        "captureSamples": 3364800,
+        "channels": 1,
+        "playedFrames": 3373568,
+        "underflowSamples": 1200832,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "deviceAfter": {
+        "reverseFrames": 7328,
+        "captureSamples": 3508800,
+        "channels": 1,
+        "playedFrames": 3517440,
+        "underflowSamples": 1344704,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "sourceRawAudioBytes": 288000,
+      "sourceCleanAudioBytes": 288000,
+      "sourceVideoFrames": 89,
+      "injectedCleanAudioBytes": 0,
+      "injectedVideoFrames": 0,
+      "droppedCleanAudioBytes": 0,
+      "droppedVideoFrames": 0,
+      "pass": true
+    }
+  ],
+  "transport": {
+    "input": "standalone AEC cleaned PCM and the same camera BGRA frames",
+    "totals": {
+      "sourceRawAudioBytes": 7027200,
+      "sourceCleanAudioBytes": 7027200,
+      "sourceVideoFrames": 2082,
+      "injectedCleanAudioBytes": 1190400,
+      "injectedVideoFrames": 369,
+      "droppedCleanAudioBytes": 0,
+      "droppedVideoFrames": 0
+    },
+    "rawRecordingContainsTransportTail": true,
+    "nearEndDuringTransport": "digital fixture added only to capture",
+    "receiverPlayback": "lab custom WebRTC ADM discards receiver playout",
+    "acousticAnalysisExcludesTransport": true,
+    "pass": true
+  },
+  "errors": [],
+  "remoteFarAcousticAnalysis": {
+    "rawRenderProjection": {
+      "lagSamples": -488,
+      "gain": 0.311969347253157,
+      "correlation": 0.596557814527939,
+      "projectedRmsDbfs": -43.041705208571955
+    },
+    "cleanRenderProjection": {
+      "lagSamples": -57,
+      "gain": 0.014633407594979952,
+      "correlation": 0.14110414805465013,
+      "projectedRmsDbfs": -69.61553922384275
+    },
+    "correlatedEchoReductionDb": 26.575329094945587,
+    "note": "Short remote-playout phase, not part of digital acceptance or physical near-end speech validation."
+  },
+  "analysis": {
+    "method": "RMS comparison excludes first second; near matched projection uses near-only alignment for doubletalk. Physical RMS attenuation is not ERLE and includes ambient noise.",
+    "globalRenderLagSamples": -487,
+    "phases": [
+      {
+        "name": "baseline",
+        "secondsAnalyzed": 2.0,
+        "rawRmsDbfs": -49.58250110685676,
+        "cleanRmsDbfs": -50.08732299356096,
+        "rmsAttenuationDb": 0.504821886704196,
+        "rawDcMean": 0.038927083333333334,
+        "rawPeak": 642.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0
+      },
+      {
+        "name": "near-only",
+        "secondsAnalyzed": 5.0,
+        "rawRmsDbfs": -46.01882958089167,
+        "cleanRmsDbfs": -24.76918264650802,
+        "rmsAttenuationDb": -21.24964693438365,
+        "rawDcMean": 0.020325,
+        "rawPeak": 1025.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0,
+        "nearAlignmentSamples": 432,
+        "nearSignedGain": 0.9765709313052264,
+        "nearGainDb": -0.20592414213197793,
+        "nearReferenceRmsDbfs": -24.655867025077423
+      },
+      {
+        "name": "far-1-warmup",
+        "secondsAnalyzed": 5.0,
+        "rawRmsDbfs": -41.59278733425577,
+        "cleanRmsDbfs": -46.45746182532008,
+        "rmsAttenuationDb": 4.864674491064308,
+        "rawDcMean": -0.065375,
+        "rawPeak": 1126.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0,
+        "rawRenderProjection": {
+          "lagSamples": -484,
+          "gain": 0.1661702135994915,
+          "correlation": 0.482980999082923,
+          "projectedRmsDbfs": -47.914186423397624
+        },
+        "cleanRenderProjection": {
+          "lagSamples": -54,
+          "gain": 0.026699509120003618,
+          "correlation": 0.13584916584486925,
+          "projectedRmsDbfs": -63.79632230407811
+        },
+        "correlatedEchoReductionDb": 15.880998026820292
+      },
+      {
+        "name": "far-1",
+        "secondsAnalyzed": 5.0,
+        "rawRmsDbfs": -38.754143241101175,
+        "cleanRmsDbfs": -42.04993721168486,
+        "rmsAttenuationDb": 3.295793970583696,
+        "rawDcMean": 0.21142916666666667,
+        "rawPeak": 1793.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0,
+        "rawRenderProjection": {
+          "lagSamples": -484,
+          "gain": 0.23874134307759853,
+          "correlation": 0.5004643178098628,
+          "projectedRmsDbfs": -44.766680870756645
+        },
+        "cleanRenderProjection": {
+          "lagSamples": -54,
+          "gain": 0.0458062340424322,
+          "correlation": 0.14030329632319594,
+          "projectedRmsDbfs": -59.10857972010448
+        },
+        "correlatedEchoReductionDb": 14.340060899767904
+      },
+      {
+        "name": "doubletalk",
+        "secondsAnalyzed": 5.0,
+        "rawRmsDbfs": -37.57506172761968,
+        "cleanRmsDbfs": -24.730756948725077,
+        "rmsAttenuationDb": -12.844304778894607,
+        "rawDcMean": 0.03205,
+        "rawPeak": 1852.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0,
+        "rawRenderProjection": {
+          "lagSamples": -487,
+          "gain": 0.42931191270843555,
+          "correlation": 0.7887174449774383,
+          "projectedRmsDbfs": -39.63663279309103
+        },
+        "cleanRenderProjection": {
+          "lagSamples": -57,
+          "gain": 0.1973700315039682,
+          "correlation": 0.08271500128680566,
+          "projectedRmsDbfs": -46.379071331975545
+        },
+        "correlatedEchoReductionDb": 6.749834583497205,
+        "nearAlignmentSamples": 432,
+        "nearSignedGain": 0.9755760569595718,
+        "nearGainDb": -0.2147773376855583,
+        "nearReferenceRmsDbfs": -24.686119176849623
+      },
+      {
+        "name": "quiet-between",
+        "secondsAnalyzed": 2.0,
+        "rawRmsDbfs": -43.50834755829972,
+        "cleanRmsDbfs": -43.93363750906754,
+        "rmsAttenuationDb": 0.42528995076781323,
+        "rawDcMean": -0.04205208333333333,
+        "rawPeak": 1276.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0
+      },
+      {
+        "name": "far-2",
+        "secondsAnalyzed": 5.0,
+        "rawRmsDbfs": -37.31275323160843,
+        "cleanRmsDbfs": -46.58260405602068,
+        "rmsAttenuationDb": 9.269850824412245,
+        "rawDcMean": 0.010133333333333333,
+        "rawPeak": 1970.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0,
+        "rawRenderProjection": {
+          "lagSamples": -488,
+          "gain": 0.2663027104362743,
+          "correlation": 0.4730913249675122,
+          "projectedRmsDbfs": -43.813853541543146
+        },
+        "cleanRenderProjection": {
+          "lagSamples": -47,
+          "gain": 0.04022339807794344,
+          "correlation": 0.20789822790983836,
+          "projectedRmsDbfs": -60.22558830616461
+        },
+        "correlatedEchoReductionDb": 16.417936593144354
+      },
+      {
+        "name": "quiet-after",
+        "secondsAnalyzed": 2.0,
+        "rawRmsDbfs": -50.75922766279467,
+        "cleanRmsDbfs": -51.2249747258954,
+        "rmsAttenuationDb": 0.4657470631007322,
+        "rawDcMean": 0.05646875,
+        "rawPeak": 397.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0
+      }
+    ],
+    "artifactsSha256": {
+      "near.pcm": "5f32f85107df5d1dadf2fea4b70bee6581f4e7393f6c83468c0ef9b26920db25",
+      "remote_far_received.pcm": "45e3e94e2de295894760a74615c4ef44d14ad20467c4631be4abad1a558af8c6",
+      "mixed.pcm": "fc1cb7600915ad775078ddf0ddd8f059e679f8c904d274b9e01e2e47f46429b9",
+      "clean.pcm": "89fdf524499e937e089404acb6073fba81859d175f4a921dc23ee40ff5459142",
+      "reference.pcm": "885e920837e5ac8e2f7874bffcbe1f1faac7833f9af14db6143020c0e4a9ae8e",
+      "raw.pcm": "0ece6470bf0176a87f5a1ab18213c9b1b13bc18dfcafe8970b64e0056483da8b",
+      "actual_render.pcm": "7d4dca4d220c1103622557533cf23b3d41786d61920b2684f939ff141e7f632a",
+      "remote_far_fixture.pcm": "16f577319a0ccf6cdc90f9024cc4bc411ab326b5afa6758a485b6f10a6c92996"
+    }
+  }
+}

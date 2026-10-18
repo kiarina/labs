@@ -1,0 +1,16 @@
+[tools]
+flutter = "3.47.2"
+
+[tasks.default]
+description = "Validate retained digital and physical evidence"
+run = "python3 tools/verify_aec.py"
+
+[tasks.prepare]
+description = "Prepare pinned transport and private-namespace AEC3 sources"
+run = ["python3 tools/prepare.py", "python3 tools/prepare_aec.py"]
+
+[tasks.build-wasm]
+run = "python3 tools/build_wasm.py"
+
+[tasks.digital-native]
+run = ["cmake -S native -B build/aec-native -DCMAKE_BUILD_TYPE=Release -DAEC_BUILD_PROBE=ON", "cmake --build build/aec-native -j 8", "build/aec-native/aec_digital_probe"]

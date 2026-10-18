@@ -1,0 +1,49 @@
+{
+  "done": true,
+  "kind": "digital-aec3-wasm",
+  "acousticValidated": false,
+  "seed": 123456789,
+  "sampleRate": 48000,
+  "seconds": 18,
+  "echoDelayMs": 80,
+  "echoGain": 0.5,
+  "farOnly": {
+    "name": "far-only",
+    "echoGain": null,
+    "echoImprovementDb": null,
+    "inputRms": 860.5981683624995,
+    "outputRms": 0.7302444415703857,
+    "erleDb": 61.42664315006066,
+    "correlation": 0,
+    "lag": 0,
+    "gain": 0
+  },
+  "nearOnly": {
+    "name": "near-only",
+    "echoGain": null,
+    "echoImprovementDb": null,
+    "inputRms": 1271.0716638404208,
+    "outputRms": 1252.6217381594981,
+    "erleDb": 0.12700185628246174,
+    "correlation": 0.5908332203889449,
+    "lag": 432,
+    "gain": 0.5812144743417633
+  },
+  "doubleTalk": {
+    "name": "double-talk",
+    "echoGain": -0.0008372535625664908,
+    "echoImprovementDb": 55.52226000339775,
+    "inputRms": 1543.3258537548236,
+    "outputRms": 898.5152281835727,
+    "erleDb": 4.698643790718593,
+    "correlation": 0.5833885415619288,
+    "lag": 432,
+    "gain": 0.4120381223764477
+  },
+  "checks": {
+    "farOnlyReduction": true,
+    "nearOnlyPreserved": false,
+    "doubleTalkPreserved": false
+  },
+  "pass": false
+}

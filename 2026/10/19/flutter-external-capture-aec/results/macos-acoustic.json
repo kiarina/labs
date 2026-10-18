@@ -1,0 +1,467 @@
+{
+  "platform": "macos",
+  "recordingSource": "mic-fallback-unprocessed-unsupported",
+  "farPcmPeakBound": 2250,
+  "digitalNearPeakBound": 6000,
+  "mixedClippedSamples": 0,
+  "sampleRate": 48000,
+  "captureStarts": {
+    "microphone": 1,
+    "camera": 1
+  },
+  "maxAudioGapMs": 109.118,
+  "maxVideoGapMs": 58.066,
+  "phases": [
+    {
+      "name": "baseline",
+      "speakerSignal": false,
+      "digitalNearEnd": false,
+      "seconds": 3,
+      "start": {
+        "rawByte": 172800,
+        "cleanByte": 172800,
+        "renderByte": 0,
+        "video": 0
+      },
+      "end": {
+        "rawByte": 460800,
+        "cleanByte": 460800,
+        "renderByte": 278400,
+        "video": 88
+      },
+      "startStats": {
+        "reverseFrames": 441,
+        "captureSamples": 86400,
+        "channels": 1,
+        "playedFrames": 211968,
+        "underflowSamples": 211968,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "endStats": {
+        "reverseFrames": 745,
+        "captureSamples": 230400,
+        "channels": 1,
+        "playedFrames": 357888,
+        "underflowSamples": 219168,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      }
+    },
+    {
+      "name": "near-only",
+      "speakerSignal": false,
+      "digitalNearEnd": true,
+      "seconds": 6,
+      "start": {
+        "rawByte": 470400,
+        "cleanByte": 460800,
+        "renderByte": 278400,
+        "video": 88
+      },
+      "end": {
+        "rawByte": 1046400,
+        "cleanByte": 1046400,
+        "renderByte": 853440,
+        "video": 268
+      },
+      "startStats": {
+        "reverseFrames": 746,
+        "captureSamples": 235200,
+        "channels": 1,
+        "playedFrames": 358400,
+        "underflowSamples": 219200,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "endStats": {
+        "reverseFrames": 1346,
+        "captureSamples": 523200,
+        "channels": 1,
+        "playedFrames": 646144,
+        "underflowSamples": 220320,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      }
+    },
+    {
+      "name": "far-1-warmup",
+      "speakerSignal": true,
+      "digitalNearEnd": false,
+      "seconds": 6,
+      "start": {
+        "rawByte": 1046400,
+        "cleanByte": 1046400,
+        "renderByte": 853440,
+        "video": 268
+      },
+      "end": {
+        "rawByte": 1622400,
+        "cleanByte": 1622400,
+        "renderByte": 1424640,
+        "video": 447
+      },
+      "startStats": {
+        "reverseFrames": 1346,
+        "captureSamples": 523200,
+        "channels": 1,
+        "playedFrames": 646144,
+        "underflowSamples": 220320,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "endStats": {
+        "reverseFrames": 1946,
+        "captureSamples": 811200,
+        "channels": 1,
+        "playedFrames": 934400,
+        "underflowSamples": 222816,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      }
+    },
+    {
+      "name": "far-1",
+      "speakerSignal": true,
+      "digitalNearEnd": false,
+      "seconds": 6,
+      "start": {
+        "rawByte": 1622400,
+        "cleanByte": 1622400,
+        "renderByte": 1424640,
+        "video": 447
+      },
+      "end": {
+        "rawByte": 2198400,
+        "cleanByte": 2198400,
+        "renderByte": 1996800,
+        "video": 627
+      },
+      "startStats": {
+        "reverseFrames": 1946,
+        "captureSamples": 811200,
+        "channels": 1,
+        "playedFrames": 934400,
+        "underflowSamples": 222816,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "endStats": {
+        "reverseFrames": 2547,
+        "captureSamples": 1099200,
+        "channels": 1,
+        "playedFrames": 1222656,
+        "underflowSamples": 224736,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      }
+    },
+    {
+      "name": "doubletalk",
+      "speakerSignal": true,
+      "digitalNearEnd": true,
+      "seconds": 6,
+      "start": {
+        "rawByte": 2198400,
+        "cleanByte": 2198400,
+        "renderByte": 1996800,
+        "video": 627
+      },
+      "end": {
+        "rawByte": 2774400,
+        "cleanByte": 2774400,
+        "renderByte": 2563200,
+        "video": 808
+      },
+      "startStats": {
+        "reverseFrames": 2547,
+        "captureSamples": 1099200,
+        "channels": 1,
+        "playedFrames": 1222656,
+        "underflowSamples": 224736,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "endStats": {
+        "reverseFrames": 3147,
+        "captureSamples": 1387200,
+        "channels": 1,
+        "playedFrames": 1510912,
+        "underflowSamples": 230048,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      }
+    },
+    {
+      "name": "quiet-between",
+      "speakerSignal": false,
+      "digitalNearEnd": false,
+      "seconds": 3,
+      "start": {
+        "rawByte": 2774400,
+        "cleanByte": 2774400,
+        "renderByte": 2563200,
+        "video": 808
+      },
+      "end": {
+        "rawByte": 3062400,
+        "cleanByte": 3062400,
+        "renderByte": 2845440,
+        "video": 897
+      },
+      "startStats": {
+        "reverseFrames": 3147,
+        "captureSamples": 1387200,
+        "channels": 1,
+        "playedFrames": 1510912,
+        "underflowSamples": 230048,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "endStats": {
+        "reverseFrames": 3447,
+        "captureSamples": 1531200,
+        "channels": 1,
+        "playedFrames": 1654784,
+        "underflowSamples": 232960,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      }
+    },
+    {
+      "name": "far-2",
+      "speakerSignal": true,
+      "digitalNearEnd": false,
+      "seconds": 6,
+      "start": {
+        "rawByte": 3062400,
+        "cleanByte": 3062400,
+        "renderByte": 2845440,
+        "video": 897
+      },
+      "end": {
+        "rawByte": 3638400,
+        "cleanByte": 3638400,
+        "renderByte": 3415680,
+        "video": 1077
+      },
+      "startStats": {
+        "reverseFrames": 3447,
+        "captureSamples": 1531200,
+        "channels": 1,
+        "playedFrames": 1654784,
+        "underflowSamples": 232960,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "endStats": {
+        "reverseFrames": 4048,
+        "captureSamples": 1819200,
+        "channels": 1,
+        "playedFrames": 1943040,
+        "underflowSamples": 236256,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      }
+    },
+    {
+      "name": "quiet-after",
+      "speakerSignal": false,
+      "digitalNearEnd": false,
+      "seconds": 3,
+      "start": {
+        "rawByte": 3638400,
+        "cleanByte": 3638400,
+        "renderByte": 3415680,
+        "video": 1077
+      },
+      "end": {
+        "rawByte": 3926400,
+        "cleanByte": 3926400,
+        "renderByte": 3701760,
+        "video": 1166
+      },
+      "startStats": {
+        "reverseFrames": 4048,
+        "captureSamples": 1819200,
+        "channels": 1,
+        "playedFrames": 1943040,
+        "underflowSamples": 236256,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      },
+      "endStats": {
+        "reverseFrames": 4348,
+        "captureSamples": 1963200,
+        "channels": 1,
+        "playedFrames": 2087424,
+        "underflowSamples": 237024,
+        "route": "AVAudioEngine output",
+        "sampleRate": 48000
+      }
+    }
+  ],
+  "errors": [],
+  "analysis": {
+    "method": "RMS comparison excludes first second; near matched projection uses near-only alignment for doubletalk. Physical RMS attenuation is not ERLE and includes ambient noise.",
+    "globalRenderLagSamples": -119247,
+    "phases": [
+      {
+        "name": "baseline",
+        "secondsAnalyzed": 2.0,
+        "rawRmsDbfs": -43.678876205345176,
+        "cleanRmsDbfs": -44.136892096017135,
+        "rmsAttenuationDb": 0.45801589067195925,
+        "rawDcMean": 0.08866666666666667,
+        "rawPeak": 2818.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0
+      },
+      {
+        "name": "near-only",
+        "secondsAnalyzed": 5.0,
+        "rawRmsDbfs": -48.52838162873893,
+        "cleanRmsDbfs": -24.83138348500944,
+        "rmsAttenuationDb": -23.69699814372948,
+        "rawDcMean": -0.040454166666666666,
+        "rawPeak": 2221.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0,
+        "nearAlignmentSamples": 432,
+        "nearSignedGain": 0.9759981837585283,
+        "nearGainDb": -0.21101981028056704,
+        "nearReferenceRmsDbfs": -24.688350780658276
+      },
+      {
+        "name": "far-1-warmup",
+        "secondsAnalyzed": 5.0,
+        "rawRmsDbfs": -40.695005820178494,
+        "cleanRmsDbfs": -46.38319438817827,
+        "rmsAttenuationDb": 5.688188567999774,
+        "rawDcMean": 0.01035,
+        "rawPeak": 6193.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0,
+        "rawRenderProjection": {
+          "lagSamples": -119244,
+          "gain": 0.17598930535990015,
+          "correlation": 0.4625088498787236,
+          "projectedRmsDbfs": -47.39260487687319
+        },
+        "cleanRenderProjection": {
+          "lagSamples": -118818,
+          "gain": -0.03165480421212629,
+          "correlation": -0.1602852379983801,
+          "projectedRmsDbfs": -62.28532386012969
+        },
+        "correlatedEchoReductionDb": 14.9009329078676
+      },
+      {
+        "name": "far-1",
+        "secondsAnalyzed": 5.0,
+        "rawRmsDbfs": -40.55743099802078,
+        "cleanRmsDbfs": -46.21105880549082,
+        "rmsAttenuationDb": 5.6536278074700554,
+        "rawDcMean": -0.0414375,
+        "rawPeak": 1597.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0,
+        "rawRenderProjection": {
+          "lagSamples": -119244,
+          "gain": 0.2638936625213483,
+          "correlation": 0.6805586478474054,
+          "projectedRmsDbfs": -43.900119859430575
+        },
+        "cleanRenderProjection": {
+          "lagSamples": -118814,
+          "gain": 0.06800614970735075,
+          "correlation": 0.33616589425087845,
+          "projectedRmsDbfs": -55.67998580664562
+        },
+        "correlatedEchoReductionDb": 11.777615469581722
+      },
+      {
+        "name": "doubletalk",
+        "secondsAnalyzed": 5.0,
+        "rawRmsDbfs": -37.940097483594286,
+        "cleanRmsDbfs": -24.739691877827006,
+        "rmsAttenuationDb": -13.200405605767278,
+        "rawDcMean": -0.056329166666666666,
+        "rawPeak": 1606.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0,
+        "rawRenderProjection": {
+          "lagSamples": -119247,
+          "gain": 0.46243804510313735,
+          "correlation": 0.877295382390966,
+          "projectedRmsDbfs": -39.0771806141342
+        },
+        "cleanRenderProjection": {
+          "lagSamples": -118817,
+          "gain": 0.16885454659108,
+          "correlation": 0.07013632712786279,
+          "projectedRmsDbfs": -47.82083149432743
+        },
+        "correlatedEchoReductionDb": 8.750815952355019,
+        "nearAlignmentSamples": 432,
+        "nearSignedGain": 0.9763317341854615,
+        "nearGainDb": -0.20805188749391992,
+        "nearReferenceRmsDbfs": -24.65791888572095
+      },
+      {
+        "name": "quiet-between",
+        "secondsAnalyzed": 2.0,
+        "rawRmsDbfs": -46.98298885508514,
+        "cleanRmsDbfs": -47.42935092368719,
+        "rmsAttenuationDb": 0.4463620686020509,
+        "rawDcMean": -0.04870833333333333,
+        "rawPeak": 2131.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0
+      },
+      {
+        "name": "far-2",
+        "secondsAnalyzed": 5.0,
+        "rawRmsDbfs": -37.29045869107467,
+        "cleanRmsDbfs": -48.05365256225406,
+        "rmsAttenuationDb": 10.763193871179391,
+        "rawDcMean": 0.007445833333333333,
+        "rawPeak": 2102.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0,
+        "rawRenderProjection": {
+          "lagSamples": -119240,
+          "gain": 0.27719543068839303,
+          "correlation": 0.4902939803086943,
+          "projectedRmsDbfs": -43.48132746840139
+        },
+        "cleanRenderProjection": {
+          "lagSamples": -118798,
+          "gain": -0.019918870777775894,
+          "correlation": -0.12164463961962431,
+          "projectedRmsDbfs": -66.35179304001795
+        },
+        "correlatedEchoReductionDb": 22.87042705779919
+      },
+      {
+        "name": "quiet-after",
+        "secondsAnalyzed": 2.0,
+        "rawRmsDbfs": -49.591543007394954,
+        "cleanRmsDbfs": -50.07443926163142,
+        "rmsAttenuationDb": 0.48289625423646293,
+        "rawDcMean": 0.14573958333333334,
+        "rawPeak": 882.0,
+        "rawClipped32700Fraction": 0.0,
+        "rawPeak26027Fraction": 0.0
+      }
+    ],
+    "artifactsSha256": {
+      "near.pcm": "459ee73a3db355966399eb4ad75f409203d896314d9947a57ff09f8b9f781cdf",
+      "mixed.pcm": "f9f01d2cd5831910e07ad9211df5187510656abd6b55a628fe3b67dabf631dd7",
+      "clean.pcm": "684b14390168d8dd93fdfb6c8c1d63e69bfcf477dcd0466836e1dd848feab951",
+      "reference.pcm": "b2338081f0fb0b3b1c175dbc6da2d0bf3527a4fa4ea386c9164dc0729a821c45",
+      "raw.pcm": "855a369d9d086fff12b3836c2dc407041b7343f23d9fdd773e95597e75043715",
+      "actual_render.pcm": "ae2e8cd0d5de32353ba29c57dcc13df60c2ab9b3a144555e47cca56223055469"
+    }
+  }
+}
