@@ -70,6 +70,8 @@ r=load('demo-synthetic-roundtrip.json');assert r['ok'] and not r['physical_micro
 assert '109' in r['thinker_result'] and '109' in r['voice_transcript']
 assert r['stats']['outputNonzeroSamples']>0 and r['stats']['outputCompletedBuffers']>0 and r['stats']['videoFrames']==0
 checks.append('Flutter synthetic external input reaches Thinker and receives nonzero audio consumed by AVAudioEngine')
+assert load('segmented-asr-validation.json')['ok'] is True
+checks.append('segmented ASR maps six alternating speaker segments; prompt-only silent-ASR failures are retained')
 for p in (root/'results').glob('*.json'):
  s=p.read_text();assert '/Users/'not in s and 'sk-'not in s and 'Bearer 'not in s,p
 print(json.dumps({'ok':True,'checks':checks,'live_runs_repeated':False},indent=2))

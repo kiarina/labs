@@ -1,0 +1,57 @@
+{
+  "ok": true,
+  "cases": [
+    {
+      "case": "first",
+      "evidence_valid": true,
+      "checks": {
+        "six_nonempty_transcripts": true,
+        "unique_binding": true,
+        "speaker_reentry": true,
+        "auth_chatgpt_only": true,
+        "no_backing_turns": true,
+        "silence_filtered": true,
+        "ordered_source_ranges": true,
+        "no_queue_loss": true,
+        "observed_speech_failure_retained": true
+      },
+      "mapping_observed": true,
+      "strict_silent_asr": false,
+      "spoken_segments": [
+        "segment-1",
+        "segment-3"
+      ],
+      "server_done_segments": 2,
+      "provisional_segments": 4,
+      "sent_seconds": 14.528,
+      "input_seconds": 20.16
+    },
+    {
+      "case": "strong",
+      "evidence_valid": true,
+      "checks": {
+        "six_nonempty_transcripts": true,
+        "unique_binding": true,
+        "speaker_reentry": true,
+        "auth_chatgpt_only": true,
+        "no_backing_turns": true,
+        "silence_filtered": true,
+        "ordered_source_ranges": true,
+        "no_queue_loss": true,
+        "observed_speech_failure_retained": true
+      },
+      "mapping_observed": true,
+      "strict_silent_asr": false,
+      "spoken_segments": [
+        "segment-4",
+        "segment-6"
+      ],
+      "server_done_segments": 2,
+      "provisional_segments": 4,
+      "sent_seconds": 14.528,
+      "input_seconds": 20.16
+    }
+  ],
+  "conclusion": "Per-segment identity binding works in this fixture; prompt-only silent ASR failed in both runs; quiescence is provisional, not a server completion guarantee",
+  "live_runs_repeated": false
+}

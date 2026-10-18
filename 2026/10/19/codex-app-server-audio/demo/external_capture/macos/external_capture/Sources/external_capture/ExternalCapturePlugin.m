@@ -28,13 +28,14 @@
 @property(nonatomic) NSUInteger droppedBytes;
 @property(nonatomic) NSUInteger deliveredBlocks;
 @property(nonatomic) NSUInteger underflows;
+@property(nonatomic) BOOL outputEnabled;
 @property(nonatomic) NSUInteger outputNonzeroSamples;
 @property(nonatomic) NSUInteger outputCompletedBuffers;
 - (void)enqueue:(NSData *)data;
 - (void)clear;
 @end
 @implementation ExternalAudioDevice
-- (instancetype)init { if ((self=[super init])) { _lock=[NSLock new];_pending=[NSMutableData new];atomic_init(&_stop,false);atomic_init(&_recording,false);atomic_init(&_playing,false);atomic_init(&_queued,0); } return self; }
+- (instancetype)init { if ((self=[super init])) { _lock=[NSLock new];_pending=[NSMutableData new];atomic_init(&_stop,false);atomic_init(&_recording,false);atomic_init(&_playing,false);atomic_init(&_queued,0);self.outputEnabled=YES; } return self; }
 - (double)deviceInputSampleRate{return 48000;}
 - (double)deviceOutputSampleRate{return 48000;}
 - (NSTimeInterval)inputIOBufferDuration{return .01;}
@@ -82,7 +83,7 @@
     AudioBufferList list={.mNumberBuffers=1,.mBuffers={{.mNumberChannels=1,.mDataByteSize=sizeof(out),.mData=out}}};
     self.delegate.getPlayoutData(&flags,&stamp,0,480,&list);
     for(int i=0;i<480;i++)if(out[i])self.outputNonzeroSamples++;
-    if(atomic_load(&_queued)<20){AVAudioPCMBuffer *buffer=[[AVAudioPCMBuffer alloc]initWithPCMFormat:_format frameCapacity:480];buffer.frameLength=480;for(int i=0;i<480;i++)buffer.floatChannelData[0][i]=out[i]/32768.0f;atomic_fetch_add(&_queued,1);[_player scheduleBuffer:buffer completionHandler:^{atomic_fetch_sub(&self->_queued,1);self.outputCompletedBuffers++;}];}
+    if(atomic_load(&_queued)<20){AVAudioPCMBuffer *buffer=[[AVAudioPCMBuffer alloc]initWithPCMFormat:_format frameCapacity:480];buffer.frameLength=480;for(int i=0;i<480;i++)buffer.floatChannelData[0][i]=self.outputEnabled?out[i]/32768.0f:0;atomic_fetch_add(&_queued,1);[_player scheduleBuffer:buffer completionHandler:^{atomic_fetch_sub(&self->_queued,1);self.outputCompletedBuffers++;}];}
    }
   }
   next+=.01;double wait=next-NSProcessInfo.processInfo.systemUptime;if(wait>0)[NSThread sleepForTimeInterval:wait];else if(wait<-.1)next=NSProcessInfo.processInfo.systemUptime;
@@ -135,6 +136,7 @@
   CVPixelBufferLockBaseAddress(pixel,0);uint8_t *dst=CVPixelBufferGetBaseAddress(pixel);const uint8_t *src=data.data.bytes;size_t stride=CVPixelBufferGetBytesPerRow(pixel);for(int y=0;y<h;y++)memcpy(dst+y*stride,src+y*w*4,w*4);CVPixelBufferUnlockBaseAddress(pixel,0);
   RTCCVPixelBuffer *buffer=[[RTCCVPixelBuffer alloc]initWithPixelBuffer:pixel];RTCVideoFrame *frame=[[RTCVideoFrame alloc]initWithBuffer:buffer rotation:RTCVideoRotation_0 timeStampNs:[a[@"timestampUs"]longLongValue]*1000];[self.source capturer:self.capturer didCaptureVideoFrame:frame];CVPixelBufferRelease(pixel);self.videoFrames++;result(nil);
  }else if([call.method isEqual:@"stats"]){result(@{@"outputNonzeroSamples":@(self.audio.outputNonzeroSamples),@"outputCompletedBuffers":@(self.audio.outputCompletedBuffers),@"outputEngineRunning":@(self.audio.isPlaying),@"videoFrames":@(self.videoFrames),@"audioReceivedBytes":@(self.audio.receivedBytes),@"audioDroppedBytes":@(self.audio.droppedBytes),@"audioDeliveredBlocks":@(self.audio.deliveredBlocks),@"audioUnderflows":@(self.audio.underflows)});
+ }else if([call.method isEqual:@"setOutputEnabled"]){self.audio.outputEnabled=[a[@"enabled"]boolValue];result(nil);
  }else if([call.method isEqual:@"flush"]){[self.audio clear];result(nil);
  }else if([call.method isEqual:@"dispose"]){if(self.stream){[p.localTracks removeObjectForKey:@"external-video"];[p.localTracks removeObjectForKey:@"external-audio"];[p.localStreams removeObjectForKey:self.stream.streamId];}self.stream=nil;self.source=nil;self.capturer=nil;[self.audio clear];result(nil);
  }else result(FlutterMethodNotImplemented);

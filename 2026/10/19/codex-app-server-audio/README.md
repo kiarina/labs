@@ -8,6 +8,8 @@
 
 前提の [司令塔と app-server の lab](../08/flutter-agent-orchestrator-kiapi/README.md) とは独立した小さい Python クライアントを使う。
 
+VAD・話者分割後の区間だけを送るASR試験は [SEGMENTED_ASR.md](SEGMENTED_ASR.md) を参照。区間対応は確認したが、無発声は両条件で失敗した。
+
 Mac で会話を体験する小型アプリは [DEMO.md](DEMO.md) を参照。
 
 `record` の外部入力ブリッジとの接続候補と未検証点は [RECORD_INPUT.md](RECORD_INPUT.md) を参照。
