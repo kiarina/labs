@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "checks": [
+    "both versions enforce experimental opt-in and API-key-free WebSocket rejection",
+    "mock audio bytes are forwarded unchanged despite mismatched metadata; input/output notifications route",
+    "listed normal models omit audio; gpt-6-luna request replaces audio with omission marker",
+    "live mini conversational session produces the fixture transcript",
+    "transcription configuration alone fails; intent workaround also fails with model query",
+    "three explicit WebRTC configurations remain unconnected, not asserted universally unavailable"
+  ],
+  "live_runs_repeated": false
+}

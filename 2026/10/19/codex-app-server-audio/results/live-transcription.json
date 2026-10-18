@@ -1,0 +1,36 @@
+{
+  "kind": "live-openai-platform-smoke",
+  "mode": "transcription",
+  "version": "0.163.0",
+  "realtime_model": "gpt-realtime-mini",
+  "started": true,
+  "start_rpc": {
+    "id": 3,
+    "result": {}
+  },
+  "sent_bytes": 9600,
+  "fixture_bytes": 321984,
+  "fixture_sha256": "a5503c8158b14ed47625665a66161265e0062fba3d359ff399b648f5346c06de",
+  "wall_seconds": 10.108,
+  "normal_turn_started": false,
+  "events": [
+    {
+      "method": "thread/realtime/started",
+      "params": {
+        "version": "v2"
+      }
+    },
+    {
+      "method": "thread/realtime/error",
+      "params": {
+        "message": "Passing a transcription session update to a realtime session is not allowed."
+      }
+    },
+    {
+      "method": "thread/realtime/closed",
+      "params": {
+        "reason": "error"
+      }
+    }
+  ]
+}

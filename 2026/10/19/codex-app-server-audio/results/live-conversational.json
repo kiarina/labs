@@ -1,0 +1,265 @@
+{
+  "kind": "live-openai-platform-smoke",
+  "mode": "conversational",
+  "version": "0.163.0",
+  "intent_override": false,
+  "realtime_model": "gpt-realtime-mini",
+  "started": true,
+  "start_rpc": {
+    "id": 3,
+    "result": {}
+  },
+  "sent_bytes": 369984,
+  "fixture_bytes": 321984,
+  "fixture_sha256": "a5503c8158b14ed47625665a66161265e0062fba3d359ff399b648f5346c06de",
+  "wall_seconds": 10.322,
+  "normal_turn_started": false,
+  "events": [
+    {
+      "method": "thread/realtime/started",
+      "params": {
+        "version": "v2"
+      }
+    },
+    {
+      "method": "thread/realtime/itemAdded",
+      "params": {
+        "item": {
+          "type": "input_audio_buffer.speech_started",
+          "item_id": "item_EaPVnXW4XLfKQP8qMf0TH"
+        }
+      }
+    },
+    {
+      "method": "thread/realtime/itemAdded",
+      "params": {
+        "item": {
+          "id": "item_EaPVnXW4XLfKQP8qMf0TH",
+          "type": "message",
+          "status": "completed",
+          "role": "user",
+          "content": [
+            {
+              "type": "input_audio",
+              "transcript": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": "Did"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " you"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " bring"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " the"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " map"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": "?"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " Yes"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": ","
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " it"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " is"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " right"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " here"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": "."
+      }
+    },
+    {
+      "method": "thread/realtime/itemAdded",
+      "params": {
+        "item": {
+          "id": "item_EaPVrn8UwjlRPwQZY2OCP",
+          "type": "message",
+          "status": "in_progress",
+          "role": "assistant",
+          "content": []
+        }
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "assistant",
+        "delta": "Great"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "assistant",
+        "delta": "!"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "assistant",
+        "delta": " Let"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "assistant",
+        "delta": " me"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "assistant",
+        "delta": " know"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "assistant",
+        "delta": " if"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "assistant",
+        "delta": " you"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "assistant",
+        "delta": " need"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "assistant",
+        "delta": " any"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "assistant",
+        "delta": " help"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "assistant",
+        "delta": " with"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "assistant",
+        "delta": " it"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "assistant",
+        "delta": "."
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/done",
+      "params": {
+        "role": "user",
+        "text": "Did you bring the map? Yes, it is right here."
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/done",
+      "params": {
+        "role": "assistant",
+        "text": "Great! Let me know if you need any help with it."
+      }
+    },
+    {
+      "method": "thread/realtime/closed",
+      "params": {
+        "reason": "requested"
+      }
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "kind": "mock-upstream-no-ASR-inference",
+  "mode": "transcription",
+  "start": {
+    "id": 3,
+    "result": {}
+  },
+  "append": {
+    "id": 4,
+    "result": {}
+  },
+  "stop": {
+    "id": 5,
+    "result": {}
+  },
+  "session_type": "transcription",
+  "audio_config": {
+    "input": {
+      "format": {
+        "type": "audio/pcm",
+        "rate": 24000
+      },
+      "transcription": {
+        "model": "gpt-4o-mini-transcribe"
+      }
+    }
+  },
+  "tool_names": [],
+  "upstream_types": [
+    "session.update",
+    "input_audio_buffer.append"
+  ],
+  "forwarded_bytes_unchanged": true,
+  "forwarded_fields": [
+    "type",
+    "audio"
+  ],
+  "normal_turn_started": false,
+  "events": [
+    {
+      "method": "thread/realtime/started",
+      "params": {
+        "version": "v2"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": "fixture "
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/done",
+      "params": {
+        "role": "user",
+        "text": "fixture transcript"
+      }
+    },
+    {
+      "method": "thread/realtime/outputAudio/delta",
+      "params": {
+        "audio": {
+          "sampleRate": 24000,
+          "numChannels": 1,
+          "samplesPerChannel": null,
+          "itemId": null,
+          "bytes": 4800,
+          "sha256": "24ddaa4710480313757f965c38d60208a334556cb244f830d5006a893edd8da7"
+        }
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "assistant",
+        "delta": "fixture answer"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/done",
+      "params": {
+        "role": "assistant",
+        "text": "fixture answer"
+      }
+    },
+    {
+      "method": "thread/realtime/closed",
+      "params": {
+        "reason": "requested"
+      }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Check experimental capability and existing ChatGPT login without key fallback"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+python3 tools/probe.py
+python3 tools/capabilities.py

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Opt-in short Platform-key real-service audio smoke"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+python3 tools/live_ws.py

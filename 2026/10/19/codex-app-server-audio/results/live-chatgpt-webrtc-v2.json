@@ -1,0 +1,31 @@
+{
+  "kind": "live-chatgpt-auth-webrtc-smoke",
+  "cli": "0.163.0",
+  "aiortc": "1.15.0",
+  "api_key_fallback": false,
+  "version": "v2",
+  "realtime_model": "gpt-realtime-mini",
+  "start_rpc": {
+    "id": 3,
+    "result": {}
+  },
+  "answer_received": false,
+  "peer_connected": false,
+  "peer_state": "new",
+  "normal_turn_started": false,
+  "wall_seconds": 0.205,
+  "events": [
+    {
+      "method": "thread/realtime/error",
+      "params": {
+        "message": "AVAS realtime calls require realtime v1 or v3"
+      }
+    },
+    {
+      "method": "thread/realtime/closed",
+      "params": {
+        "reason": "requested"
+      }
+    }
+  ]
+}

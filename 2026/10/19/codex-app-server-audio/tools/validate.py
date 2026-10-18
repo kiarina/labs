@@ -1,0 +1,33 @@
+#!/usr/bin/env python3
+import json
+from pathlib import Path
+root=Path(__file__).resolve().parent.parent
+load=lambda p:json.loads((root/'results'/p).read_text())
+checks=[]
+for version in ['installed-0.159.3','stable-0.163.0']:
+ disabled=load(f'{version}-experimental-false.json');assert 'experimentalApi'in disabled['start']['error']['message']
+ enabled=load(f'{version}-experimental-true.json');assert enabled['account_type']=='chatgpt';assert enabled['start']['result']=={}
+ assert any(x['method']=='thread/realtime/error'and x['params']['message']=='realtime conversation requires API key auth'for x in enabled['events'])
+checks.append('both versions enforce experimental opt-in and API-key-free WebSocket rejection')
+for mode in ['conversational','transcription']:
+ r=load(f'mock-{mode}.json');assert r['forwarded_bytes_unchanged'];assert not r['normal_turn_started']
+ assert [x for x in r['events']if x['method']=='thread/realtime/transcript/done'and x['params']['role']=='user'][0]['params']['text']=='fixture transcript'
+ assert r['audio_config']['input']['format']=={'type':'audio/pcm','rate':24000}
+ assert r['audio_config']['input']['transcription']['model']=='gpt-4o-mini-transcribe'
+ assert r['upstream_types']==['session.update','input_audio_buffer.append']
+checks.append('mock audio bytes are forwarded unchanged despite mismatched metadata; input/output notifications route')
+r=load('mock-normal-turn.json');assert r['turn_completed']and not r['input_audio_present']and r['omission_marker_present']
+assert all(x['inputModalities']==['text','image']for x in load('model-modalities.json')['models'])
+checks.append('listed normal models omit audio; gpt-6-luna request replaces audio with omission marker')
+r=load('live-conversational.json');assert r['started']and r['sent_bytes']==369984 and not r['normal_turn_started']
+assert any(x['method']=='thread/realtime/transcript/done'and x['params']['role']=='user'and x['params']['text']=='Did you bring the map? Yes, it is right here.'for x in r['events'])
+checks.append('live mini conversational session produces the fixture transcript')
+for file,message in [('live-transcription.json','Passing a transcription session update to a realtime session is not allowed.'),('live-transcription-intent.json','You must not provide a model parameter for transcription sessions.')]:
+ assert any(x['method']=='thread/realtime/error'and x['params']['message']==message for x in load(file)['events'])
+checks.append('transcription configuration alone fails; intent workaround also fails with model query')
+for version in ['v1','v2','v3']:
+ r=load(f'live-chatgpt-webrtc-{version}.json');assert not r['answer_received']and not r['peer_connected']and not r['api_key_fallback'];assert any(x['method']=='thread/realtime/error'for x in r['events'])
+checks.append('three explicit WebRTC configurations remain unconnected, not asserted universally unavailable')
+for p in (root/'results').glob('*.json'):
+ s=p.read_text();assert '/Users/'not in s and 'sk-'not in s and 'Bearer 'not in s,p
+print(json.dumps({'ok':True,'checks':checks,'live_runs_repeated':False},indent=2))

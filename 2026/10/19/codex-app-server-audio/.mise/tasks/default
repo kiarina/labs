@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Validate retained results without network or paid inference"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+python3 tools/validate.py

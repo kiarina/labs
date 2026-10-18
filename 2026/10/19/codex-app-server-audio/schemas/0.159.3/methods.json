@@ -1,0 +1,23 @@
+{
+  "requests": [
+    "thread/realtime/start",
+    "thread/realtime/appendAudio",
+    "thread/realtime/appendText",
+    "thread/realtime/appendSpeech",
+    "thread/realtime/stop",
+    "thread/realtime/listVoices"
+  ],
+  "notifications": [
+    "thread/realtime/started",
+    "thread/realtime/itemAdded",
+    "thread/realtime/item/started",
+    "thread/realtime/item/transcript/delta",
+    "thread/realtime/item/completed",
+    "thread/realtime/transcript/delta",
+    "thread/realtime/transcript/done",
+    "thread/realtime/outputAudio/delta",
+    "thread/realtime/sdp",
+    "thread/realtime/error",
+    "thread/realtime/closed"
+  ]
+}

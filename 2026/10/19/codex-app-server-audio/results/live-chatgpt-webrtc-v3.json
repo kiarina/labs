@@ -1,0 +1,31 @@
+{
+  "kind": "live-chatgpt-auth-webrtc-smoke",
+  "cli": "0.163.0",
+  "aiortc": "1.15.0",
+  "api_key_fallback": false,
+  "version": "v3",
+  "realtime_model": "gpt-realtime-mini",
+  "start_rpc": {
+    "id": 3,
+    "result": {}
+  },
+  "answer_received": false,
+  "peer_connected": false,
+  "peer_state": "new",
+  "normal_turn_started": false,
+  "wall_seconds": 1.025,
+  "events": [
+    {
+      "method": "thread/realtime/error",
+      "params": {
+        "message": "{\"detail\":\"Field `session.model` is not allowed for this Codex realtime session\"}"
+      }
+    },
+    {
+      "method": "thread/realtime/closed",
+      "params": {
+        "reason": "requested"
+      }
+    }
+  ]
+}

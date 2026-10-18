@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Prepare isolated pinned CLI versions, schemas and shared fixture"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+tools/prepare.sh

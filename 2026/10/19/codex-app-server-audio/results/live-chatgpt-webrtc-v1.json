@@ -1,0 +1,31 @@
+{
+  "kind": "live-chatgpt-auth-webrtc-smoke",
+  "cli": "0.163.0",
+  "aiortc": "1.15.0",
+  "api_key_fallback": false,
+  "version": "v1",
+  "realtime_model": "gpt-realtime-mini",
+  "start_rpc": {
+    "id": 3,
+    "result": {}
+  },
+  "answer_received": false,
+  "peer_connected": false,
+  "peer_state": "new",
+  "normal_turn_started": false,
+  "wall_seconds": 2.629,
+  "events": [
+    {
+      "method": "thread/realtime/error",
+      "params": {
+        "message": "{\n    \"error\": {\n        \"message\": \"AVAS requires OpenAI-Alpha: quicksilver=v2.\",\n        \"type\": \"invalid_request_error\",\n        \"code\": \"invalid_quicksilver_alpha_header\",\n        \"param\": \"\"\n    }\n}"
+      }
+    },
+    {
+      "method": "thread/realtime/closed",
+      "params": {
+        "reason": "requested"
+      }
+    }
+  ]
+}

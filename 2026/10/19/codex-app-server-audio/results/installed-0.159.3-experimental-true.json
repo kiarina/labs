@@ -1,0 +1,40 @@
+{
+  "label": "installed-0.159.3",
+  "account_type": "chatgpt",
+  "experimental": true,
+  "append_before_start": {
+    "id": 4,
+    "result": {}
+  },
+  "start": {
+    "id": 5,
+    "result": {}
+  },
+  "stop": {
+    "id": 6,
+    "result": {}
+  },
+  "events": [
+    {
+      "method": "error",
+      "params": {
+        "error": {
+          "message": "conversation is not running",
+          "codexErrorInfo": "badRequest",
+          "additionalDetails": null,
+          "misalignment": null
+        },
+        "willRetry": false,
+        "turnId": "01a1502b-9c7d-7d80-aaed-ed2aa515c2cb"
+      },
+      "emittedAtMs": 1792346397822
+    },
+    {
+      "method": "thread/realtime/error",
+      "params": {
+        "message": "realtime conversation requires API key auth"
+      },
+      "emittedAtMs": 1792346397824
+    }
+  ]
+}
