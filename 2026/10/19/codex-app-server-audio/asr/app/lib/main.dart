@@ -434,12 +434,12 @@ class _State extends State<AsrLab> {
           const SizedBox(height: 12),
           Row(
             children: [
-              FilledButton(
+              OutlinedButton(
                 onPressed: busy ? null : () => run(true),
-                child: const Text('2話者の素材で検証'),
+                child: const Text('共有の2話者素材（マイク不使用）'),
               ),
               const SizedBox(width: 12),
-              OutlinedButton(
+              FilledButton(
                 onPressed: busy ? null : () => run(false),
                 child: const Text('実マイクを30秒取得'),
               ),
