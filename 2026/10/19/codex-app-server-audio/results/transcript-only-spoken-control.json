@@ -1,0 +1,197 @@
+{
+  "instrument_valid": true,
+  "kind": "chatgpt-transcript-only-experiment",
+  "mode": "spoken-control",
+  "cli": "0.163.0",
+  "auth_type": "chatgpt",
+  "api_key_fallback": false,
+  "proxy_used": false,
+  "version": "v3",
+  "output_modality": "audio",
+  "prompt": "This is a short transport test with prerecorded fictional speech. Never delegate or call a tool. After listening, say only OK.",
+  "start_rpc": {
+    "id": 4,
+    "result": {}
+  },
+  "peer_connected": true,
+  "fixture_repetitions": 1,
+  "fixture_bytes_total": 321984,
+  "fixture_bytes_sent": 321984,
+  "audio_stats": {
+    "frames": 586,
+    "samples": 1125120,
+    "nonzero_samples": 56082,
+    "peak_pcm16": 6750,
+    "max_frame_rms_pcm16": 2644.661409093799,
+    "frames_rms_ge_20": 17,
+    "frames_rms_ge_100": 14,
+    "meter_errors": [],
+    "formats": [
+      "s16"
+    ]
+  },
+  "rtp": [
+    {
+      "type": "outbound-rtp",
+      "packetsSent": 642,
+      "packetsReceived": null
+    },
+    {
+      "type": "inbound-rtp",
+      "packetsSent": null,
+      "packetsReceived": 601
+    }
+  ],
+  "data_events": [
+    {
+      "type": "session.started"
+    },
+    {
+      "type": "input_transcript.added"
+    },
+    {
+      "type": "turn.created"
+    },
+    {
+      "type": "input_transcript.added"
+    },
+    {
+      "type": "turn.delta"
+    },
+    {
+      "type": "input_transcript.added"
+    },
+    {
+      "type": "turn.delta"
+    },
+    {
+      "type": "input_transcript.added"
+    },
+    {
+      "type": "turn.delta"
+    },
+    {
+      "type": "input_transcript.added"
+    },
+    {
+      "type": "turn.delta"
+    },
+    {
+      "type": "input_transcript.added"
+    },
+    {
+      "type": "turn.delta"
+    },
+    {
+      "type": "input_transcript.added"
+    },
+    {
+      "type": "turn.delta"
+    },
+    {
+      "type": "input_transcript.added"
+    },
+    {
+      "type": "turn.delta"
+    },
+    {
+      "type": "input_transcript.added"
+    },
+    {
+      "type": "output_transcript.added"
+    },
+    {
+      "type": "turn.delta"
+    }
+  ],
+  "normal_turn_started": false,
+  "wall_seconds": 14.777,
+  "events": [
+    {
+      "method": "thread/realtime/started",
+      "params": {
+        "version": "v3"
+      }
+    },
+    {
+      "method": "thread/realtime/sdp",
+      "params": {}
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": "Did you"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " bring"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " the"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " map"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": "? Yes"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": ", it"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " is"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " right"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " here."
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "assistant",
+        "delta": "OK."
+      }
+    },
+    {
+      "method": "thread/realtime/closed",
+      "params": {
+        "reason": "requested"
+      }
+    }
+  ]
+}

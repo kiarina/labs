@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Opt-in ChatGPT-only input transcription with spoken or listen-only prompt and PCM metering"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+uv run --with-requirements tools/requirements.txt python tools/transcript_only.py

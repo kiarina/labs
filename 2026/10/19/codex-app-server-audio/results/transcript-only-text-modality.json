@@ -1,0 +1,52 @@
+{
+  "kind": "chatgpt-transcript-only-experiment",
+  "mode": "text-modality",
+  "cli": "0.163.0",
+  "auth_type": "chatgpt",
+  "api_key_fallback": false,
+  "proxy_used": false,
+  "version": "v3",
+  "output_modality": "text",
+  "prompt": "This is a short transport test with prerecorded fictional speech. Never delegate or call a tool. After listening, say only OK.",
+  "start_rpc": {
+    "id": 4,
+    "result": {}
+  },
+  "peer_connected": false,
+  "fixture_repetitions": 1,
+  "fixture_bytes_total": 321984,
+  "fixture_bytes_sent": 0,
+  "audio_stats": {
+    "frames": 0,
+    "samples": 0,
+    "nonzero_samples": 0,
+    "peak_pcm16": 0,
+    "max_frame_rms_pcm16": 0.0,
+    "frames_rms_ge_20": 0,
+    "frames_rms_ge_100": 0
+  },
+  "rtp": [
+    {
+      "type": "outbound-rtp",
+      "packetsSent": 0,
+      "packetsReceived": null
+    }
+  ],
+  "data_events": [],
+  "normal_turn_started": false,
+  "wall_seconds": 0.975,
+  "events": [
+    {
+      "method": "thread/realtime/error",
+      "params": {
+        "message": "text realtime output modality requires realtime v2"
+      }
+    },
+    {
+      "method": "thread/realtime/closed",
+      "params": {
+        "reason": "requested"
+      }
+    }
+  ]
+}

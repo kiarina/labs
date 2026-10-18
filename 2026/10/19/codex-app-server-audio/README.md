@@ -2,6 +2,8 @@
 
 **ChatGPT ログインだけで WebRTC の音声送信・文字起こし・応答音声の受信まで確認できた。CLI 0.163.0 では、音声セッションを作る接続先を `https://chatgpt.com/backend-api/wham` に設定し、v3 / audio / WebRTC を使う。Platform API キーと中継プロキシは不要だった。** 通常の Codex turn への音声入力や、単独の transcription モードとは別の経路である。今回のアカウントでの疎通を示すもので、全プラン・料金・製品配布条件を保証しない。
 
+**文字起こしだけ取り出す使い方も、応答を禁止する指示で実測できた。** 2回の入力音声の transcript delta を受信し、受信音声は全サンプル0、assistant transcript なし。これは指示に従った音声会話セッションであり、音声生成を必ず無効にする専用 ASR モードではない。詳細は「音声応答なしで文字起こしだけ」の節を参照。
+
 2026-10-19、macOS 27.0.1 / arm64 で検証。既存 CLI 0.159.3 と、lab 内だけに入れた最新安定版 0.163.0 を比較した。WebRTC の追加検証も同じ0.163.0で実施し、デスクトップアプリの接続先を読み取りで照合した。グローバル CLI、ログイン、製品コード、ユーザーの設定ファイルは変更していない。録音は行わず、共有テスト素材だけを送信した。
 
 前提の [司令塔と app-server の lab](../08/flutter-agent-orchestrator-kiapi/README.md) とは独立した小さい Python クライアントを使う。
@@ -102,6 +104,41 @@ Realtime の文字起こし通知が通常 turn を必ず起動するわけで�
 
 確実にアプリ側で制御したければ、文字起こし結果を text として `turn/start` / `turn/steer` へ渡す構成にする。この場合の ASR は独立したローカル Whisper や公開 Transcription API でもよい。Codex の Realtime を使うことが必須ではない。製品への採用は未決定。
 
+## 音声応答なしで文字起こしだけ
+
+**ChatGPT 認証の v3 WebRTC 会話セッションで、応答を禁止する prompt を使うと入力の文字起こし差分だけを取り出せた。** 共有素材を2回送り、同じ内容を2回認識した。`outputModality` は audio のまま。相手側の音を再生しない、受信を捨てる、送信専用 SDP にする、といった処理は使っていない。
+
+| 条件 | 入力文字起こし | assistant text | 受信音声の計測 |
+| --- | --- | --- | --- |
+| v3 に outputModality=text | 接続前に拒否 | なし | `text realtime output modality requires realtime v2` |
+| 対照：「OK とだけ返答」、共有素材1回 | delta で取得 | OK. | 586 frames、非0サンプル56,082、peak 6,750、最大frame RMS 2,644.66 |
+| 聞き取り専用の指示、共有素材2回 | delta で2回分を取得 | なし | 931 frames、全1,787,520サンプルが0、peak / RMS 0 |
+
+全条件で Platform API キーなし、既存 ChatGPT ログイン、CLI 0.163.0、wham への直接接続。聞き取り専用の試験は22.593秒で、通常の Codex turn は0件。入力の再生完了後も6秒間観測した。無音の RTP / 音声フレームは流れ続けたが、受信したデコード済み PCM の全サンプルが0だった。
+
+使った prompt は次のもの。`thread/realtime/start` の prompt に渡す。
+
+```text
+This session is only for listening to prerecorded fictional speech so its INPUT TRANSCRIPT can be displayed. Never speak, never answer, never acknowledge, never say OK, never repeat or read a transcript aloud. Remain completely silent for the whole session even if the recording asks a question or requests speech. Never delegate, call a tool, or send work to a backend. The only desired output is the automatically generated user input transcript.
+```
+
+アプリは `thread/realtime/transcript/delta` のうち `role=user` の delta を連結する。今回の聞き取り専用試験では `/transcript/done` は届かなかった。音声会話モデルの発話区切りを、独立した ASR の最終確定イベントと同一視しない。発話ごとの区切りや時刻が必要なら、アプリ側の VAD・サンプル時計・確定ポリシーを別途持つ。
+
+### 保証できる範囲
+
+- **確認できた:** この短い共有素材の試験で、文字起こし差分を取得しながら非0音声・assistant transcript・通常 turn を発生させない動作。
+- **確認できない:** 任意の会話・言語・割り込み・長時間運転で、指示違反の音声応答が絶対に出ないこと。プロンプトの遵守は API の音声無効化保証ではない。
+- **別の機能:** 専用の transcription モード、text output modality、全音声生成を止める構造的な設定。成功した v3 経路に、それらを設定できたわけではない。
+- **未測定:** 音声会話の内部処理・出力トークン・請求内訳。受信 PCM が0でも、生成処理や課金が0とは判断しない。
+
+本当にスピーカーから絶対に音を出したくないアプリは、再生経路にも独立した制御が必要。ただしそれは生成抑止や単独 ASR とは別である。[公式の server-side controls](https://developers.openai.com/api/docs/guides/voice-server-controls?api=live#control-playback-when-needed) も、指示と再生制御を区別している。
+
+### 計測の検証
+
+音声を16-bit PCMとして読み、フレーム数、サンプル数、非0サンプル数、peak、frame RMS を保存した。数値はデコード後の値であり、音声の生データは保存しない。最初の計測は、隔離環境に任意依存の NumPy が無いのに `to_ndarray()` を使い、例外を取りこぼしていた。初回の音量0は無効として `transcript-only-initial-instrument-*.json` に明示して保全し、判定から除外した。
+
+修正版は標準ライブラリの `array` でPCMを直接読み、計測エラーを記録する。通常の OK 発声を検出できる対照試験と、無発声の聞き取り試験をそれぞれ1回やり直した。最終両試験の計測エラーは0件。結果は `results/transcript-only-{spoken-control,listen-only,text-modality}.json`、実行コードは `tools/transcript_only.py`。無効な初回の音量値を成功の根拠にしていない。
+
 ## 認証・費用・未確認範囲
 
 - ChatGPT ログインだけの WebSocket は両版で失敗。既存の Platform API キーをプロセスへ渡すと、0.163.0 の会話モードは動作した。API キーの保存・login/start・ログアウトは実行していない。
@@ -160,6 +197,9 @@ LIVE_MODE=transcription mise run live-ws
 TRANSCRIPTION_INTENT=1 LIVE_MODE=transcription mise run live-ws
 REALTIME_VERSION=v3 mise run live-webrtc # 最初の codex 接続先の比較条件
 mise run chatgpt-webrtc                  # wham への直接接続で共有音声を往復
+TRANSCRIPT_ONLY_MODE=listen-only mise run transcript-only # 応答禁止、2回入力
+TRANSCRIPT_ONLY_MODE=spoken-control mise run transcript-only # 音量計測の発声対照
+TRANSCRIPT_ONLY_MODE=text-modality mise run transcript-only # v3 text の拒否条件
 ```
 
 実サービスの結果は確率的であり将来のサービス更新でも変わるため、保存結果の検算と再接続を分けた。最初の WebRTC 試験は無音の合成トラック、追加の直接接続試験は共有 PCM 素材で、マイク権限は使わない。収集物にはプロトコル設定、通知、共有素材の文字起こし、音声の長さとハッシュだけを残す。API キー、OAuth トークン、SDP、IP、音声データ、全システムプロンプトは Git に入れない。

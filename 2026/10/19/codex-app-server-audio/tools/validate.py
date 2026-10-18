@@ -40,6 +40,21 @@ r=load('webrtc-followup-wham-route.json');assert r['peer_connected']and r['reque
 for name in ['omit-model','empty-session','sdp-only','public-live-model','no-legacy-query']:
  r=load(f'webrtc-followup-{name}.json');assert not r['peer_connected']and r['requests'][0]['upstream_status']==400
 checks.append('route-only relay comparison succeeds; model/schema/query edits on codex route do not')
+r=load('transcript-only-text-modality.json');assert not r['peer_connected']
+assert any(x['method']=='thread/realtime/error'and x['params']['message']=='text realtime output modality requires realtime v2'for x in r['events'])
+for mode in ['spoken-control','listen-only']:
+ r=load(f'transcript-only-{mode}.json');assert r['auth_type']=='chatgpt'and not r['api_key_fallback']and not r['proxy_used']and r['peer_connected']
+ assert r['instrument_valid']and not r['audio_stats']['meter_errors']and r['audio_stats']['frames']>0
+ assert r['fixture_bytes_sent']==r['fixture_bytes_total']and not r['normal_turn_started']
+ texts={role:''.join(x['params']['delta']for x in r['events']if x['method']=='thread/realtime/transcript/delta'and x['params']['role']==role)for role in ['user','assistant']}
+ assert texts['user'].count('Did you bring the map')==r['fixture_repetitions']
+ if mode=='listen-only':
+  assert not texts['assistant']and r['audio_stats']['nonzero_samples']==r['audio_stats']['peak_pcm16']==0
+  assert r['fixture_repetitions']==2
+ else:
+  assert 'OK'in texts['assistant']and r['audio_stats']['frames_rms_ge_100']>0
+for mode in ['spoken-control','listen-only']:assert load(f'transcript-only-initial-instrument-{mode}.json')['instrument_valid']is False
+checks.append('listen-only prompt yields two input transcripts and zero nonzero PCM samples; spoken control validates meter; v3 text rejected')
 for p in (root/'results').glob('*.json'):
  s=p.read_text();assert '/Users/'not in s and 'sk-'not in s and 'Bearer 'not in s,p
 print(json.dumps({'ok':True,'checks':checks,'live_runs_repeated':False},indent=2))
