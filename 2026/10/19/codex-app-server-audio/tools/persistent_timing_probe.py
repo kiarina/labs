@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """One short synthetic/shared-input probe of actual legacy transcript timing."""
-import asyncio,json,os,time
+import asyncio,json,os,time,base64
 from pathlib import Path
 from websockets.asyncio.server import serve
 from websockets.asyncio.client import connect
@@ -22,7 +22,11 @@ def safe_event(e):
  item=e.get('item',{});return {'type':e.get('type'),'keys':sorted(set(keys)),'numbers':numbers,'text':item.get('text',e.get('delta',''))}
 
 async def main():
- env=dict(os.environ);env.pop('OPENAI_API_KEY',None);events=[];start=time.monotonic();client=None
+ clock=None
+ if os.environ.get('PROBE_CLOCK'):
+  from audio_clock import AudioClock
+  clock=AudioClock()
+ env=dict(os.environ);env.pop('OPENAI_API_KEY',None);events=[];shapes={};audio_reflections={};start=time.monotonic();client=None
  async def relay(down):
   async with connect('wss://api.openai.com'+down.request.path,additional_headers={k:v for k,v in down.request.headers.raw_items()if k.lower()in ['authorization','chatgpt-account-id','openai-alpha','originator','user-agent','x-session-id','x-codex-turn-metadata','openai-beta']},max_size=32*1024*1024)as up:
    async def forward():
@@ -31,6 +35,12 @@ async def main():
    try:
     async for raw in up:
      e=json.loads(raw);kind=e.get('type','')
+     if kind not in shapes:shapes[kind]=safe_event({k:v for k,v in e.items()if k not in ['audio','delta']})
+     if clock and kind=='session.output_audio.delta'and isinstance(e.get('end_ms'),(int,float)):clock.reflected_output(e['end_ms'])
+     if 'audio'in kind and 'input'in kind:
+      field=e.get('audio',e.get('delta',''));field=field.get('data','')if isinstance(field,dict)else field
+      audio_reflections[kind]=audio_reflections.get(kind,0)+(len(base64.b64decode(field))if isinstance(field,str)else 0)
+      if clock and isinstance(field,str):clock.reflected_input(base64.b64decode(field))
      if 'transcript'in kind or kind in ['session.started','turn.done']:
       events.append({'arrival_seconds':round(time.monotonic()-start,3),**safe_event(e)})
      if kind=='delegation.created':continue
@@ -59,10 +69,14 @@ async def main():
    until=time.monotonic()+10
    while pc.connectionState!='connected'and time.monotonic()<until:await asyncio.sleep(.05)
    assert pc.connectionState=='connected';enabled=time.monotonic()-start;track.enabled=True
+   if clock:
+    import numpy as np
+    source=np.frombuffer(pcm,dtype='<i2');origin=track.pts/24
+    for i in range(0,len(source),6000):clock.reference(np.repeat(source[i:i+6000],2).astype('<i2').tobytes(),origin+i/24)
    await asyncio.sleep(len(pcm)/48000+5)
    await client.call('thread/realtime/stop',{'threadId':tid})
-   r={'auth':'chatgpt','api_key_fallback':False,'connections':1,'physical_microphone_used':False,'fixture_enabled_at_seconds':round(enabled,3),'fixture_sent_bytes':track.offset,'fixture_total_bytes':len(pcm),'events':events};data=json.dumps(r,ensure_ascii=False,indent=2);assert '/Users/'not in data and 'Bearer 'not in data
-   (ROOT/'results/persistent-timing-probe.json').write_text(data+'\n');print(json.dumps({'transcripts':len([e for e in events if 'transcript'in e['type']]),'numeric_fields':sorted({k for e in events if 'transcript'in e['type']for k in e['numbers']}),'keys':sorted({k for e in events if 'transcript'in e['type']for k in e['keys']})}),flush=True)
+   r={'auth':'chatgpt','api_key_fallback':False,'connections':1,'physical_microphone_used':False,'fixture_enabled_at_seconds':round(enabled,3),'fixture_sent_bytes':track.offset,'fixture_total_bytes':len(pcm),'events':events,'event_shapes':shapes,'reflected_input_bytes':audio_reflections,'clock_evidence':clock.summary()if clock else None};data=json.dumps(r,ensure_ascii=False,indent=2);assert '/Users/'not in data and 'Bearer 'not in data
+   (ROOT/('results/refinement-clock-probe.json'if os.environ.get('PROBE_CLOCK')else'results/refinement-protocol-probe.json'if os.environ.get('PROBE_REFLECTION')else'results/persistent-timing-probe.json')).write_text(data+'\n');print(json.dumps({'transcripts':len([e for e in events if 'transcript'in e['type']]),'numeric_fields':sorted({k for e in events if 'transcript'in e['type']for k in e['numbers']}),'keys':sorted({k for e in events if 'transcript'in e['type']for k in e['keys']}),'event_types':list(shapes),'reflected_input_bytes':audio_reflections,'clock_evidence':clock.summary()if clock else None}),flush=True)
  finally:
   await pc.close()
   if client:await client.close()

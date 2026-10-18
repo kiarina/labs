@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+#MISE description="Refined speaker identity and waveform-calibrated persistent ASR"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+if [[ "${PERSISTENT_SKIP_BUILD:-0}" != 1 ]]; then
+ mise run //:test-assets:download
+ python3 tools/prepare_asr.py
+ python3 tools/prepare_refinement.py
+ (cd asr/app && flutter pub get && flutter build macos --release -t lib/persistent_main.dart)
+fi
+rm -f work/refined-control.json
+uv run --with-requirements tools/refined_requirements.txt python tools/refined_asr_server.py > work/refined-server.log 2>&1 &
+backend=$!
+trap 'kill "$backend" 2>/dev/null || true' EXIT INT TERM
+for ((n=0;n<100;n++)); do
+ [[ -f work/refined-control.json ]] && break
+ kill -0 "$backend" || exit 1
+ sleep 0.1
+done
+export REFINED_ASR=1
+export PERSISTENT_LAB_URL="$(python3 -c 'import json; print(json.load(open("work/refined-control.json"))["url"])')"
+if [[ "${PERSISTENT_AUTOTEST:-0}" == 1 ]]; then
+ "asr/app/build/macos/Build/Products/Release/Speaker ASR Lab.app/Contents/MacOS/Speaker ASR Lab"
+else
+ /usr/bin/open -W -n --env "PERSISTENT_LAB_URL=$PERSISTENT_LAB_URL" --env "REFINED_ASR=1" --stdout "$PWD/work/refined-app.log" --stderr "$PWD/work/refined-app-stderr.log" "$PWD/asr/app/build/macos/Build/Products/Release/Speaker ASR Lab.app"
+fi

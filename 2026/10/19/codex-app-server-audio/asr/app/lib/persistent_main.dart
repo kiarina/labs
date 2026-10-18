@@ -17,6 +17,8 @@ import 'local/scd/speaker_change_detector.dart';
 import 'local/embedding/ecapa.dart';
 import 'native_bridge.dart';
 import 'wav.dart';
+import 'speaker_tracker.dart';
+import 'audio_time_mapper.dart';
 
 void main() => runApp(
   const MaterialApp(debugShowCheckedModeBanner: false, home: PersistentLab()),
@@ -67,6 +69,14 @@ class _State extends State<PersistentLab> {
   double? firstVadMs;
   double deviceOriginMs = 0;
   double? alignmentOffsetMs;
+  SpeakerTracker tracker = SpeakerTracker();
+  final clockHistory = <Map<String, dynamic>>[];
+  Map<String, dynamic>? clockSummary;
+  double clockUncertaintyMs = 200;
+  List<Map<String, dynamic>> clockAnchors = [];
+  double sessionMinusEchoMs = 0;
+  bool get refined => Platform.environment['REFINED_ASR'] == '1';
+  int get speakerCount => refined ? tracker.speakers.length : clusters.length;
   int? firstDeltaMs;
   Map<String, dynamic>? previousReport;
   void message(String s) {
@@ -139,26 +149,38 @@ class _State extends State<PersistentLab> {
         Float32List.fromList(audio.sublist(cropA, cropB)),
         rate,
       );
+      SpeakerObservation? reference;
       var best = -1, score = -1.0;
-      for (var i = 0; i < clusters.length; i++) {
-        for (final v in clusters[i]) {
-          final s = cosineSimilarity(embedding, v);
-          if (s > score) {
-            score = s;
-            best = i;
+      String? speaker;
+      if (refined) {
+        reference = tracker.observe(embedding, cropA / rate, cropB / rate);
+        score = reference.score;
+        best = score > -1 ? 0 : -1;
+        speaker = reference.speaker == null
+            ? null
+            : 'speaker-${reference.speaker! + 1}';
+      } else {
+        for (var i = 0; i < clusters.length; i++) {
+          for (final v in clusters[i]) {
+            final s = cosineSimilarity(embedding, v);
+            if (s > score) {
+              score = s;
+              best = i;
+            }
           }
         }
-      }
-      String? speaker;
-      if (best >= 0 && score >= .45) {
-        speaker = 'speaker-${best + 1}';
-        clusters[best].add(embedding);
-        if (clusters[best].length > 32) clusters[best].removeAt(0);
-      } else if ((cropB - cropA) / rate >= 1.5) {
-        clusters.add([embedding]);
-        speaker = 'speaker-${clusters.length}';
+
+        if (best >= 0 && score >= .45) {
+          speaker = 'speaker-${best + 1}';
+          clusters[best].add(embedding);
+          if (clusters[best].length > 32) clusters[best].removeAt(0);
+        } else if ((cropB - cropA) / rate >= 1.5) {
+          clusters.add([embedding]);
+          speaker = 'speaker-${clusters.length}';
+        }
       }
       fresh.add({
+        if (reference != null) '_speaker_ref': reference,
         'start': cropA / rate,
         'end': cropB / rate,
         'speaker_id': speaker,
@@ -168,6 +190,19 @@ class _State extends State<PersistentLab> {
     }
     gates[(end - hop) ~/ 160] = mask;
     annotations.addAll(fresh);
+    if (refined) {
+      for (final a in annotations) {
+        final ref = a['_speaker_ref'] as SpeakerObservation?;
+        if (ref != null) {
+          final next = ref.speaker == null
+              ? null
+              : 'speaker-${ref.speaker! + 1}';
+          if (a['speaker_id'] != next)
+            a['speaker_available_ms'] = clock.elapsedMilliseconds;
+          a['speaker_id'] = next;
+        }
+      }
+    }
     gateTimes.add(watch.elapsedMicroseconds / 1000);
     final bytes = Uint8List(hop * 6), data = ByteData.sublistView(bytes);
     for (var i = 0; i < hop * 3; i++) {
@@ -199,12 +234,28 @@ class _State extends State<PersistentLab> {
         rejected += 160;
       }
     }
+    if (refined && late < mask.length) {
+      ws?.add(
+        jsonEncode({
+          'type': 'audio_reference',
+          'device_ms': deviceOriginMs + (end - hop) / 16 + late * 10,
+          'audio': base64Encode(Uint8List.sublistView(bytes, late * 960)),
+        }),
+      );
+    }
     remap();
     if (mounted) setState(() {});
   }
 
   void remap() {
     for (final f in fragments) {
+      final previousSpeaker = f['speaker_id'];
+      if (refined) {
+        f['speaker_id'] = null;
+        f.remove('source_start');
+        f.remove('source_end');
+        f.remove('display_latency_ms');
+      }
       final start = f['start_ms'], end = f['end_ms'];
       if (start is! num || end is! num) {
         f['binding'] = 'missing_timestamps';
@@ -214,10 +265,20 @@ class _State extends State<PersistentLab> {
         f['binding'] = 'clock_pending';
         continue;
       }
-      final alignedStart = start + alignmentOffsetMs!,
-          alignedEnd = end + alignmentOffsetMs!;
+      final mapping = refined
+          ? mapAudioInterval(start, end, clockAnchors, sessionMinusEchoMs)
+          : null;
+      if (refined && mapping == null) {
+        f['binding'] = 'clock_outside_anchors';
+        continue;
+      }
+      final alignedStart = refined
+              ? mapping!.start
+              : start + alignmentOffsetMs!,
+          alignedEnd = refined ? mapping!.end : end + alignmentOffsetMs!;
+      if (refined) f['clock_extrapolated'] = mapping!.extrapolated;
       // The first-voice origin estimate is provisional, not exact word alignment.
-      final hits = ledger
+      var hits = ledger
           .where(
             (r) =>
                 r['sent'] == true &&
@@ -225,6 +286,17 @@ class _State extends State<PersistentLab> {
                 (r['device_ms'] as num) + 10 > alignedStart,
           )
           .toList();
+      if (refined && hits.isEmpty) {
+        hits = ledger
+            .where(
+              (r) =>
+                  r['sent'] == true &&
+                  (r['device_ms'] as num) < alignedEnd + clockUncertaintyMs &&
+                  (r['device_ms'] as num) + 10 >
+                      alignedStart - clockUncertaintyMs,
+            )
+            .toList();
+      }
       if (hits.isEmpty) {
         f['binding'] = 'no_sent_audio_overlap';
         continue;
@@ -234,33 +306,50 @@ class _State extends State<PersistentLab> {
       f['source_start'] = from;
       f['source_end'] = to;
       f['display_latency_ms'] = (f['received_ms'] as num) - to * 1000;
-      final candidates = <String>{};
-      // A 200ms margin makes approximate transcript timing explicit at changes.
-      for (var t = from; t <= to + .0001; t += .01) {
-        final matching = annotations
-            .where(
-              (a) =>
-                  (a['start'] as num) <= t + .2 &&
-                  (a['end'] as num) >= t - .2 &&
-                  a['speaker_id'] != null,
+      final candidates = refined
+          ? speakerCandidates(
+              from.toDouble(),
+              to.toDouble(),
+              annotations,
+              guardSeconds: max(1, clockUncertaintyMs / 1000),
             )
-            .toList();
-        if (matching.isNotEmpty) {
-          final newest = matching
-              .map((a) => a['available_ms'] as int)
-              .reduce(max);
-          candidates.addAll(
-            matching
-                .where((a) => a['available_ms'] == newest)
-                .map((a) => a['speaker_id'] as String),
-          );
+          : <String>{};
+      if (!refined) {
+        // A 200ms margin makes approximate transcript timing explicit at changes.
+        for (var t = from; t <= to + .0001; t += .01) {
+          final matching = annotations
+              .where(
+                (a) =>
+                    (a['start'] as num) <=
+                        t +
+                            (refined
+                                ? max(.2, clockUncertaintyMs / 1000)
+                                : .2) &&
+                    (a['end'] as num) >=
+                        t -
+                            (refined
+                                ? max(.2, clockUncertaintyMs / 1000)
+                                : .2) &&
+                    a['speaker_id'] != null,
+              )
+              .toList();
+          if (matching.isNotEmpty) {
+            final newest = matching
+                .map((a) => a['available_ms'] as int)
+                .reduce(max);
+            candidates.addAll(
+              matching
+                  .where((a) => a['available_ms'] == newest)
+                  .map((a) => a['speaker_id'] as String),
+            );
+          }
         }
       }
-      final old = f['speaker_id'];
+      final old = previousSpeaker;
       f['speaker_id'] = candidates.length == 1 ? candidates.single : null;
       f['candidates'] = candidates.toList()..sort();
       f['binding'] = candidates.length == 1
-          ? 'provisional_timestamp'
+          ? (refined ? 'waveform_clock_provisional' : 'provisional_timestamp')
           : candidates.isEmpty
           ? 'speaker_pending'
           : 'boundary_ambiguous';
@@ -300,13 +389,30 @@ class _State extends State<PersistentLab> {
           answer.completeError(StateError('connection_error'));
       }
       if (e['type'] == 'unexpected_delegation') delegations++;
+      if (e['type'] == 'clock_alignment' && refined) {
+        clockHistory.add(Map<String, dynamic>.from(e));
+        clockAnchors = [
+          for (final a in (e['anchors'] as List? ?? []))
+            Map<String, dynamic>.from(a as Map),
+        ];
+        sessionMinusEchoMs = (e['session_minus_echo_ms'] as num).toDouble();
+        alignmentOffsetMs = e['valid'] == true
+            ? (e['offset_ms'] as num).toDouble()
+            : null;
+        clockUncertaintyMs = (e['uncertainty_ms'] as num).toDouble();
+        remap();
+        if (mounted) setState(() {});
+      }
+      if (e['type'] == 'clock_summary')
+        clockSummary = Map<String, dynamic>.from(e);
       if (e['type'] == 'transcript') {
         if (e['role'] == 'assistant') {
           assistantChars += (e['delta'] as String).length;
           return;
         }
         firstDeltaMs ??= clock.elapsedMilliseconds;
-        if (alignmentOffsetMs == null &&
+        if (!refined &&
+            alignmentOffsetMs == null &&
             firstVadMs != null &&
             e['start_ms'] is num) {
           final eligible = ledger.where((r) => r['sent'] == true).toList()
@@ -363,6 +469,12 @@ class _State extends State<PersistentLab> {
       fragments.clear();
       gateTimes.clear();
       clusters.clear();
+      tracker = SpeakerTracker();
+      clockHistory.clear();
+      clockAnchors = [];
+      sessionMinusEchoMs = 0;
+      clockSummary = null;
+      clockUncertaintyMs = 200;
       errors.clear();
       gates.clear();
       vad!.reset();
@@ -443,6 +555,11 @@ class _State extends State<PersistentLab> {
         await Future<void>.delayed(const Duration(milliseconds: 10));
       }
       remap();
+      if (refined) {
+        ws?.add(jsonEncode({'type': 'clock_report'}));
+        await Future<void>.delayed(const Duration(milliseconds: 300));
+        remap();
+      }
       final after = Map<String, dynamic>.from(
         await channel.invokeMethod('stats') as Map,
       );
@@ -461,7 +578,9 @@ class _State extends State<PersistentLab> {
         'capture_end_ms': captureEnd,
         'fixed_playout_delay_ms': delayMs,
         'send_clock': 'native_scheduled',
-        'clock_origin_method': 'first_vad_to_first_transcript_estimate',
+        'clock_origin_method': refined
+            ? 'waveform_echo_segmented_with_output_clock_bound'
+            : 'first_vad_to_first_transcript_estimate',
         'alignment_offset_ms': alignmentOffsetMs,
         'device_origin_ms': deviceOriginMs,
         'scheduled_late_frames':
@@ -477,7 +596,10 @@ class _State extends State<PersistentLab> {
         'gate_late_frames': gateLate,
         'pump_skipped_frames': pumpSkipped,
         'gate_ms': gateTimes,
-        'speaker_clusters': clusters.length,
+        'refined': refined,
+        'clock_history': clockHistory,
+        if (refined) 'clock_evidence': clockSummary,
+        'speaker_clusters': speakerCount,
         'speaker_revisions': revisions,
         'assistant_text_chars': assistantChars,
         'unexpected_delegations': delegations,
@@ -509,13 +631,19 @@ class _State extends State<PersistentLab> {
                       if (e.key != 'text') e.key: e.value,
                   },
               ],
-        'speaker_intervals': annotations,
+        'speaker_intervals': [
+          for (final a in annotations)
+            {
+              for (final e in a.entries)
+                if (!e.key.startsWith('_')) e.key: e.value,
+            },
+        ],
         'send_ledger': ledger,
         'errors': errors,
       };
       previousReport = report;
       stdout.writeln('PERSISTENT_RESULT ${jsonEncode(report)}');
-      message('完了：差分${fragments.length}件 / 話者${clusters.length} / 認識中にも文字を表示');
+      message('完了：差分${fragments.length}件 / 話者$speakerCount / 認識中にも文字を表示');
       if (Platform.environment['PERSISTENT_AUTOTEST'] == '1') {
         await close();
         exit(0);
@@ -603,7 +731,7 @@ class _State extends State<PersistentLab> {
             ),
           ),
           Text(
-            '差分 ${fragments.length}件 / 話者 ${clusters.length} / 解析待ちの音声フレーム $gateLate',
+            '差分 ${fragments.length}件 / 話者 $speakerCount / 解析待ちの音声フレーム $gateLate',
           ),
           Expanded(
             child: ListView(

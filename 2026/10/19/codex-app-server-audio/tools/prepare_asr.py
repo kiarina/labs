@@ -14,3 +14,9 @@ subprocess.run(['ffmpeg','-y','-loglevel','error','-i',str(source),'-ar','16000'
 with wave.open(str(assets/"conversation.wav"),"rb") as wav:
  assert wav.getframerate()==16000 and wav.getnchannels()==1
  assert hashlib.sha256(wav.readframes(wav.getnframes())).hexdigest()=="aef288721e2f461c844ef766264cbcf09d997baf34fd72872faaebf0618dd06e"
+
+# Every Flutter entrypoint shares one asset manifest. Keep its optional offline
+# control fixture available on a clean checkout as well.
+if not (assets/"refine-third.wav").exists():
+ import sys
+ subprocess.run([sys.executable,str(root/"tools/prepare_refinement.py")],check=True)

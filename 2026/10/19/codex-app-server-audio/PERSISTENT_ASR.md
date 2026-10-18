@@ -1,5 +1,7 @@
 # WebRTC を維持する VAD・話者ゲート付き ChatGPT ASR
 
+話者IDと時刻対応の追加改善・残る限界は [REFINEMENT.md](REFINEMENT.md) を参照。この文書は初版の接続維持方式の検証条件と結果を扱う。
+
 ## 問いと評価方法
 
 区間別に接続を作り直す [前試験](SEGMENTED_ASR.md) と区別し、1つの ChatGPT 認証 WebRTC 接続を試験中維持する。record の入力をローカルの VAD・話者変化検出で選び、認識に必要な元音声だけを送る。文字起こしの音声時刻で元区間・話者IDへ結び付ける。prototype は変更しない。

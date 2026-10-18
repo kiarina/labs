@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Speaker enrolment ablations and clock controls without cloud inference"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mise run //:test-assets:download
+python3 tools/prepare_asr.py
+python3 tools/prepare_refinement.py
+(cd asr/app && flutter pub get && flutter build macos --release -t lib/refine_offline.dart)
+"asr/app/build/macos/Build/Products/Release/Speaker ASR Lab.app/Contents/MacOS/Speaker ASR Lab"
+uv run --with-requirements tools/refined_requirements.txt python tools/test_audio_clock.py
+(cd asr/app && dart run lib/refine_binding_replay.dart)

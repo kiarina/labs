@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "checks": {
+    "matching_threshold_unchanged": true,
+    "speaker_scenario_counts": true,
+    "speaker_roles_consistent_up_to_id_permutation": true,
+    "baseline_failures_retained": true,
+    "clock_controls_pass_including_clipped_prefix_and_rejection": true,
+    "both_live_runs_keep_two_clusters": true,
+    "both_live_runs_stream_captions_during_capture": true,
+    "no_audio_response_or_input_loss_in_live_cases": true,
+    "waveform_anchors_observed": true,
+    "holdout_clock_interpolation_improves_internal_fit": true,
+    "global_clock_failure_retained": true,
+    "boundary_tradeoff_not_hidden": true,
+    "second_run_gaps_not_interpolated": true,
+    "runtime_mapper_replayed": true
+  },
+  "speaker_improvement_observed": true,
+  "clock_alignment": "waveform based; piecewise supported regions, not a universal exact clock",
+  "word_correspondence_complete": false,
+  "one_second_guard_cases": [
+    {
+      "fragments": 44,
+      "guard_seconds": 1.0,
+      "correct": 11,
+      "wrong": 0,
+      "held": 33,
+      "clock_held": 1
+    },
+    {
+      "fragments": 41,
+      "guard_seconds": 1.0,
+      "correct": 8,
+      "wrong": 0,
+      "held": 33,
+      "clock_held": 15
+    }
+  ],
+  "no_new_human_microphone_trial": true,
+  "prototype_changed": false,
+  "live_runs_repeated_by_validator": false
+}
