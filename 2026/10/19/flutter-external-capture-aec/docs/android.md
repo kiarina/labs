@@ -47,8 +47,8 @@ not built in this lab: the extraction CPU dispatch needs additional source-filte
 adaptation for 32-bit x86. APK build and initial physical speaker/microphone trial
 completed. The first render implementation accumulated blocking MethodChannel
 writes; its invalid OFF-interval evidence is retained in
-`results/android-acoustic-blocking-render.json`. The dedicated-thread acoustic measurements are recorded below. WebRTC send
-switching remains a separate integration test.
+`results/android-acoustic-blocking-render.json`. The dedicated-thread acoustic measurements are recorded below. The separate remote-playback and sender-gate integration test also passed,
+as recorded below.
 
 ## Physical results (Pixel 6, Android 17, arm64)
 
@@ -94,9 +94,10 @@ The earlier higher-output result is retained in
 `results/android-acoustic-high-output.json`, and the low-output trial before
 actual-render tracing is in `results/android-acoustic-low-output.json`.
 
-This acoustic probe exercises physical playback, capture continuity and the DSP.
-It does not itself create WebRTC peer connections; transport/send switching is
-validated separately by the common application. The lab-local Android external
+The dedicated Android acoustic probe exercises physical playback, capture
+continuity and the DSP without creating WebRTC peer connections. The common
+`acoustic_probe.dart` supplies the final remote-playback and sender-gate
+integration test documented below. The lab-local Android external
 track source disables WebRTC echo cancellation, noise suppression, automatic
 gain control and high-pass filtering so the standalone-DSP comparison does not
 quietly apply a second WebRTC audio-processing stage.
@@ -118,7 +119,7 @@ The Android lab patch calls `PeerConnection.setAudioPlayout(false)` immediately
 after each native peer is created. This preserves decoding through WebRTC's
 null audio poller while preventing a second, unreferenced native speaker path.
 The patch compiled successfully and applies idempotently to the pristine pinned
-flutter_webrtc package. Runtime completion is still pending below.
+flutter_webrtc package. The final foreground runtime trial passed as recorded below.
 
 Two diagnostic attempts were invalidated by device foreground/lock conditions:
 `results/android-gate-os-frozen.json` and
@@ -145,3 +146,50 @@ For a silent gate-only diagnostic build, use both
 For the final receiver-speaker plus gate trial, retain SKIP_ACOUSTIC=true but set
 SKIP_REMOTE_FAR=false. That trial still produces about six seconds of physical
 speaker audio and must be serialized with other acoustic tests.
+
+## Final remote-speaker and sender-gate integration
+
+After the owner unlocked the device, the foreground trial passed with
+`SKIP_ACOUSTIC=true` and `SKIP_REMOTE_FAR=false`. This reused the completed
+acoustic evidence instead of repeating the 39-second local-speaker trial.
+The final evidence is `results/android-remote-far-gates.json`.
+
+The fixture-only source sent 576,000 PCM bytes through a dedicated peer pair.
+The independent remote tap delivered 313,440 samples (RMS 0.02365), backed by
+329 inbound audio packets and 313,440 decoded samples. That decoded PCM went
+to the owned AudioTrack and the same AEC render reference. The accepted render
+trace contained 292,525 nonzero samples, peak 2747; Android reported built-in
+speaker type 2, voice-call volume 7/15, no writer errors and zero underruns.
+Clean microphone audio was processed continuously but was never sent into this
+fixture source, preventing a microphone self-loop.
+
+During that far phase, the same record input supplied 625,920 bytes, AEC produced
+625,920 cleaned bytes, and the camera delivered 195 frames. Analysis of the
+same raw/clean capture against the actual accepted speaker reference measured
+5.79 dB overall RMS attenuation and 7.43 dB reduction in the optimally aligned
+render-correlated scalar projection. The raw and cleaned projection correlations
+were -0.295 and -0.245, respectively. This six-second receiver-playback test has
+less adaptation time than the earlier warmed acoustic trial and is not a claim
+of broadband ERLE. Raw abs >= 32700 clipping remained zero; the +/-26027 limiting
+observation remains a constraint. The measured hardware-accepted versus
+playback-head difference was 40 ms at the far-phase end snapshot.
+
+The same microphone/camera/DSP then passed both clean-audio/video sender gates:
+
+| Gate | Remote PCM samples | Remote PCM RMS | Remote video tap frames | Audio RTP packets | Video frames decoded |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| send-1 | 318240 | 0.07862 | 184 | 333 | 185 |
+| send-2 | 307680 | 0.08653 | 181 | 320 | 181 |
+
+All three idle intervals continued source capture and injected zero audio/video.
+Camera and record were each started once. The maximum observed source callback
+gaps were 121.7 ms for audio and 236.4 ms for video. All 12 device snapshots
+reported keyguard/device unlocked, one unchanged non-silenced recording session
+(49417), built-in microphone type 15, client/device both 48 kHz, built-in speaker
+type 2, zero speaker underruns and no writer errors. Thus WebRTC sending and
+receiving did not replace record's active microphone session in this trial.
+The patch also leaves WebRTC's physical AudioRecord input disabled.
+
+The result includes `remoteFarPhase.acousticMetrics` and hashes for local PCM
+artifacts. Raw microphone PCM remains local and is not committed. The application
+was stopped after evidence collection; no further physical trials were run.

@@ -90,7 +90,7 @@ receive/playout and sending-gate evidence.
 | iOS | real camera/mic, measured | passed | passed |
 | Web / Chrome | real camera/mic, measured | passed | passed; idle RTP delta 0 |
 | Windows x64 | real mic / synthetic video; acoustic quality limited | passed | passed; extra recording audit 0 |
-| Android ARM64 | real camera/mic, measured | implemented, final unlocked-device test pending | audio decoded with native playout off; full camera continuity pending unlocked-device test |
+| Android ARM64 | real camera/mic, measured | passed with native WebRTC playout disabled | passed; same recording session and camera kept active |
 
 See the [evidence index](results/README.md) for every retained report, including
 failures and the distinction between digital, fake-device and physical tests.

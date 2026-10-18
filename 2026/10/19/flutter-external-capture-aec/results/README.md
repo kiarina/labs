@@ -34,3 +34,4 @@ or human-speech preservation. The physical near fixtures are capture-only synthe
 | [windows-first-run-trace-error.json](windows-first-run-trace-error.json) | Failed startup/trace/lock trial; retained as failure |
 | [windows-manual-playout-sdk.json](windows-manual-playout-sdk.json) | SDK provenance / recording isolation |
 | [core-rebuild-parity.json](core-rebuild-parity.json) | Rebuilt native/Wasm digital parity after MSVC portability changes |
+| [android-remote-far-gates.json](android-remote-far-gates.json) | Unlocked real-device decoded far speaker/AEC path and two clean/camera gates |

@@ -51,3 +51,21 @@ for name in ('macos-rtc-integrated.json', 'ios-rtc-integrated.json'):
  assert r['remoteFarPhase']['receivedSamples']>0,name
  assert r['captureStarts']=={'camera':1,'microphone':1},name
  print(name,'PASS camera/record lifetime, decoded far playout and clean gates')
+
+r=json.loads((root/'results/android-remote-far-gates.json').read_text())
+assert not r['errors'] and r['transport']['pass']
+assert r['remoteFarPhase']['pass'] and not r['remoteFarPhase']['microphoneInjected']
+assert r['captureStarts']=={'camera':1,'microphone':1}
+sessions=set()
+for phase in [r['remoteFarPhase'],*r['transportPhases']]:
+ for point in ('deviceBefore','deviceAfter'):
+  stats=phase[point]
+  assert str(stats['keyguardLocked']).lower()=='false'
+  assert str(stats['deviceLocked']).lower()=='false'
+  configs=stats['activeRecordingConfigurations']
+  assert len(configs)==1
+  for config in configs:
+   sessions.add(config['sessionId'])
+   assert not config['silenced']
+assert len(sessions)==1
+print('android-remote-far-gates.json PASS unlocked camera/record continuity, one mic session, decoded speaker and clean gates')
