@@ -16,4 +16,5 @@ if [ ! -d work/codex ]; then
  git clone --depth 1 --branch rust-v0.163.0 --filter=blob:none --sparse https://github.com/openai/codex.git work/codex
 fi
 git -C work/codex sparse-checkout set codex-rs/core/src codex-rs/app-server/src codex-rs/codex-api/src codex-rs/protocol/src codex-rs/features/src
+test "$(git -C work/codex rev-parse HEAD)" = 83086188ae0614bd882818ff1aa23f3194962012
 python3 tools/export_schema.py

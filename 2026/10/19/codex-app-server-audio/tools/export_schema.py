@@ -9,7 +9,20 @@ for version,source in [('0.159.3','schema'),('0.163.0','schema-latest')]:
  for name in selected:
   p=root/'work'/source/'v2'/f'{name}.json';(out/p.name).write_text(p.read_text()+'\n')
  schema=json.loads((root/'work'/source/'v2/TurnStartParams.json').read_text())
- (out/'UserInput.json').write_text(json.dumps(schema['definitions']['UserInput'],indent=2)+'\n')
+ user=schema['definitions']['UserInput']
+ definitions={}
+ def refs(value):
+  if isinstance(value,dict):
+   if '$ref'in value:yield value['$ref'].split('/')[-1]
+   for item in value.values():yield from refs(item)
+  elif isinstance(value,list):
+   for item in value:yield from refs(item)
+ pending=list(refs(user))
+ while pending:
+  name=pending.pop()
+  if name not in definitions:
+   definitions[name]=schema['definitions'][name];pending.extend(refs(definitions[name]))
+ (out/'UserInput.json').write_text(json.dumps({'$schema':schema['$schema'],'title':'UserInput','definitions':definitions,**user},indent=2)+'\n')
  all_methods=json.loads((root/'work'/source/'ClientRequest.json').read_text())
  methods=[x['properties']['method']['enum'][0]for x in all_methods['oneOf']]
  notifications=json.loads((root/'work'/source/'ServerNotification.json').read_text())

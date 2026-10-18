@@ -14,7 +14,7 @@ async def main():
  try:
   t=await c.call('thread/start',{'ephemeral':True,'cwd':str(Path('work').resolve()),'approvalPolicy':'never','sandbox':'read-only','model':'gpt-6-luna'})
   tid=t['result']['thread']['id']
-  start=await c.call('thread/realtime/start',{'threadId':tid,'outputModality':'audio','version':version,'includeStartupContext':False,'clientManagedHandoffs':True,'model':'gpt-realtime-mini','prompt':'A transport connection test. Remain silent and never delegate.','transport':{'type':'webrtc','sdp':pc.localDescription.sdp}})
+  start=await c.call('thread/realtime/start',{'threadId':tid,'outputModality':('text' if version=='v2' else 'audio'),'version':version,'includeStartupContext':False,'clientManagedHandoffs':True,'model':'gpt-realtime-mini','prompt':'A transport connection test. Remain silent and never delegate.','transport':{'type':'webrtc','sdp':pc.localDescription.sdp}})
   await c.until(lambda x:x.get('method')in ['thread/realtime/sdp','thread/realtime/error'],20)
   sdp=next((x['params']['sdp']for x in c.events if x.get('method')=='thread/realtime/sdp'),None)
   if sdp:
