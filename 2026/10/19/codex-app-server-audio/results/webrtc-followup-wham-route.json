@@ -1,0 +1,73 @@
+{
+  "kind": "chatgpt-webrtc-followup",
+  "mode": "wham-route",
+  "cli": "0.163.0",
+  "auth_type": "chatgpt",
+  "api_key_fallback": false,
+  "model_override": false,
+  "start_rpc": {
+    "id": 4,
+    "result": {}
+  },
+  "requests": [
+    {
+      "session_fields": [
+        "audio",
+        "delegation",
+        "instructions",
+        "model"
+      ],
+      "session_model": "gpt-live-1-codex",
+      "alpha_header": "quicksilver=v2",
+      "authorization_present": true,
+      "account_header_present": true,
+      "sdp_present": true,
+      "forwarded_session_fields": [
+        "audio",
+        "delegation",
+        "instructions",
+        "model"
+      ],
+      "forwarded_body_fields": [
+        "sdp",
+        "session"
+      ],
+      "url_query": "intent=quicksilver&architecture=avas",
+      "forwarded_body_contains_model_key": true,
+      "forwarded_query": "?intent=quicksilver&architecture=avas",
+      "target_route": "wham",
+      "upstream_status": 201,
+      "location_present": true
+    }
+  ],
+  "answer_received": true,
+  "peer_connected": true,
+  "peer_state": "connected",
+  "connection_states": [
+    "connecting",
+    "connected"
+  ],
+  "normal_turn_started": false,
+  "wall_seconds": 3.424,
+  "events": [
+    {
+      "method": "thread/realtime/started",
+      "params": {
+        "version": "v3"
+      }
+    },
+    {
+      "method": "thread/realtime/sdp",
+      "params": {}
+    },
+    {
+      "method": "thread/realtime/closed",
+      "params": {
+        "reason": "requested"
+      }
+    }
+  ],
+  "adapter_changes": [
+    "change call-create route from codex to wham only"
+  ]
+}

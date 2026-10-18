@@ -28,6 +28,18 @@ checks.append('transcription configuration alone fails; intent workaround also f
 for version in ['v1','v2','v3']:
  r=load(f'live-chatgpt-webrtc-{version}.json');assert not r['answer_received']and not r['peer_connected']and not r['api_key_fallback'];assert any(x['method']=='thread/realtime/error'for x in r['events'])
 checks.append('three explicit WebRTC configurations remain unconnected, not asserted universally unavailable')
+r=load('webrtc-direct-chatgpt-audio.json')
+assert r['auth_type']=='chatgpt'and not r['api_key_fallback']and not r['proxy_used']and not r['model_override']
+assert r['peer_connected']and r['answer_received']and r['data_channel_open']
+assert r['fixture_bytes_sent']==r['fixture_bytes_total']==321984 and not r['normal_turn_started']
+assert r['received_audio']['audio_frames']>0 and r['received_audio']['audio_samples']>0
+assert any(x['method']=='thread/realtime/transcript/done'and x['params'].get('role')=='user'and x['params']['text'].rstrip('.')=='Did you bring the map? Yes, it is right here'for x in r['events'])
+assert any(x['method']=='thread/realtime/transcript/done'and x['params'].get('role')=='assistant'and x['params']['text'].strip()=='OK.'for x in r['events'])
+checks.append('ChatGPT-only direct v3 WebRTC on wham connects, transcribes fixture and receives response audio')
+r=load('webrtc-followup-wham-route.json');assert r['peer_connected']and r['requests'][0]['upstream_status']==201
+for name in ['omit-model','empty-session','sdp-only','public-live-model','no-legacy-query']:
+ r=load(f'webrtc-followup-{name}.json');assert not r['peer_connected']and r['requests'][0]['upstream_status']==400
+checks.append('route-only relay comparison succeeds; model/schema/query edits on codex route do not')
 for p in (root/'results').glob('*.json'):
  s=p.read_text();assert '/Users/'not in s and 'sk-'not in s and 'Bearer 'not in s,p
 print(json.dumps({'ok':True,'checks':checks,'live_runs_repeated':False},indent=2))

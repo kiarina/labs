@@ -1,0 +1,60 @@
+{
+  "kind": "chatgpt-webrtc-followup",
+  "mode": "omit-model",
+  "cli": "0.163.0",
+  "auth_type": "chatgpt",
+  "api_key_fallback": false,
+  "model_override": false,
+  "start_rpc": {
+    "id": 4,
+    "result": {}
+  },
+  "requests": [
+    {
+      "session_fields": [
+        "audio",
+        "delegation",
+        "instructions",
+        "model"
+      ],
+      "session_model": "gpt-live-1-codex",
+      "alpha_header": "quicksilver=v2",
+      "authorization_present": true,
+      "account_header_present": true,
+      "sdp_present": true,
+      "forwarded_session_fields": [
+        "audio",
+        "delegation",
+        "instructions"
+      ],
+      "upstream_status": 400,
+      "location_present": false,
+      "upstream_error": {
+        "detail": "Field `session.model` is not allowed for this Codex realtime session"
+      }
+    }
+  ],
+  "answer_received": false,
+  "peer_connected": false,
+  "peer_state": "new",
+  "connection_states": [],
+  "normal_turn_started": false,
+  "wall_seconds": 1.346,
+  "events": [
+    {
+      "method": "thread/realtime/error",
+      "params": {
+        "message": "{\"detail\":\"Field `session.model` is not allowed for this Codex realtime session\"}"
+      }
+    },
+    {
+      "method": "thread/realtime/closed",
+      "params": {
+        "reason": "requested"
+      }
+    }
+  ],
+  "adapter_changes": [
+    "remove session.model"
+  ]
+}

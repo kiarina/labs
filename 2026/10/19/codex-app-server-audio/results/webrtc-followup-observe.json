@@ -1,0 +1,50 @@
+{
+  "kind": "chatgpt-webrtc-followup",
+  "mode": "observe",
+  "cli": "0.163.0",
+  "auth_type": "chatgpt",
+  "api_key_fallback": false,
+  "model_override": false,
+  "start_rpc": {
+    "id": 4,
+    "result": {}
+  },
+  "requests": [
+    {
+      "session_fields": [
+        "audio",
+        "delegation",
+        "instructions",
+        "model"
+      ],
+      "session_model": "gpt-live-1-codex",
+      "alpha_header": "quicksilver=v2",
+      "authorization_present": true,
+      "account_header_present": true,
+      "sdp_present": true
+    }
+  ],
+  "answer_received": false,
+  "peer_connected": false,
+  "peer_state": "new",
+  "connection_states": [],
+  "normal_turn_started": false,
+  "wall_seconds": 0.841,
+  "events": [
+    {
+      "method": "thread/realtime/error",
+      "params": {
+        "message": "{\"error\":{\"message\":\"local capture only; upstream not called\"}}"
+      }
+    },
+    {
+      "method": "thread/realtime/closed",
+      "params": {
+        "reason": "requested"
+      }
+    }
+  ],
+  "adapter_changes": [
+    "capture only; no upstream request"
+  ]
+}

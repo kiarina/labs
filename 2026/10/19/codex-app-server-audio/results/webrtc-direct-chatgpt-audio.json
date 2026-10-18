@@ -1,0 +1,150 @@
+{
+  "kind": "direct-chatgpt-webrtc-fixture",
+  "cli": "0.163.0",
+  "auth_type": "chatgpt",
+  "api_key_fallback": false,
+  "call_create_base_route": "chatgpt.com/backend-api/wham",
+  "model_override": false,
+  "version": "v3",
+  "proxy_used": false,
+  "start_rpc": {
+    "id": 4,
+    "result": {}
+  },
+  "answer_received": true,
+  "peer_connected": true,
+  "data_channel_open": true,
+  "fixture_bytes_sent": 321984,
+  "fixture_bytes_total": 321984,
+  "fixture_sha256": "a5503c8158b14ed47625665a66161265e0062fba3d359ff399b648f5346c06de",
+  "received_audio": {
+    "audio_frames": 633,
+    "audio_samples": 607680
+  },
+  "rtp": [
+    {
+      "type": "outbound-rtp",
+      "packetsSent": 689,
+      "packetsReceived": null,
+      "bytesSent": 38899
+    },
+    {
+      "type": "inbound-rtp",
+      "packetsSent": null,
+      "packetsReceived": 648,
+      "bytesSent": null
+    }
+  ],
+  "data_event_types": [
+    "input_transcript.added",
+    "output_transcript.added",
+    "session.started",
+    "turn.created",
+    "turn.delta",
+    "turn.done"
+  ],
+  "normal_turn_started": false,
+  "wall_seconds": 15.734,
+  "events": [
+    {
+      "method": "thread/realtime/started",
+      "params": {
+        "version": "v3"
+      }
+    },
+    {
+      "method": "thread/realtime/sdp",
+      "params": {}
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": "Did you"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " bring"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " the"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " map"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": "? Yes"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": ", it"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " is"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " right"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "user",
+        "delta": " here"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/delta",
+      "params": {
+        "role": "assistant",
+        "delta": " OK."
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/done",
+      "params": {
+        "role": "user",
+        "text": "Did you bring the map? Yes, it is right here"
+      }
+    },
+    {
+      "method": "thread/realtime/transcript/done",
+      "params": {
+        "role": "assistant",
+        "text": " OK."
+      }
+    },
+    {
+      "method": "thread/realtime/closed",
+      "params": {
+        "reason": "requested"
+      }
+    }
+  ]
+}
