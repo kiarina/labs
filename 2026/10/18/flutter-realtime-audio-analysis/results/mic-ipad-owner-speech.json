@@ -1,0 +1,476 @@
+{
+ "platform": "iOS",
+ "mode": "mic",
+ "config": {
+  "whisper": "small",
+  "language": "ja",
+  "ort_threads": null,
+  "whisper_threads": 0,
+  "fit_audio_ctx": false,
+  "min_silence_ms": 300,
+  "max_voice_ms": 8000
+ },
+ "download_ms": 15824,
+ "permission": "granted",
+ "load_ms": {
+  "silero_vad": 97,
+  "pyannote": 13,
+  "ecapa": 78,
+  "whisper_small": 603,
+  "yamnet": 18,
+  "clap": 849
+ },
+ "asr": "whisper.cpp small (whisper.cpp v1.9.5 (Metal, Accelerate BLAS, CPU))",
+ "mic_samples": 1439754,
+ "mic_rms_avg": 0.016892852850612258,
+ "mic_rms_max": 0.25393648921418127,
+ "mic_callbacks": 900,
+ "mic_s": 90.53963112831116,
+ "stats": {
+  "vad": {
+   "count": 2812,
+   "dropped": 0,
+   "queued": 0,
+   "avg_ms": 2.1692745376955904,
+   "max_ms": 244,
+   "audio_s": 89.98399999999364,
+   "rtf": 0.06778982930299199
+  },
+  "speech": {
+   "count": 20,
+   "dropped": 0,
+   "queued": 0,
+   "avg_ms": 1289.2,
+   "max_ms": 3076,
+   "audio_s": 38.656,
+   "rtf": 0.6670115894039735
+  },
+  "ambient": {
+   "count": 9,
+   "dropped": 0,
+   "queued": 0,
+   "avg_ms": 237.77777777777777,
+   "max_ms": 339,
+   "audio_s": 89.984625,
+   "rtf": 0.023781840508864713
+  },
+  "events": 30
+ },
+ "recall": {
+  "now": 1792333157.664922,
+  "mic": false,
+  "events": [
+   {
+    "kind": "ambient",
+    "start": 1792333067.407946,
+    "end": 1792333077.407946,
+    "tags": [
+     {
+      "label": "Speech",
+      "score": 0.553248355263158
+     },
+     {
+      "label": "Inside, small room",
+      "score": 0.12129934210526314
+     },
+     {
+      "label": "Animal",
+      "score": 0.05304276315789474
+     }
+    ],
+    "seconds_ago": 80.3
+   },
+   {
+    "kind": "speech",
+    "start": 1792333068.6559486,
+    "end": 1792333069.4199486,
+    "speaker_kind": "speaker",
+    "speaker": 0,
+    "language": "ja",
+    "asr_ms": 1454,
+    "seconds_ago": 88.2,
+    "text_chars": 2
+   },
+   {
+    "kind": "speech",
+    "start": 1792333069.4199486,
+    "end": 1792333075.2799487,
+    "speaker_kind": "speaker",
+    "speaker": 1,
+    "language": "ja",
+    "asr_ms": 1269,
+    "seconds_ago": 82.4,
+    "text_chars": 30
+   },
+   {
+    "kind": "speech",
+    "start": 1792333075.279962,
+    "end": 1792333075.695962,
+    "speaker_kind": "unknown_silence",
+    "speaker": null,
+    "language": "ja",
+    "asr_ms": 1240,
+    "seconds_ago": 82.0,
+    "text_chars": 15
+   },
+   {
+    "kind": "ambient",
+    "start": 1792333077.407946,
+    "end": 1792333087.407946,
+    "tags": [
+     {
+      "label": "Inside, small room",
+      "score": 0.23252467105263155
+     },
+     {
+      "label": "Speech",
+      "score": 0.1798930921052631
+     },
+     {
+      "label": "Animal",
+      "score": 0.09025493421052631
+     }
+    ],
+    "seconds_ago": 70.3
+   },
+   {
+    "kind": "ambient",
+    "start": 1792333087.407946,
+    "end": 1792333097.407946,
+    "tags": [
+     {
+      "label": "Speech",
+      "score": 0.6527549342105264
+     },
+     {
+      "label": "Inside, small room",
+      "score": 0.10320723684210528
+     },
+     {
+      "label": "Animal",
+      "score": 0.09888980263157898
+     }
+    ],
+    "seconds_ago": 60.3
+   },
+   {
+    "kind": "speech",
+    "start": 1792333093.968,
+    "end": 1792333097.8079998,
+    "speaker_kind": "speaker",
+    "speaker": 2,
+    "language": "ja",
+    "asr_ms": 1130,
+    "seconds_ago": 59.9,
+    "text_chars": 18
+   },
+   {
+    "kind": "ambient",
+    "start": 1792333097.407946,
+    "end": 1792333107.407946,
+    "tags": [
+     {
+      "label": "Speech",
+      "score": 0.6893503289473684
+     },
+     {
+      "label": "Inside, small room",
+      "score": 0.08881578947368421
+     },
+     {
+      "label": "White noise",
+      "score": 0.012952302631578948
+     }
+    ],
+    "seconds_ago": 50.3
+   },
+   {
+    "kind": "speech",
+    "start": 1792333099.1200104,
+    "end": 1792333100.5600104,
+    "speaker_kind": "speaker",
+    "speaker": 2,
+    "language": "ja",
+    "asr_ms": 976,
+    "seconds_ago": 57.1,
+    "text_chars": 6
+   },
+   {
+    "kind": "speech",
+    "start": 1792333100.7840137,
+    "end": 1792333102.0000138,
+    "speaker_kind": "speaker",
+    "speaker": 3,
+    "language": "ja",
+    "asr_ms": 917,
+    "seconds_ago": 55.7,
+    "text_chars": 2
+   },
+   {
+    "kind": "speech",
+    "start": 1792333102.416017,
+    "end": 1792333104.848017,
+    "speaker_kind": "speaker",
+    "speaker": 2,
+    "language": "ja",
+    "asr_ms": 1002,
+    "seconds_ago": 52.8,
+    "text_chars": 9
+   },
+   {
+    "kind": "speech",
+    "start": 1792333106.320025,
+    "end": 1792333107.248025,
+    "speaker_kind": "speaker",
+    "speaker": 4,
+    "language": "ja",
+    "asr_ms": 924,
+    "seconds_ago": 50.4,
+    "text_chars": 3
+   },
+   {
+    "kind": "ambient",
+    "start": 1792333107.407946,
+    "end": 1792333117.407946,
+    "tags": [
+     {
+      "label": "Speech",
+      "score": 0.6319901315789473
+     },
+     {
+      "label": "Inside, small room",
+      "score": 0.11698190789473685
+     },
+     {
+      "label": "White noise",
+      "score": 0.03762335526315789
+     }
+    ],
+    "seconds_ago": 40.3
+   },
+   {
+    "kind": "speech",
+    "start": 1792333107.5040274,
+    "end": 1792333108.1440275,
+    "speaker_kind": "unknown_silence",
+    "speaker": null,
+    "language": "ja",
+    "asr_ms": 977,
+    "seconds_ago": 49.5,
+    "text_chars": 15
+   },
+   {
+    "kind": "speech",
+    "start": 1792333108.5600295,
+    "end": 1792333110.5760295,
+    "speaker_kind": "speaker",
+    "speaker": 2,
+    "language": "ja",
+    "asr_ms": 1021,
+    "seconds_ago": 47.1,
+    "text_chars": 12
+   },
+   {
+    "kind": "speech",
+    "start": 1792333112.0160365,
+    "end": 1792333114.2240365,
+    "speaker_kind": "speaker",
+    "speaker": 2,
+    "language": "ja",
+    "asr_ms": 1037,
+    "seconds_ago": 43.4,
+    "text_chars": 14
+   },
+   {
+    "kind": "speech",
+    "start": 1792333114.736042,
+    "end": 1792333115.3760421,
+    "speaker_kind": "unknown_silence",
+    "speaker": null,
+    "language": "ja",
+    "asr_ms": 977,
+    "seconds_ago": 42.3,
+    "text_chars": 15
+   },
+   {
+    "kind": "speech",
+    "start": 1792333115.5360436,
+    "end": 1792333116.7200437,
+    "speaker_kind": "speaker",
+    "speaker": 5,
+    "language": "ja",
+    "asr_ms": 934,
+    "seconds_ago": 40.9,
+    "text_chars": 4
+   },
+   {
+    "kind": "ambient",
+    "start": 1792333117.407946,
+    "end": 1792333127.407946,
+    "tags": [
+     {
+      "label": "Speech",
+      "score": 0.3844572368421053
+     },
+     {
+      "label": "Inside, small room",
+      "score": 0.2310855263157895
+     },
+     {
+      "label": "Mechanisms",
+      "score": 0.02960526315789474
+     }
+    ],
+    "seconds_ago": 30.3
+   },
+   {
+    "kind": "speech",
+    "start": 1792333118.64005,
+    "end": 1792333119.95205,
+    "speaker_kind": "speaker",
+    "speaker": 2,
+    "language": "ja",
+    "asr_ms": 1091,
+    "seconds_ago": 37.7,
+    "text_chars": 6
+   },
+   {
+    "kind": "speech",
+    "start": 1792333121.9680567,
+    "end": 1792333123.2800567,
+    "speaker_kind": "speaker",
+    "speaker": 6,
+    "language": "ja",
+    "asr_ms": 951,
+    "seconds_ago": 34.4,
+    "text_chars": 4
+   },
+   {
+    "kind": "ambient",
+    "start": 1792333127.407946,
+    "end": 1792333137.407946,
+    "tags": [
+     {
+      "label": "Speech",
+      "score": 0.33141447368421056
+     },
+     {
+      "label": "White noise",
+      "score": 0.2045641447368421
+     },
+     {
+      "label": "Noise",
+      "score": 0.11698190789473684
+     }
+    ],
+    "seconds_ago": 20.3
+   },
+   {
+    "kind": "speech",
+    "start": 1792333134.2240815,
+    "end": 1792333138.2880814,
+    "speaker_kind": "speaker",
+    "speaker": 7,
+    "language": "ja",
+    "asr_ms": 1541,
+    "seconds_ago": 19.4,
+    "text_chars": 22
+   },
+   {
+    "kind": "ambient",
+    "start": 1792333137.407946,
+    "end": 1792333147.407946,
+    "tags": [
+     {
+      "label": "Speech",
+      "score": 0.4666940789473685
+     },
+     {
+      "label": "Inside, small room",
+      "score": 0.19325657894736845
+     },
+     {
+      "label": "Typing",
+      "score": 0.05838815789473682
+     }
+    ],
+    "seconds_ago": 10.3
+   },
+   {
+    "kind": "speech",
+    "start": 1792333138.2880898,
+    "end": 1792333138.9600897,
+    "speaker_kind": "unknown_silence",
+    "speaker": null,
+    "language": "ja",
+    "asr_ms": 982,
+    "seconds_ago": 18.7,
+    "text_chars": 15
+   },
+   {
+    "kind": "speech",
+    "start": 1792333142.5760984,
+    "end": 1792333146.3840985,
+    "speaker_kind": "speaker",
+    "speaker": 2,
+    "language": "ja",
+    "asr_ms": 1152,
+    "seconds_ago": 11.3,
+    "text_chars": 25
+   },
+   {
+    "kind": "ambient",
+    "start": 1792333147.407946,
+    "end": 1792333157.3925712,
+    "tags": [
+     {
+      "label": "Speech",
+      "score": 0.4605263157894736
+     },
+     {
+      "label": "Inside, small room",
+      "score": 0.22101151315789472
+     },
+     {
+      "label": "Animal",
+      "score": 0.04029605263157894
+     }
+    ],
+    "seconds_ago": 0.3
+   },
+   {
+    "kind": "speech",
+    "start": 1792333147.4721084,
+    "end": 1792333149.1041083,
+    "speaker_kind": "speaker",
+    "speaker": 2,
+    "language": "ja",
+    "asr_ms": 1276,
+    "seconds_ago": 8.6,
+    "text_chars": 11
+   },
+   {
+    "kind": "speech",
+    "start": 1792333150.3201141,
+    "end": 1792333151.6641142,
+    "speaker_kind": "speaker",
+    "speaker": 2,
+    "language": "ja",
+    "asr_ms": 1198,
+    "seconds_ago": 6.0,
+    "text_chars": 18
+   },
+   {
+    "kind": "speech",
+    "start": 1792333152.4641185,
+    "end": 1792333153.3921185,
+    "speaker_kind": "speaker",
+    "speaker": 8,
+    "language": "ja",
+    "asr_ms": 906,
+    "seconds_ago": 4.3,
+    "text_chars": 2
+   }
+  ]
+ }
+}
