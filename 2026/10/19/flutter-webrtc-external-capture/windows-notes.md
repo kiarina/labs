@@ -1,13 +1,26 @@
 # Windows external media input
 
+## Current recording-isolated variant
+
+The Windows external input plugin now requires the rebuilt, audited SDK from
+[Windows recording isolation](WINDOWS_RECORDING_ISOLATION.md). Stock SDKs are
+rejected at track creation. The tested protected lifecycle records zero ADM,
+Windows backend, WASAPI and DMO recording initialization/start calls while one
+real `record` capture keeps supplying PCM through two send phases. The same
+DLL with the protection disabled exercises the recording initialization paths.
+This is a pinned lab-specific variant, not a general-purpose SDK recording API.
+
+The earlier stock-SDK results and failures below remain experimental evidence;
+the current SDK build and use instructions are in the linked isolation document.
+
 ## Bridge
 
 The independent `external_capture/windows` plugin links to the pinned
 `flutter_webrtc` plugin and its libwebrtc wrapper. It creates and registers a
 local stream with audio/video tracks in the same native factory used by
 `flutter_webrtc`. The custom input sources do not themselves open a device;
-however, the factory's default ADM still attempts microphone initialization
-when a custom audio track is sent (see the recording limitation below).
+however, the stock factory's default ADM attempts microphone initialization
+when a custom audio track is sent. The audited variant suppresses these paths.
 
 - Video: `CreateCustomVideoSource` → `RTCVideoSource::OnCapturedFrame`.
   Packed BGRA is converted to BT.601 limited-range I420 on the platform thread.
@@ -104,18 +117,19 @@ otherwise the probe uses camera + record. The report is written to
 `%TEMP%/external_browser_result.json`.
 
 
-### Default ADM recording limitation
+### Stock SDK recording behavior
 
 Native logs show `AudioDeviceModuleImpl::InitRecording` and `StartRecording`
 even for `RTCAudioSource::kCustom`. In this environment StartRecording then
 fails because the built-in AEC requires playout to have started first.
-Therefore this experiment proves external PCM injection, but does **not**
-prove exclusive microphone ownership by `record` on Windows. A working
-render endpoint could cause the default ADM to acquire an additional capture
-handle. The prebuilt wrapper's public `RTCPeerConnection` and `RTCAudioDevice`
+These stock-SDK runs prove external PCM injection but do not establish
+exclusive microphone ownership by `record`. A working render endpoint could
+cause the default ADM to acquire an additional capture handle. The prebuilt wrapper's public `RTCPeerConnection` and `RTCAudioDevice`
 APIs expose no `SetAudioRecording(false)` or custom ADM installation hook.
-Production support needs a wrapper/factory extension to suppress native
-recording or install a dummy/custom ADM while preserving audio decoding.
+The current lab-specific SDK adds native recording/initialization guards and
+runtime counters without changing the public wrapper C++ ABI. Its measured
+scope and remaining production/API limitations are documented in the isolation
+experiment linked above.
 
 The independent synthetic receiver test passes. The two send intervals decode
 296,640 / 297,600 audio samples and 150 / 150 video frames, with measured

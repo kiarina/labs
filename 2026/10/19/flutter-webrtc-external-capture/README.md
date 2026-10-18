@@ -9,8 +9,9 @@
 macOS、Android、iOS の実機と Chrome の仮想デバイスで、取得を維持したまま
 待機 → 送信 → 待機 → 送信 → 待機を通せました。受信側の復号済み画像・非ゼロ PCM と
 RTP 統計の両方を確認しています。Windows も外部から注入した映像と PCM を独立した Chrome で受信できました。
-ただし、Windows の実カメラと WebRTC 側の追加マイク取得抑止は未検証・未対応です。
-[Windows notes](windows-notes.md) に原因と必要な拡張を記録しています。
+Windows は監査付きの lab 専用 SDK を再ビルドし、WebRTC の追加録音を抑止した状態でも実マイクの取得・送信が続くことを確認しました。
+録音経路 7 カウンタはすべて 0 で、同じ DLL の保護を外した対照では録音初期化が観測できています。
+[Windows recording isolation](WINDOWS_RECORDING_ISOLATION.md) に実測と再現手順をまとめています。Windows の実カメラは未検証です。
 
 標準の Dart `Stream` を `MediaStream` として渡せるわけではありません。
 ネイティブの外部入力ブリッジが必要で、Android では lab 内の `flutter_webrtc` コピーに
@@ -60,6 +61,11 @@ camera 0.12.1、camera_desktop 2.0.0、dart_webrtc 1.8.2。解決した transiti
 | Chrome 155 / macOS、仮想デバイス | 89 / 90 frames | 0.0984 / 0.0961 | 60.2 / 75.1 ms | [PASS](results/web-flutter-capture.json) |
 | Windows 11 / x64 → Chrome、合成入力 | 150 / 150 frames | 最大 RMS 0.1727 / 0.1733 | 22 / 42 ms | [入力・送信 PASS](results/windows-browser-synthetic.json) |
 | Windows 11 / x64 → Chrome、実マイク＋合成映像 | 150 / 148 frames | 最大 RMS 0.0410 / 0.0392 | 49 / 42 ms | [入力・送信 PASS](results/windows-browser-record-profile-cleanup.json) |
+
+表の Windows の値は stock SDK による入力・送信の初回測定です。現在の録音抑止用 SDK では実マイク＋合成映像の送信で
+150 / 143 frames、最大 RMS 0.0386 / 0.0282、最大取得間隔は音声 53 ms・映像 46 ms でした。
+[保護モードの結果](results/windows-recording-protected.json) と
+[同じ DLL の対照](results/windows-recording-control.json) は監査・メディアの検算とも PASS です。
 
 受信 fps は 6 秒の送信区間で得られたフレーム数が基準で、厳密なレイテンシ測定ではありません。
 `results/*synthetic*.json` は合成入力の補助試験です。最終の flush 追加前の補助結果も保存し、
@@ -111,10 +117,10 @@ Web は `?synthetic=true`。結果は `EXTERNAL_RESULT` のログと、ネイテ
   macOS / iOS のテスト ADM は受信音を pull して捨て、実スピーカー再生は実装しません。
   Windows の custom audio source は通常の音声処理を通らないので、WebRTC の AEC が適用されると扱いません。
   Android もハードウェア AEC / NS を無効にしています。スピーカーでの双方向会話は未検証です。
-- Windows の `kCustom` source でも既定 ADM のマイク起動が試みられます。
-  `record` のみがマイクを所有する保証には、wrapper / factory を拡張して既定録音を抑止する必要があります。
-  検証機では 4ch 音声出力の初期化に失敗するため、ネイティブ同士の音声受信試験は失敗し、
-  独立した Chrome を受信側にして注入・送信を検証しました。物理カメラは未接続です。
+- Windows は [録音抑止用の監査付き SDK](WINDOWS_RECORDING_ISOLATION.md) が必須です。標準 SDK での外部入力作成は拒否します。
+  固定した lab のライフサイクルで既定録音の初期化・開始が 0 回になることを実証しました。
+  通常の WebRTC マイク取得を併用する汎用 SDK ではなく、明示的な録音再有効化やデバイス変更は未検証です。
+  検証機の 4ch 音声出力によるネイティブ同士の受信音声の問題は残るため、Chrome を受信側にしています。物理カメラは未接続です。
 - macOS / iOS のカスタム音声デバイスは最初の WebRTC 操作より前に factory へ設定します。
   Android の外部入力設定も factory 全体に効き、WebRTC の通常のマイク取得を無効にします。
   既存の WebRTC 通話アプリへそのまま後付けする API ではありません。

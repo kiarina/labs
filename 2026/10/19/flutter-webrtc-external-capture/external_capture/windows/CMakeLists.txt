@@ -69,3 +69,6 @@ set(external_capture_bundled_libraries
 
 # Only enable test builds when building the example (which sets this variable)
 # so that plugin clients aren't building the tests.
+
+# SHA-256 of the actual loaded audited SDK, using Windows CNG.
+target_link_libraries(${PLUGIN_NAME} PRIVATE bcrypt)

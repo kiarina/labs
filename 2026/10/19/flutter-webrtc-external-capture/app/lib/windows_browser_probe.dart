@@ -7,6 +7,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:record/record.dart';
 
@@ -48,6 +49,8 @@ Future<void> probe() async {
   final report = <String, dynamic>{
     'platform': 'windows',
     'receiver': 'independent-chromium',
+    'recordingControl':
+        Platform.environment['EXTERNAL_CAPTURE_RECORDING_CONTROL'] == '1',
     'synthetic': envValue('synthetic') == 'true',
     'phases': <Object>[],
   };
@@ -137,6 +140,7 @@ Future<void> probe() async {
         delta['sourceAudioBytes']! > 0 &&
         (sending
             ? (decodedAudio > 0 &&
+                  d('audio', 'bytesReceived') > 0 &&
                   phaseAudioRmsMax > (report['synthetic'] == true ? 0.05 : 0) &&
                   decodedVideo > 0 &&
                   delta['injectedAudioBytes']! > 0 &&
@@ -161,6 +165,8 @@ Future<void> probe() async {
   }
 
   try {
+    report['sdkSha256'] = await const MethodChannel('external_capture')
+        .invokeMethod<String>('recordingSdk');
     stream = await bridge.create();
     pc = await createPeerConnection({
       'iceServers': [],
@@ -320,8 +326,18 @@ Future<void> probe() async {
         report['temporaryProfileCleanup'] = 'failed';
       }
     }
+    try {
+      final snapshot = await const MethodChannel('external_capture')
+          .invokeMapMethod<String, dynamic>('recordingAudit');
+      if (snapshot == null) throw StateError('SDK returned no audit snapshot');
+      report['recordingAudit'] = snapshot;
+    } catch (e) {
+      report['recordingAuditError'] = '$e';
+      report['pass'] = false;
+    }
   }
-  File('${Directory.systemTemp.path}/external_browser_result.json')
-      .writeAsStringSync(jsonEncode(report));
+  File(
+    '${Directory.systemTemp.path}/${envValue('result_name') ?? 'external_browser_result.json'}',
+  ).writeAsStringSync(jsonEncode(report));
   exit(0);
 }

@@ -25,6 +25,7 @@ def check(path):
             delta=phase.get('receiverDelta',{})
             require(delta.get('videoFramesDecoded',0)>0,name+': no decoded video frames')
             require(delta.get('audioSamples',0)>0,name+': no decoded audio samples')
+            require(delta.get('audioBytes',0)>0,name+': no new received audio RTP bytes')
             require(delta.get('audioRmsMax',0)>(.05 if report.get('synthetic') else 1e-6),name+': zero/insufficient received PCM energy')
             rows=list(phase.get('afterStats',{}).values())
         else:

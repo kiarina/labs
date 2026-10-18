@@ -1,5 +1,10 @@
 #include "external_capture_plugin.h"
 
+// clang-format off
+#include <windows.h>
+#include <bcrypt.h>
+// clang-format on
+
 #include <flutter/standard_method_codec.h>
 #include <flutter_webrtc/flutter_web_r_t_c_plugin.h>
 
@@ -40,6 +45,54 @@ int64_t Int(const EncodableMap& a, const char* key) {
   return 0;
 }
 uint8_t Clip(int n) { return static_cast<uint8_t>(std::clamp(n, 0, 255)); }
+std::string ModuleSha256(HMODULE module) {
+  std::vector<wchar_t> path(32768);
+  if (!module ||
+      !GetModuleFileNameW(module, path.data(), static_cast<DWORD>(path.size())))
+    return {};
+  HANDLE file =
+      CreateFileW(path.data(), GENERIC_READ,
+                  FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+                  nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+  if (file == INVALID_HANDLE_VALUE) return {};
+  BCRYPT_ALG_HANDLE algorithm = nullptr;
+  BCRYPT_HASH_HANDLE hash = nullptr;
+  DWORD object_size = 0, returned = 0;
+  bool ok = BCryptOpenAlgorithmProvider(&algorithm, BCRYPT_SHA256_ALGORITHM,
+                                        nullptr, 0) >= 0;
+  if (ok)
+    ok = BCryptGetProperty(algorithm, BCRYPT_OBJECT_LENGTH,
+                           reinterpret_cast<PUCHAR>(&object_size),
+                           sizeof(object_size), &returned, 0) >= 0;
+  std::vector<UCHAR> object(object_size), chunk(65536);
+  if (ok)
+    ok = BCryptCreateHash(algorithm, &hash, object.data(), object_size, nullptr,
+                          0, 0) >= 0;
+  DWORD count = 0;
+  while (ok) {
+    if (!ReadFile(file, chunk.data(), static_cast<DWORD>(chunk.size()), &count,
+                  nullptr)) {
+      ok = false;
+      break;
+    }
+    if (!count) break;
+    ok = BCryptHashData(hash, chunk.data(), count, 0) >= 0;
+  }
+  UCHAR digest[32]{};
+  if (ok) ok = BCryptFinishHash(hash, digest, sizeof(digest), 0) >= 0;
+  if (hash) BCryptDestroyHash(hash);
+  if (algorithm) BCryptCloseAlgorithmProvider(algorithm, 0);
+  CloseHandle(file);
+  if (!ok) return {};
+  constexpr char hex[] = "0123456789abcdef";
+  std::string result;
+  for (auto byte : digest) {
+    result += hex[byte >> 4];
+    result += hex[byte & 15];
+  }
+  return result;
+}
+
 }  // namespace
 class Input {
  public:
@@ -140,7 +193,50 @@ void ExternalCapturePlugin::RegisterWithRegistrar(
 void ExternalCapturePlugin::HandleMethodCall(
     const flutter::MethodCall<EncodableValue>& call,
     std::unique_ptr<flutter::MethodResult<EncodableValue>> result) {
+  if (call.method_name() == "recordingSdk") {
+    const auto sha = ModuleSha256(GetModuleHandleW(L"libwebrtc.dll"));
+    if (sha.empty())
+      result->Error("sdk_hash_failed",
+                    "Cannot hash the loaded libwebrtc module");
+    else
+      result->Success(EncodableValue(sha));
+    return;
+  }
+  if (call.method_name() == "recordingAudit") {
+    auto module = GetModuleHandleW(L"libwebrtc.dll");
+    using Audit = uint64_t(__cdecl*)(int);
+    auto audit = module ? reinterpret_cast<Audit>(GetProcAddress(
+                              module, "ExternalCaptureGetRecordingAudit"))
+                        : nullptr;
+    if (!audit) {
+      result->Error("unsupported_sdk",
+                    "The audited lab-only libwebrtc DLL is required");
+      return;
+    }
+    uint64_t values[9]{};
+    for (int i = 0; i < 9; ++i) values[i] = audit(i);
+    const char* names[] = {"admInitRecording",         "admStartRecording",
+                           "windowsInitRecording",     "windowsStartRecording",
+                           "wasapiInitialize",         "wasapiCaptureService",
+                           "dmoInitRecording",         "peerConnections",
+                           "suppressedPeerConnections"};
+    EncodableMap snapshot;
+    for (int i = 0; i < 9; ++i)
+      snapshot[EncodableValue(names[i])] =
+          EncodableValue(static_cast<int64_t>(values[i]));
+    result->Success(EncodableValue(snapshot));
+    return;
+  }
   if (call.method_name() == "create") {
+    auto module = GetModuleHandleW(L"libwebrtc.dll");
+    if (!module ||
+        !GetProcAddress(module, "ExternalCaptureGetRecordingAudit")) {
+      result->Error(
+          "unsupported_sdk",
+          "Windows external capture requires the audited recording-isolated "
+          "lab SDK; see patches/windows/build_sdk.ps1");
+      return;
+    }
     input_.reset();
     auto base = FlutterWebRTCPluginSharedInstance();
     if (!base) {
