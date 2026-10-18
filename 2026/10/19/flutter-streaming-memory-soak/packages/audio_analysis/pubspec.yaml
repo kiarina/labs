@@ -1,0 +1,17 @@
+name: audio_analysis
+description: Real-time audio analysis (VAD, speaker change, ASR, speaker and sound embeddings, sound tagging) ported from kiarina-agi-audio.
+publish_to: none
+version: 0.1.0
+
+environment:
+  sdk: ^3.13.2
+  flutter: ">=3.47.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_onnxruntime: 1.9.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Run logic tests and validate the retained memory investigation results"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mise run check
+python3 tools/validate.py

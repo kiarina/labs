@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Render the memory results with pinned matplotlib"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+uv run --with-requirements tools/plot-requirements.txt python tools/plot.py

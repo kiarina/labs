@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Prepare the pinned video/VAD and a private-container PCM control fixture"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+tools/prepare.sh
+ffmpeg -v error -y -i app/assets/long.mp4 -af 'aresample=16000,atrim=end_sample=9600000,asetpts=N/SR/TB' -ac 1 -ar 16000 -f s16le work/inference.pcm
+# Control fixture staging happens after the app has initialized its sandbox.

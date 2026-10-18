@@ -1,0 +1,591 @@
+{
+  "accepted": false,
+  "reason": "Concurrent profiling; deliberately stopped; not used for final bounds.",
+  "passes": [
+    {
+      "type": "pass",
+      "pass": 1,
+      "mode": "full",
+      "wall_ms": 10232,
+      "work_ms": 10179,
+      "samples": 9600000,
+      "vad_positive": 7002,
+      "voice_count": 178,
+      "voice_retained": 8,
+      "frames": 600,
+      "frames_retained": 8,
+      "metrics": {
+        "rss": 190087168,
+        "max_rss": 192954368,
+        "malloc_allocated": 96468992,
+        "malloc_in_use": 27409248,
+        "footprint": 117621888,
+        "malloc_blocks": 172129,
+        "resident": 190087168,
+        "ort": {
+          "values": 0,
+          "sessions": 1
+        },
+        "callbacks": {
+          "ffmpeg_complete": 0,
+          "ffprobe_complete": 0,
+          "media_complete": 0,
+          "log": 0,
+          "statistics": 0,
+          "redirection": 0
+        },
+        "ffmpeg_history": 1
+      },
+      "buffers": {
+        "pcm": 3200,
+        "jpeg": 14523
+      }
+    },
+    {
+      "type": "pass",
+      "pass": 2,
+      "mode": "full",
+      "wall_ms": 20406,
+      "work_ms": 10173,
+      "samples": 9600000,
+      "vad_positive": 7002,
+      "voice_count": 178,
+      "voice_retained": 8,
+      "frames": 600,
+      "frames_retained": 8,
+      "metrics": {
+        "rss": 199213056,
+        "max_rss": 208633856,
+        "malloc_allocated": 96468992,
+        "malloc_in_use": 26031744,
+        "footprint": 123880576,
+        "malloc_blocks": 170791,
+        "resident": 199213056,
+        "ort": {
+          "values": 0,
+          "sessions": 1
+        },
+        "callbacks": {
+          "ffmpeg_complete": 0,
+          "ffprobe_complete": 0,
+          "media_complete": 0,
+          "log": 0,
+          "statistics": 0,
+          "redirection": 0
+        },
+        "ffmpeg_history": 2
+      },
+      "buffers": {
+        "pcm": 3200,
+        "jpeg": 14523
+      }
+    },
+    {
+      "type": "pass",
+      "pass": 3,
+      "mode": "full",
+      "wall_ms": 31716,
+      "work_ms": 11308,
+      "samples": 9600000,
+      "vad_positive": 7002,
+      "voice_count": 178,
+      "voice_retained": 8,
+      "frames": 600,
+      "frames_retained": 8,
+      "metrics": {
+        "rss": 201801728,
+        "max_rss": 208633856,
+        "malloc_allocated": 96468992,
+        "malloc_in_use": 27131008,
+        "footprint": 126469248,
+        "malloc_blocks": 170785,
+        "resident": 201801728,
+        "ort": {
+          "values": 0,
+          "sessions": 1
+        },
+        "callbacks": {
+          "ffmpeg_complete": 0,
+          "ffprobe_complete": 0,
+          "media_complete": 0,
+          "log": 0,
+          "statistics": 0,
+          "redirection": 0
+        },
+        "ffmpeg_history": 3
+      },
+      "buffers": {
+        "pcm": 3200,
+        "jpeg": 14523
+      }
+    },
+    {
+      "type": "pass",
+      "pass": 4,
+      "mode": "full",
+      "wall_ms": 70153,
+      "work_ms": 38404,
+      "samples": 9600000,
+      "vad_positive": 7002,
+      "voice_count": 178,
+      "voice_retained": 8,
+      "frames": 600,
+      "frames_retained": 8,
+      "metrics": {
+        "rss": 214597632,
+        "max_rss": 215515136,
+        "malloc_allocated": 113246208,
+        "malloc_in_use": 26032816,
+        "footprint": 140313728,
+        "malloc_blocks": 170897,
+        "resident": 214597632,
+        "ort": {
+          "values": 0,
+          "sessions": 1
+        },
+        "callbacks": {
+          "ffmpeg_complete": 0,
+          "ffprobe_complete": 0,
+          "media_complete": 0,
+          "log": 0,
+          "statistics": 0,
+          "redirection": 0
+        },
+        "ffmpeg_history": 4
+      },
+      "buffers": {
+        "pcm": 3200,
+        "jpeg": 14523
+      }
+    },
+    {
+      "type": "pass",
+      "pass": 5,
+      "mode": "full",
+      "wall_ms": 80238,
+      "work_ms": 10083,
+      "samples": 9600000,
+      "vad_positive": 7002,
+      "voice_count": 178,
+      "voice_retained": 8,
+      "frames": 600,
+      "frames_retained": 8,
+      "metrics": {
+        "rss": 216662016,
+        "max_rss": 217874432,
+        "malloc_allocated": 113246208,
+        "malloc_in_use": 26076176,
+        "footprint": 142378112,
+        "malloc_blocks": 171000,
+        "resident": 216662016,
+        "ort": {
+          "values": 0,
+          "sessions": 1
+        },
+        "callbacks": {
+          "ffmpeg_complete": 0,
+          "ffprobe_complete": 0,
+          "media_complete": 0,
+          "log": 0,
+          "statistics": 0,
+          "redirection": 0
+        },
+        "ffmpeg_history": 5
+      },
+      "buffers": {
+        "pcm": 3200,
+        "jpeg": 14523
+      }
+    },
+    {
+      "type": "pass",
+      "pass": 6,
+      "mode": "full",
+      "wall_ms": 90366,
+      "work_ms": 10126,
+      "samples": 9600000,
+      "vad_positive": 7002,
+      "voice_count": 178,
+      "voice_retained": 8,
+      "frames": 600,
+      "frames_retained": 8,
+      "metrics": {
+        "rss": 204439552,
+        "max_rss": 218333184,
+        "malloc_allocated": 113246208,
+        "malloc_in_use": 26037296,
+        "footprint": 126272640,
+        "malloc_blocks": 170957,
+        "resident": 204439552,
+        "ort": {
+          "values": 0,
+          "sessions": 1
+        },
+        "callbacks": {
+          "ffmpeg_complete": 0,
+          "ffprobe_complete": 0,
+          "media_complete": 0,
+          "log": 0,
+          "statistics": 0,
+          "redirection": 0
+        },
+        "ffmpeg_history": 6
+      },
+      "buffers": {
+        "pcm": 3200,
+        "jpeg": 14523
+      }
+    },
+    {
+      "type": "pass",
+      "pass": 7,
+      "mode": "full",
+      "wall_ms": 111991,
+      "work_ms": 21624,
+      "samples": 9600000,
+      "vad_positive": 7002,
+      "voice_count": 178,
+      "voice_retained": 8,
+      "frames": 600,
+      "frames_retained": 8,
+      "metrics": {
+        "rss": 205340672,
+        "max_rss": 218333184,
+        "malloc_allocated": 117440512,
+        "malloc_blocks": 195708,
+        "footprint": 112772224,
+        "resident": 205340672,
+        "malloc_in_use": 27762448,
+        "ort": {
+          "values": 0,
+          "sessions": 1
+        },
+        "callbacks": {
+          "ffmpeg_complete": 0,
+          "ffprobe_complete": 0,
+          "media_complete": 0,
+          "log": 0,
+          "statistics": 0,
+          "redirection": 0
+        },
+        "ffmpeg_history": 7
+      },
+      "buffers": {
+        "pcm": 3200,
+        "jpeg": 14523
+      }
+    },
+    {
+      "type": "pass",
+      "pass": 8,
+      "mode": "full",
+      "wall_ms": 129532,
+      "work_ms": 17539,
+      "samples": 9600000,
+      "vad_positive": 7002,
+      "voice_count": 178,
+      "voice_retained": 8,
+      "frames": 600,
+      "frames_retained": 8,
+      "metrics": {
+        "rss": 206192640,
+        "max_rss": 218333184,
+        "malloc_allocated": 117440512,
+        "malloc_blocks": 195675,
+        "footprint": 113624192,
+        "resident": 206192640,
+        "malloc_in_use": 27718864,
+        "ort": {
+          "values": 0,
+          "sessions": 1
+        },
+        "callbacks": {
+          "ffmpeg_complete": 0,
+          "ffprobe_complete": 0,
+          "media_complete": 0,
+          "log": 0,
+          "statistics": 0,
+          "redirection": 0
+        },
+        "ffmpeg_history": 8
+      },
+      "buffers": {
+        "pcm": 3200,
+        "jpeg": 14523
+      }
+    },
+    {
+      "type": "pass",
+      "pass": 9,
+      "mode": "full",
+      "wall_ms": 140190,
+      "work_ms": 10656,
+      "samples": 9600000,
+      "vad_positive": 7002,
+      "voice_count": 178,
+      "voice_retained": 8,
+      "frames": 600,
+      "frames_retained": 8,
+      "metrics": {
+        "rss": 211484672,
+        "max_rss": 218333184,
+        "malloc_allocated": 125829120,
+        "malloc_blocks": 195795,
+        "footprint": 118916224,
+        "resident": 211484672,
+        "malloc_in_use": 27772736,
+        "ort": {
+          "values": 0,
+          "sessions": 1
+        },
+        "callbacks": {
+          "ffmpeg_complete": 0,
+          "ffprobe_complete": 0,
+          "media_complete": 0,
+          "log": 0,
+          "statistics": 0,
+          "redirection": 0
+        },
+        "ffmpeg_history": 9
+      },
+      "buffers": {
+        "pcm": 3200,
+        "jpeg": 14523
+      }
+    },
+    {
+      "type": "pass",
+      "pass": 10,
+      "mode": "full",
+      "wall_ms": 151174,
+      "work_ms": 10983,
+      "samples": 9600000,
+      "vad_positive": 7002,
+      "voice_count": 178,
+      "voice_retained": 8,
+      "frames": 600,
+      "frames_retained": 8,
+      "metrics": {
+        "rss": 214859776,
+        "max_rss": 218333184,
+        "malloc_allocated": 130023424,
+        "malloc_blocks": 195859,
+        "footprint": 122291352,
+        "resident": 214859776,
+        "malloc_in_use": 29453600,
+        "ort": {
+          "values": 0,
+          "sessions": 1
+        },
+        "callbacks": {
+          "ffmpeg_complete": 0,
+          "ffprobe_complete": 0,
+          "media_complete": 0,
+          "log": 0,
+          "statistics": 0,
+          "redirection": 0
+        },
+        "ffmpeg_history": 10
+      },
+      "buffers": {
+        "pcm": 3200,
+        "jpeg": 14523
+      }
+    },
+    {
+      "type": "pass",
+      "pass": 11,
+      "mode": "full",
+      "wall_ms": 187322,
+      "work_ms": 36145,
+      "samples": 9600000,
+      "vad_positive": 7002,
+      "voice_count": 178,
+      "voice_retained": 8,
+      "frames": 600,
+      "frames_retained": 8,
+      "metrics": {
+        "rss": 214351872,
+        "max_rss": 218333184,
+        "malloc_allocated": 130023424,
+        "malloc_blocks": 195806,
+        "footprint": 121783448,
+        "resident": 214351872,
+        "malloc_in_use": 27737456,
+        "ort": {
+          "values": 0,
+          "sessions": 1
+        },
+        "callbacks": {
+          "ffmpeg_complete": 0,
+          "ffprobe_complete": 0,
+          "media_complete": 0,
+          "log": 0,
+          "statistics": 0,
+          "redirection": 0
+        },
+        "ffmpeg_history": 10
+      },
+      "buffers": {
+        "pcm": 3200,
+        "jpeg": 14523
+      }
+    },
+    {
+      "type": "pass",
+      "pass": 12,
+      "mode": "full",
+      "wall_ms": 222811,
+      "work_ms": 35475,
+      "samples": 9600000,
+      "vad_positive": 7002,
+      "voice_count": 178,
+      "voice_retained": 8,
+      "frames": 600,
+      "frames_retained": 8,
+      "metrics": {
+        "rss": 217956352,
+        "max_rss": 219299840,
+        "malloc_allocated": 134217728,
+        "malloc_blocks": 195873,
+        "footprint": 97027224,
+        "resident": 217956352,
+        "malloc_in_use": 27743872,
+        "ort": {
+          "values": 0,
+          "sessions": 1
+        },
+        "callbacks": {
+          "ffmpeg_complete": 0,
+          "ffprobe_complete": 0,
+          "media_complete": 0,
+          "log": 0,
+          "statistics": 0,
+          "redirection": 0
+        },
+        "ffmpeg_history": 10
+      },
+      "buffers": {
+        "pcm": 3200,
+        "jpeg": 14523
+      }
+    },
+    {
+      "type": "pass",
+      "pass": 13,
+      "mode": "full",
+      "wall_ms": 233377,
+      "work_ms": 10564,
+      "samples": 9600000,
+      "vad_positive": 7002,
+      "voice_count": 178,
+      "voice_retained": 8,
+      "frames": 600,
+      "frames_retained": 8,
+      "metrics": {
+        "rss": 218152960,
+        "max_rss": 220282880,
+        "malloc_allocated": 134217728,
+        "malloc_blocks": 195974,
+        "footprint": 97223832,
+        "resident": 218152960,
+        "malloc_in_use": 27810736,
+        "ort": {
+          "values": 0,
+          "sessions": 1
+        },
+        "callbacks": {
+          "ffmpeg_complete": 0,
+          "ffprobe_complete": 0,
+          "media_complete": 0,
+          "log": 0,
+          "statistics": 0,
+          "redirection": 0
+        },
+        "ffmpeg_history": 10
+      },
+      "buffers": {
+        "pcm": 3200,
+        "jpeg": 14523
+      }
+    },
+    {
+      "type": "pass",
+      "pass": 14,
+      "mode": "full",
+      "wall_ms": 243646,
+      "work_ms": 10266,
+      "samples": 9600000,
+      "vad_positive": 7002,
+      "voice_count": 178,
+      "voice_retained": 8,
+      "frames": 600,
+      "frames_retained": 8,
+      "metrics": {
+        "rss": 218415104,
+        "max_rss": 220577792,
+        "malloc_allocated": 134217728,
+        "malloc_blocks": 195826,
+        "footprint": 97485976,
+        "resident": 218415104,
+        "malloc_in_use": 29400816,
+        "ort": {
+          "values": 0,
+          "sessions": 1
+        },
+        "callbacks": {
+          "ffmpeg_complete": 0,
+          "ffprobe_complete": 0,
+          "media_complete": 0,
+          "log": 0,
+          "statistics": 0,
+          "redirection": 0
+        },
+        "ffmpeg_history": 10
+      },
+      "buffers": {
+        "pcm": 3200,
+        "jpeg": 14523
+      }
+    },
+    {
+      "type": "pass",
+      "pass": 15,
+      "mode": "full",
+      "wall_ms": 327005,
+      "work_ms": 83356,
+      "samples": 9600000,
+      "vad_positive": 7002,
+      "voice_count": 178,
+      "voice_retained": 8,
+      "frames": 600,
+      "frames_retained": 8,
+      "metrics": {
+        "rss": 217759744,
+        "max_rss": 220954624,
+        "malloc_allocated": 134217728,
+        "malloc_blocks": 196103,
+        "footprint": 95257752,
+        "resident": 217759744,
+        "malloc_in_use": 27903440,
+        "ort": {
+          "values": 0,
+          "sessions": 1
+        },
+        "callbacks": {
+          "ffmpeg_complete": 0,
+          "ffprobe_complete": 0,
+          "media_complete": 0,
+          "log": 0,
+          "statistics": 0,
+          "redirection": 0
+        },
+        "ffmpeg_history": 10
+      },
+      "buffers": {
+        "pcm": 3200,
+        "jpeg": 14523
+      }
+    }
+  ]
+}

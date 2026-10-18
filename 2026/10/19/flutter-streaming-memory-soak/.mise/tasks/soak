@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Build and run 60 ten-minute passes in release, no forced GC or pressure relief"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+WORK_ACTIVITY=1 ORT_THREADS="${ORT_THREADS:-1}" RUN_LABEL=soak-fixed RUN_MODE=full MEDIA_SECONDS=600 PASSES=60 CLEAN_CALLBACKS=1 tools/run.sh
