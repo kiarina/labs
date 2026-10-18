@@ -217,6 +217,10 @@ class HearingController extends ChangeNotifier {
       'fit_audio_ctx': config.fitAudioCtx,
       'min_silence_ms': config.minSilenceMs,
       'max_voice_ms': config.maxVoiceMs,
+      'speaker_threshold': config.speakerThreshold,
+      'asr_speakers_only': config.asrSpeakersOnly,
+      'asr_min_seconds': config.asrMinSeconds,
+      'new_speaker_min_seconds': config.newSpeakerMinSeconds,
     }};
     try {
       final dl = Stopwatch()..start();
@@ -243,7 +247,11 @@ class HearingController extends ChangeNotifier {
         report['mic_callbacks'] = _micRms.length;
         report['mic_s'] = nowSeconds() - on;
         report['stats'] = e.analyzer.statsJson();
-        report['recall'] = recall(minutes: 2);
+        report['recall'] = recall(minutes: 3);
+        // embeddings stay on the device side for offline tuning; not part of the report
+        await saveReport('mic-embeddings.json', jsonEncode([
+          for (final ev in hearing.query(since: on - 1, kinds: {'speech'}, limit: 1000)) ev.toJson(embeddings: true),
+        ]));
         throw const _Done();
       }
       if (mode == 'parity') {

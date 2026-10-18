@@ -20,6 +20,9 @@ class SttConsumer {
     required this.asr,
     this.embedder,
     this.speakerSimilarityThreshold = 0.45,
+    this.asrSpeakersOnly = false,
+    this.asrMinSeconds = 0,
+    this.newSpeakerMinSeconds = 0,
   });
 
   final VoiceDetector voiceDetector;
@@ -27,6 +30,18 @@ class SttConsumer {
   final Asr asr;
   final EcapaSpeakerEmbedder? embedder;
   final double speakerSimilarityThreshold;
+
+  /// Not in kiarina: skip ASR for speeches the change detector did not give
+  /// a speaker (silence / overlap). On a real mic, Whisper turned such short
+  /// stretches into "ご視聴ありがとうございました!".
+  final bool asrSpeakersOnly;
+
+  /// Not in kiarina: skip ASR (and speaker assignment) below this length.
+  final double asrMinSeconds;
+
+  /// Not in kiarina: a speech shorter than this never starts a new speaker;
+  /// it joins the closest existing one (short ECAPA embeddings are noisy).
+  final double newSpeakerMinSeconds;
 
   /// Embeddings seen per global speaker (kiarina keeps all; bounded here).
   final List<List<Float32List>> speakers = [];
@@ -43,30 +58,48 @@ class SttConsumer {
     final speeches = await changeDetector.detect(voice.samples, voice.sampleRate, voice.startTimestamp);
     final events = <SpeechEvent>[];
     for (final speech in speeches) {
-      final asrResult = await asr.transcribe(speech.samples, speech.sampleRate);
+      final seconds = speech.samples.length / speech.sampleRate;
+      String? skipped;
+      if (asrSpeakersOnly && speech.kind != 'speaker') skipped = speech.kind;
+      if (seconds < asrMinSeconds) skipped ??= 'short';
+      var asrResult = AsrResult('');
+      if (skipped == null) asrResult = await asr.transcribe(speech.samples, speech.sampleRate);
       Float32List? embedding;
-      if (embedder != null) {
+      if (embedder != null && skipped == null) {
         embedding = await embedder!.embed(speech.samples, speech.sampleRate);
       }
       int? speaker;
-      if (speech.kind == 'speaker') {
-        speaker = embedding != null ? _resolveSpeaker(embedding) : 0;
+      double? score;
+      if (speech.kind == 'speaker' && skipped == null) {
+        if (embedding != null) {
+          final allowNew = seconds >= newSpeakerMinSeconds;
+          // a short speech before anyone is known stays unassigned
+          if (allowNew || speakers.isNotEmpty) {
+            (speaker, score) = _resolveSpeaker(embedding, allowNew: allowNew);
+          }
+        } else {
+          speaker = 0;
+        }
       }
       events.add(SpeechEvent(
         start: speech.startTimestamp,
         end: speech.endTimestamp,
         speakerKind: speech.kind,
         speaker: speaker,
+        speakerScore: score,
         text: asrResult.text,
         language: asrResult.language,
         asrMs: asrResult.elapsed.inMilliseconds,
         embedding: embedding,
+        skipped: skipped,
       ));
     }
     return events;
   }
 
-  int _resolveSpeaker(Float32List embedding) {
+  /// Returns the global speaker and the best similarity to an existing one
+  /// (null when there was none).
+  (int, double?) _resolveSpeaker(Float32List embedding, {bool allowNew = true}) {
     var bestIndex = -1;
     var bestScore = -1.0;
     for (var i = 0; i < speakers.length; i++) {
@@ -80,13 +113,14 @@ class SttConsumer {
         bestIndex = i;
       }
     }
-    if (bestIndex >= 0 && bestScore >= speakerSimilarityThreshold) {
+    final best = bestIndex >= 0 ? bestScore : null;
+    if (bestIndex >= 0 && (bestScore >= speakerSimilarityThreshold || !allowNew)) {
       final list = speakers[bestIndex]..add(embedding);
       if (list.length > maxEmbeddingsPerSpeaker) list.removeAt(0);
-      return bestIndex;
+      return (bestIndex, best);
     }
     speakers.add([embedding]);
-    return speakers.length - 1;
+    return (speakers.length - 1, best);
   }
 }
 

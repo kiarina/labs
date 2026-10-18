@@ -23,6 +23,10 @@ class EngineConfig {
     this.fitAudioCtx = false,
     this.maxVoiceMs = 15000,
     this.minSilenceMs = 500,
+    this.speakerThreshold = 0.45,
+    this.asrSpeakersOnly = true,
+    this.asrMinSeconds = 0.5,
+    this.newSpeakerMinSeconds = 1.5,
   });
 
   final String whisperModel;
@@ -40,6 +44,14 @@ class EngineConfig {
 
   /// kiarina's VoiceDetector default is 500.
   final int minSilenceMs;
+
+  /// kiarina's speaker_similarity_threshold is 0.45.
+  final double speakerThreshold;
+
+  /// Not in kiarina (see SttConsumer).
+  final bool asrSpeakersOnly;
+  final double asrMinSeconds;
+  final double newSpeakerMinSeconds;
 
   /// Longest voice before it is cut without a pause (null = kiarina's unlimited).
   final int? maxVoiceMs;
@@ -113,6 +125,10 @@ class Engine {
         changeDetector: SpeakerChangeDetector(scd),
         asr: asr,
         embedder: ecapa,
+        speakerSimilarityThreshold: config.speakerThreshold,
+        asrSpeakersOnly: config.asrSpeakersOnly,
+        asrMinSeconds: config.asrMinSeconds,
+        newSpeakerMinSeconds: config.newSpeakerMinSeconds,
       ),
       ambient: ambient,
       store: hearing,

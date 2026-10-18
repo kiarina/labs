@@ -44,6 +44,13 @@ feed(pcm) ─┬─ 512-sample chunks → SileroVad → VoiceDetector ──► 
 - **`VoiceDetectorSettings.maxVoiceMs`** (default null = kiarina) cuts a voice
   that has no pause, so results keep coming during continuous talk.
 - **Speaker history is bounded** (32 embeddings per speaker).
+- **Optional guards from the real-mic check** (all off by default = kiarina):
+  `asrSpeakersOnly` skips ASR for silence/overlap speeches (Whisper made up
+  "ご視聴ありがとうございました!" for them), `asrMinSeconds` skips very short
+  ones, and `newSpeakerMinSeconds` keeps short speeches from starting a new
+  speaker (short ECAPA embeddings of the same person scored ~0.2; ≥1.5 s
+  ones 0.49–0.59, different people ≤0.37). The lab app turns them on
+  (0.5 s / 1.5 s).
 - **Queues are bounded**; when a stage falls behind, the oldest item is dropped
   and counted in the stats.
 

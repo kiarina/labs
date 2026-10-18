@@ -12,6 +12,11 @@ const _whisperThreads = int.fromEnvironment('WHISPER_THREADS');
 const _fitAudioCtx = bool.fromEnvironment('FIT_AUDIO_CTX');
 const _minSilenceMs = int.fromEnvironment('MIN_SILENCE_MS', defaultValue: 300);
 const _maxVoiceMs = int.fromEnvironment('MAX_VOICE_MS', defaultValue: 8000);
+// dart-define has no doubles; thresholds are passed in thousandths
+const _speakerThreshold = int.fromEnvironment('SPEAKER_THRESHOLD_MILLI', defaultValue: 450);
+const _asrSpeakersOnly = bool.fromEnvironment('ASR_SPEAKERS_ONLY', defaultValue: true);
+const _asrMinMs = int.fromEnvironment('ASR_MIN_MS', defaultValue: 500);
+const _newSpeakerMinMs = int.fromEnvironment('NEW_SPEAKER_MIN_MS', defaultValue: 1500);
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +28,10 @@ void main() {
       fitAudioCtx: _fitAudioCtx,
       minSilenceMs: _minSilenceMs,
       maxVoiceMs: _maxVoiceMs,
+      speakerThreshold: _speakerThreshold / 1000,
+      asrSpeakersOnly: _asrSpeakersOnly,
+      asrMinSeconds: _asrMinMs / 1000,
+      newSpeakerMinSeconds: _newSpeakerMinMs / 1000,
     ),
   );
   runApp(HearingLabApp(controller: controller));

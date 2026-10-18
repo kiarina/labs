@@ -26,7 +26,15 @@ class SpeechEvent extends HearingEvent {
     required this.asrMs,
     this.embedding,
     this.language,
+    this.speakerScore,
+    this.skipped,
   }) : super(start, end);
+
+  /// Best similarity to an existing speaker when this speech was assigned.
+  final double? speakerScore;
+
+  /// Why ASR was skipped ('unknown_silence', 'unknown_overlap', 'short').
+  final String? skipped;
 
   /// 'speaker' | 'unknown_silence' | 'unknown_overlap'
   final String speakerKind;
@@ -51,6 +59,8 @@ class SpeechEvent extends HearingEvent {
         'text': text,
         if (language != null) 'language': language,
         'asr_ms': asrMs,
+        if (speakerScore != null) 'speaker_score': double.parse(speakerScore!.toStringAsFixed(3)),
+        if (skipped != null) 'skipped': skipped,
         if (embeddings && embedding != null) 'embedding': embedding!.toList(),
       };
 }
