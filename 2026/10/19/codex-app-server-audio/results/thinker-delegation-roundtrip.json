@@ -1,0 +1,102 @@
+{
+  "kind": "voice-to-application-owned-thinker-delegation",
+  "cli": "0.163.0",
+  "voice_auth": "chatgpt",
+  "thinker_auth": "chatgpt",
+  "thinker_model": "gpt-6-luna",
+  "api_key_fallback": false,
+  "physical_microphone_used": false,
+  "architecture": "WebRTC voice + loopback sideband adapter suppressing builtin handoff + separate Thinker app-server",
+  "peer_connected": true,
+  "fixture_pcm_sha256": "0f875c0cb67e19c804d450138dc29a26ebd2d7a5c58f065384aa56e9023af8eb",
+  "fixture_bytes_sent": 341772,
+  "fixture_bytes_total": 341772,
+  "synthetic_request": "\u5546\u54c1\u30b3\u30fc\u30c9 A17 \u306e\u5728\u5eab\u3092\u8abf\u3079\u3001\u4e88\u7d04\u5206\u3092\u5f15\u3044\u305f\u5229\u7528\u53ef\u80fd\u6570\u3092\u65e5\u672c\u8a9e\u3067\u6559\u3048\u3066\u304f\u3060\u3055\u3044\u3002",
+  "inventory_source": "fixtures/delegation-inventory.json",
+  "delegations": [
+    {
+      "local_id": "d1",
+      "forwarded_to_builtin_codex": false,
+      "input_transcript_at_receipt": "\u5546\u54c1\u30b3\u30fc\u30c9A17\u306e\u5728\u5eab\u8abf\u3079\u3001\u4e88\u7d04\u5206\u3092\u5f15\u3044\u305f\u5229\u7528\u53ef\u80fd\u6570\u3092\u65e5\u672c\u8a9e\u3067\u6559\u3048\u3066\u304f\u3060\u3055\u3044",
+      "request_to_thinker": "\u5546\u54c1\u30b3\u30fc\u30c9A17\u306e\u5728\u5eab\u8abf\u3079\u3001\u4e88\u7d04\u5206\u3092\u5f15\u3044\u305f\u5229\u7528\u53ef\u80fd\u6570\u3092\u65e5\u672c\u8a9e\u3067\u6559\u3048\u3066\u304f\u3060\u3055\u3044",
+      "returned_to_same_delegation": true
+    }
+  ],
+  "tool_calls": [
+    {
+      "tool": "lookup_inventory",
+      "arguments": {
+        "product_code": "A17"
+      },
+      "result": {
+        "label": "\u9752\u3044\u30ce\u30fc\u30c8",
+        "stock": 137,
+        "reserved": 28
+      }
+    }
+  ],
+  "thinker_result": "\u5546\u54c1\u30b3\u30fc\u30c9A17\u306e\u4e88\u7d04\u5206\u3092\u5f15\u3044\u305f\u5229\u7528\u53ef\u80fd\u6570\u306f109\u500b\u3067\u3059\u3002",
+  "voice_input_transcript": "\u5546\u54c1\u30b3\u30fc\u30c9A17\u306e\u5728\u5eab\u8abf\u3079\u3001\u4e88\u7d04\u5206\u3092\u5f15\u3044\u305f\u5229\u7528\u53ef\u80fd\u6570\u3092\u65e5\u672c\u8a9e\u3067\u6559\u3048\u3066\u304f\u3060\u3055\u3044",
+  "voice_output_transcript": "A17\u306e\u5229\u7528\u53ef\u80fd\u6570\u306f109\u500b\u3067\u3059\u3002",
+  "voice_output_after_result": "A17\u306e\u5229\u7528\u53ef\u80fd\u6570\u306f109\u500b\u3067\u3059\u3002",
+  "audio_stats": {
+    "frames": 888,
+    "nonzero_samples_after_result": 347240,
+    "peak_after_result_pcm16": 8342
+  },
+  "voice_builtin_turns": 0,
+  "auth_receipts": [
+    {
+      "authorization_present": true,
+      "account_header_present": true,
+      "destination": "api.openai.com/v1/live/[call-id]",
+      "credential_values_saved": false
+    }
+  ],
+  "catalog": {
+    "source": "existing model metadata cache, read only",
+    "model": "gpt-6-luna",
+    "tool_mode": null,
+    "catalog_sha256": "563367eebdee5836c4a82b5c1aa178efe2c8c21561ec877031c12810a3b3bc54"
+  },
+  "errors": [],
+  "timeline": [
+    {
+      "at_seconds": 0.539,
+      "kind": "thinker_ready",
+      "model": "gpt-6-luna"
+    },
+    {
+      "at_seconds": 2.881,
+      "kind": "voice_peer_connected"
+    },
+    {
+      "at_seconds": 3.061,
+      "kind": "sideband_connected"
+    },
+    {
+      "at_seconds": 10.813,
+      "kind": "delegation_received",
+      "delegation": "d1"
+    },
+    {
+      "at_seconds": 10.813,
+      "kind": "thinker_started"
+    },
+    {
+      "at_seconds": 13.824,
+      "kind": "inventory_tool_called",
+      "product_code": "A17"
+    },
+    {
+      "at_seconds": 15.544,
+      "kind": "thinker_completed"
+    },
+    {
+      "at_seconds": 15.544,
+      "kind": "result_returned",
+      "delegation": "d1"
+    }
+  ],
+  "wall_seconds": 22.36
+}

@@ -8,6 +8,8 @@
 
 前提の [司令塔と app-server の lab](../08/flutter-agent-orchestrator-kiapi/README.md) とは独立した小さい Python クライアントを使う。
 
+自前 Thinker への委譲・ツール実行・音声返却の実証は [DELEGATION.md](DELEGATION.md) を参照。
+
 公開 gpt-live-1 との違い、primary / sideband / アプリ側 WebSocket の区別、バックエンドから音声への実測は [BACKEND_COMPARISON.md](BACKEND_COMPARISON.md) を参照。
 
 ## 実測したこと
@@ -187,7 +189,7 @@ This session is only for listening to prerecorded fictional speech so its INPUT 
 - Platform の短い疎通には gpt-realtime-mini と、内部設定の gpt-4o-mini-transcribe を使った。高単価の Codex モデルは呼んでいない。通常 turn の捕捉はローカル模擬サーバーだけで完結し、誤って委譲されても実モデルへ接続しないようにした。
 - この試験は料金明細・使用量の請求内訳を測らない。「Codex 契約内で別料金なし」「汎用 ASR として無制限に使える」という結論は出せない。
 - 公式 app-server 文書はローカル / OSS と商用・ホスト型サービスの認証の扱いを区別している。接続成功は配布・商用利用の許諾の確認ではない。製品採用時の条件は同文書と Sign in with ChatGPT を確認する。
-- 実マイクは Mac の内蔵マイクで5分確認。Mac 以外の OS、マイク切替、音声出力の再生、5分を超える連続運転、委譲往復、正解文と比較する認識精度は未検証。
+- 実マイクは Mac の内蔵マイクで5分確認。Mac 以外の OS、マイク切替、音声出力の再生、5分を超える連続運転、並列・割り込みを伴う委譲、正解文と比較する認識精度は未検証。
 
 ## ChatGPT ログインだけの WebRTC：成功条件と原因
 

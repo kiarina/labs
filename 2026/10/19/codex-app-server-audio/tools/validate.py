@@ -64,6 +64,8 @@ assert ('42'in text or '四十二'in text)and '番号'in text
 assert '42'in r['context']and '42'not in r['announcement']
 assert r['audio_stats']['nonzero_samples']>0 and 'meter_error'not in r['audio_stats']
 checks.append('ChatGPT sideband backend context and speech request yield the supplied result number and nonzero audio')
+assert load('thinker-delegation-validation.json')['ok'] is True
+checks.append('separate Thinker delegation, inventory tool and bound voice result pass the dedicated validator')
 for p in (root/'results').glob('*.json'):
  s=p.read_text();assert '/Users/'not in s and 'sk-'not in s and 'Bearer 'not in s,p
 print(json.dumps({'ok':True,'checks':checks,'live_runs_repeated':False},indent=2))

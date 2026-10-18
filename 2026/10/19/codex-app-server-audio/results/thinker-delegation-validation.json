@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "checks": {
+    "chatgpt_only": true,
+    "audio_request_complete": true,
+    "real_model_delegation_event": true,
+    "application_owns_routing": true,
+    "independent_thinker_tool": true,
+    "result_computed_by_thinker": true,
+    "same_delegation_reply": true,
+    "voice_uses_result": true,
+    "no_runtime_errors": true,
+    "causal_order": true
+  },
+  "expected_available": 109,
+  "thinker_processing_seconds": 4.731,
+  "wall_seconds": 22.36,
+  "scope": "One synthetic request; real ChatGPT voice, separate real low-effort Codex Thinker and read-only application tool; custom sideband adapter required"
+}
