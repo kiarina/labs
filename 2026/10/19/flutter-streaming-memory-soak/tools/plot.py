@@ -23,3 +23,6 @@ axes[2].set_ylim(0,125)
 for ax in axes:ax.grid(axis='y',alpha=.2);ax.spines[['top','right']].set_visible(False)
 fig.savefig(root/'results/memory.svg');fig.savefig(root/'work/memory.png',dpi=140)
 (root/'work/plot-version.txt').write_text(matplotlib.__version__+'\n')
+
+svg=root/'results/memory.svg'
+svg.write_text('\n'.join(line.rstrip()for line in svg.read_text().splitlines())+'\n')
