@@ -66,6 +66,10 @@ assert r['audio_stats']['nonzero_samples']>0 and 'meter_error'not in r['audio_st
 checks.append('ChatGPT sideband backend context and speech request yield the supplied result number and nonzero audio')
 assert load('thinker-delegation-validation.json')['ok'] is True
 checks.append('separate Thinker delegation, inventory tool and bound voice result pass the dedicated validator')
+r=load('demo-synthetic-roundtrip.json');assert r['ok'] and not r['physical_microphone_used']
+assert '109' in r['thinker_result'] and '109' in r['voice_transcript']
+assert r['stats']['outputNonzeroSamples']>0 and r['stats']['outputCompletedBuffers']>0 and r['stats']['videoFrames']==0
+checks.append('Flutter synthetic external input reaches Thinker and receives nonzero audio consumed by AVAudioEngine')
 for p in (root/'results').glob('*.json'):
  s=p.read_text();assert '/Users/'not in s and 'sk-'not in s and 'Bearer 'not in s,p
 print(json.dumps({'ok':True,'checks':checks,'live_runs_repeated':False},indent=2))

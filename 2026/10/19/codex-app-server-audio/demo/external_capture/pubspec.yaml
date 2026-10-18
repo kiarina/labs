@@ -1,0 +1,14 @@
+name: external_capture
+version: 0.0.1
+publish_to: none
+environment:
+  sdk: ^3.13.2
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_webrtc: 1.6.2+hotfix.4
+flutter:
+  plugin:
+    platforms:
+      macos:
+        pluginClass: ExternalCapturePlugin

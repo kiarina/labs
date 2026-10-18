@@ -8,6 +8,8 @@
 
 前提の [司令塔と app-server の lab](../08/flutter-agent-orchestrator-kiapi/README.md) とは独立した小さい Python クライアントを使う。
 
+Mac で会話を体験する小型アプリは [DEMO.md](DEMO.md) を参照。
+
 `record` の外部入力ブリッジとの接続候補と未検証点は [RECORD_INPUT.md](RECORD_INPUT.md) を参照。
 
 自前 Thinker への委譲・ツール実行・音声返却の実証は [DELEGATION.md](DELEGATION.md) を参照。

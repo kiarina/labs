@@ -1,0 +1,16 @@
+name: voice_thinker_lab
+publish_to: none
+version: 0.1.0+1
+environment:
+  sdk: ^3.13.2
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_webrtc: 1.6.2+hotfix.4
+  record: 7.1.2
+  external_capture:
+    path: ../external_capture
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/probe.pcm
