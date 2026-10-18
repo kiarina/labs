@@ -4,7 +4,7 @@
 
 2026-10-19、先行 lab の確定した実証版 `b87f868` を照合した。
 
-[外部入力の先行 lab](../flutter-webrtc-external-capture/README.md) が作る通常の音声トラックは、この lab の ChatGPT 認証 WebRTC の入力へ接続できる見込みがある。これは接続インターフェースの照合であり、`record` から OpenAI までの通し試験の成功を意味しない。prototype には組み込まない。
+[外部入力の先行 lab](../flutter-webrtc-external-capture/README.md) が作る通常の音声トラックを、この lab の Mac 体験アプリで ChatGPT 認証 WebRTC の入力へ接続した。実装・合成音声の往復・本人の実マイクでの体験確認は [DEMO.md](DEMO.md) を参照。prototype には組み込まない。
 
 先行 lab は `record.startStream` の PCM16 / 48 kHz / mono を `CaptureBridge.pushAudio` へ渡し、ネイティブ WebRTC の音声トラックを生成する。Mac・Android・iOS・Web のローカル送受信結果が保存されている。Windows も合成 PCM および実マイクの `record` 音声を独立した Chrome 受信側で復号できたが、WebRTC の既定 ADM が追加のマイク取得を試みる制約が残る。`record` だけのマイク所有を保証するには wrapper / factory の拡張が必要。Windows の実カメラ取得と、追加マイク取得を抑止した構成は成立済みと扱わない。詳細は先行 lab の README / Windows notes を正典とする。
 
@@ -24,6 +24,6 @@
 
 ## 音声応答を扱う際の追加条件
 
-先行 lab の Darwin 用カスタム音声デバイスは受信音を pull して捨てる実装で、スピーカー再生は行わない。このままでも入力の文字起こし・受信 PCM の観測は候補になるが、聞こえる回答まで確認するには受信 PCM の再生経路が必要。
+先行 lab の Darwin 用カスタム音声デバイスは受信音を pull して捨てる実装で、スピーカー再生は行わない。このままでも入力の文字起こし・受信 PCM の観測は候補になるが、Mac 体験アプリでは受信 PCM の再生経路を追加した。
 
 AEC / NS / AGC、スピーカーからの回り込み、二重取得、長時間運転、デバイス切替は別の評価項目。先行 lab のローカル送受信成功から ChatGPT 相手の双方向会話の成立までは断定しない。
