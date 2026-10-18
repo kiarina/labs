@@ -1,0 +1,105 @@
+{
+ "mode": "parity",
+ "platform": "android",
+ "os_version": "CP2A.260705.006",
+ "processors": 8,
+ "dart": "3.13.2",
+ "ort_threads": 0,
+ "models": {
+  "yunet/yunet_2023mar_dequantized.onnx": {
+   "sha256": "41a4aaa16542b3bd3632e96230c68d926243be226e31a3703f07c7e3bd2c0f47",
+   "bytes": 252199,
+   "ensure_ms": 85
+  },
+  "sface/face_recognition_sface_2021dec.onnx": {
+   "sha256": "0ba9fbfa01b5270c96627c4ef784da859931e02f04419c829e83484087c34e79",
+   "bytes": 38696353,
+   "ensure_ms": 3217
+  },
+  "dfine/model.onnx": {
+   "sha256": "cd8a49a945feda6d28c6304ae8ae85c2759ba1d78a5a83a22c5ce8db82ef7238",
+   "bytes": 41535197,
+   "ensure_ms": 5294
+  },
+  "dfine/config.json": {
+   "sha256": "9338ef3863d6e95627d4ab06009fa85b1dd523b346b5c3595de2b08862136e99",
+   "bytes": 6656,
+   "ensure_ms": 184
+  },
+  "siglip2/vision_model_int8.onnx": {
+   "sha256": "0dd31785a2713f1113ef2272472165c69d580473dae38d7b47568ac587795e70",
+   "bytes": 94553333,
+   "ensure_ms": 9378
+  }
+ },
+ "load_ms": {
+  "yunet_2023mar_dequantized.onnx": 49.29,
+  "face_recognition_sface_2021dec.onnx": 100.81,
+  "model.onnx": 397.294,
+  "vision_model_int8.onnx": 311.403,
+  "total": 19020
+ },
+ "parity": {
+  "frames": 52,
+  "faces": {
+   "frames_with_other_count": 0,
+   "max_coord_diff": 5.889282226334558e-07,
+   "max_score_diff": 4.885253905850817e-07,
+   "embedding_cos": {
+    "n": 29,
+    "min": 0.9999999370508605,
+    "median": 0.9999999959096622
+   }
+  },
+  "objects": {
+   "frames_with_other_count": 0,
+   "label_diffs": 0,
+   "max_bbox_diff": 5.742588042867425e-07,
+   "max_score_diff": 1.235950088496196e-05,
+   "crop_embedding_cos": {
+    "n": 272,
+    "min": 0.9775171480101759,
+    "median": 0.9964716102605196
+   }
+  },
+  "scene_embedding_cos": {
+   "n": 52,
+   "min": 0.9799940554036031,
+   "median": 0.9919346952576917
+  },
+  "model_ms": {
+   "yunet": {
+    "n": 52,
+    "median": 91.66,
+    "p90": 117.006,
+    "max": 356.397
+   },
+   "sface": {
+    "n": 29,
+    "median": 30.97,
+    "p90": 44.959,
+    "max": 53.868
+   },
+   "dfine": {
+    "n": 52,
+    "median": 411.614,
+    "p90": 429.492,
+    "max": 473.167
+   },
+   "siglip2_frame": {
+    "n": 52,
+    "median": 183.218,
+    "p90": 200.0,
+    "max": 249.974
+   },
+   "siglip2_crop": {
+    "n": 272,
+    "median": 174.881,
+    "p90": 192.979,
+    "max": 213.893
+   }
+  },
+  "notes": []
+ },
+ "ok": true
+}

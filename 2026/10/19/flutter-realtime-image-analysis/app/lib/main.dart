@@ -1,10 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'engine.dart';
+import 'host.dart';
 import 'parity.dart';
 import 'replay.dart';
 
@@ -45,10 +44,8 @@ class _SightLabAppState extends State<SightLabApp> {
     setState(() => _busy = true);
     final report = <String, Object?>{
       'mode': mode,
-      'platform': Platform.operatingSystem,
-      'os_version': Platform.operatingSystemVersion,
-      'processors': Platform.numberOfProcessors,
-      'dart': Platform.version.split(' ').first,
+      'run_id': const String.fromEnvironment('RUN_ID'),
+      ...hostInfo(),
       'ort_threads': ortThreads,
     };
     try {
@@ -69,12 +66,21 @@ class _SightLabAppState extends State<SightLabApp> {
       report['error'] = '$e\n$st';
       _log('error: $e');
     }
-    final dir = await getApplicationSupportDirectory();
-    final file = File('${dir.path}/report-${Platform.operatingSystem}-$mode.json');
-    await file.writeAsString(const JsonEncoder.withIndent(' ').convert(report));
-    _log('report: ${file.path}');
+    final json = const JsonEncoder.withIndent(' ').convert(report);
+    // logcat cuts lines at ~1 KB: also print the report in numbered parts
+    // (tools/join_report.py puts them back together)
+    final line = jsonEncode(report);
+    const size = 700;
+    final parts = (line.length + size - 1) ~/ size;
+    for (var i = 0; i < parts; i++) {
+      final end = (i + 1) * size < line.length ? (i + 1) * size : line.length;
+      // ignore: avoid_print
+      print('SIGHT_LAB_REPORT ${i + 1}/$parts ${line.substring(i * size, end)}');
+    }
+    final path = await saveReport('report-$platformName-$mode.json', json);
+    _log('report saved: ${path ?? 'page'}');
     setState(() => _busy = false);
-    if (autoExit) exit(0);
+    if (autoExit) exitApp();
   }
 
   @override

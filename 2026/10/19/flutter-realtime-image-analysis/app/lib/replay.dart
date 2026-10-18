@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:image_analysis/image_analysis.dart';
 
 import 'engine.dart';
+import 'host.dart';
 
 final replayFps = double.parse(const String.fromEnvironment('FPS', defaultValue: '2'));
 const replayLoops = int.fromEnvironment('LOOPS', defaultValue: 1);
@@ -26,7 +26,7 @@ Future<Map<String, Object?>> runReplay(Engine e, Fixtures fx, {required bool rea
   final perFrame = <Map<String, Object?>>[];
   final faceIdsBySegment = <String, Set<String>>{};
   final sceneBySegment = <String, Set<String>>{};
-  final rssMb = <double>[];
+  final rss = <double>[];
   var dropped = 0;
   var analyzed = 0;
   final wall = Stopwatch()..start();
@@ -47,7 +47,8 @@ Future<Map<String, Object?>> runReplay(Engine e, Fixtures fx, {required bool rea
       sceneBySegment.putIfAbsent(seg, () => {}).add(analyzer.scene!.id);
     }
     perFrame.add({'loop': loop, 'frame': name, 'scene': analyzer.scene?.id, ...t.toJson()});
-    if (analyzed % 13 == 0) rssMb.add(ProcessInfo.currentRss / (1 << 20));
+    final m = analyzed % 13 == 0 ? rssMb() : null;
+    if (m != null) rss.add(m);
   }
 
   for (var loop = 0; loop < replayLoops; loop++) {
@@ -111,7 +112,7 @@ Future<Map<String, Object?>> runReplay(Engine e, Fixtures fx, {required bool rea
     'entities': byKind,
     'events': store.events.length,
     'embeddings': {'count': entities.fold<int>(0, (s, x) => s + x.embeddings.length), 'bytes': store.embeddingBytes},
-    'rss_mb': rssMb,
+    'rss_mb': rss,
     'checks': {
       'faces_in_dialogue_a': a.toList()..sort(),
       'faces_in_dialogue_b': b.toList()..sort(),

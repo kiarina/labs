@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/services.dart' show rootBundle;
@@ -21,7 +20,7 @@ class Engine {
 
   static Future<Engine> load({void Function(String)? log}) async {
     final store = ModelStore();
-    final backend = FlutterOnnxBackend(threads: ortThreads > 0 ? ortThreads : null);
+    final backend = defaultOnnxBackend(threads: ortThreads > 0 ? ortThreads : null);
     final paths = <String, String>{};
     final files = <String, Object?>{};
     for (final f in ModelCatalog.all) {
@@ -41,7 +40,7 @@ class Engine {
       return m;
     }
 
-    final labels = DFine.labelsFromConfig(await File(paths['config.json']!).readAsString());
+    final labels = DFine.labelsFromConfig(await store.readText(ModelCatalog.dfineConfig));
     return Engine._(
       YuNet(await open(ModelCatalog.yunet.filename)),
       SFace(await open(ModelCatalog.sface.filename), modelSha256: ModelCatalog.sface.sha256),

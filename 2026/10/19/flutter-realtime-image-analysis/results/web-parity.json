@@ -1,0 +1,108 @@
+{
+ "mode": "parity",
+ "run_id": "",
+ "platform": "web",
+ "os_version": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+ "processors": 10,
+ "cross_origin_isolated": true,
+ "ort_threads": 0,
+ "models": {
+  "yunet/yunet_2023mar_dequantized.onnx": {
+   "sha256": "41a4aaa16542b3bd3632e96230c68d926243be226e31a3703f07c7e3bd2c0f47",
+   "bytes": 252199,
+   "ensure_ms": 239
+  },
+  "sface/face_recognition_sface_2021dec.onnx": {
+   "sha256": "0ba9fbfa01b5270c96627c4ef784da859931e02f04419c829e83484087c34e79",
+   "bytes": 38696353,
+   "ensure_ms": 3094
+  },
+  "dfine/model.onnx": {
+   "sha256": "cd8a49a945feda6d28c6304ae8ae85c2759ba1d78a5a83a22c5ce8db82ef7238",
+   "bytes": 41535197,
+   "ensure_ms": 3301
+  },
+  "dfine/config.json": {
+   "sha256": "9338ef3863d6e95627d4ab06009fa85b1dd523b346b5c3595de2b08862136e99",
+   "bytes": 6656,
+   "ensure_ms": 343
+  },
+  "siglip2/vision_model_int8.onnx": {
+   "sha256": "0dd31785a2713f1113ef2272472165c69d580473dae38d7b47568ac587795e70",
+   "bytes": 94553333,
+   "ensure_ms": 4925
+  }
+ },
+ "load_ms": {
+  "yunet_2023mar_dequantized.onnx": 456.746,
+  "face_recognition_sface_2021dec.onnx": 102.045,
+  "model.onnx": 2420.885,
+  "vision_model_int8.onnx": 3434.911,
+  "total": 18319
+ },
+ "parity": {
+  "frames": 52,
+  "faces": {
+   "frames_with_other_count": 0,
+   "max_coord_diff": 5.889282226334558e-07,
+   "max_score_diff": 5.481300353604723e-07,
+   "embedding_cos": {
+    "n": 29,
+    "min": 0.9999997752332012,
+    "median": 0.9999999881215011
+   }
+  },
+  "objects": {
+   "frames_with_other_count": 0,
+   "label_diffs": 0,
+   "max_bbox_diff": 5.755920410299709e-07,
+   "max_score_diff": 1.2417858123781045e-05,
+   "crop_embedding_cos": {
+    "n": 272,
+    "min": 0.9845990642854927,
+    "median": 0.9954946422458828
+   }
+  },
+  "scene_embedding_cos": {
+   "n": 52,
+   "min": 0.9781971566879613,
+   "median": 0.9914149620703447
+  },
+  "model_ms": {
+   "yunet": {
+    "n": 52,
+    "median": 13,
+    "p90": 13.881,
+    "max": 106.15
+   },
+   "sface": {
+    "n": 29,
+    "median": 12.56,
+    "p90": 13.454,
+    "max": 22.68
+   },
+   "dfine": {
+    "n": 52,
+    "median": 233.029,
+    "p90": 240.945,
+    "max": 293.86
+   },
+   "siglip2_frame": {
+    "n": 52,
+    "median": 252.08,
+    "p90": 255.67,
+    "max": 342.585
+   },
+   "siglip2_crop": {
+    "n": 272,
+    "median": 251.544,
+    "p90": 256.28,
+    "max": 376.665
+   }
+  },
+  "notes": []
+ },
+ "ok": true,
+ "done": true,
+ "browser": "Chrome/155.0.8059.80"
+}

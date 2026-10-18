@@ -1,6 +1,6 @@
 # image
 
-- 2026/10/19 [Real-time camera frame analysis in Flutter (YuNet faces, SFace, D-FINE objects, SigLIP2 scenes) with entity tracking that keeps embeddings, on macOS and Windows](../2026/10/19/flutter-realtime-image-analysis/README.md)
+- 2026/10/19 [Real-time camera frame analysis in Flutter (YuNet faces, SFace, D-FINE objects, SigLIP2 scenes) with entity tracking that keeps embeddings, on macOS, Windows, Android, iOS and web](../2026/10/19/flutter-realtime-image-analysis/README.md)
 - 2026/10/02 [Drawing walk-cycle pixel-art sprite sheets in plain Python, and reviewing the animation from stills](../2026/10/02/python-pixel-sprite-sheets/README.md)
 - 2026/09/16 [ONNX Runtime Web from Flutter Web (D-FINE)](../2026/09/16/flutter-web-onnx-runtime/README.md)
 - 2026/07/18 [MediaPipe Holistic real-time VRM retargeting](../2026/07/18/mediapipe-holistic-vrm/README.md)

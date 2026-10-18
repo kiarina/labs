@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+#MISE description="Build the app for the web (release), serve it cross-origin isolated, open it in headless Chrome, write work/report-web-<TAG>.json"
+set -euo pipefail
+MODE="${MODE:-parity}"; TAG="${TAG:-$MODE}"; PORT="${PORT:-8791}"
+LAB="$(cd "$(dirname "$0")/../.." && pwd)"
+cd "$LAB/app"
+# shellcheck disable=SC2086
+flutter build web --release --dart-define=AUTO="$MODE" ${EXTRA_DEFINES:-} | tail -1
+python3 "$LAB/tools/web/serve.py" --root build/web --port "$PORT" --coi --coep credentialless >/dev/null 2>&1 &
+SERVER=$!
+trap 'kill $SERVER 2>/dev/null || true' EXIT
+sleep 1
+mkdir -p "$LAB/work"
+node "$LAB/tools/web/run_headless.mjs" "http://127.0.0.1:$PORT/" "${TIMEOUT:-1800}" 2>"$LAB/work/web-console-$TAG.log" \
+  | python3 -c 'import json,sys; o=json.load(sys.stdin); r=o["result"] or {}; r["browser"]=o["browser"]; print(json.dumps(r, indent=1, ensure_ascii=False))' \
+  > "$LAB/work/report-web-$TAG.json"
+echo "report: work/report-web-$TAG.json"

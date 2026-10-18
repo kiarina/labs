@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+#MISE description="Build the app for an iOS device (profile), install and launch it with devicectl, wait for work/report-ios-<TAG>.json (MODE=parity|replay|replay-fast)"
+# release/profile print() does not reach us; the app writes the report into
+# Library/Application Support, which devicectl copies out. RUN_ID makes sure
+# the report read is the one of this run.
+set -euo pipefail
+MODE="${MODE:-parity}"; TAG="${TAG:-$MODE}"; RUN_ID="$(date +%s)"
+DEV="${IOS_DEVICE:-$(xcrun devicectl list devices 2>/dev/null | awk '/physical/ && /available/ {for(i=1;i<=NF;i++) if ($i ~ /^[0-9A-F]{8}-/) {print $i; exit}}')}"
+APP=com.kiarina.labs.sightLab
+LAB="$(cd "$(dirname "$0")/../.." && pwd)"
+cd "$LAB/app"
+# shellcheck disable=SC2086
+flutter build ios --profile --dart-define=AUTO="$MODE" --dart-define=RUN_ID="$RUN_ID" ${EXTRA_DEFINES:-} | tail -1
+xcrun devicectl device install app --device "$DEV" build/ios/iphoneos/Runner.app >/dev/null
+xcrun devicectl device process launch --device "$DEV" --terminate-existing "$APP" >/dev/null
+mkdir -p "$LAB/work"
+OUT="$LAB/work/report-ios-$TAG.json"; rm -f "$OUT"
+for _ in $(seq 1 360); do
+  sleep 10
+  if xcrun devicectl device copy from --device "$DEV" --domain-type appDataContainer --domain-identifier "$APP" \
+      --source "Library/Application Support/report-ios-$MODE.json" --destination "$OUT.part" >/dev/null 2>&1 \
+     && grep -q "\"run_id\": \"$RUN_ID\"" "$OUT.part"; then
+    mv "$OUT.part" "$OUT"; break
+  fi
+done
+xcrun devicectl device process terminate --device "$DEV" --pid "$(xcrun devicectl device info processes --device "$DEV" 2>/dev/null | awk '/Runner.app/ {print $1; exit}')" >/dev/null 2>&1 || true
+[ -f "$OUT" ] && echo "report: work/report-ios-$TAG.json" || { echo "no report"; exit 1; }
