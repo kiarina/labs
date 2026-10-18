@@ -1,0 +1,31 @@
+<!doctype html><meta charset="utf-8"><script type="module">
+// Playback callback and Wasm plumbing smoke test; no acoustic echo is measured.
+try {
+  await import('../../app/web/aec_audio.js');
+  const aec=await createAecAudio();aec.configure({enabled:true,delayMs:80});
+  let outputBytes=0,nonzeroOutput=0;
+  for(let f=0;f<200;f++){
+    const bytes=new Uint8Array(960),view=new DataView(bytes.buffer);
+    for(let i=0;i<480;i++)view.setInt16(i*2,Math.round(6000*Math.sin(2*Math.PI*440*(f*480+i)/48000)),true);
+    aec.render(bytes);
+    const clean=aec.capture(bytes);outputBytes+=clean.length;for(const x of clean)if(x)nonzeroOutput++;
+    await new Promise(r=>setTimeout(r,10));
+  }
+  await aec.stopRender();await new Promise(r=>setTimeout(r,100));
+  const stats=JSON.parse(aec.stats());
+  const trace=aec.renderTrace(),traceView=new DataView(trace.buffer);
+  let traceNonzero=0,tailNonzero=0;for(let i=0;i<trace.length;i+=2){if(traceView.getInt16(i,true)!==0){traceNonzero++;if(i>=trace.length-4800)tailNonzero++;}}
+  const captureWhileStopped=aec.capture(new Uint8Array(960));
+  const restart=new Uint8Array(960),restartView=new DataView(restart.buffer);for(let i=0;i<480;i++)restartView.setInt16(i*2,4000,true);
+  aec.render(restart);await new Promise(r=>setTimeout(r,60));await aec.stopRender();
+  const restartedStats=JSON.parse(aec.stats());
+  aec.configure({enabled:false,delayMs:80});const bypass=aec.capture(restart);
+  await aec.dispose();await aec.dispose();
+  let rejectedAfterDispose=false;try{aec.capture(restart);}catch{rejectedAfterDispose=true;}
+  const fresh=await createAecAudio();fresh.configure({enabled:false,delayMs:80});const freshClean=fresh.capture(restart);await fresh.dispose();
+  const checks={renderReference:stats.reverseFrames>100,actualCallbackSignal:stats.renderedNonzeroSamples>48000,processedCapture:outputBytes===192000,finiteOutput:nonzeroOutput>0,noCaptureErrors:stats.captureErrors===0,noOverflow:stats.droppedRenderSamples===0,
+    traceExact:trace.length===stats.renderedSamples*2&&traceNonzero===stats.renderedNonzeroSamples,traceContainsStopZeros:tailNonzero===0,captureContinuesAfterStop:captureWhileStopped.length===960,restartPlayback:restartedStats.renderedNonzeroSamples>stats.renderedNonzeroSamples,
+    disabledPassthrough:bypass.every((x,i)=>x===restart[i]),disposeRejectsFurtherProcessing:rejectedAfterDispose,recreatedBackend:freshClean.every((x,i)=>x===restart[i])};
+  window.result={done:true,acousticValidated:false,kind:'web-worklet-wasm-smoke',checks,stats,restartedStats,traceBytes:trace.length,traceNonzero,pass:Object.values(checks).every(Boolean)};
+}catch(e){window.result={error:String(e),stack:e.stack}}
+</script>

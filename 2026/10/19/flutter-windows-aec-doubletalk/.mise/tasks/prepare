@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+mise run //:test-assets:download
+python3 tools/prepare.py
+python3 tools/prepare_aec.py
+python3 tools/prepare_speech.py
+python3 tools/prepare_record.py

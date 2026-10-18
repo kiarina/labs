@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+python3 tools/prepare_aec.py
+cmake -S native -B build/aec -DCMAKE_BUILD_TYPE=Release -DAEC_BUILD_PROBE=ON
+cmake --build build/aec --config Release -j 8
+python3 tools/check_digital.py

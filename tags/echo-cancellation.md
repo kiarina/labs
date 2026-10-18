@@ -1,5 +1,6 @@
 # echo-cancellation
 
 - 2026/10/19 [Always-on Flutter camera and record capture with speaker playback and standalone AEC3](../2026/10/19/flutter-external-capture-aec/README.md)
+- 2026/10/19 [Windows double-talk echo cancellation with continuous camera and record capture](../2026/10/19/flutter-windows-aec-doubletalk/README.md)
 - 2026/09/26 [GPT-Live over WebRTC from native Flutter, with idle and conversation capture switching](../2026/09/26/flutter-gpt-live-senses/README.md)
 - 2026/09/26 [Always-on camera and microphone in Flutter with record and camera, and what echoCancel really does](../2026/09/26/flutter-record-camera-senses/README.md)

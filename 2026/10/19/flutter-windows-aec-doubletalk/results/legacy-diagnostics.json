@@ -1,0 +1,614 @@
+{
+  "source": "legacy Windows local PCM; no new playback or DSP replay",
+  "limitations": [
+    "Coherence and scalar projection are not all-echo energy or ERLE.",
+    "One-second lag aliases can reflect the old periodic stimulus and low SNR, not solely clock drift.",
+    "Known digital near retention does not establish human speech quality."
+  ],
+  "sampleRate": 48000,
+  "phaseDiagnostics": [
+    {
+      "name": "baseline",
+      "samples": 92640,
+      "rawRmsDbfs": -57.87572106954228,
+      "cleanRmsDbfs": -58.272709904929975,
+      "rawClippedFraction": 0.0
+    },
+    {
+      "name": "near-only",
+      "samples": 240480,
+      "rawRmsDbfs": -58.10635318107228,
+      "cleanRmsDbfs": -24.79648473620593,
+      "rawClippedFraction": 0.0,
+      "near": {
+        "lagSamples": 432,
+        "signedGain": 0.9766452826047444,
+        "gainDb": -0.20526286645980985,
+        "correlation": 0.9932916052228253
+      }
+    },
+    {
+      "name": "far-1-warmup",
+      "samples": 240480,
+      "rawRmsDbfs": -53.376519193174175,
+      "cleanRmsDbfs": -75.97792988903846,
+      "rawClippedFraction": 0.0,
+      "wholePhasePeak": {
+        "lagSamples": -17754,
+        "correlation": 0.02961964810160025
+      },
+      "oneSecondPeaks": [
+        {
+          "captureSecond": 9.94,
+          "lagSamples": -23383,
+          "correlation": 0.010087548579601958,
+          "atSearchBoundary": false
+        },
+        {
+          "captureSecond": 10.94,
+          "lagSamples": 6010,
+          "correlation": 0.04722376809910785,
+          "atSearchBoundary": false
+        },
+        {
+          "captureSecond": 11.94,
+          "lagSamples": 13363,
+          "correlation": -0.04731304516455926,
+          "atSearchBoundary": false
+        },
+        {
+          "captureSecond": 12.94,
+          "lagSamples": -5803,
+          "correlation": -0.07983935629628756,
+          "atSearchBoundary": false
+        },
+        {
+          "captureSecond": 13.94,
+          "lagSamples": 7070,
+          "correlation": -0.07874015185217507,
+          "atSearchBoundary": false
+        }
+      ],
+      "bands": [
+        {
+          "lowHz": 80,
+          "highHz": 330,
+          "medianCoherence": 0.0008713558506545697,
+          "referenceWeightedCoherence": 0.0030003040493106247,
+          "rawPowerFraction": 0.13576717736148156
+        },
+        {
+          "lowHz": 330,
+          "highHz": 680,
+          "medianCoherence": 4.900291189040289e-05,
+          "referenceWeightedCoherence": 0.007943667799924718,
+          "rawPowerFraction": 0.3066234895033278
+        },
+        {
+          "lowHz": 680,
+          "highHz": 725,
+          "medianCoherence": 0.06734156818637071,
+          "referenceWeightedCoherence": 0.08762223651761672,
+          "rawPowerFraction": 0.04865755242769267
+        },
+        {
+          "lowHz": 725,
+          "highHz": 2500,
+          "medianCoherence": 4.408513111348498e-05,
+          "referenceWeightedCoherence": 0.005291109069770156,
+          "rawPowerFraction": 0.3419299212907074
+        },
+        {
+          "lowHz": 2500,
+          "highHz": 8000,
+          "medianCoherence": 0.0001121837011566673,
+          "referenceWeightedCoherence": 0.000247709914368293,
+          "rawPowerFraction": 0.12699113445247942
+        },
+        {
+          "lowHz": 8000,
+          "highHz": 16000,
+          "medianCoherence": 0.0005257288086561577,
+          "referenceWeightedCoherence": 0.006946817734508363,
+          "rawPowerFraction": 0.03381907944549098
+        },
+        {
+          "lowHz": 16000,
+          "highHz": 23900,
+          "medianCoherence": 0.006174036573597036,
+          "referenceWeightedCoherence": 0.009267132778886779,
+          "rawPowerFraction": 4.991186100084352e-06
+        }
+      ],
+      "rawSpectralPeaksHz": [
+        433.59375,
+        421.875,
+        445.3125,
+        410.15625,
+        703.125,
+        457.03125,
+        1371.09375,
+        1535.15625
+      ]
+    },
+    {
+      "name": "far-1",
+      "samples": 240960,
+      "rawRmsDbfs": -50.43312418826301,
+      "cleanRmsDbfs": -51.333264185364285,
+      "rawClippedFraction": 0.0,
+      "wholePhasePeak": {
+        "lagSamples": -16415,
+        "correlation": -0.05700935859758839
+      },
+      "oneSecondPeaks": [
+        {
+          "captureSecond": 15.95,
+          "lagSamples": -5220,
+          "correlation": 0.05635376329693535,
+          "atSearchBoundary": false
+        },
+        {
+          "captureSecond": 16.95,
+          "lagSamples": -4190,
+          "correlation": 0.049607873543989434,
+          "atSearchBoundary": false
+        },
+        {
+          "captureSecond": 17.95,
+          "lagSamples": -5562,
+          "correlation": 0.05493290299070894,
+          "atSearchBoundary": false
+        },
+        {
+          "captureSecond": 18.95,
+          "lagSamples": 17273,
+          "correlation": -0.10721527160976885,
+          "atSearchBoundary": false
+        },
+        {
+          "captureSecond": 19.95,
+          "lagSamples": -15904,
+          "correlation": 0.099865467811687,
+          "atSearchBoundary": false
+        }
+      ],
+      "bands": [
+        {
+          "lowHz": 80,
+          "highHz": 330,
+          "medianCoherence": 0.00286741180790632,
+          "referenceWeightedCoherence": 0.0039047704195811633,
+          "rawPowerFraction": 0.24635491759105463
+        },
+        {
+          "lowHz": 330,
+          "highHz": 680,
+          "medianCoherence": 0.004526298829618598,
+          "referenceWeightedCoherence": 0.008298615576715986,
+          "rawPowerFraction": 0.1560288338701803
+        },
+        {
+          "lowHz": 680,
+          "highHz": 725,
+          "medianCoherence": 0.3011598271239966,
+          "referenceWeightedCoherence": 0.4022060312363366,
+          "rawPowerFraction": 0.037766807075242784
+        },
+        {
+          "lowHz": 725,
+          "highHz": 2500,
+          "medianCoherence": 0.02586308980892496,
+          "referenceWeightedCoherence": 0.01503641230340667,
+          "rawPowerFraction": 0.1476217362162091
+        },
+        {
+          "lowHz": 2500,
+          "highHz": 8000,
+          "medianCoherence": 0.04758802583219549,
+          "referenceWeightedCoherence": 0.05786891739497314,
+          "rawPowerFraction": 0.30559120298823156
+        },
+        {
+          "lowHz": 8000,
+          "highHz": 16000,
+          "medianCoherence": 0.011183381646016774,
+          "referenceWeightedCoherence": 0.00860827260913399,
+          "rawPowerFraction": 0.09703621900800379
+        },
+        {
+          "lowHz": 16000,
+          "highHz": 23900,
+          "medianCoherence": 0.006940109261821803,
+          "referenceWeightedCoherence": 0.009990507156020989,
+          "rawPowerFraction": 2.9751203116367754e-06
+        }
+      ],
+      "rawSpectralPeaksHz": [
+        105.46875,
+        93.75,
+        140.625,
+        82.03125,
+        703.125,
+        152.34375,
+        164.0625,
+        128.90625
+      ]
+    },
+    {
+      "name": "doubletalk",
+      "samples": 238560,
+      "rawRmsDbfs": -41.2878088697316,
+      "cleanRmsDbfs": -24.74545925608198,
+      "rawClippedFraction": 0.0,
+      "near": {
+        "lagSamples": 432,
+        "signedGain": 0.9762841504459037,
+        "gainDb": -0.208475224324989,
+        "correlation": 0.9836852929137392
+      },
+      "wholePhasePeak": {
+        "lagSamples": 6213,
+        "correlation": 0.042232591354366335
+      },
+      "oneSecondPeaks": [
+        {
+          "captureSecond": 21.97,
+          "lagSamples": 6214,
+          "correlation": 0.1020789441653886,
+          "atSearchBoundary": false
+        },
+        {
+          "captureSecond": 22.97,
+          "lagSamples": -23979,
+          "correlation": 0.03437335372120353,
+          "atSearchBoundary": false
+        },
+        {
+          "captureSecond": 23.97,
+          "lagSamples": 6213,
+          "correlation": 0.0725835787450183,
+          "atSearchBoundary": false
+        },
+        {
+          "captureSecond": 24.97,
+          "lagSamples": 6213,
+          "correlation": 0.23093039869530751,
+          "atSearchBoundary": false
+        }
+      ],
+      "bands": [
+        {
+          "lowHz": 80,
+          "highHz": 330,
+          "medianCoherence": 0.0018800578784822321,
+          "referenceWeightedCoherence": 0.0026057789250436957,
+          "rawPowerFraction": 0.14033585889813244
+        },
+        {
+          "lowHz": 330,
+          "highHz": 680,
+          "medianCoherence": 0.004675248393515149,
+          "referenceWeightedCoherence": 0.013774179762766525,
+          "rawPowerFraction": 0.18296277553723586
+        },
+        {
+          "lowHz": 680,
+          "highHz": 725,
+          "medianCoherence": 0.18307410526629722,
+          "referenceWeightedCoherence": 0.30356447052856145,
+          "rawPowerFraction": 0.01419480436247358
+        },
+        {
+          "lowHz": 725,
+          "highHz": 2500,
+          "medianCoherence": 0.00140803716694134,
+          "referenceWeightedCoherence": 0.003879714471902192,
+          "rawPowerFraction": 0.2624275155056842
+        },
+        {
+          "lowHz": 2500,
+          "highHz": 8000,
+          "medianCoherence": 0.0035653654246985194,
+          "referenceWeightedCoherence": 0.037217904524496255,
+          "rawPowerFraction": 0.2875565938940189
+        },
+        {
+          "lowHz": 8000,
+          "highHz": 16000,
+          "medianCoherence": 0.007818851451021775,
+          "referenceWeightedCoherence": 0.06372076137610214,
+          "rawPowerFraction": 0.09970124364331129
+        },
+        {
+          "lowHz": 16000,
+          "highHz": 23900,
+          "medianCoherence": 0.0066590346462389125,
+          "referenceWeightedCoherence": 0.009419492907127059,
+          "rawPowerFraction": 3.470704981315778e-07
+        }
+      ],
+      "rawSpectralPeaksHz": [
+        1113.28125,
+        574.21875,
+        585.9375,
+        328.125,
+        316.40625,
+        1125.0,
+        3843.75,
+        527.34375
+      ]
+    },
+    {
+      "name": "quiet-between",
+      "samples": 96000,
+      "rawRmsDbfs": -58.84538308648079,
+      "cleanRmsDbfs": -59.27675198731936,
+      "rawClippedFraction": 0.0
+    },
+    {
+      "name": "far-2",
+      "samples": 240960,
+      "rawRmsDbfs": -52.20032920969529,
+      "cleanRmsDbfs": -53.79727613289756,
+      "rawClippedFraction": 0.0,
+      "wholePhasePeak": {
+        "lagSamples": 6213,
+        "correlation": 0.12206975707873789
+      },
+      "oneSecondPeaks": [
+        {
+          "captureSecond": 30.94,
+          "lagSamples": 6520,
+          "correlation": -0.22075108248127462,
+          "atSearchBoundary": false
+        },
+        {
+          "captureSecond": 31.94,
+          "lagSamples": 6562,
+          "correlation": 0.20871364456284494,
+          "atSearchBoundary": false
+        },
+        {
+          "captureSecond": 32.94,
+          "lagSamples": 6222,
+          "correlation": 0.17404412570173636,
+          "atSearchBoundary": false
+        },
+        {
+          "captureSecond": 33.94,
+          "lagSamples": 6213,
+          "correlation": 0.2694875488409586,
+          "atSearchBoundary": false
+        },
+        {
+          "captureSecond": 34.94,
+          "lagSamples": 6484,
+          "correlation": 0.10227831164876673,
+          "atSearchBoundary": false
+        }
+      ],
+      "bands": [
+        {
+          "lowHz": 80,
+          "highHz": 330,
+          "medianCoherence": 0.0016077194408092334,
+          "referenceWeightedCoherence": 0.0025592057500200033,
+          "rawPowerFraction": 0.3448168102176466
+        },
+        {
+          "lowHz": 330,
+          "highHz": 680,
+          "medianCoherence": 0.0009344725842317021,
+          "referenceWeightedCoherence": 0.009141585104510309,
+          "rawPowerFraction": 0.13314807515096228
+        },
+        {
+          "lowHz": 680,
+          "highHz": 725,
+          "medianCoherence": 0.2750985423085644,
+          "referenceWeightedCoherence": 0.35963967029744537,
+          "rawPowerFraction": 0.061544407763975094
+        },
+        {
+          "lowHz": 725,
+          "highHz": 2500,
+          "medianCoherence": 0.03856461668082044,
+          "referenceWeightedCoherence": 0.16568244850879493,
+          "rawPowerFraction": 0.19658677218016105
+        },
+        {
+          "lowHz": 2500,
+          "highHz": 8000,
+          "medianCoherence": 0.2843010575065993,
+          "referenceWeightedCoherence": 0.41322689287930897,
+          "rawPowerFraction": 0.1995380139317633
+        },
+        {
+          "lowHz": 8000,
+          "highHz": 16000,
+          "medianCoherence": 0.007472593873955506,
+          "referenceWeightedCoherence": 0.46865123342495224,
+          "rawPowerFraction": 0.04630916624227385
+        },
+        {
+          "lowHz": 16000,
+          "highHz": 23900,
+          "medianCoherence": 0.006966299765682504,
+          "referenceWeightedCoherence": 0.009604386775353102,
+          "rawPowerFraction": 8.589377424969306e-06
+        }
+      ],
+      "rawSpectralPeaksHz": [
+        105.46875,
+        93.75,
+        82.03125,
+        164.0625,
+        703.125,
+        128.90625,
+        140.625,
+        152.34375
+      ]
+    },
+    {
+      "name": "quiet-after",
+      "samples": 95520,
+      "rawRmsDbfs": -51.08098267099162,
+      "cleanRmsDbfs": -51.462204677316294,
+      "rawClippedFraction": 0.0
+    },
+    {
+      "name": "rtc-far-playback",
+      "samples": 267360,
+      "rawRmsDbfs": -43.96923889942363,
+      "cleanRmsDbfs": -44.98767890624903,
+      "rawClippedFraction": 0.0,
+      "wholePhasePeak": {
+        "lagSamples": 6213,
+        "correlation": 0.06916918622435413
+      },
+      "oneSecondPeaks": [
+        {
+          "captureSecond": 63.21,
+          "lagSamples": 6147,
+          "correlation": 0.10022039540910099,
+          "atSearchBoundary": false
+        },
+        {
+          "captureSecond": 64.21,
+          "lagSamples": 6176,
+          "correlation": -0.11413187763521764,
+          "atSearchBoundary": false
+        },
+        {
+          "captureSecond": 65.21,
+          "lagSamples": 6485,
+          "correlation": 0.06638198153410979,
+          "atSearchBoundary": false
+        },
+        {
+          "captureSecond": 66.21,
+          "lagSamples": 6220,
+          "correlation": 0.08576604630874697,
+          "atSearchBoundary": false
+        },
+        {
+          "captureSecond": 67.21,
+          "lagSamples": 6214,
+          "correlation": 0.06378512280185034,
+          "atSearchBoundary": false
+        }
+      ],
+      "bands": [
+        {
+          "lowHz": 80,
+          "highHz": 330,
+          "medianCoherence": 0.004708395258596764,
+          "referenceWeightedCoherence": 0.007191747651021495,
+          "rawPowerFraction": 0.3984823937193012
+        },
+        {
+          "lowHz": 330,
+          "highHz": 680,
+          "medianCoherence": 0.008222505628373344,
+          "referenceWeightedCoherence": 0.018500865498778454,
+          "rawPowerFraction": 0.3277918310663687
+        },
+        {
+          "lowHz": 680,
+          "highHz": 725,
+          "medianCoherence": 0.36838046601713004,
+          "referenceWeightedCoherence": 0.343720254370935,
+          "rawPowerFraction": 0.04165602264874599
+        },
+        {
+          "lowHz": 725,
+          "highHz": 2500,
+          "medianCoherence": 0.01614600519679721,
+          "referenceWeightedCoherence": 0.11333981132561977,
+          "rawPowerFraction": 0.20973427943624823
+        },
+        {
+          "lowHz": 2500,
+          "highHz": 8000,
+          "medianCoherence": 0.2827124300435628,
+          "referenceWeightedCoherence": 0.4050392391506401,
+          "rawPowerFraction": 0.012527977224562413
+        },
+        {
+          "lowHz": 8000,
+          "highHz": 16000,
+          "medianCoherence": 0.027066049125128416,
+          "referenceWeightedCoherence": 0.47376329424721564,
+          "rawPowerFraction": 0.001515408069603633
+        },
+        {
+          "lowHz": 16000,
+          "highHz": 23900,
+          "medianCoherence": 0.005346741443450587,
+          "referenceWeightedCoherence": 0.008060220715971915,
+          "rawPowerFraction": 7.799082169172875e-07
+        }
+      ],
+      "rawSpectralPeaksHz": [
+        152.34375,
+        140.625,
+        597.65625,
+        609.375,
+        585.9375,
+        750.0,
+        93.75,
+        621.09375
+      ]
+    }
+  ],
+  "legacyStimulus": {
+    "phaseRadians": "2*pi*t*(330+2200*frac(.71*t))",
+    "instantaneousHzAwayFromResets": "330+3124*t-2200*floor(.71*t)",
+    "resetPeriodSeconds": 1.4084507042253522,
+    "resetPhaseJumpCycles": "-2200*t at each reset",
+    "foldToNyquist": "abs((instantaneousHz+24000)%48000-24000)",
+    "spectralFramesCompared": 3839,
+    "medianPeakPredictionErrorHz": 11.714666666681296,
+    "fractionWithin150Hz": 1.0,
+    "referenceEnergyAbove2500HzFraction": 0.7264224586831506,
+    "examples": [
+      {
+        "timeSeconds": 10.0,
+        "nominalFHz": 549.9999999999992,
+        "instantaneousUnfoldedHz": 16170.0,
+        "predictedAliasedHz": 16170.0,
+        "observedPeakExcluding701Hz": 16171.875
+      },
+      {
+        "timeSeconds": 15.999999999999998,
+        "nominalFHz": 1121.999999999995,
+        "instantaneousUnfoldedHz": 26113.999999999993,
+        "predictedAliasedHz": 21886.000000000007,
+        "observedPeakExcluding701Hz": 21890.625
+      },
+      {
+        "timeSeconds": 22.0,
+        "nominalFHz": 1693.9999999999982,
+        "instantaneousUnfoldedHz": 36058.0,
+        "predictedAliasedHz": 11942.0,
+        "observedPeakExcluding701Hz": 11953.125
+      },
+      {
+        "timeSeconds": 34.0,
+        "nominalFHz": 638.0000000000013,
+        "instantaneousUnfoldedHz": 53746.0,
+        "predictedAliasedHz": 5746.0,
+        "observedPeakExcluding701Hz": 5765.625
+      }
+    ]
+  },
+  "artifactsSha256": {
+    "raw.pcm": "d5d7cefa8f55bbd64a1caf9afb9c94c3f4408fce93799d3ba146de2685aff4c8",
+    "mixed.pcm": "2d09299fc2158778e75b31e807978bd4840ad80a87f329368ed5fda67ab27886",
+    "clean.pcm": "cf9f78b8677946e0d4492863ba77844d82f417f0e9da58730ba395db3990d6b1",
+    "near.pcm": "db27819a7afae622d6af2ee0488f9d000b237898f28ccb1a9428ae68b68112cc",
+    "reference.pcm": "6114a5161535b15e237f3a6cb6ccba6951a78525684b8d48e2cca2e693178762",
+    "actual_render.pcm": "9e32d6baa9e223fe727b339f9ef05a5384f4aa8a5a83fbd9ef0574a5406d73e2"
+  }
+}

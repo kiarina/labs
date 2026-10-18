@@ -1,0 +1,647 @@
+{
+  "kind": "same-input-offline-aec-comparison",
+  "rawRenderLagSamples": 6213,
+  "dspLatencySamples": 432,
+  "sourceSha256": {
+    "raw": "d5d7cefa8f55bbd64a1caf9afb9c94c3f4408fce93799d3ba146de2685aff4c8",
+    "mixed": "2d09299fc2158778e75b31e807978bd4840ad80a87f329368ed5fda67ab27886",
+    "near": "db27819a7afae622d6af2ee0488f9d000b237898f28ccb1a9428ae68b68112cc",
+    "actual_render": "9e32d6baa9e223fe727b339f9ef05a5384f4aa8a5a83fbd9ef0574a5406d73e2",
+    "clean": "cf9f78b8677946e0d4492863ba77844d82f417f0e9da58730ba395db3990d6b1"
+  },
+  "metric": "Welch cross-spectrum coherent power over 300-3500Hz, raw coherence >=.2, excluding near harmonics; credible bins <8 is inconclusive. Reference aligned once on raw, output latency fixed432.",
+  "runs": [
+    {
+      "name": "recorded-live",
+      "preset": null,
+      "delayHintMs": 80,
+      "phases": [
+        {
+          "name": "baseline",
+          "rawRmsDbfs": -57.87602888846177,
+          "outputRmsDbfs": -58.158993119505915
+        },
+        {
+          "name": "near-only",
+          "rawRmsDbfs": -58.10650974807132,
+          "outputRmsDbfs": -24.79407777921763,
+          "nearGainDb": -0.2052659952272503
+        },
+        {
+          "name": "far-1-warmup",
+          "rawRmsDbfs": -53.3765540705115,
+          "outputRmsDbfs": -76.01647876298671,
+          "excitedBins": 5,
+          "credibleBins": 0,
+          "rawCoherenceMedian": 0.03152270201074947,
+          "coherentEchoReductionDb": -240.0,
+          "identifiable": false
+        },
+        {
+          "name": "far-1",
+          "rawRmsDbfs": -50.43316074662373,
+          "outputRmsDbfs": -51.33631650121294,
+          "excitedBins": 4,
+          "credibleBins": 2,
+          "rawCoherenceMedian": 0.2442738354935708,
+          "coherentEchoReductionDb": 12.122365620154396,
+          "identifiable": false
+        },
+        {
+          "name": "doubletalk",
+          "rawRmsDbfs": -41.28781284642738,
+          "outputRmsDbfs": -24.74653684730381,
+          "nearGainDb": -0.20849545745154618,
+          "excitedBins": 4,
+          "credibleBins": 1,
+          "rawCoherenceMedian": 0.1702793517553829,
+          "coherentEchoReductionDb": 0.13528564943762167,
+          "identifiable": false
+        },
+        {
+          "name": "quiet-between",
+          "rawRmsDbfs": -58.84562112950511,
+          "outputRmsDbfs": -59.27347955214054
+        },
+        {
+          "name": "far-2",
+          "rawRmsDbfs": -52.20039092795222,
+          "outputRmsDbfs": -53.62597480944305,
+          "excitedBins": 207,
+          "credibleBins": 55,
+          "rawCoherenceMedian": 0.07339553887446652,
+          "coherentEchoReductionDb": 5.391290267968245,
+          "identifiable": true
+        },
+        {
+          "name": "quiet-after",
+          "rawRmsDbfs": -51.08102278397191,
+          "outputRmsDbfs": -51.43976309054189
+        },
+        {
+          "name": "rtc-far-playback",
+          "rawRmsDbfs": -43.97326782957076,
+          "outputRmsDbfs": -44.985436121198845,
+          "excitedBins": 152,
+          "credibleBins": 14,
+          "rawCoherenceMedian": 0.043898213986676676,
+          "coherentEchoReductionDb": 7.160439882022505,
+          "identifiable": true
+        }
+      ]
+    },
+    {
+      "name": "paired-default",
+      "preset": 0,
+      "delayHintMs": 80,
+      "phases": [
+        {
+          "name": "baseline",
+          "rawRmsDbfs": -57.87602888846177,
+          "outputRmsDbfs": -58.158993119505915
+        },
+        {
+          "name": "near-only",
+          "rawRmsDbfs": -58.10650974807132,
+          "outputRmsDbfs": -24.794077878326746,
+          "nearGainDb": -0.20526610857277774
+        },
+        {
+          "name": "far-1-warmup",
+          "rawRmsDbfs": -53.3765540705115,
+          "outputRmsDbfs": -70.24828180747588,
+          "excitedBins": 5,
+          "credibleBins": 0,
+          "rawCoherenceMedian": 0.03152270201074947,
+          "coherentEchoReductionDb": -240.0,
+          "identifiable": false
+        },
+        {
+          "name": "far-1",
+          "rawRmsDbfs": -50.43316074662373,
+          "outputRmsDbfs": -51.321939290996326,
+          "excitedBins": 4,
+          "credibleBins": 2,
+          "rawCoherenceMedian": 0.2442738354935708,
+          "coherentEchoReductionDb": 10.867082385861188,
+          "identifiable": false
+        },
+        {
+          "name": "doubletalk",
+          "rawRmsDbfs": -41.28781284642738,
+          "outputRmsDbfs": -24.746506746995195,
+          "nearGainDb": -0.20849157025777235,
+          "excitedBins": 4,
+          "credibleBins": 1,
+          "rawCoherenceMedian": 0.1702793517553829,
+          "coherentEchoReductionDb": 0.1350861739282681,
+          "identifiable": false
+        },
+        {
+          "name": "quiet-between",
+          "rawRmsDbfs": -58.84562112950511,
+          "outputRmsDbfs": -59.27347955214054
+        },
+        {
+          "name": "far-2",
+          "rawRmsDbfs": -52.20039092795222,
+          "outputRmsDbfs": -53.61382781211431,
+          "excitedBins": 207,
+          "credibleBins": 55,
+          "rawCoherenceMedian": 0.07339553887446652,
+          "coherentEchoReductionDb": 4.875159415444187,
+          "identifiable": true
+        },
+        {
+          "name": "quiet-after",
+          "rawRmsDbfs": -51.08102278397191,
+          "outputRmsDbfs": -51.43976354157357
+        },
+        {
+          "name": "rtc-far-playback",
+          "rawRmsDbfs": -43.97326782957076,
+          "outputRmsDbfs": -44.56373714981901,
+          "excitedBins": 152,
+          "credibleBins": 14,
+          "rawCoherenceMedian": 0.043898213986676676,
+          "coherentEchoReductionDb": 8.388912032540958,
+          "identifiable": true
+        }
+      ]
+    },
+    {
+      "name": "paired-drift",
+      "preset": 1,
+      "delayHintMs": 80,
+      "phases": [
+        {
+          "name": "baseline",
+          "rawRmsDbfs": -57.87602888846177,
+          "outputRmsDbfs": -58.158993119505915
+        },
+        {
+          "name": "near-only",
+          "rawRmsDbfs": -58.10650974807132,
+          "outputRmsDbfs": -24.794077878326746,
+          "nearGainDb": -0.20526610857277774
+        },
+        {
+          "name": "far-1-warmup",
+          "rawRmsDbfs": -53.3765540705115,
+          "outputRmsDbfs": -70.47760987368902,
+          "excitedBins": 5,
+          "credibleBins": 0,
+          "rawCoherenceMedian": 0.03152270201074947,
+          "coherentEchoReductionDb": -240.0,
+          "identifiable": false
+        },
+        {
+          "name": "far-1",
+          "rawRmsDbfs": -50.43316074662373,
+          "outputRmsDbfs": -51.34689967490607,
+          "excitedBins": 4,
+          "credibleBins": 2,
+          "rawCoherenceMedian": 0.2442738354935708,
+          "coherentEchoReductionDb": 10.866617838400586,
+          "identifiable": false
+        },
+        {
+          "name": "doubletalk",
+          "rawRmsDbfs": -41.28781284642738,
+          "outputRmsDbfs": -24.746505967207458,
+          "nearGainDb": -0.20849077606379593,
+          "excitedBins": 4,
+          "credibleBins": 1,
+          "rawCoherenceMedian": 0.1702793517553829,
+          "coherentEchoReductionDb": 0.13515164913084662,
+          "identifiable": false
+        },
+        {
+          "name": "quiet-between",
+          "rawRmsDbfs": -58.84562112950511,
+          "outputRmsDbfs": -59.27347955214054
+        },
+        {
+          "name": "far-2",
+          "rawRmsDbfs": -52.20039092795222,
+          "outputRmsDbfs": -53.65417114529821,
+          "excitedBins": 207,
+          "credibleBins": 55,
+          "rawCoherenceMedian": 0.07339553887446652,
+          "coherentEchoReductionDb": 7.032373010404015,
+          "identifiable": true
+        },
+        {
+          "name": "quiet-after",
+          "rawRmsDbfs": -51.08102278397191,
+          "outputRmsDbfs": -51.43976354157357
+        },
+        {
+          "name": "rtc-far-playback",
+          "rawRmsDbfs": -43.97326782957076,
+          "outputRmsDbfs": -44.56980550398856,
+          "excitedBins": 152,
+          "credibleBins": 14,
+          "rawCoherenceMedian": 0.043898213986676676,
+          "coherentEchoReductionDb": 8.389307235546571,
+          "identifiable": true
+        }
+      ]
+    },
+    {
+      "name": "paired-long-filter",
+      "preset": 2,
+      "delayHintMs": 80,
+      "phases": [
+        {
+          "name": "baseline",
+          "rawRmsDbfs": -57.87602888846177,
+          "outputRmsDbfs": -58.158993119505915
+        },
+        {
+          "name": "near-only",
+          "rawRmsDbfs": -58.10650974807132,
+          "outputRmsDbfs": -24.794077878326746,
+          "nearGainDb": -0.20526610857277774
+        },
+        {
+          "name": "far-1-warmup",
+          "rawRmsDbfs": -53.3765540705115,
+          "outputRmsDbfs": -70.34313038304099,
+          "excitedBins": 5,
+          "credibleBins": 0,
+          "rawCoherenceMedian": 0.03152270201074947,
+          "coherentEchoReductionDb": -240.0,
+          "identifiable": false
+        },
+        {
+          "name": "far-1",
+          "rawRmsDbfs": -50.43316074662373,
+          "outputRmsDbfs": -51.42719743475786,
+          "excitedBins": 4,
+          "credibleBins": 2,
+          "rawCoherenceMedian": 0.2442738354935708,
+          "coherentEchoReductionDb": 14.576280351439975,
+          "identifiable": false
+        },
+        {
+          "name": "doubletalk",
+          "rawRmsDbfs": -41.28781284642738,
+          "outputRmsDbfs": -24.746532543940365,
+          "nearGainDb": -0.2084955902969352,
+          "excitedBins": 4,
+          "credibleBins": 1,
+          "rawCoherenceMedian": 0.1702793517553829,
+          "coherentEchoReductionDb": 0.13527456778667327,
+          "identifiable": false
+        },
+        {
+          "name": "quiet-between",
+          "rawRmsDbfs": -58.84562112950511,
+          "outputRmsDbfs": -59.27347955214054
+        },
+        {
+          "name": "far-2",
+          "rawRmsDbfs": -52.20039092795222,
+          "outputRmsDbfs": -53.74071446951363,
+          "excitedBins": 207,
+          "credibleBins": 55,
+          "rawCoherenceMedian": 0.07339553887446652,
+          "coherentEchoReductionDb": 4.983855232877438,
+          "identifiable": true
+        },
+        {
+          "name": "quiet-after",
+          "rawRmsDbfs": -51.08102278397191,
+          "outputRmsDbfs": -51.43976354157357
+        },
+        {
+          "name": "rtc-far-playback",
+          "rawRmsDbfs": -43.97326782957076,
+          "outputRmsDbfs": -44.5738204357254,
+          "excitedBins": 152,
+          "credibleBins": 14,
+          "rawCoherenceMedian": 0.043898213986676676,
+          "coherentEchoReductionDb": 9.134222859062138,
+          "identifiable": true
+        }
+      ]
+    },
+    {
+      "name": "paired-near-suppression",
+      "preset": 3,
+      "delayHintMs": 80,
+      "phases": [
+        {
+          "name": "baseline",
+          "rawRmsDbfs": -57.87602888846177,
+          "outputRmsDbfs": -58.158993119505915
+        },
+        {
+          "name": "near-only",
+          "rawRmsDbfs": -58.10650974807132,
+          "outputRmsDbfs": -24.794077878326746,
+          "nearGainDb": -0.20526610857277774
+        },
+        {
+          "name": "far-1-warmup",
+          "rawRmsDbfs": -53.3765540705115,
+          "outputRmsDbfs": -70.4873167365544,
+          "excitedBins": 5,
+          "credibleBins": 0,
+          "rawCoherenceMedian": 0.03152270201074947,
+          "coherentEchoReductionDb": -240.0,
+          "identifiable": false
+        },
+        {
+          "name": "far-1",
+          "rawRmsDbfs": -50.43316074662373,
+          "outputRmsDbfs": -51.552999420224666,
+          "excitedBins": 4,
+          "credibleBins": 2,
+          "rawCoherenceMedian": 0.2442738354935708,
+          "coherentEchoReductionDb": 12.815527546341276,
+          "identifiable": false
+        },
+        {
+          "name": "doubletalk",
+          "rawRmsDbfs": -41.28781284642738,
+          "outputRmsDbfs": -24.746526040107753,
+          "nearGainDb": -0.2084942021612035,
+          "excitedBins": 4,
+          "credibleBins": 1,
+          "rawCoherenceMedian": 0.1702793517553829,
+          "coherentEchoReductionDb": 0.13525626785335343,
+          "identifiable": false
+        },
+        {
+          "name": "quiet-between",
+          "rawRmsDbfs": -58.84562112950511,
+          "outputRmsDbfs": -59.27347955214054
+        },
+        {
+          "name": "far-2",
+          "rawRmsDbfs": -52.20039092795222,
+          "outputRmsDbfs": -54.05787575650653,
+          "excitedBins": 207,
+          "credibleBins": 55,
+          "rawCoherenceMedian": 0.07339553887446652,
+          "coherentEchoReductionDb": 5.2074243564522575,
+          "identifiable": true
+        },
+        {
+          "name": "quiet-after",
+          "rawRmsDbfs": -51.08102278397191,
+          "outputRmsDbfs": -51.43976354157357
+        },
+        {
+          "name": "rtc-far-playback",
+          "rawRmsDbfs": -43.97326782957076,
+          "outputRmsDbfs": -44.81129304316017,
+          "excitedBins": 152,
+          "credibleBins": 14,
+          "rawCoherenceMedian": 0.043898213986676676,
+          "coherentEchoReductionDb": 9.181902822656134,
+          "identifiable": true
+        }
+      ]
+    },
+    {
+      "name": "paired-long-drift",
+      "preset": 4,
+      "delayHintMs": 80,
+      "phases": [
+        {
+          "name": "baseline",
+          "rawRmsDbfs": -57.87602888846177,
+          "outputRmsDbfs": -58.158993119505915
+        },
+        {
+          "name": "near-only",
+          "rawRmsDbfs": -58.10650974807132,
+          "outputRmsDbfs": -24.794077878326746,
+          "nearGainDb": -0.20526610857277774
+        },
+        {
+          "name": "far-1-warmup",
+          "rawRmsDbfs": -53.3765540705115,
+          "outputRmsDbfs": -70.72724357221601,
+          "excitedBins": 5,
+          "credibleBins": 0,
+          "rawCoherenceMedian": 0.03152270201074947,
+          "coherentEchoReductionDb": -240.0,
+          "identifiable": false
+        },
+        {
+          "name": "far-1",
+          "rawRmsDbfs": -50.43316074662373,
+          "outputRmsDbfs": -51.54987852630035,
+          "excitedBins": 4,
+          "credibleBins": 2,
+          "rawCoherenceMedian": 0.2442738354935708,
+          "coherentEchoReductionDb": 14.578214962322456,
+          "identifiable": false
+        },
+        {
+          "name": "doubletalk",
+          "rawRmsDbfs": -41.28781284642738,
+          "outputRmsDbfs": -24.746532279603525,
+          "nearGainDb": -0.2084961026656062,
+          "excitedBins": 4,
+          "credibleBins": 1,
+          "rawCoherenceMedian": 0.1702793517553829,
+          "coherentEchoReductionDb": 0.1353383354869409,
+          "identifiable": false
+        },
+        {
+          "name": "quiet-between",
+          "rawRmsDbfs": -58.84562112950511,
+          "outputRmsDbfs": -59.27347955214054
+        },
+        {
+          "name": "far-2",
+          "rawRmsDbfs": -52.20039092795222,
+          "outputRmsDbfs": -53.80269991044544,
+          "excitedBins": 207,
+          "credibleBins": 55,
+          "rawCoherenceMedian": 0.07339553887446652,
+          "coherentEchoReductionDb": 6.876422164167474,
+          "identifiable": true
+        },
+        {
+          "name": "quiet-after",
+          "rawRmsDbfs": -51.08102278397191,
+          "outputRmsDbfs": -51.43976354157357
+        },
+        {
+          "name": "rtc-far-playback",
+          "rawRmsDbfs": -43.97326782957076,
+          "outputRmsDbfs": -44.581990067228396,
+          "excitedBins": 152,
+          "credibleBins": 14,
+          "rawCoherenceMedian": 0.043898213986676676,
+          "coherentEchoReductionDb": 9.134435980040394,
+          "identifiable": true
+        }
+      ]
+    },
+    {
+      "name": "paired-external-120ms",
+      "preset": 5,
+      "delayHintMs": 120,
+      "phases": [
+        {
+          "name": "baseline",
+          "rawRmsDbfs": -57.87602888846177,
+          "outputRmsDbfs": -58.158993119505915
+        },
+        {
+          "name": "near-only",
+          "rawRmsDbfs": -58.10650974807132,
+          "outputRmsDbfs": -24.794077878326746,
+          "nearGainDb": -0.20526610857277774
+        },
+        {
+          "name": "far-1-warmup",
+          "rawRmsDbfs": -53.3765540705115,
+          "outputRmsDbfs": -75.90616311583516,
+          "excitedBins": 5,
+          "credibleBins": 0,
+          "rawCoherenceMedian": 0.03152270201074947,
+          "coherentEchoReductionDb": -240.0,
+          "identifiable": false
+        },
+        {
+          "name": "far-1",
+          "rawRmsDbfs": -50.43316074662373,
+          "outputRmsDbfs": -51.34750872381896,
+          "excitedBins": 4,
+          "credibleBins": 2,
+          "rawCoherenceMedian": 0.2442738354935708,
+          "coherentEchoReductionDb": 18.60015603898322,
+          "identifiable": false
+        },
+        {
+          "name": "doubletalk",
+          "rawRmsDbfs": -41.28781284642738,
+          "outputRmsDbfs": -24.746718925031942,
+          "nearGainDb": -0.2081649654576603,
+          "excitedBins": 4,
+          "credibleBins": 1,
+          "rawCoherenceMedian": 0.1702793517553829,
+          "coherentEchoReductionDb": 17.185458440343673,
+          "identifiable": false
+        },
+        {
+          "name": "quiet-between",
+          "rawRmsDbfs": -58.84562112950511,
+          "outputRmsDbfs": -59.27347955214054
+        },
+        {
+          "name": "far-2",
+          "rawRmsDbfs": -52.20039092795222,
+          "outputRmsDbfs": -54.179557704741235,
+          "excitedBins": 207,
+          "credibleBins": 55,
+          "rawCoherenceMedian": 0.07339553887446652,
+          "coherentEchoReductionDb": 32.70803308776341,
+          "identifiable": true
+        },
+        {
+          "name": "quiet-after",
+          "rawRmsDbfs": -51.08102278397191,
+          "outputRmsDbfs": -51.43976354157357
+        },
+        {
+          "name": "rtc-far-playback",
+          "rawRmsDbfs": -43.97326782957076,
+          "outputRmsDbfs": -44.60221019368483,
+          "excitedBins": 152,
+          "credibleBins": 14,
+          "rawCoherenceMedian": 0.043898213986676676,
+          "coherentEchoReductionDb": 19.12841583837836,
+          "identifiable": true
+        }
+      ]
+    },
+    {
+      "name": "paired-external-160ms",
+      "preset": 5,
+      "delayHintMs": 160,
+      "phases": [
+        {
+          "name": "baseline",
+          "rawRmsDbfs": -57.87602888846177,
+          "outputRmsDbfs": -58.158993119505915
+        },
+        {
+          "name": "near-only",
+          "rawRmsDbfs": -58.10650974807132,
+          "outputRmsDbfs": -24.794077878326746,
+          "nearGainDb": -0.20526610857277774
+        },
+        {
+          "name": "far-1-warmup",
+          "rawRmsDbfs": -53.3765540705115,
+          "outputRmsDbfs": -75.9839489556102,
+          "excitedBins": 5,
+          "credibleBins": 0,
+          "rawCoherenceMedian": 0.03152270201074947,
+          "coherentEchoReductionDb": -240.0,
+          "identifiable": false
+        },
+        {
+          "name": "far-1",
+          "rawRmsDbfs": -50.43316074662373,
+          "outputRmsDbfs": -51.29344774303986,
+          "excitedBins": 4,
+          "credibleBins": 2,
+          "rawCoherenceMedian": 0.2442738354935708,
+          "coherentEchoReductionDb": 14.790914585863352,
+          "identifiable": false
+        },
+        {
+          "name": "doubletalk",
+          "rawRmsDbfs": -41.28781284642738,
+          "outputRmsDbfs": -24.748104754741117,
+          "nearGainDb": -0.21019008604670128,
+          "excitedBins": 4,
+          "credibleBins": 1,
+          "rawCoherenceMedian": 0.1702793517553829,
+          "coherentEchoReductionDb": 10.617675447268573,
+          "identifiable": false
+        },
+        {
+          "name": "quiet-between",
+          "rawRmsDbfs": -58.84562112950511,
+          "outputRmsDbfs": -59.27347955214054
+        },
+        {
+          "name": "far-2",
+          "rawRmsDbfs": -52.20039092795222,
+          "outputRmsDbfs": -53.61295948042931,
+          "excitedBins": 207,
+          "credibleBins": 55,
+          "rawCoherenceMedian": 0.07339553887446652,
+          "coherentEchoReductionDb": 13.144774139590535,
+          "identifiable": true
+        },
+        {
+          "name": "quiet-after",
+          "rawRmsDbfs": -51.08102278397191,
+          "outputRmsDbfs": -51.43976354157357
+        },
+        {
+          "name": "rtc-far-playback",
+          "rawRmsDbfs": -43.97326782957076,
+          "outputRmsDbfs": -44.56940803691992,
+          "excitedBins": 152,
+          "credibleBins": 14,
+          "rawCoherenceMedian": 0.043898213986676676,
+          "coherentEchoReductionDb": 12.40592626031211,
+          "identifiable": true
+        }
+      ]
+    }
+  ]
+}
