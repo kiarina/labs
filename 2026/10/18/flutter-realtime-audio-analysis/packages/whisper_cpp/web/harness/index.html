@@ -1,0 +1,66 @@
+<!doctype html>
+<!-- Plain-JS harness for web/whisper_worker.js (no Flutter). Serve the lab
+     root with web/serve.py and open
+     /packages/whisper_cpp/web/harness/?model=tiny&threads=0&runs=2[&audioCtx=512][&seconds=2] -->
+<meta charset="utf-8">
+<title>whisper.cpp wasm harness</title>
+<pre id="log">loading…</pre>
+<script>
+const q = new URLSearchParams(location.search);
+const model = q.get('model') || 'tiny';
+const threads = +(q.get('threads') || 0);
+const runs = +(q.get('runs') || 2);
+const variant = q.get('variant') || 'auto';
+const pool = +(q.get('pool') || 0);
+const audioCtx = +(q.get('audioCtx') || 0);
+const seconds = +(q.get('seconds') || 0); // crop the wav to its first N s
+const lab = '../../../../';
+const out = document.getElementById('log');
+const log = (s) => { out.textContent += '\n' + s; console.log(s); };
+const result = { model, variant, audioCtx, seconds, crossOriginIsolated: self.crossOriginIsolated, hc: navigator.hardwareConcurrency, ua: navigator.userAgent, runs: [] };
+window.result = result;
+
+function readWav(buf) {
+  const v = new DataView(buf);
+  let off = 12, fmt = null, data = null;
+  while (off < v.byteLength) {
+    const id = String.fromCharCode(v.getUint8(off), v.getUint8(off+1), v.getUint8(off+2), v.getUint8(off+3));
+    const len = v.getUint32(off + 4, true);
+    if (id === 'fmt ') fmt = { ch: v.getUint16(off + 10, true), rate: v.getUint32(off + 12, true), bits: v.getUint16(off + 22, true) };
+    if (id === 'data') data = [off + 8, len];
+    off += 8 + len + (len & 1);
+  }
+  if (fmt.ch !== 1 || fmt.rate !== 16000 || fmt.bits !== 16) throw new Error('need 16k mono s16');
+  const n = data[1] / 2, pcm = new Float32Array(n);
+  for (let i = 0; i < n; i++) pcm[i] = v.getInt16(data[0] + i * 2, true) / 32768;
+  return pcm;
+}
+
+(async () => {
+  const w = new Worker('../../assets/whisper_web/whisper_worker.js');
+  let next = 1; const pend = new Map();
+  w.onmessage = (e) => { const p = pend.get(e.data.id); pend.delete(e.data.id); e.data.ok ? p[0](e.data) : p[1](new Error(e.data.error)); };
+  w.onerror = (e) => log('worker error ' + e.message);
+  const call = (msg, transfer = []) => new Promise((res, rej) => { const id = next++; pend.set(id, [res, rej]); w.postMessage({ ...msg, id }, transfer); });
+  try {
+    let pcm = readWav(await (await fetch(lab + 'work/conversation_16k.wav')).arrayBuffer());
+    if (seconds > 0) pcm = pcm.slice(0, seconds * 16000);
+    log(`coi=${self.crossOriginIsolated} hc=${navigator.hardwareConcurrency} audio=${(pcm.length / 16000).toFixed(2)}s`);
+    const t0 = performance.now();
+    const init = await call({ cmd: 'init', variant, poolSize: pool, modelUrl: lab + `models/whisper/ggml-${model}.bin` });
+    result.loadMs = performance.now() - t0; result.init = init;
+    log(`init ${JSON.stringify(init)} total ${result.loadMs.toFixed(0)}ms`);
+    for (let i = 0; i < runs; i++) {
+      const copy = pcm.slice();
+      const t = performance.now();
+      const r = await call({ cmd: 'transcribe', pcm: copy.buffer, language: 'ja', threads, translate: false, noContext: true, suppressNonSpeech: true, temperature: 0, audioCtx }, [copy.buffer]);
+      const wall = performance.now() - t;
+      result.runs.push({ elapsedMs: r.elapsedMs, wallMs: wall, threads: r.threads, heapBytes: r.heapBytes, language: r.language, text: r.text, segments: r.segments });
+      log(`run${i} threads=${r.threads} whisper_full=${r.elapsedMs.toFixed(0)}ms wall=${wall.toFixed(0)}ms lang=${r.language}`);
+      for (const s of r.segments) log(`  [${s.t0Ms}-${s.t1Ms}] ${s.text}`);
+    }
+    await call({ cmd: 'dispose' });
+    result.done = true; log('DONE');
+  } catch (e) { result.error = String(e); log('ERROR ' + e); }
+})();
+</script>

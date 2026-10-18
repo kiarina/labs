@@ -1,0 +1,19 @@
+[project]
+name = "flutter-realtime-audio-analysis-tools"
+version = "0.1.0"
+description = "Python reference fixtures for the Dart port of kiarina-agi-audio"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "kiarina-agi-audio[vad-provider-silero,scd-provider-pyannote,audio-embedding-provider-ecapa-tdnn-onnx,audio-embedding-provider-clap-onnx,audio-tagging-provider-yamnet,audio-source-file]",
+    "numpy>=2.0,<3",
+    "onnx>=1.19",
+    "soundfile>=0.13.1",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+# Read-only local checkout of kiarina-python (commit 9d483457), next to this
+# labs checkout: ~/src/github.com/kiarina/{labs,kiarina-python}.
+kiarina-agi-audio = { path = "../../../../../../kiarina-python/packages/kiarina-agi-audio", editable = true }

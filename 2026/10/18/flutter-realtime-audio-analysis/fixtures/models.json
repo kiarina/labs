@@ -1,0 +1,283 @@
+{
+ "onnxruntime": "1.31.0",
+ "models": [
+  {
+   "name": "silero-vad",
+   "url": "https://raw.githubusercontent.com/snakers4/silero-vad/master/src/silero_vad/data/silero_vad.onnx",
+   "pinned_url": "https://raw.githubusercontent.com/snakers4/silero-vad/bfdc0193023f121ea5b3cc7b176dbed570a68a59/src/silero_vad/data/silero_vad.onnx",
+   "license": "MIT",
+   "license_source": "github.com/snakers4/silero-vad LICENSE",
+   "notes": "kiarina's url follows the master branch; bfdc019 ('add v6.2 model', 2025-11-06) is the last commit touching the file.",
+   "local_path": "models/kiarina-cache/models/silero-vad/silero_vad.onnx",
+   "sha256": "1a153a22f4509e292a94e67d6f9b85e8deb25b4988682b7e174c65279d8788e3",
+   "bytes": 2327524,
+   "io": {
+    "runtime": "onnx",
+    "inputs": [
+     {
+      "name": "input",
+      "type": "tensor(float)",
+      "shape": [
+       null,
+       null
+      ]
+     },
+     {
+      "name": "state",
+      "type": "tensor(float)",
+      "shape": [
+       2,
+       null,
+       128
+      ]
+     },
+     {
+      "name": "sr",
+      "type": "tensor(int64)",
+      "shape": []
+     }
+    ],
+    "outputs": [
+     {
+      "name": "output",
+      "type": "tensor(float)",
+      "shape": [
+       null,
+       1
+      ]
+     },
+     {
+      "name": "stateN",
+      "type": "tensor(float)",
+      "shape": [
+       null,
+       null,
+       null
+      ]
+     }
+    ],
+    "producer": "spox",
+    "opsets": {
+     "ai.onnx": 16
+    }
+   }
+  },
+  {
+   "name": "pyannote-segmentation-3.0",
+   "url": "https://huggingface.co/onnx-community/pyannote-segmentation-3.0/resolve/main/onnx/model.onnx",
+   "pinned_url": "https://huggingface.co/onnx-community/pyannote-segmentation-3.0/resolve/733a93b6473d019a773298e08cefa686894b1854/onnx/model.onnx",
+   "license": "MIT",
+   "license_source": "HF model card of onnx-community/pyannote-segmentation-3.0 (license: mit, base_model pyannote/segmentation-3.0) and of pyannote/segmentation-3.0 (license: mit, gated: auto)",
+   "notes": "The original pyannote/segmentation-3.0 is gated (accept conditions to download); the onnx-community export is not gated.",
+   "local_path": "models/kiarina-cache/models/pyannote-segmentation-3.0/model.onnx",
+   "sha256": "057ee564753071c0b09b5b611648b50ac188d50846bff5f01e9f7bbf1591ea25",
+   "bytes": 5986908,
+   "io": {
+    "runtime": "onnx",
+    "inputs": [
+     {
+      "name": "input_values",
+      "type": "tensor(float)",
+      "shape": [
+       "batch_size",
+       "num_channels",
+       "num_samples"
+      ]
+     }
+    ],
+    "outputs": [
+     {
+      "name": "logits",
+      "type": "tensor(float)",
+      "shape": [
+       "batch_size",
+       "num_frames",
+       7
+      ]
+     }
+    ],
+    "producer": "pytorch",
+    "opsets": {
+     "ai.onnx": 17
+    }
+   }
+  },
+  {
+   "name": "ecapa-tdnn-onnx",
+   "url": "https://huggingface.co/pranjal-pravesh/ecapa_tdnn_onnx/resolve/04c3ffe4fd00b3b7853fd57db44e2e531d4817f2/ecapa_tdnn.onnx",
+   "pinned_url": "https://huggingface.co/pranjal-pravesh/ecapa_tdnn_onnx/resolve/04c3ffe4fd00b3b7853fd57db44e2e531d4817f2/ecapa_tdnn.onnx",
+   "license": "MIT",
+   "license_source": "HF model card of pranjal-pravesh/ecapa_tdnn_onnx (license: mit). The card does not name its source checkpoint; SpeechBrain's spkrec-ecapa-voxceleb is apache-2.0.",
+   "local_path": "models/kiarina-cache/models/ecapa-tdnn-onnx/ecapa_tdnn.onnx",
+   "sha256": "245eb5995cfffd74494862dee33da2b00c1c2579eb0c6703847784e9901ed458",
+   "bytes": 84028639,
+   "io": {
+    "runtime": "onnx",
+    "inputs": [
+     {
+      "name": "audio",
+      "type": "tensor(float)",
+      "shape": [
+       "s42",
+       "s51"
+      ]
+     }
+    ],
+    "outputs": [
+     {
+      "name": "embedding",
+      "type": "tensor(float)",
+      "shape": [
+       1,
+       1,
+       192
+      ]
+     }
+    ],
+    "producer": "pytorch",
+    "opsets": {
+     "ai.onnx": 18
+    }
+   }
+  },
+  {
+   "name": "clap-htsat-unfused-audio",
+   "url": "https://huggingface.co/Xenova/clap-htsat-unfused/resolve/main/onnx/audio_model.onnx",
+   "pinned_url": "https://huggingface.co/Xenova/clap-htsat-unfused/resolve/c28f2883575e590e04d3146ff0713c2448d691ba/onnx/audio_model.onnx",
+   "license": "Apache-2.0 (inherited)",
+   "license_source": "Xenova/clap-htsat-unfused card has no license field (base_model laion/clap-htsat-unfused); laion/clap-htsat-unfused card: license apache-2.0",
+   "notes": "kiarina's url follows the main branch.",
+   "local_path": "models/kiarina-cache/models/clap-onnx/audio_model.onnx",
+   "sha256": "a1c2b43c44f71e0fa841a4b86700886c199bf87699ea45632c4d831bc6c88957",
+   "bytes": 117528416,
+   "io": {
+    "runtime": "onnx",
+    "inputs": [
+     {
+      "name": "input_features",
+      "type": "tensor(float)",
+      "shape": [
+       "audio_batch_size",
+       "num_channels",
+       "height",
+       "width"
+      ]
+     }
+    ],
+    "outputs": [
+     {
+      "name": "audio_embeds",
+      "type": "tensor(float)",
+      "shape": [
+       "batch_size",
+       512
+      ]
+     }
+    ],
+    "producer": "pytorch",
+    "opsets": {
+     "ai.onnx": 11
+    }
+   }
+  },
+  {
+   "name": "clap-htsat-unfused-preprocessor-config",
+   "url": "https://huggingface.co/laion/clap-htsat-unfused/resolve/84bcbbd1d619e407a8216371ddef36e458d95d93/preprocessor_config.json",
+   "pinned_url": "https://huggingface.co/laion/clap-htsat-unfused/resolve/84bcbbd1d619e407a8216371ddef36e458d95d93/preprocessor_config.json",
+   "license": "Apache-2.0",
+   "license_source": "HF model card of laion/clap-htsat-unfused (license: apache-2.0)",
+   "local_path": "models/kiarina-cache/models/clap-onnx/preprocessor_config.json",
+   "sha256": "9739f58296aa6f9ac18008fd0150fb2649bc554985fbde86d0a4041c882ac753",
+   "bytes": 541
+  },
+  {
+   "name": "yamnet-tflite",
+   "url": "https://tfhub.dev/google/lite-model/yamnet/classification/tflite/1?lite-format=tflite",
+   "pinned_url": null,
+   "license": "Apache-2.0",
+   "license_source": "TF Hub / Kaggle Models page for google/yamnet (tflite classification v1); not re-checked by API",
+   "notes": "tfhub.dev now 302-redirects to a short-lived signed storage.googleapis.com (Kaggle) URL. Int8-quantized; reads only waveform[0:15600].",
+   "local_path": "models/kiarina-cache/models/yamnet/yamnet.tflite",
+   "sha256": "10c95ea3eb9a7bb4cb8bddf6feb023250381008177ac162ce169694d05c317de",
+   "bytes": 4126810,
+   "io": {
+    "runtime": "tflite",
+    "inputs": [
+     {
+      "name": "waveform_binary",
+      "type": "float32",
+      "shape": [
+       15600
+      ],
+      "shape_signature": [
+       15600
+      ]
+     }
+    ],
+    "outputs": [
+     {
+      "name": "tower0/network/layer32/final_output",
+      "type": "float32",
+      "shape": [
+       1,
+       521
+      ],
+      "shape_signature": [
+       1,
+       521
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "name": "yamnet-class-map",
+   "url": "https://raw.githubusercontent.com/tensorflow/models/5c597f85268743140854f0e670f2175e8668553a/research/audioset/yamnet/yamnet_class_map.csv",
+   "pinned_url": "https://raw.githubusercontent.com/tensorflow/models/5c597f85268743140854f0e670f2175e8668553a/research/audioset/yamnet/yamnet_class_map.csv",
+   "license": "Apache-2.0",
+   "license_source": "github.com/tensorflow/models LICENSE",
+   "notes": "CSV header index,mid,display_name; 521 rows; display_name may contain commas (quoted).",
+   "local_path": "models/kiarina-cache/models/yamnet/yamnet_class_map.csv",
+   "sha256": "cdf24d193e196d9e95912a2667051ae203e92a2ba09449218ccb40ef787c6df2",
+   "bytes": 14096
+  },
+  {
+   "name": "yamnet-onnx",
+   "url": null,
+   "pinned_url": null,
+   "license": "Apache-2.0 (derived from yamnet-tflite)",
+   "license_source": "conversion of yamnet-tflite by tools/convert_yamnet.sh (tf2onnx 1.16.1, opset 17)",
+   "notes": "Not hosted yet. Input length symbolic; N must be >= 15600.",
+   "local_path": "models/yamnet/yamnet.onnx",
+   "sha256": "8b977c9434c28c29d769e4d9e90b8e9752cdf9aaf6465eaa90a8eb535e83c46c",
+   "bytes": 4999860,
+   "io": {
+    "runtime": "onnx",
+    "inputs": [
+     {
+      "name": "waveform_binary",
+      "type": "tensor(float)",
+      "shape": [
+       "num_samples"
+      ]
+     }
+    ],
+    "outputs": [
+     {
+      "name": "tower0/network/layer32/final_output",
+      "type": "tensor(float)",
+      "shape": [
+       1,
+       521
+      ]
+     }
+    ],
+    "producer": "tf2onnx",
+    "opsets": {
+     "ai.onnx": 17,
+     "ai.onnx.ml": 2
+    }
+   }
+  }
+ ]
+}

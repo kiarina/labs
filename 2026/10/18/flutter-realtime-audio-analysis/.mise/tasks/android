@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+#MISE description="Build the app for Android (profile, arm64), install on the adb device, run MODE with EXTRA_DEFINES, write work/report-android-<TAG>.json"
+# logcat cuts lines at ~1 KB, so the app prints the report in numbered parts.
+set -euo pipefail
+MODE="${MODE:-replay}"; TAG="${TAG:-$MODE}"; WHISPER_MODEL="${WHISPER_MODEL:-base}"
+ADB="${ADB:-$HOME/Library/Android/sdk/platform-tools/adb}"
+S="${ANDROID_SERIAL:-$("$ADB" devices | awk 'NR>1 && $2=="device"{print $1; exit}')}"
+LAB="$(cd "$(dirname "$0")/../.." && pwd)"
+cd "$LAB/app"
+# shellcheck disable=SC2086
+flutter build apk --profile --target-platform android-arm64 --dart-define=AUTO="$MODE" \
+  --dart-define=WHISPER_MODEL="$WHISPER_MODEL" ${EXTRA_DEFINES:-} | tail -1
+"$ADB" -s "$S" shell am force-stop com.kiarina.labs.hearing_lab || true
+"$ADB" -s "$S" install -r build/app/outputs/flutter-apk/app-profile.apk | tail -1
+"$ADB" -s "$S" logcat -c
+"$ADB" -s "$S" shell am start -n com.kiarina.labs.hearing_lab/.MainActivity >/dev/null
+for _ in $(seq 1 180); do
+  sleep 5
+  "$ADB" -s "$S" logcat -d -s flutter:I | grep -q "report saved" && break
+done
+mkdir -p "$LAB/work"
+"$ADB" -s "$S" logcat -d -s flutter:I | python3 "$LAB/tools/join_report.py" > "$LAB/work/report-android-$TAG.json"
+"$ADB" -s "$S" shell am force-stop com.kiarina.labs.hearing_lab || true
+echo "report: work/report-android-$TAG.json"

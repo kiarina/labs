@@ -1,0 +1,363 @@
+{
+ "platform": "macOS",
+ "mode": "replay",
+ "config": {
+  "whisper": "base",
+  "language": "ja",
+  "ort_threads": null,
+  "whisper_threads": 0,
+  "min_silence_ms": 300,
+  "max_voice_ms": 8000
+ },
+ "download_ms": 31,
+ "load_ms": {
+  "silero_vad": 51,
+  "pyannote": 9,
+  "ecapa": 32,
+  "whisper_base": 99,
+  "yamnet": 10,
+  "clap": 559
+ },
+ "asr": "whisper.cpp base (whisper.cpp v1.9.5 (Metal, Accelerate BLAS, CPU))",
+ "replay": {
+  "audio_s": 14.171,
+  "fed_ms": 14172,
+  "done_ms": 14384,
+  "latency_after_end_ms": 213,
+  "events": [
+   {
+    "kind": "speech",
+    "start": 0.0,
+    "end": 2.016,
+    "speaker_kind": "speaker",
+    "speaker": 0,
+    "text": "もしもしもう息に吹いた?",
+    "language": "ja",
+    "asr_ms": 72,
+    "lag_s": 0.14
+   },
+   {
+    "kind": "ambient",
+    "start": 0.0,
+    "end": 10.0,
+    "tags": [
+     {
+      "label": "Speech",
+      "score": 0.9730674342105267
+     },
+     {
+      "label": "Speech synthesizer",
+      "score": 0.06969572368421052
+     },
+     {
+      "label": "Narration, monologue",
+      "score": 0.0283717105263158
+     }
+    ],
+    "lag_s": 0.03
+   },
+   {
+    "kind": "speech",
+    "start": 2.016,
+    "end": 4.138,
+    "speaker_kind": "speaker",
+    "speaker": 1,
+    "text": "うん今開殺出れたところ。",
+    "language": "ja",
+    "asr_ms": 103,
+    "lag_s": 0.93
+   },
+   {
+    "kind": "speech",
+    "start": 4.138,
+    "end": 4.928,
+    "speaker_kind": "speaker",
+    "speaker": 2,
+    "text": "それでは!",
+    "language": "ja",
+    "asr_ms": 47,
+    "lag_s": 0.21
+   },
+   {
+    "kind": "speech",
+    "start": 4.928,
+    "end": 7.322,
+    "speaker_kind": "speaker",
+    "speaker": 0,
+    "text": "こっちはまだ電車、あと5分くらいかな",
+    "language": "ja",
+    "asr_ms": 79,
+    "lag_s": 5.73
+   },
+   {
+    "kind": "speech",
+    "start": 7.322,
+    "end": 9.648,
+    "speaker_kind": "speaker",
+    "speaker": 1,
+    "text": "良い。じゃあ、カフェの前で待ってるね。",
+    "language": "ja",
+    "asr_ms": 65,
+    "lag_s": 3.51
+   },
+   {
+    "kind": "speech",
+    "start": 9.648,
+    "end": 11.855,
+    "speaker_kind": "speaker",
+    "speaker": 0,
+    "text": "助かれ、今日は結構寒いね",
+    "language": "ja",
+    "asr_ms": 58,
+    "lag_s": 1.41
+   },
+   {
+    "kind": "ambient",
+    "start": 10.0,
+    "end": 14.171,
+    "tags": [
+     {
+      "label": "Speech",
+      "score": 0.9871651785714287
+     },
+     {
+      "label": "Speech synthesizer",
+      "score": 0.0703125
+     },
+     {
+      "label": "Narration, monologue",
+      "score": 0.018973214285714284
+     }
+    ],
+    "lag_s": 0.19
+   },
+   {
+    "kind": "speech",
+    "start": 11.855,
+    "end": 12.928,
+    "speaker_kind": "speaker",
+    "speaker": 1,
+    "text": "本当まふれっ",
+    "language": "ja",
+    "asr_ms": 61,
+    "lag_s": 0.42
+   },
+   {
+    "kind": "speech",
+    "start": 12.928,
+    "end": 14.171,
+    "speaker_kind": "speaker",
+    "speaker": 1,
+    "text": "持ってきて正解だった",
+    "language": "ja",
+    "asr_ms": 54,
+    "lag_s": 0.19
+   }
+  ]
+ },
+ "replay_warm": {
+  "audio_s": 14.171,
+  "fed_ms": 14175,
+  "done_ms": 14373,
+  "latency_after_end_ms": 202,
+  "events": [
+   {
+    "kind": "speech",
+    "start": 0.0,
+    "end": 2.016,
+    "speaker_kind": "speaker",
+    "speaker": 0,
+    "text": "もしもしもう息に吹いた?",
+    "language": "ja",
+    "asr_ms": 72,
+    "lag_s": 0.13
+   },
+   {
+    "kind": "ambient",
+    "start": 0.0,
+    "end": 10.0,
+    "tags": [
+     {
+      "label": "Speech",
+      "score": 0.9730674342105267
+     },
+     {
+      "label": "Speech synthesizer",
+      "score": 0.06969572368421052
+     },
+     {
+      "label": "Narration, monologue",
+      "score": 0.0283717105263158
+     }
+    ],
+    "lag_s": 0.03
+   },
+   {
+    "kind": "speech",
+    "start": 2.016,
+    "end": 4.138,
+    "speaker_kind": "speaker",
+    "speaker": 1,
+    "text": "うん今開殺出れたところ。",
+    "language": "ja",
+    "asr_ms": 103,
+    "lag_s": 0.94
+   },
+   {
+    "kind": "speech",
+    "start": 4.138,
+    "end": 4.928,
+    "speaker_kind": "speaker",
+    "speaker": 2,
+    "text": "それでは!",
+    "language": "ja",
+    "asr_ms": 48,
+    "lag_s": 0.22
+   },
+   {
+    "kind": "speech",
+    "start": 4.928,
+    "end": 7.322,
+    "speaker_kind": "speaker",
+    "speaker": 0,
+    "text": "こっちはまだ電車、あと5分くらいかな",
+    "language": "ja",
+    "asr_ms": 80,
+    "lag_s": 5.73
+   },
+   {
+    "kind": "speech",
+    "start": 7.322,
+    "end": 9.648,
+    "speaker_kind": "speaker",
+    "speaker": 1,
+    "text": "良い。じゃあ、カフェの前で待ってるね。",
+    "language": "ja",
+    "asr_ms": 67,
+    "lag_s": 3.51
+   },
+   {
+    "kind": "speech",
+    "start": 9.648,
+    "end": 11.855,
+    "speaker_kind": "speaker",
+    "speaker": 0,
+    "text": "助かれ、今日は結構寒いね",
+    "language": "ja",
+    "asr_ms": 57,
+    "lag_s": 1.4
+   },
+   {
+    "kind": "ambient",
+    "start": 10.0,
+    "end": 14.171,
+    "tags": [
+     {
+      "label": "Speech",
+      "score": 0.9871651785714287
+     },
+     {
+      "label": "Speech synthesizer",
+      "score": 0.0703125
+     },
+     {
+      "label": "Narration, monologue",
+      "score": 0.018973214285714284
+     }
+    ],
+    "lag_s": 0.18
+   },
+   {
+    "kind": "speech",
+    "start": 11.855,
+    "end": 12.928,
+    "speaker_kind": "speaker",
+    "speaker": 1,
+    "text": "本当まふれっ",
+    "language": "ja",
+    "asr_ms": 61,
+    "lag_s": 0.41
+   },
+   {
+    "kind": "speech",
+    "start": 12.928,
+    "end": 14.171,
+    "speaker_kind": "speaker",
+    "speaker": 1,
+    "text": "持ってきて正解だった",
+    "language": "ja",
+    "asr_ms": 52,
+    "lag_s": 0.18
+   }
+  ]
+ },
+ "stats": {
+  "vad": {
+   "count": 886,
+   "dropped": 0,
+   "queued": 0,
+   "avg_ms": 0.20090293453724606,
+   "max_ms": 33,
+   "audio_s": 28.342000000000024,
+   "rtf": 0.006280431867899225
+  },
+  "speech": {
+   "count": 8,
+   "dropped": 0,
+   "queued": 0,
+   "avg_ms": 248.625,
+   "max_ms": 439,
+   "audio_s": 28.342,
+   "rtf": 0.07017853362500882
+  },
+  "ambient": {
+   "count": 4,
+   "dropped": 0,
+   "queued": 0,
+   "avg_ms": 145.75,
+   "max_ms": 176,
+   "audio_s": 28.342,
+   "rtf": 0.020570178533625007
+  },
+  "events": 10
+ },
+ "recall_example": {
+  "now": 1792327194.356094,
+  "mic": false,
+  "events": [
+   {
+    "kind": "speech",
+    "start": 1792327189.6299973,
+    "end": 1792327191.8371222,
+    "speaker_kind": "speaker",
+    "speaker": 0,
+    "text": "助かれ、今日は結構寒いね",
+    "language": "ja",
+    "asr_ms": 57,
+    "seconds_ago": 2.5
+   },
+   {
+    "kind": "speech",
+    "start": 1792327191.8371222,
+    "end": 1792327192.9101222,
+    "speaker_kind": "speaker",
+    "speaker": 1,
+    "text": "本当まふれっ",
+    "language": "ja",
+    "asr_ms": 61,
+    "seconds_ago": 1.4
+   },
+   {
+    "kind": "speech",
+    "start": 1792327192.9101222,
+    "end": 1792327194.1531222,
+    "speaker_kind": "speaker",
+    "speaker": 1,
+    "text": "持ってきて正解だった",
+    "language": "ja",
+    "asr_ms": 52,
+    "seconds_ago": 0.2
+   }
+  ]
+ }
+}

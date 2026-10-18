@@ -1,0 +1,148 @@
+{
+ "platform": "windows",
+ "mode": "parity",
+ "config": {
+  "whisper": "base",
+  "language": "ja"
+ },
+ "download_ms": 13534,
+ "parity": {
+  "silero_vad": {
+   "chunks": 443,
+   "max_abs_diff": 7.861404418552098e-07,
+   "threshold_agreement": 1.0,
+   "call_us_p50": 603,
+   "call_us_p95": 1312,
+   "ms": 837
+  },
+  "pyannote": {
+   "frames": 829,
+   "frames_python": 829,
+   "frame_ms": 16.97792869269949,
+   "max_abs_diff": 1.2702465057579104e-06,
+   "ms": 86
+  },
+  "ecapa": {
+   "speeches": 6,
+   "cosine_to_python_min": 0.9999999999954226,
+   "cosine": [
+    0.9999999999969313,
+    0.9999999999972757,
+    0.9999999999974449,
+    0.9999999999976111,
+    0.9999999999954226,
+    0.9999999999973426
+   ],
+   "ms": 714
+  },
+  "clap": {
+   "windows": 2,
+   "cosine": [
+    0.9999999999991774,
+    0.9999999999988733
+   ],
+   "ms": 1973
+  },
+  "yamnet": {
+   "windows": [
+    {
+     "window": 0,
+     "max_abs_diff_vs_python_onnx": 0.0,
+     "max_abs_diff_vs_tflite": 0.0078125,
+     "top3_first_crop": [
+      {
+       "label": "Speech",
+       "score": 0.99609375
+      },
+      {
+       "label": "Speech synthesizer",
+       "score": 0.04296875
+      },
+      {
+       "label": "Narration, monologue",
+       "score": 0.01953125
+      }
+     ],
+     "top3_python": [
+      {
+       "label": "Speech",
+       "score": 0.992188
+      },
+      {
+       "label": "Speech synthesizer",
+       "score": 0.0429688
+      },
+      {
+       "label": "Narration, monologue",
+       "score": 0.015625
+      }
+     ],
+     "top3_full_window": [
+      {
+       "label": "Speech",
+       "score": 0.9730674342105267
+      },
+      {
+       "label": "Speech synthesizer",
+       "score": 0.06969572368421052
+      },
+      {
+       "label": "Narration, monologue",
+       "score": 0.027754934210526324
+      }
+     ],
+     "full_window_ms": 50
+    },
+    {
+     "window": 1,
+     "max_abs_diff_vs_python_onnx": 0.0,
+     "max_abs_diff_vs_tflite": 0.015625250000000035,
+     "top3_first_crop": [
+      {
+       "label": "Speech",
+       "score": 0.95703125
+      },
+      {
+       "label": "Inside, small room",
+       "score": 0.015625
+      },
+      {
+       "label": "Narration, monologue",
+       "score": 0.01171875
+      }
+     ],
+     "top3_python": [
+      {
+       "label": "Speech",
+       "score": 0.941406
+      },
+      {
+       "label": "Speech synthesizer",
+       "score": 0.0117188
+      },
+      {
+       "label": "Narration, monologue",
+       "score": 0.0078125
+      }
+     ],
+     "top3_full_window": [
+      {
+       "label": "Speech",
+       "score": 0.9871651785714287
+      },
+      {
+       "label": "Speech synthesizer",
+       "score": 0.0703125
+      },
+      {
+       "label": "Narration, monologue",
+       "score": 0.018973214285714284
+      }
+     ],
+     "full_window_ms": 8
+    }
+   ],
+   "ms": 496
+  }
+ }
+}

@@ -1,0 +1,14 @@
+{
+ "wav": "work/conversation_16k.wav",
+ "sample_rate": 16000,
+ "num_samples": 226736,
+ "duration_s": 14.171,
+ "pcm16_sha256": "aef288721e2f461c844ef766264cbcf09d997baf34fd72872faaebf0618dd06e",
+ "float32_sha256": "c8dbdc46e1870386f9f48e48a9d4c0d0c88aebde3ae202288ef11c630e981d90",
+ "float32_conversion": "int16 / 32768.0 (identical to soundfile dtype=float32)",
+ "audio_source": "file?sample_rate=16000&start_timestamp=0.0&chunk_size=512",
+ "consumers": [
+  "stt?diarization_enabled=true&asr_model=mock",
+  "ambient?window_seconds=10.0&top_k=3"
+ ]
+}

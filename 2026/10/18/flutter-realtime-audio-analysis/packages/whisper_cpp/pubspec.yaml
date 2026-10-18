@@ -1,0 +1,35 @@
+name: whisper_cpp
+description: "whisper.cpp (local Whisper ASR) for Flutter: dart:ffi on macOS, iOS, Android and Windows; WebAssembly on the web."
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.13.2
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  ffi: ^2.1.3
+  web: ^1.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  # Web runtime (whisper_worker.js + wasm builds), staged by tool/build_web.sh
+  # and loaded by lib/src/whisper_web.dart. See WEB.md.
+  assets:
+    - assets/whisper_web/
+  plugin:
+    platforms:
+      android:
+        ffiPlugin: true
+      ios:
+        ffiPlugin: true
+      macos:
+        ffiPlugin: true
+      windows:
+        ffiPlugin: true

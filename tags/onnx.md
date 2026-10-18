@@ -1,5 +1,6 @@
 # onnx
 
+- 2026/10/18 [Real-time microphone analysis in Flutter (VAD, speaker change, whisper.cpp ASR, speaker and sound embeddings, YAMNet) on macOS, Windows, Android, iOS and web](../2026/10/18/flutter-realtime-audio-analysis/README.md)
 - 2026/09/16 [ONNX Runtime Web from Flutter Web (D-FINE)](../2026/09/16/flutter-web-onnx-runtime/README.md)
 - 2026/07/15 [ZipDepth on Apple Silicon](../2026/07/15/zipdepth-apple-silicon/README.md)
 - 2026/07/14 [YOLO26 semantic segmentation on Apple Silicon](../2026/07/14/yolo26-semantic-segmentation/README.md)

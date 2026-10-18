@@ -1,0 +1,204 @@
+{
+ "platform": "web",
+ "mode": "mic",
+ "config": {
+  "whisper": "base",
+  "language": "ja",
+  "ort_threads": null,
+  "whisper_threads": 0,
+  "fit_audio_ctx": true,
+  "min_silence_ms": 300,
+  "max_voice_ms": 8000
+ },
+ "download_ms": 17759,
+ "permission": "granted",
+ "load_ms": {
+  "silero_vad": 475,
+  "pyannote": 1002,
+  "ecapa": 3273,
+  "whisper_base": 182,
+  "yamnet": 35,
+  "clap": 5108
+ },
+ "asr": "whisper.cpp base fit-audio-ctx (whisper.cpp v1.9.5 (wasm32, SIMD128, CPU, multi-threaded))",
+ "mic_samples": 255605,
+ "mic_rms_avg": 0.041115485599417106,
+ "mic_rms_max": 0.14796373170577515,
+ "mic_callbacks": 344,
+ "mic_s": 18.51699995994568,
+ "stats": {
+  "vad": {
+   "count": 499,
+   "dropped": 0,
+   "queued": 0,
+   "avg_ms": 0.23446893787575152,
+   "max_ms": 31,
+   "audio_s": 15.968000000000012,
+   "rtf": 0.007327154308617229
+  },
+  "speech": {
+   "count": 4,
+   "dropped": 0,
+   "queued": 0,
+   "avg_ms": 2289,
+   "max_ms": 4092,
+   "audio_s": 15.968,
+   "rtf": 0.5733967935871744
+  },
+  "ambient": {
+   "count": 2,
+   "dropped": 0,
+   "queued": 0,
+   "avg_ms": 370,
+   "max_ms": 472,
+   "audio_s": 15.975312500000001,
+   "rtf": 0.04632147258465209
+  },
+  "events": 11
+ },
+ "recall": {
+  "now": 1792329798.523,
+  "mic": false,
+  "events": [
+   {
+    "kind": "speech",
+    "start": 1792329780.2725625,
+    "end": 1792329782.2565625,
+    "speaker_kind": "speaker",
+    "speaker": 0,
+    "text": "もしもしもう一気に吹いた?",
+    "language": "ja",
+    "asr_ms": 1180,
+    "seconds_ago": 16.3
+   },
+   {
+    "kind": "ambient",
+    "start": 1792329780.2725625,
+    "end": 1792329790.2725625,
+    "tags": [
+     {
+      "label": "Speech",
+      "score": 0.9592927631578951
+     },
+     {
+      "label": "Speech synthesizer",
+      "score": 0.038651315789473686
+     },
+     {
+      "label": "Narration, monologue",
+      "score": 0.02467105263157895
+     }
+    ],
+    "seconds_ago": 8.3
+   },
+   {
+    "kind": "speech",
+    "start": 1792329782.2565665,
+    "end": 1792329784.3788166,
+    "speaker_kind": "speaker",
+    "speaker": 1,
+    "text": "今開殺出れたところ 今開殺出れたところ",
+    "language": "ja",
+    "asr_ms": 1301,
+    "seconds_ago": 14.1
+   },
+   {
+    "kind": "speech",
+    "start": 1792329784.3788166,
+    "end": 1792329785.1685665,
+    "speaker_kind": "speaker",
+    "speaker": 2,
+    "text": "さっきは?",
+    "language": "ja",
+    "asr_ms": 1050,
+    "seconds_ago": 13.4
+   },
+   {
+    "kind": "speech",
+    "start": 1792329785.1685724,
+    "end": 1792329787.5624473,
+    "speaker_kind": "speaker",
+    "speaker": 3,
+    "text": "こっちはまだ電車、あと5分くらいかな",
+    "language": "ja",
+    "asr_ms": 950,
+    "seconds_ago": 11
+   },
+   {
+    "kind": "speech",
+    "start": 1792329787.5624473,
+    "end": 1792329789.8884475,
+    "speaker_kind": "speaker",
+    "speaker": 1,
+    "text": "理解。じゃあ、カフェの前で待ってるね。",
+    "language": "ja",
+    "asr_ms": 972,
+    "seconds_ago": 8.6
+   },
+   {
+    "kind": "speech",
+    "start": 1792329789.8884475,
+    "end": 1792329792.0955725,
+    "speaker_kind": "speaker",
+    "speaker": 3,
+    "text": "助かれ、今日は結構寒いね。",
+    "language": "ja",
+    "asr_ms": 819,
+    "seconds_ago": 6.4
+   },
+   {
+    "kind": "ambient",
+    "start": 1792329790.2725625,
+    "end": 1792329796.247875,
+    "tags": [
+     {
+      "label": "Speech",
+      "score": 0.9925426136363638
+     },
+     {
+      "label": "Speech synthesizer",
+      "score": 0.041903409090909095
+     },
+     {
+      "label": "Narration, monologue",
+      "score": 0.02095170454545454
+     }
+    ],
+    "seconds_ago": 2.3
+   },
+   {
+    "kind": "speech",
+    "start": 1792329792.0955725,
+    "end": 1792329793.1685724,
+    "speaker_kind": "speaker",
+    "speaker": 1,
+    "text": "本当まふり。",
+    "language": "ja",
+    "asr_ms": 1001,
+    "seconds_ago": 5.4
+   },
+   {
+    "kind": "speech",
+    "start": 1792329793.1685886,
+    "end": 1792329794.4249637,
+    "speaker_kind": "speaker",
+    "speaker": 1,
+    "text": "空は持ってきて正解だった",
+    "language": "ja",
+    "asr_ms": 502,
+    "seconds_ago": 4.1
+   },
+   {
+    "kind": "speech",
+    "start": 1792329794.4249637,
+    "end": 1792329796.2405887,
+    "speaker_kind": "speaker",
+    "speaker": 0,
+    "text": "もしもしもう息に吹いた?",
+    "language": "ja",
+    "asr_ms": 577,
+    "seconds_ago": 2.3
+   }
+  ]
+ }
+}

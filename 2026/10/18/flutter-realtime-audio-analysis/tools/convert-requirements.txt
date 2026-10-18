@@ -1,0 +1,8 @@
+# Isolated venv for the YAMNet TFLite -> ONNX conversion (Python 3.11, macOS arm64).
+# Kept separate from the uv project because tensorflow pins old numpy/protobuf.
+tensorflow==2.15.1
+tf2onnx==1.16.1
+onnx==1.16.2
+numpy==1.26.4
+protobuf==3.20.3
+flatbuffers==25.12.19

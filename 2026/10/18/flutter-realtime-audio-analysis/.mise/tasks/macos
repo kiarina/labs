@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#MISE description="Build the app for macOS (profile) with MODE=parity|replay and EXTRA_DEFINES, run it, write work/report-macos-<TAG>.json"
+set -euo pipefail
+MODE="${MODE:-replay}"; TAG="${TAG:-$MODE}"; WHISPER_MODEL="${WHISPER_MODEL:-base}"
+LAB="$(cd "$(dirname "$0")/../.." && pwd)"
+cd "$LAB/app"
+# shellcheck disable=SC2086
+flutter build macos --profile --dart-define=AUTO="$MODE" --dart-define=AUTO_EXIT=true \
+  --dart-define=WHISPER_MODEL="$WHISPER_MODEL" ${EXTRA_DEFINES:-} | tail -1
+mkdir -p "$LAB/work"
+timeout 1200 build/macos/Build/Products/Profile/hearing_lab.app/Contents/MacOS/hearing_lab 2>&1 \
+  | python3 "$LAB/tools/join_report.py" > "$LAB/work/report-macos-$TAG.json"
+echo "report: work/report-macos-$TAG.json"

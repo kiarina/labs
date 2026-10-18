@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+#MISE description="Ship the lab to a Windows PC over ssh, build the app (profile) and run it as an interactive task; MODE=parity|replay; writes work/report-windows-<MODE>.json"
+# A Flutter Windows app is a GUI-subsystem process: an ssh session (session 0)
+# cannot show it and plugin symlinks don't resolve from ssh, so both the build
+# and the run are interactive scheduled tasks. The app writes its report to
+# %APPDATA%\com.kiarina.labs\hearing_lab\report-windows.json.
+set -euo pipefail
+: "${WIN_HOST:?set WIN_HOST, e.g. user@windows-pc}"
+MODE="${MODE:-parity}"
+WHISPER_MODEL="${WHISPER_MODEL:-base}"
+TAG="${TAG:-$MODE}"
+WIN_USER="$(echo "$WIN_HOST" | cut -d@ -f1)"
+[ "$WIN_USER" = "$WIN_HOST" ] && WIN_USER="$(ssh -o LogLevel=ERROR "$WIN_HOST" 'echo %USERNAME%' | tr -d '\r')"
+WIN_DIR="C:\\Users\\$WIN_USER\\labtmp_hearing"
+REPORT="C:\\Users\\$WIN_USER\\AppData\\Roaming\\com.kiarina.labs\\hearing_lab\\report-windows.json"
+LAB="$(cd "$(dirname "$0")/../.." && pwd)"
+ssh_() { ssh -o LogLevel=ERROR "$WIN_HOST" "$@"; }
+task() { # name, cmd file contents; waits for "done=" in the log
+  local name="$1" body="$2" cmd; cmd="$(mktemp)"
+  printf '%s\r\n' "$body" > "$cmd"
+  scp -q -o LogLevel=ERROR "$cmd" "$WIN_HOST:labtmp_hearing/$name.cmd"
+  ssh_ "del /q $WIN_DIR\\$name.log 2>nul & schtasks /create /tn Hearing$name /tr $WIN_DIR\\$name.cmd /sc once /st 23:59 /it /f >nul && schtasks /run /tn Hearing$name >nul"
+  for _ in $(seq 1 360); do
+    if ssh_ "findstr /c:done= $WIN_DIR\\$name.log >nul 2>&1"; then break; fi
+    sleep 5
+  done
+  ssh_ "schtasks /delete /tn Hearing$name /f >nul" || true
+}
+if [ "${SKIP_SHIP:-}" != 1 ]; then
+  tgz="$(mktemp).tgz"
+  (cd "$LAB" && COPYFILE_DISABLE=1 tar czf "$tgz" \
+    --exclude '*/build' --exclude '*/.dart_tool' --exclude app/ios --exclude app/android --exclude app/macos \
+    --exclude packages/whisper_cpp/example --exclude 'packages/whisper_cpp/third_party/whisper.cpp/examples' \
+    --exclude 'packages/whisper_cpp/third_party/whisper.cpp/models' \
+    app packages fixtures)
+  ssh_ "if exist $WIN_DIR rmdir /s /q $WIN_DIR" || true
+  ssh_ "mkdir $WIN_DIR"
+  scp -q -o LogLevel=ERROR "$tgz" "$WIN_HOST:labtmp_hearing/lab.tgz"
+  ssh_ "cd $WIN_DIR && tar xzf lab.tgz"
+fi
+task build "cd /d $WIN_DIR\\app
+call flutter pub get > $WIN_DIR\\build.log 2>&1
+call flutter build windows --profile --dart-define=AUTO=$MODE --dart-define=AUTO_EXIT=true --dart-define=WHISPER_MODEL=$WHISPER_MODEL ${EXTRA_DEFINES:-} >> $WIN_DIR\\build.log 2>&1
+echo done=%ERRORLEVEL% >> $WIN_DIR\\build.log"
+ssh_ "type $WIN_DIR\\build.log" | tr -d '\r' | tail -5
+ssh_ "del /q \"$REPORT\" 2>nul" || true
+task run "\"$WIN_DIR\\app\\build\\windows\\x64\\runner\\Profile\\hearing_lab.exe\"
+echo done=%ERRORLEVEL% > $WIN_DIR\\run.log"
+mkdir -p "$LAB/work"
+ssh_ "type \"$REPORT\"" | tr -d '\r' > "$LAB/work/report-windows-$TAG.json"
+ssh_ "taskkill /im hearing_lab.exe /f >nul 2>&1" || true
+echo "report: work/report-windows-$TAG.json ($(wc -c < "$LAB/work/report-windows-$TAG.json") bytes)"

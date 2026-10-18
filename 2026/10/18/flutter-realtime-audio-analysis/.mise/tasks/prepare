@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#MISE description="Make the 16 kHz WAV from the shared asset and copy it and the fixtures into the app"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mise run //:test-assets:download >/dev/null 2>&1 || (cd ../../../.. && make download-test-assets)
+mkdir -p work app/assets/fixtures
+ffmpeg -loglevel error -y -i ../../../../tests/assets/mp3/conversation_2speaker_14s_16k.mp3 -ac 1 -ar 16000 -c:a pcm_s16le work/conversation_16k.wav
+cp work/conversation_16k.wav app/assets/
+cp fixtures/*.json app/assets/fixtures/
+# YAMNet ONNX made by tools/convert_yamnet.sh (not hosted, so shipped in the app)
+mkdir -p app/assets/models && cp models/yamnet/yamnet.onnx app/assets/models/
+echo "prepared app/assets"
