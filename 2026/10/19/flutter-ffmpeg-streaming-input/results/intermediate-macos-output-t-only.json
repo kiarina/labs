@@ -1,0 +1,30 @@
+{
+  "description": "Pre-fix run; timestamps alone did not enforce a sample-count limit. Not an accepted final result.",
+  "cases": [
+    {
+      "case": "60",
+      "audio_samples": 961493,
+      "vad_positive": 709
+    },
+    {
+      "case": "600",
+      "audio_samples": 9616608,
+      "vad_positive": 7031
+    },
+    {
+      "case": "slow",
+      "audio_samples": 961493,
+      "vad_positive": 709
+    },
+    {
+      "case": "cancel",
+      "audio_samples": 81541,
+      "vad_positive": 79
+    },
+    {
+      "case": "restart",
+      "audio_samples": 96000,
+      "vad_positive": 79
+    }
+  ]
+}

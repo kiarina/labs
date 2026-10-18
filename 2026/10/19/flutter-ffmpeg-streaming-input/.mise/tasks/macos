@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Build and run streaming cases on macOS; STREAM_CASES=60,600,slow,cancel,restart"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+(cd app && flutter build macos --release --dart-define=AUTO_EXIT=true)
+exec app/build/macos/Build/Products/Release/streaming_input_lab.app/Contents/MacOS/streaming_input_lab

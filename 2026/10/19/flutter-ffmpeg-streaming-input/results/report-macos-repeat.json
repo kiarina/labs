@@ -1,0 +1,774 @@
+{
+  "platform": "macos",
+  "utc": "2026-10-18T16:36:21.566375Z",
+  "cases": [
+    {
+      "case": "600",
+      "ok": true,
+      "config": {
+        "duration_s": 600,
+        "consumer_delay_ms": 0
+      },
+      "stream": {
+        "cancelled": false,
+        "return_code": 0,
+        "first_pcm_ms": 16,
+        "first_pcm_before_producer_done": true,
+        "first_image_ms": 43,
+        "producer_done_ms": 9805,
+        "elapsed_ms": 11070,
+        "audio_samples": 9600000,
+        "frames": 600,
+        "max_audio_payload_bytes": 3200,
+        "max_jpeg_buffer_bytes": 14523,
+        "cancel_latency_ms": null,
+        "input_bytes": 32310704,
+        "ffmpeg": "n8.1.2",
+        "timestamp_policy": "audio sample clock, nominal 0.5+n frame selection on zero-start CFR fixture"
+      },
+      "audio": {
+        "samples": 9600000,
+        "seconds": 600.0,
+        "rms": 0.08465778472184643,
+        "peak": 0.75506591796875,
+        "vad_chunks": 18750,
+        "vad_positive": 7002,
+        "vad_ms": 10851.616,
+        "voice_count": 178,
+        "last_voices": [
+          {
+            "start": 572.736,
+            "end": 574.252
+          },
+          {
+            "start": 574.272,
+            "end": 576.492
+          },
+          {
+            "start": 579.488,
+            "end": 581.0039999999999
+          },
+          {
+            "start": 581.024,
+            "end": 583.2439999999999
+          },
+          {
+            "start": 586.24,
+            "end": 587.756
+          },
+          {
+            "start": 587.776,
+            "end": 589.996
+          },
+          {
+            "start": 592.96,
+            "end": 594.476
+          },
+          {
+            "start": 594.496,
+            "end": 596.7159999999999
+          }
+        ],
+        "tail_samples": 0,
+        "dangling_byte": false
+      },
+      "images": {
+        "count": 600,
+        "last": [
+          {
+            "pts": 592.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13922
+          },
+          {
+            "pts": 593.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13941
+          },
+          {
+            "pts": 594.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13963
+          },
+          {
+            "pts": 595.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14000
+          },
+          {
+            "pts": 596.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13727
+          },
+          {
+            "pts": 597.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14479
+          },
+          {
+            "pts": 598.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14305
+          },
+          {
+            "pts": 599.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14047
+          }
+        ]
+      },
+      "first_voice_ms": 45,
+      "max_pending_analysis_calls": 1,
+      "rss_peak_sampled": 192626688,
+      "memory_samples": [
+        {
+          "media_s": 0.0,
+          "wall_ms": 0,
+          "rss": 156942336,
+          "peak_rss": 156942336
+        },
+        {
+          "media_s": 36.1523125,
+          "wall_ms": 800,
+          "rss": 184041472,
+          "peak_rss": 184041472
+        },
+        {
+          "media_s": 63.857625,
+          "wall_ms": 1401,
+          "rss": 184958976,
+          "peak_rss": 184958976
+        },
+        {
+          "media_s": 95.969625,
+          "wall_ms": 2000,
+          "rss": 186368000,
+          "peak_rss": 186368000
+        },
+        {
+          "media_s": 128.639,
+          "wall_ms": 2600,
+          "rss": 186580992,
+          "peak_rss": 187219968
+        },
+        {
+          "media_s": 150.829625,
+          "wall_ms": 3000,
+          "rss": 186662912,
+          "peak_rss": 187236352
+        },
+        {
+          "media_s": 184.467,
+          "wall_ms": 3601,
+          "rss": 187105280,
+          "peak_rss": 187744256
+        },
+        {
+          "media_s": 216.741625,
+          "wall_ms": 4201,
+          "rss": 187056128,
+          "peak_rss": 188383232
+        },
+        {
+          "media_s": 250.5163125,
+          "wall_ms": 4800,
+          "rss": 187023360,
+          "peak_rss": 188383232
+        },
+        {
+          "media_s": 272.353625,
+          "wall_ms": 5200,
+          "rss": 187039744,
+          "peak_rss": 188383232
+        },
+        {
+          "media_s": 305.691,
+          "wall_ms": 5800,
+          "rss": 186941440,
+          "peak_rss": 188383232
+        },
+        {
+          "media_s": 338.565625,
+          "wall_ms": 6401,
+          "rss": 186941440,
+          "peak_rss": 188383232
+        },
+        {
+          "media_s": 360.103,
+          "wall_ms": 6800,
+          "rss": 187465728,
+          "peak_rss": 188383232
+        },
+        {
+          "media_s": 392.6323125,
+          "wall_ms": 7400,
+          "rss": 187990016,
+          "peak_rss": 188907520
+        },
+        {
+          "media_s": 424.925625,
+          "wall_ms": 8000,
+          "rss": 189857792,
+          "peak_rss": 191037440
+        },
+        {
+          "media_s": 457.525625,
+          "wall_ms": 8600,
+          "rss": 189841408,
+          "peak_rss": 191037440
+        },
+        {
+          "media_s": 490.343,
+          "wall_ms": 9200,
+          "rss": 190300160,
+          "peak_rss": 191807488
+        },
+        {
+          "media_s": 511.843,
+          "wall_ms": 9600,
+          "rss": 190300160,
+          "peak_rss": 191807488
+        },
+        {
+          "media_s": 547.541625,
+          "wall_ms": 10201,
+          "rss": 187858944,
+          "peak_rss": 192626688
+        },
+        {
+          "media_s": 571.441625,
+          "wall_ms": 10602,
+          "rss": 187858944,
+          "peak_rss": 192626688
+        },
+        {
+          "media_s": 600.0,
+          "wall_ms": 11071,
+          "rss": 187891712,
+          "peak_rss": 192626688
+        }
+      ]
+    },
+    {
+      "case": "600",
+      "ok": true,
+      "config": {
+        "duration_s": 600,
+        "consumer_delay_ms": 0
+      },
+      "stream": {
+        "cancelled": false,
+        "return_code": 0,
+        "first_pcm_ms": 12,
+        "first_pcm_before_producer_done": true,
+        "first_image_ms": 38,
+        "producer_done_ms": 9491,
+        "elapsed_ms": 10759,
+        "audio_samples": 9600000,
+        "frames": 600,
+        "max_audio_payload_bytes": 3200,
+        "max_jpeg_buffer_bytes": 14523,
+        "cancel_latency_ms": null,
+        "input_bytes": 32310704,
+        "ffmpeg": "n8.1.2",
+        "timestamp_policy": "audio sample clock, nominal 0.5+n frame selection on zero-start CFR fixture"
+      },
+      "audio": {
+        "samples": 9600000,
+        "seconds": 600.0,
+        "rms": 0.08465778472184643,
+        "peak": 0.75506591796875,
+        "vad_chunks": 18750,
+        "vad_positive": 7002,
+        "vad_ms": 10547.706,
+        "voice_count": 178,
+        "last_voices": [
+          {
+            "start": 572.736,
+            "end": 574.252
+          },
+          {
+            "start": 574.272,
+            "end": 576.492
+          },
+          {
+            "start": 579.488,
+            "end": 581.0039999999999
+          },
+          {
+            "start": 581.024,
+            "end": 583.2439999999999
+          },
+          {
+            "start": 586.24,
+            "end": 587.756
+          },
+          {
+            "start": 587.776,
+            "end": 589.996
+          },
+          {
+            "start": 592.96,
+            "end": 594.476
+          },
+          {
+            "start": 594.496,
+            "end": 596.7159999999999
+          }
+        ],
+        "tail_samples": 0,
+        "dangling_byte": false
+      },
+      "images": {
+        "count": 600,
+        "last": [
+          {
+            "pts": 592.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13922
+          },
+          {
+            "pts": 593.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13941
+          },
+          {
+            "pts": 594.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13963
+          },
+          {
+            "pts": 595.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14000
+          },
+          {
+            "pts": 596.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13727
+          },
+          {
+            "pts": 597.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14479
+          },
+          {
+            "pts": 598.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14305
+          },
+          {
+            "pts": 599.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14047
+          }
+        ]
+      },
+      "first_voice_ms": 41,
+      "max_pending_analysis_calls": 1,
+      "rss_peak_sampled": 200261632,
+      "memory_samples": [
+        {
+          "media_s": 0.0,
+          "wall_ms": 0,
+          "rss": 187908096,
+          "peak_rss": 192626688
+        },
+        {
+          "media_s": 30.779,
+          "wall_ms": 600,
+          "rss": 191283200,
+          "peak_rss": 192626688
+        },
+        {
+          "media_s": 63.437625,
+          "wall_ms": 1201,
+          "rss": 189251584,
+          "peak_rss": 192626688
+        },
+        {
+          "media_s": 96.439,
+          "wall_ms": 1801,
+          "rss": 189022208,
+          "peak_rss": 192626688
+        },
+        {
+          "media_s": 130.5843125,
+          "wall_ms": 2401,
+          "rss": 188923904,
+          "peak_rss": 192626688
+        },
+        {
+          "media_s": 152.321625,
+          "wall_ms": 2801,
+          "rss": 189792256,
+          "peak_rss": 192626688
+        },
+        {
+          "media_s": 184.551,
+          "wall_ms": 3402,
+          "rss": 188760064,
+          "peak_rss": 192626688
+        },
+        {
+          "media_s": 217.797625,
+          "wall_ms": 4000,
+          "rss": 189628416,
+          "peak_rss": 192626688
+        },
+        {
+          "media_s": 250.0123125,
+          "wall_ms": 4600,
+          "rss": 197607424,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 271.7443125,
+          "wall_ms": 5000,
+          "rss": 197918720,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 304.903,
+          "wall_ms": 5600,
+          "rss": 198328320,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 337.203,
+          "wall_ms": 6201,
+          "rss": 198328320,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 360.181625,
+          "wall_ms": 6600,
+          "rss": 200130560,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 393.281625,
+          "wall_ms": 7201,
+          "rss": 200130560,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 427.555,
+          "wall_ms": 7800,
+          "rss": 200196096,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 461.055,
+          "wall_ms": 8402,
+          "rss": 200196096,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 483.743,
+          "wall_ms": 8800,
+          "rss": 200261632,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 517.743,
+          "wall_ms": 9401,
+          "rss": 200196096,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 542.123,
+          "wall_ms": 9802,
+          "rss": 199393280,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 578.123,
+          "wall_ms": 10401,
+          "rss": 199393280,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 600.0,
+          "wall_ms": 10760,
+          "rss": 199409664,
+          "peak_rss": 205930496
+        }
+      ]
+    },
+    {
+      "case": "600",
+      "ok": true,
+      "config": {
+        "duration_s": 600,
+        "consumer_delay_ms": 0
+      },
+      "stream": {
+        "cancelled": false,
+        "return_code": 0,
+        "first_pcm_ms": 10,
+        "first_pcm_before_producer_done": true,
+        "first_image_ms": 33,
+        "producer_done_ms": 9299,
+        "elapsed_ms": 10379,
+        "audio_samples": 9600000,
+        "frames": 600,
+        "max_audio_payload_bytes": 3200,
+        "max_jpeg_buffer_bytes": 14523,
+        "cancel_latency_ms": null,
+        "input_bytes": 32310704,
+        "ffmpeg": "n8.1.2",
+        "timestamp_policy": "audio sample clock, nominal 0.5+n frame selection on zero-start CFR fixture"
+      },
+      "audio": {
+        "samples": 9600000,
+        "seconds": 600.0,
+        "rms": 0.08465778472184643,
+        "peak": 0.75506591796875,
+        "vad_chunks": 18750,
+        "vad_positive": 7002,
+        "vad_ms": 10177.104,
+        "voice_count": 178,
+        "last_voices": [
+          {
+            "start": 572.736,
+            "end": 574.252
+          },
+          {
+            "start": 574.272,
+            "end": 576.492
+          },
+          {
+            "start": 579.488,
+            "end": 581.0039999999999
+          },
+          {
+            "start": 581.024,
+            "end": 583.2439999999999
+          },
+          {
+            "start": 586.24,
+            "end": 587.756
+          },
+          {
+            "start": 587.776,
+            "end": 589.996
+          },
+          {
+            "start": 592.96,
+            "end": 594.476
+          },
+          {
+            "start": 594.496,
+            "end": 596.7159999999999
+          }
+        ],
+        "tail_samples": 0,
+        "dangling_byte": false
+      },
+      "images": {
+        "count": 600,
+        "last": [
+          {
+            "pts": 592.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13922
+          },
+          {
+            "pts": 593.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13941
+          },
+          {
+            "pts": 594.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13963
+          },
+          {
+            "pts": 595.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14000
+          },
+          {
+            "pts": 596.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13727
+          },
+          {
+            "pts": 597.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14479
+          },
+          {
+            "pts": 598.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14305
+          },
+          {
+            "pts": 599.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14047
+          }
+        ]
+      },
+      "first_voice_ms": 36,
+      "max_pending_analysis_calls": 1,
+      "rss_peak_sampled": 204488704,
+      "memory_samples": [
+        {
+          "media_s": 0.0,
+          "wall_ms": 0,
+          "rss": 199409664,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 32.8363125,
+          "wall_ms": 600,
+          "rss": 204488704,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 66.4123125,
+          "wall_ms": 1200,
+          "rss": 201818112,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 101.237625,
+          "wall_ms": 1801,
+          "rss": 202883072,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 123.169625,
+          "wall_ms": 2201,
+          "rss": 203046912,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 158.019,
+          "wall_ms": 2801,
+          "rss": 203538432,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 180.7443125,
+          "wall_ms": 3201,
+          "rss": 203112448,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 214.119,
+          "wall_ms": 3800,
+          "rss": 203161600,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 248.593625,
+          "wall_ms": 4401,
+          "rss": 203161600,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 272.155,
+          "wall_ms": 4800,
+          "rss": 203636736,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 307.5683125,
+          "wall_ms": 5401,
+          "rss": 203227136,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 330.853625,
+          "wall_ms": 5800,
+          "rss": 202964992,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 366.091,
+          "wall_ms": 6401,
+          "rss": 203620352,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 401.265625,
+          "wall_ms": 7001,
+          "rss": 203620352,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 424.803,
+          "wall_ms": 7401,
+          "rss": 202964992,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 458.877625,
+          "wall_ms": 8000,
+          "rss": 203669504,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 481.677625,
+          "wall_ms": 8400,
+          "rss": 203685888,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 515.8603125,
+          "wall_ms": 9000,
+          "rss": 204095488,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 551.9923125,
+          "wall_ms": 9602,
+          "rss": 203358208,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 576.6923125,
+          "wall_ms": 10001,
+          "rss": 203358208,
+          "peak_rss": 205930496
+        },
+        {
+          "media_s": 600.0,
+          "wall_ms": 10379,
+          "rss": 203374592,
+          "peak_rss": 205930496
+        }
+      ]
+    }
+  ],
+  "model_ready_ms": 72,
+  "ok": true,
+  "elapsed_ms": 32284
+}

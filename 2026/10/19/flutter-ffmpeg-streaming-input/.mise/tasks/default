@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Run logic tests and verify the retained five-platform reports"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mise run check
+python3 tools/validate_reports.py

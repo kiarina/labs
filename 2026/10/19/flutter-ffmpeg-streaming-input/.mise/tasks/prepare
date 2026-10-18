@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Prepare the pinned repeated ten-minute MP4 and VAD model"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+exec tools/prepare.sh

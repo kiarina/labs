@@ -1,6 +1,7 @@
 # macos
 
 - 2026/10/19 [FFmpeg file and microphone inputs for one Dart analysis pipeline across five platforms](../2026/10/19/flutter-ffmpeg-media-input/README.md)
+- 2026/10/19 [Bounded streaming video decoding and Dart VAD across native Flutter and WebAssembly](../2026/10/19/flutter-ffmpeg-streaming-input/README.md)
 - 2026/10/18 [Real-time microphone analysis in Flutter (VAD, speaker change, whisper.cpp ASR, speaker and sound embeddings, YAMNet) on macOS, Windows, Android, iOS and web](../2026/10/18/flutter-realtime-audio-analysis/README.md)
 - 2026/10/09 [Connecting N orchestrator apps over WebRTC: one brain drives workers on many bodies, every console shows the same state](../2026/10/09/flutter-agent-orchestrator-mesh/README.md)
 - 2026/10/09 [Several orchestrators on one network: a signaling server with a roster and body ownership](../2026/10/09/flutter-agent-orchestrator-multi-brain/README.md)

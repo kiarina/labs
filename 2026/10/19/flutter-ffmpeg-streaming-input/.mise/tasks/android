@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Build Android profile APK; optional ANDROID_SERIAL installs and runs it"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+(cd app && flutter build apk --profile --target-platform android-arm64)
+if [ -n "${ANDROID_SERIAL:-}" ]; then
+ adb -s "$ANDROID_SERIAL" shell am force-stop dev.lab.streaming_input_lab
+ adb -s "$ANDROID_SERIAL" install -r app/build/app/outputs/flutter-apk/app-profile.apk
+ adb -s "$ANDROID_SERIAL" shell am start -n dev.lab.streaming_input_lab/.MainActivity
+fi

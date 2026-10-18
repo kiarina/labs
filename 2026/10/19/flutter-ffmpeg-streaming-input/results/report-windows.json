@@ -1,0 +1,756 @@
+{
+  "platform": "windows",
+  "utc": "2026-10-18T16:36:48.569139Z",
+  "cases": [
+    {
+      "case": "60",
+      "ok": true,
+      "config": {
+        "duration_s": 60,
+        "consumer_delay_ms": 0
+      },
+      "stream": {
+        "cancelled": false,
+        "return_code": 0,
+        "first_pcm_ms": 38,
+        "first_pcm_before_producer_done": true,
+        "first_image_ms": 61,
+        "producer_done_ms": 894,
+        "elapsed_ms": 1047,
+        "audio_samples": 960000,
+        "frames": 60,
+        "max_audio_payload_bytes": 3200,
+        "max_jpeg_buffer_bytes": 14513,
+        "cancel_latency_ms": null,
+        "input_bytes": 32310704,
+        "ffmpeg": "n8.1.2",
+        "timestamp_policy": "audio sample clock, nominal 0.5+n frame selection on zero-start CFR fixture"
+      },
+      "audio": {
+        "samples": 960000,
+        "seconds": 60.0,
+        "rms": 0.08513168924736858,
+        "peak": 0.75506591796875,
+        "vad_chunks": 1875,
+        "vad_positive": 709,
+        "vad_ms": 984.203,
+        "voice_count": 18,
+        "last_voices": [
+          {
+            "start": 33.44,
+            "end": 34.956
+          },
+          {
+            "start": 34.976,
+            "end": 37.196
+          },
+          {
+            "start": 40.192,
+            "end": 41.708
+          },
+          {
+            "start": 41.728,
+            "end": 43.948
+          },
+          {
+            "start": 46.912,
+            "end": 48.428
+          },
+          {
+            "start": 48.448,
+            "end": 50.668
+          },
+          {
+            "start": 53.664,
+            "end": 55.18
+          },
+          {
+            "start": 55.2,
+            "end": 57.42
+          }
+        ],
+        "tail_samples": 0,
+        "dangling_byte": false
+      },
+      "images": {
+        "count": 60,
+        "last": [
+          {
+            "pts": 52.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14489
+          },
+          {
+            "pts": 53.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14300
+          },
+          {
+            "pts": 54.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13909
+          },
+          {
+            "pts": 55.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13831
+          },
+          {
+            "pts": 56.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13837
+          },
+          {
+            "pts": 57.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14055
+          },
+          {
+            "pts": 58.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13828
+          },
+          {
+            "pts": 59.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14074
+          }
+        ]
+      },
+      "first_voice_ms": 66,
+      "max_pending_analysis_calls": 1,
+      "rss_peak_sampled": 191062016,
+      "memory_samples": [
+        {
+          "media_s": 0.0,
+          "wall_ms": 0,
+          "rss": 144011264,
+          "peak_rss": 148406272
+        },
+        {
+          "media_s": 31.471,
+          "wall_ms": 601,
+          "rss": 188628992,
+          "peak_rss": 188628992
+        },
+        {
+          "media_s": 60.0,
+          "wall_ms": 1050,
+          "rss": 162947072,
+          "peak_rss": 192512000
+        }
+      ]
+    },
+    {
+      "case": "600",
+      "ok": true,
+      "config": {
+        "duration_s": 600,
+        "consumer_delay_ms": 0
+      },
+      "stream": {
+        "cancelled": false,
+        "return_code": 0,
+        "first_pcm_ms": 13,
+        "first_pcm_before_producer_done": true,
+        "first_image_ms": 35,
+        "producer_done_ms": 9221,
+        "elapsed_ms": 9368,
+        "audio_samples": 9600000,
+        "frames": 600,
+        "max_audio_payload_bytes": 3200,
+        "max_jpeg_buffer_bytes": 14513,
+        "cancel_latency_ms": null,
+        "input_bytes": 32310704,
+        "ffmpeg": "n8.1.2",
+        "timestamp_policy": "audio sample clock, nominal 0.5+n frame selection on zero-start CFR fixture"
+      },
+      "audio": {
+        "samples": 9600000,
+        "seconds": 600.0,
+        "rms": 0.08465778433951948,
+        "peak": 0.75506591796875,
+        "vad_chunks": 18750,
+        "vad_positive": 7002,
+        "vad_ms": 9153.338,
+        "voice_count": 178,
+        "last_voices": [
+          {
+            "start": 572.736,
+            "end": 574.252
+          },
+          {
+            "start": 574.272,
+            "end": 576.492
+          },
+          {
+            "start": 579.488,
+            "end": 581.0039999999999
+          },
+          {
+            "start": 581.024,
+            "end": 583.2439999999999
+          },
+          {
+            "start": 586.24,
+            "end": 587.756
+          },
+          {
+            "start": 587.776,
+            "end": 589.996
+          },
+          {
+            "start": 592.96,
+            "end": 594.476
+          },
+          {
+            "start": 594.496,
+            "end": 596.7159999999999
+          }
+        ],
+        "tail_samples": 0,
+        "dangling_byte": false
+      },
+      "images": {
+        "count": 600,
+        "last": [
+          {
+            "pts": 592.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13925
+          },
+          {
+            "pts": 593.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13912
+          },
+          {
+            "pts": 594.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13941
+          },
+          {
+            "pts": 595.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13997
+          },
+          {
+            "pts": 596.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13694
+          },
+          {
+            "pts": 597.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14457
+          },
+          {
+            "pts": 598.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14310
+          },
+          {
+            "pts": 599.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14034
+          }
+        ]
+      },
+      "first_voice_ms": 36,
+      "max_pending_analysis_calls": 1,
+      "rss_peak_sampled": 198852608,
+      "memory_samples": [
+        {
+          "media_s": 0.0,
+          "wall_ms": 0,
+          "rss": 162967552,
+          "peak_rss": 192512000
+        },
+        {
+          "media_s": 36.285625,
+          "wall_ms": 602,
+          "rss": 193302528,
+          "peak_rss": 193302528
+        },
+        {
+          "media_s": 61.809625,
+          "wall_ms": 1000,
+          "rss": 197918720,
+          "peak_rss": 197918720
+        },
+        {
+          "media_s": 100.273625,
+          "wall_ms": 1602,
+          "rss": 198250496,
+          "peak_rss": 198250496
+        },
+        {
+          "media_s": 125.697625,
+          "wall_ms": 2002,
+          "rss": 198369280,
+          "peak_rss": 198369280
+        },
+        {
+          "media_s": 151.673625,
+          "wall_ms": 2401,
+          "rss": 198565888,
+          "peak_rss": 198565888
+        },
+        {
+          "media_s": 190.385625,
+          "wall_ms": 3001,
+          "rss": 198602752,
+          "peak_rss": 198602752
+        },
+        {
+          "media_s": 216.309625,
+          "wall_ms": 3402,
+          "rss": 198651904,
+          "peak_rss": 198651904
+        },
+        {
+          "media_s": 242.133625,
+          "wall_ms": 3801,
+          "rss": 198725632,
+          "peak_rss": 198725632
+        },
+        {
+          "media_s": 281.145625,
+          "wall_ms": 4402,
+          "rss": 198705152,
+          "peak_rss": 198729728
+        },
+        {
+          "media_s": 306.721625,
+          "wall_ms": 4801,
+          "rss": 198725632,
+          "peak_rss": 198729728
+        },
+        {
+          "media_s": 332.345625,
+          "wall_ms": 5202,
+          "rss": 198729728,
+          "peak_rss": 198737920
+        },
+        {
+          "media_s": 370.957625,
+          "wall_ms": 5801,
+          "rss": 198742016,
+          "peak_rss": 198742016
+        },
+        {
+          "media_s": 396.833625,
+          "wall_ms": 6201,
+          "rss": 198762496,
+          "peak_rss": 198762496
+        },
+        {
+          "media_s": 422.657625,
+          "wall_ms": 6601,
+          "rss": 198832128,
+          "peak_rss": 198832128
+        },
+        {
+          "media_s": 461.469625,
+          "wall_ms": 7201,
+          "rss": 198848512,
+          "peak_rss": 198848512
+        },
+        {
+          "media_s": 486.945625,
+          "wall_ms": 7601,
+          "rss": 198848512,
+          "peak_rss": 198856704
+        },
+        {
+          "media_s": 512.369625,
+          "wall_ms": 8002,
+          "rss": 198852608,
+          "peak_rss": 198856704
+        },
+        {
+          "media_s": 550.733625,
+          "wall_ms": 8601,
+          "rss": 198844416,
+          "peak_rss": 198856704
+        },
+        {
+          "media_s": 576.357625,
+          "wall_ms": 9002,
+          "rss": 198848512,
+          "peak_rss": 198856704
+        },
+        {
+          "media_s": 600.0,
+          "wall_ms": 9369,
+          "rss": 166023168,
+          "peak_rss": 198856704
+        }
+      ]
+    },
+    {
+      "case": "slow",
+      "ok": true,
+      "config": {
+        "duration_s": 60,
+        "consumer_delay_ms": 25
+      },
+      "stream": {
+        "cancelled": false,
+        "return_code": 0,
+        "first_pcm_ms": 13,
+        "first_pcm_before_producer_done": true,
+        "first_image_ms": 35,
+        "producer_done_ms": 13035,
+        "elapsed_ms": 16968,
+        "audio_samples": 960000,
+        "frames": 60,
+        "max_audio_payload_bytes": 3200,
+        "max_jpeg_buffer_bytes": 14513,
+        "cancel_latency_ms": null,
+        "input_bytes": 32310704,
+        "ffmpeg": "n8.1.2",
+        "timestamp_policy": "audio sample clock, nominal 0.5+n frame selection on zero-start CFR fixture"
+      },
+      "audio": {
+        "samples": 960000,
+        "seconds": 60.0,
+        "rms": 0.08513168924736858,
+        "peak": 0.75506591796875,
+        "vad_chunks": 1875,
+        "vad_positive": 709,
+        "vad_ms": 1176.621,
+        "voice_count": 18,
+        "last_voices": [
+          {
+            "start": 33.44,
+            "end": 34.956
+          },
+          {
+            "start": 34.976,
+            "end": 37.196
+          },
+          {
+            "start": 40.192,
+            "end": 41.708
+          },
+          {
+            "start": 41.728,
+            "end": 43.948
+          },
+          {
+            "start": 46.912,
+            "end": 48.428
+          },
+          {
+            "start": 48.448,
+            "end": 50.668
+          },
+          {
+            "start": 53.664,
+            "end": 55.18
+          },
+          {
+            "start": 55.2,
+            "end": 57.42
+          }
+        ],
+        "tail_samples": 0,
+        "dangling_byte": false
+      },
+      "images": {
+        "count": 60,
+        "last": [
+          {
+            "pts": 52.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14489
+          },
+          {
+            "pts": 53.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14300
+          },
+          {
+            "pts": 54.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13909
+          },
+          {
+            "pts": 55.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13831
+          },
+          {
+            "pts": 56.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13837
+          },
+          {
+            "pts": 57.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14055
+          },
+          {
+            "pts": 58.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13828
+          },
+          {
+            "pts": 59.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14074
+          }
+        ]
+      },
+      "first_voice_ms": 374,
+      "max_pending_analysis_calls": 1,
+      "rss_peak_sampled": 198565888,
+      "memory_samples": [
+        {
+          "media_s": 0.0,
+          "wall_ms": 0,
+          "rss": 166023168,
+          "peak_rss": 198856704
+        },
+        {
+          "media_s": 30.4243125,
+          "wall_ms": 8600,
+          "rss": 196145152,
+          "peak_rss": 198856704
+        },
+        {
+          "media_s": 60.0,
+          "wall_ms": 16969,
+          "rss": 169459712,
+          "peak_rss": 198975488
+        }
+      ]
+    },
+    {
+      "case": "cancel",
+      "ok": true,
+      "config": {
+        "duration_s": 600,
+        "consumer_delay_ms": 0
+      },
+      "stream": {
+        "cancelled": true,
+        "return_code": 255,
+        "first_pcm_ms": 22,
+        "first_pcm_before_producer_done": true,
+        "first_image_ms": 44,
+        "producer_done_ms": 110,
+        "elapsed_ms": 110,
+        "audio_samples": 81114,
+        "frames": 6,
+        "max_audio_payload_bytes": 3200,
+        "max_jpeg_buffer_bytes": 14241,
+        "cancel_latency_ms": 4,
+        "input_bytes": 32310704,
+        "ffmpeg": "n8.1.2",
+        "timestamp_policy": "audio sample clock, nominal 0.5+n frame selection on zero-start CFR fixture"
+      },
+      "audio": {
+        "samples": 81114,
+        "seconds": 5.069625,
+        "rms": 0.09762435406540325,
+        "peak": 0.75506591796875,
+        "vad_chunks": 158,
+        "vad_positive": 79,
+        "vad_ms": 81.047,
+        "voice_count": 2,
+        "last_voices": [
+          {
+            "start": 0.0,
+            "end": 1.26
+          },
+          {
+            "start": 1.28,
+            "end": 3.5
+          }
+        ],
+        "tail_samples": 218,
+        "dangling_byte": false
+      },
+      "images": {
+        "count": 6,
+        "last": [
+          {
+            "pts": 0.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13968
+          },
+          {
+            "pts": 1.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13790
+          },
+          {
+            "pts": 2.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13918
+          },
+          {
+            "pts": 3.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14063
+          },
+          {
+            "pts": 4.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13785
+          },
+          {
+            "pts": 5.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14241
+          }
+        ]
+      },
+      "first_voice_ms": 45,
+      "max_pending_analysis_calls": 1,
+      "rss_peak_sampled": 170070016,
+      "memory_samples": [
+        {
+          "media_s": 0.0,
+          "wall_ms": 0,
+          "rss": 169459712,
+          "peak_rss": 198975488
+        }
+      ]
+    },
+    {
+      "case": "restart",
+      "ok": true,
+      "config": {
+        "duration_s": 6,
+        "consumer_delay_ms": 0
+      },
+      "stream": {
+        "cancelled": false,
+        "return_code": 0,
+        "first_pcm_ms": 13,
+        "first_pcm_before_producer_done": true,
+        "first_image_ms": 34,
+        "producer_done_ms": 89,
+        "elapsed_ms": 107,
+        "audio_samples": 96000,
+        "frames": 6,
+        "max_audio_payload_bytes": 3200,
+        "max_jpeg_buffer_bytes": 14241,
+        "cancel_latency_ms": null,
+        "input_bytes": 32310704,
+        "ffmpeg": "n8.1.2",
+        "timestamp_policy": "audio sample clock, nominal 0.5+n frame selection on zero-start CFR fixture"
+      },
+      "audio": {
+        "samples": 96000,
+        "seconds": 6.0,
+        "rms": 0.08973677674729592,
+        "peak": 0.75506591796875,
+        "vad_chunks": 187,
+        "vad_positive": 79,
+        "vad_ms": 91.605,
+        "voice_count": 2,
+        "last_voices": [
+          {
+            "start": 0.0,
+            "end": 1.26
+          },
+          {
+            "start": 1.28,
+            "end": 3.5
+          }
+        ],
+        "tail_samples": 256,
+        "dangling_byte": false
+      },
+      "images": {
+        "count": 6,
+        "last": [
+          {
+            "pts": 0.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13968
+          },
+          {
+            "pts": 1.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13790
+          },
+          {
+            "pts": 2.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13918
+          },
+          {
+            "pts": 3.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14063
+          },
+          {
+            "pts": 4.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13785
+          },
+          {
+            "pts": 5.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 14241
+          }
+        ]
+      },
+      "first_voice_ms": 35,
+      "max_pending_analysis_calls": 1,
+      "rss_peak_sampled": 170070016,
+      "memory_samples": [
+        {
+          "media_s": 0.0,
+          "wall_ms": 0,
+          "rss": 170070016,
+          "peak_rss": 198975488
+        }
+      ]
+    }
+  ],
+  "model_ready_ms": 125,
+  "ok": true,
+  "elapsed_ms": 27737
+}

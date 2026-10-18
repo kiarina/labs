@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-19",
+  "baseline_lab": "2026/10/19/flutter-ffmpeg-media-input",
+  "baseline_commit": "ebb4abb",
+  "flutter": "3.47.2",
+  "dart": "3.13.2",
+  "ffmpeg_kit_flutter_new_min": "3.6.7",
+  "native_ffmpeg": "n8.1.2",
+  "wasm_ffmpeg": "8.1.2",
+  "emscripten": "6.0.12",
+  "onnx_flutter": "1.9.0",
+  "onnx_web": "1.30.0",
+  "fixture_preparation_ffmpeg": "9.0.2",
+  "input_sha256": "e5a96dbb5d648b119413b40da9475e2d406954c26e662add8742afa694856887",
+  "input_bytes": 32310704,
+  "input_duration_s": 600.10734,
+  "input_audio_duration_s": 600.007333,
+  "input_recipe": "Repeat the pinned shared 6.708 s H.264/AAC clip using -stream_loop -1 -t 600 -c copy -movflags +faststart. This is a repeated stress fixture, not 10 minutes of independent content.",
+  "source_asset_sha256": "20e1c86950574d95ad72ed2d324407aa7e48d6013a5d556cdd9517fb71e412ff",
+  "vad_sha256": "1a153a22f4509e292a94e67d6f9b85e8deb25b4988682b7e174c65279d8788e3",
+  "ffmpeg_source_sha256": "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c",
+  "wasm_bytes": 2006049,
+  "environments": {
+    "macos": "Apple M1 Max 64 GB, macOS 27.0.1, release",
+    "windows": "Core i9-12900K 64 GB, Windows 11 x64, release",
+    "android": "Pixel 6 Android 17 API 37, profile",
+    "ios": "iPad Air 4 iPadOS 27.0.1, release development signing",
+    "web": "Chrome 155 headless on the M1 Max, release, single-thread decoder and single-thread ONNX"
+  },
+  "measurement": "One retained final suite per platform; additional three consecutive ten-minute passes on macOS. Memory sampled every 200 ms and recorded around 30 media-second intervals; not a confidence interval or an hours-long soak test."
+}

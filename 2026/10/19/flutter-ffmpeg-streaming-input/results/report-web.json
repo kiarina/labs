@@ -1,0 +1,716 @@
+{
+  "platform": "web",
+  "utc": "2026-10-18T16:34:20.883Z",
+  "cases": [
+    {
+      "case": "60",
+      "ok": true,
+      "config": {
+        "duration_s": 60,
+        "consumer_delay_ms": 0
+      },
+      "stream": {
+        "done": true,
+        "events": 2873,
+        "first_output_read_bytes": 463371,
+        "total_input_read_bytes": 3641867,
+        "max_payload_bytes": 13371,
+        "wasm_heap_bytes": 19464192,
+        "input_bytes": 32310704,
+        "elapsed_ms": 3038.52499999851,
+        "license": "LGPL version 2.1 or later",
+        "cancelled": false,
+        "first_pcm_ms": 74.39000000059605,
+        "first_image_ms": 114.19999999552965,
+        "audio_samples": 960000,
+        "frames": 60,
+        "max_pending_analysis_calls": 1
+      },
+      "audio": {
+        "samples": 960000,
+        "seconds": 60,
+        "rms": 0.08513168984469235,
+        "peak": 0.75506591796875,
+        "vad_chunks": 1875,
+        "vad_positive": 709,
+        "vad_ms": 713.617,
+        "voice_count": 18,
+        "last_voices": [
+          {
+            "start": 33.44,
+            "end": 34.956
+          },
+          {
+            "start": 34.976,
+            "end": 37.196
+          },
+          {
+            "start": 40.192,
+            "end": 41.708
+          },
+          {
+            "start": 41.728,
+            "end": 43.948
+          },
+          {
+            "start": 46.912,
+            "end": 48.428
+          },
+          {
+            "start": 48.448,
+            "end": 50.668
+          },
+          {
+            "start": 53.664,
+            "end": 55.18
+          },
+          {
+            "start": 55.2,
+            "end": 57.42
+          }
+        ],
+        "tail_samples": 0,
+        "dangling_byte": false
+      },
+      "images": {
+        "count": 60,
+        "last": [
+          {
+            "pts": 52.524332682291664,
+            "width": 256,
+            "height": 256,
+            "bytes": 13367
+          },
+          {
+            "pts": 53.524332682291664,
+            "width": 256,
+            "height": 256,
+            "bytes": 13178
+          },
+          {
+            "pts": 54.50398763020833,
+            "width": 256,
+            "height": 256,
+            "bytes": 12836
+          },
+          {
+            "pts": 55.50398763020833,
+            "width": 256,
+            "height": 256,
+            "bytes": 12824
+          },
+          {
+            "pts": 56.50398763020833,
+            "width": 256,
+            "height": 256,
+            "bytes": 12788
+          },
+          {
+            "pts": 57.50398763020833,
+            "width": 256,
+            "height": 256,
+            "bytes": 12977
+          },
+          {
+            "pts": 58.50398763020833,
+            "width": 256,
+            "height": 256,
+            "bytes": 12762
+          },
+          {
+            "pts": 59.50398763020833,
+            "width": 256,
+            "height": 256,
+            "bytes": 12994
+          }
+        ]
+      },
+      "first_voice_ms": 156,
+      "max_pending_analysis_calls": 1,
+      "rss_peak_sampled": null,
+      "memory_samples": [
+        {
+          "media_s": 0,
+          "wall_ms": 0,
+          "js_heap_used": 20569826
+        },
+        {
+          "media_s": 30.7403125,
+          "wall_ms": 1600,
+          "js_heap_used": 21644418
+        },
+        {
+          "media_s": 60,
+          "wall_ms": 3039,
+          "js_heap_used": 27307162
+        }
+      ]
+    },
+    {
+      "case": "600",
+      "ok": true,
+      "config": {
+        "duration_s": 600,
+        "consumer_delay_ms": 0
+      },
+      "stream": {
+        "done": true,
+        "events": 28726,
+        "first_output_read_bytes": 463371,
+        "total_input_read_bytes": 32310704,
+        "max_payload_bytes": 13371,
+        "wasm_heap_bytes": 19464192,
+        "input_bytes": 32310704,
+        "elapsed_ms": 26902.554999999702,
+        "license": "LGPL version 2.1 or later",
+        "cancelled": false,
+        "first_pcm_ms": 60.32500000298023,
+        "first_image_ms": 95.17499999701977,
+        "audio_samples": 9600000,
+        "frames": 600,
+        "max_pending_analysis_calls": 1
+      },
+      "audio": {
+        "samples": 9600000,
+        "seconds": 600,
+        "rms": 0.08465778495846706,
+        "peak": 0.75506591796875,
+        "vad_chunks": 18750,
+        "vad_positive": 7002,
+        "vad_ms": 5930.491,
+        "voice_count": 178,
+        "last_voices": [
+          {
+            "start": 572.736,
+            "end": 574.252
+          },
+          {
+            "start": 574.272,
+            "end": 576.492
+          },
+          {
+            "start": 579.488,
+            "end": 581.0039999999999
+          },
+          {
+            "start": 581.024,
+            "end": 583.2439999999999
+          },
+          {
+            "start": 586.24,
+            "end": 587.756
+          },
+          {
+            "start": 587.776,
+            "end": 589.996
+          },
+          {
+            "start": 592.96,
+            "end": 594.476
+          },
+          {
+            "start": 594.496,
+            "end": 596.7159999999999
+          }
+        ],
+        "tail_samples": 0,
+        "dangling_byte": false
+      },
+      "images": {
+        "count": 600,
+        "last": [
+          {
+            "pts": 592.502685546875,
+            "width": 256,
+            "height": 256,
+            "bytes": 12865
+          },
+          {
+            "pts": 593.502685546875,
+            "width": 256,
+            "height": 256,
+            "bytes": 12913
+          },
+          {
+            "pts": 594.502685546875,
+            "width": 256,
+            "height": 256,
+            "bytes": 12898
+          },
+          {
+            "pts": 595.502685546875,
+            "width": 256,
+            "height": 256,
+            "bytes": 12877
+          },
+          {
+            "pts": 596.502685546875,
+            "width": 256,
+            "height": 256,
+            "bytes": 12696
+          },
+          {
+            "pts": 597.502685546875,
+            "width": 256,
+            "height": 256,
+            "bytes": 13347
+          },
+          {
+            "pts": 598.502685546875,
+            "width": 256,
+            "height": 256,
+            "bytes": 13158
+          },
+          {
+            "pts": 599.5240071614583,
+            "width": 256,
+            "height": 256,
+            "bytes": 12944
+          }
+        ]
+      },
+      "first_voice_ms": 135,
+      "max_pending_analysis_calls": 1,
+      "rss_peak_sampled": null,
+      "memory_samples": [
+        {
+          "media_s": 0,
+          "wall_ms": 0,
+          "js_heap_used": 27243346
+        },
+        {
+          "media_s": 31.8923125,
+          "wall_ms": 1600,
+          "js_heap_used": 28792216
+        },
+        {
+          "media_s": 62.079,
+          "wall_ms": 3000,
+          "js_heap_used": 26698607
+        },
+        {
+          "media_s": 91.689625,
+          "wall_ms": 4400,
+          "js_heap_used": 33288501
+        },
+        {
+          "media_s": 122.6443125,
+          "wall_ms": 5800,
+          "js_heap_used": 32260999
+        },
+        {
+          "media_s": 154.1963125,
+          "wall_ms": 7200,
+          "js_heap_used": 33060108
+        },
+        {
+          "media_s": 182.911,
+          "wall_ms": 8400,
+          "js_heap_used": 30036870
+        },
+        {
+          "media_s": 210.431,
+          "wall_ms": 9600,
+          "js_heap_used": 34788362
+        },
+        {
+          "media_s": 242.0683125,
+          "wall_ms": 11000,
+          "js_heap_used": 35563712
+        },
+        {
+          "media_s": 274.217625,
+          "wall_ms": 12400,
+          "js_heap_used": 36778076
+        },
+        {
+          "media_s": 302.527,
+          "wall_ms": 13600,
+          "js_heap_used": 42234779
+        },
+        {
+          "media_s": 331.071,
+          "wall_ms": 14800,
+          "js_heap_used": 39078022
+        },
+        {
+          "media_s": 361.321625,
+          "wall_ms": 16201,
+          "js_heap_used": 47546828
+        },
+        {
+          "media_s": 392.511,
+          "wall_ms": 17600,
+          "js_heap_used": 47083660
+        },
+        {
+          "media_s": 423.8283125,
+          "wall_ms": 19000,
+          "js_heap_used": 47063118
+        },
+        {
+          "media_s": 450.409625,
+          "wall_ms": 20200,
+          "js_heap_used": 26905850
+        },
+        {
+          "media_s": 481.4923125,
+          "wall_ms": 21601,
+          "js_heap_used": 27087416
+        },
+        {
+          "media_s": 513.6843125,
+          "wall_ms": 23000,
+          "js_heap_used": 23313952
+        },
+        {
+          "media_s": 540.351,
+          "wall_ms": 24200,
+          "js_heap_used": 26936633
+        },
+        {
+          "media_s": 571.6043125,
+          "wall_ms": 25600,
+          "js_heap_used": 26860854
+        },
+        {
+          "media_s": 600,
+          "wall_ms": 26902,
+          "js_heap_used": 28261217
+        }
+      ]
+    },
+    {
+      "case": "slow",
+      "ok": true,
+      "config": {
+        "duration_s": 60,
+        "consumer_delay_ms": 25
+      },
+      "stream": {
+        "done": true,
+        "events": 2873,
+        "first_output_read_bytes": 463371,
+        "total_input_read_bytes": 3641867,
+        "max_payload_bytes": 13371,
+        "wasm_heap_bytes": 19464192,
+        "input_bytes": 32310704,
+        "elapsed_ms": 19093.960000000894,
+        "license": "LGPL version 2.1 or later",
+        "cancelled": false,
+        "first_pcm_ms": 60.16499999910593,
+        "first_image_ms": 229.04999999701977,
+        "audio_samples": 960000,
+        "frames": 60,
+        "max_pending_analysis_calls": 1
+      },
+      "audio": {
+        "samples": 960000,
+        "seconds": 60,
+        "rms": 0.08513168984469235,
+        "peak": 0.75506591796875,
+        "vad_chunks": 1875,
+        "vad_positive": 709,
+        "vad_ms": 830.429,
+        "voice_count": 18,
+        "last_voices": [
+          {
+            "start": 33.44,
+            "end": 34.956
+          },
+          {
+            "start": 34.976,
+            "end": 37.196
+          },
+          {
+            "start": 40.192,
+            "end": 41.708
+          },
+          {
+            "start": 41.728,
+            "end": 43.948
+          },
+          {
+            "start": 46.912,
+            "end": 48.428
+          },
+          {
+            "start": 48.448,
+            "end": 50.668
+          },
+          {
+            "start": 53.664,
+            "end": 55.18
+          },
+          {
+            "start": 55.2,
+            "end": 57.42
+          }
+        ],
+        "tail_samples": 0,
+        "dangling_byte": false
+      },
+      "images": {
+        "count": 60,
+        "last": [
+          {
+            "pts": 52.524332682291664,
+            "width": 256,
+            "height": 256,
+            "bytes": 13367
+          },
+          {
+            "pts": 53.524332682291664,
+            "width": 256,
+            "height": 256,
+            "bytes": 13178
+          },
+          {
+            "pts": 54.50398763020833,
+            "width": 256,
+            "height": 256,
+            "bytes": 12836
+          },
+          {
+            "pts": 55.50398763020833,
+            "width": 256,
+            "height": 256,
+            "bytes": 12824
+          },
+          {
+            "pts": 56.50398763020833,
+            "width": 256,
+            "height": 256,
+            "bytes": 12788
+          },
+          {
+            "pts": 57.50398763020833,
+            "width": 256,
+            "height": 256,
+            "bytes": 12977
+          },
+          {
+            "pts": 58.50398763020833,
+            "width": 256,
+            "height": 256,
+            "bytes": 12762
+          },
+          {
+            "pts": 59.50398763020833,
+            "width": 256,
+            "height": 256,
+            "bytes": 12994
+          }
+        ]
+      },
+      "first_voice_ms": 470,
+      "max_pending_analysis_calls": 1,
+      "rss_peak_sampled": null,
+      "memory_samples": [
+        {
+          "media_s": 0,
+          "wall_ms": 0,
+          "js_heap_used": 28279345
+        },
+        {
+          "media_s": 30.5483125,
+          "wall_ms": 9801,
+          "js_heap_used": 17917375
+        },
+        {
+          "media_s": 60,
+          "wall_ms": 19094,
+          "js_heap_used": 20755916
+        }
+      ]
+    },
+    {
+      "case": "cancel",
+      "ok": true,
+      "config": {
+        "duration_s": 600,
+        "consumer_delay_ms": 0
+      },
+      "stream": {
+        "cancelled": true,
+        "cancel_latency_ms": 0.01000000536441803,
+        "first_pcm_ms": 55.95000000298023,
+        "first_image_ms": 89.20000000298023,
+        "audio_samples": 80197,
+        "frames": 5,
+        "max_pending_analysis_calls": 1,
+        "max_payload_bytes": 13001,
+        "elapsed_ms": 286.5600000023842,
+        "input_bytes": 32310704
+      },
+      "audio": {
+        "samples": 80197,
+        "seconds": 5.0123125,
+        "rms": 0.09818090392986929,
+        "peak": 0.75506591796875,
+        "vad_chunks": 156,
+        "vad_positive": 79,
+        "vad_ms": 46.718,
+        "voice_count": 2,
+        "last_voices": [
+          {
+            "start": 0,
+            "end": 1.26
+          },
+          {
+            "start": 1.28,
+            "end": 3.5
+          }
+        ],
+        "tail_samples": 325,
+        "dangling_byte": false
+      },
+      "images": {
+        "count": 5,
+        "last": [
+          {
+            "pts": 0.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 12948
+          },
+          {
+            "pts": 1.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 12729
+          },
+          {
+            "pts": 2.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 12841
+          },
+          {
+            "pts": 3.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13001
+          },
+          {
+            "pts": 4.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 12723
+          }
+        ]
+      },
+      "first_voice_ms": 124,
+      "max_pending_analysis_calls": 1,
+      "rss_peak_sampled": null,
+      "memory_samples": [
+        {
+          "media_s": 0,
+          "wall_ms": 0,
+          "js_heap_used": 20768308
+        }
+      ]
+    },
+    {
+      "case": "restart",
+      "ok": true,
+      "config": {
+        "duration_s": 6,
+        "consumer_delay_ms": 0
+      },
+      "stream": {
+        "done": true,
+        "events": 288,
+        "first_output_read_bytes": 463371,
+        "total_input_read_bytes": 791051,
+        "max_payload_bytes": 13136,
+        "wasm_heap_bytes": 19464192,
+        "input_bytes": 32310704,
+        "elapsed_ms": 334.429999999702,
+        "license": "LGPL version 2.1 or later",
+        "cancelled": false,
+        "first_pcm_ms": 59.814999997615814,
+        "first_image_ms": 91.90999999642372,
+        "audio_samples": 96000,
+        "frames": 6,
+        "max_pending_analysis_calls": 1
+      },
+      "audio": {
+        "samples": 96000,
+        "seconds": 6,
+        "rms": 0.08973677776491792,
+        "peak": 0.75506591796875,
+        "vad_chunks": 187,
+        "vad_positive": 79,
+        "vad_ms": 55.241,
+        "voice_count": 2,
+        "last_voices": [
+          {
+            "start": 0,
+            "end": 1.26
+          },
+          {
+            "start": 1.28,
+            "end": 3.5
+          }
+        ],
+        "tail_samples": 256,
+        "dangling_byte": false
+      },
+      "images": {
+        "count": 6,
+        "last": [
+          {
+            "pts": 0.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 12948
+          },
+          {
+            "pts": 1.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 12729
+          },
+          {
+            "pts": 2.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 12841
+          },
+          {
+            "pts": 3.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13001
+          },
+          {
+            "pts": 4.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 12723
+          },
+          {
+            "pts": 5.5,
+            "width": 256,
+            "height": 256,
+            "bytes": 13136
+          }
+        ]
+      },
+      "first_voice_ms": 126,
+      "max_pending_analysis_calls": 1,
+      "rss_peak_sampled": null,
+      "memory_samples": [
+        {
+          "media_s": 0,
+          "wall_ms": 0,
+          "js_heap_used": 20819516
+        }
+      ]
+    }
+  ],
+  "model_ready_ms": 260,
+  "ok": true,
+  "elapsed_ms": 49921
+}
