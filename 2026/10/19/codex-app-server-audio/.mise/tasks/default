@@ -2,4 +2,6 @@
 #MISE description="Validate retained results without network or paid inference"
 set -euo pipefail
 cd "$(dirname "$0")/../.."
+node tools/test_meter.mjs
+python3 tools/validate_real_mic.py
 python3 tools/validate.py

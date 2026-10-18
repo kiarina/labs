@@ -2,7 +2,7 @@
 
 **ChatGPT ログインだけで WebRTC の音声送信・文字起こし・応答音声の受信まで確認できた。CLI 0.163.0 では、音声セッションを作る接続先を `https://chatgpt.com/backend-api/wham` に設定し、v3 / audio / WebRTC を使う。Platform API キーと中継プロキシは不要だった。** 通常の Codex turn への音声入力や、単独の transcription モードとは別の経路である。今回のアカウントでの疎通を示すもので、全プラン・料金・製品配布条件を保証しない。
 
-**文字起こしだけ取り出す使い方も、応答を禁止する指示で実測できた。** 2回の入力音声の transcript delta を受信し、受信音声は全サンプル0、assistant transcript なし。これは指示に従った音声会話セッションであり、音声生成を必ず無効にする専用 ASR モードではない。詳細は「音声応答なしで文字起こしだけ」の節を参照。
+**文字起こしだけ取り出す使い方も、応答を禁止する指示で実測できた。** 共有素材2回と実マイク5分の試験で transcript delta を受信し、受信音声は全サンプル0、assistant transcript なし。これは指示に従った音声会話セッションであり、音声生成を必ず無効にする専用 ASR モードではない。詳細は「音声応答なしで文字起こしだけ」の節を参照。
 
 2026-10-19、macOS 27.0.1 / arm64 で検証。既存 CLI 0.159.3 と、lab 内だけに入れた最新安定版 0.163.0 を比較した。WebRTC の追加検証も同じ0.163.0で実施し、デスクトップアプリの接続先を読み取りで照合した。グローバル CLI、ログイン、製品コード、ユーザーの設定ファイルは変更していない。録音は行わず、共有テスト素材だけを送信した。
 
@@ -139,6 +139,45 @@ This session is only for listening to prerecorded fictional speech so its INPUT 
 
 修正版は標準ライブラリの `array` でPCMを直接読み、計測エラーを記録する。通常の OK 発声を検出できる対照試験と、無発声の聞き取り試験をそれぞれ1回やり直した。最終両試験の計測エラーは0件。結果は `results/transcript-only-{spoken-control,listen-only,text-modality}.json`、実行コードは `tools/transcript_only.py`。無効な初回の音量値を成功の根拠にしていない。
 
+## 実マイクで5分間：連続する無発声文字起こし
+
+**Mac の内蔵マイクで本人が話す300秒の試験でも、最後まで user の文字起こし差分を受信し、assistant text と非0の応答音声は0だった。** 本人による表示内容の確認も「おおむね話した内容に合っていた」。これは定性的な確認であり、正解文を用いた文字誤り率の測定ではない。
+
+| 計測項目 | 結果 |
+| --- | --- |
+| 実時間 | 300.016秒、ブラウザー側の5分タイマーで自動停止 |
+| マイク | MacBook Pro 内蔵マイクを許可ダイアログで明示選択 |
+| 文字起こし | 478差分、1,097文字、最後の通知は開始300.008秒後 |
+| assistant transcript / 通常 turn / エラー | すべて0 |
+| 受信音声 | 計測した28,636,160サンプルすべて0、peak / RMS 0 |
+| 入力の音量が閾値以上だった時間 | 190.256秒（RMS ≥0.005。発話VADではない） |
+| 接続 | WebRTC / data channel / 音量計測が終盤まで稼働、受信パケット損失0 |
+| 内容の保存 | 音声・会話文は検証ファイルに保存せず、画面内の会話文も終了時に消去 |
+
+| 経過区間 | 文字起こし差分数 |
+| --- | ---: |
+| 0–1分 | 91 |
+| 1–2分 | 115 |
+| 2–3分 | 138 |
+| 3–4分 | 42 |
+| 4–5分・終了処理 | 92 |
+
+最後の区間には終了時の8 ms分も含む。通知時刻はローカルで受信した相対時刻であり、発話の正確なタイムスタンプや認識遅延ではない。途中の通知の間は、本人の発話の間や処理待ちと区別できないので、通知が常に等間隔に届くとは評価しない。全5つの1分区間と終盤に入力差分が届いたことを継続の根拠にする。
+
+### 構成・操作
+
+`mise run real-mic` で loopback の計測ページを起動し、Chrome で表示する。①マイクを準備し、許可の選択肢で内蔵マイクと今回のみの許可を選ぶ。②開始すると既存 ChatGPT ログインの v3 / wham セッションへ接続し、接続後に300秒のタイマーが始まる。Platform API キーは child process の環境から除く。マイク切替や音声ファイルによる代用は行わない。
+
+ブラウザーの getUserMedia と WebRTC メディアトラックで送り、AudioWorklet で入力と受信音声を計測する。受信音声は **音量計測の後** にローカルの0ゲインへ接続するため、実際に音声が生成された場合は計測に現れる。再生しないことを無発声の根拠にはしない。PCM は float、AudioContext は48 kHz、今回の Worklet 入力集計は2chだった。sample 数は Worklet の全チャネルの値の数である。
+
+音量は0.5秒周期で集計し、ブラウザーから2秒周期で数値だけを送る。結果の browser フィールドは最後の計測時点の状態であり、終了後にマイクや接続を開いたままという意味ではない。終了時にはマイクトラック・peer・AudioContext を閉じ、画面の文字起こしを消し、Codex の realtime / process も停止する。
+
+事前に定めた基準は `results/real-microphone-criteria.json`。300秒近くの完了、実マイクの入力、複数の1分区間と最後の1分の transcript、無発声、接続・計測の稼働を評価し、[検算結果](results/real-microphone-validation.json) は全条件を通過した。Worklet の数値計測は、無音・既知の非0サンプル・reset をオフラインでテストしてから使った。
+
+生データは [数値だけの連続計測](results/real-microphone-listen-only.json)、[1分区間の集計](results/real-microphone-minute-summary.json)、[本人の定性的な確認](results/real-microphone-owner-feedback.json)。結果には会話文、音声、OAuth 値、デバイスID、SDP、IPを含めない。文字起こしは live DOM と上限のあるプロセス内バッファにだけ置き、ツールで検査したのも数値だけのエンドポイントである。
+
+今回も `/transcript/done` は0件。差分を連結する使い方の検証であり、発話ごとの最終確定は別途必要。1人・1台・5分の実証を、複数話者・一昼夜・任意の入力での無発声保証へ広げない。指示依存であるという前節の制約は変わらない。
+
 ## 認証・費用・未確認範囲
 
 - ChatGPT ログインだけの WebSocket は両版で失敗。既存の Platform API キーをプロセスへ渡すと、0.163.0 の会話モードは動作した。API キーの保存・login/start・ログアウトは実行していない。
@@ -146,7 +185,7 @@ This session is only for listening to prerecorded fictional speech so its INPUT 
 - Platform の短い疎通には gpt-realtime-mini と、内部設定の gpt-4o-mini-transcribe を使った。高単価の Codex モデルは呼んでいない。通常 turn の捕捉はローカル模擬サーバーだけで完結し、誤って委譲されても実モデルへ接続しないようにした。
 - この試験は料金明細・使用量の請求内訳を測らない。「Codex 契約内で別料金なし」「汎用 ASR として無制限に使える」という結論は出せない。
 - 公式 app-server 文書はローカル / OSS と商用・ホスト型サービスの認証の扱いを区別している。接続成功は配布・商用利用の許諾の確認ではない。製品採用時の条件は同文書と Sign in with ChatGPT を確認する。
-- Mac 以外の OS、実マイク、マイク切替、音声出力の再生、WebRTC の長時間運転、委譲往復、認識精度と長時間運転は未検証。
+- 実マイクは Mac の内蔵マイクで5分確認。Mac 以外の OS、マイク切替、音声出力の再生、5分を超える連続運転、委譲往復、正解文と比較する認識精度は未検証。
 
 ## ChatGPT ログインだけの WebRTC：成功条件と原因
 
@@ -200,6 +239,7 @@ mise run chatgpt-webrtc                  # wham への直接接続で共有音�
 TRANSCRIPT_ONLY_MODE=listen-only mise run transcript-only # 応答禁止、2回入力
 TRANSCRIPT_ONLY_MODE=spoken-control mise run transcript-only # 音量計測の発声対照
 TRANSCRIPT_ONLY_MODE=text-modality mise run transcript-only # v3 text の拒否条件
+mise run real-mic                     # 実マイク用ページ。本人が開始・発話する
 ```
 
 実サービスの結果は確率的であり将来のサービス更新でも変わるため、保存結果の検算と再接続を分けた。最初の WebRTC 試験は無音の合成トラック、追加の直接接続試験は共有 PCM 素材で、マイク権限は使わない。収集物にはプロトコル設定、通知、共有素材の文字起こし、音声の長さとハッシュだけを残す。API キー、OAuth トークン、SDP、IP、音声データ、全システムプロンプトは Git に入れない。

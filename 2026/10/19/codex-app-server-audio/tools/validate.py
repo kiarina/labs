@@ -55,6 +55,8 @@ for mode in ['spoken-control','listen-only']:
   assert 'OK'in texts['assistant']and r['audio_stats']['frames_rms_ge_100']>0
 for mode in ['spoken-control','listen-only']:assert load(f'transcript-only-initial-instrument-{mode}.json')['instrument_valid']is False
 checks.append('listen-only prompt yields two input transcripts and zero nonzero PCM samples; spoken control validates meter; v3 text rejected')
+assert load('real-microphone-validation.json')['ok']is True
+checks.append('five-minute real microphone metrics pass the separate continuity and silence validator')
 for p in (root/'results').glob('*.json'):
  s=p.read_text();assert '/Users/'not in s and 'sk-'not in s and 'Bearer 'not in s,p
 print(json.dumps({'ok':True,'checks':checks,'live_runs_repeated':False},indent=2))
