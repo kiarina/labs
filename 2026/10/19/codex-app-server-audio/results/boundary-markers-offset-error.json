@@ -1,0 +1,1110 @@
+{
+  "mode": "markers",
+  "boundaries": [
+    {
+      "id": "boundary-1",
+      "source_end": 3.7915,
+      "at": 7.662,
+      "speaker": 0
+    },
+    {
+      "id": "boundary-2",
+      "source_end": 6.6268125,
+      "at": 10.503,
+      "speaker": 1
+    },
+    {
+      "id": "boundary-3",
+      "source_end": 9.2244375,
+      "at": 13.105,
+      "speaker": 0
+    },
+    {
+      "id": "boundary-4",
+      "source_end": 11.584375,
+      "at": 15.464,
+      "speaker": 1
+    },
+    {
+      "id": "boundary-5",
+      "source_end": 13.7405625,
+      "at": 17.624,
+      "speaker": 0
+    },
+    {
+      "id": "boundary-6",
+      "source_end": 16.171,
+      "at": 18.043,
+      "speaker": 1
+    }
+  ],
+  "commands": [
+    {
+      "at": 2.661,
+      "command": {
+        "type": "input_audio_buffer.commit",
+        "event_id": "probe-1"
+      }
+    },
+    {
+      "at": 3.263,
+      "command": {
+        "type": "session.input_audio.commit",
+        "event_id": "probe-2"
+      }
+    },
+    {
+      "at": 7.662,
+      "command": {
+        "type": "session.context.append",
+        "event_id": "boundary-1",
+        "channel": "commentary",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "BOUNDARY boundary-1: source audio through 3.7915 seconds is complete. The next audio is a different speaker. After all input transcript through this boundary has been emitted, delegate BOUNDARY_COMPLETE boundary-1. Remain silent."
+          }
+        ]
+      }
+    },
+    {
+      "at": 10.503,
+      "command": {
+        "type": "session.context.append",
+        "event_id": "boundary-2",
+        "channel": "commentary",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "BOUNDARY boundary-2: source audio through 6.6268 seconds is complete. The next audio is a different speaker. After all input transcript through this boundary has been emitted, delegate BOUNDARY_COMPLETE boundary-2. Remain silent."
+          }
+        ]
+      }
+    },
+    {
+      "at": 13.105,
+      "command": {
+        "type": "session.context.append",
+        "event_id": "boundary-3",
+        "channel": "commentary",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "BOUNDARY boundary-3: source audio through 9.2244 seconds is complete. The next audio is a different speaker. After all input transcript through this boundary has been emitted, delegate BOUNDARY_COMPLETE boundary-3. Remain silent."
+          }
+        ]
+      }
+    },
+    {
+      "at": 15.464,
+      "command": {
+        "type": "session.context.append",
+        "event_id": "boundary-4",
+        "channel": "commentary",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "BOUNDARY boundary-4: source audio through 11.5844 seconds is complete. The next audio is a different speaker. After all input transcript through this boundary has been emitted, delegate BOUNDARY_COMPLETE boundary-4. Remain silent."
+          }
+        ]
+      }
+    },
+    {
+      "at": 17.624,
+      "command": {
+        "type": "session.context.append",
+        "event_id": "boundary-5",
+        "channel": "commentary",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "BOUNDARY boundary-5: source audio through 13.7406 seconds is complete. The next audio is a different speaker. After all input transcript through this boundary has been emitted, delegate BOUNDARY_COMPLETE boundary-5. Remain silent."
+          }
+        ]
+      }
+    },
+    {
+      "at": 18.043,
+      "command": {
+        "type": "session.context.append",
+        "event_id": "boundary-6",
+        "channel": "commentary",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "BOUNDARY boundary-6: source audio through 16.1710 seconds is complete. The next audio is a different speaker. After all input transcript through this boundary has been emitted, delegate BOUNDARY_COMPLETE boundary-6. Remain silent."
+          }
+        ]
+      }
+    }
+  ],
+  "auth": "chatgpt",
+  "api_key_fallback": false,
+  "connections": 1,
+  "physical_microphone_used": false,
+  "fixture_enabled_at_seconds": 3.863,
+  "fixture_sent_bytes": 680208,
+  "fixture_total_bytes": 680208,
+  "events": [
+    {
+      "arrival_seconds": 2.542,
+      "type": "session.started",
+      "keys": [
+        "session",
+        "session.expires_at",
+        "session.id",
+        "session.status",
+        "type"
+      ],
+      "numbers": {
+        "session.expires_at": 1792372196
+      },
+      "text": ""
+    },
+    {
+      "arrival_seconds": 2.772,
+      "type": "error",
+      "keys": [
+        "error",
+        "error.code",
+        "error.event_id",
+        "error.message",
+        "error.param",
+        "error.type",
+        "event_id",
+        "type"
+      ],
+      "numbers": {},
+      "text": "",
+      "error": {
+        "type": "invalid_request_error",
+        "code": "invalid_value",
+        "message": "Invalid value: 'inp...mit'. Supported values are: 'session.update', 'output_audio.playback.play', 'session.feedback', 'input_audio.pause', 'input_audio.resume', 'session.context.append', 'response.item.create', 'response.create', 'delegation.context.append', 'delegation.function_call_output.create', 'output_audio.send_dtmf_event', and 'session.close'.",
+        "param": "type"
+      }
+    },
+    {
+      "arrival_seconds": 3.371,
+      "type": "error",
+      "keys": [
+        "error",
+        "error.code",
+        "error.event_id",
+        "error.message",
+        "error.param",
+        "error.type",
+        "event_id",
+        "type"
+      ],
+      "numbers": {},
+      "text": "",
+      "error": {
+        "type": "invalid_request_error",
+        "code": "invalid_value",
+        "message": "Invalid value: 'ses...mit'. Supported values are: 'session.update', 'output_audio.playback.play', 'session.feedback', 'input_audio.pause', 'input_audio.resume', 'session.context.append', 'response.item.create', 'response.create', 'delegation.context.append', 'delegation.function_call_output.create', 'output_audio.send_dtmf_event', and 'session.close'.",
+        "param": "type"
+      }
+    },
+    {
+      "arrival_seconds": 5.668,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 2400,
+        "start_ms": 2200
+      },
+      "text": "もしもし"
+    },
+    {
+      "arrival_seconds": 6.143,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 2800,
+        "start_ms": 2600
+      },
+      "text": "、貿"
+    },
+    {
+      "arrival_seconds": 6.277,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 3000,
+        "start_ms": 2800
+      },
+      "text": "易"
+    },
+    {
+      "arrival_seconds": 6.665,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 3400,
+        "start_ms": 3200
+      },
+      "text": "について"
+    },
+    {
+      "arrival_seconds": 7.491,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 4200,
+        "start_ms": 4000
+      },
+      "text": "。うん"
+    },
+    {
+      "arrival_seconds": 7.81,
+      "type": "session.context.appended",
+      "keys": [
+        "end_ms",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 4600,
+        "start_ms": 4400
+      },
+      "text": ""
+    },
+    {
+      "arrival_seconds": 8.137,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 4800,
+        "start_ms": 4600
+      },
+      "text": "、今"
+    },
+    {
+      "arrival_seconds": 8.398,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 5000,
+        "start_ms": 4800
+      },
+      "text": "改"
+    },
+    {
+      "arrival_seconds": 8.479,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 5200,
+        "start_ms": 5000
+      },
+      "text": "札出た"
+    },
+    {
+      "arrival_seconds": 8.872,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 5600,
+        "start_ms": 5400
+      },
+      "text": "ところ"
+    },
+    {
+      "arrival_seconds": 9.526,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 6200,
+        "start_ms": 6000
+      },
+      "text": "、そっ"
+    },
+    {
+      "arrival_seconds": 9.683,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 6400,
+        "start_ms": 6200
+      },
+      "text": "ちは"
+    },
+    {
+      "arrival_seconds": 10.337,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 7000,
+        "start_ms": 6800
+      },
+      "text": "?こっ"
+    },
+    {
+      "arrival_seconds": 10.517,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 7200,
+        "start_ms": 7000
+      },
+      "text": "ちは"
+    },
+    {
+      "arrival_seconds": 10.644,
+      "type": "session.context.appended",
+      "keys": [
+        "end_ms",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 7400,
+        "start_ms": 7200
+      },
+      "text": ""
+    },
+    {
+      "arrival_seconds": 10.72,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 7400,
+        "start_ms": 7200
+      },
+      "text": "まだ"
+    },
+    {
+      "arrival_seconds": 11.09,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 7800,
+        "start_ms": 7600
+      },
+      "text": "電車"
+    },
+    {
+      "arrival_seconds": 11.544,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 8200,
+        "start_ms": 8000
+      },
+      "text": "、あと"
+    },
+    {
+      "arrival_seconds": 11.75,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 8400,
+        "start_ms": 8200
+      },
+      "text": "5"
+    },
+    {
+      "arrival_seconds": 11.884,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 8600,
+        "start_ms": 8400
+      },
+      "text": "分くら"
+    },
+    {
+      "arrival_seconds": 12.274,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 9000,
+        "start_ms": 8800
+      },
+      "text": "いかな"
+    },
+    {
+      "arrival_seconds": 12.883,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 9600,
+        "start_ms": 9400
+      },
+      "text": "。了解"
+    },
+    {
+      "arrival_seconds": 13.247,
+      "type": "session.context.appended",
+      "keys": [
+        "end_ms",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 10000,
+        "start_ms": 9800
+      },
+      "text": ""
+    },
+    {
+      "arrival_seconds": 13.568,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 10200,
+        "start_ms": 10000
+      },
+      "text": "、じゃあ"
+    },
+    {
+      "arrival_seconds": 13.703,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 10400,
+        "start_ms": 10200
+      },
+      "text": "カフェ"
+    },
+    {
+      "arrival_seconds": 14.178,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 10800,
+        "start_ms": 10600
+      },
+      "text": "の前で"
+    },
+    {
+      "arrival_seconds": 14.336,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 11000,
+        "start_ms": 10800
+      },
+      "text": "待ってる"
+    },
+    {
+      "arrival_seconds": 14.467,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 11200,
+        "start_ms": 11000
+      },
+      "text": "ね"
+    },
+    {
+      "arrival_seconds": 15.345,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 12000,
+        "start_ms": 11800
+      },
+      "text": "。助か"
+    },
+    {
+      "arrival_seconds": 15.481,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 12200,
+        "start_ms": 12000
+      },
+      "text": "る"
+    },
+    {
+      "arrival_seconds": 15.603,
+      "type": "session.context.appended",
+      "keys": [
+        "end_ms",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 12400,
+        "start_ms": 12200
+      },
+      "text": ""
+    },
+    {
+      "arrival_seconds": 15.877,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 12600,
+        "start_ms": 12400
+      },
+      "text": "、今日は"
+    },
+    {
+      "arrival_seconds": 16.355,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 13000,
+        "start_ms": 12800
+      },
+      "text": "結構寒"
+    },
+    {
+      "arrival_seconds": 16.543,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 13200,
+        "start_ms": 13000
+      },
+      "text": "い"
+    },
+    {
+      "arrival_seconds": 16.674,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 13400,
+        "start_ms": 13200
+      },
+      "text": "ね"
+    },
+    {
+      "arrival_seconds": 17.345,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 14000,
+        "start_ms": 13800
+      },
+      "text": "。ほん"
+    },
+    {
+      "arrival_seconds": 17.479,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 14200,
+        "start_ms": 14000
+      },
+      "text": "と"
+    },
+    {
+      "arrival_seconds": 17.765,
+      "type": "session.context.appended",
+      "keys": [
+        "end_ms",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 14400,
+        "start_ms": 14200
+      },
+      "text": ""
+    },
+    {
+      "arrival_seconds": 17.933,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 14600,
+        "start_ms": 14400
+      },
+      "text": "、マフ"
+    },
+    {
+      "arrival_seconds": 18.149,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 14800,
+        "start_ms": 14600
+      },
+      "text": "ラー"
+    },
+    {
+      "arrival_seconds": 18.192,
+      "type": "session.context.appended",
+      "keys": [
+        "end_ms",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 15000,
+        "start_ms": 14800
+      },
+      "text": ""
+    },
+    {
+      "arrival_seconds": 18.31,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 15000,
+        "start_ms": 14800
+      },
+      "text": "持って"
+    },
+    {
+      "arrival_seconds": 18.772,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 15400,
+        "start_ms": 15200
+      },
+      "text": "きて正"
+    },
+    {
+      "arrival_seconds": 18.873,
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 15600,
+        "start_ms": 15400
+      },
+      "text": "解だった"
+    }
+  ],
+  "event_shapes": {
+    "session.started": {
+      "type": "session.started",
+      "keys": [
+        "session",
+        "session.expires_at",
+        "session.id",
+        "session.status",
+        "type"
+      ],
+      "numbers": {
+        "session.expires_at": 1792372196
+      },
+      "text": ""
+    },
+    "error": {
+      "type": "error",
+      "keys": [
+        "error",
+        "error.code",
+        "error.event_id",
+        "error.message",
+        "error.param",
+        "error.type",
+        "event_id",
+        "type"
+      ],
+      "numbers": {},
+      "text": ""
+    },
+    "session.input_audio.append": {
+      "type": "session.input_audio.append",
+      "keys": [
+        "type"
+      ],
+      "numbers": {},
+      "text": ""
+    },
+    "session.output_audio.delta": {
+      "type": "session.output_audio.delta",
+      "keys": [
+        "end_ms",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "start_ms": 200,
+        "end_ms": 400
+      },
+      "text": ""
+    },
+    "input_transcript.added": {
+      "type": "input_transcript.added",
+      "keys": [
+        "end_ms",
+        "item",
+        "item.id",
+        "item.text",
+        "item.type",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 2400,
+        "start_ms": 2200
+      },
+      "text": "もしもし"
+    },
+    "turn.created": {
+      "type": "turn.created",
+      "keys": [
+        "turn",
+        "turn.end_ms",
+        "turn.id",
+        "turn.role",
+        "turn.start_ms",
+        "turn.transcript",
+        "type"
+      ],
+      "numbers": {
+        "turn.end_ms": 2400,
+        "turn.start_ms": 2200
+      },
+      "text": ""
+    },
+    "turn.delta": {
+      "type": "turn.delta",
+      "keys": [
+        "end_ms",
+        "start_ms",
+        "turn_id",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 2800,
+        "start_ms": 2600
+      },
+      "text": ""
+    },
+    "session.context.appended": {
+      "type": "session.context.appended",
+      "keys": [
+        "end_ms",
+        "start_ms",
+        "type"
+      ],
+      "numbers": {
+        "end_ms": 4600,
+        "start_ms": 4400
+      },
+      "text": ""
+    },
+    "session.usage.updated": {
+      "type": "session.usage.updated",
+      "keys": [
+        "type",
+        "usage",
+        "usage.audio_duration_ms",
+        "usage.backend_model_usage",
+        "usage_limit",
+        "usage_limit.reset_seconds",
+        "usage_limit.status"
+      ],
+      "numbers": {
+        "usage.audio_duration_ms": 13600
+      },
+      "text": ""
+    }
+  },
+  "reflected_input_bytes": {
+    "session.input_audio.append": 1113600
+  },
+  "clock_evidence": null
+}

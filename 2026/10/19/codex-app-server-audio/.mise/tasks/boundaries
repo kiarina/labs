@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Live ChatGPT boundary/commit probe with shared audio"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mise run //:test-assets:download
+# CLI and requirements are pinned by this lab; no API-key fallback.
+ffmpeg -y -loglevel error -i ../../../../tests/assets/mp3/conversation_2speaker_14s_16k.mp3 -ar 24000 -ac 1 -f s16le work/persistent-fixture.pcm
+uv run --with-requirements tools/requirements.txt python tools/boundary_probe.py
+BOUNDARY_MODE=immediate uv run --with-requirements tools/requirements.txt python tools/boundary_probe.py
+python3 tools/validate_boundaries.py

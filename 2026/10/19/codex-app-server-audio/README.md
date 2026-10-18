@@ -8,6 +8,8 @@
 
 前提の [司令塔と app-server の lab](../08/flutter-agent-orchestrator-kiapi/README.md) とは独立した小さい Python クライアントを使う。
 
+境界指示・確定操作・後着文字の検証は [BOUNDARIES.md](BOUNDARIES.md) を参照。
+
 話者IDと音声時計の追加改善は [REFINEMENT.md](REFINEMENT.md) を参照。話者の誤分割は改善したが、単語ごとの話者対応は多数を保留するため未解決。
 
 接続を維持して送るASR・表示遅延・暫定話者IDの試験は [PERSISTENT_ASR.md](PERSISTENT_ASR.md) を参照。実マイク1人・30秒で本人が速さと内容を実用的と評価。話者の再登場・境界・時計の推定には制約がある。

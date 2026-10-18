@@ -1,0 +1,197 @@
+{
+  "evidence_valid": true,
+  "checks": {
+    "baseline": {
+      "six_boundaries": true,
+      "transcript_present": true
+    },
+    "markers": {
+      "six_boundaries": true,
+      "transcript_present": true
+    },
+    "immediate": {
+      "six_boundaries": true,
+      "transcript_present": true
+    },
+    "markers_protocol": {
+      "two_commit_rejections": true,
+      "six_acks": true,
+      "no_completion_event_observed": true,
+      "late_characters_observed": true
+    }
+  },
+  "reports": [
+    {
+      "mode": "baseline",
+      "fragments": 41,
+      "boundary_commands": 0,
+      "acknowledgments": 0,
+      "delegations": 0,
+      "matched_boundary_events": 0,
+      "output_nonzero_samples": 0,
+      "rows": [
+        {
+          "boundary": "boundary-1",
+          "transcript_tail_after_boundary_ms": 1040.0
+        },
+        {
+          "boundary": "boundary-2",
+          "transcript_tail_after_boundary_ms": 1415.0
+        },
+        {
+          "boundary": "boundary-3",
+          "transcript_tail_after_boundary_ms": 997.0
+        },
+        {
+          "boundary": "boundary-4",
+          "transcript_tail_after_boundary_ms": 1033.0
+        },
+        {
+          "boundary": "boundary-5",
+          "transcript_tail_after_boundary_ms": 1084.0
+        },
+        {
+          "boundary": "boundary-6",
+          "transcript_tail_after_boundary_ms": 1071.0
+        }
+      ],
+      "ack_as_boundary_wrong_speaker_characters": null,
+      "evaluated_characters": 86,
+      "evaluation_scope": "lexical six-utterance labels; fragment arrival grouping; punctuation excluded; not word timing truth",
+      "dedicated_errors": []
+    },
+    {
+      "mode": "markers",
+      "fragments": 36,
+      "boundary_commands": 6,
+      "acknowledgments": 6,
+      "delegations": 0,
+      "matched_boundary_events": 0,
+      "output_nonzero_samples": 0,
+      "rows": [
+        {
+          "boundary": "boundary-1",
+          "transcript_tail_after_boundary_ms": 982.0,
+          "ack_latency_ms": 148.0,
+          "completed_speaker_chars_after_ack": 6
+        },
+        {
+          "boundary": "boundary-2",
+          "transcript_tail_after_boundary_ms": 950.0,
+          "ack_latency_ms": 155.0,
+          "completed_speaker_chars_after_ack": 7
+        },
+        {
+          "boundary": "boundary-3",
+          "transcript_tail_after_boundary_ms": 926.0,
+          "ack_latency_ms": 149.0,
+          "completed_speaker_chars_after_ack": 9
+        },
+        {
+          "boundary": "boundary-4",
+          "transcript_tail_after_boundary_ms": 774.0,
+          "ack_latency_ms": 147.0,
+          "completed_speaker_chars_after_ack": 8
+        },
+        {
+          "boundary": "boundary-5",
+          "transcript_tail_after_boundary_ms": 832.0,
+          "ack_latency_ms": 144.0,
+          "completed_speaker_chars_after_ack": 5
+        },
+        {
+          "boundary": "boundary-6",
+          "transcript_tail_after_boundary_ms": 788.0,
+          "ack_latency_ms": 148.0,
+          "completed_speaker_chars_after_ack": 6
+        }
+      ],
+      "ack_as_boundary_wrong_speaker_characters": 35,
+      "evaluated_characters": 84,
+      "evaluation_scope": "lexical six-utterance labels; fragment arrival grouping; punctuation excluded; not word timing truth",
+      "dedicated_errors": [
+        {
+          "type": "invalid_request_error",
+          "code": "invalid_value",
+          "message": "Invalid value: 'inp...mit'. Supported values are: 'session.update', 'output_audio.playback.play', 'session.feedback', 'input_audio.pause', 'input_audio.resume', 'session.context.append', 'response.item.create', 'response.create', 'delegation.context.append', 'delegation.function_call_output.create', 'output_audio.send_dtmf_event', and 'session.close'.",
+          "param": "type"
+        },
+        {
+          "type": "invalid_request_error",
+          "code": "invalid_value",
+          "message": "Invalid value: 'ses...mit'. Supported values are: 'session.update', 'output_audio.playback.play', 'session.feedback', 'input_audio.pause', 'input_audio.resume', 'session.context.append', 'response.item.create', 'response.create', 'delegation.context.append', 'delegation.function_call_output.create', 'output_audio.send_dtmf_event', and 'session.close'.",
+          "param": "type"
+        }
+      ]
+    },
+    {
+      "mode": "immediate",
+      "fragments": 39,
+      "boundary_commands": 6,
+      "acknowledgments": 6,
+      "delegations": 0,
+      "matched_boundary_events": 0,
+      "output_nonzero_samples": 0,
+      "rows": [
+        {
+          "boundary": "boundary-1",
+          "transcript_tail_after_boundary_ms": 574.0,
+          "ack_latency_ms": 150.0,
+          "completed_speaker_chars_after_ack": 6
+        },
+        {
+          "boundary": "boundary-2",
+          "transcript_tail_after_boundary_ms": 744.0,
+          "ack_latency_ms": 155.0,
+          "completed_speaker_chars_after_ack": 7
+        },
+        {
+          "boundary": "boundary-3",
+          "transcript_tail_after_boundary_ms": 743.0,
+          "ack_latency_ms": 157.0,
+          "completed_speaker_chars_after_ack": 9
+        },
+        {
+          "boundary": "boundary-4",
+          "transcript_tail_after_boundary_ms": 569.0,
+          "ack_latency_ms": 152.0,
+          "completed_speaker_chars_after_ack": 8
+        },
+        {
+          "boundary": "boundary-5",
+          "transcript_tail_after_boundary_ms": 843.0,
+          "ack_latency_ms": 157.0,
+          "completed_speaker_chars_after_ack": 5
+        },
+        {
+          "boundary": "boundary-6",
+          "transcript_tail_after_boundary_ms": 613.0,
+          "ack_latency_ms": 149.0,
+          "completed_speaker_chars_after_ack": 6
+        }
+      ],
+      "ack_as_boundary_wrong_speaker_characters": 35,
+      "evaluated_characters": 86,
+      "evaluation_scope": "lexical six-utterance labels; fragment arrival grouping; punctuation excluded; not word timing truth",
+      "dedicated_errors": [
+        {
+          "type": "invalid_request_error",
+          "code": "invalid_value",
+          "message": "Invalid value: 'inp...mit'. Supported values are: 'session.update', 'output_audio.playback.play', 'session.feedback', 'input_audio.pause', 'input_audio.resume', 'session.context.append', 'response.item.create', 'response.create', 'delegation.context.append', 'delegation.function_call_output.create', 'output_audio.send_dtmf_event', and 'session.close'.",
+          "param": "type"
+        },
+        {
+          "type": "invalid_request_error",
+          "code": "invalid_value",
+          "message": "Invalid value: 'ses...mit'. Supported values are: 'session.update', 'output_audio.playback.play', 'session.feedback', 'input_audio.pause', 'input_audio.resume', 'session.context.append', 'response.item.create', 'response.create', 'delegation.context.append', 'delegation.function_call_output.create', 'output_audio.send_dtmf_event', and 'session.close'.",
+          "param": "type"
+        }
+      ]
+    }
+  ],
+  "transcript_barrier_established": false,
+  "current_code_sha256": {
+    "tools/boundary_probe.py": "6690348d203ccf8775128cb80b1e8a8c82e51255c56f5cd12003c3e7c15f8c0a",
+    "asr/app/assets/refine-reference.json": "2df871fe565218aa871601f54d14b1851f2cf7b043ef3024edf849b0f060e972"
+  }
+}
