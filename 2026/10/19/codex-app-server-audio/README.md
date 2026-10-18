@@ -8,6 +8,8 @@
 
 前提の [司令塔と app-server の lab](../08/flutter-agent-orchestrator-kiapi/README.md) とは独立した小さい Python クライアントを使う。
 
+`record` の外部入力ブリッジとの接続候補と未検証点は [RECORD_INPUT.md](RECORD_INPUT.md) を参照。
+
 自前 Thinker への委譲・ツール実行・音声返却の実証は [DELEGATION.md](DELEGATION.md) を参照。
 
 公開 gpt-live-1 との違い、primary / sideband / アプリ側 WebSocket の区別、バックエンドから音声への実測は [BACKEND_COMPARISON.md](BACKEND_COMPARISON.md) を参照。
