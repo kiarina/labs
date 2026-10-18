@@ -1,0 +1,106 @@
+{
+  "browser": "Chrome/155.0.8059.80",
+  "url": "http://127.0.0.1:8876/tools/web/bridge_test.html",
+  "result": {
+    "done": true,
+    "checks": {
+      "capturingDuringIdle": true,
+      "stableTrackIds": true,
+      "firstVideo": true,
+      "firstAudio": true,
+      "idleVideoBytes": true,
+      "idleAudioBytes": true,
+      "resumedVideo": true,
+      "resumedAudio": true
+    },
+    "pass": true,
+    "first": {
+      "audioRms": 0.26030118768824784,
+      "cameraFrames": 45,
+      "pcmSamples": 144960,
+      "trackIds": [
+        "0d13a864-2c44-4a53-ac36-a7965ab170b8",
+        "ebc5d609-8a04-460e-89e6-4ef3543d519d"
+      ],
+      "inbound": [
+        {
+          "kind": "audio",
+          "bytes": 12232,
+          "samples": 143520,
+          "audioEnergy": 0.40979469512155753
+        },
+        {
+          "kind": "video",
+          "bytes": 197222,
+          "frames": 44
+        }
+      ]
+    },
+    "idleStart": {
+      "audioRms": 0,
+      "cameraFrames": 61,
+      "pcmSamples": 192960,
+      "trackIds": [
+        "0d13a864-2c44-4a53-ac36-a7965ab170b8",
+        "ebc5d609-8a04-460e-89e6-4ef3543d519d"
+      ],
+      "inbound": [
+        {
+          "kind": "audio",
+          "bytes": 12232,
+          "samples": 191520,
+          "audioEnergy": 0.44423289993134996
+        },
+        {
+          "kind": "video",
+          "bytes": 197222,
+          "frames": 44
+        }
+      ]
+    },
+    "idleEnd": {
+      "audioRms": 0,
+      "cameraFrames": 91,
+      "pcmSamples": 289920,
+      "trackIds": [
+        "0d13a864-2c44-4a53-ac36-a7965ab170b8",
+        "ebc5d609-8a04-460e-89e6-4ef3543d519d"
+      ],
+      "inbound": [
+        {
+          "kind": "audio",
+          "bytes": 12232,
+          "samples": 288480,
+          "audioEnergy": 0.44423289993134996
+        },
+        {
+          "kind": "video",
+          "bytes": 197222,
+          "frames": 44
+        }
+      ]
+    },
+    "resumed": {
+      "audioRms": 0.2579087826848303,
+      "cameraFrames": 137,
+      "pcmSamples": 433920,
+      "trackIds": [
+        "0d13a864-2c44-4a53-ac36-a7965ab170b8",
+        "ebc5d609-8a04-460e-89e6-4ef3543d519d"
+      ],
+      "inbound": [
+        {
+          "kind": "audio",
+          "bytes": 24382,
+          "samples": 432000,
+          "audioEnergy": 0.8502730082362869
+        },
+        {
+          "kind": "video",
+          "bytes": 363181,
+          "frames": 87
+        }
+      ]
+    }
+  }
+}

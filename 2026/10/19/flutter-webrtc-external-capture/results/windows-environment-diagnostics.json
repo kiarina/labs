@@ -1,0 +1,27 @@
+{
+  "os": "Windows 11 Home Insider Preview 10.0.26220 x64",
+  "hardware": "Intel Core i9-12900K / GeForce RTX 3080 Ti / 64 GB",
+  "flutter": "3.47.2",
+  "dart": "3.13.2",
+  "chrome": "155.0.8059.84",
+  "flutterWebrtc": "1.6.2+hotfix.4",
+  "libwebrtc": "libwebrtc.m150.7871.03",
+  "cameraDisplayNames": ["Pixel Fold (Windows virtual camera)", "CyberLink Webcam Splitter 6.0"],
+  "defaultCameraError": "CameraException(initialization_failed, Failed to enumerate camera media types)",
+  "localWebrtcReceiver": {
+    "initPlayoutCalled": true,
+    "errorSite": "audio_device_core_win.cc:1977 IAudioClient::Initialize",
+    "hresult": "0x88890008",
+    "hresultName": "AUDCLNT_E_UNSUPPORTED_FORMAT",
+    "deviceClosestMatch": "4 channels / 48000 Hz",
+    "testedChannels": [1, 2],
+    "remoteAudioRtpPacketsReceived": true,
+    "remoteAudioPcmObserved": false
+  },
+  "defaultAdmCapture": {
+    "initRecordingCalledForCustomSource": true,
+    "startRecordingCalledForCustomSource": true,
+    "startRecordingLog": "Playout must be started before recording when using the built-in AEC",
+    "exclusiveRecordOwnershipEstablished": false
+  }
+}

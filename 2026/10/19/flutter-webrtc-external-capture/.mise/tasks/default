@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Prepare local WebRTC, analyze and build the Web app"
+set -euo pipefail
+python3 tools/prepare.py
+(cd app && flutter pub get && flutter analyze && flutter build web --release)

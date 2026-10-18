@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#MISE description="Build and verify real/synthetic external tracks on macOS"
+set -euo pipefail
+python3 tools/prepare.py
+(cd app && flutter pub get && flutter build macos --release)
+mkdir -p build results
+for input in synthetic real; do
+  synthetic=false
+  if [[ "$input" == synthetic ]]; then synthetic=true; fi
+  log="$PWD/build/macos-$input.log"
+  timeout 120 open -W -n --env EXTERNAL_SYNTHETIC="$synthetic" --env EXTERNAL_EXIT=true \
+    --stdout "$log" --stderr "$log" app/build/macos/Build/Products/Release/external_capture_app.app
+  python3 tools/extract_result.py "$log" "results/macos-$input.json"
+done
+python3 tools/verify_results.py results/macos-real.json results/macos-synthetic.json

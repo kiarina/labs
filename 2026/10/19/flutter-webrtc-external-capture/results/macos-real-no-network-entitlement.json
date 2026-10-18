@@ -1,0 +1,141 @@
+{
+  "platform": "macOS",
+  "web": false,
+  "phases": [
+    {
+      "name": "idle-before",
+      "sourceVideoFrames": 77,
+      "sourceAudioBytes": 288000,
+      "injectedVideoFrames": 0,
+      "injectedAudioBytes": 0,
+      "busyDroppedVideo": 0,
+      "busyDroppedAudioBytes": 0,
+      "pass": true
+    },
+    {
+      "name": "send-1",
+      "sourceVideoFrames": 160,
+      "sourceAudioBytes": 595200,
+      "injectedVideoFrames": 160,
+      "injectedAudioBytes": 595200,
+      "busyDroppedVideo": 0,
+      "busyDroppedAudioBytes": 0,
+      "receiver": {
+        "audio": {
+          "polls": 60,
+          "pcmBytes": 663360,
+          "videoFrames": 0,
+          "sumSquares": 0.0,
+          "samples": 331680,
+          "last": {
+            "callbacks": 691,
+            "rms": 0.0,
+            "channels": 1,
+            "bitsPerSample": 16,
+            "sampleRate": 48000,
+            "framesPerChunk": 480
+          },
+          "rms": 0.0
+        },
+        "video": {
+          "polls": 60,
+          "pcmBytes": 0,
+          "videoFrames": 0,
+          "sumSquares": 0.0,
+          "samples": 0,
+          "last": {},
+          "rms": null
+        }
+      },
+      "inboundStats": [],
+      "pass": false
+    },
+    {
+      "name": "idle-after-1",
+      "sourceVideoFrames": 77,
+      "sourceAudioBytes": 288000,
+      "injectedVideoFrames": 0,
+      "injectedAudioBytes": 0,
+      "busyDroppedVideo": 0,
+      "busyDroppedAudioBytes": 0,
+      "pass": true
+    },
+    {
+      "name": "send-2",
+      "sourceVideoFrames": 162,
+      "sourceAudioBytes": 604800,
+      "injectedVideoFrames": 162,
+      "injectedAudioBytes": 604800,
+      "busyDroppedVideo": 0,
+      "busyDroppedAudioBytes": 0,
+      "receiver": {
+        "audio": {
+          "polls": 60,
+          "pcmBytes": 672000,
+          "videoFrames": 0,
+          "sumSquares": 0.0,
+          "samples": 336000,
+          "last": {
+            "callbacks": 700,
+            "bitsPerSample": 16,
+            "sampleRate": 48000,
+            "rms": 0.0,
+            "channels": 1,
+            "framesPerChunk": 480
+          },
+          "rms": 0.0
+        },
+        "video": {
+          "polls": 60,
+          "pcmBytes": 0,
+          "videoFrames": 0,
+          "sumSquares": 0.0,
+          "samples": 0,
+          "last": {},
+          "rms": null
+        }
+      },
+      "inboundStats": [],
+      "pass": false
+    },
+    {
+      "name": "idle-after-2",
+      "sourceVideoFrames": 78,
+      "sourceAudioBytes": 288000,
+      "injectedVideoFrames": 0,
+      "injectedAudioBytes": 0,
+      "busyDroppedVideo": 0,
+      "busyDroppedAudioBytes": 0,
+      "pass": true
+    }
+  ],
+  "tracks": [
+    {
+      "id": "external-audio",
+      "kind": "audio"
+    },
+    {
+      "id": "external-video",
+      "kind": "video"
+    }
+  ],
+  "synthetic": false,
+  "captureStarts": {
+    "camera": 1,
+    "microphone": 1
+  },
+  "maxSourceGapMs": {
+    "video": 96.928,
+    "audio": 116.713
+  },
+  "totals": {
+    "sourceVideoFrames": 603,
+    "sourceAudioBytes": 2438400,
+    "injectedVideoFrames": 322,
+    "injectedAudioBytes": 1200000,
+    "busyDroppedVideo": 0,
+    "busyDroppedAudioBytes": 0
+  },
+  "errors": [],
+  "pass": false
+}

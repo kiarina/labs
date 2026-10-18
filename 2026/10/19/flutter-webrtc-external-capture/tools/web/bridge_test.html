@@ -1,0 +1,47 @@
+<!doctype html><meta charset="utf-8"><script src="../../app/web/capture_bridge.js"></script>
+<script>
+(async()=>{try {
+  const bridge=await createExternalCaptureBridge();
+  let cameraFrames=0,pcmSamples=0;
+  await bridge.startCamera((bytes,w,h,t)=>{cameraFrames++;bridge.pushVideo(bytes,w,h);});
+  const audioTimer=setInterval(()=>{
+    const bytes=new Uint8Array(960*2),view=new DataView(bytes.buffer);
+    for(let i=0;i<960;i++)view.setInt16(i*2,Math.round(Math.sin(2*Math.PI*440*(pcmSamples++)/48000)*12000),true);
+    bridge.pushAudio(bytes);
+  },20);
+  const a=new RTCPeerConnection({iceServers:[]}),b=new RTCPeerConnection({iceServers:[]});
+  a.onicecandidate=e=>e.candidate&&b.addIceCandidate(e.candidate);
+  b.onicecandidate=e=>e.candidate&&a.addIceCandidate(e.candidate);
+  const remote=new MediaStream();b.ontrack=e=>remote.addTrack(e.track);
+  const senders=bridge.stream.getTracks().map(t=>a.addTrack(t,bridge.stream));
+  await a.setLocalDescription(await a.createOffer());await b.setRemoteDescription(a.localDescription);
+  await b.setLocalDescription(await b.createAnswer());await a.setRemoteDescription(b.localDescription);
+  const el=new Audio();el.srcObject=remote;await el.play();
+  const receiveAudio=new AudioContext();await receiveAudio.resume();
+  const receivedSource=receiveAudio.createMediaStreamSource(remote),analyser=receiveAudio.createAnalyser();
+  const silent=receiveAudio.createGain();silent.gain.value=0;
+  receivedSource.connect(analyser);analyser.connect(silent);silent.connect(receiveAudio.destination);
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  const rms=()=>{const x=new Float32Array(analyser.fftSize);analyser.getFloatTimeDomainData(x);return Math.sqrt(x.reduce((a,b)=>a+b*b,0)/x.length)};
+  const snapshot=async()=>({audioRms:rms(),cameraFrames,pcmSamples,trackIds:bridge.stream.getTracks().map(t=>t.id),
+    inbound:[...(await b.getStats()).values()].filter(s=>s.type==='inbound-rtp').map(s=>({kind:s.kind,bytes:s.bytesReceived,frames:s.framesDecoded,samples:s.totalSamplesReceived,audioEnergy:s.totalAudioEnergy}))});
+  await sleep(3000);const first=await snapshot();
+  await Promise.all(senders.map(s=>s.replaceTrack(null)));
+  bridge.flush();
+  await sleep(1000);const idleStart=await snapshot();await sleep(2000);const idleEnd=await snapshot();
+  bridge.flush();
+  await Promise.all(senders.map((s,i)=>s.replaceTrack(bridge.stream.getTracks()[i])));
+  await sleep(3000);const resumed=await snapshot();
+  clearInterval(audioTimer);await bridge.dispose();await receiveAudio.close();a.close();b.close();
+  const delta=(x,y,kind,key)=>y.inbound.find(s=>s.kind===kind)[key]-x.inbound.find(s=>s.kind===kind)[key];
+  const checks={capturingDuringIdle:idleEnd.cameraFrames>idleStart.cameraFrames&&idleEnd.pcmSamples>idleStart.pcmSamples,
+    stableTrackIds:JSON.stringify(first.trackIds)===JSON.stringify(resumed.trackIds),
+    firstVideo:first.inbound.find(s=>s.kind==='video')?.frames>0,
+    firstAudio:first.audioRms>0.01,
+    idleVideoBytes:delta(idleStart,idleEnd,'video','bytes')===0,
+    idleAudioBytes:delta(idleStart,idleEnd,'audio','bytes')===0,
+    resumedVideo:delta(idleEnd,resumed,'video','frames')>0,
+    resumedAudio:resumed.audioRms>0.01};
+  window.result={done:true,checks,pass:Object.values(checks).every(Boolean),first,idleStart,idleEnd,resumed};
+}catch(e){window.result={error:String(e),stack:e.stack}}})();
+</script>
