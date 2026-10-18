@@ -1,0 +1,19 @@
+[project]
+name = "flutter-realtime-image-analysis-tools"
+version = "0.1.0"
+description = "Python reference fixtures for the Dart port of kiarina-agi-image"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "kiarina-agi-image[image-detection-provider-dfine,image-detection-provider-yunet,image-embedding-provider-sface,image-embedding-provider-siglip2]",
+    "numpy>=2.0,<3",
+    "onnx>=1.19",
+    "onnxruntime>=1.25.1",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+# Read-only local checkout of kiarina-python (commit 9d483457), next to this
+# labs checkout: ~/src/github.com/kiarina/{labs,kiarina-python}.
+kiarina-agi-image = { path = "../../../../../../kiarina-python/packages/kiarina-agi-image", editable = true }

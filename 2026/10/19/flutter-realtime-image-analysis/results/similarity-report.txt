@@ -1,0 +1,15 @@
+faces: same person {'n': 84, 'min': 0.336, 'p10': 0.517, 'median': 0.706, 'max': 0.981} 
+  same person, a vs b segment {'n': 42, 'min': 0.336, 'p10': 0.49, 'median': 0.681, 'max': 0.893} 
+  different people {'n': 52, 'min': -0.012, 'p10': 0.021, 'median': 0.079, 'max': 0.212} 
+  with the crowd frame {'n': 74, 'min': -0.026, 'p10': -0.001, 'median': 0.363, 'max': 1.0}
+  who: [('crowd', None), ('dialogue_a', 'left'), ('dialogue_a', 'right'), ('dialogue_b', 'left')]
+objects: same label, next frame, IoU>0.5 {'n': 182, 'min': 0.943, 'p10': 0.976, 'median': 0.99, 'max': 1.0} 
+  same label otherwise {'n': 4530, 'min': 0.692, 'p10': 0.825, 'median': 0.94, 'max': 1.0} 
+  different label {'n': 25916, 'min': 0.573, 'p10': 0.723, 'median': 0.836, 'max': 0.992}
+  labels: [('crowd', 'bus'), ('crowd', 'car'), ('crowd', 'person'), ('dialogue_a', 'book'), ('dialogue_a', 'person'), ('dialogue_b', 'book'), ('dialogue_b', 'person'), ('door', 'chair'), ('door', 'refrigerator'), ('glass', 'bottle'), ('glass', 'bowl'), ('glass', 'cup'), ('glass', 'diningtable'), ('glass', 'knife'), ('glass', 'microwave'), ('glass', 'refrigerator'), ('glass', 'sink'), ('glass', 'spoon'), ('glass', 'toaster')]
+scenes: consecutive, same segment {'n': 44, 'min': 0.941, 'p10': 0.958, 'median': 0.979, 'max': 1.0} 
+  cuts [('dialogue_a_07', 'door_01', 0.642), ('door_16', 'crowd_01', 0.604), ('crowd_04', 'glass_01', 0.483), ('glass_16', 'dialogue_b_01', 0.652)] 
+  dialogue a vs b (the same place again) {'n': 42, 'min': 0.962, 'p10': 0.969, 'median': 0.977, 'max': 0.986} 
+  different places {'n': 852, 'min': 0.462, 'p10': 0.51, 'median': 0.648, 'max': 0.835}
+re-identification: dialogue_b face vs the left track of dialogue_a (best of track) {'n': 6, 'min': 0.701, 'p10': 0.723, 'median': 0.819, 'max': 0.893}
+  strangers (stills and crowd) vs either track (best of track) {'n': 24, 'min': 0.021, 'p10': 0.068, 'median': 0.139, 'max': 0.374}

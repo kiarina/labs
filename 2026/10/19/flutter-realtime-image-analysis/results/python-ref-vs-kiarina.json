@@ -1,0 +1,41 @@
+{
+ "warp_vs_cv2_mismatch": {
+  "mean": 0.000176849,
+  "max": 0.000504889
+ },
+ "face_cos": {
+  "n": 29,
+  "min": 0.999999,
+  "median": 1.0
+ },
+ "object_crop_cos": {
+  "n": 256,
+  "min": 0.9831,
+  "median": 0.9954835
+ },
+ "scene_cos": {
+  "n": 52,
+  "min": 0.985975,
+  "median": 1.0
+ },
+ "faces": {
+  "frames_with_other_count": [],
+  "max_coord_diff": 1.0000000000287557e-06
+ },
+ "objects": {
+  "frames_with_other_count": [
+   {
+    "frame": "many_face",
+    "ref": 47,
+    "kiarina": 46
+   },
+   {
+    "frame": "dialogue_b_01",
+    "ref": 11,
+    "kiarina": 12
+   }
+  ],
+  "max_bbox_diff": 0.06299599999999994,
+  "label_diffs": 2
+ }
+}

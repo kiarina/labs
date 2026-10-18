@@ -1,0 +1,28 @@
+name: sight_lab
+description: "Real-time camera frame analysis lab app."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  image_analysis:
+    path: ../packages/image_analysis
+  image: 4.12.0
+  path_provider: 2.1.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/fixtures/
+    - assets/frames/
+    - assets/bin/
+    - assets/models/

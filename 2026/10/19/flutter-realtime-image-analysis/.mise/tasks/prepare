@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Copy the fixtures, the frames (as PNG), the ref embeddings and the converted YuNet into the app"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+[ -f fixtures/frames.json ] || { echo "run tools/convert_yunet.py and tools/make_fixtures.py first (tools/README.md)"; exit 1; }
+rm -rf app/assets && mkdir -p app/assets/fixtures app/assets/frames app/assets/bin app/assets/models
+cp fixtures/*.json app/assets/fixtures/
+uv run --project tools python tools/frames_to_png.py app/assets/frames
+cp work/fixtures-bin/*.f32 app/assets/bin/
+cp models/yunet/yunet_2023mar_dequantized.onnx app/assets/models/
+echo "prepared app/assets ($(du -sh app/assets | cut -f1))"

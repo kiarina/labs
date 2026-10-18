@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#MISE description="Build the app for macOS (profile), run MODE=parity|replay|replay-fast, write work/report-macos-<TAG>.json"
+set -euo pipefail
+MODE="${MODE:-parity}"; TAG="${TAG:-$MODE}"
+LAB="$(cd "$(dirname "$0")/../.." && pwd)"
+cd "$LAB/app"
+# shellcheck disable=SC2086
+flutter build macos --profile --dart-define=AUTO="$MODE" --dart-define=AUTO_EXIT=true ${EXTRA_DEFINES:-} | tail -1
+SUPPORT="$HOME/Library/Containers/com.kiarina.labs.sightLab/Data/Library/Application Support/com.kiarina.labs.sightLab"
+rm -f "$SUPPORT/report-macos-$MODE.json"
+timeout 1800 build/macos/Build/Products/Profile/sight_lab.app/Contents/MacOS/sight_lab 2>&1 | grep 'SIGHT_LAB' | tail -3 || true
+mkdir -p "$LAB/work"
+cp "$SUPPORT/report-macos-$MODE.json" "$LAB/work/report-macos-$TAG.json"
+echo "report: work/report-macos-$TAG.json"
