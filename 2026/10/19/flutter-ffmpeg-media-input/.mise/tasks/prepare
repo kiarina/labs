@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Fetch the pinned input and VAD model"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+tools/prepare.sh

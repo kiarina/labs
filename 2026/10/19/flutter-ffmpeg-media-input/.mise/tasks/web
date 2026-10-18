@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Build the LGPL Wasm decoder and Flutter web app, then serve on 8798"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mkdir -p work
+tools/build_web_decoder.sh
+(cd app && flutter build web --release --dart-define=AUTO=file)
+exec python3 tools/serve.py

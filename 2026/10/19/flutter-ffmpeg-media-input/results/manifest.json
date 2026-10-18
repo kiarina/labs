@@ -1,0 +1,38 @@
+{
+  "lab_date": "2026-10-19",
+  "flutter": "3.47.2",
+  "dart": "3.13.2",
+  "ffmpeg_kit_flutter_new_min": "3.6.7",
+  "ffmpeg_native": "n8.1.2",
+  "ffmpeg_wasm": "8.1.2",
+  "emscripten": "6.0.12",
+  "onnx_runtime_flutter": "1.9.0",
+  "onnxruntime_web": "1.30.0",
+  "record": "7.1.2",
+  "copied_audio_source_commit": "476bb018bde6e2227f89766729d97c48ffc1250b",
+  "input": {
+    "source": "kiarina/test-assets v1, mp4/ltx2_dialogue_512x512_24fps_7s_355kb.mp4",
+    "sha256": "20e1c86950574d95ad72ed2d324407aa7e48d6013a5d556cdd9517fb71e412ff",
+    "video": "H.264, 512x512, 24fps, 161 frames",
+    "audio": "AAC, mono, 48kHz",
+    "container_duration_s": 6.708008
+  },
+  "vad_sha256": "1a153a22f4509e292a94e67d6f9b85e8deb25b4988682b7e174c65279d8788e3",
+  "ffmpeg_source_sha256": "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c",
+  "wasm_bytes": 2005618,
+  "memory": {
+    "macos_max_rss_bytes": 212860928,
+    "android_idle_after_file_pss_kib": 218211,
+    "android_idle_after_file_rss_kib": 338272,
+    "note": "Whole app incl UI/ONNX. Mac is time -l peak; Android is dumpsys after completion, not peak or directly comparable."
+  },
+  "environments": {
+    "macos": "Apple Silicon M1 Max, macOS 27.0.1",
+    "windows": "Windows 11 x64, Core i9-12900K, 64 GB, CPU inference",
+    "android": "Pixel 6, Android 17 API 37, profile build",
+    "ios_device": "iPad Air 4, iPadOS 27.0.1, release build",
+    "ios_simulator": "iPhone 17 simulator, iOS 27.0, debug build, earlier audio-only app consumer",
+    "web": "Chrome 155.0.8059.80 headless on M1 Max, Flutter release, single-thread FFmpeg Worker and single-thread ORT"
+  },
+  "measurement": "One short fixture, one retained run per environment; no confidence intervals; performance is indicative."
+}

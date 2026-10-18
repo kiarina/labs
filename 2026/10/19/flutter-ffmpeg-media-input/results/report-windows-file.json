@@ -1,0 +1,132 @@
+{
+  "platform": "windows",
+  "mode": "file",
+  "utc": "2026-10-18T16:02:19.962765Z",
+  "file": {
+    "ffmpeg": "n8.1.2",
+    "gpl_enabled": false,
+    "nonfree_enabled": false,
+    "missing_input_failed": true,
+    "cancelled": true,
+    "probe": {
+      "duration": "6.708008",
+      "streams": [
+        {
+          "type": "video",
+          "codec": "h264",
+          "sample_rate": null,
+          "width": 512,
+          "height": 512
+        },
+        {
+          "type": "audio",
+          "codec": "aac",
+          "sample_rate": "48000",
+          "width": null,
+          "height": null
+        }
+      ]
+    },
+    "decode_ms": 54,
+    "pcm_bytes": 215040,
+    "frames": [
+      {
+        "pts": 0.5,
+        "bytes": 13968
+      },
+      {
+        "pts": 1.5,
+        "bytes": 13790
+      },
+      {
+        "pts": 2.5,
+        "bytes": 13918
+      },
+      {
+        "pts": 3.5,
+        "bytes": 14063
+      },
+      {
+        "pts": 4.5,
+        "bytes": 13785
+      },
+      {
+        "pts": 5.5,
+        "bytes": 14241
+      },
+      {
+        "pts": 6.5,
+        "bytes": 14240
+      }
+    ],
+    "timestamp_policy": "source presentation timestamps; first frame at or after 0.5+n seconds",
+    "build_date": "20260712"
+  },
+  "audio": {
+    "samples": 107520,
+    "seconds": 6.72,
+    "rms": 0.08479328383209594,
+    "peak": 0.75506591796875,
+    "vad_chunks": 210,
+    "vad_positive": 79,
+    "vad_ms": 113.872,
+    "voices": [
+      {
+        "start": 0.0,
+        "end": 1.26
+      },
+      {
+        "start": 1.28,
+        "end": 3.5
+      }
+    ],
+    "tail_samples": 0,
+    "dangling_byte": false
+  },
+  "images": [
+    {
+      "pts": 0.5,
+      "width": 256,
+      "height": 256,
+      "bytes": 13968
+    },
+    {
+      "pts": 1.5,
+      "width": 256,
+      "height": 256,
+      "bytes": 13790
+    },
+    {
+      "pts": 2.5,
+      "width": 256,
+      "height": 256,
+      "bytes": 13918
+    },
+    {
+      "pts": 3.5,
+      "width": 256,
+      "height": 256,
+      "bytes": 14063
+    },
+    {
+      "pts": 4.5,
+      "width": 256,
+      "height": 256,
+      "bytes": 13785
+    },
+    {
+      "pts": 5.5,
+      "width": 256,
+      "height": 256,
+      "bytes": 14241
+    },
+    {
+      "pts": 6.5,
+      "width": 256,
+      "height": 256,
+      "bytes": 14240
+    }
+  ],
+  "ok": true,
+  "elapsed_ms": 453
+}

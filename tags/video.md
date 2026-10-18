@@ -1,5 +1,6 @@
 # video
 
+- 2026/10/19 [FFmpeg file and microphone inputs for one Dart analysis pipeline across five platforms](../2026/10/19/flutter-ffmpeg-media-input/README.md)
 - 2026/09/26 [GPT-Live over WebRTC from native Flutter, with idle and conversation capture switching](../2026/09/26/flutter-gpt-live-senses/README.md)
 - 2026/09/26 [Always-on camera and microphone in Flutter with record and camera, and what echoCancel really does](../2026/09/26/flutter-record-camera-senses/README.md)
 - 2026/09/25 [Flutter realtime media pipeline: one Pure Dart pipeline over WebRTC and local capture](../2026/09/25/flutter-realtime-media-pipeline/README.md)

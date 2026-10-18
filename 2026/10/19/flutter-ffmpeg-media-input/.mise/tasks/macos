@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Build and run the native file or microphone experiment (MODE=file|mic)"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mkdir -p work
+(cd app && flutter build macos --release --dart-define=AUTO=file --dart-define=AUTO_EXIT=true)
+if [ "${MODE:-file}" = mic ]; then
+ open -n --env MEDIA_MODE=mic app/build/macos/Build/Products/Release/media_input_lab.app
+else
+ app/build/macos/Build/Products/Release/media_input_lab.app/Contents/MacOS/media_input_lab
+fi

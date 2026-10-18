@@ -1,0 +1,115 @@
+{
+  "platform": "web",
+  "mode": "file",
+  "utc": "2026-10-18T16:02:36.355Z",
+  "file": {
+    "frames": [
+      {
+        "pts": 0.5,
+        "bytes": 12948,
+        "file": "/frame-000.jpg"
+      },
+      {
+        "pts": 1.5,
+        "bytes": 12729,
+        "file": "/frame-001.jpg"
+      },
+      {
+        "pts": 2.5,
+        "bytes": 12841,
+        "file": "/frame-002.jpg"
+      },
+      {
+        "pts": 3.5,
+        "bytes": 13001,
+        "file": "/frame-003.jpg"
+      },
+      {
+        "pts": 4.5,
+        "bytes": 12723,
+        "file": "/frame-004.jpg"
+      },
+      {
+        "pts": 5.5,
+        "bytes": 13136,
+        "file": "/frame-005.jpg"
+      },
+      {
+        "pts": 6.5,
+        "bytes": 13138,
+        "file": "/frame-006.jpg"
+      }
+    ],
+    "decode_ms": 246.85999999940395,
+    "license": "LGPL version 2.1 or later",
+    "config": "--cc=emcc --cxx=em++ --ar=emar --ranlib=emranlib --nm=emnm --target-os=none --arch=wasm32 --enable-cross-compile --disable-asm --disable-inline-asm --disable-everything --disable-autodetect --disable-programs --disable-doc --disable-debug --disable-pthreads --disable-network --enable-small --enable-protocol=file --enable-demuxer=mov --enable-parser='h264,aac' --enable-decoder='h264,aac' --enable-encoder='mjpeg,pcm_s16le' --enable-swscale --enable-swresample --disable-gpl --disable-nonfree",
+    "pcm_bytes": 215040
+  },
+  "audio": {
+    "samples": 107520,
+    "seconds": 6.72,
+    "rms": 0.08479328479365836,
+    "peak": 0.75506591796875,
+    "vad_chunks": 210,
+    "vad_positive": 79,
+    "vad_ms": 65.195,
+    "voices": [
+      {
+        "start": 0,
+        "end": 1.26
+      },
+      {
+        "start": 1.28,
+        "end": 3.5
+      }
+    ],
+    "tail_samples": 0,
+    "dangling_byte": false
+  },
+  "images": [
+    {
+      "pts": 0.5,
+      "width": 256,
+      "height": 256,
+      "bytes": 12948
+    },
+    {
+      "pts": 1.5,
+      "width": 256,
+      "height": 256,
+      "bytes": 12729
+    },
+    {
+      "pts": 2.5,
+      "width": 256,
+      "height": 256,
+      "bytes": 12841
+    },
+    {
+      "pts": 3.5,
+      "width": 256,
+      "height": 256,
+      "bytes": 13001
+    },
+    {
+      "pts": 4.5,
+      "width": 256,
+      "height": 256,
+      "bytes": 12723
+    },
+    {
+      "pts": 5.5,
+      "width": 256,
+      "height": 256,
+      "bytes": 13136
+    },
+    {
+      "pts": 6.5,
+      "width": 256,
+      "height": 256,
+      "bytes": 13138
+    }
+  ],
+  "ok": true,
+  "elapsed_ms": 625
+}
