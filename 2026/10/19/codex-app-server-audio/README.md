@@ -8,6 +8,8 @@
 
 前提の [司令塔と app-server の lab](../08/flutter-agent-orchestrator-kiapi/README.md) とは独立した小さい Python クライアントを使う。
 
+2本の同時WebRTCを交互利用する検証は [TWO_CONNECTIONS.md](TWO_CONNECTIONS.md) を参照。
+
 境界指示・確定操作・後着文字の検証は [BOUNDARIES.md](BOUNDARIES.md) を参照。
 
 話者IDと音声時計の追加改善は [REFINEMENT.md](REFINEMENT.md) を参照。話者の誤分割は改善したが、単語ごとの話者対応は多数を保留するため未解決。

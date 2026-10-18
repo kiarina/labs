@@ -1,0 +1,441 @@
+{
+  "evidence_valid": true,
+  "checks": {
+    "natural": {
+      "two_peers_connected": true,
+      "complete": true,
+      "all_segment_samples_sent_exactly": true,
+      "no_service_errors": true,
+      "no_normal_turns": true
+    },
+    "rapid": {
+      "two_peers_connected": true,
+      "complete": true,
+      "all_segment_samples_sent_exactly": true,
+      "no_service_errors": true,
+      "no_normal_turns": true
+    },
+    "guarded": {
+      "two_peers_connected": true,
+      "complete": true,
+      "all_segment_samples_sent_exactly": true,
+      "no_service_errors": true,
+      "no_normal_turns": true
+    }
+  },
+  "reports": [
+    {
+      "mode": "natural",
+      "status": "complete",
+      "lanes": [
+        {
+          "connection": "A",
+          "full_transcript": "もしもし、貿易について。こっちはまだ電車、あと5分くらいかな。助かる、今日は結構寒いね",
+          "binding_evaluated": true,
+          "fragments": 18,
+          "characters": 38,
+          "wrong_segment_characters_if_assign_on_reuse": 0,
+          "rows": [
+            {
+              "id": "segment-1",
+              "source_start": 0,
+              "source_end": 1.7915,
+              "play_start": 0,
+              "play_end": 1.7915,
+              "queue_wait_ms": 0,
+              "first_text": 1.9075,
+              "last_text": 2.412,
+              "characters": 10,
+              "characters_arriving_after_reuse": 0,
+              "first_text_latency_ms": 1907.5,
+              "tail_after_actual_send_end_ms": 620.5,
+              "tail_latency_ms": 620.5
+            },
+            {
+              "id": "segment-3",
+              "source_start": 4.6268125,
+              "source_end": 7.2244375000000005,
+              "play_start": 4.6268125,
+              "play_end": 7.2244375000000005,
+              "queue_wait_ms": 0,
+              "first_text": 6.3098,
+              "last_text": 8.0192,
+              "characters": 17,
+              "characters_arriving_after_reuse": 0,
+              "first_text_latency_ms": 1683.0,
+              "tail_after_actual_send_end_ms": 794.8,
+              "tail_latency_ms": 794.8
+            },
+            {
+              "id": "segment-5",
+              "source_start": 9.584375,
+              "source_end": 11.7405625,
+              "play_start": 9.584375,
+              "play_end": 11.740562499999998,
+              "queue_wait_ms": 0,
+              "first_text": 11.0654,
+              "last_text": 12.6311,
+              "characters": 11,
+              "characters_arriving_after_reuse": 0,
+              "first_text_latency_ms": 1481.0,
+              "tail_after_actual_send_end_ms": 890.5,
+              "tail_latency_ms": 890.5
+            }
+          ],
+          "reuse": [
+            {
+              "previous": "segment-1",
+              "next": "segment-3",
+              "source_silence_between_ms": 2835.3,
+              "actual_tail_margin_before_reuse_ms": 2214.8,
+              "last_text_before_reuse": 2.412,
+              "quiet_guard_additional_wait_ms": 0,
+              "quiet_guard_would_allow_now": true
+            },
+            {
+              "previous": "segment-3",
+              "next": "segment-5",
+              "source_silence_between_ms": 2359.9,
+              "actual_tail_margin_before_reuse_ms": 1565.2,
+              "last_text_before_reuse": 8.0192,
+              "quiet_guard_additional_wait_ms": 0,
+              "quiet_guard_would_allow_now": true
+            }
+          ],
+          "sent_samples_match_segments": true,
+          "output_nonzero_samples": 0,
+          "assistant_fragments": 0,
+          "errors": [],
+          "normal_turns": 0,
+          "max_sender_scheduling_late_ms": 8.519
+        },
+        {
+          "connection": "B",
+          "full_transcript": "んー今改札出たところ、そっちは了解、じゃあカフェの前で待ってるね。ほんと、マフラー持ってきて正解だった",
+          "binding_evaluated": true,
+          "fragments": 21,
+          "characters": 47,
+          "wrong_segment_characters_if_assign_on_reuse": 0,
+          "rows": [
+            {
+              "id": "segment-2",
+              "source_start": 1.7915,
+              "source_end": 4.6268125,
+              "play_start": 1.7915,
+              "play_end": 4.6268125,
+              "queue_wait_ms": 0,
+              "first_text": 3.7647,
+              "last_text": 5.7513,
+              "characters": 14,
+              "characters_arriving_after_reuse": 0,
+              "first_text_latency_ms": 1973.2,
+              "tail_after_actual_send_end_ms": 1124.5,
+              "tail_latency_ms": 1124.5
+            },
+            {
+              "id": "segment-4",
+              "source_start": 7.2244375000000005,
+              "source_end": 9.584375,
+              "play_start": 7.2244375000000005,
+              "play_end": 9.584375000000001,
+              "queue_wait_ms": 0,
+              "first_text": 8.7579,
+              "last_text": 10.3818,
+              "characters": 16,
+              "characters_arriving_after_reuse": 0,
+              "first_text_latency_ms": 1533.5,
+              "tail_after_actual_send_end_ms": 797.4,
+              "tail_latency_ms": 797.4
+            },
+            {
+              "id": "segment-6",
+              "source_start": 11.7405625,
+              "source_end": 14.171,
+              "play_start": 11.7405625,
+              "play_end": 14.171,
+              "queue_wait_ms": 0,
+              "first_text": 13.3797,
+              "last_text": 14.9657,
+              "characters": 17,
+              "characters_arriving_after_reuse": 0,
+              "first_text_latency_ms": 1639.1,
+              "tail_after_actual_send_end_ms": 794.7,
+              "tail_latency_ms": 794.7
+            }
+          ],
+          "reuse": [
+            {
+              "previous": "segment-2",
+              "next": "segment-4",
+              "source_silence_between_ms": 2597.6,
+              "actual_tail_margin_before_reuse_ms": 1473.1,
+              "last_text_before_reuse": 5.7513,
+              "quiet_guard_additional_wait_ms": 0,
+              "quiet_guard_would_allow_now": true
+            },
+            {
+              "previous": "segment-4",
+              "next": "segment-6",
+              "source_silence_between_ms": 2156.2,
+              "actual_tail_margin_before_reuse_ms": 1358.8,
+              "last_text_before_reuse": 10.3818,
+              "quiet_guard_additional_wait_ms": 0,
+              "quiet_guard_would_allow_now": true
+            }
+          ],
+          "sent_samples_match_segments": true,
+          "output_nonzero_samples": 39454,
+          "assistant_fragments": 6,
+          "errors": [],
+          "normal_turns": 0,
+          "max_sender_scheduling_late_ms": 8.459
+        }
+      ],
+      "both_connected_before_source": true,
+      "all_segments_labeled": true,
+      "scope": "shared utterance lexical labels only; not independent word timestamps, subjective usability or long-duration guarantee"
+    },
+    {
+      "mode": "rapid",
+      "status": "complete",
+      "lanes": [
+        {
+          "connection": "A",
+          "full_transcript": "もしもし、貿易について?こっちはまだ電車、あと5分くらいかな。助かる、今日は結構寒いね",
+          "binding_evaluated": true,
+          "fragments": 19,
+          "characters": 38,
+          "wrong_segment_characters_if_assign_on_reuse": 11,
+          "rows": [
+            {
+              "id": "segment-1",
+              "source_start": 0.0,
+              "source_end": 1.7915,
+              "play_start": 0.0,
+              "play_end": 1.7915,
+              "queue_wait_ms": 0,
+              "first_text": 2.123,
+              "last_text": 2.476,
+              "characters": 10,
+              "characters_arriving_after_reuse": 6,
+              "first_text_latency_ms": 2123.0,
+              "tail_after_actual_send_end_ms": 684.5,
+              "tail_latency_ms": 684.5
+            },
+            {
+              "id": "segment-3",
+              "source_start": 2.2415,
+              "source_end": 4.839083333333333,
+              "play_start": 2.2415,
+              "play_end": 4.839083333333333,
+              "queue_wait_ms": 0,
+              "first_text": 3.8754,
+              "last_text": 5.5921,
+              "characters": 17,
+              "characters_arriving_after_reuse": 5,
+              "first_text_latency_ms": 1633.9,
+              "tail_after_actual_send_end_ms": 753.0,
+              "tail_latency_ms": 753.0
+            },
+            {
+              "id": "segment-5",
+              "source_start": 5.339083333333333,
+              "source_end": 7.495291666666667,
+              "play_start": 5.339083333333333,
+              "play_end": 7.495291666666667,
+              "queue_wait_ms": 0,
+              "first_text": 7.0554,
+              "last_text": 8.3976,
+              "characters": 11,
+              "characters_arriving_after_reuse": 0,
+              "first_text_latency_ms": 1716.3,
+              "tail_after_actual_send_end_ms": 902.3,
+              "tail_latency_ms": 902.3
+            }
+          ],
+          "reuse": [
+            {
+              "previous": "segment-1",
+              "next": "segment-3",
+              "source_silence_between_ms": 450.0,
+              "actual_tail_margin_before_reuse_ms": -234.5,
+              "last_text_before_reuse": 2.123,
+              "quiet_guard_additional_wait_ms": 881.5,
+              "quiet_guard_would_allow_now": false
+            },
+            {
+              "previous": "segment-3",
+              "next": "segment-5",
+              "source_silence_between_ms": 500.0,
+              "actual_tail_margin_before_reuse_ms": -253.0,
+              "last_text_before_reuse": 5.2899,
+              "quiet_guard_additional_wait_ms": 950.8,
+              "quiet_guard_would_allow_now": false
+            }
+          ],
+          "sent_samples_match_segments": true,
+          "output_nonzero_samples": 0,
+          "assistant_fragments": 0,
+          "errors": [],
+          "normal_turns": 0,
+          "max_sender_scheduling_late_ms": 14.113
+        },
+        {
+          "connection": "B",
+          "full_transcript": " Mmいや、ほんとマフラー持ってきて正解だった",
+          "missing_lexical_markers": [
+            "了解"
+          ],
+          "binding_evaluated": false,
+          "output_nonzero_samples": 0,
+          "assistant_fragments": 0,
+          "errors": [],
+          "normal_turns": 0,
+          "sent_segments": {
+            "segment-2": {
+              "first_send": 1.7917,
+              "last_send": 2.2312,
+              "samples": 10800
+            },
+            "segment-4": {
+              "first_send": 4.8309,
+              "last_send": 5.331,
+              "samples": 12000
+            },
+            "segment-6": {
+              "first_send": 7.4911,
+              "last_send": 9.9118,
+              "samples": 58330
+            }
+          }
+        }
+      ],
+      "both_connected_before_source": true,
+      "all_segments_labeled": false,
+      "scope": "shared utterance lexical labels only; not independent word timestamps, subjective usability or long-duration guarantee"
+    },
+    {
+      "mode": "guarded",
+      "status": "complete",
+      "lanes": [
+        {
+          "connection": "A",
+          "full_transcript": "もしもし、もう駅に着いた?こっちはまだ電車、あと五分くらいかな助かる、今日はけっこう寒いね",
+          "binding_evaluated": true,
+          "fragments": 20,
+          "characters": 41,
+          "wrong_segment_characters_if_assign_on_reuse": 0,
+          "rows": [
+            {
+              "id": "segment-1",
+              "source_start": 0.0,
+              "source_end": 1.7915,
+              "play_start": 0.04570833333333333,
+              "play_end": 1.8372083333333333,
+              "queue_wait_ms": 45.7,
+              "first_text": 1.393,
+              "last_text": 2.8015,
+              "characters": 11,
+              "characters_arriving_after_reuse": 0,
+              "first_text_latency_ms": 1393.0,
+              "tail_after_actual_send_end_ms": 964.3,
+              "tail_latency_ms": 1010.0
+            },
+            {
+              "id": "segment-3",
+              "source_start": 2.2415,
+              "source_end": 4.839083333333333,
+              "play_start": 4.2084166666666665,
+              "play_end": 6.805999999999999,
+              "queue_wait_ms": 1966.9,
+              "first_text": 6.0076,
+              "last_text": 8.1964,
+              "characters": 17,
+              "characters_arriving_after_reuse": 0,
+              "first_text_latency_ms": 3766.1,
+              "tail_after_actual_send_end_ms": 1390.4,
+              "tail_latency_ms": 3357.3
+            },
+            {
+              "id": "segment-5",
+              "source_start": 5.339083333333333,
+              "source_end": 7.495291666666667,
+              "play_start": 9.238666666666667,
+              "play_end": 11.394875,
+              "queue_wait_ms": 3899.6,
+              "first_text": 11.3138,
+              "last_text": 12.5913,
+              "characters": 13,
+              "characters_arriving_after_reuse": 0,
+              "first_text_latency_ms": 5974.7,
+              "tail_after_actual_send_end_ms": 1196.4,
+              "tail_latency_ms": 5096.0
+            }
+          ],
+          "reuse": [
+            {
+              "previous": "segment-1",
+              "next": "segment-3",
+              "source_silence_between_ms": 2371.2,
+              "actual_tail_margin_before_reuse_ms": 1406.9,
+              "last_text_before_reuse": 3.1639,
+              "quiet_guard_additional_wait_ms": 0,
+              "quiet_guard_would_allow_now": true
+            },
+            {
+              "previous": "segment-3",
+              "next": "segment-5",
+              "source_silence_between_ms": 2432.7,
+              "actual_tail_margin_before_reuse_ms": 1042.3,
+              "last_text_before_reuse": 8.1964,
+              "quiet_guard_additional_wait_ms": 0,
+              "quiet_guard_would_allow_now": true
+            }
+          ],
+          "sent_samples_match_segments": true,
+          "output_nonzero_samples": 175643,
+          "assistant_fragments": 28,
+          "errors": [],
+          "normal_turns": 0,
+          "max_sender_scheduling_late_ms": 30.337
+        },
+        {
+          "connection": "B",
+          "full_transcript": " Mm. Dio。本当マフラー持ってきて正解だった",
+          "missing_lexical_markers": [
+            "了解"
+          ],
+          "binding_evaluated": false,
+          "output_nonzero_samples": 0,
+          "assistant_fragments": 0,
+          "errors": [],
+          "normal_turns": 0,
+          "sent_segments": {
+            "segment-2": {
+              "first_send": 1.8722,
+              "last_send": 2.3318,
+              "samples": 10800
+            },
+            "segment-4": {
+              "first_send": 6.8319,
+              "last_send": 7.3321,
+              "samples": 12000
+            },
+            "segment-6": {
+              "first_send": 11.4322,
+              "last_send": 13.872,
+              "samples": 58330
+            }
+          }
+        }
+      ],
+      "both_connected_before_source": true,
+      "all_segments_labeled": false,
+      "scope": "shared utterance lexical labels only; not independent word timestamps, subjective usability or long-duration guarantee"
+    }
+  ],
+  "quiet_guard_seconds": 1,
+  "dedicated_asr_completion": false,
+  "rapid_unresolved_B_retained": true,
+  "guarded_unresolved_B_retained": true
+}

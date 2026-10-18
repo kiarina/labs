@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Two simultaneous ChatGPT WebRTC sessions alternating SCD segments"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mise run //:test-assets:download
+mkdir -p work
+ffmpeg -y -loglevel error -i ../../../../tests/assets/mp3/conversation_2speaker_14s_16k.mp3 -ar 24000 -ac 1 -f s16le work/persistent-fixture.pcm
+uv run --with-requirements tools/requirements.txt python tools/two_connections.py
+TWO_MODE=rapid uv run --with-requirements tools/requirements.txt python tools/two_connections.py
+TWO_MODE=guarded uv run --with-requirements tools/requirements.txt python tools/two_connections.py
+python3 tools/validate_two_connections.py
