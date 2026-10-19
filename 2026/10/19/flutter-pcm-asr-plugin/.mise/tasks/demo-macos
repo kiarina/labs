@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#MISE description="Build the demo for macOS and open it (DEMO_AUTOTEST=1 plays the shared audio headless and prints JSON)"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mise run demo-prepare
+if [[ "${DEMO_AUTOTEST:-0}" == 1 ]]; then
+ (cd demo && flutter pub get && flutter build macos --release --dart-define=PCM_ASR_DEMO_AUTOTEST=1)
+ mkdir -p work
+ demo/build/macos/Build/Products/Release/pcm_asr_demo.app/Contents/MacOS/pcm_asr_demo > work/demo-macos.log 2> work/demo-macos-stderr.log || true
+ grep -a 'PCM_ASR_DEMO {"kind":"fixture"' work/demo-macos.log | sed 's/.*PCM_ASR_DEMO //' > results/demo-macos.json
+ cat results/demo-macos.json
+else
+ (cd demo && flutter pub get && flutter build macos --release)
+ open -n demo/build/macos/Build/Products/Release/pcm_asr_demo.app
+fi

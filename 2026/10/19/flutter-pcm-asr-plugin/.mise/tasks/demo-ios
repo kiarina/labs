@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Install the demo on a connected iOS device in profile mode (DEVICE=<id>); the app stays installed"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mise run demo-prepare
+cd demo && flutter pub get && flutter run --profile -d "${DEVICE:?set DEVICE to the iOS device id}"

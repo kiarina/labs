@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Fetch the pinned VAD/SCD/ECAPA models and the shared conversation for the demo app"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mise run //:test-assets:download
+python3 tools/prepare_demo.py

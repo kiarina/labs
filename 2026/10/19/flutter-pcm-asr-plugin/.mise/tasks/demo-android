@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#MISE description="Build the demo APK (release, onnxruntime kept from R8) and install it on ANDROID_SERIAL"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mise run demo-prepare
+(cd demo && flutter pub get && flutter build apk --release)
+: "${ANDROID_SERIAL:?set ANDROID_SERIAL to the adb device id}"
+adb install -r demo/build/app/outputs/flutter-apk/app-release.apk
+adb shell am start -n jp.kiarina.pcm_asr_demo/.MainActivity

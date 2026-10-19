@@ -77,6 +77,25 @@ Web の `prepare` は何もしない（Chrome の端末内モデルは約 60 MB 
   要求ごとに thread を分け、終わった要求は両端を閉じて writer を解く（1 本の executor で直列にしていたときは後続の要求が 20 秒待った）。
   `stopListening` は呼ばず、cancel の後は recognizer を作り直す。無音 1 秒は service が `ERROR_NO_MATCH` を 0.3 秒で返し、空文字にする。
 
+## 体験版（demo/）
+
+Mac で評価してもらった体験アプリ（record → VAD → 逐次 SCD → 話者 ID → ASR）を `demo/` に写し、ASR を plugin に差し替えて
+iOS・Android・Web・macOS で動かした。操作と作りは [demo/README.md](demo/README.md)。`mise run demo-ios|demo-android|demo-web|demo-macos`。
+
+| 環境 | 共有音声（14 秒・6 発話）の通し | ASR（要求→確定） | 音声区間末尾→表示 |
+| --- | --- | --- | --- |
+| macOS 27 | 6 区間・2 話者、誤り 0（`results/demo-macos.json`） | 101〜260 ms | 0.9〜1.1 秒（逐次 SCD の確定待ち込み） |
+| iOS 27（iPad Air 4） | 準備完了まで確認（profile build を入れた） | – | – |
+| Android 17（Pixel 6） | 6 区間・2 話者（`results/demo-pixel6.png`） | 平均 557 ms | 0.6〜1.6 秒 |
+| Web（Chrome 155、cloud） | 6 区間・2 話者（`results/demo-web.json`） | 3.0〜3.9 秒 | 4〜11 秒（ASR が区間長ぶん掛かり、直列の要求が溜まる） |
+
+- Android の release build は onnxruntime を R8 から守らないと JNI が `SIGABRT` で落ちる（`demo/android/app/proguard-rules.pro`）。
+  10/18 の lab と同じ対処。
+- flutter_onnxruntime 1.9.0 は iOS 16・macOS 14 以上を要る（demo の deployment target を上げた）。
+- Web はブランド版 Chrome で `localhost` か https から開く（マイクの取得条件）。モデル 88 MB をページの読み込み時に取る。
+  cloud の ASR は区間長ぶん待つので、連続した会話では表示が遅れていく。
+- 実マイクでの評価はオーナーに依頼中。人数・時間・内容は未記録。
+
 ## 判断と限界
 
 **外部 PCM → OS 標準 ASR → 要求ごとの最終結果、という契約は Apple（macOS・iOS）と Android（Pixel 6）で端末内で成立し、
