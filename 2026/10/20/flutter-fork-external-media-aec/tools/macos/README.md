@@ -7,8 +7,8 @@ process must not use a hardened configuration that blocks insertion. Confirm the
 installed marker before interpreting an empty trace. Object identities and raw
 stacks stay private; publish only module-attributed counts.
 
-Run ownership_control.dart with a default factory as a positive sensitivity
-control. Its ordinary getUserMedia(audio:true) must show SDK input enable/start
+Run the main application with AEC_SDK_MIC_CONTROL=1 and the independent
+peer as a negotiated default-factory positive sensitivity control. Its ordinary getUserMedia(audio:true) must show SDK input enable/start
 before zero SDK input in the external-only process is meaningful. AVAudioEngine
 inputNode alone is supplementary because native SDKs can use AudioUnits directly.
 
