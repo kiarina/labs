@@ -143,3 +143,6 @@ explicit compatible output choice. AEC/reverse-reference quality, live human
 double-talk, physical Windows camera, other output devices, hot-plug, long runs
 and other OS remain unvalidated. Synthetic camera frames are not a physical
 camera result. These results do not make the complete product integration ready.
+
+The published loopback JSONL uses LF line endings. build.json preserves the
+original Windows CRLF file hash; summary.json identifies the published file.
