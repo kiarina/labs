@@ -1,0 +1,77 @@
+{
+  "session": "win-physical-auto-1",
+  "externalOnly": true,
+  "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+  "sdkIdentityMatches": true,
+  "lostEvents": 0,
+  "lostBuffers": 0,
+  "recordRawOwnershipPass": true,
+  "sdkMicrophoneAttempts": 0,
+  "recordMicrophoneAttempts": 1,
+  "aecRenderLoopbackClients": 1,
+  "nativeSpeakerClients": 0,
+  "zeroAdditionalSdkMicPass": false,
+  "recordRawAudit": {
+    "activeRawCaptures": 0,
+    "lastHresult": 0,
+    "mfCreateRequests": 0,
+    "nativeCaptureFrames": 1440,
+    "rawPropertiesAccepted": 1,
+    "rawRequests": 1,
+    "rawStarts": 1
+  },
+  "clients": [
+    {
+      "kind": "render-loopback",
+      "modules": [
+        "aec_audio_plugin.dll",
+        "audioses.dll",
+        "kernel32.dll",
+        "ntdll.dll",
+        "ucrtbase.dll"
+      ],
+      "endpointSha256": "9c5b6b287ee93d72d9f7b95abcad12126248d741340b9c5ff48f414bcd62bb7b",
+      "streamType": "2",
+      "streamFlags": "0x00020002",
+      "rawRequested": "0",
+      "initialize": "0x00000000",
+      "started": true,
+      "stackAvailable": true,
+      "rate": "96000",
+      "channels": "2"
+    },
+    {
+      "kind": "record-raw-microphone",
+      "modules": [
+        "audioses.dll",
+        "kernel32.dll",
+        "ntdll.dll",
+        "record_windows_plugin.dll",
+        "ucrtbase.dll"
+      ],
+      "endpointSha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd",
+      "streamType": "1",
+      "streamFlags": "0x00000002",
+      "rawRequested": "1",
+      "initialize": "0x00000000",
+      "started": true,
+      "stackAvailable": true,
+      "rate": "48000",
+      "channels": "2"
+    }
+  ],
+  "videoSource": "camera plugin physical image stream",
+  "captureStarts": {
+    "record": 1,
+    "camera": 0
+  },
+  "phases": [],
+  "endpointVolumeMuteUnchanged": true,
+  "errors": [
+    "CameraException(initialization_failed, Failed to enumerate camera media types)"
+  ],
+  "inputSha256": {
+    "events.csv": "0b31ba80cc09801e58b9eab63c7f5014385adae79b876b7a941e72465f10b90f",
+    "stacks.jsonl": "15be13bc6083f5914777739e0ebabb1461a8f090356d80aa52b04be78054818f"
+  }
+}

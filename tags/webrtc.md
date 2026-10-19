@@ -1,5 +1,6 @@
 # webrtc
 
+- 2026/10/20 [Physical camera and microphone AEC through the external-media fork and bridge](../2026/10/20/flutter-fork-external-media-aec/README.md)
 - 2026/10/19 [Always-on Flutter camera and record capture with speaker playback and standalone AEC3](../2026/10/19/flutter-external-capture-aec/README.md)
 - 2026/10/19 [Always-on camera and record capture into on-demand WebRTC media tracks](../2026/10/19/flutter-webrtc-external-capture/README.md)
 - 2026/10/19 [Windows double-talk echo cancellation with continuous camera and record capture](../2026/10/19/flutter-windows-aec-doubletalk/README.md)
