@@ -191,7 +191,8 @@ Web は cloud 前提で成立、Windows は不成立。** 5 環境で同じ API�
 - Android は Pixel 6・Google の端末内認識器・debug build の 1 条件。他社端末や端末内認識器の無い端末、cloud の既定認識器に
   `EXTRA_AUDIO_SOURCE` を渡したときの挙動（マイクに黙って切り替わる可能性）は未確認。
 - Web の時間は Chrome の cloud の応答を含み、回線で変わる。
-- `pcm_asr` の名前・所有 repo・publisher・ライセンス（lab は MIT）・初期公開の範囲は未決定。
+- パッケージは `kiarina/pcm_asr` として 0.1.1 を pub.dev に公開した（2026-10-20、https://pub.dev/packages/pcm_asr）。以後の実装はそちらが正典で、
+  この lab は実証と実測の記録として残す。
 
 ## 参照
 
