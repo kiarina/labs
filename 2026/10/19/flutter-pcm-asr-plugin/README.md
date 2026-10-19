@@ -117,7 +117,23 @@ ggml の重みを hash 固定で取る）。計測は同 repo の例題を G-GEA
 - whisper は 1 秒の無音に「この動画はこの動画で、また次回!」と幻覚した（`suppress_nst` でも）。backend は RMS 0.001 未満の区間を
   whisper に渡さず空文字で返す。
 - 4 → 8 スレッドで small が 1.7 倍速い（P コア 8 の CPU）。既定の `threads: 0`（whisper.cpp の min(4, cores)）は Windows では少ない。
-- GPU（Vulkan）の計測は下に追記する。
+
+GPU（Vulkan、RTX 3080 Ti。Vulkan SDK 1.4.363 で build。DLL は 46.9 MB、CPU 版は 1.6 MB）:
+
+| モデル | backend | CER | 要求→確定 中央値 / p95 | 最初の要求 | ロード |
+| --- | --- | ---: | --- | ---: | ---: |
+| base | Vulkan | 19.8 % | 46 / 138 ms | 81 ms | 0.27 秒 |
+| small | Vulkan | 7.0 % | **67 / 159 ms** | 8249 ms | 0.59 秒 |
+| large-v3-turbo q5_0 | Vulkan | **0 %** | **96 / 104 ms** | 3789 ms | 0.59 秒 |
+| large-v3-turbo f16 | Vulkan | **0 %** | 86 / 88 ms | 112 ms | 1.34 秒 |
+
+- GPU では large-v3-turbo が Apple の SpeechAnalyzer と同じ精度・同じ速さ（約 100 ms）になる。CPU の 12.5 秒との差は 130 倍。
+- 「最初の要求」の 8.2 秒・3.8 秒は Vulkan のパイプライン（シェーダー）のコンパイルで、ドライバーのキャッシュが温まると 0.1 秒になる
+  （f16 と base は前の run の後で速かった）。backend は `prepare()` で短い暖機の推論を 1 回流し、最初の実要求に出さないようにする。
+- Vulkan のビルドは、ggml のシェーダー生成（ExternalProject）が Flutter の深い build ディレクトリで MSBuild の MAX_PATH を超えて
+  `MSB4184 NormalizePath` で落ちる。`LongPathsEnabled` では直らず、短い junction（`C:\pa`）から build し、CMake のディレクトリ名も
+  `s`・`w` に縮めた。`VULKAN_SDK` は新しい ssh セッションに入らないので、build の環境で明示する。
+- 既定の提案: Vulkan の GPU があれば large-v3-turbo q5_0（574 MB）、無ければ small（488 MB）を 8 スレッドで。
 
 ## 判断と限界
 

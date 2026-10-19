@@ -1,0 +1,185 @@
+{
+  "name": "windows-whisper-large-v3-turbo-t8-gpu1",
+  "platform": {
+    "kind": "platform",
+    "os": "windows",
+    "locale": "ja-JP"
+  },
+  "support": {
+    "kind": "support",
+    "engine": "whisper.cpp/large-v3-turbo",
+    "supported": true,
+    "accepts_external_pcm": true,
+    "on_device": true,
+    "model_state": "installed",
+    "locale": "ja",
+    "sample_rates": [
+      16000
+    ],
+    "needs_network_for_model": false,
+    "reason": null
+  },
+  "prepare": {
+    "kind": "prepare",
+    "ms": 1344,
+    "model_state_before": "installed"
+  },
+  "expected_results": 18,
+  "results": 18,
+  "errors": [],
+  "non_empty": 18,
+  "id_matches": 18,
+  "cer": 0.0,
+  "cer_detail": "0/258",
+  "elapsed_ms": {
+    "first": 112,
+    "median": 85.5,
+    "p95": 88,
+    "max": 112,
+    "median_after_first": 85
+  },
+  "round_trip_ms_median": 85.5,
+  "error_checks": {
+    "unsupported_locale": {
+      "ok": true,
+      "code": "unsupportedLocale"
+    },
+    "cancel": {
+      "ok": true,
+      "code": "cancelled"
+    },
+    "silence": {
+      "ok": true,
+      "text": "",
+      "elapsed_ms": 0
+    }
+  },
+  "known_limits": [],
+  "per_segment": {
+    "segment-1": [
+      {
+        "trial": 0,
+        "text": "もしもし、もう駅に着いた?",
+        "distance": 0,
+        "elapsed_ms": 112
+      },
+      {
+        "trial": 1,
+        "text": "もしもし、もう駅に着いた?",
+        "distance": 0,
+        "elapsed_ms": 83
+      },
+      {
+        "trial": 2,
+        "text": "もしもし、もう駅に着いた?",
+        "distance": 0,
+        "elapsed_ms": 87
+      }
+    ],
+    "segment-2": [
+      {
+        "trial": 0,
+        "text": "うん今改札出たところそっちは",
+        "distance": 0,
+        "elapsed_ms": 86
+      },
+      {
+        "trial": 1,
+        "text": "うん今改札出たところそっちは",
+        "distance": 0,
+        "elapsed_ms": 85
+      },
+      {
+        "trial": 2,
+        "text": "うん今改札出たところそっちは",
+        "distance": 0,
+        "elapsed_ms": 82
+      }
+    ],
+    "segment-3": [
+      {
+        "trial": 0,
+        "text": "こっちはまだ電車あと5分くらいかな",
+        "distance": 0,
+        "elapsed_ms": 88
+      },
+      {
+        "trial": 1,
+        "text": "こっちはまだ電車あと5分くらいかな",
+        "distance": 0,
+        "elapsed_ms": 86
+      },
+      {
+        "trial": 2,
+        "text": "こっちはまだ電車あと5分くらいかな",
+        "distance": 0,
+        "elapsed_ms": 84
+      }
+    ],
+    "segment-4": [
+      {
+        "trial": 0,
+        "text": "了解じゃあカフェの前で待ってるね",
+        "distance": 0,
+        "elapsed_ms": 86
+      },
+      {
+        "trial": 1,
+        "text": "了解じゃあカフェの前で待ってるね",
+        "distance": 0,
+        "elapsed_ms": 84
+      },
+      {
+        "trial": 2,
+        "text": "了解じゃあカフェの前で待ってるね",
+        "distance": 0,
+        "elapsed_ms": 83
+      }
+    ],
+    "segment-5": [
+      {
+        "trial": 0,
+        "text": "助かる。今日は結構寒いね。",
+        "distance": 0,
+        "elapsed_ms": 84
+      },
+      {
+        "trial": 1,
+        "text": "助かる。今日は結構寒いね。",
+        "distance": 0,
+        "elapsed_ms": 83
+      },
+      {
+        "trial": 2,
+        "text": "助かる。今日は結構寒いね。",
+        "distance": 0,
+        "elapsed_ms": 83
+      }
+    ],
+    "segment-6": [
+      {
+        "trial": 0,
+        "text": "ほんとマフラー持ってきて正解だった",
+        "distance": 0,
+        "elapsed_ms": 87
+      },
+      {
+        "trial": 1,
+        "text": "ほんとマフラー持ってきて正解だった",
+        "distance": 0,
+        "elapsed_ms": 88
+      },
+      {
+        "trial": 2,
+        "text": "ほんとマフラー持ってきて正解だった",
+        "distance": 0,
+        "elapsed_ms": 88
+      }
+    ]
+  },
+  "done": {
+    "kind": "done",
+    "ok": true
+  },
+  "pass": true
+}
