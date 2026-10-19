@@ -1,0 +1,41 @@
+name: pcm_asr
+description: >-
+  Final transcription of finalized PCM segments with the OS speech engine.
+  The caller owns the microphone; this plugin only turns one finished
+  segment into final text. (Working name; not published.)
+version: 0.0.1
+publish_to: none
+repository: https://github.com/kiarina/labs/tree/main/2026/10/19/flutter-pcm-asr-plugin/pcm_asr
+
+environment:
+  sdk: ^3.13.2
+  flutter: '>=3.47.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.1.8
+  flutter_web_plugins:
+    sdk: flutter
+  web: ^1.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  plugin:
+    platforms:
+      ios:
+        pluginClass: PcmAsrPlugin
+        sharedDarwinSource: true
+      macos:
+        pluginClass: PcmAsrPlugin
+        sharedDarwinSource: true
+      android:
+        package: jp.kiarina.pcm_asr
+        pluginClass: PcmAsrPlugin
+      web:
+        pluginClass: PcmAsrWeb
+        fileName: pcm_asr_web.dart

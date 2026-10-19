@@ -1,0 +1,22 @@
+name: pcm_asr_example
+description: "Runs the pcm_asr plugin over fixed PCM segments and prints the results."
+publish_to: 'none'
+
+environment:
+  sdk: ^3.13.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  pcm_asr:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/segments/

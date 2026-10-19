@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Cut the shared conversation into PCM segment assets for the example"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mise run //:test-assets:download
+python3 tools/prepare.py

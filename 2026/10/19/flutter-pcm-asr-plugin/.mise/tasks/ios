@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#MISE description="Run the fixture on a connected iOS device in profile mode, evaluate (DEVICE=<id>)"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mise run prepare
+mkdir -p work
+: > work/ios.log
+(cd pcm_asr/example && flutter pub get)
+# flutter run stays attached; stop it once the app has printed its summary line.
+(cd pcm_asr/example && flutter run --profile -d "${DEVICE:?set DEVICE to the iOS device id}" --dart-define=PCM_ASR_AUTOTEST=1 2>&1 | tee ../../work/ios.log) &
+pid=$!
+for _ in $(seq 1 600); do
+ if grep -q 'PCM_ASR {"kind":"done"' work/ios.log; then break; fi
+ sleep 1
+done
+kill $pid 2>/dev/null || true
+wait $pid 2>/dev/null || true
+python3 tools/evaluate.py ios work/ios.log

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#MISE description="Build the example for the Web, run it in the installed Google Chrome, evaluate"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mise run prepare
+(cd pcm_asr/example && flutter pub get && flutter build web --release --dart-define=PCM_ASR_AUTOTEST=1)
+(cd tools/web && test -d node_modules/puppeteer-core || npm install --no-audit --no-fund)
+mkdir -p work
+port=8765
+(cd pcm_asr/example/build/web && python3 -m http.server "$port" --bind 127.0.0.1 > /dev/null 2>&1 &)
+sleep 1
+SHOT="$PWD/work/web.png" node tools/web/capture.mjs "http://127.0.0.1:$port/" > work/web.log 2> work/web-stderr.log || true
+lsof -ti:"$port" | xargs kill 2>/dev/null || true
+# The Web cannot reject an unknown locale before sending audio (cloud recognition accepts any tag).
+python3 tools/evaluate.py web work/web.log --known-limit unsupported_locale

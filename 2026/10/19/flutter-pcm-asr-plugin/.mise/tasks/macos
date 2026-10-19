@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Build the example for macOS, run the fixture headless, evaluate"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mise run prepare
+(cd pcm_asr/example && flutter pub get && flutter build macos --release --dart-define=PCM_ASR_AUTOTEST=1)
+mkdir -p work
+app="pcm_asr/example/build/macos/Build/Products/Release/pcm_asr_example.app"
+: > work/macos.log
+"$app/Contents/MacOS/pcm_asr_example" > work/macos.log 2> work/macos-stderr.log || true
+python3 tools/evaluate.py macos work/macos.log

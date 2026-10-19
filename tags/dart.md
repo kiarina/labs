@@ -4,6 +4,7 @@
 - 2026/10/19 [Always-on Flutter camera and record capture with speaker playback and standalone AEC3](../2026/10/19/flutter-external-capture-aec/README.md)
 - 2026/10/19 [FFmpeg file and microphone inputs for one Dart analysis pipeline across five platforms](../2026/10/19/flutter-ffmpeg-media-input/README.md)
 - 2026/10/19 [Bounded streaming video decoding and Dart VAD across native Flutter and WebAssembly](../2026/10/19/flutter-ffmpeg-streaming-input/README.md)
+- 2026/10/19 [A Flutter plugin that turns finalized PCM segments into final text with the OS speech engine, platform by platform](../2026/10/19/flutter-pcm-asr-plugin/README.md)
 - 2026/10/19 [Real-time camera frame analysis in Flutter (YuNet faces, SFace, D-FINE objects, SigLIP2 scenes) with entity tracking that keeps embeddings, on macOS, Windows, Android, iOS and web](../2026/10/19/flutter-realtime-image-analysis/README.md)
 - 2026/10/19 [Diagnosing and soaking Flutter FFmpeg and ONNX memory on macOS](../2026/10/19/flutter-streaming-memory-soak/README.md)
 - 2026/10/19 [Always-on camera and record capture into on-demand WebRTC media tracks](../2026/10/19/flutter-webrtc-external-capture/README.md)

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+#MISE description="Build the example APK, install it on the device in ANDROID_SERIAL, run the fixture, evaluate"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mise run prepare
+(cd pcm_asr/example && flutter pub get && flutter build apk --debug --dart-define=PCM_ASR_AUTOTEST=1)
+: "${ANDROID_SERIAL:?set ANDROID_SERIAL to the adb device id}"
+adb install -r -t pcm_asr/example/build/app/outputs/flutter-apk/app-debug.apk
+adb logcat -c
+adb shell am start -n jp.kiarina.pcm_asr_example/.MainActivity
+for _ in $(seq 1 240); do
+ sleep 2
+ if adb logcat -d 2>/dev/null | grep -q 'PCM_ASR {"kind":"done"'; then break; fi
+done
+mkdir -p work
+adb logcat -d | grep -a 'PCM_ASR\|AiAiSpeech' | sed 's/.*PCM_ASR/PCM_ASR/' > work/android.log
+python3 tools/evaluate.py android work/android.log

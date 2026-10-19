@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Re-check the saved results without running any engine"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+(cd pcm_asr && flutter analyze && flutter test)
+python3 tools/check_results.py
