@@ -1,0 +1,86 @@
+{
+  "kind": "paired-live-headroom",
+  "session": "headroom-human-1",
+  "sentProfile": "headroom",
+  "captureGain": 0.5,
+  "postGain": 1,
+  "normalizationOnlyInAnalysis": true,
+  "exactFullScaleSamples": {
+    "baseline": 779,
+    "headroom": 0,
+    "decodedReceiver": 0
+  },
+  "farOnly": [
+    {
+      "phase": "far-1",
+      "identifiable": true,
+      "baselineReductionDb": 38.32110250019824,
+      "headroomReductionDb": 41.71424543203014,
+      "headroomLevelNormalizedReductionDb": 35.693645518750515,
+      "pairedNormalizedDifferenceDb": -2.627456981447729
+    },
+    {
+      "phase": "far-2",
+      "identifiable": true,
+      "baselineReductionDb": 32.213596629850684,
+      "headroomReductionDb": 34.07109850285006,
+      "headroomLevelNormalizedReductionDb": 28.050498589570438,
+      "pairedNormalizedDifferenceDb": -4.163098040280246
+    }
+  ],
+  "nearOnly": [],
+  "doubletalkKnownNear": [],
+  "pairedCompleteWaveform": [
+    {
+      "phase": "mic-check",
+      "normalizedOutputCorrelation": 0.9999885548475161,
+      "normalizedRmsDifferenceDb": 0.002043790860247867,
+      "meaning": "Complete output waveform similarity, not isolated near speech."
+    },
+    {
+      "phase": "near-only",
+      "normalizedOutputCorrelation": 0.9999953666712987,
+      "normalizedRmsDifferenceDb": 0.0010013852164599871,
+      "meaning": "Complete output waveform similarity, not isolated near speech."
+    },
+    {
+      "phase": "doubletalk-1",
+      "normalizedOutputCorrelation": 0.967929291720343,
+      "normalizedRmsDifferenceDb": 0.7589656655864473,
+      "meaning": "Complete output waveform similarity, not isolated near speech."
+    },
+    {
+      "phase": "doubletalk-gate-off",
+      "normalizedOutputCorrelation": 0.9849017871793397,
+      "normalizedRmsDifferenceDb": 0.4744385416331619,
+      "meaning": "Complete output waveform similarity, not isolated near speech."
+    },
+    {
+      "phase": "doubletalk-2",
+      "normalizedOutputCorrelation": 0.9595078334709859,
+      "normalizedRmsDifferenceDb": 0.4150012318051437,
+      "meaning": "Complete output waveform similarity, not isolated near speech."
+    },
+    {
+      "phase": "near-recovery",
+      "normalizedOutputCorrelation": 0.9999851288979326,
+      "normalizedRmsDifferenceDb": 0.001084814623314634,
+      "meaning": "Complete output waveform similarity, not isolated near speech."
+    }
+  ],
+  "acceptance": {
+    "zeroOutputAndReceiverFullScale": true,
+    "farNonRegression": false,
+    "knownNear": null,
+    "knownDtNear": null,
+    "humanListeningRequired": true
+  },
+  "decodedSamples": 2707200,
+  "decodedSha256": "6d74375405572f1bb298bee0e7988e5b22079657610791c2b2d34727b3a0789c",
+  "maxCaptureGapMs": 24.592,
+  "caveats": [
+    "Far transfer normalized for0.5 gain; actual output was not amplified.",
+    "Human total raw RMS ratios do not isolate near speech.",
+    "No physical Windows camera or broader hardware/OS claim."
+  ]
+}

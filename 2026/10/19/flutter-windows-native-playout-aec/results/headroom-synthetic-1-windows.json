@@ -1,0 +1,93 @@
+{
+  "kind": "known-near-short-window-retention",
+  "candidate": "headroom",
+  "analysisExpectedCandidateGain": 0.5,
+  "audioGainRestored": false,
+  "activeTargetRmsMinimum": 20,
+  "variants": [
+    {
+      "variant": "baseline",
+      "lag": 431,
+      "phases": [
+        {
+          "name": "near-only",
+          "active100msWindows": 69,
+          "minimumSignedProjectionGainDb": -240.0,
+          "windowsBelowMinus6Db": 12,
+          "longestRunBelowMinus6DbMs": 100
+        },
+        {
+          "name": "doubletalk-1",
+          "active100msWindows": 52,
+          "minimumSignedProjectionGainDb": -240.0,
+          "windowsBelowMinus6Db": 38,
+          "longestRunBelowMinus6DbMs": 900
+        },
+        {
+          "name": "doubletalk-gate-off",
+          "active100msWindows": 5,
+          "minimumSignedProjectionGainDb": -39.16630259752334,
+          "windowsBelowMinus6Db": 3,
+          "longestRunBelowMinus6DbMs": 200
+        },
+        {
+          "name": "doubletalk-2",
+          "active100msWindows": 52,
+          "minimumSignedProjectionGainDb": -240.0,
+          "windowsBelowMinus6Db": 32,
+          "longestRunBelowMinus6DbMs": 800
+        },
+        {
+          "name": "near-recovery",
+          "active100msWindows": 67,
+          "minimumSignedProjectionGainDb": -240.0,
+          "windowsBelowMinus6Db": 13,
+          "longestRunBelowMinus6DbMs": 200
+        }
+      ]
+    },
+    {
+      "variant": "headroom",
+      "lag": 431,
+      "phases": [
+        {
+          "name": "near-only",
+          "active100msWindows": 69,
+          "minimumSignedProjectionGainDb": -240.0,
+          "windowsBelowMinus6Db": 12,
+          "longestRunBelowMinus6DbMs": 100
+        },
+        {
+          "name": "doubletalk-1",
+          "active100msWindows": 52,
+          "minimumSignedProjectionGainDb": -240.0,
+          "windowsBelowMinus6Db": 37,
+          "longestRunBelowMinus6DbMs": 900
+        },
+        {
+          "name": "doubletalk-gate-off",
+          "active100msWindows": 5,
+          "minimumSignedProjectionGainDb": -8.104527096899348,
+          "windowsBelowMinus6Db": 2,
+          "longestRunBelowMinus6DbMs": 100
+        },
+        {
+          "name": "doubletalk-2",
+          "active100msWindows": 52,
+          "minimumSignedProjectionGainDb": -240.0,
+          "windowsBelowMinus6Db": 32,
+          "longestRunBelowMinus6DbMs": 800
+        },
+        {
+          "name": "near-recovery",
+          "active100msWindows": 67,
+          "minimumSignedProjectionGainDb": -240.0,
+          "windowsBelowMinus6Db": 13,
+          "longestRunBelowMinus6DbMs": 200
+        }
+      ]
+    }
+  ],
+  "candidateNoLossPass": false,
+  "caveat": "Known capture-only speech mixed with real mic; not physical human near or proof of acoustic echo rejection."
+}

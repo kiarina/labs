@@ -5,7 +5,7 @@ param(
  [string]$Executable,
  [string]$Peer='http://127.0.0.1:18794',
  [string]$MicrophoneId='',
- [ValidateSet('baseline','conditioned')][string]$Output='baseline',
+ [ValidateSet('baseline','conditioned','headroom')][string]$Output='baseline',
  [double]$NearGain=0.05,
  [switch]$Human,
  [switch]$PositiveControl

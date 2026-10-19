@@ -1,0 +1,118 @@
+{
+  "kind": "paired-live-headroom",
+  "session": "headroom-synthetic-1",
+  "sentProfile": "headroom",
+  "captureGain": 0.5,
+  "postGain": 1,
+  "normalizationOnlyInAnalysis": true,
+  "exactFullScaleSamples": {
+    "baseline": 71,
+    "headroom": 0,
+    "decodedReceiver": 0
+  },
+  "farOnly": [
+    {
+      "phase": "far-1",
+      "identifiable": true,
+      "baselineReductionDb": 41.936435596152094,
+      "headroomReductionDb": 44.41516991547558,
+      "headroomLevelNormalizedReductionDb": 38.394570002195955,
+      "pairedNormalizedDifferenceDb": -3.541865593956139
+    },
+    {
+      "phase": "far-2",
+      "identifiable": true,
+      "baselineReductionDb": 37.8494341270524,
+      "headroomReductionDb": 40.749234605584064,
+      "headroomLevelNormalizedReductionDb": 34.72863469230444,
+      "pairedNormalizedDifferenceDb": -3.1207994347479584
+    }
+  ],
+  "nearOnly": [
+    {
+      "phase": "near-only",
+      "baselineGainDb": -0.7770383551433788,
+      "headroomActualGainDb": -6.797704615523572,
+      "headroomGainRelativeToExpectedDb": -0.7771047022439479,
+      "baselineCorrelation": 0.13262239156214523,
+      "headroomCorrelation": 0.13260602992392173,
+      "pairedRelativeGainDifferenceDb": -6.634710056907522e-05
+    },
+    {
+      "phase": "near-recovery",
+      "baselineGainDb": -0.8250556010119625,
+      "headroomActualGainDb": -6.845642843471612,
+      "headroomGainRelativeToExpectedDb": -0.8250429301919882,
+      "baselineCorrelation": 0.3085889299812801,
+      "headroomCorrelation": 0.3085891146609288,
+      "pairedRelativeGainDifferenceDb": 1.2670819974358594e-05
+    }
+  ],
+  "doubletalkKnownNear": [
+    {
+      "phase": "doubletalk-1",
+      "baselineGainDb": -8.858180558927701,
+      "headroomActualGainDb": -14.175037762450721,
+      "headroomGainRelativeToExpectedDb": -8.154437849171096,
+      "baselineCorrelation": 0.18300667629139078,
+      "headroomCorrelation": 0.19925331177747443,
+      "pairedRelativeGainDifferenceDb": 0.7037427097566056
+    },
+    {
+      "phase": "doubletalk-2",
+      "baselineGainDb": -8.44325425697319,
+      "headroomActualGainDb": -14.170951740958406,
+      "headroomGainRelativeToExpectedDb": -8.150351827678783,
+      "baselineCorrelation": 0.2232338321575154,
+      "headroomCorrelation": 0.24377085949963617,
+      "pairedRelativeGainDifferenceDb": 0.2929024292944078
+    }
+  ],
+  "pairedCompleteWaveform": [
+    {
+      "phase": "near-only",
+      "normalizedOutputCorrelation": 0.9999973223742875,
+      "normalizedRmsDifferenceDb": 0.0007698455492689276,
+      "meaning": "Complete output waveform similarity, not isolated near speech."
+    },
+    {
+      "phase": "doubletalk-1",
+      "normalizedOutputCorrelation": 0.978108125549974,
+      "normalizedRmsDifferenceDb": 0.372598336450729,
+      "meaning": "Complete output waveform similarity, not isolated near speech."
+    },
+    {
+      "phase": "doubletalk-gate-off",
+      "normalizedOutputCorrelation": 0.9411102104170231,
+      "normalizedRmsDifferenceDb": 0.34078448066575695,
+      "meaning": "Complete output waveform similarity, not isolated near speech."
+    },
+    {
+      "phase": "doubletalk-2",
+      "normalizedOutputCorrelation": 0.905202911926155,
+      "normalizedRmsDifferenceDb": -0.5059127531838008,
+      "meaning": "Complete output waveform similarity, not isolated near speech."
+    },
+    {
+      "phase": "near-recovery",
+      "normalizedOutputCorrelation": 0.9999999067437662,
+      "normalizedRmsDifferenceDb": 7.425427392295314e-06,
+      "meaning": "Complete output waveform similarity, not isolated near speech."
+    }
+  ],
+  "acceptance": {
+    "zeroOutputAndReceiverFullScale": true,
+    "farNonRegression": false,
+    "knownNear": false,
+    "knownDtNear": false,
+    "humanListeningRequired": false
+  },
+  "decodedSamples": 2320320,
+  "decodedSha256": "848c2ec1339f131de5bdc7c559ff64bc428dc112422848beade5f6667bbceb6d",
+  "maxCaptureGapMs": 228.816,
+  "caveats": [
+    "Far transfer normalized for0.5 gain; actual output was not amplified.",
+    "Human total raw RMS ratios do not isolate near speech.",
+    "No physical Windows camera or broader hardware/OS claim."
+  ]
+}

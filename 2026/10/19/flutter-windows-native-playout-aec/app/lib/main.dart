@@ -42,7 +42,7 @@ class _Probe extends State<Probe>{
     final human=Platform.environment['AEC_HUMAN']=='1';final session=Platform.environment['AEC_SESSION']??'synthetic-1';
     final recorder=AudioRecorder(),bridge=CaptureBridge(),clock=Stopwatch()..start();
     final raw=BytesBuilder(copy:false),near=BytesBuilder(copy:false),mixed=BytesBuilder(copy:false);
-    final outputs={'baseline':BytesBuilder(copy:false),'clockDrift':BytesBuilder(copy:false),'conditioned':BytesBuilder(copy:false)};
+    final outputs={'baseline':BytesBuilder(copy:false),'clockDrift':BytesBuilder(copy:false),'conditioned':BytesBuilder(copy:false),'headroom':BytesBuilder(copy:false)};
     final captureGaps=<Map<String,dynamic>>[];
     final selectedOutput=Platform.environment['AEC_OUTPUT']??'baseline';
     final errors=<String>[],phases=<Map<String,dynamic>>[],timeline=<Map<String,dynamic>>[];

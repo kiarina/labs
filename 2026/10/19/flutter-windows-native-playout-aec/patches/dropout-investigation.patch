@@ -9,7 +9,7 @@
 +    if(started||inputId==null)return;started=true;
 @@ -44 +45,3 @@
 -    final outputs={'baseline':BytesBuilder(copy:false),'clockDrift':BytesBuilder(copy:false)};
-+    final outputs={'baseline':BytesBuilder(copy:false),'clockDrift':BytesBuilder(copy:false),'conditioned':BytesBuilder(copy:false)};
++    final outputs={'baseline':BytesBuilder(copy:false),'clockDrift':BytesBuilder(copy:false),'conditioned':BytesBuilder(copy:false),'headroom':BytesBuilder(copy:false)};
 +    final captureGaps=<Map<String,dynamic>>[];
 +    final selectedOutput=Platform.environment['AEC_OUTPUT']??'baseline';
 @@ -49 +52 @@
@@ -54,8 +54,8 @@
 @@ -29,2 +29,2 @@
 -  std::array<void*,2> engines{};
 -  const std::array<const char*,2> names{"baseline","clockDrift"};
-+  std::array<void*,3> engines{};
-+  const std::array<const char*,3> names{"baseline","clockDrift","conditioned"};
++  std::array<void*,4> engines{};
++  const std::array<const char*,4> names{"baseline","clockDrift","conditioned","headroom"};
 @@ -38 +38,3 @@
 -  std::mutex trace_mutex;
 +  std::mutex trace_mutex,dsp_mutex;
@@ -66,23 +66,24 @@
 -    engines[0]=aec_create_config(1,0);engines[1]=aec_create_config(1,1);
 -    if(!engines[0]||!engines[1])return E_FAIL;
 +    Dispose();stop=false;hresult=0;reverse_blocks=0;capture_samples=0;dsp_errors=0;discontinuities=0;silent_packets=0;trace.clear();events.clear();conditioned_overrange=0;delay_ms=delay;
-+    engines[0]=aec_create_config(1,0);engines[1]=aec_create_config(1,1);engines[2]=aec_create_config(1,18);
-+    if(!engines[0]||!engines[1]||!engines[2])return E_FAIL;
++    engines[0]=aec_create_config(1,0);engines[1]=aec_create_config(1,1);engines[2]=aec_create_config(1,18);engines[3]=aec_create_config(1,0);
++    if(!engines[0]||!engines[1]||!engines[2]||!engines[3])return E_FAIL;
 @@ -83 +85,2 @@
 -                for(auto e:engines)if(aec_reverse(e,block.data(),480)!=0)++dsp_errors;
 +                {std::lock_guard<std::mutex> dsp_lock(dsp_mutex);
 +                for(auto e:engines)if(aec_reverse(e,block.data(),480)!=0)++dsp_errors;events.push_back(1);}
-@@ -98,0 +102 @@
+@@ -98,0 +102,2 @@
 +    m[EncodableValue("conditionedGain")]=EncodableValue(8);m[EncodableValue("conditionedOverrangeSamples")]=Count(conditioned_overrange);
-@@ -119,3 +123,4 @@
++    m[EncodableValue("headroomCaptureGain")]=EncodableValue(.5);m[EncodableValue("headroomPostGain")]=EncodableValue(1);
+@@ -119,3 +124,4 @@
 -  std::array<std::vector<int16_t>,2> output;size_t offset=0;
 -  while(s.pending.size()-offset>=480){for(size_t j=0;j<2;++j){int16_t block[480];if(aec_capture(s.engines[j],s.pending.data()+offset,block,480,s.delay_ms)!=0)++s.dsp_errors;output[j].insert(output[j].end(),block,block+480);}offset+=480;s.capture_samples+=480;}
 -  s.pending.erase(s.pending.begin(),s.pending.begin()+offset);EncodableMap m;for(size_t j=0;j<2;++j)m[EncodableValue(s.names[j])]=EncodableValue(Bytes(output[j]));result->Success(EncodableValue(m));return;
-+  std::array<std::vector<int16_t>,3> output;size_t offset=0;
++  std::array<std::vector<int16_t>,4> output;size_t offset=0;
 +  std::lock_guard<std::mutex> dsp_lock(s.dsp_mutex);
-+  while(s.pending.size()-offset>=480){for(int k=0;k<480;++k)if(std::abs(static_cast<int>(s.pending[offset+k]))>4095)++s.conditioned_overrange;for(size_t j=0;j<3;++j){int16_t block[480];if(aec_capture(s.engines[j],s.pending.data()+offset,block,480,s.delay_ms)!=0)++s.dsp_errors;output[j].insert(output[j].end(),block,block+480);}s.events.push_back(2);offset+=480;s.capture_samples+=480;}
-+  s.pending.erase(s.pending.begin(),s.pending.begin()+offset);EncodableMap m;for(size_t j=0;j<3;++j)m[EncodableValue(s.names[j])]=EncodableValue(Bytes(output[j]));result->Success(EncodableValue(m));return;
-@@ -123,0 +129,2 @@
++  while(s.pending.size()-offset>=480){for(int k=0;k<480;++k)if(std::abs(static_cast<int>(s.pending[offset+k]))>4095)++s.conditioned_overrange;for(size_t j=0;j<4;++j){int16_t block[480];int16_t half[480];if(j==3)for(int k=0;k<480;++k)half[k]=static_cast<int16_t>(std::lrint(s.pending[offset+k]*.5));if(aec_capture(s.engines[j],j==3?half:s.pending.data()+offset,block,480,s.delay_ms)!=0)++s.dsp_errors;output[j].insert(output[j].end(),block,block+480);}s.events.push_back(2);offset+=480;s.capture_samples+=480;}
++  s.pending.erase(s.pending.begin(),s.pending.begin()+offset);EncodableMap m;for(size_t j=0;j<4;++j)m[EncodableValue(s.names[j])]=EncodableValue(Bytes(output[j]));result->Success(EncodableValue(m));return;
+@@ -123,0 +130,2 @@
 + if(call.method_name()=="freeze"){s.stop=true;if(s.thread.joinable())s.thread.join();result->Success();return;}
 + if(call.method_name()=="dspEvents"){std::lock_guard<std::mutex> lock(s.dsp_mutex);result->Success(EncodableValue(s.events));return;}
 --- a/native/aec_engine.cc

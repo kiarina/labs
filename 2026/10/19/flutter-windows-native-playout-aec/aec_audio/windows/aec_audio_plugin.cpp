@@ -26,8 +26,8 @@ std::vector<uint8_t> Bytes(const std::vector<int16_t>& p){std::vector<uint8_t>b(
 }
 class State {
  public:
-  std::array<void*,3> engines{};
-  const std::array<const char*,3> names{"baseline","clockDrift","conditioned"};
+  std::array<void*,4> engines{};
+  const std::array<const char*,4> names{"baseline","clockDrift","conditioned","headroom"};
   std::atomic<bool> stop{false};
   std::thread thread;
   std::atomic<uint64_t> reverse_blocks{0},capture_samples{0},dsp_errors{0},discontinuities{0},silent_packets{0};
@@ -42,8 +42,8 @@ class State {
   void Dispose(){stop=true;if(thread.joinable())thread.join();for(auto& e:engines){if(e)aec_destroy(e);e=nullptr;}pending.clear();}
   HRESULT Configure(const std::string& endpoint,int delay){
     Dispose();stop=false;hresult=0;reverse_blocks=0;capture_samples=0;dsp_errors=0;discontinuities=0;silent_packets=0;trace.clear();events.clear();conditioned_overrange=0;delay_ms=delay;
-    engines[0]=aec_create_config(1,0);engines[1]=aec_create_config(1,1);engines[2]=aec_create_config(1,18);
-    if(!engines[0]||!engines[1]||!engines[2])return E_FAIL;
+    engines[0]=aec_create_config(1,0);engines[1]=aec_create_config(1,1);engines[2]=aec_create_config(1,18);engines[3]=aec_create_config(1,0);
+    if(!engines[0]||!engines[1]||!engines[2]||!engines[3])return E_FAIL;
     auto ready=std::make_shared<std::promise<HRESULT>>();auto future=ready->get_future();
     thread=std::thread([this,endpoint,ready]{Loop(endpoint,ready);});
     return future.get();
@@ -100,6 +100,7 @@ class State {
   EncodableMap Stats(){
     EncodableMap m{{EncodableValue("reverseBlocks"),Count(reverse_blocks)},{EncodableValue("captureSamples"),Count(capture_samples)},{EncodableValue("dspErrors"),Count(dsp_errors)},{EncodableValue("loopbackHresult"),EncodableValue(hresult.load())},{EncodableValue("discontinuities"),Count(discontinuities)},{EncodableValue("silentPackets"),Count(silent_packets)},{EncodableValue("renderRate"),Count(rate)},{EncodableValue("renderChannels"),Count(channels)},{EncodableValue("referenceKind"),EncodableValue("selected render endpoint LOOPBACK; no microphone or speaker owner")}};
     m[EncodableValue("conditionedGain")]=EncodableValue(8);m[EncodableValue("conditionedOverrangeSamples")]=Count(conditioned_overrange);
+    m[EncodableValue("headroomCaptureGain")]=EncodableValue(.5);m[EncodableValue("headroomPostGain")]=EncodableValue(1);
     using Audit=uint64_t(__cdecl*)(int);auto module=GetModuleHandleW(L"record_windows_plugin.dll");auto audit=module?reinterpret_cast<Audit>(GetProcAddress(module,"RecordRawAudit")):nullptr;
     if(audit){const char* keys[]={"rawRequests","rawPropertiesAccepted","rawStarts","nativeCaptureFrames","lastHresult","mfCreateRequests","activeRawCaptures"};EncodableMap a;for(int i=0;i<7;++i)a[EncodableValue(keys[i])]=Count(audit(i));m[EncodableValue("recordRawAudit")]=EncodableValue(a);}else m[EncodableValue("recordRawAuditMissing")]=EncodableValue(true);
     return m;
@@ -120,10 +121,10 @@ void AecAudioPlugin::Handle(const flutter::MethodCall<EncodableValue>& call,std:
  if(call.method_name()=="captureCompare"){
   auto value=Arg(a,"bytes");if(!value||!std::holds_alternative<std::vector<uint8_t>>(*value)||!s.engines[0]){result->Error("aec","not configured or missing PCM");return;}
   const auto& b=std::get<std::vector<uint8_t>>(*value);for(size_t i=0;i+1<b.size();i+=2)s.pending.push_back(static_cast<int16_t>(b[i]|(b[i+1]<<8)));
-  std::array<std::vector<int16_t>,3> output;size_t offset=0;
+  std::array<std::vector<int16_t>,4> output;size_t offset=0;
   std::lock_guard<std::mutex> dsp_lock(s.dsp_mutex);
-  while(s.pending.size()-offset>=480){for(int k=0;k<480;++k)if(std::abs(static_cast<int>(s.pending[offset+k]))>4095)++s.conditioned_overrange;for(size_t j=0;j<3;++j){int16_t block[480];if(aec_capture(s.engines[j],s.pending.data()+offset,block,480,s.delay_ms)!=0)++s.dsp_errors;output[j].insert(output[j].end(),block,block+480);}s.events.push_back(2);offset+=480;s.capture_samples+=480;}
-  s.pending.erase(s.pending.begin(),s.pending.begin()+offset);EncodableMap m;for(size_t j=0;j<3;++j)m[EncodableValue(s.names[j])]=EncodableValue(Bytes(output[j]));result->Success(EncodableValue(m));return;
+  while(s.pending.size()-offset>=480){for(int k=0;k<480;++k)if(std::abs(static_cast<int>(s.pending[offset+k]))>4095)++s.conditioned_overrange;for(size_t j=0;j<4;++j){int16_t block[480];int16_t half[480];if(j==3)for(int k=0;k<480;++k)half[k]=static_cast<int16_t>(std::lrint(s.pending[offset+k]*.5));if(aec_capture(s.engines[j],j==3?half:s.pending.data()+offset,block,480,s.delay_ms)!=0)++s.dsp_errors;output[j].insert(output[j].end(),block,block+480);}s.events.push_back(2);offset+=480;s.capture_samples+=480;}
+  s.pending.erase(s.pending.begin(),s.pending.begin()+offset);EncodableMap m;for(size_t j=0;j<4;++j)m[EncodableValue(s.names[j])]=EncodableValue(Bytes(output[j]));result->Success(EncodableValue(m));return;
  }
  if(call.method_name()=="stats"){result->Success(EncodableValue(s.Stats()));return;}
  if(call.method_name()=="freeze"){s.stop=true;if(s.thread.joinable())s.thread.join();result->Success();return;}

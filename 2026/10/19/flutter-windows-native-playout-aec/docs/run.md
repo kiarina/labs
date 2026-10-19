@@ -46,7 +46,7 @@ The public output selector chooses the fixture's EDIFIER speaker **after** media
 ./tools/windows/run_trial.ps1 -Session human -OutputDirectory build/human -SdkManifest build/sdk-manifest.json -Output conditioned -Human
 ```
 
-Use a fresh output directory and one process per trial. Human mode waits for the participant to explicitly select the input and press Start on every run (unless `-MicrophoneId` supplies an explicit input). Immediately read the microphone-check cue aloud. Then stop speaking, press the quiet-measurement confirmation and remain silent/still for8seconds; the final4seconds define the quiet level. Follow near/far/double-talk cues afterwards (about90seconds plus the manual confirmation). A failed microphone check aborts rather than counting silence as successful human speech. Baseline remains the default; conditioned is an opt-in candidate restricted to low inputs. Its fixed8x pre-AEC gain is reversed after processing. Human conditioned mode aborts after microphone-check if overrange has already occurred. Any later nonzero `conditionedOverrangeSamples` still invalidates the low-input headroom condition; this is not a general AGC or a large-input solution.
+Use a fresh output directory and one process per trial. Human mode waits for the participant to explicitly select the input and press Start on every run (unless `-MicrophoneId` supplies an explicit input). Immediately read the microphone-check cue aloud. Then stop speaking, press the quiet-measurement confirmation and remain silent/still for8seconds; the final4seconds define the quiet level. Follow near/far/double-talk cues afterwards (about90seconds plus the manual confirmation). A failed microphone check aborts rather than counting silence as successful human speech. Baseline remains the default. `headroom` is an opt-in live profile with capture gain0.5/postgain1; `conditioned` is the separate8x opt-in candidate restricted to low inputs. Its fixed8x pre-AEC gain is reversed after processing. Human conditioned mode aborts after microphone-check if overrange has already occurred. Any later nonzero `conditionedOverrangeSamples` still invalidates the low-input headroom condition; this is not a general AGC or a large-input solution.
 
 The collector refuses an existing WPR session and stops only its own trace. ETL, endpoint IDs, raw JSON, PCM and listening files stay private/ignored. Public ownership metrics distinguish physical microphone capture from render LOOPBACK. A positive control must produce SDK microphone events with no lost events/buffers before treating zero observed events as evidence.
 
@@ -84,3 +84,14 @@ build/aec/aec_replay_events build/half-input.pcm build/human/artifacts/actual_re
 ```
 
 This is device-free DSP replay, not new live acquisition or decoded delivery evidence. The recorded experiment uses the same Windows AEC DLL for live and replay; check the reported identities before making that claim.
+
+For a live headroom trial use `-Output headroom` and an explicit DualSense input ID. The app stores baseline and headroom PCM from the same input; only headroom is sent. Run the ordinary analyzer first, then the gain-aware paired decision (the raw analyzer reports actual output gains):
+
+```sh
+python tools/analyze.py build/headroom results/headroom.json
+python tools/analyze_headroom.py build/headroom results/headroom.json build/peer/headroom-received.pcm results/headroom-paired.json
+python tools/near_windows.py build/headroom/artifacts results/headroom-windows.json --candidate headroom
+python tools/diagnose_dropouts.py build/headroom/artifacts build/peer/headroom-received.pcm results/headroom-delivery.json --variant headroom
+```
+
+Echo and known-near transfer are normalized for expected0.5 **in analysis only**. Actual sent/received audio stays attenuated; exact full-scale counts are taken before any listening normalization. Baseline remains the default if paired non-regression or participant quality fails.

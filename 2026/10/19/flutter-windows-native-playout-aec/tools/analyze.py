@@ -4,7 +4,7 @@ import argparse,hashlib,json
 from pathlib import Path
 import numpy as np
 from scipy.signal import correlate,correlation_lags,welch,csd
-p=argparse.ArgumentParser();p.add_argument('trial',type=Path);p.add_argument('output',type=Path);a=p.parse_args();d=a.trial/'artifacts';r=json.loads((d/'report.json').read_text());variants=['baseline','clockDrift']+(['conditioned'] if (d/'conditioned.pcm').exists() else []);names=['raw','near','mixed',*variants,'actual_render'];x={n:np.fromfile(d/(n+'.pcm'),'<i2').astype(float) for n in names};ph={q['name']:q for q in r['phases']};raw=x['raw'];reference=x['actual_render']
+p=argparse.ArgumentParser();p.add_argument('trial',type=Path);p.add_argument('output',type=Path);a=p.parse_args();d=a.trial/'artifacts';r=json.loads((d/'report.json').read_text());variants=['baseline','clockDrift']+([name for name in ['conditioned','headroom'] if (d/(name+'.pcm')).exists()]);names=['raw','near','mixed',*variants,'actual_render'];x={n:np.fromfile(d/(n+'.pcm'),'<i2').astype(float) for n in names};ph={q['name']:q for q in r['phases']};raw=x['raw'];reference=x['actual_render']
 level=lambda v:float(10*np.log10(max(float(np.mean(v*v))/32768**2,1e-24))) if len(v) else None
 def bounds(q,discard=1):return int(q['start']['rawBytes'])//2+int(discard*48000),min(int(q['end']['rawBytes'])//2,len(raw),*(len(x[k])-960 for k in variants))
 def db(v):return float(20*np.log10(max(abs(float(v)),1e-12)))

@@ -1,0 +1,626 @@
+{
+  "kind": "normal-native-render-aec-matched-analysis",
+  "humanNear": false,
+  "referenceKind": "actual selected render-endpoint loopback; not SDK mixer pull",
+  "rawRenderLagSamples": 19130,
+  "dspLatencySamples": {
+    "baseline": 431,
+    "clockDrift": 431,
+    "conditioned": 431,
+    "headroom": 431
+  },
+  "calibrationValid": true,
+  "coherentCalibrationBins": 218,
+  "eligibleCalibrationBins": 272,
+  "phases": [
+    {
+      "name": "quiet",
+      "far": false,
+      "nearExpected": false,
+      "rawRmsDbfs": -16.03287988533841,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -16.39361280953481,
+          "clipSamples": 2
+        },
+        "clockDrift": {
+          "rmsDbfs": -16.39361280953481,
+          "clipSamples": 2
+        },
+        "conditioned": {
+          "rmsDbfs": -20.826752897520144,
+          "clipSamples": 0
+        },
+        "headroom": {
+          "rmsDbfs": -22.414060330795785,
+          "clipSamples": 0
+        }
+      }
+    },
+    {
+      "name": "near-only",
+      "far": false,
+      "nearExpected": true,
+      "rawRmsDbfs": -15.76125821546981,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -16.08130485107659,
+          "clipSamples": 18,
+          "nearGainDb": -0.7770383551433788,
+          "nearSignedGain": 0.9144249816026195,
+          "nearCorrelation": 0.13262239156214523
+        },
+        "clockDrift": {
+          "rmsDbfs": -16.08130485107659,
+          "clipSamples": 18,
+          "nearGainDb": -0.7770383551433788,
+          "nearSignedGain": 0.9144249816026195,
+          "nearCorrelation": 0.13262239156214523
+        },
+        "conditioned": {
+          "rmsDbfs": -21.686160615262608,
+          "clipSamples": 0,
+          "nearGainDb": -3.606980681984761,
+          "nearSignedGain": 0.660162674740352,
+          "nearCorrelation": 0.18254188339208682
+        },
+        "headroom": {
+          "rmsDbfs": -22.10089946624402,
+          "clipSamples": 0,
+          "nearGainDb": -6.797704615523572,
+          "nearSignedGain": 0.4572089984005866,
+          "nearCorrelation": 0.13260602992392173
+        }
+      }
+    },
+    {
+      "name": "far-warmup",
+      "far": true,
+      "nearExpected": false,
+      "rawRmsDbfs": -15.08620924389824,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -26.750162087898993,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 27.93155855289815
+        },
+        "clockDrift": {
+          "rmsDbfs": -26.760774404736555,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 27.937847080432128
+        },
+        "conditioned": {
+          "rmsDbfs": -27.587822058496418,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 33.92994824108346
+        },
+        "headroom": {
+          "rmsDbfs": -32.401008595393456,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 41.849297001296094
+        }
+      },
+      "identifiable": true,
+      "validWindowFraction": 0.9090909090909091,
+      "windows": [
+        {
+          "coverage": 0.5183823529411765,
+          "valid": true
+        },
+        {
+          "coverage": 0.21323529411764705,
+          "valid": false
+        },
+        {
+          "coverage": 0.6948529411764706,
+          "valid": true
+        },
+        {
+          "coverage": 0.5698529411764706,
+          "valid": true
+        },
+        {
+          "coverage": 0.6139705882352942,
+          "valid": true
+        },
+        {
+          "coverage": 0.6397058823529411,
+          "valid": true
+        },
+        {
+          "coverage": 0.7647058823529411,
+          "valid": true
+        },
+        {
+          "coverage": 0.7426470588235294,
+          "valid": true
+        },
+        {
+          "coverage": 0.6507352941176471,
+          "valid": true
+        },
+        {
+          "coverage": 0.8455882352941176,
+          "valid": true
+        },
+        {
+          "coverage": 0.7058823529411765,
+          "valid": true
+        }
+      ]
+    },
+    {
+      "name": "far-1",
+      "far": true,
+      "nearExpected": false,
+      "rawRmsDbfs": -15.748326318940508,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -28.722586791948203,
+          "clipSamples": 1,
+          "renderCoherentReductionDb": 41.936435596152094
+        },
+        "clockDrift": {
+          "rmsDbfs": -28.68959599967033,
+          "clipSamples": 2,
+          "renderCoherentReductionDb": 42.02073731621222
+        },
+        "conditioned": {
+          "rmsDbfs": -28.20379562320468,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 36.498612626298
+        },
+        "headroom": {
+          "rmsDbfs": -34.3504684752053,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 44.41516991547558
+        }
+      },
+      "identifiable": true,
+      "validWindowFraction": 0.8571428571428571,
+      "windows": [
+        {
+          "coverage": 0.7867647058823529,
+          "valid": true
+        },
+        {
+          "coverage": 0.5367647058823529,
+          "valid": true
+        },
+        {
+          "coverage": 0.5625,
+          "valid": true
+        },
+        {
+          "coverage": 0.12867647058823528,
+          "valid": false
+        },
+        {
+          "coverage": 0.45588235294117646,
+          "valid": true
+        },
+        {
+          "coverage": 0.6727941176470589,
+          "valid": true
+        },
+        {
+          "coverage": 0.5772058823529411,
+          "valid": true
+        }
+      ]
+    },
+    {
+      "name": "doubletalk-1",
+      "far": true,
+      "nearExpected": true,
+      "rawRmsDbfs": -14.810197359172241,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -27.216168277415065,
+          "clipSamples": 3,
+          "nearGainDb": -8.858180558927701,
+          "nearSignedGain": 0.3606541816638429,
+          "nearCorrelation": 0.18300667629139078,
+          "renderCoherentReductionDb": 35.72212075609894
+        },
+        "clockDrift": {
+          "rmsDbfs": -27.301046326786306,
+          "clipSamples": 3,
+          "nearGainDb": -8.890169224355041,
+          "nearSignedGain": 0.3593283960092437,
+          "nearCorrelation": 0.18412442464932993,
+          "renderCoherentReductionDb": 35.77399838968241
+        },
+        "conditioned": {
+          "rmsDbfs": -27.346202282645656,
+          "clipSamples": 0,
+          "nearGainDb": -7.261238062550665,
+          "nearSignedGain": 0.4334490913562417,
+          "nearCorrelation": 0.22326248723822711,
+          "renderCoherentReductionDb": 32.57643473342481
+        },
+        "headroom": {
+          "rmsDbfs": -33.2717977796501,
+          "clipSamples": 0,
+          "nearGainDb": -14.175037762450721,
+          "nearSignedGain": 0.19554562863778127,
+          "nearCorrelation": 0.19925331177747443,
+          "renderCoherentReductionDb": 40.84869472580281
+        }
+      },
+      "identifiable": true,
+      "validWindowFraction": 1.0,
+      "windows": [
+        {
+          "coverage": 0.7647058823529411,
+          "valid": true
+        },
+        {
+          "coverage": 0.7316176470588235,
+          "valid": true
+        },
+        {
+          "coverage": 0.6360294117647058,
+          "valid": true
+        },
+        {
+          "coverage": 0.7389705882352942,
+          "valid": true
+        },
+        {
+          "coverage": 0.7389705882352942,
+          "valid": true
+        },
+        {
+          "coverage": 0.40808823529411764,
+          "valid": true
+        },
+        {
+          "coverage": 0.3897058823529412,
+          "valid": true
+        }
+      ]
+    },
+    {
+      "name": "doubletalk-gate-off",
+      "far": true,
+      "nearExpected": true,
+      "rawRmsDbfs": -13.820000586097404,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -16.327753051486976,
+          "clipSamples": 0,
+          "nearGainDb": -7.398139842749981,
+          "nearSignedGain": 0.42667088422202376,
+          "nearCorrelation": 0.08145465938100512,
+          "renderCoherentReductionDb": 1.6360044812360104
+        },
+        "clockDrift": {
+          "rmsDbfs": -16.32865553830324,
+          "clipSamples": 0,
+          "nearGainDb": -7.40765464269283,
+          "nearSignedGain": 0.4262037512592759,
+          "nearCorrelation": 0.08137393473551471,
+          "renderCoherentReductionDb": 1.6360918643747513
+        },
+        "conditioned": {
+          "rmsDbfs": -28.61477570133824,
+          "clipSamples": 0,
+          "nearGainDb": -11.047049944261216,
+          "nearSignedGain": 0.2803157518031329,
+          "nearCorrelation": 0.22020215220311903,
+          "renderCoherentReductionDb": 29.214576288154625
+        },
+        "headroom": {
+          "rmsDbfs": -21.992957709821038,
+          "clipSamples": 0,
+          "nearGainDb": -10.05398398087852,
+          "nearSignedGain": 0.31426846258313357,
+          "nearCorrelation": 0.11518182566484107,
+          "renderCoherentReductionDb": 7.401977694477577
+        }
+      },
+      "identifiable": false,
+      "validWindowFraction": 1.0,
+      "windows": [
+        {
+          "coverage": 0.6544117647058824,
+          "valid": true
+        }
+      ]
+    },
+    {
+      "name": "doubletalk-2",
+      "far": true,
+      "nearExpected": true,
+      "rawRmsDbfs": -13.197483605547946,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -27.95986187826577,
+          "clipSamples": 0,
+          "nearGainDb": -8.44325425697319,
+          "nearSignedGain": 0.3783008239079969,
+          "nearCorrelation": 0.2232338321575154,
+          "renderCoherentReductionDb": 26.561057285642757
+        },
+        "clockDrift": {
+          "rmsDbfs": -27.971321690167986,
+          "clipSamples": 0,
+          "nearGainDb": -8.519819110698384,
+          "nearSignedGain": 0.3749808113834786,
+          "nearCorrelation": 0.22156683937099567,
+          "renderCoherentReductionDb": 26.5711831781045
+        },
+        "conditioned": {
+          "rmsDbfs": -26.815423295520656,
+          "clipSamples": 0,
+          "nearGainDb": -7.118264635272356,
+          "nearSignedGain": 0.4406428913056858,
+          "nearCorrelation": 0.22792269246645322,
+          "renderCoherentReductionDb": 31.087144653784144
+        },
+        "headroom": {
+          "rmsDbfs": -34.45199484071863,
+          "clipSamples": 0,
+          "nearGainDb": -14.170951740958406,
+          "nearSignedGain": 0.19563763897155323,
+          "nearCorrelation": 0.24377085949963617,
+          "renderCoherentReductionDb": 36.24924014262399
+        }
+      },
+      "identifiable": true,
+      "validWindowFraction": 1.0,
+      "windows": [
+        {
+          "coverage": 0.8198529411764706,
+          "valid": true
+        },
+        {
+          "coverage": 0.8051470588235294,
+          "valid": true
+        },
+        {
+          "coverage": 0.6139705882352942,
+          "valid": true
+        },
+        {
+          "coverage": 0.7794117647058824,
+          "valid": true
+        },
+        {
+          "coverage": 0.7352941176470589,
+          "valid": true
+        },
+        {
+          "coverage": 0.8235294117647058,
+          "valid": true
+        },
+        {
+          "coverage": 0.8051470588235294,
+          "valid": true
+        }
+      ]
+    },
+    {
+      "name": "quiet-after",
+      "far": false,
+      "nearExpected": false,
+      "rawRmsDbfs": -23.590946750900304,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -24.06614814456061,
+          "clipSamples": 0
+        },
+        "clockDrift": {
+          "rmsDbfs": -24.06614814456061,
+          "clipSamples": 0
+        },
+        "conditioned": {
+          "rmsDbfs": -24.41874061586265,
+          "clipSamples": 0
+        },
+        "headroom": {
+          "rmsDbfs": -30.086751142481326,
+          "clipSamples": 0
+        }
+      }
+    },
+    {
+      "name": "far-2",
+      "far": true,
+      "nearExpected": false,
+      "rawRmsDbfs": -12.65936059795586,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -31.40874857992625,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 37.8494341270524
+        },
+        "clockDrift": {
+          "rmsDbfs": -31.40917579887542,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 37.85090405263929
+        },
+        "conditioned": {
+          "rmsDbfs": -27.762214653626778,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 25.209595027333613
+        },
+        "headroom": {
+          "rmsDbfs": -36.95961134952676,
+          "clipSamples": 0,
+          "renderCoherentReductionDb": 40.749234605584064
+        }
+      },
+      "identifiable": true,
+      "validWindowFraction": 1.0,
+      "windows": [
+        {
+          "coverage": 0.8676470588235294,
+          "valid": true
+        },
+        {
+          "coverage": 0.5992647058823529,
+          "valid": true
+        },
+        {
+          "coverage": 0.8566176470588235,
+          "valid": true
+        },
+        {
+          "coverage": 0.7757352941176471,
+          "valid": true
+        },
+        {
+          "coverage": 0.6911764705882353,
+          "valid": true
+        }
+      ]
+    },
+    {
+      "name": "near-recovery",
+      "far": false,
+      "nearExpected": true,
+      "rawRmsDbfs": -23.287070102651356,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -23.32436996815281,
+          "clipSamples": 0,
+          "nearGainDb": -0.8250556010119625,
+          "nearSignedGain": 0.9093838139172888,
+          "nearCorrelation": 0.3085889299812801
+        },
+        "clockDrift": {
+          "rmsDbfs": -23.32436996815281,
+          "clipSamples": 0,
+          "nearGainDb": -0.8250556010119625,
+          "nearSignedGain": 0.9093838139172888,
+          "nearCorrelation": 0.3085889299812801
+        },
+        "conditioned": {
+          "rmsDbfs": -23.903793218901328,
+          "clipSamples": 0,
+          "nearGainDb": -1.7598864167003732,
+          "nearSignedGain": 0.8165930496806134,
+          "nearCorrelation": 0.29621698982742445
+        },
+        "headroom": {
+          "rmsDbfs": -29.344962408811135,
+          "clipSamples": 0,
+          "nearGainDb": -6.845642843471612,
+          "nearSignedGain": 0.4546925702555247,
+          "nearCorrelation": 0.3085891146609288
+        }
+      }
+    },
+    {
+      "name": "final-quiet",
+      "far": false,
+      "nearExpected": false,
+      "rawRmsDbfs": -13.769914469920304,
+      "variants": {
+        "baseline": {
+          "rmsDbfs": -14.148443662963503,
+          "clipSamples": 49
+        },
+        "clockDrift": {
+          "rmsDbfs": -14.148443662963503,
+          "clipSamples": 49
+        },
+        "conditioned": {
+          "rmsDbfs": -21.700585271376838,
+          "clipSamples": 0
+        },
+        "headroom": {
+          "rmsDbfs": -20.16126226666131,
+          "clipSamples": 0
+        }
+      }
+    }
+  ],
+  "acceptance": {
+    "baseline": {
+      "farOnlyPass": true,
+      "knownNearOnlyPass": false,
+      "knownDoubleTalkNearPass": false,
+      "doubleTalkEchoIdentifiablePass": true,
+      "humanListeningRequired": false
+    },
+    "clockDrift": {
+      "farOnlyPass": true,
+      "knownNearOnlyPass": false,
+      "knownDoubleTalkNearPass": false,
+      "doubleTalkEchoIdentifiablePass": true,
+      "humanListeningRequired": false
+    },
+    "conditioned": {
+      "farOnlyPass": true,
+      "knownNearOnlyPass": false,
+      "knownDoubleTalkNearPass": false,
+      "doubleTalkEchoIdentifiablePass": true,
+      "humanListeningRequired": false
+    },
+    "headroom": {
+      "farOnlyPass": true,
+      "knownNearOnlyPass": false,
+      "knownDoubleTalkNearPass": false,
+      "doubleTalkEchoIdentifiablePass": true,
+      "humanListeningRequired": false
+    }
+  },
+  "rawClippedSamples": 103,
+  "mixedClippedSamples": 131,
+  "maxAudioGapMs": 228.816,
+  "captureStarts": {
+    "record": 1,
+    "camera": 1
+  },
+  "totals": {
+    "rawBytes": 7372800,
+    "cleanBytes": 7372800,
+    "cameraFrames": 2321,
+    "injectedAudioBytes": 4649280,
+    "injectedVideoFrames": 1499
+  },
+  "stoppedStats": {
+    "captureSamples": 3686400,
+    "conditionedGain": 8,
+    "conditionedOverrangeSamples": 967632,
+    "discontinuities": 1,
+    "dspErrors": 0,
+    "headroomCaptureGain": 0.5,
+    "headroomPostGain": 1,
+    "loopbackHresult": 0,
+    "recordRawAudit": {
+      "activeRawCaptures": 0,
+      "lastHresult": 0,
+      "mfCreateRequests": 0,
+      "nativeCaptureFrames": 3817920,
+      "rawPropertiesAccepted": 1,
+      "rawRequests": 1,
+      "rawStarts": 1
+    },
+    "referenceKind": "selected render endpoint LOOPBACK; no microphone or speaker owner",
+    "renderChannels": 2,
+    "renderRate": 96000,
+    "reverseBlocks": 7933,
+    "silentPackets": 3514
+  },
+  "errors": [],
+  "peerSamples": 2320320,
+  "pcmSha256": {
+    "raw": "cacd0f2b6afc9eaf5be9e51ac786891f941e53b81e3fd97245c66b05cf3b4905",
+    "near": "0be44df3e1e253e41abf888539fd9fe2bac6e88f563c36ac055bac5cf613894a",
+    "mixed": "823e47c241452b4e80aed6c19928fa34c4f512cd7ab4fad5361aeb1ee3c206db",
+    "baseline": "75a9421e16a5839cd7dab59e34c539cad6268e0a8d95d652d6dc93e0a00ec6f8",
+    "clockDrift": "a68f4da8465c0570ca623f0fee743382d21332defd33a0faca327f62ae471aa1",
+    "conditioned": "3901ca336a172b8eac3a18967f55b304c1cee16a07cce3cf38ee7d702cd0c6da",
+    "headroom": "b955eea643eb67270e8a86ba25d5ba497a76ff79c131b4e54e008bd8f5a09159",
+    "actual_render": "1443ae9beab3920826ada9fafc875ad4d4ae931b54639b20b8384fdc6fa60885"
+  },
+  "caveats": [
+    "Coherent reduction is not broadband ERLE or source separation.",
+    "Real human near has no independent clean reference.",
+    "Single setup, short run and synthetic camera."
+  ]
+}
