@@ -97,6 +97,28 @@ iOS・Android・Web・macOS で動かした。操作と作りは [demo/README.md
 - 実マイクでのオーナーの評価（2026-10-19）: 精度の印象は iPad > Mac > Chrome > Android、速さは Mac・iPad > Android > Chrome。
   **どれも合格レベル**との評価。人数・時間・内容は未記録で、正解文との誤り率ではない。
 
+## Windows: パッケージ内の whisper.cpp（段階 2 の実測）
+
+OS の認識器が使えないため、オーナーの決定（2026-10-19）で Windows だけ `pcm_asr` の内部で whisper.cpp を動かす形にした。
+実装は `kiarina/pcm_asr` の `lib/pcm_asr_windows.dart`・`src/`・`windows/`（dart:ffi、isolate で推論、`prepare()` が Hugging Face から
+ggml の重みを hash 固定で取る）。計測は同 repo の例題を G-GEAR（Core i9-12900K、RTX 3080 Ti、Windows 11 25H2）で release build し、
+`tools/evaluate.py` と同じ判定にかけた。結果は `results/windows-whisper-*.json`、ログは `work/`（`PCM_ASR_LOG_FILE` でアプリが書く）。
+
+| モデル | backend | スレッド | CER | 要求→確定 中央値 / p95 / 最初 | 準備（取得＋ロード） |
+| --- | --- | ---: | ---: | --- | ---: |
+| base（148 MB） | CPU | 4 | 19.8 % | 635 / 765 / 639 ms | 5.8 秒 |
+| small（488 MB） | CPU | 4 | 7.0 % | 2343 / 2397 / 2334 ms | 14.4 秒 |
+| small | CPU | 8 | 7.0 % | 1355 / 1381 / 1364 ms | 0.36 秒（ロードのみ） |
+| large-v3-turbo q5_0（574 MB） | CPU | 4 | **0 %** | 12546 / 12640 / 13037 ms | 16.5 秒 |
+| large-v3-turbo f16（1.6 GB） | CPU | 4 | **0 %** | 13022 / 13358 / 13386 ms | 47.1 秒 |
+
+- CPU では large-v3-turbo が 1 字も間違えない代わりに 3 秒の区間に 12〜13 秒かかり、会話に追いつかない。small は Mac と同じ 7 %
+  （「改札→解説」「助かる→助かれ」「本当／ほんと」）で、8 スレッドなら 1.4 秒。base は「駅に着いた→息に吹いた」など 20 %。
+- whisper は 1 秒の無音に「この動画はこの動画で、また次回!」と幻覚した（`suppress_nst` でも）。backend は RMS 0.001 未満の区間を
+  whisper に渡さず空文字で返す。
+- 4 → 8 スレッドで small が 1.7 倍速い（P コア 8 の CPU）。既定の `threads: 0`（whisper.cpp の min(4, cores)）は Windows では少ない。
+- GPU（Vulkan）の計測は下に追記する。
+
 ## 判断と限界
 
 **外部 PCM → OS 標準 ASR → 要求ごとの最終結果、という契約は Apple（macOS・iOS）と Android（Pixel 6）で端末内で成立し、
