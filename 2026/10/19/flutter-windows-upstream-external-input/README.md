@@ -5,7 +5,7 @@ one continuous record/MF client and zero extra SDK capture attempts. Actual
 received PCM/video also passes with the separate native-playout diagnostic.
 Official SDK availability, public wrapper playout support and speaker/AEC remain
 unfinished. Core [Draft PR #314](https://github.com/webrtc-sdk/webrtc/pull/314)
-is submitted; the wrapper PR remains unsubmitted. This lab builds a candidate
+is submitted; [wrapper Draft PR #158](https://github.com/webrtc-sdk/libwebrtc/pull/158) is submitted. This lab builds a candidate
 SDK, not an unmodified official SDK, and cannot demonstrate official availability.
 
 Question: can the three-path recording policy plus an immutable external-only
@@ -167,6 +167,6 @@ The [wrapper proposal](upstream/wrapper/README.md) is based on main
 The Windows DLL and test target build successfully; all 25 wrapper tests pass,
 including four AudioDevice tests. This separate proposal includes a minimal
 eight-file patch, API contract, source/patch/DLL hashes, retained results and
-ready PR body. No wrapper PR is submitted. The original SDK pins, DLL and runtime
+ready PR body. [Wrapper Draft PR #158](https://github.com/webrtc-sdk/libwebrtc/pull/158) is submitted. The original SDK pins, DLL and runtime
 results above remain unchanged; runtime ETW/ABI and other OS validation have
 not been repeated for the new proposal.

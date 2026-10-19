@@ -2,7 +2,7 @@
 
 Core Draft PR: [webrtc-sdk/webrtc#314](https://github.com/webrtc-sdk/webrtc/pull/314),
 submitted on 2026-10-19 from [kiarina/webrtc](https://github.com/kiarina/webrtc),
-commit `543b9cb70ee7b07311d4f4ddefc014278d6066d4`. The wrapper PR remains unsubmitted.
+commit `543b9cb70ee7b07311d4f4ddefc014278d6066d4`. Wrapper [Draft PR #158](https://github.com/webrtc-sdk/libwebrtc/pull/158) is submitted.
 This is not a claim of a clean broad regression run or complete product support.
 
 ## Core: webrtc-sdk/webrtc → m150_release
@@ -63,7 +63,7 @@ Evidence and limitations:
 [validation lab](https://github.com/kiarina/labs/tree/main/2026/10/19/flutter-windows-upstream-external-input),
 [core differential tests](https://github.com/kiarina/labs/blob/main/2026/10/19/flutter-windows-stock-sdk-external-capture/results/core-policy-native.json).
 
-## Wrapper: webrtc-sdk/libwebrtc → main (dependent; do not submit yet)
+## Wrapper: webrtc-sdk/libwebrtc → main (dependent Draft PR #158)
 
 Title: **Add an immutable external-audio-only factory policy**
 
@@ -78,4 +78,5 @@ The original `sdk/factory-policy.patch` and f7e9 source pin remain the measured
 ETW/ABI candidate. They are not replaced by the latest-main proposal. Latest-main
 build/test evidence is in `upstream/wrapper/validation.json`; ETW, old-binary
 runtime, other OS builds and full presubmit were not repeated for the new DLL.
-No wrapper fork or PR has been published. Publication requires owner approval.
+Submitted as [Draft PR #158](https://github.com/webrtc-sdk/libwebrtc/pull/158) from
+[kiarina/libwebrtc](https://github.com/kiarina/libwebrtc), commit `f9a23f98e19c2784fd293941b9e67a43977f1635`.

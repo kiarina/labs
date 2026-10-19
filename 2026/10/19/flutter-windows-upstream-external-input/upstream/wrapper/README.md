@@ -2,7 +2,9 @@
 
 This is the latest-main submission candidate for `webrtc-sdk/libwebrtc`.
 It depends on [core PR #314](https://github.com/webrtc-sdk/webrtc/pull/314).
-No wrapper fork or PR has been published.
+Submitted as [Draft PR #158](https://github.com/webrtc-sdk/libwebrtc/pull/158) from
+[kiarina/libwebrtc](https://github.com/kiarina/libwebrtc), commit
+`f9a23f98e19c2784fd293941b9e67a43977f1635`, targeting upstream main.
 
 Apply [factory-policy.patch](factory-policy.patch) to main commit
 `9f6a87af46a5810a452aa20306c705b7c5269fbe`. The diff changes eight files:
@@ -95,6 +97,7 @@ Run `python3 verify.py --source /path/to/pristine/libwebrtc` to check hashes,
 strict patch application and retained test evidence without building or opening
 devices. Omit --source to fetch only the eight pinned original files.
 
-Before publication, recheck main, the core dependency and maintainer feedback.
-If either source changes, rebase and rerun relevant builds/tests. Obtain owner
-approval to create a fork and submit the prepared dependent Draft PR.
+For review updates, recheck main, the core dependency and maintainer feedback.
+If either source changes, rebase and rerun relevant builds/tests. The
+`upstreamPRCreated: false` field in validation.json is the measurement-time
+status; current submission status is recorded in inputs.json.
