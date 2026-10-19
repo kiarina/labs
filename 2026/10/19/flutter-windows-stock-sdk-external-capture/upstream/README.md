@@ -83,6 +83,20 @@ pre-initialization option is not the primary safety mechanism. If added as an
 optimization, keep its original meaning. No playout toggle, mixer-pull export,
 AEC algorithm, WASAPI workaround or audit counter belongs in this feature PR.
 
+## Downstream integration and remaining SDK dependency
+
+After an official SDK release exposes the factory policy, Flutter's native
+initialization must pass it before creating its shared factory. This is a small
+separate plugin integration, not something the new SDK API enables automatically
+for existing Flutter applications. Keep normal initialization as the default and
+reject changing the policy after initialization.
+
+This proposal addresses capture ownership only. The existing AEC lab also uses
+custom playout/mixer-pull exports; eliminating that remaining custom-SDK dependency
+requires a separate supported receive/playout design and successful decoding tests.
+Do not promise that merging recording suppression alone removes every custom DLL
+requirement from the complete speaker/AEC configuration.
+
 ## Submission gates
 
 - Compile the exact native and wrapper patches on the chosen upstream base.
