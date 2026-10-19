@@ -1,8 +1,9 @@
 # Upstream draft pull requests
 
-No PR has been submitted. The core change is ready for a bounded draft review;
-this is not a claim of a clean broad regression run or complete product support.
-Ask the owner before creating a public fork or submitting upstream.
+Core Draft PR: [webrtc-sdk/webrtc#314](https://github.com/webrtc-sdk/webrtc/pull/314),
+submitted on 2026-10-19 from [kiarina/webrtc](https://github.com/kiarina/webrtc),
+commit `543b9cb70ee7b07311d4f4ddefc014278d6066d4`. The wrapper PR remains unsubmitted.
+This is not a claim of a clean broad regression run or complete product support.
 
 ## Core: webrtc-sdk/webrtc → m150_release
 

@@ -4,7 +4,8 @@
 one continuous record/MF client and zero extra SDK capture attempts. Actual
 received PCM/video also passes with the separate native-playout diagnostic.
 Official SDK availability, public wrapper playout support and speaker/AEC remain
-unfinished. No upstream PR has been submitted. This lab builds a candidate
+unfinished. Core [Draft PR #314](https://github.com/webrtc-sdk/webrtc/pull/314)
+is submitted; the wrapper PR remains unsubmitted. This lab builds a candidate
 SDK, not an unmodified official SDK, and cannot demonstrate official availability.
 
 Question: can the three-path recording policy plus an immutable external-only
@@ -154,3 +155,7 @@ its desktop-capture update. The eight candidate target files are byte-identical
 to the tested f7e9 source and the factory patch applies. That main revision was
 not built; keep the tested pin and rebuild before the dependent wrapper PR.
 See [head audit](results/wrapper-head-audit.json).
+
+The `upstreamPRCreated: false` flag in retained trial results records the status
+at measurement time. Current submission status is in `sdk/core-inputs.json` and
+[PR drafts](PR_DRAFTS.md). Submission did not change the tested code.
