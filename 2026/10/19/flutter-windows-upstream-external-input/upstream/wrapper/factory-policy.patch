@@ -1,0 +1,290 @@
+diff --git a/include/libwebrtc.h b/include/libwebrtc.h
+index 1dcb072..33cbeb8 100644
+--- a/include/libwebrtc.h
++++ b/include/libwebrtc.h
+@@ -60,6 +60,11 @@ class LibWebRTC {
+   LIB_WEBRTC_API static scoped_refptr<RTCPeerConnectionFactory>
+   CreateRTCPeerConnectionFactory();
+ 
++  // External-only factories reject microphone sources (returning nullptr).
++  // The default no-argument factory retains ordinary capture behavior.
++  LIB_WEBRTC_API static scoped_refptr<RTCPeerConnectionFactory>
++  CreateRTCPeerConnectionFactory(const RTCPeerConnectionFactoryOptions& options);
++
+   /**
+    * @brief Terminates the WebRTC PeerConnectionFactory and threads.
+    *
+diff --git a/include/rtc_peerconnection_factory.h b/include/rtc_peerconnection_factory.h
+index b5487bc..33f6331 100644
+--- a/include/rtc_peerconnection_factory.h
++++ b/include/rtc_peerconnection_factory.h
+@@ -20,6 +20,15 @@ class RTCAudioProcessing;
+ class RTCVideoDevice;
+ class RTCRtpCapabilities;
+ 
++// Options are copied when the factory is created and cannot change afterward.
++// Audio tracks/sources must be created by the factory they are used with.
++struct RTCPeerConnectionFactoryOptions {
++  // Accept only custom audio input and disable device recording for every
++  // connection in this factory. Requires the core recording-policy fix.
++  // Separate factories may still capture. Playout is unaffected.
++  bool external_audio_input_only = false;
++};
++
+ class RTCPeerConnectionFactory : public RefCountInterface {
+  public:
+   virtual bool Initialize() = 0;
+diff --git a/src/libwebrtc.cc b/src/libwebrtc.cc
+index 5d1a27f..721deab 100644
+--- a/src/libwebrtc.cc
++++ b/src/libwebrtc.cc
+@@ -43,9 +43,15 @@ void LibWebRTC::Terminate() {
+ // Creates and returns an instance of RTCPeerConnectionFactory.
+ scoped_refptr<RTCPeerConnectionFactory>
+ LibWebRTC::CreateRTCPeerConnectionFactory() {
++  return CreateRTCPeerConnectionFactory(RTCPeerConnectionFactoryOptions{});
++}
++
++scoped_refptr<RTCPeerConnectionFactory>
++LibWebRTC::CreateRTCPeerConnectionFactory(
++    const RTCPeerConnectionFactoryOptions& options) {
+   scoped_refptr<RTCPeerConnectionFactory> rtc_peerconnection_factory =
+       scoped_refptr<RTCPeerConnectionFactory>(
+-          new RefCountedObject<RTCPeerConnectionFactoryImpl>());
++          new RefCountedObject<RTCPeerConnectionFactoryImpl>(options));
+   return rtc_peerconnection_factory;
+ }
+ 
+diff --git a/src/rtc_peerconnection_factory_impl.cc b/src/rtc_peerconnection_factory_impl.cc
+index cf524b6..2b97d7e 100644
+--- a/src/rtc_peerconnection_factory_impl.cc
++++ b/src/rtc_peerconnection_factory_impl.cc
+@@ -58,8 +58,9 @@ webrtc::Environment CreateEnvironmentWithFieldTrials() {
+ 
+ }  // namespace
+ 
+-RTCPeerConnectionFactoryImpl::RTCPeerConnectionFactoryImpl():
+-env_(CreateEnvironmentWithFieldTrials()) {}
++RTCPeerConnectionFactoryImpl::RTCPeerConnectionFactoryImpl(
++    const RTCPeerConnectionFactoryOptions& options)
++    : options_(options), env_(CreateEnvironmentWithFieldTrials()) {}
+ 
+ RTCPeerConnectionFactoryImpl::~RTCPeerConnectionFactoryImpl() {}
+ 
+@@ -166,7 +167,8 @@ scoped_refptr<RTCPeerConnection> RTCPeerConnectionFactoryImpl::Create(
+   scoped_refptr<RTCPeerConnection> peerconnection =
+       scoped_refptr<RTCPeerConnectionImpl>(
+           new RefCountedObject<RTCPeerConnectionImpl>(
+-              configuration, constraints, rtc_peerconnection_factory_));
++              configuration, constraints, rtc_peerconnection_factory_,
++              options_.external_audio_input_only));
+   peerconnections_.push_back(peerconnection);
+   return peerconnection;
+ }
+@@ -241,6 +243,11 @@ RTCPeerConnectionFactoryImpl::CreateAudioSourceWithOptions(
+ scoped_refptr<RTCAudioSource> RTCPeerConnectionFactoryImpl::CreateAudioSource(
+     const string audio_source_label, RTCAudioSource::SourceType source_type,
+     RTCAudioOptions options) {
++  if (options_.external_audio_input_only &&
++      source_type != RTCAudioSource::SourceType::kCustom) {
++    RTC_LOG(LS_ERROR) << "Microphone sources are disabled for this factory";
++    return nullptr;
++  }
+   auto rtc_options = webrtc::AudioOptions();
+   rtc_options.echo_cancellation = options.echo_cancellation;
+   rtc_options.auto_gain_control = options.auto_gain_control;
+@@ -387,6 +394,10 @@ scoped_refptr<RTCVideoTrack> RTCPeerConnectionFactoryImpl::CreateVideoTrack(
+ 
+ scoped_refptr<RTCAudioTrack> RTCPeerConnectionFactoryImpl::CreateAudioTrack(
+     scoped_refptr<RTCAudioSource> source, const string track_id) {
++  if (!source || (options_.external_audio_input_only &&
++                  source->GetSourceType() != RTCAudioSource::SourceType::kCustom)) {
++    return nullptr;
++  }
+   RTCAudioSourceImpl* source_impl =
+       static_cast<RTCAudioSourceImpl*>(source.get());
+ 
+diff --git a/src/rtc_peerconnection_factory_impl.h b/src/rtc_peerconnection_factory_impl.h
+index 8b26a74..a215130 100644
+--- a/src/rtc_peerconnection_factory_impl.h
++++ b/src/rtc_peerconnection_factory_impl.h
+@@ -27,7 +27,8 @@ namespace libwebrtc {
+ 
+ class RTCPeerConnectionFactoryImpl : public RTCPeerConnectionFactory {
+  public:
+-  RTCPeerConnectionFactoryImpl();
++  explicit RTCPeerConnectionFactoryImpl(
++      const RTCPeerConnectionFactoryOptions& options = {});
+ 
+   virtual ~RTCPeerConnectionFactoryImpl();
+ 
+@@ -106,6 +107,7 @@ class RTCPeerConnectionFactoryImpl : public RTCPeerConnectionFactory {
+       scoped_refptr<RTCMediaConstraints> constraints);
+ #endif
+  private:
++  const RTCPeerConnectionFactoryOptions options_;
+   std::unique_ptr<webrtc::Thread> worker_thread_;
+   std::unique_ptr<webrtc::Thread> signaling_thread_;
+   std::unique_ptr<webrtc::Thread> network_thread_;
+diff --git a/src/rtc_peerconnection_impl.cc b/src/rtc_peerconnection_impl.cc
+index 40fcdda..7113dad 100644
+--- a/src/rtc_peerconnection_impl.cc
++++ b/src/rtc_peerconnection_impl.cc
+@@ -214,8 +214,10 @@ RTCPeerConnectionImpl::RTCPeerConnectionImpl(
+     const RTCConfiguration& configuration,
+     scoped_refptr<RTCMediaConstraints> constraints,
+     webrtc::scoped_refptr<webrtc::PeerConnectionFactoryInterface>
+-        peer_connection_factory)
++        peer_connection_factory,
++    bool external_audio_input_only)
+     : rtc_peerconnection_factory_(peer_connection_factory),
++      external_audio_input_only_(external_audio_input_only),
+       configuration_(configuration),
+       constraints_(constraints),
+       callback_crt_sec_(new webrtc::Mutex()) {
+@@ -462,6 +464,11 @@ bool RTCPeerConnectionImpl::Initialize() {
+   }
+ 
+   rtc_peerconnection_ = result.MoveValue();
++  if (external_audio_input_only_) {
++    // AudioState is shared by this factory. Apply the immutable policy before
++    // exposing the connection to AddTrack, negotiation or sender operations.
++    rtc_peerconnection_->SetAudioRecording(false);
++  }
+   return true;
+ }
+ 
+diff --git a/src/rtc_peerconnection_impl.h b/src/rtc_peerconnection_impl.h
+index c9c5d72..b86be8a 100644
+--- a/src/rtc_peerconnection_impl.h
++++ b/src/rtc_peerconnection_impl.h
+@@ -140,7 +140,8 @@ class RTCPeerConnectionImpl : public RTCPeerConnection,
+       const RTCConfiguration& configuration,
+       scoped_refptr<RTCMediaConstraints> constraints,
+       webrtc::scoped_refptr<webrtc::PeerConnectionFactoryInterface>
+-          peer_connection_factory);
++          peer_connection_factory,
++      bool external_audio_input_only = false);
+ 
+  protected:
+   ~RTCPeerConnectionImpl();
+@@ -186,6 +187,7 @@ class RTCPeerConnectionImpl : public RTCPeerConnection,
+   webrtc::scoped_refptr<webrtc::PeerConnectionFactoryInterface>
+       rtc_peerconnection_factory_;
+   webrtc::scoped_refptr<webrtc::PeerConnectionInterface> rtc_peerconnection_;
++  const bool external_audio_input_only_;
+   const RTCConfiguration& configuration_;
+   scoped_refptr<RTCMediaConstraints> constraints_;
+   webrtc::PeerConnectionInterface::RTCOfferAnswerOptions offer_answer_options_;
+diff --git a/test/peerconnection_factory.test.cc b/test/peerconnection_factory.test.cc
+index 81a7b45..b774fb5 100644
+--- a/test/peerconnection_factory.test.cc
++++ b/test/peerconnection_factory.test.cc
+@@ -5,6 +5,7 @@
+ #include "rtc_mediaconstraints.h"
+ #include "rtc_peerconnection.h"
+ #include "rtc_peerconnection_factory.h"
++#include "rtc_rtp_sender.h"
+ 
+ using libwebrtc::LibWebRTC;
+ using libwebrtc::scoped_refptr;
+@@ -67,3 +68,99 @@ TEST(AudioDevice, EnumerationWorksBeforePeerConnection) {
+   factory = nullptr;
+   LibWebRTC::Terminate();
+ }
++
++TEST(AudioDevice, ExternalOnlyFactoryRejectsMicrophoneAndAllowsCustomSources) {
++  ASSERT_TRUE(LibWebRTC::Initialize());
++  libwebrtc::RTCPeerConnectionFactoryOptions options;
++  options.external_audio_input_only = true;
++  auto factory = LibWebRTC::CreateRTCPeerConnectionFactory(options);
++  ASSERT_TRUE(factory->Initialize());
++  EXPECT_EQ(factory->CreateAudioSource("mic").get(), nullptr);
++  auto source = factory->CreateAudioSource(
++      "external", libwebrtc::RTCAudioSource::SourceType::kCustom);
++  ASSERT_NE(source.get(), nullptr);
++  auto track = factory->CreateAudioTrack(source, "external-track");
++  ASSERT_NE(track.get(), nullptr);
++
++  libwebrtc::RTCConfiguration config{};
++  auto constraints = libwebrtc::RTCMediaConstraints::Create();
++  auto first = factory->Create(config, constraints);
++  auto second = factory->Create(config, constraints);
++  ASSERT_NE(first.get(), nullptr);
++  ASSERT_NE(second.get(), nullptr);
++  auto first_sender = first->AddTrack(track, {});
++  auto second_sender = second->AddTrack(track, {});
++  ASSERT_NE(first_sender.get(), nullptr);
++  ASSERT_NE(second_sender.get(), nullptr);
++  EXPECT_TRUE(first->RemoveTrack(first_sender));
++  EXPECT_TRUE(second->RemoveTrack(second_sender));
++  first_sender = nullptr;
++  second_sender = nullptr;
++  first->Close();
++  second->Close();
++  factory->Delete(first);
++  factory->Delete(second);
++  first = nullptr;
++  second = nullptr;
++  track = nullptr;
++  source = nullptr;
++  factory->Terminate();
++  factory = nullptr;
++  LibWebRTC::Terminate();
++}
++
++TEST(AudioDevice, ExternalOnlyPolicyIsCopiedAndDefaultFactoryStaysIndependent) {
++  ASSERT_TRUE(LibWebRTC::Initialize());
++  libwebrtc::RTCPeerConnectionFactoryOptions options;
++  options.external_audio_input_only = true;
++  auto external = LibWebRTC::CreateRTCPeerConnectionFactory(options);
++  options.external_audio_input_only = false;
++  auto ordinary = LibWebRTC::CreateRTCPeerConnectionFactory();
++  ASSERT_TRUE(external->Initialize());
++  ASSERT_TRUE(ordinary->Initialize());
++  EXPECT_EQ(external->CreateAudioSource("external-mic").get(), nullptr);
++  auto mic = ordinary->CreateAudioSource("ordinary-mic");
++  auto custom = ordinary->CreateAudioSource(
++      "ordinary-custom", libwebrtc::RTCAudioSource::SourceType::kCustom);
++  ASSERT_NE(mic.get(), nullptr);
++  ASSERT_NE(custom.get(), nullptr);
++  EXPECT_EQ(external->CreateAudioTrack(mic, "foreign-mic").get(), nullptr);
++
++  libwebrtc::RTCConfiguration config{};
++  auto constraints = libwebrtc::RTCMediaConstraints::Create();
++  auto external_pc = external->Create(config, constraints);
++  auto ordinary_pc = ordinary->Create(config, constraints);
++  ASSERT_NE(external_pc.get(), nullptr);
++  ASSERT_NE(ordinary_pc.get(), nullptr);
++  external_pc->Close();
++  ordinary_pc->Close();
++  external->Delete(external_pc);
++  ordinary->Delete(ordinary_pc);
++  external_pc = nullptr;
++  ordinary_pc = nullptr;
++  custom = nullptr;
++  mic = nullptr;
++  external->Terminate();
++  ordinary->Terminate();
++  external = nullptr;
++  ordinary = nullptr;
++  LibWebRTC::Terminate();
++}
++
++TEST(AudioDevice, DefaultOptionsAllowMicrophoneAndRejectNullSource) {
++  ASSERT_TRUE(LibWebRTC::Initialize());
++  libwebrtc::RTCPeerConnectionFactoryOptions options;
++  EXPECT_FALSE(options.external_audio_input_only);
++  auto factory = LibWebRTC::CreateRTCPeerConnectionFactory(options);
++  ASSERT_TRUE(factory->Initialize());
++  auto source = factory->CreateAudioSource("ordinary-mic");
++  ASSERT_NE(source.get(), nullptr);
++  auto track = factory->CreateAudioTrack(source, "ordinary-track");
++  EXPECT_NE(track.get(), nullptr);
++  EXPECT_EQ(factory->CreateAudioTrack(nullptr, "null-source").get(), nullptr);
++  track = nullptr;
++  source = nullptr;
++  factory->Terminate();
++  factory = nullptr;
++  LibWebRTC::Terminate();
++}

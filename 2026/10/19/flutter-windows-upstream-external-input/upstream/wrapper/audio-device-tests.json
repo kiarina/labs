@@ -1,0 +1,62 @@
+{
+  "tests": 4,
+  "failures": 0,
+  "disabled": 0,
+  "errors": 0,
+  "timestamp": "2026-10-19T18:19:10Z",
+  "time": "0.219s",
+  "name": "AllTests",
+  "testsuites": [
+    {
+      "name": "AudioDevice",
+      "tests": 4,
+      "failures": 0,
+      "disabled": 0,
+      "errors": 0,
+      "timestamp": "2026-10-19T18:19:10Z",
+      "time": "0.219s",
+      "testsuite": [
+        {
+          "name": "EnumerationWorksBeforePeerConnection",
+          "file": "..\\libwebrtc\\test\\peerconnection_factory.test.cc",
+          "line": 30,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:10Z",
+          "time": "0.057s",
+          "classname": "AudioDevice"
+        },
+        {
+          "name": "ExternalOnlyFactoryRejectsMicrophoneAndAllowsCustomSources",
+          "file": "..\\libwebrtc\\test\\peerconnection_factory.test.cc",
+          "line": 72,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:10Z",
+          "time": "0.046s",
+          "classname": "AudioDevice"
+        },
+        {
+          "name": "ExternalOnlyPolicyIsCopiedAndDefaultFactoryStaysIndependent",
+          "file": "..\\libwebrtc\\test\\peerconnection_factory.test.cc",
+          "line": 112,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:11Z",
+          "time": "0.078s",
+          "classname": "AudioDevice"
+        },
+        {
+          "name": "DefaultOptionsAllowMicrophoneAndRejectNullSource",
+          "file": "..\\libwebrtc\\test\\peerconnection_factory.test.cc",
+          "line": 150,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:11Z",
+          "time": "0.037s",
+          "classname": "AudioDevice"
+        }
+      ]
+    }
+  ]
+}

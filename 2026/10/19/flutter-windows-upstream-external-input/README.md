@@ -159,3 +159,14 @@ See [head audit](results/wrapper-head-audit.json).
 The `upstreamPRCreated: false` flag in retained trial results records the status
 at measurement time. Current submission status is in `sdk/core-inputs.json` and
 [PR drafts](PR_DRAFTS.md). Submission did not change the tested code.
+
+## Latest-main wrapper PR preparation
+
+The [wrapper proposal](upstream/wrapper/README.md) is based on main
+`9f6a87af46a5810a452aa20306c705b7c5269fbe` and depends on core PR #314.
+The Windows DLL and test target build successfully; all 25 wrapper tests pass,
+including four AudioDevice tests. This separate proposal includes a minimal
+eight-file patch, API contract, source/patch/DLL hashes, retained results and
+ready PR body. No wrapper PR is submitted. The original SDK pins, DLL and runtime
+results above remain unchanged; runtime ETW/ABI and other OS validation have
+not been repeated for the new proposal.

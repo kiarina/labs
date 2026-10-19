@@ -1,0 +1,294 @@
+{
+  "tests": 25,
+  "failures": 0,
+  "disabled": 0,
+  "errors": 0,
+  "timestamp": "2026-10-19T18:19:30Z",
+  "time": "0.457s",
+  "name": "AllTests",
+  "testsuites": [
+    {
+      "name": "FieldTrialsTest",
+      "tests": 15,
+      "failures": 0,
+      "disabled": 0,
+      "errors": 0,
+      "timestamp": "2026-10-19T18:19:30Z",
+      "time": "0.046s",
+      "testsuite": [
+        {
+          "name": "BuildFieldTrialsStringAppendsMissingSeparator",
+          "file": "..\\libwebrtc\\test\\field_trials.test.cc",
+          "line": 53,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0s",
+          "classname": "FieldTrialsTest"
+        },
+        {
+          "name": "BuildFieldTrialsStringConcatenatesEntries",
+          "file": "..\\libwebrtc\\test\\field_trials.test.cc",
+          "line": 60,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0s",
+          "classname": "FieldTrialsTest"
+        },
+        {
+          "name": "BuildFieldTrialsStringSkipsEmptyEntries",
+          "file": "..\\libwebrtc\\test\\field_trials.test.cc",
+          "line": 66,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0s",
+          "classname": "FieldTrialsTest"
+        },
+        {
+          "name": "InitFieldTrialsFromStringAppliesTrials",
+          "file": "..\\libwebrtc\\test\\field_trials.test.cc",
+          "line": 73,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0s",
+          "classname": "FieldTrialsTest"
+        },
+        {
+          "name": "UnconfiguredTrialIsNeitherEnabledNorDisabled",
+          "file": "..\\libwebrtc\\test\\field_trials.test.cc",
+          "line": 89,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0s",
+          "classname": "FieldTrialsTest"
+        },
+        {
+          "name": "InitFieldTrialsAcceptsEntriesWithoutTrailingSeparator",
+          "file": "..\\libwebrtc\\test\\field_trials.test.cc",
+          "line": 98,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0s",
+          "classname": "FieldTrialsTest"
+        },
+        {
+          "name": "WellKnownKeysAreAccepted",
+          "file": "..\\libwebrtc\\test\\field_trials.test.cc",
+          "line": 110,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0s",
+          "classname": "FieldTrialsTest"
+        },
+        {
+          "name": "ForcePlayoutDelayIsAppliedFromString",
+          "file": "..\\libwebrtc\\test\\field_trials.test.cc",
+          "line": 134,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0s",
+          "classname": "FieldTrialsTest"
+        },
+        {
+          "name": "ForcePlayoutDelayIsAppliedFromEntries",
+          "file": "..\\libwebrtc\\test\\field_trials.test.cc",
+          "line": 150,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0s",
+          "classname": "FieldTrialsTest"
+        },
+        {
+          "name": "ForcePlayoutDelayCoexistsWithOtherTrials",
+          "file": "..\\libwebrtc\\test\\field_trials.test.cc",
+          "line": 163,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0s",
+          "classname": "FieldTrialsTest"
+        },
+        {
+          "name": "ForcePlayoutDelayIsClearedByEmptyString",
+          "file": "..\\libwebrtc\\test\\field_trials.test.cc",
+          "line": 176,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0s",
+          "classname": "FieldTrialsTest"
+        },
+        {
+          "name": "InvalidStringIsRejectedAndKeepsPreviousTrials",
+          "file": "..\\libwebrtc\\test\\field_trials.test.cc",
+          "line": 187,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0s",
+          "classname": "FieldTrialsTest"
+        },
+        {
+          "name": "EmptyStringClearsTrials",
+          "file": "..\\libwebrtc\\test\\field_trials.test.cc",
+          "line": 206,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0s",
+          "classname": "FieldTrialsTest"
+        },
+        {
+          "name": "ReinitializationReplacesPreviousTrials",
+          "file": "..\\libwebrtc\\test\\field_trials.test.cc",
+          "line": 217,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0s",
+          "classname": "FieldTrialsTest"
+        },
+        {
+          "name": "InitializeWithFieldTrialsAppliesTrialsBeforeFactory",
+          "file": "..\\libwebrtc\\test\\field_trials.test.cc",
+          "line": 229,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0.045s",
+          "classname": "FieldTrialsTest"
+        }
+      ]
+    },
+    {
+      "name": "AudioDevice",
+      "tests": 4,
+      "failures": 0,
+      "disabled": 0,
+      "errors": 0,
+      "timestamp": "2026-10-19T18:19:30Z",
+      "time": "0.193s",
+      "testsuite": [
+        {
+          "name": "EnumerationWorksBeforePeerConnection",
+          "file": "..\\libwebrtc\\test\\peerconnection_factory.test.cc",
+          "line": 30,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0.042s",
+          "classname": "AudioDevice"
+        },
+        {
+          "name": "ExternalOnlyFactoryRejectsMicrophoneAndAllowsCustomSources",
+          "file": "..\\libwebrtc\\test\\peerconnection_factory.test.cc",
+          "line": 72,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0.041s",
+          "classname": "AudioDevice"
+        },
+        {
+          "name": "ExternalOnlyPolicyIsCopiedAndDefaultFactoryStaysIndependent",
+          "file": "..\\libwebrtc\\test\\peerconnection_factory.test.cc",
+          "line": 112,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0.073s",
+          "classname": "AudioDevice"
+        },
+        {
+          "name": "DefaultOptionsAllowMicrophoneAndRejectNullSource",
+          "file": "..\\libwebrtc\\test\\peerconnection_factory.test.cc",
+          "line": 150,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0.036s",
+          "classname": "AudioDevice"
+        }
+      ]
+    },
+    {
+      "name": "VideoProcessorTest",
+      "tests": 6,
+      "failures": 0,
+      "disabled": 0,
+      "errors": 0,
+      "timestamp": "2026-10-19T18:19:30Z",
+      "time": "0.217s",
+      "testsuite": [
+        {
+          "name": "WithoutProcessorsFramesAreUnchanged",
+          "file": "..\\libwebrtc\\test\\video_processor.test.cc",
+          "line": 105,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0.036s",
+          "classname": "VideoProcessorTest"
+        },
+        {
+          "name": "ReplacedFrameReachesRenderer",
+          "file": "..\\libwebrtc\\test\\video_processor.test.cc",
+          "line": 111,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0.035s",
+          "classname": "VideoProcessorTest"
+        },
+        {
+          "name": "PassThroughKeepsFrame",
+          "file": "..\\libwebrtc\\test\\video_processor.test.cc",
+          "line": 122,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0.035s",
+          "classname": "VideoProcessorTest"
+        },
+        {
+          "name": "ProcessorsRunInOrderAdded",
+          "file": "..\\libwebrtc\\test\\video_processor.test.cc",
+          "line": 133,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0.038s",
+          "classname": "VideoProcessorTest"
+        },
+        {
+          "name": "NullResultDropsFrame",
+          "file": "..\\libwebrtc\\test\\video_processor.test.cc",
+          "line": 147,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0.035s",
+          "classname": "VideoProcessorTest"
+        },
+        {
+          "name": "RemovedProcessorIsNotCalled",
+          "file": "..\\libwebrtc\\test\\video_processor.test.cc",
+          "line": 161,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-10-19T18:19:30Z",
+          "time": "0.036s",
+          "classname": "VideoProcessorTest"
+        }
+      ]
+    }
+  ]
+}

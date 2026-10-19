@@ -67,33 +67,15 @@ Evidence and limitations:
 
 Title: **Add an immutable external-audio-only factory policy**
 
-Patch: [sdk/factory-policy.patch](sdk/factory-policy.patch), based on
-`f7e9e5904ca743066bbd8cc0e5676b7a08c48436`. Requires the core policy fix above;
-use the final upstream core PR/release reference before submission.
+Submission candidate: [latest-main wrapper proposal](upstream/wrapper/README.md),
+[patch](upstream/wrapper/factory-policy.patch) and
+[ready body](upstream/wrapper/PR_BODY.md). Based on main
+`9f6a87af46a5810a452aa20306c705b7c5269fbe`, with all 25 wrapper tests passing
+on Windows x64 (including four AudioDevice tests). Requires
+[core PR #314](https://github.com/webrtc-sdk/webrtc/pull/314).
 
-Keep the exported no-argument factory and add an options overload, defaulting to
-ordinary recording. Copy the policy into the factory, apply disabled recording
-before exposing each native connection, and reject microphone sources/tracks
-created through an external-only factory. Specify external-mode source/track
-ownership carefully: foreign track use is outside the supported contract, and a
-separate ordinary factory may intentionally capture. This is not a process-wide
-microphone block. The final public header wording/API shape remains reviewable.
-
-Three AudioDevice tests pass: existing enumeration/no-argument use, custom input
-with two external connections, and copied options/default-factory independence
-including rejection of a foreign microphone source in CreateAudioTrack. The
-older official05-header Flutter binaries run unchanged against the candidate
-DLL with exit0/errors0 and the expected loaded hash. That tests the exercised
-interfaces, not exhaustive ABI certification. Independent ETW/media results are
-retained in the validation lab. Ordinary native output-format failure and the
-missing public wrapper playout/clock control remain separate limitations.
-
-Do not include the diagnostic protected-member access, lab environment controls,
-media-tap plugin, AEC, mixer-pull APIs or observation tools in this PR. Flutter's
-initialize integration is a later thin change after official SDK support exists.
-
-Wrapper main was rechecked at `9f6a87af46a5810a452aa20306c705b7c5269fbe` after
-its desktop-capture update. The eight candidate target files are byte-identical
-to the tested f7e9 source and the factory patch applies. That main revision was
-not built; keep the tested pin and rebuild before the dependent wrapper PR.
-See [head audit](results/wrapper-head-audit.json).
+The original `sdk/factory-policy.patch` and f7e9 source pin remain the measured
+ETW/ABI candidate. They are not replaced by the latest-main proposal. Latest-main
+build/test evidence is in `upstream/wrapper/validation.json`; ETW, old-binary
+runtime, other OS builds and full presubmit were not repeated for the new DLL.
+No wrapper fork or PR has been published. Publication requires owner approval.
