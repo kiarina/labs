@@ -9,6 +9,7 @@
 - 2026/10/19 [Always-on camera and record capture into on-demand WebRTC media tracks](../2026/10/19/flutter-webrtc-external-capture/README.md)
 - 2026/10/19 [Windows double-talk echo cancellation with continuous camera and record capture](../2026/10/19/flutter-windows-aec-doubletalk/README.md)
 - 2026/10/19 [Stock Windows WebRTC SDK with continuous camera and record capture: recording isolation feasibility](../2026/10/19/flutter-windows-stock-sdk-external-capture/README.md)
+- 2026/10/19 [Validating upstream recording policy and external-only factories in native Flutter on Windows](../2026/10/19/flutter-windows-upstream-external-input/README.md)
 - 2026/10/18 [Real-time microphone analysis in Flutter (VAD, speaker change, whisper.cpp ASR, speaker and sound embeddings, YAMNet) on macOS, Windows, Android, iOS and web](../2026/10/18/flutter-realtime-audio-analysis/README.md)
 - 2026/10/09 [Connecting N orchestrator apps over WebRTC: one brain drives workers on many bodies, every console shows the same state](../2026/10/09/flutter-agent-orchestrator-mesh/README.md)
 - 2026/10/09 [Several orchestrators on one network: a signaling server with a roster and body ownership](../2026/10/09/flutter-agent-orchestrator-multi-brain/README.md)

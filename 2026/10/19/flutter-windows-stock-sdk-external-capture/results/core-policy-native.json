@@ -1,0 +1,59 @@
+{
+  "nativeCommit": "51c367e209f8f12b39bd8dd0ca70bf588f42cb48",
+  "patchSha256": "099b0b912f5cdd3073d3c1cdb724efac8e21bbd998066e789db96cdddac43e75",
+  "platform": "Windows x64, Visual Studio 2022, Chromium Clang",
+  "control": "same candidate test harness/getter; all three production guards reverted; not a pristine upstream binary",
+  "buildPassed": true,
+  "groups": {
+    "audio-state": {
+      "tests": 60,
+      "candidatePassed": 60,
+      "candidateFailed": 0,
+      "controlFailed": 4,
+      "newFailures": [],
+      "repaired": [
+        "AudioStateTest/AudioStateTest.AddStreamDoesNothingIfRecordingDisabled/0",
+        "AudioStateTest/AudioStateTest.AddStreamDoesNothingIfRecordingDisabled/1",
+        "AudioStateTest/AudioStateTest.AddStreamDoesNothingIfRecordingDisabled/2",
+        "AudioStateTest/AudioStateTest.AddStreamDoesNothingIfRecordingDisabled/3"
+      ],
+      "commonFailureNamesSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "commonFailureExamples": []
+    },
+    "voice-engine": {
+      "tests": 310,
+      "candidatePassed": 132,
+      "candidateFailed": 178,
+      "controlFailed": 182,
+      "newFailures": [],
+      "repaired": [
+        "TestBothWithAndWithoutNullApm/WebRtcVoiceEngineTestFake.DisabledRecordingSkipsEagerInitialization/0",
+        "TestBothWithAndWithoutNullApm/WebRtcVoiceEngineTestFake.DisabledRecordingSkipsEagerInitialization/1",
+        "TestBothWithAndWithoutNullApm/WebRtcVoiceEngineTestFake.DisabledRecordingSkipsMuteUnmuteDeviceAccess/0",
+        "TestBothWithAndWithoutNullApm/WebRtcVoiceEngineTestFake.DisabledRecordingSkipsMuteUnmuteDeviceAccess/1"
+      ],
+      "commonFailureNamesSha256": "f0703cb725bc748a0538c0dd708ff8d8ebae8e9412ee237edadad393c0d540fa",
+      "commonFailureExamples": [
+        "TestBothWithAndWithoutNullApm/WebRtcVoiceEngineTestFake.AddRecvStreamEnableNack/0",
+        "TestBothWithAndWithoutNullApm/WebRtcVoiceEngineTestFake.AddRecvStreamEnableNack/1",
+        "TestBothWithAndWithoutNullApm/WebRtcVoiceEngineTestFake.AddRecvStreamEnableRtcpReducedSize/0"
+      ]
+    }
+  },
+  "deviceCaptureValidated": false,
+  "wrapperValidated": false,
+  "upstreamPRCreated": false,
+  "focusedVoiceTestsPassed": [
+    "TestBothWithAndWithoutNullApm/WebRtcVoiceEngineTestFake.DisabledRecordingSkipsEagerInitialization/0",
+    "TestBothWithAndWithoutNullApm/WebRtcVoiceEngineTestFake.DisabledRecordingSkipsEagerInitialization/1",
+    "TestBothWithAndWithoutNullApm/WebRtcVoiceEngineTestFake.DisabledRecordingSkipsMuteUnmuteDeviceAccess/0",
+    "TestBothWithAndWithoutNullApm/WebRtcVoiceEngineTestFake.DisabledRecordingSkipsMuteUnmuteDeviceAccess/1",
+    "TestBothWithAndWithoutNullApm/WebRtcVoiceEngineTestFake.EnabledRecordingStillRestartsOnUnmute/0",
+    "TestBothWithAndWithoutNullApm/WebRtcVoiceEngineTestFake.EnabledRecordingStillRestartsOnUnmute/1",
+    "TestBothWithAndWithoutNullApm/WebRtcVoiceEngineTestFake.InitRecordingOnSend/0",
+    "TestBothWithAndWithoutNullApm/WebRtcVoiceEngineTestFake.InitRecordingOnSend/1",
+    "TestBothWithAndWithoutNullApm/WebRtcVoiceEngineTestFake.SkipInitRecordingOnSend/0",
+    "TestBothWithAndWithoutNullApm/WebRtcVoiceEngineTestFake.SkipInitRecordingOnSend/1"
+  ],
+  "allTestsPassed": false
+}

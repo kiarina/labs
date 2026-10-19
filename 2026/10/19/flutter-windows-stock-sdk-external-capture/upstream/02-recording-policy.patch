@@ -1,0 +1,151 @@
+--- a/call/audio_state.h
++++ b/call/audio_state.h
+@@ -52,9 +52,12 @@
+   virtual void SetPlayout(bool enabled) = 0;
+ 
+   // Enable/disable recording of the audio channels. Enabled by default.
+-  // This will stop recording of the underlying audio device and no audio
+-  // packets will be encoded or transmitted.
++  // Disabling stops device recording and prevents recording initialization
++  // and start until re-enabled. This does not gate independently fed sources.
+   virtual void SetRecording(bool enabled) = 0;
++
++  // Accessed on the same worker sequence as SetRecording().
++  virtual bool recording_enabled() const = 0;
+ 
+   virtual void SetStereoChannelSwapping(bool enable) = 0;
+ 
+--- a/audio/audio_state.h
++++ b/audio/audio_state.h
+@@ -47,6 +47,7 @@
+ 
+   void SetPlayout(bool enabled) override;
+   void SetRecording(bool enabled) override;
++  bool recording_enabled() const override;
+ 
+   void SetStereoChannelSwapping(bool enable) override;
+ 
+--- a/audio/audio_state.cc
++++ b/audio/audio_state.cc
+@@ -133,6 +133,11 @@
+   recording_enabled_ = enabled;
+ }
+ 
++bool AudioState::recording_enabled() const {
++  RTC_DCHECK_RUN_ON(&thread_checker_);
++  return recording_enabled_;
++}
++
+ void AudioState::AddSendingStream(webrtc::AudioSendStream* stream,
+                                   int sample_rate_hz,
+                                   size_t num_channels) {
+@@ -142,9 +147,9 @@
+   properties.num_channels = num_channels;
+   UpdateAudioTransportWithSendingStreams();
+ 
+-  // Make sure recording is initialized; start recording if enabled.
++  // Initialize and start recording only when device recording is enabled.
+   auto* adm = config_.audio_device_module.get();
+-  if (!adm->Recording()) {
++  if (recording_enabled_ && !adm->Recording()) {
+     if (adm->InitRecording() == 0) {
+       if (recording_enabled_) {
+ #if defined(WEBRTC_WIN)
+--- a/media/engine/webrtc_voice_engine.cc
++++ b/media/engine/webrtc_voice_engine.cc
+@@ -1491,7 +1491,8 @@
+ 
+     // Initialize the ADM for recording (this may take time on some platforms,
+     // e.g. Android).
+-    if (options_.init_recording_on_send.value_or(true) &&
++    if (engine()->GetAudioState()->recording_enabled() &&
++        options_.init_recording_on_send.value_or(true) &&
+         // InitRecording() may return an error if the ADM is already recording.
+         !engine()->adm()->RecordingIsInitialized() &&
+         !engine()->adm()->Recording()) {
+@@ -1714,7 +1715,7 @@
+       ap->set_output_will_be_muted(v);
+     }
+ 
+-    if (!is_all_no_source) {
++    if (!is_all_no_source && engine()->GetAudioState()->recording_enabled()) {
+       // We don't mute when ClearSend() is called.
+       webrtc::AudioDeviceModule* adm = engine()->adm();
+       if (adm) {
+--- a/audio/audio_state_unittest.cc
++++ b/audio/audio_state_unittest.cc
+@@ -410,13 +410,18 @@
+   auto* adm = reinterpret_cast<MockAudioDeviceModule*>(
+       helper.config().audio_device_module.get());
+ 
+-  EXPECT_CALL(*adm, StopRecording()).Times(2);
++  EXPECT_TRUE(audio_state->recording_enabled());
++  EXPECT_CALL(*adm, StopRecording()).Times(3);
+   audio_state->SetRecording(false);
++  EXPECT_FALSE(audio_state->recording_enabled());
+ 
+   MockAudioSendStream stream;
+-  EXPECT_CALL(*adm, StartRecording).Times(0);
+-  audio_state->AddSendingStream(&stream, kSampleRate, kNumberOfChannels);
+-  audio_state->RemoveSendingStream(&stream);
++  EXPECT_CALL(*adm, InitRecording()).Times(0);
++  EXPECT_CALL(*adm, StartRecording()).Times(0);
++  for (int i = 0; i < 2; ++i) {
++    audio_state->AddSendingStream(&stream, kSampleRate, kNumberOfChannels);
++    audio_state->RemoveSendingStream(&stream);
++  }
+ }
+ 
+ TEST_P(AudioStateTest, AlwaysCallInitRecordingBeforeStartRecording) {
+@@ -443,6 +448,7 @@
+     EXPECT_CALL(*adm, InitRecording());
+     EXPECT_CALL(*adm, StartRecording());
+     audio_state->SetRecording(true);
++    EXPECT_TRUE(audio_state->recording_enabled());
+   }
+ 
+   EXPECT_CALL(*adm, StopRecording());
+--- a/media/engine/webrtc_voice_engine_unittest.cc
++++ b/media/engine/webrtc_voice_engine_unittest.cc
+@@ -3953,6 +3953,41 @@
+   send_channel->SetSend(true);
+ }
+ 
++TEST_P(WebRtcVoiceEngineTestFake, EnabledRecordingStillRestartsOnUnmute) {
++  EXPECT_CALL(*adm_, Recording()).Times(3).WillRepeatedly(Return(false));
++  EXPECT_CALL(*adm_, InitRecording()).Times(2).WillRepeatedly(Return(0));
++  EXPECT_CALL(*adm_, StartRecording()).Times(2).WillRepeatedly(Return(0));
++  EXPECT_TRUE(SetupSendStream());
++  SetAudioSend(kSsrcX, false, &fake_source_);
++  SetAudioSend(kSsrcX, true, &fake_source_);
++}
++
++TEST_P(WebRtcVoiceEngineTestFake, DisabledRecordingSkipsEagerInitialization) {
++  EXPECT_CALL(*adm_, StopRecording()).WillOnce(Return(0)).RetiresOnSaturation();
++  engine_->GetAudioState()->SetRecording(false);
++  EXPECT_CALL(*adm_, RecordingIsInitialized()).Times(0);
++  EXPECT_CALL(*adm_, Recording()).Times(0);
++  EXPECT_CALL(*adm_, InitRecording()).Times(0);
++  EXPECT_CALL(*adm_, StartRecording()).Times(0);
++
++  auto channel = engine_->CreateSendChannel(
++      env_, &call_, MediaConfig(), AudioOptions(), CryptoOptions());
++  EXPECT_TRUE(channel->SetSend(true));
++  EXPECT_TRUE(channel->SetSend(false));
++  EXPECT_TRUE(channel->SetSend(true));
++}
++
++TEST_P(WebRtcVoiceEngineTestFake, DisabledRecordingSkipsMuteUnmuteDeviceAccess) {
++  EXPECT_CALL(*adm_, StopRecording()).WillOnce(Return(0)).RetiresOnSaturation();
++  engine_->GetAudioState()->SetRecording(false);
++  EXPECT_CALL(*adm_, InitRecording()).Times(0);
++  EXPECT_CALL(*adm_, StartRecording()).Times(0);
++  EXPECT_CALL(*adm_, SetMicrophoneMute(_)).Times(0);
++  EXPECT_TRUE(SetupSendStream());
++  SetAudioSend(kSsrcX, false, &fake_source_);
++  SetAudioSend(kSsrcX, true, &fake_source_);
++}
++
+ TEST_P(WebRtcVoiceEngineTestFake, SkipInitRecordingOnSend) {
+   EXPECT_CALL(*adm_, RecordingIsInitialized()).Times(0);
+   EXPECT_CALL(*adm_, Recording()).Times(0);

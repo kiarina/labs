@@ -115,8 +115,8 @@ requirement from the complete speaker/AEC configuration.
 - Keep the test instrumentation out of the production diff. Avoid unrelated
   dependency updates and the separate render-initialization failure.
 
-The full unmute policy/API patches and the native regression/build gates above
-remain future work. Maintainer acceptance and release timing are unknown. Neither
+The three-path core and factory candidates below have now been built on Windows.
+Their focused tests pass, but broad regression and device/media gates remain incomplete. Maintainer acceptance and release timing are unknown. Neither
 an issue nor a PR has been sent as part of the preparation/value assessment.
 
 ## Check the included draft
@@ -135,3 +135,44 @@ release/source pins rather than silently applying those instructions to m150.
 No CONTRIBUTING.md or PR template was found at the inspected raw paths; this is
 not a claim that the projects have no contribution requirements. Check the actual
 submission target again when implementation/testing is ready.
+
+## Three-path and factory candidates
+
+`02-recording-policy.patch` extends the first slice to the eager-send and
+mute/unmute paths through a worker-sequence AudioState policy getter. It adds
+regression cases to the existing native test files. `core-policy-inputs.json`
+pins the unmodified inputs. This patch replaces, rather than follows, patch01.
+
+`03-external-factory-draft.patch` adds an immutable factory opt-in, keeps the
+existing no-argument exported factory, rejects microphone-source creation and
+applies SetAudioRecording(false) before exposing each connection. Its test uses
+two connections and custom sources. Cross-factory track/source use is outside
+the supported contract; this is not a process-wide capture block. The wrapper
+candidate depends on the core change and the wrapper's ordinary upstream
+custom-source patches. It contains no lab audit or mixer-pull exports.
+
+Applicability checks (not builds or device tests):
+
+```sh
+python3 tools/check_upstream_proposal.py --policy
+python3 tools/check_upstream_proposal.py --wrapper
+```
+
+Windows results: [core](../results/core-policy-native.json) and
+[wrapper](../results/wrapper-policy-native.json). AudioState60/60 and the ten
+focused voice cases pass. The same-harness control with all three guards removed
+fails eight corresponding cases. The broad voice run retains178 common failing
+tests (182 in the control), with no newly failing test names. These are mainly
+strict-mock Recording/InitRecording/StartRecording expectations in ordinary
+mute/unmute setup; this is not an all-green regression run.
+
+The wrapper DLL/test executable build succeeded and both AudioDevice cases pass.
+This tests source rejection and two connections, not media sending or OS capture.
+The ordinary wrapper custom-source patches merged cleanly with the candidate via
+git apply --3way. Initial build setup failures (Python launcher/tools checkout,
+private accessor corrected to GetAudioState, overlapping builds stopped and
+rerun, native stderr handling) were not counted as successful builds.
+
+Runtime validation continues in the independent
+[next lab](../../flutter-windows-upstream-external-input/README.md), which owns
+its candidate copies. Neither candidate is submission-ready yet.
