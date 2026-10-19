@@ -69,4 +69,4 @@ assert wrapper['tests'] == 3 and wrapper['failures'] == 0
 for name, key in [('core-policy.patch', 'corePatchSha256'), ('factory-policy.patch', 'factoryPatchSha256')]:
     assert hashlib.sha256((root / 'sdk' / name).read_bytes()).hexdigest() == sdk[key], name
 assert wrapper['factoryPatchSha256'] == sdk['factoryPatchSha256']
-print('Evidence and false-zero guards PASS; official SDK, speaker/AEC and physical camera remain unvalidated')
+print('Original default-route evidence and false-zero guards PASS; later speaker results are checked separately')

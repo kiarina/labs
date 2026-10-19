@@ -3,7 +3,9 @@
 **Capture isolation passes on the measured Windows setup.** The candidate keeps
 one continuous record/MF client and zero extra SDK capture attempts. Actual
 received PCM/video also passes with the separate native-playout diagnostic.
-Official SDK availability, public wrapper playout support and speaker/AEC remain
+The [submitted candidate with explicit output selection](upstream/playout/README.md)
+also supports normal native speaker playback on the measured stereo output;
+the operator heard both test bursts. Official SDK availability and AEC remain
 unfinished. Core [Draft PR #314](https://github.com/webrtc-sdk/webrtc/pull/314)
 is submitted; [wrapper Draft PR #158](https://github.com/webrtc-sdk/libwebrtc/pull/158) is submitted. This lab builds a candidate
 SDK, not an unmodified official SDK, and cannot demonstrate official availability.
@@ -171,3 +173,20 @@ ready PR body. [Wrapper Draft PR #158](https://github.com/webrtc-sdk/libwebrtc/p
 results above remain unchanged. The submitted DLL now has separate
 [runtime ETW/stop-resume/PCM/old-binary results](upstream/wrapper/runtime/README.md);
 other OS validation remains unperformed.
+
+## Normal native speaker playback
+
+[Native playout results and recipe](upstream/playout/README.md) use the unchanged
+submitted core/wrapper DLL. Select the compatible speaker through public
+`Helper.selectAudioOutput` after creating the media PeerConnections and before
+negotiation. Pre-peer selection is overwritten by media-engine initialization.
+The stereo96kHz speaker works, while the four-channel communications default
+still fails legacy format selection. This is an application output-routing fix,
+not a new SDK patch or a system-default/format change.
+
+Six independent traces have lost0; external-only record capture stays1 and SDK
+capture attempts stay0, including track/replace gates. The same-app ordinary
+factory positive control observes SDK capture. The render-endpoint observer and
+operator confirm both pilot bursts. Physical Windows camera, AEC and other
+outputs/OS remain unvalidated. Earlier default-route results above are retained
+with their original conditions.

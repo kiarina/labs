@@ -1,0 +1,932 @@
+[
+  {
+    "role": 0,
+    "case": "mix",
+    "flags": 0,
+    "isSupported": "0x00000000",
+    "initialize": "0x00000000",
+    "format": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 3,
+      "subformat": 3
+    },
+    "closest": null
+  },
+  {
+    "role": 0,
+    "case": "pcm16-ex",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 1,
+      "channels": 1,
+      "rate": 48000,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 3,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 0,
+    "case": "pcm16-autoconvert",
+    "flags": 2281701376,
+    "isSupported": "0x00000001",
+    "initialize": "0x00000000",
+    "format": {
+      "tag": 1,
+      "channels": 1,
+      "rate": 48000,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 3,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 0,
+    "case": "pcm16-extensible",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 65534,
+      "channels": 1,
+      "rate": 48000,
+      "bits": 16,
+      "extra": 22,
+      "validBits": 16,
+      "mask": 4,
+      "subformat": 1
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 3,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 0,
+    "case": "pcm16-ex",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 1,
+      "channels": 2,
+      "rate": 48000,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 3,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 0,
+    "case": "pcm16-autoconvert",
+    "flags": 2281701376,
+    "isSupported": "0x00000001",
+    "initialize": "0x00000000",
+    "format": {
+      "tag": 1,
+      "channels": 2,
+      "rate": 48000,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 3,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 0,
+    "case": "pcm16-extensible",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 48000,
+      "bits": 16,
+      "extra": 22,
+      "validBits": 16,
+      "mask": 3,
+      "subformat": 1
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 3,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 0,
+    "case": "pcm16-ex",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 1,
+      "channels": 1,
+      "rate": 44100,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 3,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 0,
+    "case": "pcm16-extensible",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 65534,
+      "channels": 1,
+      "rate": 44100,
+      "bits": 16,
+      "extra": 22,
+      "validBits": 16,
+      "mask": 4,
+      "subformat": 1
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 3,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 0,
+    "case": "pcm16-ex",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 1,
+      "channels": 2,
+      "rate": 44100,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 3,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 0,
+    "case": "pcm16-extensible",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 44100,
+      "bits": 16,
+      "extra": 22,
+      "validBits": 16,
+      "mask": 3,
+      "subformat": 1
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 3,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 0,
+    "case": "pcm16-ex",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 1,
+      "channels": 1,
+      "rate": 96000,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 3,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 0,
+    "case": "pcm16-extensible",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 65534,
+      "channels": 1,
+      "rate": 96000,
+      "bits": 16,
+      "extra": 22,
+      "validBits": 16,
+      "mask": 4,
+      "subformat": 1
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 3,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 0,
+    "case": "pcm16-ex",
+    "flags": 0,
+    "isSupported": "0x00000000",
+    "initialize": "0x00000000",
+    "format": {
+      "tag": 1,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": null
+  },
+  {
+    "role": 0,
+    "case": "pcm16-extensible",
+    "flags": 0,
+    "isSupported": "0x00000000",
+    "initialize": "0x00000000",
+    "format": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 16,
+      "extra": 22,
+      "validBits": 16,
+      "mask": 3,
+      "subformat": 1
+    },
+    "closest": null
+  },
+  {
+    "role": 0,
+    "case": "pcm16-ex",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 1,
+      "channels": 1,
+      "rate": 192000,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 3,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 0,
+    "case": "pcm16-extensible",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 65534,
+      "channels": 1,
+      "rate": 192000,
+      "bits": 16,
+      "extra": 22,
+      "validBits": 16,
+      "mask": 4,
+      "subformat": 1
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 3,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 0,
+    "case": "pcm16-ex",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 1,
+      "channels": 2,
+      "rate": 192000,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 3,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 0,
+    "case": "pcm16-extensible",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 192000,
+      "bits": 16,
+      "extra": 22,
+      "validBits": 16,
+      "mask": 3,
+      "subformat": 1
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 3,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 2,
+    "case": "mix",
+    "flags": 0,
+    "isSupported": "0x00000000",
+    "initialize": "0x00000000",
+    "format": {
+      "tag": 65534,
+      "channels": 4,
+      "rate": 48000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 51,
+      "subformat": 3
+    },
+    "closest": null
+  },
+  {
+    "role": 2,
+    "case": "pcm16-ex",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 1,
+      "channels": 1,
+      "rate": 48000,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 4,
+      "rate": 48000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 51,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 2,
+    "case": "pcm16-autoconvert",
+    "flags": 2281701376,
+    "isSupported": "0x00000001",
+    "initialize": "0x00000000",
+    "format": {
+      "tag": 1,
+      "channels": 1,
+      "rate": 48000,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 4,
+      "rate": 48000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 51,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 2,
+    "case": "pcm16-extensible",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 65534,
+      "channels": 1,
+      "rate": 48000,
+      "bits": 16,
+      "extra": 22,
+      "validBits": 16,
+      "mask": 4,
+      "subformat": 1
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 4,
+      "rate": 48000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 51,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 2,
+    "case": "pcm16-ex",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 1,
+      "channels": 2,
+      "rate": 48000,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 4,
+      "rate": 48000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 51,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 2,
+    "case": "pcm16-autoconvert",
+    "flags": 2281701376,
+    "isSupported": "0x00000001",
+    "initialize": "0x00000000",
+    "format": {
+      "tag": 1,
+      "channels": 2,
+      "rate": 48000,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 4,
+      "rate": 48000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 51,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 2,
+    "case": "pcm16-extensible",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 48000,
+      "bits": 16,
+      "extra": 22,
+      "validBits": 16,
+      "mask": 3,
+      "subformat": 1
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 4,
+      "rate": 48000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 51,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 2,
+    "case": "pcm16-ex",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 1,
+      "channels": 1,
+      "rate": 44100,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 4,
+      "rate": 48000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 51,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 2,
+    "case": "pcm16-extensible",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 65534,
+      "channels": 1,
+      "rate": 44100,
+      "bits": 16,
+      "extra": 22,
+      "validBits": 16,
+      "mask": 4,
+      "subformat": 1
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 4,
+      "rate": 48000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 51,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 2,
+    "case": "pcm16-ex",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 1,
+      "channels": 2,
+      "rate": 44100,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 4,
+      "rate": 48000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 51,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 2,
+    "case": "pcm16-extensible",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 44100,
+      "bits": 16,
+      "extra": 22,
+      "validBits": 16,
+      "mask": 3,
+      "subformat": 1
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 4,
+      "rate": 48000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 51,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 2,
+    "case": "pcm16-ex",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 1,
+      "channels": 1,
+      "rate": 96000,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 4,
+      "rate": 48000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 51,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 2,
+    "case": "pcm16-extensible",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 65534,
+      "channels": 1,
+      "rate": 96000,
+      "bits": 16,
+      "extra": 22,
+      "validBits": 16,
+      "mask": 4,
+      "subformat": 1
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 4,
+      "rate": 48000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 51,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 2,
+    "case": "pcm16-ex",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 1,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 4,
+      "rate": 48000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 51,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 2,
+    "case": "pcm16-extensible",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 96000,
+      "bits": 16,
+      "extra": 22,
+      "validBits": 16,
+      "mask": 3,
+      "subformat": 1
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 4,
+      "rate": 48000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 51,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 2,
+    "case": "pcm16-ex",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 1,
+      "channels": 1,
+      "rate": 192000,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 4,
+      "rate": 48000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 51,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 2,
+    "case": "pcm16-extensible",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 65534,
+      "channels": 1,
+      "rate": 192000,
+      "bits": 16,
+      "extra": 22,
+      "validBits": 16,
+      "mask": 4,
+      "subformat": 1
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 4,
+      "rate": 48000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 51,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 2,
+    "case": "pcm16-ex",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 1,
+      "channels": 2,
+      "rate": 192000,
+      "bits": 16,
+      "extra": 0
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 4,
+      "rate": 48000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 51,
+      "subformat": 3
+    }
+  },
+  {
+    "role": 2,
+    "case": "pcm16-extensible",
+    "flags": 0,
+    "isSupported": "0x00000001",
+    "initialize": "0x88890008",
+    "format": {
+      "tag": 65534,
+      "channels": 2,
+      "rate": 192000,
+      "bits": 16,
+      "extra": 22,
+      "validBits": 16,
+      "mask": 3,
+      "subformat": 1
+    },
+    "closest": {
+      "tag": 65534,
+      "channels": 4,
+      "rate": 48000,
+      "bits": 32,
+      "extra": 22,
+      "validBits": 32,
+      "mask": 51,
+      "subformat": 3
+    }
+  }
+]

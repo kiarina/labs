@@ -119,7 +119,7 @@ The unchanged old official05-header executable/plugin run with the new DLL:
 exit 0, errors [], loaded hash matches. This confirms the exercised old binary
 interfaces only. The old executable/plugin hashes match the earlier exercise.
 
-**Normal native rendering still fails.** Its ETW render initialization result is
+**Unselected communications-default rendering still fails.** Its ETW render initialization result is
 0x887c0030 (the previously diagnosed format failure); ordinary native-mic and
 external trials decode 0 PCM samples. Only the separately labeled native-playout
 diagnostic confirms received PCM. Speaker/AEC and a public wrapper playout API
@@ -150,3 +150,8 @@ To regenerate the summary from privately retained inputs:
 ```sh
 python3 upstream/wrapper/runtime/assess_permission.py <private-normal-and-diagnostic-dir> <cleanup.json> upstream/wrapper/runtime/results/permission-recheck.json
 ```
+
+A later [normal playout experiment](../../playout/README.md) succeeds on the
+compatible stereo speaker with public output selection after PeerConnection
+creation. It uses this same submitted DLL; the default-route failure above
+remains a distinct condition.

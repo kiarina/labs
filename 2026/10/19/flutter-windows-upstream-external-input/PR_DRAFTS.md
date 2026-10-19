@@ -82,3 +82,9 @@ stop/resume with decoded PCM in the diagnostic path and old-binary execution.
 Other OS builds and full presubmit remain unperformed.
 Submitted as [Draft PR #158](https://github.com/webrtc-sdk/libwebrtc/pull/158) from
 [kiarina/libwebrtc](https://github.com/kiarina/libwebrtc), commit `f9a23f98e19c2784fd293941b9e67a43977f1635`.
+
+The later [normal speaker playback experiment](upstream/playout/README.md) uses
+public output selection after PeerConnection creation with the same submitted
+DLL. It adds no core/wrapper change. A compatible stereo output succeeds; the
+four-channel communications default still fails. PR_BODY.md remains the text
+prepared at submission, rather than an automatically posted review update.

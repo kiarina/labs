@@ -1,0 +1,846 @@
+{
+  "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+  "sdkChanged": false,
+  "normalNativePlayout": true,
+  "physicalCameraValidated": false,
+  "aecValidated": false,
+  "trials": {
+    "playout-selection-initial": {
+      "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+      "errors": [],
+      "externalOnly": true,
+      "nativePlayoutDiagnostic": null,
+      "pilotTone": false,
+      "sourceRms": 0.0003229195392200558,
+      "recordStarts": 1,
+      "traceLossFree": true,
+      "captureStacksAvailable": true,
+      "sdkCaptureAttempts": 0,
+      "recordMfStarted": 1,
+      "sdkCaptureStarted": 0,
+      "captureEndpoints": [
+        {
+          "kind": "record-mf",
+          "sha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd"
+        }
+      ],
+      "render": [
+        {
+          "result": "0x887c0030",
+          "channels": "1",
+          "rate": "192000",
+          "started": false,
+          "endpointSha256": "cc1a393cd490fa5588389cb846fc6e6b69f2d2687539cfd123c2111d0af12cc8"
+        }
+      ],
+      "receiver": [
+        {
+          "pcmSamples": 0,
+          "rms": 0,
+          "videoFrames": 101,
+          "audioPacketsReceived": 203
+        },
+        {
+          "pcmSamples": 0,
+          "rms": 0,
+          "videoFrames": 95,
+          "audioPacketsReceived": 406
+        }
+      ],
+      "phases": [
+        {
+          "name": "record-only",
+          "delta": {
+            "rawBytes": 378240,
+            "videoFrames": 100,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "source-only",
+          "delta": {
+            "rawBytes": 289920,
+            "videoFrames": 75,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "negotiated-before-external-injection",
+          "delta": {
+            "rawBytes": 194880,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-1",
+          "delta": {
+            "rawBytes": 389760,
+            "videoFrames": 102,
+            "injectedAudio": 389760,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-1",
+          "delta": {
+            "rawBytes": 194880,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-2",
+          "delta": {
+            "rawBytes": 390720,
+            "videoFrames": 102,
+            "injectedAudio": 390720,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-2",
+          "delta": {
+            "rawBytes": 191040,
+            "videoFrames": 51,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        }
+      ],
+      "stops": [
+        {
+          "rms": 0,
+          "pcmSamples": 0
+        },
+        {
+          "rms": 0,
+          "pcmSamples": 0
+        }
+      ],
+      "nativeTransitions": [],
+      "maxAudioGapMs": 59.603,
+      "maxVideoGapMs": 42.447,
+      "selectedSpeaker": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+      "selectedEndpointSha256": null,
+      "endpointVolumeMuteUnchanged": true,
+      "traceInputSha256": {
+        "events.csv": "d74fff666dbeb8f5b1fab750bb54f2d683e192f24f299054c8a67b558286c0aa",
+        "stacks.jsonl": "49bf0989b9dbf1510ea8795e154cc7eb1039cca54e02b2d16c6ab61ae62cdd9d"
+      }
+    },
+    "playout-public-selected": {
+      "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+      "errors": [],
+      "externalOnly": true,
+      "nativePlayoutDiagnostic": null,
+      "pilotTone": false,
+      "sourceRms": 0.00046814293646918427,
+      "recordStarts": 1,
+      "traceLossFree": true,
+      "captureStacksAvailable": true,
+      "sdkCaptureAttempts": 0,
+      "recordMfStarted": 1,
+      "sdkCaptureStarted": 0,
+      "captureEndpoints": [
+        {
+          "kind": "record-mf",
+          "sha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd"
+        }
+      ],
+      "render": [
+        {
+          "result": "0x00000000",
+          "channels": "2",
+          "rate": "96000",
+          "started": true,
+          "endpointSha256": "9c5b6b287ee93d72d9f7b95abcad12126248d741340b9c5ff48f414bcd62bb7b"
+        }
+      ],
+      "receiver": [
+        {
+          "pcmSamples": 238560,
+          "rms": 0.0004897181063515373,
+          "videoFrames": 101,
+          "audioPacketsReceived": 204
+        },
+        {
+          "pcmSamples": 194880,
+          "rms": 0.0005335531059758424,
+          "videoFrames": 94,
+          "audioPacketsReceived": 407
+        }
+      ],
+      "phases": [
+        {
+          "name": "record-only",
+          "delta": {
+            "rawBytes": 376320,
+            "videoFrames": 99,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "source-only",
+          "delta": {
+            "rawBytes": 289920,
+            "videoFrames": 75,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "negotiated-before-external-injection",
+          "delta": {
+            "rawBytes": 190080,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-1",
+          "delta": {
+            "rawBytes": 392640,
+            "videoFrames": 102,
+            "injectedAudio": 392640,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-1",
+          "delta": {
+            "rawBytes": 193920,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-2",
+          "delta": {
+            "rawBytes": 388800,
+            "videoFrames": 102,
+            "injectedAudio": 388800,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-2",
+          "delta": {
+            "rawBytes": 193920,
+            "videoFrames": 51,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        }
+      ],
+      "stops": [
+        {
+          "rms": 0.0,
+          "pcmSamples": 48960
+        },
+        {
+          "rms": 0.0,
+          "pcmSamples": 48960
+        }
+      ],
+      "nativeTransitions": [],
+      "maxAudioGapMs": 108.639,
+      "maxVideoGapMs": 98.018,
+      "selectedSpeaker": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+      "selectedEndpointSha256": "9c5b6b287ee93d72d9f7b95abcad12126248d741340b9c5ff48f414bcd62bb7b",
+      "endpointVolumeMuteUnchanged": true,
+      "traceInputSha256": {
+        "events.csv": "c25f9ccad2303eecaf6666f7e17aa8b9bc121c394500804deae1be968b2022f5",
+        "stacks.jsonl": "75f92fff1e0d4307253a9f28e7e191a983f1cc03ee9e73aeadeaa8b8318c32f0"
+      }
+    },
+    "playout-default-factory": {
+      "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+      "errors": [],
+      "externalOnly": false,
+      "nativePlayoutDiagnostic": null,
+      "pilotTone": false,
+      "sourceRms": 0.001662935358785247,
+      "recordStarts": 1,
+      "traceLossFree": true,
+      "captureStacksAvailable": true,
+      "sdkCaptureAttempts": 2,
+      "recordMfStarted": 1,
+      "sdkCaptureStarted": 2,
+      "captureEndpoints": [
+        {
+          "kind": "record-mf",
+          "sha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd"
+        },
+        {
+          "kind": "sdk",
+          "sha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd"
+        },
+        {
+          "kind": "sdk",
+          "sha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd"
+        }
+      ],
+      "render": [
+        {
+          "result": "0x00000000",
+          "channels": "2",
+          "rate": "96000",
+          "started": true,
+          "endpointSha256": "9c5b6b287ee93d72d9f7b95abcad12126248d741340b9c5ff48f414bcd62bb7b"
+        }
+      ],
+      "receiver": [
+        {
+          "pcmSamples": 238560,
+          "rms": 0.00013310973356447478,
+          "videoFrames": 101,
+          "audioPacketsReceived": 204
+        },
+        {
+          "pcmSamples": 195360,
+          "rms": 0.0026253062489751482,
+          "videoFrames": 96,
+          "audioPacketsReceived": 409
+        }
+      ],
+      "phases": [
+        {
+          "name": "record-only",
+          "delta": {
+            "rawBytes": 378240,
+            "videoFrames": 99,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "source-only",
+          "delta": {
+            "rawBytes": 290880,
+            "videoFrames": 75,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "negotiated-before-external-injection",
+          "delta": {
+            "rawBytes": 189120,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-1",
+          "delta": {
+            "rawBytes": 392640,
+            "videoFrames": 102,
+            "injectedAudio": 392640,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-1",
+          "delta": {
+            "rawBytes": 193920,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-2",
+          "delta": {
+            "rawBytes": 392640,
+            "videoFrames": 101,
+            "injectedAudio": 392640,
+            "injectedVideo": 101
+          }
+        },
+        {
+          "name": "idle-after-2",
+          "delta": {
+            "rawBytes": 193920,
+            "videoFrames": 51,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        }
+      ],
+      "stops": [
+        {
+          "rms": 0.0,
+          "pcmSamples": 48960
+        },
+        {
+          "rms": 0.0,
+          "pcmSamples": 48960
+        }
+      ],
+      "nativeTransitions": [],
+      "maxAudioGapMs": 85.472,
+      "maxVideoGapMs": 61.008,
+      "selectedSpeaker": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+      "selectedEndpointSha256": "9c5b6b287ee93d72d9f7b95abcad12126248d741340b9c5ff48f414bcd62bb7b",
+      "endpointVolumeMuteUnchanged": true,
+      "traceInputSha256": {
+        "events.csv": "85377ada903572eca2ab60c2f0a709f9ce5fc9b81293468f60ce78126ff543dd",
+        "stacks.jsonl": "c6da3e779907103b0da9c94f6154ff2ced0dd9e01450b0e29047105b0c06c0f3"
+      }
+    },
+    "playout-track-gates": {
+      "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+      "errors": [],
+      "externalOnly": true,
+      "nativePlayoutDiagnostic": null,
+      "pilotTone": false,
+      "sourceRms": 0.0030930098854699984,
+      "recordStarts": 1,
+      "traceLossFree": true,
+      "captureStacksAvailable": true,
+      "sdkCaptureAttempts": 0,
+      "recordMfStarted": 1,
+      "sdkCaptureStarted": 0,
+      "captureEndpoints": [
+        {
+          "kind": "record-mf",
+          "sha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd"
+        }
+      ],
+      "render": [
+        {
+          "result": "0x00000000",
+          "channels": "2",
+          "rate": "96000",
+          "started": true,
+          "endpointSha256": "9c5b6b287ee93d72d9f7b95abcad12126248d741340b9c5ff48f414bcd62bb7b"
+        }
+      ],
+      "receiver": [
+        {
+          "pcmSamples": 238560,
+          "rms": 0.002896607618080746,
+          "videoFrames": 102,
+          "audioPacketsReceived": 203
+        },
+        {
+          "pcmSamples": 195840,
+          "rms": 0.0033271777134473404,
+          "videoFrames": 97,
+          "audioPacketsReceived": 407
+        }
+      ],
+      "phases": [
+        {
+          "name": "record-only",
+          "delta": {
+            "rawBytes": 379200,
+            "videoFrames": 99,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "source-only",
+          "delta": {
+            "rawBytes": 290880,
+            "videoFrames": 75,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "negotiated-before-external-injection",
+          "delta": {
+            "rawBytes": 193920,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-1",
+          "delta": {
+            "rawBytes": 389760,
+            "videoFrames": 102,
+            "injectedAudio": 389760,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-1",
+          "delta": {
+            "rawBytes": 194880,
+            "videoFrames": 51,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-2",
+          "delta": {
+            "rawBytes": 392640,
+            "videoFrames": 102,
+            "injectedAudio": 392640,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-2",
+          "delta": {
+            "rawBytes": 194880,
+            "videoFrames": 51,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        }
+      ],
+      "stops": [
+        {
+          "rms": 0.0,
+          "pcmSamples": 48960
+        },
+        {
+          "rms": 0.0,
+          "pcmSamples": 48480
+        }
+      ],
+      "nativeTransitions": [
+        "native-track-enable-1",
+        "native-track-disable-1",
+        "native-track-enable-2",
+        "native-track-disable-2"
+      ],
+      "maxAudioGapMs": 69.628,
+      "maxVideoGapMs": 94.598,
+      "selectedSpeaker": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+      "selectedEndpointSha256": "9c5b6b287ee93d72d9f7b95abcad12126248d741340b9c5ff48f414bcd62bb7b",
+      "endpointVolumeMuteUnchanged": true,
+      "traceInputSha256": {
+        "events.csv": "fcf532f57df5d3e13b04bcc09ec504dfa68abd1a21d77fb57eebbd8243b7af3f",
+        "stacks.jsonl": "49091275561d92831d9496984c07a2e56290fea9c1039fa85a3b6257a07b6352"
+      }
+    },
+    "playout-replace-gates": {
+      "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+      "errors": [],
+      "externalOnly": true,
+      "nativePlayoutDiagnostic": null,
+      "pilotTone": false,
+      "sourceRms": 0.004359381738819734,
+      "recordStarts": 1,
+      "traceLossFree": true,
+      "captureStacksAvailable": true,
+      "sdkCaptureAttempts": 0,
+      "recordMfStarted": 1,
+      "sdkCaptureStarted": 0,
+      "captureEndpoints": [
+        {
+          "kind": "record-mf",
+          "sha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd"
+        }
+      ],
+      "render": [
+        {
+          "result": "0x00000000",
+          "channels": "2",
+          "rate": "96000",
+          "started": true,
+          "endpointSha256": "9c5b6b287ee93d72d9f7b95abcad12126248d741340b9c5ff48f414bcd62bb7b"
+        }
+      ],
+      "receiver": [
+        {
+          "pcmSamples": 238560,
+          "rms": 0.007423413337889968,
+          "videoFrames": 102,
+          "audioPacketsReceived": 202
+        },
+        {
+          "pcmSamples": 195840,
+          "rms": 0.001960010521581022,
+          "videoFrames": 94,
+          "audioPacketsReceived": 406
+        }
+      ],
+      "phases": [
+        {
+          "name": "record-only",
+          "delta": {
+            "rawBytes": 380160,
+            "videoFrames": 99,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "source-only",
+          "delta": {
+            "rawBytes": 287040,
+            "videoFrames": 75,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "negotiated-before-external-injection",
+          "delta": {
+            "rawBytes": 189120,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-1",
+          "delta": {
+            "rawBytes": 388800,
+            "videoFrames": 102,
+            "injectedAudio": 388800,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-1",
+          "delta": {
+            "rawBytes": 193920,
+            "videoFrames": 51,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-2",
+          "delta": {
+            "rawBytes": 391680,
+            "videoFrames": 102,
+            "injectedAudio": 391680,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-2",
+          "delta": {
+            "rawBytes": 194880,
+            "videoFrames": 51,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        }
+      ],
+      "stops": [
+        {
+          "rms": 0.0,
+          "pcmSamples": 48960
+        },
+        {
+          "rms": 0.0,
+          "pcmSamples": 48480
+        }
+      ],
+      "nativeTransitions": [
+        "native-replace-enable-1",
+        "native-replace-disable-1",
+        "native-replace-enable-2",
+        "native-replace-disable-2"
+      ],
+      "maxAudioGapMs": 64.052,
+      "maxVideoGapMs": 99.252,
+      "selectedSpeaker": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+      "selectedEndpointSha256": "9c5b6b287ee93d72d9f7b95abcad12126248d741340b9c5ff48f414bcd62bb7b",
+      "endpointVolumeMuteUnchanged": true,
+      "traceInputSha256": {
+        "events.csv": "ffe5ced166678e67dbc765321149ec9491c32f2bec75f6254090af446930dc6d",
+        "stacks.jsonl": "fdd4c2e198310f1b86886a1aab9ad570a9f646c55f7fa1ab82d7ea7cdb5c90f7"
+      }
+    },
+    "playout-speaker-pilot": {
+      "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+      "errors": [],
+      "externalOnly": true,
+      "nativePlayoutDiagnostic": null,
+      "pilotTone": true,
+      "sourceRms": 0.002287348615672749,
+      "recordStarts": 1,
+      "traceLossFree": true,
+      "captureStacksAvailable": true,
+      "sdkCaptureAttempts": 0,
+      "recordMfStarted": 1,
+      "sdkCaptureStarted": 0,
+      "captureEndpoints": [
+        {
+          "kind": "record-mf",
+          "sha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd"
+        }
+      ],
+      "render": [
+        {
+          "result": "0x00000000",
+          "channels": "2",
+          "rate": "96000",
+          "started": true,
+          "endpointSha256": "9c5b6b287ee93d72d9f7b95abcad12126248d741340b9c5ff48f414bcd62bb7b"
+        }
+      ],
+      "receiver": [
+        {
+          "pcmSamples": 238080,
+          "rms": 0.05049423075421413,
+          "videoFrames": 101,
+          "audioPacketsReceived": 205
+        },
+        {
+          "pcmSamples": 195360,
+          "rms": 0.056023502758926445,
+          "videoFrames": 97,
+          "audioPacketsReceived": 408
+        }
+      ],
+      "phases": [
+        {
+          "name": "record-only",
+          "delta": {
+            "rawBytes": 380160,
+            "videoFrames": 99,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "source-only",
+          "delta": {
+            "rawBytes": 286080,
+            "videoFrames": 75,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "negotiated-before-external-injection",
+          "delta": {
+            "rawBytes": 190080,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-1",
+          "delta": {
+            "rawBytes": 393600,
+            "videoFrames": 102,
+            "injectedAudio": 393600,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-1",
+          "delta": {
+            "rawBytes": 193920,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-2",
+          "delta": {
+            "rawBytes": 389760,
+            "videoFrames": 102,
+            "injectedAudio": 389760,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-2",
+          "delta": {
+            "rawBytes": 194880,
+            "videoFrames": 51,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        }
+      ],
+      "stops": [
+        {
+          "rms": 0.0,
+          "pcmSamples": 48480
+        },
+        {
+          "rms": 0.0,
+          "pcmSamples": 48960
+        }
+      ],
+      "nativeTransitions": [],
+      "maxAudioGapMs": 62.539,
+      "maxVideoGapMs": 60.414,
+      "selectedSpeaker": "\u30b9\u30d4\u30fc\u30ab\u30fc (EDIFIER M60)",
+      "selectedEndpointSha256": "9c5b6b287ee93d72d9f7b95abcad12126248d741340b9c5ff48f414bcd62bb7b",
+      "endpointVolumeMuteUnchanged": true,
+      "traceInputSha256": {
+        "events.csv": "03e9487e796e21067ad6ccd77b0535d171e5edcbbeb3f212fcf89cf0016c3530",
+        "stacks.jsonl": "abf4a5a0a09a8c4e45689fd9700e30bdb6e34a1556f7d0cb1fd48745d487bd05"
+      }
+    }
+  },
+  "loopback": {
+    "metadata": {
+      "kind": "render-endpoint-loopback",
+      "pid": 15836,
+      "endpointSha256": "9c5b6b287ee93d72d9f7b95abcad12126248d741340b9c5ff48f414bcd62bb7b",
+      "rate": 96000,
+      "channels": 2,
+      "bits": 32,
+      "floating": true,
+      "startUtcMs": 1792414673042.257
+    },
+    "windows": [
+      {
+        "cycle": 1,
+        "state": "on",
+        "startUtcMs": 1792414686701.492,
+        "endUtcMs": 1792414689366.4001,
+        "bins": 13,
+        "medianPilotAmplitude": 0.079900239,
+        "maxPilotAmplitude": 0.079985886
+      },
+      {
+        "cycle": 1,
+        "state": "off",
+        "startUtcMs": 1792414690766.4001,
+        "endUtcMs": 1792414691486.3372,
+        "bins": 4,
+        "medianPilotAmplitude": 0.0,
+        "maxPilotAmplitude": 0.0
+      },
+      {
+        "cycle": 2,
+        "state": "on",
+        "startUtcMs": 1792414692786.3372,
+        "endUtcMs": 1792414695457.176,
+        "bins": 13,
+        "medianPilotAmplitude": 0.079895666,
+        "maxPilotAmplitude": 0.079964172
+      },
+      {
+        "cycle": 2,
+        "state": "off",
+        "startUtcMs": 1792414696857.176,
+        "endUtcMs": 1792414697583.2,
+        "bins": 3,
+        "medianPilotAmplitude": 0.0,
+        "maxPilotAmplitude": 0.0
+      }
+    ],
+    "inputSha256": "8fe29e5f63ec90752b0239b8c3b58ae56502fb7f486283142afc7c4c53b60ef8"
+  }
+}

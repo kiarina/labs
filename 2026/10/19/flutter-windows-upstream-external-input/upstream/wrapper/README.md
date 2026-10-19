@@ -102,3 +102,9 @@ For review updates, recheck main, the core dependency and maintainer feedback.
 If either source changes, rebase and rerun relevant builds/tests. The
 `upstreamPRCreated: false` field in validation.json is the measurement-time
 status; current submission status is recorded in inputs.json.
+
+Normal native speaker playback is now separately established with the unchanged
+submitted DLL and public output selection after PeerConnection creation. See the
+[playout recipe and limits](../playout/README.md). The four-channel communications
+default remains unsupported by the legacy format loop; the compatible stereo
+output, rather than the native-playout-off diagnostic, is used for this success.
