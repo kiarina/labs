@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Build and compare finalized SCD segments on Apple SpeechAnalyzer / Whisper"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mise run //:test-assets:download
+python3 tools/prepare.py
+swift build -c release
+python3 tools/benchmark.py
+dart tools/dart_stream.dart
+python3 tools/evaluate.py

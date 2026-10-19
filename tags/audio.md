@@ -1,5 +1,6 @@
 # audio
 
+- 2026/10/19 [Apple SpeechAnalyzer vs Whisper on finalized SCD segments with speaker binding](../2026/10/19/apple-speech-scd-asr/README.md)
 - 2026/10/19 [Codex app-server audio, realtime transport and transcription boundaries](../2026/10/19/codex-app-server-audio/README.md)
 - 2026/10/19 [Always-on Flutter camera and record capture with speaker playback and standalone AEC3](../2026/10/19/flutter-external-capture-aec/README.md)
 - 2026/10/19 [FFmpeg file and microphone inputs for one Dart analysis pipeline across five platforms](../2026/10/19/flutter-ffmpeg-media-input/README.md)

@@ -26,6 +26,8 @@
 無発声に成功した試行があっても、区間別・2接続では応答生成を観測している。再生しないことと生成しないことも区別する。
 
 [RECORD_INPUT.md](RECORD_INPUT.md) は単一captureの接続条件、[BACKEND_COMPARISON.md](BACKEND_COMPARISON.md) は公開APIとCodex経路の違いを扱う。
+別経路として、[MacのSpeechAnalyzerにSCD確定区間を渡す比較](../apple-speech-scd-asr/README.md) も検証した。これはChatGPT音声経路の制約を解決したものではなく、OS標準ASRの独立した評価である。
+
 以下は初期の認証・transport・5分文字起こしの検証記録。後続の方式への一般化は上表の範囲に限る。
 
 ## 実測したこと
