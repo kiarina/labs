@@ -1,0 +1,64 @@
+{
+  "kind": "same-event-order-headroom-replay",
+  "captureScale": 0.5,
+  "postGain": 1,
+  "restoredGain": false,
+  "newLiveTrial": false,
+  "decodedReceiver": false,
+  "baselineFullScaleSamples": 1103,
+  "halfInputFullScaleSamples": 0,
+  "phases": [
+    {
+      "phase": "near-only",
+      "baselineRmsDbfs": -7.145196729875729,
+      "halfInputRmsDbfs": -13.164609388477436,
+      "baselineFullScaleSamples": 187,
+      "halfInputFullScaleSamples": 0
+    },
+    {
+      "phase": "far-1",
+      "baselineRmsDbfs": -29.685634446821588,
+      "halfInputRmsDbfs": -35.27508805198723,
+      "baselineFullScaleSamples": 0,
+      "halfInputFullScaleSamples": 0
+    },
+    {
+      "phase": "doubletalk-1",
+      "baselineRmsDbfs": -8.227949508822224,
+      "halfInputRmsDbfs": -13.9607332984516,
+      "baselineFullScaleSamples": 269,
+      "halfInputFullScaleSamples": 0
+    },
+    {
+      "phase": "doubletalk-2",
+      "baselineRmsDbfs": -9.015392068691435,
+      "halfInputRmsDbfs": -14.858830387781923,
+      "baselineFullScaleSamples": 175,
+      "halfInputFullScaleSamples": 0
+    },
+    {
+      "phase": "far-2",
+      "baselineRmsDbfs": -28.94168446781366,
+      "halfInputRmsDbfs": -34.705561128756926,
+      "baselineFullScaleSamples": 0,
+      "halfInputFullScaleSamples": 0
+    },
+    {
+      "phase": "near-recovery",
+      "baselineRmsDbfs": -6.791590699167895,
+      "halfInputRmsDbfs": -12.810883728212604,
+      "baselineFullScaleSamples": 189,
+      "halfInputFullScaleSamples": 0
+    }
+  ],
+  "sha256": {
+    "half-input.pcm": "a02fc4ead2101b5a238270bfabd1b008f3438682e0c177e8546f8bac43eee159",
+    "half-output.pcm": "20b9acc5781c39228330f6a5dfd9928cebf75e0db5fbfc8c1ecfd046dbca1f54"
+  },
+  "decision": "Exploratory headroom result only; not adopted for live sending. Far echo non-regression and decoded listening not checked for this replay.",
+  "dspIdentity": {
+    "replayDspDll": "7a623e34f7dcd0475973dd757964d92c8817d513cce4c746bb0a7361b6471b58",
+    "liveDspDll": "7a623e34f7dcd0475973dd757964d92c8817d513cce4c746bb0a7361b6471b58"
+  },
+  "sameDspDll": true
+}

@@ -1,0 +1,178 @@
+{
+  "session": "human-6",
+  "externalOnly": true,
+  "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+  "sdkIdentityMatches": true,
+  "lostEvents": 0,
+  "lostBuffers": 0,
+  "recordRawOwnershipPass": true,
+  "sdkMicrophoneAttempts": 0,
+  "recordMicrophoneAttempts": 1,
+  "aecRenderLoopbackClients": 1,
+  "nativeSpeakerClients": 1,
+  "zeroAdditionalSdkMicPass": true,
+  "recordRawAudit": {
+    "activeRawCaptures": 0,
+    "lastHresult": 0,
+    "mfCreateRequests": 0,
+    "nativeCaptureFrames": 4230240,
+    "rawPropertiesAccepted": 1,
+    "rawRequests": 1,
+    "rawStarts": 1
+  },
+  "clients": [
+    {
+      "kind": "render-loopback",
+      "modules": [
+        "aec_audio_plugin.dll",
+        "audioses.dll",
+        "kernel32.dll",
+        "ntdll.dll",
+        "ucrtbase.dll"
+      ],
+      "endpointSha256": "9c5b6b287ee93d72d9f7b95abcad12126248d741340b9c5ff48f414bcd62bb7b",
+      "streamType": "2",
+      "streamFlags": "0x00020002",
+      "rawRequested": "0",
+      "initialize": "0x00000000",
+      "started": true,
+      "stackAvailable": true,
+      "rate": "96000",
+      "channels": "2"
+    },
+    {
+      "kind": "record-raw-microphone",
+      "modules": [
+        "audioses.dll",
+        "kernel32.dll",
+        "ntdll.dll",
+        "record_windows_plugin.dll",
+        "ucrtbase.dll"
+      ],
+      "endpointSha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd",
+      "streamType": "1",
+      "streamFlags": "0x00000002",
+      "rawRequested": "1",
+      "initialize": "0x00000000",
+      "started": true,
+      "stackAvailable": true,
+      "rate": "48000",
+      "channels": "2"
+    },
+    {
+      "kind": "speaker",
+      "modules": [
+        "audioses.dll",
+        "kernel32.dll",
+        "libwebrtc.dll",
+        "ntdll.dll"
+      ],
+      "endpointSha256": "9c5b6b287ee93d72d9f7b95abcad12126248d741340b9c5ff48f414bcd62bb7b",
+      "streamType": "0",
+      "streamFlags": "0x00040002",
+      "rawRequested": "0",
+      "initialize": "0x00000000",
+      "started": true,
+      "stackAvailable": true,
+      "rate": "96000",
+      "channels": "2"
+    }
+  ],
+  "videoSource": "synthetic; physical camera unvalidated",
+  "captureStarts": {
+    "record": 1,
+    "camera": 1
+  },
+  "phases": [
+    {
+      "name": "mic-check",
+      "rawBytesDelta": 769920,
+      "cameraFramesDelta": 243,
+      "injectedAudioBytesDelta": 769920,
+      "peerSamplesDelta": 381120
+    },
+    {
+      "name": "quiet",
+      "rawBytesDelta": 768960,
+      "cameraFramesDelta": 243,
+      "injectedAudioBytesDelta": 0,
+      "peerSamplesDelta": 0
+    },
+    {
+      "name": "near-only",
+      "rawBytesDelta": 960960,
+      "cameraFramesDelta": 303,
+      "injectedAudioBytesDelta": 961920,
+      "peerSamplesDelta": 480960
+    },
+    {
+      "name": "far-warmup",
+      "rawBytesDelta": 1153920,
+      "cameraFramesDelta": 364,
+      "injectedAudioBytesDelta": 0,
+      "peerSamplesDelta": 0
+    },
+    {
+      "name": "far-1",
+      "rawBytesDelta": 768960,
+      "cameraFramesDelta": 242,
+      "injectedAudioBytesDelta": 768960,
+      "peerSamplesDelta": 384960
+    },
+    {
+      "name": "doubletalk-1",
+      "rawBytesDelta": 768960,
+      "cameraFramesDelta": 243,
+      "injectedAudioBytesDelta": 768960,
+      "peerSamplesDelta": 384960
+    },
+    {
+      "name": "doubletalk-gate-off",
+      "rawBytesDelta": 192000,
+      "cameraFramesDelta": 61,
+      "injectedAudioBytesDelta": 0,
+      "peerSamplesDelta": 0
+    },
+    {
+      "name": "doubletalk-2",
+      "rawBytesDelta": 768000,
+      "cameraFramesDelta": 243,
+      "injectedAudioBytesDelta": 768960,
+      "peerSamplesDelta": 384960
+    },
+    {
+      "name": "quiet-after",
+      "rawBytesDelta": 288000,
+      "cameraFramesDelta": 92,
+      "injectedAudioBytesDelta": 0,
+      "peerSamplesDelta": 0
+    },
+    {
+      "name": "far-2",
+      "rawBytesDelta": 576960,
+      "cameraFramesDelta": 182,
+      "injectedAudioBytesDelta": 577920,
+      "peerSamplesDelta": 288960
+    },
+    {
+      "name": "near-recovery",
+      "rawBytesDelta": 770880,
+      "cameraFramesDelta": 243,
+      "injectedAudioBytesDelta": 770880,
+      "peerSamplesDelta": 384960
+    },
+    {
+      "name": "final-quiet",
+      "rawBytesDelta": 288960,
+      "cameraFramesDelta": 91,
+      "injectedAudioBytesDelta": 0,
+      "peerSamplesDelta": 0
+    }
+  ],
+  "endpointVolumeMuteUnchanged": true,
+  "errors": [],
+  "inputSha256": {
+    "events.csv": "57afe64f575315574cad93bf7945697cc239ddf35e53751ffab5acb77a433f76",
+    "stacks.jsonl": "4dd57b6576e96f405776de69a18828be031583cd5a1021e1ddae815db4d961bb"
+  }
+}

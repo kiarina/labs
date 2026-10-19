@@ -15,6 +15,12 @@
 @@ -49 +52 @@
 -    final report=<String,dynamic>{'kind':'normal-native-playout-aec','humanNear':human,'syntheticNearInjection':!human,'session':session,'phases':phases,'timeline':timeline,'errors':errors,'normalNativePlayout':true,'videoSource':'synthetic; physical camera unvalidated'};
 +    final report=<String,dynamic>{'kind':'normal-native-playout-aec','humanNear':human,'syntheticNearInjection':!human,'session':session,'phases':phases,'timeline':timeline,'errors':errors,'normalNativePlayout':true,'selectedOutput':selectedOutput,'captureGaps':captureGaps,'videoSource':'synthetic; physical camera unvalidated'};
+@@ -55 +58 @@
+-      final startEnergy=rawEnergy,startSamples=rawSamples;
++      var startEnergy=rawEnergy,startSamples=rawSamples;
+@@ -57 +60 @@
+-      for(var t=seconds;t>0;t--){if(mounted)setState((){status=name;instruction=cue;remaining=t;});await Future<void>.delayed(const Duration(seconds:1));}
++      for(var t=seconds;t>0;t--){if(mounted)setState((){status=name;instruction=cue;remaining=t;});await Future<void>.delayed(const Duration(seconds:1));if(human&&name=='quiet'&&t==5){startEnergy=rawEnergy;startSamples=rawSamples;row['levelDiscardSeconds']=4;}}
 @@ -72 +75 @@
 -        final now=clock.elapsedMicroseconds;if(lastAudio>0)gap=math.max(gap,now-lastAudio);lastAudio=now;rawBytes+=data.length;raw.add(data);
 +        final now=clock.elapsedMicroseconds;if(lastAudio>0){gap=math.max(gap,now-lastAudio);if(now-lastAudio>30000)captureGaps.add({'rawSample':rawBytes~/2,'gapUs':now-lastAudio,'clockUs':now});}lastAudio=now;rawBytes+=data.length;raw.add(data);
@@ -24,16 +30,23 @@
 @@ -84 +87 @@
 -          final clean=result['baseline'] as Uint8List;cleanBytes+=clean.length;
 +          final clean=result[selectedOutput] as Uint8List;cleanBytes+=clean.length;
-@@ -100 +103 @@
+@@ -99,2 +102,7 @@
+-      await phase('quiet',4,gateOn:false,cue:'声を出さず待ってください');
 -      if(human){final check=(phases.firstWhere((p)=>p['name']=='mic-check')['rawLevelDbfs'] as num).toDouble();final quiet=(phases.firstWhere((p)=>p['name']=='quiet')['rawLevelDbfs'] as num).toDouble();report['micCheck']={'speechDbfs':check,'quietDbfs':quiet,'snrDb':check-quiet};if(check-quiet<6)throw StateError('声の入力を十分に検出できません。選んだマイクと位置を確認してください。');}
-+      if(human){final check=(phases.firstWhere((p)=>p['name']=='mic-check')['rawLevelDbfs'] as num).toDouble();final quiet=(phases.firstWhere((p)=>p['name']=='quiet')['rawLevelDbfs'] as num).toDouble();report['micCheck']={'speechDbfs':check,'quietDbfs':quiet,'snrDb':check-quiet};if(check-quiet<6)throw StateError('声の入力を十分に検出できません。選んだマイクと位置を確認してください。');if(selectedOutput=='conditioned'){final preflight=await aec.invokeMapMethod<String,dynamic>('stats');if((preflight?['conditionedOverrangeSamples'] as num? ??0)>0)throw StateError('入力が低入力向けAECの範囲を超えています。baselineを使用するか、マイクと入力レベルを確認してください。');}}
-@@ -118,0 +122 @@
++      if(human){
++        await gate(false);
++        if(!mounted)throw StateError('UI closed before microphone calibration');
++        await showDialog<void>(context:context,barrierDismissible:false,builder:(context)=>AlertDialog(title:const Text('次は無音レベルを測ります'),content:const Text('ここで話すのを止めてください。コントローラーを動かさず、ボタンを押した後の8秒間は黙ってください。'),actions:[TextButton(onPressed:()=>Navigator.of(context).pop(),child:const Text('声を止めたので、無音を測る'))]));
++      }
++      await phase('quiet',human?8:4,gateOn:false,cue:'8秒間、声を出さずコントローラーも動かさず待ってください');
++      if(human){final check=(phases.firstWhere((p)=>p['name']=='mic-check')['rawLevelDbfs'] as num).toDouble();final quiet=(phases.firstWhere((p)=>p['name']=='quiet')['rawLevelDbfs'] as num).toDouble();report['micCheck']={'speechDbfs':check,'quietDbfs':quiet,'snrDb':check-quiet};if(check-quiet<6)throw StateError('発話と無音のレベル差が6dB未満でした。無音測定中は話さず、周囲の音・コントローラーの操作音も確認してください。');if(selectedOutput=='conditioned'){final preflight=await aec.invokeMapMethod<String,dynamic>('stats');if((preflight?['conditionedOverrangeSamples'] as num? ??0)>0)throw StateError('入力が低入力向けAECの範囲を超えています。baselineを使用するか、マイクと入力レベルを確認してください。');}}
+@@ -118,0 +127 @@
 +      await aec.invokeMethod<void>('freeze');
-@@ -119,0 +124 @@
+@@ -119,0 +129 @@
 +      final events=await aec.invokeMethod<Uint8List>('dspEvents');
-@@ -121,0 +127 @@
+@@ -121,0 +132 @@
 +      File('${folder.path}/dsp-events.bin').writeAsBytesSync(events??Uint8List(0));
-@@ -130 +136 @@
+@@ -130 +141 @@
 -  @override Widget build(BuildContext context)=>Scaffold(appBar:AppBar(title:const Text('Native speaker AEC / continuous record')),body:Padding(padding:const EdgeInsets.all(24),child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[Text(status,style:const TextStyle(fontSize:30)),if(!started&&inputs.isNotEmpty)DropdownButton<String>(isExpanded:true,value:inputId,items:inputs.map((d)=>DropdownMenuItem(value:d.id,child:Text(d.label))).toList(),onChanged:(id){if(id!=null)setState((){inputId=id;inputName=inputs.firstWhere((d)=>d.id==id).label;});}),Text('入力: $inputName\nマイクレベル: ${liveDb.toStringAsFixed(1)} dBFS',style:const TextStyle(fontSize:22)),Text('$remaining',style:const TextStyle(fontSize:54)),Text(instruction,style:const TextStyle(fontSize:28)),if(!started&&inputs.isNotEmpty)ElevatedButton(onPressed:run,child:const Text('開始'))])));
 +  @override Widget build(BuildContext context)=>Scaffold(appBar:AppBar(title:const Text('Native speaker AEC / continuous record')),body:Padding(padding:const EdgeInsets.all(24),child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[Text(status,style:const TextStyle(fontSize:30)),if(!started&&inputs.isNotEmpty)DropdownButton<String>(isExpanded:true,value:inputId,hint:const Text('使うマイクを選択してください'),items:inputs.map((d)=>DropdownMenuItem(value:d.id,child:Text(d.label))).toList(),onChanged:(id){if(id!=null)setState((){inputId=id;inputName=inputs.firstWhere((d)=>d.id==id).label;});}),Text('入力: $inputName\nマイクレベル: ${started?'${liveDb.toStringAsFixed(1)} dBFS':'未開始（開始後に動きます）'}',style:const TextStyle(fontSize:22)),Text('$remaining',style:const TextStyle(fontSize:54)),Text(instruction,style:const TextStyle(fontSize:28)),if(!started&&inputs.isNotEmpty)ElevatedButton(onPressed:inputId==null?null:run,child:const Text('開始'))])));
 --- a/aec_audio/windows/aec_audio_plugin.cpp

@@ -46,7 +46,7 @@ The public output selector chooses the fixture's EDIFIER speaker **after** media
 ./tools/windows/run_trial.ps1 -Session human -OutputDirectory build/human -SdkManifest build/sdk-manifest.json -Output conditioned -Human
 ```
 
-Use a fresh output directory and one process per trial. Human mode waits for the participant to explicitly select the input and press Start on every run (unless `-MicrophoneId` supplies an explicit input). Immediately read the microphone-check cue aloud, then follow quiet/near/far/double-talk cues for about80seconds. A failed microphone check aborts rather than counting silence as successful human speech. Baseline remains the default; conditioned is an opt-in candidate restricted to low inputs. Its fixed8x pre-AEC gain is reversed after processing. Human conditioned mode aborts after microphone-check if overrange has already occurred. Any later nonzero `conditionedOverrangeSamples` still invalidates the low-input headroom condition; this is not a general AGC or a large-input solution.
+Use a fresh output directory and one process per trial. Human mode waits for the participant to explicitly select the input and press Start on every run (unless `-MicrophoneId` supplies an explicit input). Immediately read the microphone-check cue aloud. Then stop speaking, press the quiet-measurement confirmation and remain silent/still for8seconds; the final4seconds define the quiet level. Follow near/far/double-talk cues afterwards (about90seconds plus the manual confirmation). A failed microphone check aborts rather than counting silence as successful human speech. Baseline remains the default; conditioned is an opt-in candidate restricted to low inputs. Its fixed8x pre-AEC gain is reversed after processing. Human conditioned mode aborts after microphone-check if overrange has already occurred. Any later nonzero `conditionedOverrangeSamples` still invalidates the low-input headroom condition; this is not a general AGC or a large-input solution.
 
 The collector refuses an existing WPR session and stops only its own trace. ETL, endpoint IDs, raw JSON, PCM and listening files stay private/ignored. Public ownership metrics distinguish physical microphone capture from render LOOPBACK. A positive control must produce SDK microphone events with no lost events/buffers before treating zero observed events as evidence.
 
@@ -75,3 +75,12 @@ build/aec/aec_replay_events build/low-near/artifacts/mixed.pcm build/low-near/ar
 On Windows use the matching recorded AEC DLL and compare replay hashes. The serialized event log records reverse/capture processing order under one mutex. The reference thread is stopped before snapshots; capture and reference input counts must agree with the log. The earlier human-2 lacks this event log: `replay_dropouts.py` approximates cadence and is exploratory only.
 
 After each experiment, check record shutdown active0/HRESULT0, WPR stopped and no application left capturing. Stop the owned peer/signaling forward and remove any temporary launcher task. Keep private artifacts for analysis; never cancel unrelated WPR sessions or delete shared SDK caches.
+
+For the saved-input headroom experiment, prepare a fresh scaled PCM and replay the original serialized event order with baseline preset0. Keep post-gain at1; multiplying by2 afterwards would discard the intended output headroom.
+
+```sh
+python tools/prepare_headroom.py build/human/artifacts/mixed.pcm build/half-input.pcm --scale 0.5
+build/aec/aec_replay_events build/half-input.pcm build/human/artifacts/actual_render.pcm build/human/artifacts/dsp-events.bin 0 build/half-output.pcm 20
+```
+
+This is device-free DSP replay, not new live acquisition or decoded delivery evidence. The recorded experiment uses the same Windows AEC DLL for live and replay; check the reported identities before making that claim.

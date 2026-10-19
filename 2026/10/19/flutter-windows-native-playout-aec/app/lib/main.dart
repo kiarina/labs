@@ -55,9 +55,9 @@ class _Probe extends State<Probe>{
     Future<void> gate(bool enabled)async{if(enabled)await bridge.flush();send=enabled;stream?.getAudioTracks().single.enabled=enabled;mark(enabled?'send-on':'send-off');}
     Future<void> phase(String name,int seconds,{bool far=false,bool nearSignal=false,bool gateOn=true,String cue=''})async{
       synthNear=nearSignal&&!human;await gate(gateOn);final peerStart=await request('POST','/state',{'far':far,'phase':name});
-      final startEnergy=rawEnergy,startSamples=rawSamples;
+      var startEnergy=rawEnergy,startSamples=rawSamples;
       final row=<String,dynamic>{'name':name,'far':far,'nearExpected':nearSignal,'start':counts(),'peerStart':peerStart};mark(name);
-      for(var t=seconds;t>0;t--){if(mounted)setState((){status=name;instruction=cue;remaining=t;});await Future<void>.delayed(const Duration(seconds:1));}
+      for(var t=seconds;t>0;t--){if(mounted)setState((){status=name;instruction=cue;remaining=t;});await Future<void>.delayed(const Duration(seconds:1));if(human&&name=='quiet'&&t==5){startEnergy=rawEnergy;startSamples=rawSamples;row['levelDiscardSeconds']=4;}}
       await chain;row['rawLevelDbfs']=rawSamples>startSamples?10*math.log((rawEnergy-startEnergy)/(rawSamples-startSamples)+1e-24)/math.ln10:-120;row['end']=counts();row['peerEnd']=await request('GET','/stats');row['stats']=await aec.invokeMapMethod<String,dynamic>('stats');phases.add(row);
     }
     try{
@@ -99,8 +99,13 @@ class _Probe extends State<Probe>{
         await phase('positive-capture-control',8,gateOn:true,cue:'SDK capture positive control');
       }else{
       if(human)await phase('mic-check',8,nearSignal:true,cue:'マイク確認：「こんにちは、マイクの確認です」と話してください。入力レベルが上がるか見てください');
-      await phase('quiet',4,gateOn:false,cue:'声を出さず待ってください');
-      if(human){final check=(phases.firstWhere((p)=>p['name']=='mic-check')['rawLevelDbfs'] as num).toDouble();final quiet=(phases.firstWhere((p)=>p['name']=='quiet')['rawLevelDbfs'] as num).toDouble();report['micCheck']={'speechDbfs':check,'quietDbfs':quiet,'snrDb':check-quiet};if(check-quiet<6)throw StateError('声の入力を十分に検出できません。選んだマイクと位置を確認してください。');if(selectedOutput=='conditioned'){final preflight=await aec.invokeMapMethod<String,dynamic>('stats');if((preflight?['conditionedOverrangeSamples'] as num? ??0)>0)throw StateError('入力が低入力向けAECの範囲を超えています。baselineを使用するか、マイクと入力レベルを確認してください。');}}
+      if(human){
+        await gate(false);
+        if(!mounted)throw StateError('UI closed before microphone calibration');
+        await showDialog<void>(context:context,barrierDismissible:false,builder:(context)=>AlertDialog(title:const Text('次は無音レベルを測ります'),content:const Text('ここで話すのを止めてください。コントローラーを動かさず、ボタンを押した後の8秒間は黙ってください。'),actions:[TextButton(onPressed:()=>Navigator.of(context).pop(),child:const Text('声を止めたので、無音を測る'))]));
+      }
+      await phase('quiet',human?8:4,gateOn:false,cue:'8秒間、声を出さずコントローラーも動かさず待ってください');
+      if(human){final check=(phases.firstWhere((p)=>p['name']=='mic-check')['rawLevelDbfs'] as num).toDouble();final quiet=(phases.firstWhere((p)=>p['name']=='quiet')['rawLevelDbfs'] as num).toDouble();report['micCheck']={'speechDbfs':check,'quietDbfs':quiet,'snrDb':check-quiet};if(check-quiet<6)throw StateError('発話と無音のレベル差が6dB未満でした。無音測定中は話さず、周囲の音・コントローラーの操作音も確認してください。');if(selectedOutput=='conditioned'){final preflight=await aec.invokeMapMethod<String,dynamic>('stats');if((preflight?['conditionedOverrangeSamples'] as num? ??0)>0)throw StateError('入力が低入力向けAECの範囲を超えています。baselineを使用するか、マイクと入力レベルを確認してください。');}}
 
       await phase('near-only',10,nearSignal:true,cue:human?'「今日はよい天気です。カメラとマイクは動き続けています。」と繰り返してください':'capture-only known near speech');
       await phase('far-warmup',12,far:true,gateOn:false,cue:'相手の声を聞き、声を出さず待ってください');
