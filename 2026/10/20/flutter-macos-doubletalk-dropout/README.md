@@ -1,6 +1,8 @@
 # Mac double-talk dropout investigation
 
-Status: investigation started; no improvement accepted yet. Uses the existing
+Status: continuity fix validated in a short real-speech Mac trial; participant
+reports no concerning loss, pumping or echo. Strict automatic criteria still
+have failures, so this is not a universal AEC acceptance. Uses the existing
 external-media fork4477798 and bridge9f5e2da (0.1.0-dev.2) with continuous real camera/record.
 This independent fixture owns copies of the predecessor source and private
 baseline artifacts; no runtime imports from another lab. Only macOS is targeted.
@@ -124,5 +126,12 @@ and0 in the defined interior. Near-only still has one10ms interior underflow.
 Maximum record callback interval110.093ms. Far-only coherent reductions45.10/
 44.02dB are identifiable; changed recordings are not a paired noninferiority
 comparison against the predecessor. No DSP errors or baseline PCM clipping.
-Participant reception judgment is pending; short clean-looking counters alone
-are not acceptance. The live baseline AEC algorithm/gain remains unchanged.
+Participant reports no concerning loss, pumping or echo in all four receiver
+clips. This is a successful short-run subjective check; short clean-looking
+counters alone are not acceptance. The live baseline AEC algorithm/gain remains unchanged.
+
+The bridge continuity correction is retained. The earlier light loss could not be
+reliably reproduced in saved clips, so neither sole cause nor a controlled paired
+perceptual improvement is established. No gain profile is adopted. Human success
+and failed strict known-near criteria remain separate. Recheck real product
+analysis/ASR load, long sessions and device changes before broader acceptance.
