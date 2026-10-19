@@ -125,3 +125,28 @@ external trials decode 0 PCM samples. Only the separately labeled native-playout
 diagnostic confirms received PCM. Speaker/AEC and a public wrapper playout API
 are not established. Tests/processes have ended, the dedicated scheduled task
 is removed, and WPR is no longer recording ([cleanup](results/cleanup.json)).
+
+### Permissions controlled follow-up
+
+The owner reported that two Windows permission dialogs had remained unapproved
+during the first run. Their original titles were not captured, so the first
+run does not establish the dialog permission state. After the owner confirmed
+approving both, the same executable and same DLL were run again in the normal
+and native-playout-off diagnostic modes. Read-only inspection found enabled
+Private/Public Allow firewall rules for both app executables; the agent did
+not change security settings.
+
+[Follow-up evidence](results/permission-recheck.json) shows that normal mode
+still receives audio RTP (203 then 406 packets) and video but 0 PCM samples, with
+the same render initialization result 0x887c0030. The diagnostic again receives
+238,080 then 195,360 nonzero-RMS PCM samples and has 0 off-window RMS. Both traces
+have no loss and record/MF1, SDK capture attempts 0. Thus approving the dialogs
+did not resolve the normal rendering failure. This does not establish the
+original dialog type or rule out every possible permission interaction. The
+old-binary exercise was not repeated in this two-run follow-up.
+
+To regenerate the summary from privately retained inputs:
+
+```sh
+python3 upstream/wrapper/runtime/assess_permission.py <private-normal-and-diagnostic-dir> <cleanup.json> upstream/wrapper/runtime/results/permission-recheck.json
+```

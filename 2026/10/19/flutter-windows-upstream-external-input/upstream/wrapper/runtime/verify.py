@@ -95,4 +95,21 @@ assert build['mainDartSha256'] == hashlib.sha256((root / 'main.dart').read_bytes
 assert cleanup['suiteComplete'] and cleanup['wprNotRecording']
 assert cleanup['dedicatedTasksRemaining'] == cleanup['appProcessesRemaining'] == 0
 assert cleanup['nativeDllSha256'] == cleanup['runtimeDllSha256'] == expected
+
+permission = json.loads((root / 'results/permission-recheck.json').read_text())
+assert permission['userReportedBothDialogsApproved'] and permission['dllSha256'] == expected
+for t in permission['trials'].values():
+    assert t['lostEvents'] == t['lostBuffers'] == 0 and not t['errors']
+    assert t['captureStacksAvailable'] and t['captureInitializeEvents'] == 1
+    assert t['sdkCaptureAttempts'] == 0 and t['recordMfStarted'] == t['recordStarts'] == 1
+    assert t['endpointVolumeMuteUnchanged']
+    assert len(t['receiver']) == 2 and t['receiver'][1]['audioPacketsReceived'] > t['receiver'][0]['audioPacketsReceived'] > 0
+normal = permission['trials']['normal']
+diagnostic = permission['trials']['diagnostic']
+assert all(w['pcmSamples'] == 0 for w in normal['receiver'])
+assert '0x887c0030' in normal['renderInitializeHResults']
+assert all(w['pcmSamples'] > 0 and w['rms'] > 0 for w in diagnostic['receiver'])
+assert diagnostic['stopRms'] == [0, 0]
+assert permission['cleanup']['wprNotRecording']
+assert permission['cleanup']['appProcessesRemaining'] == permission['cleanup']['dedicatedTasksRemaining'] == 0
 print('Submitted-wrapper ETW/stop-resume/PCM/old-binary evidence and eight rejection guards PASS')

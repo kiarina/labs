@@ -1,0 +1,83 @@
+{
+  "userReportedBothDialogsApproved": true,
+  "originalDialogTitlesCaptured": false,
+  "firewallRulesObserved": "Both app executables have enabled Allow rules for Private/Public; no rules were changed by the agent",
+  "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+  "trials": {
+    "normal": {
+      "errors": [],
+      "lostEvents": 0,
+      "lostBuffers": 0,
+      "captureInitializeEvents": 1,
+      "captureStacksAvailable": true,
+      "sdkCaptureAttempts": 0,
+      "recordMfStarted": 1,
+      "recordStarts": 1,
+      "receiver": [
+        {
+          "pcmSamples": 0,
+          "rms": 0,
+          "videoFrames": 101,
+          "audioPacketsReceived": 203
+        },
+        {
+          "pcmSamples": 0,
+          "rms": 0,
+          "videoFrames": 94,
+          "audioPacketsReceived": 406
+        }
+      ],
+      "stopRms": [
+        0,
+        0
+      ],
+      "renderInitializeHResults": [
+        "0x887c0030"
+      ],
+      "endpointVolumeMuteUnchanged": true,
+      "traceInputSha256": {
+        "events.csv": "639951fd99e7c084f31059271bd4870914859496df6bcaae468a1b27ad8b0d7f",
+        "stacks.jsonl": "7f1c0390c6e73a4be1b58f0e315597869f9ee1d1fbe3de9c2064f465975e92e0"
+      }
+    },
+    "diagnostic": {
+      "errors": [],
+      "lostEvents": 0,
+      "lostBuffers": 0,
+      "captureInitializeEvents": 1,
+      "captureStacksAvailable": true,
+      "sdkCaptureAttempts": 0,
+      "recordMfStarted": 1,
+      "recordStarts": 1,
+      "receiver": [
+        {
+          "pcmSamples": 238080,
+          "rms": 0.0005264580454975584,
+          "videoFrames": 101,
+          "audioPacketsReceived": 203
+        },
+        {
+          "pcmSamples": 195360,
+          "rms": 0.0006784047226094419,
+          "videoFrames": 94,
+          "audioPacketsReceived": 405
+        }
+      ],
+      "stopRms": [
+        0.0,
+        0.0
+      ],
+      "renderInitializeHResults": [],
+      "endpointVolumeMuteUnchanged": true,
+      "traceInputSha256": {
+        "events.csv": "37241237dad2c926912164b284bc16e6be7283f749497b316080432247f74f23",
+        "stacks.jsonl": "54a7eed16bbd34865777841efe3fa68483e81c02c751732e6efced0a2452ff55"
+      }
+    }
+  },
+  "cleanup": {
+    "appProcessesRemaining": 0,
+    "dedicatedTasksRemaining": 0,
+    "wprNotRecording": true
+  }
+}
