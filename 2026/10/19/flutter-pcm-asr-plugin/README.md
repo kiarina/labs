@@ -7,6 +7,8 @@ Flutter plugin の候補（作業名 `pcm_asr`。公開名・所有 repo は未�
 それぞれで「外部 PCM を受ける／結果が要求ごとに確定する／端末内で処理する／日本語が使える」を実測で確かめる。
 マイクは plugin が開かない。record・VAD・SCD・話者 ID は呼び出し側が所有する。
 
+**その後（2026-10-20）: pub.dev の [`pcm_asr`](https://pub.dev/packages/pcm_asr)（repo `kiarina/pcm_asr`、0.1.2）として公開し、Spirits Garden の試作が使っている。以後の実装・対応表はそちらが正典で、この lab は実証の記録。**
+
 先行 lab [apple-speech-scd-asr](../apple-speech-scd-asr/README.md) で Mac の SpeechAnalyzer が成立したことを出発点にし、
 同じ共有素材の 6 区間（SCD 確定済み、正解文つき）を同じ 3 パス（正順 2 回・逆順 1 回）で流す。
 事前目安は、非空の結果 18/18、要求 ID の一致 18/18、正規化 CER 10 % 以下、準備後の確定待ちの p95 が 1 秒以内。
