@@ -58,6 +58,11 @@ high 2・medium 1）。`huggingface-hub` → `requests` 経由で入ります。
 quality と performance の token 列が一致しました（Mac Studio M4 Max で確認）。PTE は同じ環境でも
 export のたびに約 2,800 バイトが変わる（サイズは下の表と同じ）ため、SHA-256 では比べていません。
 
+`hydra-core` は 2026-10-19 に **1.3.4 から 1.3.7 へ上げました**（`uv.lock` のみ。advisory 3 件、
+すべて high）。`executorch` から入ります。1.3.7 の環境で `--force` で export し直し、上げる前の
+benchmark と比べると、3 backend とも quality と performance の token 列が一致し、PTE のサイズも
+同じでした（Mac Studio M4 Max で確認）。
+
 ## Run
 
 Apple Silicon MacとXcode Command Line Toolsが必要です。初回はPython環境、Hugging Faceの重み、

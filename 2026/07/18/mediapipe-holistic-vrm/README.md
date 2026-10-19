@@ -47,6 +47,11 @@ hashで固定しています。Seed-sanはVirtualCast, Inc.によるモデルで
 [VRM Public License 1.0](https://vrm.dev/en/licenses/1.0/)です。モデルとWASMは
 `public/models/`、`public/wasm/`へ取得し、Gitでは管理しません。
 
+2026-10-19に、advisory（GHSA-68fv-2mgg-jv7q、high）が出たbuild時のdevDependency
+`source-map-js`を1.2.1から1.2.2へ上げました（`package-lock.json`のみ）。上げる前後で
+`mise run`を流し、testは14件ともpassし、`dist/`の11ファイルはSHA-256がすべて一致しました
+（Mac Studio M4 Maxで確認）。
+
 ## Pipeline
 
 ```text

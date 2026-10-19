@@ -118,6 +118,14 @@ byte-comparable artifact to show unchanged after an upgrade, and rerunning it
 means a 34 GiB download on the original machine. `datasets` is not imported on
 the benchmark path.
 
+As of 2026-10-19, the lock also resolves `fsspec` 2026.4.0 (1 high advisory,
+template injection in `ReferenceFileSystem`, fixed in 2026.6.0) and `multidict`
+6.7.1 (1 medium advisory, a reference leak in items-view set operations, fixed
+in 6.9.1). They come in through `datasets` and `huggingface-hub`, and through
+`fsspec[http]` → `aiohttp`. They are not upgraded for the same reason. The
+benchmark only calls `huggingface_hub.snapshot_download` and never opens a
+reference file system or uses `aiohttp`.
+
 ## References
 
 - [Tanishq Dubey's Laguna S 2.1 benchmark harness](https://github.com/tanishq-dubey/macos-laguna-s2.1)
