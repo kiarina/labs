@@ -91,7 +91,8 @@ summary = {
 }
 summary['pass'] = bool(
     done and done.get('ok') and len(results) == expected and nonempty == expected and id_ok == expected
-    and not errors and all(c.get('ok') or k in known_limits for k, c in checks.items()) and len(checks) == 3
+    and not errors and all(c.get('ok') or k in known_limits for k, c in checks.items())
+    and {'unsupported_locale', 'cancel', 'silence'} <= set(checks)
 )
 out = root / 'results' / f'{name}.json'
 out.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + '\n')

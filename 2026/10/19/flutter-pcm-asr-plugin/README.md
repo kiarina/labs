@@ -140,6 +140,8 @@ GPU（Vulkan、RTX 3080 Ti。Vulkan SDK 1.4.363 で build。DLL は 46.9 MB、CP
   cold の確認（2026-10-20）: NVIDIA のシェーダーキャッシュ（DXCache 508 件・GLCache 54 件）を消してから起動すると、`prepare()` が
   7.4 秒（ロード 0.6 秒＋暖機でのパイプラインのコンパイル）になり、最初の実要求は 104 ms のまま。暖機が cold の費用を `prepare()` に収める
   （`results/windows-whisper-auto-gpu1-cold.json`）。`support()` は取得前の重みの大きさを `model_bytes` で返す。
+  0.1.2（whisper.cpp を CMake の FetchContent が取り、`%LOCALAPPDATA%\pcm_asr` で build する版）でも同じ結果（CER 0 %、中央値 95 ms。
+  `results/windows-whisper-auto-gpu1-fetch.json`）。`evaluate.py` の合格判定は、異常系が 3 件ちょうどでなく、名前の付いた 3 件を含むことにした（堅牢性の確認で件数が増えた）。
 
 ## 堅牢性（段階 2、2026-10-20）
 
