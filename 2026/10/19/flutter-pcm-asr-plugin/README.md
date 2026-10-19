@@ -133,7 +133,9 @@ GPU（Vulkan、RTX 3080 Ti。Vulkan SDK 1.4.363 で build。DLL は 46.9 MB、CP
 - Vulkan のビルドは、ggml のシェーダー生成（ExternalProject）が Flutter の深い build ディレクトリで MSBuild の MAX_PATH を超えて
   `MSB4184 NormalizePath` で落ちる。`LongPathsEnabled` では直らず、短い junction（`C:\pa`）から build し、CMake のディレクトリ名も
   `s`・`w` に縮めた。`VULKAN_SDK` は新しい ssh セッションに入らないので、build の環境で明示する。
-- 既定の提案: Vulkan の GPU があれば large-v3-turbo q5_0（574 MB）、無ければ small（488 MB）を 8 スレッドで。
+- 既定: Vulkan の GPU があれば large-v3-turbo q5_0（574 MB）、無ければ small（488 MB）、8 スレッド、ロード後に暖機。`pcm_asr` に入れて
+  `auto` で確認した: large-v3-turbo q5_0 が選ばれ、CER 0 %、中央値 95 ms、最初の要求 103 ms、準備 654 ms（`results/windows-whisper-auto.json`）。
+  ただしこのときドライバーのシェーダーキャッシュは温まっていたので、cold での暖機の効果は未確認。
 
 ## 判断と限界
 
