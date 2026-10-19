@@ -135,7 +135,9 @@ GPU（Vulkan、RTX 3080 Ti。Vulkan SDK 1.4.363 で build。DLL は 46.9 MB、CP
   `s`・`w` に縮めた。`VULKAN_SDK` は新しい ssh セッションに入らないので、build の環境で明示する。
 - 既定: Vulkan の GPU があれば large-v3-turbo q5_0（574 MB）、無ければ small（488 MB）、8 スレッド、ロード後に暖機。`pcm_asr` に入れて
   `auto` で確認した: large-v3-turbo q5_0 が選ばれ、CER 0 %、中央値 95 ms、最初の要求 103 ms、準備 654 ms（`results/windows-whisper-auto.json`）。
-  ただしこのときドライバーのシェーダーキャッシュは温まっていたので、cold での暖機の効果は未確認。
+  cold の確認（2026-10-20）: NVIDIA のシェーダーキャッシュ（DXCache 508 件・GLCache 54 件）を消してから起動すると、`prepare()` が
+  7.4 秒（ロード 0.6 秒＋暖機でのパイプラインのコンパイル）になり、最初の実要求は 104 ms のまま。暖機が cold の費用を `prepare()` に収める
+  （`results/windows-whisper-auto-gpu1-cold.json`）。`support()` は取得前の重みの大きさを `model_bytes` で返す。
 
 ## 堅牢性（段階 2、2026-10-20）
 
