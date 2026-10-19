@@ -94,7 +94,8 @@ iOS・Android・Web・macOS で動かした。操作と作りは [demo/README.md
 - flutter_onnxruntime 1.9.0 は iOS 16・macOS 14 以上を要る（demo の deployment target を上げた）。
 - Web はブランド版 Chrome で `localhost` か https から開く（マイクの取得条件）。モデル 88 MB をページの読み込み時に取る。
   cloud の ASR は区間長ぶん待つので、連続した会話では表示が遅れていく。
-- 実マイクでの評価はオーナーに依頼中。人数・時間・内容は未記録。
+- 実マイクでのオーナーの評価（2026-10-19）: 精度の印象は iPad > Mac > Chrome > Android、速さは Mac・iPad > Android > Chrome。
+  **どれも合格レベル**との評価。人数・時間・内容は未記録で、正解文との誤り率ではない。
 
 ## 判断と限界
 
