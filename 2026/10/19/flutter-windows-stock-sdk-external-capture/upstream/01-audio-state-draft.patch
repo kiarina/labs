@@ -1,0 +1,21 @@
+--- a/audio/audio_state.cc
++++ b/audio/audio_state.cc
+@@ -144,7 +144,7 @@
+ 
+   // Make sure recording is initialized; start recording if enabled.
+   auto* adm = config_.audio_device_module.get();
+-  if (!adm->Recording()) {
++  if (recording_enabled_ && !adm->Recording()) {
+     if (adm->InitRecording() == 0) {
+       if (recording_enabled_) {
+ #if defined(WEBRTC_WIN)
+--- a/audio/audio_state_unittest.cc
++++ b/audio/audio_state_unittest.cc
+@@ -414,6 +414,7 @@
+   audio_state->SetRecording(false);
+ 
+   MockAudioSendStream stream;
++  EXPECT_CALL(*adm, InitRecording()).Times(0);
+   EXPECT_CALL(*adm, StartRecording).Times(0);
+   audio_state->AddSendingStream(&stream, kSampleRate, kNumberOfChannels);
+   audio_state->RemoveSendingStream(&stream);

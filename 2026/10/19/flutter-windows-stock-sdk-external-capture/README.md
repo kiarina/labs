@@ -135,3 +135,10 @@ not counted as `.05`. A C++ index-conversion warning was fixed before retrying.
 See the observer notes; none of these failures were relabeled as successful `.05`
 or zero-capture trials. The final `.05` run used a separate header/importlib build
 and its actual official DLL hash.
+
+## Upstream proposal
+
+An [upstream preparation kit](upstream/README.md) contains the change split,
+compatibility constraints, English PR drafts and a first narrow source patch.
+It is a proposal: native tests/builds and the complete external-only policy are
+not validated, and no upstream PR has been opened.
