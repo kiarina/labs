@@ -145,3 +145,6 @@ The MF/RAW microphone path can still be nonlinear or time-varying; the exact cau
 of trial1 silence is unproven. Real human near speech, other capture hardware,
 Bluetooth, high-band DT fidelity and long drift remain unverified. No product or
 five-platform adoption policy is changed by this Windows-only experiment.
+
+See [Windows SDK requirements and alternatives](docs/windows-sdk-alternatives.md)
+for the distinction between the measured custom SDK and proposed stock-runtime paths.
