@@ -1,0 +1,137 @@
+{
+  "errors": [],
+  "captureStarts": {
+    "record": 1,
+    "camera": 1
+  },
+  "cameraUniqueSampledFrames": 128,
+  "maxAudioGapMs": 110.093,
+  "phases": [
+    {
+      "phase": "mic-check",
+      "sending": true,
+      "underflowDelta": 6,
+      "flushBytesDelta": 0,
+      "interiorUnderflowBlocks": 0,
+      "interiorEvents": []
+    },
+    {
+      "phase": "quiet",
+      "sending": false,
+      "underflowDelta": 0,
+      "flushBytesDelta": 0,
+      "interiorUnderflowBlocks": 0,
+      "interiorEvents": []
+    },
+    {
+      "phase": "near-only",
+      "sending": true,
+      "underflowDelta": 4,
+      "flushBytesDelta": 0,
+      "interiorUnderflowBlocks": 1,
+      "interiorEvents": [
+        {
+          "relativeMs": 5045.68,
+          "zeroFillBlocks": 1,
+          "snapshotIntervalMs": 108.34
+        }
+      ]
+    },
+    {
+      "phase": "far-warmup",
+      "sending": false,
+      "underflowDelta": 0,
+      "flushBytesDelta": 0,
+      "interiorUnderflowBlocks": 0,
+      "interiorEvents": []
+    },
+    {
+      "phase": "far-1",
+      "sending": true,
+      "underflowDelta": 8,
+      "flushBytesDelta": 0,
+      "interiorUnderflowBlocks": 0,
+      "interiorEvents": []
+    },
+    {
+      "phase": "doubletalk-1",
+      "sending": true,
+      "underflowDelta": 0,
+      "flushBytesDelta": 0,
+      "interiorUnderflowBlocks": 0,
+      "interiorEvents": []
+    },
+    {
+      "phase": "doubletalk-gate-off",
+      "sending": false,
+      "underflowDelta": 0,
+      "flushBytesDelta": 0,
+      "interiorUnderflowBlocks": 0,
+      "interiorEvents": []
+    },
+    {
+      "phase": "doubletalk-2",
+      "sending": true,
+      "underflowDelta": 4,
+      "flushBytesDelta": 0,
+      "interiorUnderflowBlocks": 0,
+      "interiorEvents": []
+    },
+    {
+      "phase": "quiet-after",
+      "sending": false,
+      "underflowDelta": 0,
+      "flushBytesDelta": 0,
+      "interiorUnderflowBlocks": 0,
+      "interiorEvents": []
+    },
+    {
+      "phase": "far-2",
+      "sending": true,
+      "underflowDelta": 9,
+      "flushBytesDelta": 0,
+      "interiorUnderflowBlocks": 0,
+      "interiorEvents": []
+    },
+    {
+      "phase": "near-recovery",
+      "sending": true,
+      "underflowDelta": 0,
+      "flushBytesDelta": 0,
+      "interiorUnderflowBlocks": 0,
+      "interiorEvents": []
+    },
+    {
+      "phase": "final-quiet",
+      "sending": false,
+      "underflowDelta": 0,
+      "flushBytesDelta": 0,
+      "interiorUnderflowBlocks": 0,
+      "interiorEvents": []
+    }
+  ],
+  "native": {
+    "captureQueueCapacityBytes": 19200,
+    "renderReferenceDroppedBytes": 0,
+    "captureUnderflows": 44,
+    "captureDroppedBytes": 0,
+    "videoFrames": 398,
+    "captureOverflowDroppedBytes": 0,
+    "captureRecording": false,
+    "captureInactiveDroppedBytes": 0,
+    "renderSamples": 4159680,
+    "captureQueuedBytes": 0,
+    "capturePeakQueuedBytes": 11520,
+    "speakerRunning": true,
+    "audioBlocks": 5627,
+    "captureFlushedBytes": 35520
+  },
+  "submittedBytes": 5395200,
+  "accountedBytes": 5395200,
+  "accountingExact": true,
+  "notes": [
+    "Snapshots bound zero-fill timing to record callback intervals, not exact sample timestamps.",
+    "Interior excludes first1s and last250ms of each approximate capture-duration phase.",
+    "Off phases intentionally stop source injection; underflow there is not audible speech loss."
+  ]
+}

@@ -1,0 +1,2606 @@
+{
+  "kind": "dropout-localization",
+  "variant": "baseline",
+  "expectedCaptureGain": 1.0,
+  "session": "mac-idempotent-human-1",
+  "rawActivityThresholdDbfs": -65,
+  "dspDelaySamples": 432,
+  "analysisWindowMs": 100,
+  "phases": [
+    {
+      "phase": "near-only",
+      "receiverLagSamples": 6533,
+      "active100msWindows": 86,
+      "aecWindowsBelowMinus6Db": 0,
+      "aecWorstGainDb": -0.5426143678098206,
+      "receiverWindowsBelowMinus12Db": 0,
+      "receiverMedianCorrelation": 0.7270532214110179,
+      "windows": [
+        {
+          "secondsInPhase": 1.0,
+          "rawDbfs": -52.1524082350065,
+          "aecRmsGainDb": -0.4732850976117867,
+          "aecGainRelativeToExpectedDb": -0.4732850976117867,
+          "receiverCorrelationLocal": 0.603315680838997,
+          "receiverRmsGainDb": -1.5525752403901838,
+          "receiverAlignmentAdjustmentSamples": 8
+        },
+        {
+          "secondsInPhase": 1.1,
+          "rawDbfs": -53.055685177801976,
+          "aecRmsGainDb": -0.4864715233008688,
+          "aecGainRelativeToExpectedDb": -0.4864715233008688,
+          "receiverCorrelationLocal": 0.5885913114877969,
+          "receiverRmsGainDb": -2.1841572315620024,
+          "receiverAlignmentAdjustmentSamples": 9
+        },
+        {
+          "secondsInPhase": 1.2,
+          "rawDbfs": -46.83427756202594,
+          "aecRmsGainDb": -0.1748933098476256,
+          "aecGainRelativeToExpectedDb": -0.1748933098476256,
+          "receiverCorrelationLocal": 0.815287654216906,
+          "receiverRmsGainDb": -1.118343608303549,
+          "receiverAlignmentAdjustmentSamples": 17
+        },
+        {
+          "secondsInPhase": 1.3,
+          "rawDbfs": -32.21632313204607,
+          "aecRmsGainDb": -0.5025784668695501,
+          "aecGainRelativeToExpectedDb": -0.5025784668695501,
+          "receiverCorrelationLocal": 0.855729235361849,
+          "receiverRmsGainDb": -0.4399619322063511,
+          "receiverAlignmentAdjustmentSamples": -4
+        },
+        {
+          "secondsInPhase": 1.4,
+          "rawDbfs": -28.12687909530724,
+          "aecRmsGainDb": -0.44375201822321797,
+          "aecGainRelativeToExpectedDb": -0.44375201822321797,
+          "receiverCorrelationLocal": 0.9095756330693076,
+          "receiverRmsGainDb": -0.19604930291325856,
+          "receiverAlignmentAdjustmentSamples": 9
+        },
+        {
+          "secondsInPhase": 1.5,
+          "rawDbfs": -27.548272205534268,
+          "aecRmsGainDb": -0.4730609591232441,
+          "aecGainRelativeToExpectedDb": -0.4730609591232441,
+          "receiverCorrelationLocal": 0.8162565045705397,
+          "receiverRmsGainDb": -0.424260825415036,
+          "receiverAlignmentAdjustmentSamples": 7
+        },
+        {
+          "secondsInPhase": 1.6,
+          "rawDbfs": -29.905318649922336,
+          "aecRmsGainDb": -0.524638957087417,
+          "aecGainRelativeToExpectedDb": -0.524638957087417,
+          "receiverCorrelationLocal": 0.7692091131016179,
+          "receiverRmsGainDb": -1.221783542428972,
+          "receiverAlignmentAdjustmentSamples": 1129
+        },
+        {
+          "secondsInPhase": 1.7,
+          "rawDbfs": -29.51224353758606,
+          "aecRmsGainDb": -0.5163248771274005,
+          "aecGainRelativeToExpectedDb": -0.5163248771274005,
+          "receiverCorrelationLocal": 0.8806376531229766,
+          "receiverRmsGainDb": -0.37878244441796505,
+          "receiverAlignmentAdjustmentSamples": -7
+        },
+        {
+          "secondsInPhase": 1.8,
+          "rawDbfs": -31.49416649188673,
+          "aecRmsGainDb": -0.5117418785265747,
+          "aecGainRelativeToExpectedDb": -0.5117418785265747,
+          "receiverCorrelationLocal": 0.9233269280162831,
+          "receiverRmsGainDb": -0.22401783262435013,
+          "receiverAlignmentAdjustmentSamples": -6
+        },
+        {
+          "secondsInPhase": 1.9,
+          "rawDbfs": -30.442540542530345,
+          "aecRmsGainDb": -0.5080709982233572,
+          "aecGainRelativeToExpectedDb": -0.5080709982233572,
+          "receiverCorrelationLocal": 0.7885638559940948,
+          "receiverRmsGainDb": -0.6764749608796212,
+          "receiverAlignmentAdjustmentSamples": -2
+        },
+        {
+          "secondsInPhase": 2.0,
+          "rawDbfs": -32.061794418732795,
+          "aecRmsGainDb": -0.5399485575391101,
+          "aecGainRelativeToExpectedDb": -0.5399485575391101,
+          "receiverCorrelationLocal": 0.8810559125401054,
+          "receiverRmsGainDb": -1.3636352856326739,
+          "receiverAlignmentAdjustmentSamples": 353
+        },
+        {
+          "secondsInPhase": 2.1,
+          "rawDbfs": -34.81331882493278,
+          "aecRmsGainDb": -0.49270556885523686,
+          "aecGainRelativeToExpectedDb": -0.49270556885523686,
+          "receiverCorrelationLocal": 0.7323118781617808,
+          "receiverRmsGainDb": -0.7068126897741294,
+          "receiverAlignmentAdjustmentSamples": -12
+        },
+        {
+          "secondsInPhase": 2.2,
+          "rawDbfs": -33.57644775091402,
+          "aecRmsGainDb": -0.5251883134526467,
+          "aecGainRelativeToExpectedDb": -0.5251883134526467,
+          "receiverCorrelationLocal": 0.6583728246771007,
+          "receiverRmsGainDb": -1.1178899509642934,
+          "receiverAlignmentAdjustmentSamples": -9
+        },
+        {
+          "secondsInPhase": 2.3,
+          "rawDbfs": -37.14993547404991,
+          "aecRmsGainDb": -0.42377487998146335,
+          "aecGainRelativeToExpectedDb": -0.42377487998146335,
+          "receiverCorrelationLocal": 0.6950841926229743,
+          "receiverRmsGainDb": -1.347480242468873,
+          "receiverAlignmentAdjustmentSamples": -104
+        },
+        {
+          "secondsInPhase": 2.4,
+          "rawDbfs": -42.76174336232976,
+          "aecRmsGainDb": -0.0456615777535779,
+          "aecGainRelativeToExpectedDb": -0.0456615777535779,
+          "receiverCorrelationLocal": 0.6607904130889598,
+          "receiverRmsGainDb": -2.1911898465548454,
+          "receiverAlignmentAdjustmentSamples": 18
+        },
+        {
+          "secondsInPhase": 2.5,
+          "rawDbfs": -48.61870868003325,
+          "aecRmsGainDb": -0.11249390731767953,
+          "aecGainRelativeToExpectedDb": -0.11249390731767953,
+          "receiverCorrelationLocal": 0.7257808622461602,
+          "receiverRmsGainDb": -2.0683214522450415,
+          "receiverAlignmentAdjustmentSamples": 17
+        },
+        {
+          "secondsInPhase": 2.6,
+          "rawDbfs": -52.834289235419085,
+          "aecRmsGainDb": -0.48984707805280847,
+          "aecGainRelativeToExpectedDb": -0.48984707805280847,
+          "receiverCorrelationLocal": 0.5448556803043615,
+          "receiverRmsGainDb": -2.218761658847611,
+          "receiverAlignmentAdjustmentSamples": 899
+        },
+        {
+          "secondsInPhase": 2.7,
+          "rawDbfs": -53.244621620075165,
+          "aecRmsGainDb": -0.46750099227715525,
+          "aecGainRelativeToExpectedDb": -0.46750099227715525,
+          "receiverCorrelationLocal": 0.6466583504563266,
+          "receiverRmsGainDb": -1.6898674640096498,
+          "receiverAlignmentAdjustmentSamples": 13
+        },
+        {
+          "secondsInPhase": 2.8,
+          "rawDbfs": -52.739919531769,
+          "aecRmsGainDb": -0.46737343939453835,
+          "aecGainRelativeToExpectedDb": -0.46737343939453835,
+          "receiverCorrelationLocal": 0.5025644321281004,
+          "receiverRmsGainDb": -2.2191188721048998,
+          "receiverAlignmentAdjustmentSamples": -12
+        },
+        {
+          "secondsInPhase": 2.9,
+          "rawDbfs": -54.44455314261255,
+          "aecRmsGainDb": -0.4375784924433323,
+          "aecGainRelativeToExpectedDb": -0.4375784924433323,
+          "receiverCorrelationLocal": 0.5455445808889273,
+          "receiverRmsGainDb": -2.3676767509631818,
+          "receiverAlignmentAdjustmentSamples": 15
+        },
+        {
+          "secondsInPhase": 3.0,
+          "rawDbfs": -54.175781125864006,
+          "aecRmsGainDb": -0.4646757873392392,
+          "aecGainRelativeToExpectedDb": -0.4646757873392392,
+          "receiverCorrelationLocal": 0.575029102444735,
+          "receiverRmsGainDb": -2.3386591983977607,
+          "receiverAlignmentAdjustmentSamples": 13
+        },
+        {
+          "secondsInPhase": 3.1,
+          "rawDbfs": -45.21719906052569,
+          "aecRmsGainDb": -0.16655431567687476,
+          "aecGainRelativeToExpectedDb": -0.16655431567687476,
+          "receiverCorrelationLocal": 0.7344985872750852,
+          "receiverRmsGainDb": -2.003757485848095,
+          "receiverAlignmentAdjustmentSamples": 17
+        },
+        {
+          "secondsInPhase": 3.2,
+          "rawDbfs": -30.04196212289065,
+          "aecRmsGainDb": -0.5096408496109313,
+          "aecGainRelativeToExpectedDb": -0.5096408496109313,
+          "receiverCorrelationLocal": 0.8425183380116774,
+          "receiverRmsGainDb": -0.42287417613501105,
+          "receiverAlignmentAdjustmentSamples": -7
+        },
+        {
+          "secondsInPhase": 3.3,
+          "rawDbfs": -28.945887568494392,
+          "aecRmsGainDb": -0.5097340117593995,
+          "aecGainRelativeToExpectedDb": -0.5097340117593995,
+          "receiverCorrelationLocal": 0.8595128715846931,
+          "receiverRmsGainDb": -0.4836123926286091,
+          "receiverAlignmentAdjustmentSamples": -6
+        },
+        {
+          "secondsInPhase": 3.4,
+          "rawDbfs": -30.179582026600094,
+          "aecRmsGainDb": -0.48330262324630835,
+          "aecGainRelativeToExpectedDb": -0.48330262324630835,
+          "receiverCorrelationLocal": 0.7283255805758757,
+          "receiverRmsGainDb": -0.5302976783314672,
+          "receiverAlignmentAdjustmentSamples": 3
+        },
+        {
+          "secondsInPhase": 3.5,
+          "rawDbfs": -34.091426380899144,
+          "aecRmsGainDb": -0.5276043267833587,
+          "aecGainRelativeToExpectedDb": -0.5276043267833587,
+          "receiverCorrelationLocal": 0.7319471614605171,
+          "receiverRmsGainDb": -0.9159078803472881,
+          "receiverAlignmentAdjustmentSamples": -18
+        },
+        {
+          "secondsInPhase": 3.6,
+          "rawDbfs": -31.520374014353642,
+          "aecRmsGainDb": -0.5339743731001135,
+          "aecGainRelativeToExpectedDb": -0.5339743731001135,
+          "receiverCorrelationLocal": 0.8254732418663842,
+          "receiverRmsGainDb": -0.7170705955741321,
+          "receiverAlignmentAdjustmentSamples": -480
+        },
+        {
+          "secondsInPhase": 3.7,
+          "rawDbfs": -30.540445322720405,
+          "aecRmsGainDb": -0.5303677027830356,
+          "aecGainRelativeToExpectedDb": -0.5303677027830356,
+          "receiverCorrelationLocal": 0.8647148707211271,
+          "receiverRmsGainDb": -0.9911509036099078,
+          "receiverAlignmentAdjustmentSamples": 355
+        },
+        {
+          "secondsInPhase": 3.8,
+          "rawDbfs": -44.9712867978572,
+          "aecRmsGainDb": -0.3067540065930999,
+          "aecGainRelativeToExpectedDb": -0.3067540065930999,
+          "receiverCorrelationLocal": 0.7062272779402075,
+          "receiverRmsGainDb": 0.15511062808980963,
+          "receiverAlignmentAdjustmentSamples": -69
+        },
+        {
+          "secondsInPhase": 3.9,
+          "rawDbfs": -33.21162379443622,
+          "aecRmsGainDb": -0.4931048772728449,
+          "aecGainRelativeToExpectedDb": -0.4931048772728449,
+          "receiverCorrelationLocal": 0.6443351085608315,
+          "receiverRmsGainDb": -0.8148323358149755,
+          "receiverAlignmentAdjustmentSamples": 4
+        },
+        {
+          "secondsInPhase": 4.0,
+          "rawDbfs": -33.27087640664459,
+          "aecRmsGainDb": -0.4989508786744723,
+          "aecGainRelativeToExpectedDb": -0.4989508786744723,
+          "receiverCorrelationLocal": 0.6950269231388672,
+          "receiverRmsGainDb": -1.3508984074622308,
+          "receiverAlignmentAdjustmentSamples": 386
+        },
+        {
+          "secondsInPhase": 4.1,
+          "rawDbfs": -36.17521085195723,
+          "aecRmsGainDb": -0.5107794761993613,
+          "aecGainRelativeToExpectedDb": -0.5107794761993613,
+          "receiverCorrelationLocal": 0.7667627937821456,
+          "receiverRmsGainDb": -1.408871725275156,
+          "receiverAlignmentAdjustmentSamples": -29
+        },
+        {
+          "secondsInPhase": 4.2,
+          "rawDbfs": -33.66574344470797,
+          "aecRmsGainDb": -0.4846696897291134,
+          "aecGainRelativeToExpectedDb": -0.4846696897291134,
+          "receiverCorrelationLocal": 0.8016132864432279,
+          "receiverRmsGainDb": -0.3104283635522067,
+          "receiverAlignmentAdjustmentSamples": 4
+        },
+        {
+          "secondsInPhase": 4.3,
+          "rawDbfs": -46.91114339220923,
+          "aecRmsGainDb": -0.16014521486058028,
+          "aecGainRelativeToExpectedDb": -0.16014521486058028,
+          "receiverCorrelationLocal": 0.8069170966222177,
+          "receiverRmsGainDb": -1.333059935601639,
+          "receiverAlignmentAdjustmentSamples": 17
+        },
+        {
+          "secondsInPhase": 4.4,
+          "rawDbfs": -39.4962260795209,
+          "aecRmsGainDb": -0.4735802666465391,
+          "aecGainRelativeToExpectedDb": -0.4735802666465391,
+          "receiverCorrelationLocal": 0.8036431990543449,
+          "receiverRmsGainDb": -0.9297412568705379,
+          "receiverAlignmentAdjustmentSamples": -12
+        },
+        {
+          "secondsInPhase": 4.5,
+          "rawDbfs": -37.50576902841848,
+          "aecRmsGainDb": -0.4740040143387498,
+          "aecGainRelativeToExpectedDb": -0.4740040143387498,
+          "receiverCorrelationLocal": 0.8247428705571944,
+          "receiverRmsGainDb": -0.6173919152948244,
+          "receiverAlignmentAdjustmentSamples": -11
+        },
+        {
+          "secondsInPhase": 4.6,
+          "rawDbfs": -32.701025175777254,
+          "aecRmsGainDb": -0.4732223033577287,
+          "aecGainRelativeToExpectedDb": -0.4732223033577287,
+          "receiverCorrelationLocal": 0.8636633446255931,
+          "receiverRmsGainDb": -0.4372058316473957,
+          "receiverAlignmentAdjustmentSamples": -2
+        },
+        {
+          "secondsInPhase": 4.7,
+          "rawDbfs": -40.939995081519214,
+          "aecRmsGainDb": -0.4234592724048234,
+          "aecGainRelativeToExpectedDb": -0.4234592724048234,
+          "receiverCorrelationLocal": 0.7956212032727803,
+          "receiverRmsGainDb": 0.19994145859415888,
+          "receiverAlignmentAdjustmentSamples": 0
+        },
+        {
+          "secondsInPhase": 4.8,
+          "rawDbfs": -32.47026068310342,
+          "aecRmsGainDb": -0.5022993792736372,
+          "aecGainRelativeToExpectedDb": -0.5022993792736372,
+          "receiverCorrelationLocal": 0.75195832583645,
+          "receiverRmsGainDb": -0.5135363656647869,
+          "receiverAlignmentAdjustmentSamples": -1
+        },
+        {
+          "secondsInPhase": 4.9,
+          "rawDbfs": -34.12863776862832,
+          "aecRmsGainDb": -0.5309805299694917,
+          "aecGainRelativeToExpectedDb": -0.5309805299694917,
+          "receiverCorrelationLocal": 0.7211225046028994,
+          "receiverRmsGainDb": -0.9931718151624631,
+          "receiverAlignmentAdjustmentSamples": -18
+        },
+        {
+          "secondsInPhase": 5.0,
+          "rawDbfs": -33.86179750789408,
+          "aecRmsGainDb": -0.5285690925608875,
+          "aecGainRelativeToExpectedDb": -0.5285690925608875,
+          "receiverCorrelationLocal": 0.6431669734438725,
+          "receiverRmsGainDb": -1.2998694606503864,
+          "receiverAlignmentAdjustmentSamples": 455
+        },
+        {
+          "secondsInPhase": 5.1,
+          "rawDbfs": -42.546218873807895,
+          "aecRmsGainDb": -0.29424972733154814,
+          "aecGainRelativeToExpectedDb": -0.29424972733154814,
+          "receiverCorrelationLocal": 0.413412455363831,
+          "receiverRmsGainDb": -1.797599714284952,
+          "receiverAlignmentAdjustmentSamples": 499
+        },
+        {
+          "secondsInPhase": 5.2,
+          "rawDbfs": -41.66158290544887,
+          "aecRmsGainDb": -0.13833137926456257,
+          "aecGainRelativeToExpectedDb": -0.13833137926456257,
+          "receiverCorrelationLocal": 0.6340098480314084,
+          "receiverRmsGainDb": -2.1781108924302477,
+          "receiverAlignmentAdjustmentSamples": 498
+        },
+        {
+          "secondsInPhase": 5.3,
+          "rawDbfs": -48.574869373298874,
+          "aecRmsGainDb": -0.16866910773678073,
+          "aecGainRelativeToExpectedDb": -0.16866910773678073,
+          "receiverCorrelationLocal": 0.6147464768834695,
+          "receiverRmsGainDb": -2.580590762856458,
+          "receiverAlignmentAdjustmentSamples": 498
+        },
+        {
+          "secondsInPhase": 5.4,
+          "rawDbfs": -53.43268756732687,
+          "aecRmsGainDb": -0.4810488596497402,
+          "aecGainRelativeToExpectedDb": -0.4810488596497402,
+          "receiverCorrelationLocal": 0.5374605182882124,
+          "receiverRmsGainDb": -1.850976617955219,
+          "receiverAlignmentAdjustmentSamples": -2016
+        },
+        {
+          "secondsInPhase": 5.5,
+          "rawDbfs": -53.04002805933667,
+          "aecRmsGainDb": -0.4797123189235194,
+          "aecGainRelativeToExpectedDb": -0.4797123189235194,
+          "receiverCorrelationLocal": 0.5382489173279225,
+          "receiverRmsGainDb": -2.050803664468443,
+          "receiverAlignmentAdjustmentSamples": 489
+        },
+        {
+          "secondsInPhase": 5.6,
+          "rawDbfs": -52.40569806474937,
+          "aecRmsGainDb": -0.46610975851815173,
+          "aecGainRelativeToExpectedDb": -0.46610975851815173,
+          "receiverCorrelationLocal": 0.5756653620332713,
+          "receiverRmsGainDb": -1.6419417195700323,
+          "receiverAlignmentAdjustmentSamples": 493
+        },
+        {
+          "secondsInPhase": 5.7,
+          "rawDbfs": -53.38081508131718,
+          "aecRmsGainDb": -0.45116227544113285,
+          "aecGainRelativeToExpectedDb": -0.45116227544113285,
+          "receiverCorrelationLocal": 0.501710159930419,
+          "receiverRmsGainDb": -2.1950509119752315,
+          "receiverAlignmentAdjustmentSamples": -108
+        },
+        {
+          "secondsInPhase": 5.8,
+          "rawDbfs": -53.473264823600985,
+          "aecRmsGainDb": -0.4454020968496563,
+          "aecGainRelativeToExpectedDb": -0.4454020968496563,
+          "receiverCorrelationLocal": 0.6034298298351456,
+          "receiverRmsGainDb": -2.638453042151836,
+          "receiverAlignmentAdjustmentSamples": 936
+        },
+        {
+          "secondsInPhase": 5.9,
+          "rawDbfs": -52.86782237614447,
+          "aecRmsGainDb": -0.4946041619648224,
+          "aecGainRelativeToExpectedDb": -0.4946041619648224,
+          "receiverCorrelationLocal": 0.48255715441902636,
+          "receiverRmsGainDb": -2.6865291105207634,
+          "receiverAlignmentAdjustmentSamples": 473
+        },
+        {
+          "secondsInPhase": 6.0,
+          "rawDbfs": -40.46147240387734,
+          "aecRmsGainDb": -0.42450394091465055,
+          "aecGainRelativeToExpectedDb": -0.42450394091465055,
+          "receiverCorrelationLocal": 0.8574327099340193,
+          "receiverRmsGainDb": -1.4832509224686712,
+          "receiverAlignmentAdjustmentSamples": 497
+        },
+        {
+          "secondsInPhase": 6.1,
+          "rawDbfs": -27.079906998778167,
+          "aecRmsGainDb": -0.46541390939595534,
+          "aecGainRelativeToExpectedDb": -0.46541390939595534,
+          "receiverCorrelationLocal": 0.8437813987862272,
+          "receiverRmsGainDb": -0.4004680098695443,
+          "receiverAlignmentAdjustmentSamples": 487
+        },
+        {
+          "secondsInPhase": 6.2,
+          "rawDbfs": -30.175292819555757,
+          "aecRmsGainDb": -0.5172387700082539,
+          "aecGainRelativeToExpectedDb": -0.5172387700082539,
+          "receiverCorrelationLocal": 0.7206812362696562,
+          "receiverRmsGainDb": -0.8512873244465847,
+          "receiverAlignmentAdjustmentSamples": 853
+        },
+        {
+          "secondsInPhase": 6.3,
+          "rawDbfs": -31.405174029857825,
+          "aecRmsGainDb": -0.5426143678098206,
+          "aecGainRelativeToExpectedDb": -0.5426143678098206,
+          "receiverCorrelationLocal": 0.9210140980318391,
+          "receiverRmsGainDb": -0.9955506961932482,
+          "receiverAlignmentAdjustmentSamples": 831
+        },
+        {
+          "secondsInPhase": 6.4,
+          "rawDbfs": -31.493824978978324,
+          "aecRmsGainDb": -0.527138373339492,
+          "aecGainRelativeToExpectedDb": -0.527138373339492,
+          "receiverCorrelationLocal": 0.8779879616853791,
+          "receiverRmsGainDb": -0.4743864905552645,
+          "receiverAlignmentAdjustmentSamples": 801
+        },
+        {
+          "secondsInPhase": 6.5,
+          "rawDbfs": -34.267749884430785,
+          "aecRmsGainDb": -0.5159016756771232,
+          "aecGainRelativeToExpectedDb": -0.5159016756771232,
+          "receiverCorrelationLocal": 0.8848891290062538,
+          "receiverRmsGainDb": -0.3938324770872015,
+          "receiverAlignmentAdjustmentSamples": 472
+        },
+        {
+          "secondsInPhase": 6.6,
+          "rawDbfs": -32.496405956508504,
+          "aecRmsGainDb": -0.5134932792242421,
+          "aecGainRelativeToExpectedDb": -0.5134932792242421,
+          "receiverCorrelationLocal": 0.7823747824303424,
+          "receiverRmsGainDb": -0.641430462612384,
+          "receiverAlignmentAdjustmentSamples": 478
+        },
+        {
+          "secondsInPhase": 6.7,
+          "rawDbfs": -31.06984364738573,
+          "aecRmsGainDb": -0.5377425480803868,
+          "aecGainRelativeToExpectedDb": -0.5377425480803868,
+          "receiverCorrelationLocal": 0.8565802523130331,
+          "receiverRmsGainDb": -1.0638472284391307,
+          "receiverAlignmentAdjustmentSamples": 836
+        },
+        {
+          "secondsInPhase": 6.8,
+          "rawDbfs": -38.39698396684622,
+          "aecRmsGainDb": -0.5111974762252491,
+          "aecGainRelativeToExpectedDb": -0.5111974762252491,
+          "receiverCorrelationLocal": 0.737894340607318,
+          "receiverRmsGainDb": -1.5539071786381071,
+          "receiverAlignmentAdjustmentSamples": 428
+        },
+        {
+          "secondsInPhase": 6.9,
+          "rawDbfs": -33.828014218010146,
+          "aecRmsGainDb": -0.5143801333672162,
+          "aecGainRelativeToExpectedDb": -0.5143801333672162,
+          "receiverCorrelationLocal": 0.6983127545153351,
+          "receiverRmsGainDb": -0.848049637272545,
+          "receiverAlignmentAdjustmentSamples": 474
+        },
+        {
+          "secondsInPhase": 7.0,
+          "rawDbfs": -34.480066628783575,
+          "aecRmsGainDb": -0.5176385328513691,
+          "aecGainRelativeToExpectedDb": -0.5176385328513691,
+          "receiverCorrelationLocal": 0.6688472177200919,
+          "receiverRmsGainDb": -1.164361580534644,
+          "receiverAlignmentAdjustmentSamples": 475
+        },
+        {
+          "secondsInPhase": 7.1,
+          "rawDbfs": -40.73105596977143,
+          "aecRmsGainDb": -0.014858683104856116,
+          "aecGainRelativeToExpectedDb": -0.014858683104856116,
+          "receiverCorrelationLocal": 0.6168334294107394,
+          "receiverRmsGainDb": -2.4271232942370924,
+          "receiverAlignmentAdjustmentSamples": 498
+        },
+        {
+          "secondsInPhase": 7.2,
+          "rawDbfs": -42.77816831031178,
+          "aecRmsGainDb": 0.01672750509965778,
+          "aecGainRelativeToExpectedDb": 0.01672750509965778,
+          "receiverCorrelationLocal": 0.6618274923869056,
+          "receiverRmsGainDb": -2.782612119510539,
+          "receiverAlignmentAdjustmentSamples": 498
+        },
+        {
+          "secondsInPhase": 7.3,
+          "rawDbfs": -52.128200719967175,
+          "aecRmsGainDb": -0.42641117678494833,
+          "aecGainRelativeToExpectedDb": -0.42641117678494833,
+          "receiverCorrelationLocal": 0.5195916231342611,
+          "receiverRmsGainDb": -2.662480650568362,
+          "receiverAlignmentAdjustmentSamples": 497
+        },
+        {
+          "secondsInPhase": 7.4,
+          "rawDbfs": -52.78439534150727,
+          "aecRmsGainDb": -0.48467665590503484,
+          "aecGainRelativeToExpectedDb": -0.48467665590503484,
+          "receiverCorrelationLocal": 0.5380512095100862,
+          "receiverRmsGainDb": -2.118657710579824,
+          "receiverAlignmentAdjustmentSamples": 465
+        },
+        {
+          "secondsInPhase": 7.5,
+          "rawDbfs": -52.6949940950537,
+          "aecRmsGainDb": -0.46994953769072706,
+          "aecGainRelativeToExpectedDb": -0.46994953769072706,
+          "receiverCorrelationLocal": 0.5102352160321527,
+          "receiverRmsGainDb": -2.2804747537185412,
+          "receiverAlignmentAdjustmentSamples": 493
+        },
+        {
+          "secondsInPhase": 7.6,
+          "rawDbfs": -53.143120663528435,
+          "aecRmsGainDb": -0.48542497342328467,
+          "aecGainRelativeToExpectedDb": -0.48542497342328467,
+          "receiverCorrelationLocal": 0.5484767145939462,
+          "receiverRmsGainDb": -2.7707320339461488,
+          "receiverAlignmentAdjustmentSamples": -2032
+        },
+        {
+          "secondsInPhase": 7.7,
+          "rawDbfs": -46.437383566301776,
+          "aecRmsGainDb": -0.1853192363830119,
+          "aecGainRelativeToExpectedDb": -0.1853192363830119,
+          "receiverCorrelationLocal": 0.821442872813851,
+          "receiverRmsGainDb": -1.3206535285625642,
+          "receiverAlignmentAdjustmentSamples": 496
+        },
+        {
+          "secondsInPhase": 7.8,
+          "rawDbfs": -30.8573634878106,
+          "aecRmsGainDb": -0.49201672718145084,
+          "aecGainRelativeToExpectedDb": -0.49201672718145084,
+          "receiverCorrelationLocal": 0.7670233416129142,
+          "receiverRmsGainDb": -0.5978377950564709,
+          "receiverAlignmentAdjustmentSamples": 485
+        },
+        {
+          "secondsInPhase": 7.9,
+          "rawDbfs": -29.379415341610972,
+          "aecRmsGainDb": -0.5159806473680489,
+          "aecGainRelativeToExpectedDb": -0.5159806473680489,
+          "receiverCorrelationLocal": 0.8179634102883758,
+          "receiverRmsGainDb": -0.6441176193477796,
+          "receiverAlignmentAdjustmentSamples": 468
+        },
+        {
+          "secondsInPhase": 8.0,
+          "rawDbfs": -32.92159436491746,
+          "aecRmsGainDb": -0.47257754938561886,
+          "aecGainRelativeToExpectedDb": -0.47257754938561886,
+          "receiverCorrelationLocal": 0.6321737270668095,
+          "receiverRmsGainDb": -0.7794207811588139,
+          "receiverAlignmentAdjustmentSamples": 490
+        },
+        {
+          "secondsInPhase": 8.1,
+          "rawDbfs": -34.946899559214145,
+          "aecRmsGainDb": -0.5290866007243069,
+          "aecGainRelativeToExpectedDb": -0.5290866007243069,
+          "receiverCorrelationLocal": 0.6740602034489904,
+          "receiverRmsGainDb": -1.189599891362554,
+          "receiverAlignmentAdjustmentSamples": 474
+        },
+        {
+          "secondsInPhase": 8.2,
+          "rawDbfs": -32.62511194307672,
+          "aecRmsGainDb": -0.5129821465756627,
+          "aecGainRelativeToExpectedDb": -0.5129821465756627,
+          "receiverCorrelationLocal": 0.6988046352513293,
+          "receiverRmsGainDb": -0.9466707570232026,
+          "receiverAlignmentAdjustmentSamples": 2172
+        },
+        {
+          "secondsInPhase": 8.3,
+          "rawDbfs": -34.24827398861651,
+          "aecRmsGainDb": -0.5154822012478384,
+          "aecGainRelativeToExpectedDb": -0.5154822012478384,
+          "receiverCorrelationLocal": 0.7356213656658233,
+          "receiverRmsGainDb": -0.8246661264785398,
+          "receiverAlignmentAdjustmentSamples": 422
+        },
+        {
+          "secondsInPhase": 8.4,
+          "rawDbfs": -47.39639981435054,
+          "aecRmsGainDb": -0.3813355837396035,
+          "aecGainRelativeToExpectedDb": -0.3813355837396035,
+          "receiverCorrelationLocal": 0.7663011476560699,
+          "receiverRmsGainDb": -1.283179257638184,
+          "receiverAlignmentAdjustmentSamples": 495
+        },
+        {
+          "secondsInPhase": 8.5,
+          "rawDbfs": -35.62594410997451,
+          "aecRmsGainDb": -0.508996445934363,
+          "aecGainRelativeToExpectedDb": -0.508996445934363,
+          "receiverCorrelationLocal": 0.5596205388200172,
+          "receiverRmsGainDb": -1.4698658229010033,
+          "receiverAlignmentAdjustmentSamples": 479
+        },
+        {
+          "secondsInPhase": 8.6,
+          "rawDbfs": -35.77472402882939,
+          "aecRmsGainDb": -0.524189106129006,
+          "aecGainRelativeToExpectedDb": -0.524189106129006,
+          "receiverCorrelationLocal": 0.6184122330723512,
+          "receiverRmsGainDb": -1.5414838648145655,
+          "receiverAlignmentAdjustmentSamples": 411
+        },
+        {
+          "secondsInPhase": 8.7,
+          "rawDbfs": -35.11057859657642,
+          "aecRmsGainDb": -0.4991802495527187,
+          "aecGainRelativeToExpectedDb": -0.4991802495527187,
+          "receiverCorrelationLocal": 0.735152717537604,
+          "receiverRmsGainDb": -0.7271802031096969,
+          "receiverAlignmentAdjustmentSamples": 480
+        },
+        {
+          "secondsInPhase": 8.8,
+          "rawDbfs": -45.46215956630345,
+          "aecRmsGainDb": -0.22273576235857662,
+          "aecGainRelativeToExpectedDb": -0.22273576235857662,
+          "receiverCorrelationLocal": 0.6955084427590649,
+          "receiverRmsGainDb": -0.5723596022649364,
+          "receiverAlignmentAdjustmentSamples": 497
+        },
+        {
+          "secondsInPhase": 8.9,
+          "rawDbfs": -49.37701022143759,
+          "aecRmsGainDb": -0.2566815415332752,
+          "aecGainRelativeToExpectedDb": -0.2566815415332752,
+          "receiverCorrelationLocal": 0.5671339503359102,
+          "receiverRmsGainDb": -2.001458862738934,
+          "receiverAlignmentAdjustmentSamples": 498
+        },
+        {
+          "secondsInPhase": 9.0,
+          "rawDbfs": -39.09016428558069,
+          "aecRmsGainDb": -0.4868293082445016,
+          "aecGainRelativeToExpectedDb": -0.4868293082445016,
+          "receiverCorrelationLocal": 0.812459761086014,
+          "receiverRmsGainDb": -0.9686830980331164,
+          "receiverAlignmentAdjustmentSamples": 470
+        },
+        {
+          "secondsInPhase": 9.1,
+          "rawDbfs": -37.725226242334834,
+          "aecRmsGainDb": -0.47016244715784106,
+          "aecGainRelativeToExpectedDb": -0.47016244715784106,
+          "receiverCorrelationLocal": 0.809297757816755,
+          "receiverRmsGainDb": -0.784045952022935,
+          "receiverAlignmentAdjustmentSamples": 471
+        },
+        {
+          "secondsInPhase": 9.2,
+          "rawDbfs": -31.499162373785808,
+          "aecRmsGainDb": -0.4633664679363125,
+          "aecGainRelativeToExpectedDb": -0.4633664679363125,
+          "receiverCorrelationLocal": 0.8268815977458395,
+          "receiverRmsGainDb": -0.3922763357283904,
+          "receiverAlignmentAdjustmentSamples": 480
+        },
+        {
+          "secondsInPhase": 9.3,
+          "rawDbfs": -38.87028413282216,
+          "aecRmsGainDb": -0.4856658955427524,
+          "aecGainRelativeToExpectedDb": -0.4856658955427524,
+          "receiverCorrelationLocal": 0.7145740957614826,
+          "receiverRmsGainDb": -0.1283845338032021,
+          "receiverAlignmentAdjustmentSamples": 475
+        },
+        {
+          "secondsInPhase": 9.4,
+          "rawDbfs": -32.04302480264844,
+          "aecRmsGainDb": -0.49981201890808574,
+          "aecGainRelativeToExpectedDb": -0.49981201890808574,
+          "receiverCorrelationLocal": 0.7345726217197592,
+          "receiverRmsGainDb": -0.8365461046812919,
+          "receiverAlignmentAdjustmentSamples": 480
+        },
+        {
+          "secondsInPhase": 9.5,
+          "rawDbfs": -32.50148088770311,
+          "aecRmsGainDb": -0.5370518540238672,
+          "aecGainRelativeToExpectedDb": -0.5370518540238672,
+          "receiverCorrelationLocal": 0.6703656993808949,
+          "receiverRmsGainDb": -1.3738214576380006,
+          "receiverAlignmentAdjustmentSamples": 456
+        }
+      ]
+    },
+    {
+      "phase": "doubletalk-1",
+      "receiverLagSamples": 7501,
+      "active100msWindows": 65,
+      "aecWindowsBelowMinus6Db": 38,
+      "aecWorstGainDb": -29.619472901106207,
+      "receiverWindowsBelowMinus12Db": 0,
+      "receiverMedianCorrelation": 0.7457114304012223,
+      "windows": [
+        {
+          "secondsInPhase": 1.0,
+          "rawDbfs": -31.664697837560208,
+          "aecRmsGainDb": -24.309701875288976,
+          "aecGainRelativeToExpectedDb": -24.309701875288976,
+          "receiverCorrelationLocal": 0.7088851092786225,
+          "receiverRmsGainDb": -2.1329783915475304,
+          "receiverAlignmentAdjustmentSamples": 8
+        },
+        {
+          "secondsInPhase": 1.1,
+          "rawDbfs": -27.572159319852297,
+          "aecRmsGainDb": -29.619472901106207,
+          "aecGainRelativeToExpectedDb": -29.619472901106207,
+          "receiverCorrelationLocal": 0.6466409920046738,
+          "receiverRmsGainDb": -2.3152880660434585,
+          "receiverAlignmentAdjustmentSamples": 4
+        },
+        {
+          "secondsInPhase": 1.2,
+          "rawDbfs": -34.788239388356864,
+          "aecRmsGainDb": -20.992471490381238,
+          "aecGainRelativeToExpectedDb": -20.992471490381238,
+          "receiverCorrelationLocal": 0.7111042698004382,
+          "receiverRmsGainDb": -1.8733301061772567,
+          "receiverAlignmentAdjustmentSamples": 4
+        },
+        {
+          "secondsInPhase": 1.3,
+          "rawDbfs": -38.27654978223894,
+          "aecRmsGainDb": -17.575856592220866,
+          "aecGainRelativeToExpectedDb": -17.575856592220866,
+          "receiverCorrelationLocal": 0.5589939114040756,
+          "receiverRmsGainDb": -2.4651773140488666,
+          "receiverAlignmentAdjustmentSamples": 3
+        },
+        {
+          "secondsInPhase": 1.4,
+          "rawDbfs": -32.43244382460776,
+          "aecRmsGainDb": -2.04966363016501,
+          "aecGainRelativeToExpectedDb": -2.04966363016501,
+          "receiverCorrelationLocal": 0.7992070997331315,
+          "receiverRmsGainDb": -0.5888207492779893,
+          "receiverAlignmentAdjustmentSamples": 3
+        },
+        {
+          "secondsInPhase": 1.5,
+          "rawDbfs": -32.34850663414308,
+          "aecRmsGainDb": -0.43543640651008025,
+          "aecGainRelativeToExpectedDb": -0.43543640651008025,
+          "receiverCorrelationLocal": 0.7505058589634649,
+          "receiverRmsGainDb": -0.47413297683662337,
+          "receiverAlignmentAdjustmentSamples": 5
+        },
+        {
+          "secondsInPhase": 1.6,
+          "rawDbfs": -32.33057302794579,
+          "aecRmsGainDb": -0.4081944851961379,
+          "aecGainRelativeToExpectedDb": -0.4081944851961379,
+          "receiverCorrelationLocal": 0.7930807805545891,
+          "receiverRmsGainDb": -0.6566605031099251,
+          "receiverAlignmentAdjustmentSamples": -1
+        },
+        {
+          "secondsInPhase": 1.7,
+          "rawDbfs": -34.75101581058263,
+          "aecRmsGainDb": -0.38544869952392724,
+          "aecGainRelativeToExpectedDb": -0.38544869952392724,
+          "receiverCorrelationLocal": 0.7077787238585345,
+          "receiverRmsGainDb": -1.2060385990753832,
+          "receiverAlignmentAdjustmentSamples": 9
+        },
+        {
+          "secondsInPhase": 1.8,
+          "rawDbfs": -28.85406713897259,
+          "aecRmsGainDb": -2.006247961542869,
+          "aecGainRelativeToExpectedDb": -2.006247961542869,
+          "receiverCorrelationLocal": 0.8294629590257954,
+          "receiverRmsGainDb": -0.39748081468447893,
+          "receiverAlignmentAdjustmentSamples": -4
+        },
+        {
+          "secondsInPhase": 1.9,
+          "rawDbfs": -28.013806310397232,
+          "aecRmsGainDb": -6.920097159448773,
+          "aecGainRelativeToExpectedDb": -6.920097159448773,
+          "receiverCorrelationLocal": 0.8398175296326069,
+          "receiverRmsGainDb": -0.6943116535833471,
+          "receiverAlignmentAdjustmentSamples": -31
+        },
+        {
+          "secondsInPhase": 2.0,
+          "rawDbfs": -30.953844723803464,
+          "aecRmsGainDb": -6.472253986722068,
+          "aecGainRelativeToExpectedDb": -6.472253986722068,
+          "receiverCorrelationLocal": 0.7506378870127917,
+          "receiverRmsGainDb": -0.500823641782995,
+          "receiverAlignmentAdjustmentSamples": -2
+        },
+        {
+          "secondsInPhase": 2.1,
+          "rawDbfs": -31.87369390743287,
+          "aecRmsGainDb": -23.09914442656545,
+          "aecGainRelativeToExpectedDb": -23.09914442656545,
+          "receiverCorrelationLocal": 0.7457114304012223,
+          "receiverRmsGainDb": -1.2178026894067948,
+          "receiverAlignmentAdjustmentSamples": 2
+        },
+        {
+          "secondsInPhase": 2.2,
+          "rawDbfs": -48.447923978345166,
+          "aecRmsGainDb": -2.2055150251498636,
+          "aecGainRelativeToExpectedDb": -2.2055150251498636,
+          "receiverCorrelationLocal": 0.8123514134621256,
+          "receiverRmsGainDb": -1.0869556909484688,
+          "receiverAlignmentAdjustmentSamples": -13
+        },
+        {
+          "secondsInPhase": 2.3,
+          "rawDbfs": -36.32104716523243,
+          "aecRmsGainDb": -0.5107205870758929,
+          "aecGainRelativeToExpectedDb": -0.5107205870758929,
+          "receiverCorrelationLocal": 0.7648112321230132,
+          "receiverRmsGainDb": -0.6845487950240476,
+          "receiverAlignmentAdjustmentSamples": -11
+        },
+        {
+          "secondsInPhase": 2.4,
+          "rawDbfs": -36.720359018969404,
+          "aecRmsGainDb": -0.4635691220203347,
+          "aecGainRelativeToExpectedDb": -0.4635691220203347,
+          "receiverCorrelationLocal": 0.7817779538080827,
+          "receiverRmsGainDb": -0.5418551665739756,
+          "receiverAlignmentAdjustmentSamples": -15
+        },
+        {
+          "secondsInPhase": 2.5,
+          "rawDbfs": -31.135280982757877,
+          "aecRmsGainDb": -1.133801360775916,
+          "aecGainRelativeToExpectedDb": -1.133801360775916,
+          "receiverCorrelationLocal": 0.8803018008805101,
+          "receiverRmsGainDb": -0.4671191963195679,
+          "receiverAlignmentAdjustmentSamples": -17
+        },
+        {
+          "secondsInPhase": 2.6,
+          "rawDbfs": -27.437791623807428,
+          "aecRmsGainDb": -10.26077396383791,
+          "aecGainRelativeToExpectedDb": -10.26077396383791,
+          "receiverCorrelationLocal": 0.8214057561670595,
+          "receiverRmsGainDb": -0.32160156597742934,
+          "receiverAlignmentAdjustmentSamples": -13
+        },
+        {
+          "secondsInPhase": 2.7,
+          "rawDbfs": -30.597703627077472,
+          "aecRmsGainDb": -7.8867003896429,
+          "aecGainRelativeToExpectedDb": -7.8867003896429,
+          "receiverCorrelationLocal": 0.8213542094469903,
+          "receiverRmsGainDb": -2.150734857259533,
+          "receiverAlignmentAdjustmentSamples": -52
+        },
+        {
+          "secondsInPhase": 2.8,
+          "rawDbfs": -28.29676500877077,
+          "aecRmsGainDb": -5.810603982350443,
+          "aecGainRelativeToExpectedDb": -5.810603982350443,
+          "receiverCorrelationLocal": 0.7771731904789362,
+          "receiverRmsGainDb": -1.1789286701661614,
+          "receiverAlignmentAdjustmentSamples": 326
+        },
+        {
+          "secondsInPhase": 2.9,
+          "rawDbfs": -28.90019166841043,
+          "aecRmsGainDb": -25.266353078701794,
+          "aecGainRelativeToExpectedDb": -25.266353078701794,
+          "receiverCorrelationLocal": 0.6532995125638509,
+          "receiverRmsGainDb": -2.8719209876431484,
+          "receiverAlignmentAdjustmentSamples": 10
+        },
+        {
+          "secondsInPhase": 3.0,
+          "rawDbfs": -26.302376108330165,
+          "aecRmsGainDb": -28.438085693281913,
+          "aecGainRelativeToExpectedDb": -28.438085693281913,
+          "receiverCorrelationLocal": 0.7506687686427217,
+          "receiverRmsGainDb": -1.5936394900149642,
+          "receiverAlignmentAdjustmentSamples": 3
+        },
+        {
+          "secondsInPhase": 3.1,
+          "rawDbfs": -30.134366323725498,
+          "aecRmsGainDb": -25.15272249703393,
+          "aecGainRelativeToExpectedDb": -25.15272249703393,
+          "receiverCorrelationLocal": 0.6753533518732131,
+          "receiverRmsGainDb": -1.7084488556982194,
+          "receiverAlignmentAdjustmentSamples": 3
+        },
+        {
+          "secondsInPhase": 3.2,
+          "rawDbfs": -32.415726790234594,
+          "aecRmsGainDb": -23.46183194253582,
+          "aecGainRelativeToExpectedDb": -23.46183194253582,
+          "receiverCorrelationLocal": 0.7130681765817439,
+          "receiverRmsGainDb": -2.1650624294611767,
+          "receiverAlignmentAdjustmentSamples": 5
+        },
+        {
+          "secondsInPhase": 3.3,
+          "rawDbfs": -31.63292964680509,
+          "aecRmsGainDb": -22.76046437071627,
+          "aecGainRelativeToExpectedDb": -22.76046437071627,
+          "receiverCorrelationLocal": 0.6433676505173697,
+          "receiverRmsGainDb": -2.1141632872608267,
+          "receiverAlignmentAdjustmentSamples": 10
+        },
+        {
+          "secondsInPhase": 3.4,
+          "rawDbfs": -35.207397142285885,
+          "aecRmsGainDb": -20.652221738157902,
+          "aecGainRelativeToExpectedDb": -20.652221738157902,
+          "receiverCorrelationLocal": 0.7093844416230728,
+          "receiverRmsGainDb": -2.0021553332144837,
+          "receiverAlignmentAdjustmentSamples": 3
+        },
+        {
+          "secondsInPhase": 3.5,
+          "rawDbfs": -37.732011079243,
+          "aecRmsGainDb": -17.81119688253736,
+          "aecGainRelativeToExpectedDb": -17.81119688253736,
+          "receiverCorrelationLocal": 0.7365543834110064,
+          "receiverRmsGainDb": -1.666808332292551,
+          "receiverAlignmentAdjustmentSamples": 2
+        },
+        {
+          "secondsInPhase": 3.6,
+          "rawDbfs": -35.81385505040018,
+          "aecRmsGainDb": -19.929182432099694,
+          "aecGainRelativeToExpectedDb": -19.929182432099694,
+          "receiverCorrelationLocal": 0.6449081342676855,
+          "receiverRmsGainDb": -2.2070305452765075,
+          "receiverAlignmentAdjustmentSamples": 4
+        },
+        {
+          "secondsInPhase": 3.7,
+          "rawDbfs": -36.324446163927405,
+          "aecRmsGainDb": -18.759685273188648,
+          "aecGainRelativeToExpectedDb": -18.759685273188648,
+          "receiverCorrelationLocal": 0.7262400009548483,
+          "receiverRmsGainDb": -2.0797389619577977,
+          "receiverAlignmentAdjustmentSamples": 3
+        },
+        {
+          "secondsInPhase": 3.8,
+          "rawDbfs": -39.38577367709914,
+          "aecRmsGainDb": -15.839758258700785,
+          "aecGainRelativeToExpectedDb": -15.839758258700785,
+          "receiverCorrelationLocal": 0.6420142148851372,
+          "receiverRmsGainDb": -2.2173222140273117,
+          "receiverAlignmentAdjustmentSamples": 4
+        },
+        {
+          "secondsInPhase": 3.9,
+          "rawDbfs": -46.85837319549849,
+          "aecRmsGainDb": -0.36829012212136364,
+          "aecGainRelativeToExpectedDb": -0.36829012212136364,
+          "receiverCorrelationLocal": 0.836999938471783,
+          "receiverRmsGainDb": -1.0161614396346654,
+          "receiverAlignmentAdjustmentSamples": 6
+        },
+        {
+          "secondsInPhase": 4.0,
+          "rawDbfs": -26.485634755076475,
+          "aecRmsGainDb": -0.4323681836023848,
+          "aecGainRelativeToExpectedDb": -0.4323681836023848,
+          "receiverCorrelationLocal": 0.8712740558940709,
+          "receiverRmsGainDb": -0.34325699601190096,
+          "receiverAlignmentAdjustmentSamples": 3
+        },
+        {
+          "secondsInPhase": 4.1,
+          "rawDbfs": -26.027076771213345,
+          "aecRmsGainDb": -0.9983132865301724,
+          "aecGainRelativeToExpectedDb": -0.9983132865301724,
+          "receiverCorrelationLocal": 0.8498546962278709,
+          "receiverRmsGainDb": -0.231917459755421,
+          "receiverAlignmentAdjustmentSamples": -9
+        },
+        {
+          "secondsInPhase": 4.2,
+          "rawDbfs": -28.683427224200287,
+          "aecRmsGainDb": -5.639322147034771,
+          "aecGainRelativeToExpectedDb": -5.639322147034771,
+          "receiverCorrelationLocal": 0.7101960093977652,
+          "receiverRmsGainDb": -0.8047316693833663,
+          "receiverAlignmentAdjustmentSamples": -89
+        },
+        {
+          "secondsInPhase": 4.3,
+          "rawDbfs": -34.035194532251666,
+          "aecRmsGainDb": -1.1470893129293893,
+          "aecGainRelativeToExpectedDb": -1.1470893129293893,
+          "receiverCorrelationLocal": 0.6337150518240595,
+          "receiverRmsGainDb": -1.493301060082815,
+          "receiverAlignmentAdjustmentSamples": 7
+        },
+        {
+          "secondsInPhase": 4.4,
+          "rawDbfs": -26.665149262370758,
+          "aecRmsGainDb": -22.080598494791907,
+          "aecGainRelativeToExpectedDb": -22.080598494791907,
+          "receiverCorrelationLocal": 0.6808973749175452,
+          "receiverRmsGainDb": 1.2389718810806007,
+          "receiverAlignmentAdjustmentSamples": -101
+        },
+        {
+          "secondsInPhase": 4.5,
+          "rawDbfs": -25.673734977503607,
+          "aecRmsGainDb": -8.387350494379719,
+          "aecGainRelativeToExpectedDb": -8.387350494379719,
+          "receiverCorrelationLocal": 0.7698978080052273,
+          "receiverRmsGainDb": -1.1372921322824487,
+          "receiverAlignmentAdjustmentSamples": -73
+        },
+        {
+          "secondsInPhase": 4.6,
+          "rawDbfs": -33.25102783954023,
+          "aecRmsGainDb": -4.707587671904035,
+          "aecGainRelativeToExpectedDb": -4.707587671904035,
+          "receiverCorrelationLocal": 0.7866534109306881,
+          "receiverRmsGainDb": -1.3115640048302293,
+          "receiverAlignmentAdjustmentSamples": -51
+        },
+        {
+          "secondsInPhase": 4.7,
+          "rawDbfs": -30.917018394287332,
+          "aecRmsGainDb": -0.5614782401989012,
+          "aecGainRelativeToExpectedDb": -0.5614782401989012,
+          "receiverCorrelationLocal": 0.7893334750741563,
+          "receiverRmsGainDb": -1.0322947245677296,
+          "receiverAlignmentAdjustmentSamples": -54
+        },
+        {
+          "secondsInPhase": 4.8,
+          "rawDbfs": -33.542442431032065,
+          "aecRmsGainDb": -0.4654878895385489,
+          "aecGainRelativeToExpectedDb": -0.4654878895385489,
+          "receiverCorrelationLocal": 0.7779274141576632,
+          "receiverRmsGainDb": -0.9080825502575661,
+          "receiverAlignmentAdjustmentSamples": -2
+        },
+        {
+          "secondsInPhase": 4.9,
+          "rawDbfs": -28.545462364493147,
+          "aecRmsGainDb": -3.426747184392322,
+          "aecGainRelativeToExpectedDb": -3.426747184392322,
+          "receiverCorrelationLocal": 0.7179686222374105,
+          "receiverRmsGainDb": -0.4987138820962773,
+          "receiverAlignmentAdjustmentSamples": -2
+        },
+        {
+          "secondsInPhase": 5.0,
+          "rawDbfs": -28.368544325242677,
+          "aecRmsGainDb": -27.582950752421315,
+          "aecGainRelativeToExpectedDb": -27.582950752421315,
+          "receiverCorrelationLocal": 0.6351491922012102,
+          "receiverRmsGainDb": -1.6593106303266227,
+          "receiverAlignmentAdjustmentSamples": 5
+        },
+        {
+          "secondsInPhase": 5.1,
+          "rawDbfs": -28.541589143820268,
+          "aecRmsGainDb": -22.279478530219905,
+          "aecGainRelativeToExpectedDb": -22.279478530219905,
+          "receiverCorrelationLocal": 0.6704765127815973,
+          "receiverRmsGainDb": -1.8181730518444896,
+          "receiverAlignmentAdjustmentSamples": 3
+        },
+        {
+          "secondsInPhase": 5.2,
+          "rawDbfs": -33.96901831181138,
+          "aecRmsGainDb": -14.171208305354364,
+          "aecGainRelativeToExpectedDb": -14.171208305354364,
+          "receiverCorrelationLocal": 0.6494820024937251,
+          "receiverRmsGainDb": -2.013108181891384,
+          "receiverAlignmentAdjustmentSamples": 377
+        },
+        {
+          "secondsInPhase": 5.3,
+          "rawDbfs": -31.531577894217136,
+          "aecRmsGainDb": -5.412637377628223,
+          "aecGainRelativeToExpectedDb": -5.412637377628223,
+          "receiverCorrelationLocal": 0.9639563519678938,
+          "receiverRmsGainDb": -0.6023912885145265,
+          "receiverAlignmentAdjustmentSamples": 8
+        },
+        {
+          "secondsInPhase": 5.4,
+          "rawDbfs": -27.14923220944154,
+          "aecRmsGainDb": -8.003061009453791,
+          "aecGainRelativeToExpectedDb": -8.003061009453791,
+          "receiverCorrelationLocal": 0.8322181920609455,
+          "receiverRmsGainDb": -0.8152989643420449,
+          "receiverAlignmentAdjustmentSamples": -15
+        },
+        {
+          "secondsInPhase": 5.5,
+          "rawDbfs": -25.958143512422648,
+          "aecRmsGainDb": -1.4225055906302067,
+          "aecGainRelativeToExpectedDb": -1.4225055906302067,
+          "receiverCorrelationLocal": 0.8773584283971602,
+          "receiverRmsGainDb": -0.22806816086258663,
+          "receiverAlignmentAdjustmentSamples": -18
+        },
+        {
+          "secondsInPhase": 5.6,
+          "rawDbfs": -28.443750923360106,
+          "aecRmsGainDb": -3.8595786436615893,
+          "aecGainRelativeToExpectedDb": -3.8595786436615893,
+          "receiverCorrelationLocal": 0.8216399758327109,
+          "receiverRmsGainDb": -0.37299756314541677,
+          "receiverAlignmentAdjustmentSamples": -20
+        },
+        {
+          "secondsInPhase": 5.7,
+          "rawDbfs": -26.955002702399796,
+          "aecRmsGainDb": -28.39140265297644,
+          "aecGainRelativeToExpectedDb": -28.39140265297644,
+          "receiverCorrelationLocal": 0.6493222501683326,
+          "receiverRmsGainDb": -1.8379077318975825,
+          "receiverAlignmentAdjustmentSamples": 9
+        },
+        {
+          "secondsInPhase": 5.8,
+          "rawDbfs": -27.234751543736863,
+          "aecRmsGainDb": -10.342525416999266,
+          "aecGainRelativeToExpectedDb": -10.342525416999266,
+          "receiverCorrelationLocal": 0.9863246474377722,
+          "receiverRmsGainDb": -0.05533636063465386,
+          "receiverAlignmentAdjustmentSamples": 8
+        },
+        {
+          "secondsInPhase": 5.9,
+          "rawDbfs": -32.69474323949073,
+          "aecRmsGainDb": -21.01928677297259,
+          "aecGainRelativeToExpectedDb": -21.01928677297259,
+          "receiverCorrelationLocal": 0.709452629917975,
+          "receiverRmsGainDb": -1.5384335681297863,
+          "receiverAlignmentAdjustmentSamples": 10
+        },
+        {
+          "secondsInPhase": 6.0,
+          "rawDbfs": -40.141644115688244,
+          "aecRmsGainDb": -10.45600105256813,
+          "aecGainRelativeToExpectedDb": -10.45600105256813,
+          "receiverCorrelationLocal": 0.5749789108331603,
+          "receiverRmsGainDb": -2.204194724679162,
+          "receiverAlignmentAdjustmentSamples": 11
+        },
+        {
+          "secondsInPhase": 6.1,
+          "rawDbfs": -52.74284884288252,
+          "aecRmsGainDb": -0.5503063209733569,
+          "aecGainRelativeToExpectedDb": -0.5503063209733569,
+          "receiverCorrelationLocal": 0.5511719971480366,
+          "receiverRmsGainDb": -2.1363083226098967,
+          "receiverAlignmentAdjustmentSamples": 2
+        },
+        {
+          "secondsInPhase": 6.2,
+          "rawDbfs": -52.55086595271629,
+          "aecRmsGainDb": -0.564067972718112,
+          "aecGainRelativeToExpectedDb": -0.564067972718112,
+          "receiverCorrelationLocal": 0.5769047188888777,
+          "receiverRmsGainDb": -1.9521408270313176,
+          "receiverAlignmentAdjustmentSamples": 3
+        },
+        {
+          "secondsInPhase": 6.3,
+          "rawDbfs": -47.72585475301468,
+          "aecRmsGainDb": -6.675351654804691,
+          "aecGainRelativeToExpectedDb": -6.675351654804691,
+          "receiverCorrelationLocal": 0.5835990013643532,
+          "receiverRmsGainDb": -2.1252625796228135,
+          "receiverAlignmentAdjustmentSamples": 7
+        },
+        {
+          "secondsInPhase": 6.4,
+          "rawDbfs": -28.51144497621549,
+          "aecRmsGainDb": -27.370102929933395,
+          "aecGainRelativeToExpectedDb": -27.370102929933395,
+          "receiverCorrelationLocal": 0.6827033982687432,
+          "receiverRmsGainDb": -2.111751621575261,
+          "receiverAlignmentAdjustmentSamples": 5
+        },
+        {
+          "secondsInPhase": 6.5,
+          "rawDbfs": -33.31402718342696,
+          "aecRmsGainDb": -22.6012974847606,
+          "aecGainRelativeToExpectedDb": -22.6012974847606,
+          "receiverCorrelationLocal": 0.6616207289527282,
+          "receiverRmsGainDb": -1.7380340260982825,
+          "receiverAlignmentAdjustmentSamples": 5
+        },
+        {
+          "secondsInPhase": 6.6,
+          "rawDbfs": -28.441385511237378,
+          "aecRmsGainDb": -26.702571519855802,
+          "aecGainRelativeToExpectedDb": -26.702571519855802,
+          "receiverCorrelationLocal": 0.7213448596185799,
+          "receiverRmsGainDb": -1.8872190135380666,
+          "receiverAlignmentAdjustmentSamples": 5
+        },
+        {
+          "secondsInPhase": 6.7,
+          "rawDbfs": -43.629211048234865,
+          "aecRmsGainDb": -12.694476136498809,
+          "aecGainRelativeToExpectedDb": -12.694476136498809,
+          "receiverCorrelationLocal": 0.7022132367698507,
+          "receiverRmsGainDb": -1.728907496492155,
+          "receiverAlignmentAdjustmentSamples": 5
+        },
+        {
+          "secondsInPhase": 6.8,
+          "rawDbfs": -31.65198294207562,
+          "aecRmsGainDb": -0.34144066956404345,
+          "aecGainRelativeToExpectedDb": -0.34144066956404345,
+          "receiverCorrelationLocal": 0.8527158791348111,
+          "receiverRmsGainDb": -0.5499910434548597,
+          "receiverAlignmentAdjustmentSamples": 6
+        },
+        {
+          "secondsInPhase": 6.9,
+          "rawDbfs": -31.142367805276887,
+          "aecRmsGainDb": -0.824561643498083,
+          "aecGainRelativeToExpectedDb": -0.824561643498083,
+          "receiverCorrelationLocal": 0.7340761271352306,
+          "receiverRmsGainDb": -0.2679417665566652,
+          "receiverAlignmentAdjustmentSamples": 5
+        },
+        {
+          "secondsInPhase": 7.0,
+          "rawDbfs": -23.42550413587245,
+          "aecRmsGainDb": -5.334976448730896,
+          "aecGainRelativeToExpectedDb": -5.334976448730896,
+          "receiverCorrelationLocal": 0.874385278462394,
+          "receiverRmsGainDb": -0.18282700222147133,
+          "receiverAlignmentAdjustmentSamples": 7
+        },
+        {
+          "secondsInPhase": 7.1,
+          "rawDbfs": -28.77642509042655,
+          "aecRmsGainDb": -14.28761756991503,
+          "aecGainRelativeToExpectedDb": -14.28761756991503,
+          "receiverCorrelationLocal": 0.7574137699941912,
+          "receiverRmsGainDb": -2.429942139187449,
+          "receiverAlignmentAdjustmentSamples": 9
+        },
+        {
+          "secondsInPhase": 7.2,
+          "rawDbfs": -23.360745487446106,
+          "aecRmsGainDb": -28.79254088976817,
+          "aecGainRelativeToExpectedDb": -28.79254088976817,
+          "receiverCorrelationLocal": 0.8981279175783499,
+          "receiverRmsGainDb": -0.2554600655290151,
+          "receiverAlignmentAdjustmentSamples": 0
+        },
+        {
+          "secondsInPhase": 7.3,
+          "rawDbfs": -24.61544455990113,
+          "aecRmsGainDb": -13.612707802827096,
+          "aecGainRelativeToExpectedDb": -13.612707802827096,
+          "receiverCorrelationLocal": 0.9654250191844922,
+          "receiverRmsGainDb": -0.2539342379659683,
+          "receiverAlignmentAdjustmentSamples": 4
+        },
+        {
+          "secondsInPhase": 7.4,
+          "rawDbfs": -26.956588979518013,
+          "aecRmsGainDb": -11.686964212865758,
+          "aecGainRelativeToExpectedDb": -11.686964212865758,
+          "receiverCorrelationLocal": 0.9712789319440255,
+          "receiverRmsGainDb": 0.0742687894294678,
+          "receiverAlignmentAdjustmentSamples": -1
+        }
+      ]
+    },
+    {
+      "phase": "doubletalk-2",
+      "receiverLagSamples": 6060,
+      "active100msWindows": 66,
+      "aecWindowsBelowMinus6Db": 40,
+      "aecWorstGainDb": -28.51448573182789,
+      "receiverWindowsBelowMinus12Db": 0,
+      "receiverMedianCorrelation": 0.7869955750625712,
+      "windows": [
+        {
+          "secondsInPhase": 1.0,
+          "rawDbfs": -39.30906245962037,
+          "aecRmsGainDb": -0.4719751880387552,
+          "aecGainRelativeToExpectedDb": -0.4719751880387552,
+          "receiverCorrelationLocal": 0.7439878910995235,
+          "receiverRmsGainDb": -1.138994261617416,
+          "receiverAlignmentAdjustmentSamples": 11
+        },
+        {
+          "secondsInPhase": 1.1,
+          "rawDbfs": -32.9710764126063,
+          "aecRmsGainDb": -0.7669764177747889,
+          "aecGainRelativeToExpectedDb": -0.7669764177747889,
+          "receiverCorrelationLocal": 0.8773096993610981,
+          "receiverRmsGainDb": -0.24768481134881104,
+          "receiverAlignmentAdjustmentSamples": 0
+        },
+        {
+          "secondsInPhase": 1.2,
+          "rawDbfs": -26.88764958489971,
+          "aecRmsGainDb": -10.77040301614846,
+          "aecGainRelativeToExpectedDb": -10.77040301614846,
+          "receiverCorrelationLocal": 0.8302570669473082,
+          "receiverRmsGainDb": -0.41682344293058277,
+          "receiverAlignmentAdjustmentSamples": -7
+        },
+        {
+          "secondsInPhase": 1.3,
+          "rawDbfs": -27.62674130628586,
+          "aecRmsGainDb": -23.700226164962068,
+          "aecGainRelativeToExpectedDb": -23.700226164962068,
+          "receiverCorrelationLocal": 0.8505836765261215,
+          "receiverRmsGainDb": -0.013969916474571676,
+          "receiverAlignmentAdjustmentSamples": -1
+        },
+        {
+          "secondsInPhase": 1.4,
+          "rawDbfs": -30.994535670095644,
+          "aecRmsGainDb": -8.587124468128454,
+          "aecGainRelativeToExpectedDb": -8.587124468128454,
+          "receiverCorrelationLocal": 0.8697890679253524,
+          "receiverRmsGainDb": -0.5668331221296034,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 1.5,
+          "rawDbfs": -27.282094023673164,
+          "aecRmsGainDb": -26.930923236238257,
+          "aecGainRelativeToExpectedDb": -26.930923236238257,
+          "receiverCorrelationLocal": 0.625735929469782,
+          "receiverRmsGainDb": 2.2760907325716215,
+          "receiverAlignmentAdjustmentSamples": 3
+        },
+        {
+          "secondsInPhase": 1.6,
+          "rawDbfs": -34.152221421203365,
+          "aecRmsGainDb": -19.723942575997427,
+          "aecGainRelativeToExpectedDb": -19.723942575997427,
+          "receiverCorrelationLocal": 0.7639479396455885,
+          "receiverRmsGainDb": -1.6107770929492622,
+          "receiverAlignmentAdjustmentSamples": 7
+        },
+        {
+          "secondsInPhase": 1.7,
+          "rawDbfs": -34.55519050347527,
+          "aecRmsGainDb": -6.398863037774287,
+          "aecGainRelativeToExpectedDb": -6.398863037774287,
+          "receiverCorrelationLocal": 0.7917791667323194,
+          "receiverRmsGainDb": -0.7647897006333048,
+          "receiverAlignmentAdjustmentSamples": 7
+        },
+        {
+          "secondsInPhase": 1.8,
+          "rawDbfs": -30.698123823880778,
+          "aecRmsGainDb": -11.370434306519355,
+          "aecGainRelativeToExpectedDb": -11.370434306519355,
+          "receiverCorrelationLocal": 0.6237812342306255,
+          "receiverRmsGainDb": -0.8534978684106252,
+          "receiverAlignmentAdjustmentSamples": -13
+        },
+        {
+          "secondsInPhase": 1.9,
+          "rawDbfs": -34.66792346494624,
+          "aecRmsGainDb": -19.968745291366425,
+          "aecGainRelativeToExpectedDb": -19.968745291366425,
+          "receiverCorrelationLocal": 0.8001726047287742,
+          "receiverRmsGainDb": -1.6725985581950964,
+          "receiverAlignmentAdjustmentSamples": 6
+        },
+        {
+          "secondsInPhase": 2.0,
+          "rawDbfs": -38.79947218298869,
+          "aecRmsGainDb": -16.017860231602963,
+          "aecGainRelativeToExpectedDb": -16.017860231602963,
+          "receiverCorrelationLocal": 0.7629945711873123,
+          "receiverRmsGainDb": -1.1687251671056529,
+          "receiverAlignmentAdjustmentSamples": 5
+        },
+        {
+          "secondsInPhase": 2.1,
+          "rawDbfs": -34.86076413206586,
+          "aecRmsGainDb": -19.950331616528448,
+          "aecGainRelativeToExpectedDb": -19.950331616528448,
+          "receiverCorrelationLocal": 0.7538217231469804,
+          "receiverRmsGainDb": -1.3663215375948932,
+          "receiverAlignmentAdjustmentSamples": 6
+        },
+        {
+          "secondsInPhase": 2.2,
+          "rawDbfs": -33.985154950068626,
+          "aecRmsGainDb": -20.611796501499974,
+          "aecGainRelativeToExpectedDb": -20.611796501499974,
+          "receiverCorrelationLocal": 0.762218434732325,
+          "receiverRmsGainDb": -1.2850242928199438,
+          "receiverAlignmentAdjustmentSamples": 7
+        },
+        {
+          "secondsInPhase": 2.3,
+          "rawDbfs": -46.99597889821931,
+          "aecRmsGainDb": -7.119855784098245,
+          "aecGainRelativeToExpectedDb": -7.119855784098245,
+          "receiverCorrelationLocal": 0.7125947269159708,
+          "receiverRmsGainDb": -2.2940249411010742,
+          "receiverAlignmentAdjustmentSamples": 6
+        },
+        {
+          "secondsInPhase": 2.4,
+          "rawDbfs": -53.59038339400878,
+          "aecRmsGainDb": -0.5066529208919799,
+          "aecGainRelativeToExpectedDb": -0.5066529208919799,
+          "receiverCorrelationLocal": 0.6314444878120156,
+          "receiverRmsGainDb": -1.4216121167359277,
+          "receiverAlignmentAdjustmentSamples": 3
+        },
+        {
+          "secondsInPhase": 2.5,
+          "rawDbfs": -45.334714673349374,
+          "aecRmsGainDb": -0.10524003795801076,
+          "aecGainRelativeToExpectedDb": -0.10524003795801076,
+          "receiverCorrelationLocal": 0.7245384706116704,
+          "receiverRmsGainDb": -2.434343594651699,
+          "receiverAlignmentAdjustmentSamples": 11
+        },
+        {
+          "secondsInPhase": 2.6,
+          "rawDbfs": -28.237051806188944,
+          "aecRmsGainDb": -0.6405620452967256,
+          "aecGainRelativeToExpectedDb": -0.6405620452967256,
+          "receiverCorrelationLocal": 0.8781726422096425,
+          "receiverRmsGainDb": -0.36013941970136554,
+          "receiverAlignmentAdjustmentSamples": -16
+        },
+        {
+          "secondsInPhase": 2.7,
+          "rawDbfs": -28.3635662326699,
+          "aecRmsGainDb": -0.6431688683400514,
+          "aecGainRelativeToExpectedDb": -0.6431688683400514,
+          "receiverCorrelationLocal": 0.9046507839359199,
+          "receiverRmsGainDb": 0.052336266326415144,
+          "receiverAlignmentAdjustmentSamples": 0
+        },
+        {
+          "secondsInPhase": 2.8,
+          "rawDbfs": -27.05805388217293,
+          "aecRmsGainDb": -3.286053999060491,
+          "aecGainRelativeToExpectedDb": -3.286053999060491,
+          "receiverCorrelationLocal": 0.8523715859047085,
+          "receiverRmsGainDb": -0.13237545588216915,
+          "receiverAlignmentAdjustmentSamples": 2
+        },
+        {
+          "secondsInPhase": 2.9,
+          "rawDbfs": -25.547771763398373,
+          "aecRmsGainDb": -6.445846910986539,
+          "aecGainRelativeToExpectedDb": -6.445846910986539,
+          "receiverCorrelationLocal": 0.9229922068114282,
+          "receiverRmsGainDb": -0.0674675996739844,
+          "receiverAlignmentAdjustmentSamples": 5
+        },
+        {
+          "secondsInPhase": 3.0,
+          "rawDbfs": -34.84545206467824,
+          "aecRmsGainDb": -5.505248220656958,
+          "aecGainRelativeToExpectedDb": -5.505248220656958,
+          "receiverCorrelationLocal": 0.9292881588031454,
+          "receiverRmsGainDb": -0.3424198041192831,
+          "receiverAlignmentAdjustmentSamples": 7
+        },
+        {
+          "secondsInPhase": 3.1,
+          "rawDbfs": -30.644848499685857,
+          "aecRmsGainDb": -0.424686914456897,
+          "aecGainRelativeToExpectedDb": -0.424686914456897,
+          "receiverCorrelationLocal": 0.79806419307944,
+          "receiverRmsGainDb": -0.573050331247412,
+          "receiverAlignmentAdjustmentSamples": 8
+        },
+        {
+          "secondsInPhase": 3.2,
+          "rawDbfs": -31.93135600111242,
+          "aecRmsGainDb": -0.494985089706913,
+          "aecGainRelativeToExpectedDb": -0.494985089706913,
+          "receiverCorrelationLocal": 0.8748010156819253,
+          "receiverRmsGainDb": -0.07742746891779421,
+          "receiverAlignmentAdjustmentSamples": -6
+        },
+        {
+          "secondsInPhase": 3.3,
+          "rawDbfs": -29.63818838511393,
+          "aecRmsGainDb": -0.5217551766071811,
+          "aecGainRelativeToExpectedDb": -0.5217551766071811,
+          "receiverCorrelationLocal": 0.923545680558467,
+          "receiverRmsGainDb": -0.27338826097189184,
+          "receiverAlignmentAdjustmentSamples": -10
+        },
+        {
+          "secondsInPhase": 3.4,
+          "rawDbfs": -27.457961778686094,
+          "aecRmsGainDb": -0.7323332821476193,
+          "aecGainRelativeToExpectedDb": -0.7323332821476193,
+          "receiverCorrelationLocal": 0.9437430095074703,
+          "receiverRmsGainDb": 0.018105262690428735,
+          "receiverAlignmentAdjustmentSamples": -12
+        },
+        {
+          "secondsInPhase": 3.5,
+          "rawDbfs": -30.414596039069714,
+          "aecRmsGainDb": -1.8153663715831803,
+          "aecGainRelativeToExpectedDb": -1.8153663715831803,
+          "receiverCorrelationLocal": 0.913143865324975,
+          "receiverRmsGainDb": -0.10560095769195131,
+          "receiverAlignmentAdjustmentSamples": -4
+        },
+        {
+          "secondsInPhase": 3.6,
+          "rawDbfs": -30.102020395939114,
+          "aecRmsGainDb": -2.3128437562507953,
+          "aecGainRelativeToExpectedDb": -2.3128437562507953,
+          "receiverCorrelationLocal": 0.9236525652477203,
+          "receiverRmsGainDb": -0.08240663234625108,
+          "receiverAlignmentAdjustmentSamples": 3
+        },
+        {
+          "secondsInPhase": 3.7,
+          "rawDbfs": -23.839047489483672,
+          "aecRmsGainDb": -10.81544954713635,
+          "aecGainRelativeToExpectedDb": -10.81544954713635,
+          "receiverCorrelationLocal": 0.9275944503770344,
+          "receiverRmsGainDb": -0.05924537454780107,
+          "receiverAlignmentAdjustmentSamples": 2
+        },
+        {
+          "secondsInPhase": 3.8,
+          "rawDbfs": -25.145252896057112,
+          "aecRmsGainDb": -28.51448573182789,
+          "aecGainRelativeToExpectedDb": -28.51448573182789,
+          "receiverCorrelationLocal": 0.7589303844258904,
+          "receiverRmsGainDb": -1.722368726784399,
+          "receiverAlignmentAdjustmentSamples": 5
+        },
+        {
+          "secondsInPhase": 3.9,
+          "rawDbfs": -30.90356025068074,
+          "aecRmsGainDb": -24.24339110089845,
+          "aecGainRelativeToExpectedDb": -24.24339110089845,
+          "receiverCorrelationLocal": 0.7110693720290986,
+          "receiverRmsGainDb": -1.7820843022174648,
+          "receiverAlignmentAdjustmentSamples": 7
+        },
+        {
+          "secondsInPhase": 4.0,
+          "rawDbfs": -33.558478550565965,
+          "aecRmsGainDb": -16.585193335681755,
+          "aecGainRelativeToExpectedDb": -16.585193335681755,
+          "receiverCorrelationLocal": 0.8285968524022433,
+          "receiverRmsGainDb": -0.98199899370332,
+          "receiverAlignmentAdjustmentSamples": 8
+        },
+        {
+          "secondsInPhase": 4.1,
+          "rawDbfs": -32.07289612868515,
+          "aecRmsGainDb": -9.891871874352987,
+          "aecGainRelativeToExpectedDb": -9.891871874352987,
+          "receiverCorrelationLocal": 0.88090078287292,
+          "receiverRmsGainDb": -0.8879818585011698,
+          "receiverAlignmentAdjustmentSamples": 8
+        },
+        {
+          "secondsInPhase": 4.2,
+          "rawDbfs": -31.790453482301725,
+          "aecRmsGainDb": -1.1474233763387969,
+          "aecGainRelativeToExpectedDb": -1.1474233763387969,
+          "receiverCorrelationLocal": 0.6687172823803154,
+          "receiverRmsGainDb": -0.7267198234620635,
+          "receiverAlignmentAdjustmentSamples": -14
+        },
+        {
+          "secondsInPhase": 4.3,
+          "rawDbfs": -31.80554560254543,
+          "aecRmsGainDb": -11.504612113233792,
+          "aecGainRelativeToExpectedDb": -11.504612113233792,
+          "receiverCorrelationLocal": 0.6735271619634577,
+          "receiverRmsGainDb": -3.4381845887671263,
+          "receiverAlignmentAdjustmentSamples": 397
+        },
+        {
+          "secondsInPhase": 4.4,
+          "rawDbfs": -31.03198465036675,
+          "aecRmsGainDb": -0.8875518557927377,
+          "aecGainRelativeToExpectedDb": -0.8875518557927377,
+          "receiverCorrelationLocal": 0.8135841533657381,
+          "receiverRmsGainDb": -0.40177941426852964,
+          "receiverAlignmentAdjustmentSamples": 4
+        },
+        {
+          "secondsInPhase": 4.5,
+          "rawDbfs": -35.5016964133631,
+          "aecRmsGainDb": -0.4680684978356475,
+          "aecGainRelativeToExpectedDb": -0.4680684978356475,
+          "receiverCorrelationLocal": 0.754414706971468,
+          "receiverRmsGainDb": -0.4020038610245297,
+          "receiverAlignmentAdjustmentSamples": 5
+        },
+        {
+          "secondsInPhase": 4.6,
+          "rawDbfs": -36.65045411069384,
+          "aecRmsGainDb": -16.14553730517311,
+          "aecGainRelativeToExpectedDb": -16.14553730517311,
+          "receiverCorrelationLocal": 0.6691074148837176,
+          "receiverRmsGainDb": -1.2882490474126984,
+          "receiverAlignmentAdjustmentSamples": 8
+        },
+        {
+          "secondsInPhase": 4.7,
+          "rawDbfs": -29.75605007199445,
+          "aecRmsGainDb": -24.982224234709314,
+          "aecGainRelativeToExpectedDb": -24.982224234709314,
+          "receiverCorrelationLocal": 0.6957321278493758,
+          "receiverRmsGainDb": -1.4883185904089538,
+          "receiverAlignmentAdjustmentSamples": 5
+        },
+        {
+          "secondsInPhase": 4.8,
+          "rawDbfs": -25.542277337888358,
+          "aecRmsGainDb": -9.200555863928612,
+          "aecGainRelativeToExpectedDb": -9.200555863928612,
+          "receiverCorrelationLocal": 0.8241574640371208,
+          "receiverRmsGainDb": 2.025319228705948,
+          "receiverAlignmentAdjustmentSamples": 323
+        },
+        {
+          "secondsInPhase": 4.9,
+          "rawDbfs": -31.86626844764099,
+          "aecRmsGainDb": -8.147370275514504,
+          "aecGainRelativeToExpectedDb": -8.147370275514504,
+          "receiverCorrelationLocal": 0.8985353628403193,
+          "receiverRmsGainDb": 0.1665376244679454,
+          "receiverAlignmentAdjustmentSamples": -43
+        },
+        {
+          "secondsInPhase": 5.0,
+          "rawDbfs": -36.459066562204,
+          "aecRmsGainDb": -16.616919461559114,
+          "aecGainRelativeToExpectedDb": -16.616919461559114,
+          "receiverCorrelationLocal": 0.7538016314912634,
+          "receiverRmsGainDb": -1.2069997733756248,
+          "receiverAlignmentAdjustmentSamples": 9
+        },
+        {
+          "secondsInPhase": 5.1,
+          "rawDbfs": -28.21801261693922,
+          "aecRmsGainDb": -9.29767215360479,
+          "aecGainRelativeToExpectedDb": -9.29767215360479,
+          "receiverCorrelationLocal": 0.9158059703327291,
+          "receiverRmsGainDb": -0.17669952086190416,
+          "receiverAlignmentAdjustmentSamples": 3
+        },
+        {
+          "secondsInPhase": 5.2,
+          "rawDbfs": -28.834476680900426,
+          "aecRmsGainDb": -22.866375691076772,
+          "aecGainRelativeToExpectedDb": -22.866375691076772,
+          "receiverCorrelationLocal": 0.7962067353815954,
+          "receiverRmsGainDb": -1.0220992544461098,
+          "receiverAlignmentAdjustmentSamples": 3
+        },
+        {
+          "secondsInPhase": 5.3,
+          "rawDbfs": -26.25836226037494,
+          "aecRmsGainDb": -19.988754413421596,
+          "aecGainRelativeToExpectedDb": -19.988754413421596,
+          "receiverCorrelationLocal": 0.9617129316111197,
+          "receiverRmsGainDb": -0.2402085763685381,
+          "receiverAlignmentAdjustmentSamples": 5
+        },
+        {
+          "secondsInPhase": 5.4,
+          "rawDbfs": -33.57953851620133,
+          "aecRmsGainDb": -12.315628313242527,
+          "aecGainRelativeToExpectedDb": -12.315628313242527,
+          "receiverCorrelationLocal": 0.939912518223825,
+          "receiverRmsGainDb": -0.22471094159890112,
+          "receiverAlignmentAdjustmentSamples": 4
+        },
+        {
+          "secondsInPhase": 5.5,
+          "rawDbfs": -34.02597300674597,
+          "aecRmsGainDb": -12.043559504722854,
+          "aecGainRelativeToExpectedDb": -12.043559504722854,
+          "receiverCorrelationLocal": 0.7308625541127416,
+          "receiverRmsGainDb": -0.635338420044375,
+          "receiverAlignmentAdjustmentSamples": 2
+        },
+        {
+          "secondsInPhase": 5.6,
+          "rawDbfs": -36.748028115666386,
+          "aecRmsGainDb": -3.9126401807378985,
+          "aecGainRelativeToExpectedDb": -3.9126401807378985,
+          "receiverCorrelationLocal": 0.7569518555120607,
+          "receiverRmsGainDb": -0.7117870147471044,
+          "receiverAlignmentAdjustmentSamples": 4
+        },
+        {
+          "secondsInPhase": 5.7,
+          "rawDbfs": -35.08761552492748,
+          "aecRmsGainDb": -0.4761620267505906,
+          "aecGainRelativeToExpectedDb": -0.4761620267505906,
+          "receiverCorrelationLocal": 0.7504972362346163,
+          "receiverRmsGainDb": -0.8089177980254088,
+          "receiverAlignmentAdjustmentSamples": 8
+        },
+        {
+          "secondsInPhase": 5.8,
+          "rawDbfs": -33.8322318360709,
+          "aecRmsGainDb": -0.4379515258297951,
+          "aecGainRelativeToExpectedDb": -0.4379515258297951,
+          "receiverCorrelationLocal": 0.7035885803505224,
+          "receiverRmsGainDb": -0.5745384490432178,
+          "receiverAlignmentAdjustmentSamples": 7
+        },
+        {
+          "secondsInPhase": 5.9,
+          "rawDbfs": -42.530184213092745,
+          "aecRmsGainDb": -0.5356636624139937,
+          "aecGainRelativeToExpectedDb": -0.5356636624139937,
+          "receiverCorrelationLocal": 0.7822119833928232,
+          "receiverRmsGainDb": -0.29716775798078415,
+          "receiverAlignmentAdjustmentSamples": -29
+        },
+        {
+          "secondsInPhase": 6.0,
+          "rawDbfs": -30.591651374483213,
+          "aecRmsGainDb": -23.240731020465955,
+          "aecGainRelativeToExpectedDb": -23.240731020465955,
+          "receiverCorrelationLocal": 0.6966305935669987,
+          "receiverRmsGainDb": -1.8455497581677616,
+          "receiverAlignmentAdjustmentSamples": 6
+        },
+        {
+          "secondsInPhase": 6.1,
+          "rawDbfs": -32.30086707883961,
+          "aecRmsGainDb": -23.09632987520514,
+          "aecGainRelativeToExpectedDb": -23.09632987520514,
+          "receiverCorrelationLocal": 0.7602997206361336,
+          "receiverRmsGainDb": -1.539651233307753,
+          "receiverAlignmentAdjustmentSamples": 7
+        },
+        {
+          "secondsInPhase": 6.2,
+          "rawDbfs": -30.54666802338151,
+          "aecRmsGainDb": -23.82641029545632,
+          "aecGainRelativeToExpectedDb": -23.82641029545632,
+          "receiverCorrelationLocal": 0.7047735856236799,
+          "receiverRmsGainDb": -2.043964538279204,
+          "receiverAlignmentAdjustmentSamples": 7
+        },
+        {
+          "secondsInPhase": 6.3,
+          "rawDbfs": -35.34116258610503,
+          "aecRmsGainDb": -19.04355138816418,
+          "aecGainRelativeToExpectedDb": -19.04355138816418,
+          "receiverCorrelationLocal": 0.7228951932190103,
+          "receiverRmsGainDb": -2.031251760599861,
+          "receiverAlignmentAdjustmentSamples": 6
+        },
+        {
+          "secondsInPhase": 6.4,
+          "rawDbfs": -52.708055875373184,
+          "aecRmsGainDb": -1.23752868101449,
+          "aecGainRelativeToExpectedDb": -1.23752868101449,
+          "receiverCorrelationLocal": 0.6812218797720389,
+          "receiverRmsGainDb": -1.969194645004587,
+          "receiverAlignmentAdjustmentSamples": 9
+        },
+        {
+          "secondsInPhase": 6.5,
+          "rawDbfs": -50.801989771477345,
+          "aecRmsGainDb": -0.3181596485895748,
+          "aecGainRelativeToExpectedDb": -0.3181596485895748,
+          "receiverCorrelationLocal": 0.6944546184199163,
+          "receiverRmsGainDb": -1.7964314351871111,
+          "receiverAlignmentAdjustmentSamples": 10
+        },
+        {
+          "secondsInPhase": 6.6,
+          "rawDbfs": -52.1655864230928,
+          "aecRmsGainDb": -0.7042456780371702,
+          "aecGainRelativeToExpectedDb": -0.7042456780371702,
+          "receiverCorrelationLocal": 0.6742430993494983,
+          "receiverRmsGainDb": -1.1908460781299672,
+          "receiverAlignmentAdjustmentSamples": -17
+        },
+        {
+          "secondsInPhase": 6.7,
+          "rawDbfs": -35.697762664966056,
+          "aecRmsGainDb": -18.640642623262863,
+          "aecGainRelativeToExpectedDb": -18.640642623262863,
+          "receiverCorrelationLocal": 0.7238681561004782,
+          "receiverRmsGainDb": -1.2311938347447753,
+          "receiverAlignmentAdjustmentSamples": 10
+        },
+        {
+          "secondsInPhase": 6.8,
+          "rawDbfs": -24.815573808085375,
+          "aecRmsGainDb": -8.593540032587834,
+          "aecGainRelativeToExpectedDb": -8.593540032587834,
+          "receiverCorrelationLocal": 0.8537124637824125,
+          "receiverRmsGainDb": -1.2519574891468488,
+          "receiverAlignmentAdjustmentSamples": -11
+        },
+        {
+          "secondsInPhase": 6.9,
+          "rawDbfs": -27.101975983996176,
+          "aecRmsGainDb": -1.3497947813648605,
+          "aecGainRelativeToExpectedDb": -1.3497947813648605,
+          "receiverCorrelationLocal": 0.9199606204865199,
+          "receiverRmsGainDb": 0.02024050281326501,
+          "receiverAlignmentAdjustmentSamples": -15
+        },
+        {
+          "secondsInPhase": 7.0,
+          "rawDbfs": -27.747501611557794,
+          "aecRmsGainDb": -4.2074478179093395,
+          "aecGainRelativeToExpectedDb": -4.2074478179093395,
+          "receiverCorrelationLocal": 0.8948396374266919,
+          "receiverRmsGainDb": -0.04013406457318098,
+          "receiverAlignmentAdjustmentSamples": -1
+        },
+        {
+          "secondsInPhase": 7.1,
+          "rawDbfs": -24.84073825967198,
+          "aecRmsGainDb": -10.373441481533142,
+          "aecGainRelativeToExpectedDb": -10.373441481533142,
+          "receiverCorrelationLocal": 0.9354151129589456,
+          "receiverRmsGainDb": -0.051449679626419956,
+          "receiverAlignmentAdjustmentSamples": -23
+        },
+        {
+          "secondsInPhase": 7.2,
+          "rawDbfs": -25.32686783063764,
+          "aecRmsGainDb": -14.865029331395025,
+          "aecGainRelativeToExpectedDb": -14.865029331395025,
+          "receiverCorrelationLocal": 0.9714987457203708,
+          "receiverRmsGainDb": -0.3365207577326941,
+          "receiverAlignmentAdjustmentSamples": 8
+        },
+        {
+          "secondsInPhase": 7.3,
+          "rawDbfs": -30.324125074600996,
+          "aecRmsGainDb": -26.191599718683847,
+          "aecGainRelativeToExpectedDb": -26.191599718683847,
+          "receiverCorrelationLocal": 0.7368266882326591,
+          "receiverRmsGainDb": -1.1450399480188642,
+          "receiverAlignmentAdjustmentSamples": 8
+        },
+        {
+          "secondsInPhase": 7.4,
+          "rawDbfs": -34.04366670184735,
+          "aecRmsGainDb": -21.312501129179175,
+          "aecGainRelativeToExpectedDb": -21.312501129179175,
+          "receiverCorrelationLocal": 0.758003113831601,
+          "receiverRmsGainDb": -1.5612889638907563,
+          "receiverAlignmentAdjustmentSamples": 7
+        },
+        {
+          "secondsInPhase": 7.5,
+          "rawDbfs": -26.86548119052737,
+          "aecRmsGainDb": -13.062184272955514,
+          "aecGainRelativeToExpectedDb": -13.062184272955514,
+          "receiverCorrelationLocal": 0.8571097025675173,
+          "receiverRmsGainDb": -0.8531296691025207,
+          "receiverAlignmentAdjustmentSamples": 6
+        }
+      ]
+    },
+    {
+      "phase": "near-recovery",
+      "receiverLagSamples": 8465,
+      "active100msWindows": 65,
+      "aecWindowsBelowMinus6Db": 0,
+      "aecWorstGainDb": -0.49308323219976846,
+      "receiverWindowsBelowMinus12Db": 0,
+      "receiverMedianCorrelation": 0.6098294977591349,
+      "windows": [
+        {
+          "secondsInPhase": 1.0,
+          "rawDbfs": -53.2510492993551,
+          "aecRmsGainDb": -0.4508996170650659,
+          "aecGainRelativeToExpectedDb": -0.4508996170650659,
+          "receiverCorrelationLocal": 0.577934494191179,
+          "receiverRmsGainDb": -1.5769412976656094,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 1.1,
+          "rawDbfs": -53.322187674844145,
+          "aecRmsGainDb": -0.47625563803990106,
+          "aecGainRelativeToExpectedDb": -0.47625563803990106,
+          "receiverCorrelationLocal": 0.6255787504548551,
+          "receiverRmsGainDb": -1.7969777065552637,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 1.2,
+          "rawDbfs": -54.206560608696684,
+          "aecRmsGainDb": -0.45218766967123225,
+          "aecGainRelativeToExpectedDb": -0.45218766967123225,
+          "receiverCorrelationLocal": 0.591367242245212,
+          "receiverRmsGainDb": -1.759520422196426,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 1.3,
+          "rawDbfs": -53.04932661827163,
+          "aecRmsGainDb": -0.47928494556369616,
+          "aecGainRelativeToExpectedDb": -0.47928494556369616,
+          "receiverCorrelationLocal": 0.5911255386741282,
+          "receiverRmsGainDb": -1.3617928762455465,
+          "receiverAlignmentAdjustmentSamples": -3
+        },
+        {
+          "secondsInPhase": 1.4,
+          "rawDbfs": -52.87780528322938,
+          "aecRmsGainDb": -0.4796617344549531,
+          "aecGainRelativeToExpectedDb": -0.4796617344549531,
+          "receiverCorrelationLocal": 0.5597248131598226,
+          "receiverRmsGainDb": -1.551445970207763,
+          "receiverAlignmentAdjustmentSamples": -2
+        },
+        {
+          "secondsInPhase": 1.5,
+          "rawDbfs": -53.63612124337894,
+          "aecRmsGainDb": -0.4562782732563413,
+          "aecGainRelativeToExpectedDb": -0.4562782732563413,
+          "receiverCorrelationLocal": 0.6802849789218959,
+          "receiverRmsGainDb": -1.434651177428161,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 1.6,
+          "rawDbfs": -53.25298623179452,
+          "aecRmsGainDb": -0.46175885055199095,
+          "aecGainRelativeToExpectedDb": -0.46175885055199095,
+          "receiverCorrelationLocal": 0.6151150713130014,
+          "receiverRmsGainDb": -2.1709990537297448,
+          "receiverAlignmentAdjustmentSamples": -1
+        },
+        {
+          "secondsInPhase": 1.7,
+          "rawDbfs": -53.43333288571501,
+          "aecRmsGainDb": -0.4657611575309312,
+          "aecGainRelativeToExpectedDb": -0.4657611575309312,
+          "receiverCorrelationLocal": 0.6151769341921015,
+          "receiverRmsGainDb": -2.214811943666816,
+          "receiverAlignmentAdjustmentSamples": 0
+        },
+        {
+          "secondsInPhase": 1.8,
+          "rawDbfs": -52.979652042314456,
+          "aecRmsGainDb": -0.47728831488767137,
+          "aecGainRelativeToExpectedDb": -0.47728831488767137,
+          "receiverCorrelationLocal": 0.6421337990215841,
+          "receiverRmsGainDb": -2.31673705823305,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 1.9,
+          "rawDbfs": -53.29620593088347,
+          "aecRmsGainDb": -0.46505870004000277,
+          "aecGainRelativeToExpectedDb": -0.46505870004000277,
+          "receiverCorrelationLocal": 0.5956493850901962,
+          "receiverRmsGainDb": -1.760295670515541,
+          "receiverAlignmentAdjustmentSamples": -1
+        },
+        {
+          "secondsInPhase": 2.0,
+          "rawDbfs": -55.00886292045117,
+          "aecRmsGainDb": -0.446155680732653,
+          "aecGainRelativeToExpectedDb": -0.446155680732653,
+          "receiverCorrelationLocal": 0.6282636753363826,
+          "receiverRmsGainDb": -1.682952589395485,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 2.1,
+          "rawDbfs": -53.756776909651165,
+          "aecRmsGainDb": -0.45085418258582677,
+          "aecGainRelativeToExpectedDb": -0.45085418258582677,
+          "receiverCorrelationLocal": 0.6062793641442689,
+          "receiverRmsGainDb": -2.14079278055229,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 2.2,
+          "rawDbfs": -53.89589807622086,
+          "aecRmsGainDb": -0.44677738937588163,
+          "aecGainRelativeToExpectedDb": -0.44677738937588163,
+          "receiverCorrelationLocal": 0.7515891180354548,
+          "receiverRmsGainDb": -1.550698219876903,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 2.3,
+          "rawDbfs": -53.27978068063531,
+          "aecRmsGainDb": -0.46952764933737334,
+          "aecGainRelativeToExpectedDb": -0.46952764933737334,
+          "receiverCorrelationLocal": 0.6564851178621571,
+          "receiverRmsGainDb": -1.8864339158995431,
+          "receiverAlignmentAdjustmentSamples": -2
+        },
+        {
+          "secondsInPhase": 2.4,
+          "rawDbfs": -54.15036208167468,
+          "aecRmsGainDb": -0.46201220690518785,
+          "aecGainRelativeToExpectedDb": -0.46201220690518785,
+          "receiverCorrelationLocal": 0.6224729297112743,
+          "receiverRmsGainDb": -2.0617742116633826,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 2.5,
+          "rawDbfs": -53.33999752076552,
+          "aecRmsGainDb": -0.47490205378051065,
+          "aecGainRelativeToExpectedDb": -0.47490205378051065,
+          "receiverCorrelationLocal": 0.6395017337627797,
+          "receiverRmsGainDb": -2.0659213705346837,
+          "receiverAlignmentAdjustmentSamples": -2
+        },
+        {
+          "secondsInPhase": 2.6,
+          "rawDbfs": -53.612485045244526,
+          "aecRmsGainDb": -0.4734216739298272,
+          "aecGainRelativeToExpectedDb": -0.4734216739298272,
+          "receiverCorrelationLocal": 0.5224316306539893,
+          "receiverRmsGainDb": -1.9024906737381926,
+          "receiverAlignmentAdjustmentSamples": -1
+        },
+        {
+          "secondsInPhase": 2.7,
+          "rawDbfs": -53.47464306704652,
+          "aecRmsGainDb": -0.45647463000693145,
+          "aecGainRelativeToExpectedDb": -0.45647463000693145,
+          "receiverCorrelationLocal": 0.6716974760246218,
+          "receiverRmsGainDb": -1.750852654700965,
+          "receiverAlignmentAdjustmentSamples": 0
+        },
+        {
+          "secondsInPhase": 2.8,
+          "rawDbfs": -53.78976387406893,
+          "aecRmsGainDb": -0.4572826429963921,
+          "aecGainRelativeToExpectedDb": -0.4572826429963921,
+          "receiverCorrelationLocal": 0.6138272035525725,
+          "receiverRmsGainDb": -1.7658467309599302,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 2.9,
+          "rawDbfs": -53.04523935709457,
+          "aecRmsGainDb": -0.4770739141883097,
+          "aecGainRelativeToExpectedDb": -0.4770739141883097,
+          "receiverCorrelationLocal": 0.5892123014583385,
+          "receiverRmsGainDb": -2.180229801988021,
+          "receiverAlignmentAdjustmentSamples": -2
+        },
+        {
+          "secondsInPhase": 3.0,
+          "rawDbfs": -53.53136718648203,
+          "aecRmsGainDb": -0.46115178264098355,
+          "aecGainRelativeToExpectedDb": -0.46115178264098355,
+          "receiverCorrelationLocal": 0.573615039462987,
+          "receiverRmsGainDb": -2.1034835510047647,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 3.1,
+          "rawDbfs": -52.573578452790855,
+          "aecRmsGainDb": -0.48173310540013026,
+          "aecGainRelativeToExpectedDb": -0.48173310540013026,
+          "receiverCorrelationLocal": 0.6062728893182119,
+          "receiverRmsGainDb": -1.839409031328243,
+          "receiverAlignmentAdjustmentSamples": -2
+        },
+        {
+          "secondsInPhase": 3.2,
+          "rawDbfs": -53.602005489484554,
+          "aecRmsGainDb": -0.4713250421108526,
+          "aecGainRelativeToExpectedDb": -0.4713250421108526,
+          "receiverCorrelationLocal": 0.5550728197602559,
+          "receiverRmsGainDb": -2.205538187615036,
+          "receiverAlignmentAdjustmentSamples": 0
+        },
+        {
+          "secondsInPhase": 3.3,
+          "rawDbfs": -53.82428636051179,
+          "aecRmsGainDb": -0.44471209564944214,
+          "aecGainRelativeToExpectedDb": -0.44471209564944214,
+          "receiverCorrelationLocal": 0.5615933411156029,
+          "receiverRmsGainDb": -2.299706929473297,
+          "receiverAlignmentAdjustmentSamples": 2
+        },
+        {
+          "secondsInPhase": 3.4,
+          "rawDbfs": -53.97272391520148,
+          "aecRmsGainDb": -0.4677667199716061,
+          "aecGainRelativeToExpectedDb": -0.4677667199716061,
+          "receiverCorrelationLocal": 0.5990347654532147,
+          "receiverRmsGainDb": -1.875729232140456,
+          "receiverAlignmentAdjustmentSamples": 0
+        },
+        {
+          "secondsInPhase": 3.5,
+          "rawDbfs": -53.8259423048068,
+          "aecRmsGainDb": -0.4584185154296928,
+          "aecGainRelativeToExpectedDb": -0.4584185154296928,
+          "receiverCorrelationLocal": 0.6060952038807741,
+          "receiverRmsGainDb": -2.206985619775019,
+          "receiverAlignmentAdjustmentSamples": 0
+        },
+        {
+          "secondsInPhase": 3.6,
+          "rawDbfs": -53.700737654662746,
+          "aecRmsGainDb": -0.4627657734094756,
+          "aecGainRelativeToExpectedDb": -0.4627657734094756,
+          "receiverCorrelationLocal": 0.599325896264348,
+          "receiverRmsGainDb": -1.5319949326093365,
+          "receiverAlignmentAdjustmentSamples": -2
+        },
+        {
+          "secondsInPhase": 3.7,
+          "rawDbfs": -53.08116427359173,
+          "aecRmsGainDb": -0.48093937909552087,
+          "aecGainRelativeToExpectedDb": -0.48093937909552087,
+          "receiverCorrelationLocal": 0.579459365038461,
+          "receiverRmsGainDb": -1.992404020021199,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 3.8,
+          "rawDbfs": -52.83963015616572,
+          "aecRmsGainDb": -0.4656531127188878,
+          "aecGainRelativeToExpectedDb": -0.4656531127188878,
+          "receiverCorrelationLocal": 0.6559538148994755,
+          "receiverRmsGainDb": -1.7180322393926235,
+          "receiverAlignmentAdjustmentSamples": -1
+        },
+        {
+          "secondsInPhase": 3.9,
+          "rawDbfs": -53.517053670804074,
+          "aecRmsGainDb": -0.4592419723081004,
+          "aecGainRelativeToExpectedDb": -0.4592419723081004,
+          "receiverCorrelationLocal": 0.7080408177548617,
+          "receiverRmsGainDb": -1.5590502877552492,
+          "receiverAlignmentAdjustmentSamples": 2
+        },
+        {
+          "secondsInPhase": 4.0,
+          "rawDbfs": -53.04567123827508,
+          "aecRmsGainDb": -0.4639332540629094,
+          "aecGainRelativeToExpectedDb": -0.4639332540629094,
+          "receiverCorrelationLocal": 0.6801327450228191,
+          "receiverRmsGainDb": -1.5975765576013845,
+          "receiverAlignmentAdjustmentSamples": -2
+        },
+        {
+          "secondsInPhase": 4.1,
+          "rawDbfs": -53.88441965546265,
+          "aecRmsGainDb": -0.45895672814925487,
+          "aecGainRelativeToExpectedDb": -0.45895672814925487,
+          "receiverCorrelationLocal": 0.6252404112687022,
+          "receiverRmsGainDb": -1.900623260581506,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 4.2,
+          "rawDbfs": -54.544571577649556,
+          "aecRmsGainDb": -0.4561580585898608,
+          "aecGainRelativeToExpectedDb": -0.4561580585898608,
+          "receiverCorrelationLocal": 0.6134379661554368,
+          "receiverRmsGainDb": -2.000882342487246,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 4.3,
+          "rawDbfs": -53.06938687588275,
+          "aecRmsGainDb": -0.47108151132178844,
+          "aecGainRelativeToExpectedDb": -0.47108151132178844,
+          "receiverCorrelationLocal": 0.602135056687439,
+          "receiverRmsGainDb": -1.5790615873814715,
+          "receiverAlignmentAdjustmentSamples": -1
+        },
+        {
+          "secondsInPhase": 4.4,
+          "rawDbfs": -52.10743816072444,
+          "aecRmsGainDb": -0.47163509442614193,
+          "aecGainRelativeToExpectedDb": -0.47163509442614193,
+          "receiverCorrelationLocal": 0.6820139755295881,
+          "receiverRmsGainDb": -1.618018317350454,
+          "receiverAlignmentAdjustmentSamples": -2
+        },
+        {
+          "secondsInPhase": 4.5,
+          "rawDbfs": -54.17708722148813,
+          "aecRmsGainDb": -0.45695530316586325,
+          "aecGainRelativeToExpectedDb": -0.45695530316586325,
+          "receiverCorrelationLocal": 0.6364613060079355,
+          "receiverRmsGainDb": -1.862602103980269,
+          "receiverAlignmentAdjustmentSamples": 2
+        },
+        {
+          "secondsInPhase": 4.6,
+          "rawDbfs": -52.54877316835792,
+          "aecRmsGainDb": -0.4722305316401746,
+          "aecGainRelativeToExpectedDb": -0.4722305316401746,
+          "receiverCorrelationLocal": 0.5564362622299248,
+          "receiverRmsGainDb": -2.2047274001393187,
+          "receiverAlignmentAdjustmentSamples": -1
+        },
+        {
+          "secondsInPhase": 4.7,
+          "rawDbfs": -53.91216594050559,
+          "aecRmsGainDb": -0.45933848609042155,
+          "aecGainRelativeToExpectedDb": -0.45933848609042155,
+          "receiverCorrelationLocal": 0.6226324968764867,
+          "receiverRmsGainDb": -1.6914933227516271,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 4.8,
+          "rawDbfs": -54.1239591612248,
+          "aecRmsGainDb": -0.4576540369102803,
+          "aecGainRelativeToExpectedDb": -0.4576540369102803,
+          "receiverCorrelationLocal": 0.6164335455814294,
+          "receiverRmsGainDb": -1.745761947138155,
+          "receiverAlignmentAdjustmentSamples": -1
+        },
+        {
+          "secondsInPhase": 4.9,
+          "rawDbfs": -52.4263851088934,
+          "aecRmsGainDb": -0.47608628083901794,
+          "aecGainRelativeToExpectedDb": -0.47608628083901794,
+          "receiverCorrelationLocal": 0.6720233353898935,
+          "receiverRmsGainDb": -1.4874140468265549,
+          "receiverAlignmentAdjustmentSamples": -1
+        },
+        {
+          "secondsInPhase": 5.0,
+          "rawDbfs": -54.02182128882303,
+          "aecRmsGainDb": -0.46884755510671594,
+          "aecGainRelativeToExpectedDb": -0.46884755510671594,
+          "receiverCorrelationLocal": 0.5548356744973717,
+          "receiverRmsGainDb": -1.501060591051531,
+          "receiverAlignmentAdjustmentSamples": -1
+        },
+        {
+          "secondsInPhase": 5.1,
+          "rawDbfs": -53.083837218636475,
+          "aecRmsGainDb": -0.46537388469632546,
+          "aecGainRelativeToExpectedDb": -0.46537388469632546,
+          "receiverCorrelationLocal": 0.6652213029259101,
+          "receiverRmsGainDb": -2.534894243070881,
+          "receiverAlignmentAdjustmentSamples": -1
+        },
+        {
+          "secondsInPhase": 5.2,
+          "rawDbfs": -52.18413250155456,
+          "aecRmsGainDb": -0.48791829216536464,
+          "aecGainRelativeToExpectedDb": -0.48791829216536464,
+          "receiverCorrelationLocal": 0.5732537539559545,
+          "receiverRmsGainDb": -1.8326422429079066,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 5.3,
+          "rawDbfs": -53.472069949905546,
+          "aecRmsGainDb": -0.4560619248342635,
+          "aecGainRelativeToExpectedDb": -0.4560619248342635,
+          "receiverCorrelationLocal": 0.5736212451934969,
+          "receiverRmsGainDb": -1.9370321169576576,
+          "receiverAlignmentAdjustmentSamples": -2
+        },
+        {
+          "secondsInPhase": 5.4,
+          "rawDbfs": -53.70114150277131,
+          "aecRmsGainDb": -0.46963094499714075,
+          "aecGainRelativeToExpectedDb": -0.46963094499714075,
+          "receiverCorrelationLocal": 0.5919556061081174,
+          "receiverRmsGainDb": -1.8786908829713458,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 5.5,
+          "rawDbfs": -52.88812610547187,
+          "aecRmsGainDb": -0.49308323219976846,
+          "aecGainRelativeToExpectedDb": -0.49308323219976846,
+          "receiverCorrelationLocal": 0.5157091135263373,
+          "receiverRmsGainDb": -2.230078085544533,
+          "receiverAlignmentAdjustmentSamples": -3
+        },
+        {
+          "secondsInPhase": 5.6,
+          "rawDbfs": -52.25846166470002,
+          "aecRmsGainDb": -0.4892623361868438,
+          "aecGainRelativeToExpectedDb": -0.4892623361868438,
+          "receiverCorrelationLocal": 0.6083561277833303,
+          "receiverRmsGainDb": -1.876223358517847,
+          "receiverAlignmentAdjustmentSamples": -6
+        },
+        {
+          "secondsInPhase": 5.7,
+          "rawDbfs": -52.848004365459495,
+          "aecRmsGainDb": -0.4653494314329854,
+          "aecGainRelativeToExpectedDb": -0.4653494314329854,
+          "receiverCorrelationLocal": 0.6757996872301487,
+          "receiverRmsGainDb": -1.703354752321213,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 5.8,
+          "rawDbfs": -53.31760740817626,
+          "aecRmsGainDb": -0.47522943838761167,
+          "aecGainRelativeToExpectedDb": -0.47522943838761167,
+          "receiverCorrelationLocal": 0.6677035762602895,
+          "receiverRmsGainDb": -1.3074411970199962,
+          "receiverAlignmentAdjustmentSamples": -1
+        },
+        {
+          "secondsInPhase": 5.9,
+          "rawDbfs": -51.9341787475507,
+          "aecRmsGainDb": -0.4561799621579061,
+          "aecGainRelativeToExpectedDb": -0.4561799621579061,
+          "receiverCorrelationLocal": 0.5726489157113344,
+          "receiverRmsGainDb": -2.262178768777376,
+          "receiverAlignmentAdjustmentSamples": 2
+        },
+        {
+          "secondsInPhase": 6.0,
+          "rawDbfs": -52.848250165418236,
+          "aecRmsGainDb": -0.45922392530989153,
+          "aecGainRelativeToExpectedDb": -0.45922392530989153,
+          "receiverCorrelationLocal": 0.63918899333067,
+          "receiverRmsGainDb": -1.5265661237163708,
+          "receiverAlignmentAdjustmentSamples": -1
+        },
+        {
+          "secondsInPhase": 6.1,
+          "rawDbfs": -53.93048212410789,
+          "aecRmsGainDb": -0.46623872718347537,
+          "aecGainRelativeToExpectedDb": -0.46623872718347537,
+          "receiverCorrelationLocal": 0.5801567447898488,
+          "receiverRmsGainDb": -1.5040086168675955,
+          "receiverAlignmentAdjustmentSamples": 0
+        },
+        {
+          "secondsInPhase": 6.2,
+          "rawDbfs": -53.87465700694708,
+          "aecRmsGainDb": -0.46991692546102637,
+          "aecGainRelativeToExpectedDb": -0.46991692546102637,
+          "receiverCorrelationLocal": 0.593411256070211,
+          "receiverRmsGainDb": -1.5429215970928167,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 6.3,
+          "rawDbfs": -53.876882402882735,
+          "aecRmsGainDb": -0.46259982037024167,
+          "aecGainRelativeToExpectedDb": -0.46259982037024167,
+          "receiverCorrelationLocal": 0.6098629373336337,
+          "receiverRmsGainDb": -2.0635415577897938,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 6.4,
+          "rawDbfs": -53.25860003534444,
+          "aecRmsGainDb": -0.46886671073188346,
+          "aecGainRelativeToExpectedDb": -0.46886671073188346,
+          "receiverCorrelationLocal": 0.6557877667747374,
+          "receiverRmsGainDb": -2.2478865435932063,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 6.5,
+          "rawDbfs": -53.453338434534466,
+          "aecRmsGainDb": -0.4654398333604101,
+          "aecGainRelativeToExpectedDb": -0.4654398333604101,
+          "receiverCorrelationLocal": 0.613448582097253,
+          "receiverRmsGainDb": -2.123235623058206,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 6.6,
+          "rawDbfs": -52.9697532598989,
+          "aecRmsGainDb": -0.4676030463433181,
+          "aecGainRelativeToExpectedDb": -0.4676030463433181,
+          "receiverCorrelationLocal": 0.6098294977591349,
+          "receiverRmsGainDb": -1.7069386272001568,
+          "receiverAlignmentAdjustmentSamples": -2
+        },
+        {
+          "secondsInPhase": 6.7,
+          "rawDbfs": -53.15558947510509,
+          "aecRmsGainDb": -0.4761422846757224,
+          "aecGainRelativeToExpectedDb": -0.4761422846757224,
+          "receiverCorrelationLocal": 0.5697309447213188,
+          "receiverRmsGainDb": -1.70878954065698,
+          "receiverAlignmentAdjustmentSamples": -142
+        },
+        {
+          "secondsInPhase": 6.8,
+          "rawDbfs": -53.43574039406336,
+          "aecRmsGainDb": -0.4642773206106964,
+          "aecGainRelativeToExpectedDb": -0.4642773206106964,
+          "receiverCorrelationLocal": 0.6710200930061591,
+          "receiverRmsGainDb": -1.9938073249869215,
+          "receiverAlignmentAdjustmentSamples": -2
+        },
+        {
+          "secondsInPhase": 6.9,
+          "rawDbfs": -53.39388792108521,
+          "aecRmsGainDb": -0.46585800661639387,
+          "aecGainRelativeToExpectedDb": -0.46585800661639387,
+          "receiverCorrelationLocal": 0.5900512809591164,
+          "receiverRmsGainDb": -2.438748075818447,
+          "receiverAlignmentAdjustmentSamples": 1
+        },
+        {
+          "secondsInPhase": 7.0,
+          "rawDbfs": -53.051602139170555,
+          "aecRmsGainDb": -0.4836770556836396,
+          "aecGainRelativeToExpectedDb": -0.4836770556836396,
+          "receiverCorrelationLocal": 0.5777404504694654,
+          "receiverRmsGainDb": -2.494690396304892,
+          "receiverAlignmentAdjustmentSamples": -3
+        },
+        {
+          "secondsInPhase": 7.1,
+          "rawDbfs": -53.57492288629526,
+          "aecRmsGainDb": -0.4782982349173479,
+          "aecGainRelativeToExpectedDb": -0.4782982349173479,
+          "receiverCorrelationLocal": 0.5547333364680529,
+          "receiverRmsGainDb": -1.8346331976463917,
+          "receiverAlignmentAdjustmentSamples": -2
+        },
+        {
+          "secondsInPhase": 7.2,
+          "rawDbfs": -53.790133129080516,
+          "aecRmsGainDb": -0.46641324775038123,
+          "aecGainRelativeToExpectedDb": -0.46641324775038123,
+          "receiverCorrelationLocal": 0.5994177048372725,
+          "receiverRmsGainDb": -2.2442578861467863,
+          "receiverAlignmentAdjustmentSamples": 2
+        },
+        {
+          "secondsInPhase": 7.3,
+          "rawDbfs": -52.69519847130249,
+          "aecRmsGainDb": -0.46559792929077365,
+          "aecGainRelativeToExpectedDb": -0.46559792929077365,
+          "receiverCorrelationLocal": 0.6795906017974863,
+          "receiverRmsGainDb": -1.7679573367019663,
+          "receiverAlignmentAdjustmentSamples": -2
+        },
+        {
+          "secondsInPhase": 7.4,
+          "rawDbfs": -53.245432432185716,
+          "aecRmsGainDb": -0.4703491952066944,
+          "aecGainRelativeToExpectedDb": -0.4703491952066944,
+          "receiverCorrelationLocal": 0.6494241366914374,
+          "receiverRmsGainDb": -1.6104359408020867,
+          "receiverAlignmentAdjustmentSamples": -2
+        }
+      ]
+    }
+  ],
+  "clipEdit": {
+    "combinedDoubletalkEditSeconds": 6,
+    "recommendation": "Listen to doubletalk-1 and doubletalk-2 separately."
+  },
+  "caveats": [
+    "Total raw input ratios are not isolated near-speech gain.",
+    "Local decoder alignment allows +/-50ms; report corrections, do not treat them as a fixed end-to-end latency.",
+    "Original callback maximum104.568ms has no position; capture gaps cannot be excluded."
+  ],
+  "inputSha256": {
+    "raw": "dfee80cc16ba138d7daac8289ababdd0e32c81fbd88069a167c8ffa901321e9c",
+    "baseline": "66dd78c398d0787b6bd608e254c6880fd428a9368e5c332d03211d61ea3f98e2"
+  }
+}

@@ -114,3 +114,15 @@ from speech-interior interpretation. Known-near100ms windows still include
 500/700ms runs below-6dB, so this is not an all-criteria pass. Overall near-only
 correlation.845 also misses the predeclared.95 threshold. Baseline live AEC is
 unchanged; the physical human test remains necessary.
+
+Human corrected-gate run: capture/record each1, SDK input0 with positive sensitivity
+control, send-off capture/DSP continues and receiver resumes. Native overflow and
+inactive drops0, render-reference drops0 even at shutdown; exact PCM conservation.
+Total underflow44 versus68 in the predecessor (different runs, not a controlled
+paired AEC comparison). Doubletalk-1 has0 underflows; doubletalk-2 has4 at onset
+and0 in the defined interior. Near-only still has one10ms interior underflow.
+Maximum record callback interval110.093ms. Far-only coherent reductions45.10/
+44.02dB are identifiable; changed recordings are not a paired noninferiority
+comparison against the predecessor. No DSP errors or baseline PCM clipping.
+Participant reception judgment is pending; short clean-looking counters alone
+are not acceptance. The live baseline AEC algorithm/gain remains unchanged.

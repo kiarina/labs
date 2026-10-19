@@ -1,0 +1,194 @@
+{
+  "captureStarts": {
+    "record": 1,
+    "camera": 1
+  },
+  "cameraSource": "physical camera plugin image stream; Windows Pixel Fold via OS virtual-camera transport when selected",
+  "cameraUniqueSampledFrames": 128,
+  "bridgeStatsBeforeClose": {
+    "sending": false,
+    "faulted": false,
+    "queuedAudioFrames": 0,
+    "maxQueuedAudioFrames": 10,
+    "partialAudioBytes": 0,
+    "audioFramesSubmitted": 5620,
+    "audioFramesDropped": 0,
+    "videoFramesSubmitted": 398,
+    "videoFramesDropped": 0,
+    "bytesDiscardedWhileGated": 0,
+    "native": {
+      "captureQueueCapacityBytes": 19200,
+      "renderReferenceDroppedBytes": 0,
+      "captureUnderflows": 44,
+      "captureDroppedBytes": 0,
+      "videoFrames": 398,
+      "captureOverflowDroppedBytes": 0,
+      "captureRecording": false,
+      "captureInactiveDroppedBytes": 0,
+      "renderSamples": 4159680,
+      "captureQueuedBytes": 0,
+      "capturePeakQueuedBytes": 11520,
+      "speakerRunning": true,
+      "audioBlocks": 5627,
+      "captureFlushedBytes": 35520
+    }
+  },
+  "captureAndDspContinueDuringDoubletalkGate": true,
+  "receiveResumesAfterGate": true,
+  "phases": [
+    {
+      "phase": "mic-check",
+      "rawBytesDelta": 768000,
+      "processedBytesDelta": 768000,
+      "cameraFramesDelta": 57,
+      "cameraSourceFramesDelta": 242,
+      "injectedAudioBytesDelta": 768000,
+      "injectedVideoFramesDelta": 57,
+      "peerSamplesDelta": 384960,
+      "peerVideoFramesDelta": 55
+    },
+    {
+      "phase": "quiet",
+      "rawBytesDelta": 768000,
+      "processedBytesDelta": 768000,
+      "cameraFramesDelta": 58,
+      "cameraSourceFramesDelta": 241,
+      "injectedAudioBytesDelta": 0,
+      "injectedVideoFramesDelta": 0,
+      "peerSamplesDelta": 0,
+      "peerVideoFramesDelta": 0,
+      "gateInteriorSamples": 0,
+      "gateInteriorRmsDbfs": null
+    },
+    {
+      "phase": "near-only",
+      "rawBytesDelta": 969600,
+      "processedBytesDelta": 969600,
+      "cameraFramesDelta": 72,
+      "cameraSourceFramesDelta": 301,
+      "injectedAudioBytesDelta": 969600,
+      "injectedVideoFramesDelta": 72,
+      "peerSamplesDelta": 481920,
+      "peerVideoFramesDelta": 72
+    },
+    {
+      "phase": "far-warmup",
+      "rawBytesDelta": 1152000,
+      "processedBytesDelta": 1152000,
+      "cameraFramesDelta": 88,
+      "cameraSourceFramesDelta": 360,
+      "injectedAudioBytesDelta": 0,
+      "injectedVideoFramesDelta": 0,
+      "peerSamplesDelta": 0,
+      "peerVideoFramesDelta": 0,
+      "gateInteriorSamples": 0,
+      "gateInteriorRmsDbfs": null
+    },
+    {
+      "phase": "far-1",
+      "rawBytesDelta": 768000,
+      "processedBytesDelta": 768000,
+      "cameraFramesDelta": 58,
+      "cameraSourceFramesDelta": 238,
+      "injectedAudioBytesDelta": 768000,
+      "injectedVideoFramesDelta": 58,
+      "peerSamplesDelta": 384960,
+      "peerVideoFramesDelta": 58
+    },
+    {
+      "phase": "doubletalk-1",
+      "rawBytesDelta": 768000,
+      "processedBytesDelta": 768000,
+      "cameraFramesDelta": 57,
+      "cameraSourceFramesDelta": 239,
+      "injectedAudioBytesDelta": 768000,
+      "injectedVideoFramesDelta": 57,
+      "peerSamplesDelta": 384960,
+      "peerVideoFramesDelta": 57
+    },
+    {
+      "phase": "doubletalk-gate-off",
+      "rawBytesDelta": 192000,
+      "processedBytesDelta": 192000,
+      "cameraFramesDelta": 14,
+      "cameraSourceFramesDelta": 60,
+      "injectedAudioBytesDelta": 0,
+      "injectedVideoFramesDelta": 0,
+      "peerSamplesDelta": 0,
+      "peerVideoFramesDelta": 0,
+      "gateInteriorSamples": 0,
+      "gateInteriorRmsDbfs": null
+    },
+    {
+      "phase": "doubletalk-2",
+      "rawBytesDelta": 777600,
+      "processedBytesDelta": 777600,
+      "cameraFramesDelta": 55,
+      "cameraSourceFramesDelta": 240,
+      "injectedAudioBytesDelta": 777600,
+      "injectedVideoFramesDelta": 55,
+      "peerSamplesDelta": 385920,
+      "peerVideoFramesDelta": 55
+    },
+    {
+      "phase": "quiet-after",
+      "rawBytesDelta": 288000,
+      "processedBytesDelta": 288000,
+      "cameraFramesDelta": 21,
+      "cameraSourceFramesDelta": 90,
+      "injectedAudioBytesDelta": 0,
+      "injectedVideoFramesDelta": 0,
+      "peerSamplesDelta": 0,
+      "peerVideoFramesDelta": 0,
+      "gateInteriorSamples": 0,
+      "gateInteriorRmsDbfs": null
+    },
+    {
+      "phase": "far-2",
+      "rawBytesDelta": 576000,
+      "processedBytesDelta": 576000,
+      "cameraFramesDelta": 41,
+      "cameraSourceFramesDelta": 180,
+      "injectedAudioBytesDelta": 576000,
+      "injectedVideoFramesDelta": 41,
+      "peerSamplesDelta": 288000,
+      "peerVideoFramesDelta": 41
+    },
+    {
+      "phase": "near-recovery",
+      "rawBytesDelta": 768000,
+      "processedBytesDelta": 768000,
+      "cameraFramesDelta": 58,
+      "cameraSourceFramesDelta": 240,
+      "injectedAudioBytesDelta": 768000,
+      "injectedVideoFramesDelta": 58,
+      "peerSamplesDelta": 384960,
+      "peerVideoFramesDelta": 58
+    },
+    {
+      "phase": "final-quiet",
+      "rawBytesDelta": 288000,
+      "processedBytesDelta": 288000,
+      "cameraFramesDelta": 23,
+      "cameraSourceFramesDelta": 90,
+      "injectedAudioBytesDelta": 0,
+      "injectedVideoFramesDelta": 0,
+      "peerSamplesDelta": 0,
+      "peerVideoFramesDelta": 0,
+      "gateInteriorSamples": 0,
+      "gateInteriorRmsDbfs": null
+    }
+  ],
+  "micCheck": {
+    "speechDbfs": -38.41086246823061,
+    "quietDbfs": -52.07283497372238,
+    "snrDb": 13.661972505491768
+  },
+  "maxAudioCallbackGapMs": 110.093,
+  "errors": [],
+  "caveats": [
+    "Start counts and increasing counters distinguish continuous acquisition from callback timing; they do not prove long-duration clock synchronization.",
+    "Already-submitted RTP/decoder buffers cannot be retracted when a gate closes.",
+    "Queue drops, intentionally flushed data and inactive-source drops are separate counters."
+  ]
+}
