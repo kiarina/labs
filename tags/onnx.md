@@ -1,5 +1,6 @@
 # onnx
 
+- 2026/10/19 [Apple SpeechAnalyzer vs Whisper on finalized SCD segments with speaker binding](../2026/10/19/apple-speech-scd-asr/README.md)
 - 2026/10/19 [Real-time camera frame analysis in Flutter (YuNet faces, SFace, D-FINE objects, SigLIP2 scenes) with entity tracking that keeps embeddings, on macOS, Windows, Android, iOS and web](../2026/10/19/flutter-realtime-image-analysis/README.md)
 - 2026/10/19 [Diagnosing and soaking Flutter FFmpeg and ONNX memory on macOS](../2026/10/19/flutter-streaming-memory-soak/README.md)
 - 2026/10/18 [Real-time microphone analysis in Flutter (VAD, speaker change, whisper.cpp ASR, speaker and sound embeddings, YAMNet) on macOS, Windows, Android, iOS and web](../2026/10/18/flutter-realtime-audio-analysis/README.md)

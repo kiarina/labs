@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#MISE description="Experience record -> VAD/SCD -> Apple SpeechAnalyzer on Mac"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mkdir -p work
+mise run //:test-assets:download
+python3 tools/prepare_demo.py
+(cd app && flutter pub get && flutter build macos --release)
+if [[ "${APPLE_SPEAKER_AUTOTEST:-0}" == 1 ]]; then
+ "app/build/macos/Build/Products/Release/Apple Speaker Lab.app/Contents/MacOS/Apple Speaker Lab"
+else
+ open -W -n --stdout "$PWD/work/app-stdout.log" --stderr "$PWD/work/app-stderr.log" "app/build/macos/Build/Products/Release/Apple Speaker Lab.app"
+fi

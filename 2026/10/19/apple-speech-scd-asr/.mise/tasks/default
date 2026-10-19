@@ -3,3 +3,4 @@
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 python3 tools/evaluate.py
+python3 tools/validate_demo.py
