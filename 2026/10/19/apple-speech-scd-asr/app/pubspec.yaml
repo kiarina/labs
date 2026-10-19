@@ -8,8 +8,12 @@ dependencies:
     sdk: flutter
   record: 7.1.2
   flutter_onnxruntime: 1.9.0
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
 flutter:
   uses-material-design: true
   assets:
     - assets/models/
     - assets/conversation.wav
+    - assets/one-speaker.wav

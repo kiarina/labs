@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+#MISE description="Compare batch endpoint and online SCD in the native Mac app"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mkdir -p work
+mise run //:test-assets:download
+python3 tools/prepare_demo.py
+(cd app && flutter pub get && flutter test test/streaming_scd_test.dart && flutter build macos --release)
+for mode in baseline streaming; do
+ : > "$PWD/work/online-$mode.log"
+ : > "$PWD/work/online-$mode-stderr.log"
+ open -W -n --env APPLE_SPEAKER_AUTOTEST=1 --env "APPLE_SPEAKER_MODE=$mode" --stdout "$PWD/work/online-$mode.log" --stderr "$PWD/work/online-$mode-stderr.log" "app/build/macos/Build/Products/Release/Apple Speaker Lab.app"
+ python3 tools/collect_streaming.py "$mode"
+done
+: > "$PWD/work/online-one-speaker.log"
+: > "$PWD/work/online-one-speaker-stderr.log"
+open -W -n --env APPLE_SPEAKER_AUTOTEST=1 --env APPLE_SPEAKER_MODE=streaming --env APPLE_SPEAKER_FIXTURE=one_speaker --stdout "$PWD/work/online-one-speaker.log" --stderr "$PWD/work/online-one-speaker-stderr.log" "app/build/macos/Build/Products/Release/Apple Speaker Lab.app"
+python3 tools/collect_streaming.py one-speaker
+python3 tools/validate_streaming.py

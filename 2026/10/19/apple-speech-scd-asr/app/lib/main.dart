@@ -17,6 +17,7 @@ import 'local/scd/speaker_change_detector.dart';
 import 'local/embedding/ecapa.dart';
 import 'speaker_tracker.dart';
 import 'wav.dart';
+import 'streaming_scd.dart';
 
 void main() => runApp(
   MaterialApp(
@@ -52,6 +53,8 @@ class _LabState extends State<Lab> {
   Timer? ticker;
   List<InputDevice> devices = [];
   String? selected;
+  bool streaming = Platform.environment['APPLE_SPEAKER_MODE'] != 'baseline';
+  StreamingScd? online;
   bool stopping = false;
   bool ready = false,
       running = false,
@@ -129,6 +132,15 @@ class _LabState extends State<Lab> {
         update('マイクの使用許可が必要です');
         return;
       }
+      vad = VoiceDetector(
+        SileroVad(models[0]),
+        settings: VoiceDetectorSettings(
+          minSilenceMs: 500,
+          voicePadMs: 200,
+          maxVoiceMs: streaming ? 15000 : 6000,
+        ),
+      );
+      online = StreamingScd(scd!.detect);
       vad!.reset();
       tracker = SpeakerTracker();
       rows.clear();
@@ -151,7 +163,11 @@ class _LabState extends State<Lab> {
       );
       update(fixture ? '共有音声をリアルタイム再生中' : '取得中。交代するときは少し間を入れてください。');
       if (fixture) {
-        final data = await rootBundle.load('assets/conversation.wav');
+        final data = await rootBundle.load(
+          Platform.environment['APPLE_SPEAKER_FIXTURE'] == 'one_speaker'
+              ? 'assets/one-speaker.wav'
+              : 'assets/conversation.wav',
+        );
         final wav = Wav.parse(
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
         );
@@ -172,6 +188,12 @@ class _LabState extends State<Lab> {
           stdout.writeln(
             jsonEncode({
               'type': 'apple_speaker_fixture',
+              'mode': streaming ? 'streaming' : 'baseline',
+              'scd_inferences': online?.inferences,
+              'scd_inference_ms': online?.inferenceMs,
+              'fixture_variant':
+                  Platform.environment['APPLE_SPEAKER_FIXTURE'] ??
+                  'conversation',
               'rows': rows
                   .map(
                     (r) => {
@@ -183,6 +205,9 @@ class _LabState extends State<Lab> {
                       'end_to_text_ms': r['end_to_text_ms'],
                       'status': r['status'],
                       'characters': (r['text'] as String).length,
+                      'text': r['text'],
+                      'confirmed_ms': r['confirmed_ms'],
+                      'reason': r['reason'],
                     },
                   )
                   .toList(),
@@ -264,7 +289,19 @@ class _LabState extends State<Lab> {
       vadTail = vadTail.then((_) async {
         try {
           final result = await vad!.detect(frame, 16000, at);
-          if (result.voice != null) enqueue(result.voice!);
+          if (streaming) {
+            final parts = await online!.feed(
+              frame,
+              at,
+              result.isVoice,
+              endpoint: result.voice?.endTimestamp,
+            );
+            for (final part in parts) {
+              enqueueConfirmed(part);
+            }
+          } else if (result.voice != null) {
+            enqueue(result.voice!);
+          }
         } catch (e) {
           fail('vad:${e.runtimeType}');
         } finally {
@@ -310,70 +347,93 @@ class _LabState extends State<Lab> {
   }
 
   Future<void> analyze(Voice voice) async {
-    final scdStart = clock.elapsedMicroseconds / 1000;
     final parts = await scd!.detect(
       voice.samples,
       voice.sampleRate,
       voice.startTimestamp,
     );
     for (final part in parts) {
-      if (part.kind != 'speaker' ||
-          part.samples.length / part.sampleRate < .5) {
-        skipped++;
-        continue;
-      }
-      final vector = await embedder!.embed(part.samples, part.sampleRate);
-      final observation = tracker.observe(
-        vector,
-        part.startTimestamp,
-        part.endTimestamp,
-      );
-      if (tracker.speakers.length > 16) {
-        fail('speaker_limit');
-        return;
-      }
-      final id = 'segment-${++sequence}';
-      final row = <String, dynamic>{
-        'id': id,
-        'observation': observation,
-        'start': part.startTimestamp,
-        'end': part.endTimestamp,
-        'text': '',
-        'status': '文字起こし中',
-        'asr_ms': null,
-        'end_to_text_ms': null,
-        'segmentation_ms': clock.elapsedMicroseconds / 1000 - scdStart,
-      };
-      rows.add(row);
-      if (rows.length > 200) rows.removeAt(0);
-      update();
-      final watch = Stopwatch()..start();
-      try {
-        final sentSpeaker = speaker(row);
-        final response = Map<String, dynamic>.from(
-          await native
-                  .invokeMethod('recognize', {
-                    'id': id,
-                    'speaker_id': sentSpeaker,
-                    'audio': pcmBytes(part.samples),
-                  })
-                  .timeout(const Duration(seconds: 20))
-              as Map,
-        );
-        if (response['id'] != id || response['speaker_id'] != sentSpeaker)
-          throw StateError('request_binding_mismatch');
-        row['text'] = response['text'] as String;
-        row['status'] = (row['text'] as String).isEmpty ? '認識結果なし' : '確定';
-        row['asr_ms'] = watch.elapsedMicroseconds / 1000;
-        row['end_to_text_ms'] =
-            clock.elapsedMicroseconds / 1000 - part.endTimestamp * 1000;
-        durations.add(row['asr_ms'] as double);
-      } catch (e) {
-        row['status'] = '認識失敗';
-        errors.add('asr:${e.runtimeType}');
-      }
-      update();
+      await processPart(part, clock.elapsedMicroseconds / 1000, 'batch');
     }
+  }
+
+  void enqueueConfirmed(ConfirmedPart part) {
+    if (analysisQueue >= 12) {
+      fail('analysis_queue_full');
+      return;
+    }
+    analysisQueue++;
+    final confirmedMs = clock.elapsedMicroseconds / 1000;
+    analysisTail = analysisTail.then((_) async {
+      try {
+        await processPart(part.speech, confirmedMs, part.reason);
+      } catch (e) {
+        fail('analysis:${e.runtimeType}');
+      } finally {
+        analysisQueue--;
+        update();
+      }
+    });
+  }
+
+  Future<void> processPart(Speech part, double scdStart, String reason) async {
+    if (part.kind != 'speaker' || part.samples.length / part.sampleRate < .5) {
+      skipped++;
+      return;
+    }
+    final vector = await embedder!.embed(part.samples, part.sampleRate);
+    final observation = tracker.observe(
+      vector,
+      part.startTimestamp,
+      part.endTimestamp,
+    );
+    if (tracker.speakers.length > 16) {
+      fail('speaker_limit');
+      return;
+    }
+    final id = 'segment-${++sequence}';
+    final row = <String, dynamic>{
+      'id': id,
+      'observation': observation,
+      'start': part.startTimestamp,
+      'end': part.endTimestamp,
+      'text': '',
+      'status': '文字起こし中',
+      'asr_ms': null,
+      'end_to_text_ms': null,
+      'segmentation_ms': clock.elapsedMicroseconds / 1000 - scdStart,
+      'reason': reason,
+      'confirmed_ms': scdStart,
+    };
+    rows.add(row);
+    if (rows.length > 200) rows.removeAt(0);
+    update();
+    final watch = Stopwatch()..start();
+    try {
+      final sentSpeaker = speaker(row);
+      final response = Map<String, dynamic>.from(
+        await native
+                .invokeMethod('recognize', {
+                  'id': id,
+                  'speaker_id': sentSpeaker,
+                  'audio': pcmBytes(part.samples),
+                })
+                .timeout(const Duration(seconds: 20))
+            as Map,
+      );
+      if (response['id'] != id || response['speaker_id'] != sentSpeaker)
+        throw StateError('request_binding_mismatch');
+      row['text'] = response['text'] as String;
+      row['status'] = (row['text'] as String).isEmpty ? '認識結果なし' : '確定';
+      row['asr_ms'] = watch.elapsedMicroseconds / 1000;
+      row['end_to_text_ms'] =
+          clock.elapsedMicroseconds / 1000 - part.endTimestamp * 1000;
+      durations.add(row['asr_ms'] as double);
+    } catch (e) {
+      row['status'] = '認識失敗';
+      errors.add('asr:${e.runtimeType}');
+    }
+    update();
   }
 
   Future<void> stop() async {
@@ -390,13 +450,31 @@ class _LabState extends State<Lab> {
     await vadTail;
     if (pending.isNotEmpty) {
       final frame = Float32List(512)..setRange(0, pending.length, pending);
-      final last = await vad!.detect(frame, 16000, cursor / 16000);
+      final remainderAt = cursor / 16000;
+      final last = await vad!.detect(frame, 16000, remainderAt);
       cursor += pending.length;
       pending = Float32List(0);
-      if (last.voice != null) enqueue(last.voice!);
+      if (streaming) {
+        for (final part in await online!.feed(
+          frame,
+          remainderAt,
+          last.isVoice,
+          endpoint: last.voice?.endTimestamp,
+        )) {
+          enqueueConfirmed(part);
+        }
+      } else if (last.voice != null) {
+        enqueue(last.voice!);
+      }
     }
     final remainder = vad!.flush();
-    if (remainder != null) enqueue(remainder);
+    if (streaming) {
+      for (final part in online!.finish()) {
+        enqueueConfirmed(part);
+      }
+    } else if (remainder != null) {
+      enqueue(remainder);
+    }
     await analysisTail;
     ticker?.cancel();
     ticker = null;
@@ -445,6 +523,13 @@ class _LabState extends State<Lab> {
               ),
               const SizedBox(height: 6),
               const Text('record → VAD・SCD → SpeechAnalyzer　｜　すべて端末内で処理'),
+              SwitchListTile(
+                title: const Text('話者変化で早期確定（逐次SCD）'),
+                value: streaming,
+                onChanged: running || busy || stopping
+                    ? null
+                    : (v) => setState(() => streaming = v),
+              ),
               const SizedBox(height: 18),
               Wrap(
                 spacing: 12,
@@ -504,8 +589,10 @@ class _LabState extends State<Lab> {
                 '${(cursor / 16000).toStringAsFixed(1)}秒 / ${rows.length}区間 / ${tracker.speakers.length}話者候補　解析待ち $analysisQueue　ASR平均 ${average?.toStringAsFixed(0) ?? "—"}ms',
               ),
               const SizedBox(height: 8),
-              const Text(
-                '無音500msまたは最大6秒で区切り、SCDで話者変化を解析します。短い声は話者未確定になり、後から更新される場合があります。録音・会話文はファイルへ保存しません。',
+              Text(
+                streaming
+                    ? '話者変化を逐次検出し、境界が安定した左区間から文字起こしします。無音500ms・1人の連続発話15秒は補助の区切りです。短い声は未確定になり、録音・会話文は保存しません。'
+                    : '無音500msまたは最大6秒で区切ってから解析する比較用の初版です。録音・会話文は保存しません。',
                 style: TextStyle(color: Colors.white70),
               ),
               const Divider(height: 24),

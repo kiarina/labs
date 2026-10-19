@@ -1,0 +1,145 @@
+{
+  "evidence_valid": true,
+  "checks": {
+    "baseline": {
+      "no_errors": true,
+      "no_microphone": true,
+      "all_rows_nonempty": true,
+      "request_ids_unique": true,
+      "audio_ranges_not_duplicated": true,
+      "six_utterances_aligned": true
+    },
+    "streaming": {
+      "no_errors": true,
+      "no_microphone": true,
+      "all_rows_nonempty": true,
+      "request_ids_unique": true,
+      "audio_ranges_not_duplicated": true,
+      "six_utterances_aligned": true
+    }
+  },
+  "reports": {
+    "baseline": {
+      "segments": 7,
+      "cer": 0.023255813953488372,
+      "edits": 2,
+      "reference_characters": 86,
+      "deleted_characters": 2,
+      "inserted_characters": 0,
+      "substituted_characters": 0,
+      "utterances": [
+        {
+          "utterance": 1,
+          "source_end": 1.7915,
+          "last_aligned_character_latency_ms": 4681.942,
+          "aligned_characters": 11
+        },
+        {
+          "utterance": 2,
+          "source_end": 4.6268125,
+          "last_aligned_character_latency_ms": 2022.4795000000004,
+          "aligned_characters": 14
+        },
+        {
+          "utterance": 3,
+          "source_end": 7.2244375,
+          "last_aligned_character_latency_ms": 5375.2705000000005,
+          "aligned_characters": 17
+        },
+        {
+          "utterance": 4,
+          "source_end": 9.584375,
+          "last_aligned_character_latency_ms": 3186.9179999999997,
+          "aligned_characters": 16
+        },
+        {
+          "utterance": 5,
+          "source_end": 11.7405625,
+          "last_aligned_character_latency_ms": 1193.5215000000007,
+          "aligned_characters": 11
+        },
+        {
+          "utterance": 6,
+          "source_end": 14.171,
+          "last_aligned_character_latency_ms": 200.55199999999968,
+          "aligned_characters": 15
+        }
+      ],
+      "utterance_latency_median_ms": 2604.69875,
+      "utterance_latency_max_ms": 5375.2705000000005,
+      "scd_changes": [],
+      "mixed_expected_roles_by_lexical_alignment": [],
+      "asr_ms_median": 99.835,
+      "scd_inferences": 0,
+      "scd_inference_ms_median": null,
+      "speaker_candidates": 2,
+      "unknown_rows": 2
+    },
+    "streaming": {
+      "segments": 6,
+      "cer": 0.011627906976744186,
+      "edits": 1,
+      "reference_characters": 86,
+      "deleted_characters": 0,
+      "inserted_characters": 0,
+      "substituted_characters": 1,
+      "utterances": [
+        {
+          "utterance": 1,
+          "source_end": 1.7915,
+          "last_aligned_character_latency_ms": 1011.8969999999999,
+          "aligned_characters": 11
+        },
+        {
+          "utterance": 2,
+          "source_end": 4.6268125,
+          "last_aligned_character_latency_ms": 3594.2474999999995,
+          "aligned_characters": 14
+        },
+        {
+          "utterance": 3,
+          "source_end": 7.2244375,
+          "last_aligned_character_latency_ms": 996.6224999999995,
+          "aligned_characters": 17
+        },
+        {
+          "utterance": 4,
+          "source_end": 9.584375,
+          "last_aligned_character_latency_ms": 1001.0239999999994,
+          "aligned_characters": 16
+        },
+        {
+          "utterance": 5,
+          "source_end": 11.7405625,
+          "last_aligned_character_latency_ms": 905.9125000000004,
+          "aligned_characters": 11
+        },
+        {
+          "utterance": 6,
+          "source_end": 14.171,
+          "last_aligned_character_latency_ms": 206.88500000000022,
+          "aligned_characters": 17
+        }
+      ],
+      "utterance_latency_median_ms": 998.8232499999995,
+      "utterance_latency_max_ms": 3594.2474999999995,
+      "scd_changes": [
+        1.850625,
+        4.416,
+        7.3209375,
+        9.631625,
+        11.8404375
+      ],
+      "mixed_expected_roles_by_lexical_alignment": [
+        3
+      ],
+      "asr_ms_median": 106.894,
+      "scd_inferences": 51,
+      "scd_inference_ms_median": 34.514,
+      "speaker_candidates": 2,
+      "unknown_rows": 0
+    }
+  },
+  "alignment_scope": "whole-transcript Levenshtein alignment to six shared utterances; not word timing truth; latency of available aligned text, report CER alongside",
+  "general_accuracy_verified": false
+}

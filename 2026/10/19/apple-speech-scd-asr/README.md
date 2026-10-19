@@ -20,7 +20,7 @@ prototypeは変更しない。
 
 ## 実マイクの体験アプリ
 
-`mise run demo` でFlutterの小型アプリを起動できる。recordからVAD・SCD・話者埋め込みを通し、SpeechAnalyzerへ確定PCMを直接渡す。操作・計測・制約は [DEMO.md](DEMO.md)。下の比較表は確定済み区間のASR単体であり、体験アプリ全体の表示遅延とは別。
+`mise run demo` でFlutterの小型アプリを起動できる。recordからVAD・SCD・話者埋め込みを通し、SpeechAnalyzerへ確定PCMを直接渡す。操作・計測・制約は [DEMO.md](DEMO.md)。下の比較表は確定済み区間のASR単体であり、体験アプリ全体の表示遅延とは別。 話者変化で早期確定する改良版と旧6秒方式の比較は [STREAMING.md](STREAMING.md)。
 
 ## 条件と再現
 
