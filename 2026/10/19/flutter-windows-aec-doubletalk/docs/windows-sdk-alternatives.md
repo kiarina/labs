@@ -47,3 +47,9 @@ Merely distributing our prebuilt patched DLL removes **consumer-side builds**,
 but still leaves a custom SDK and its maintenance. It is not a stock-SDK solution.
 No alternate backend, public-API-only native path or all-platform replacement was
 implemented or benchmarked as part of this API investigation.
+
+The subsequent [stock native SDK experiment](../../flutter-windows-stock-sdk-external-capture/README.md)
+tested official .03/.05 DLLs with external ETW observation. Active candidates
+opened an additional SDK-owned capture client; the tested public processing/mute
+settings did not establish recording isolation. See its results and separate
+audio-decoder limitation rather than interpreting missing audit exports as zero.

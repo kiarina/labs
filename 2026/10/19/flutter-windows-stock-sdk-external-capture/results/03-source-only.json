@@ -1,0 +1,1122 @@
+{
+  "kind": "stock-sdk-recording-isolation-trial",
+  "sdk": "libwebrtc.m150.7871.03",
+  "variant": "source-only",
+  "stockIdentityMatches": true,
+  "mediaFlowConfirmed": false,
+  "audioRtpReceived": false,
+  "videoDecoded": false,
+  "singleRecordContinuity": true,
+  "sdkCaptureInitializeObserved": 0,
+  "sdkCaptureStartObserved": 0,
+  "sdkInitializeAttemptsObserved": 0,
+  "uniqueCaptureClientsObserved": 1,
+  "lostEvents": 0,
+  "lostBuffers": 0,
+  "traceLossFree": true,
+  "additionalCaptureZero": null,
+  "requirementSatisfied": null,
+  "reason": "No SDK capture observed is not sufficient proof of zero; coverage/controls still required",
+  "captureClients": [
+    {
+      "clientId": "{96ee1c5c-09a6-46c9-add5-ab68379216a8}",
+      "initializeSucceeded": true,
+      "initializeHresult": "0x00000000",
+      "sdkCallerInStack": false,
+      "modules": [
+        "audioses.dll",
+        "kernel32.dll",
+        "mfcore.dll",
+        "ntdll.dll",
+        "rtworkq.dll"
+      ],
+      "stackAvailable": true,
+      "startSucceeded": true,
+      "endpointSha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd"
+    }
+  ],
+  "runtimeSdkInstrumentation": false,
+  "scope": "Unmodified official DLL; Windows OS ETW observation, not injected counters. Physical camera not established when synthetic.",
+  "app": {
+    "kind": "stock-native-external-capture",
+    "variant": "source-only",
+    "pid": 27476,
+    "timeline": [
+      {
+        "stage": "begin",
+        "pid": 27476,
+        "utc": "2026-10-19T05:26:06.356772Z",
+        "clockUs": 308
+      },
+      {
+        "stage": "record-start",
+        "pid": 27476,
+        "utc": "2026-10-19T05:26:06.362023Z",
+        "clockUs": 5857
+      },
+      {
+        "stage": "record-only",
+        "pid": 27476,
+        "utc": "2026-10-19T05:26:06.394314Z",
+        "clockUs": 37509
+      },
+      {
+        "stage": "before-webRTC-initialize",
+        "pid": 27476,
+        "utc": "2026-10-19T05:26:10.395828Z",
+        "clockUs": 4039360
+      },
+      {
+        "stage": "create-custom-source",
+        "pid": 27476,
+        "utc": "2026-10-19T05:26:10.396845Z",
+        "clockUs": 4040876
+      },
+      {
+        "stage": "source-only",
+        "pid": 27476,
+        "utc": "2026-10-19T05:26:10.474633Z",
+        "clockUs": 4118139
+      },
+      {
+        "stage": "cleanup",
+        "pid": 27476,
+        "utc": "2026-10-19T05:26:13.475960Z",
+        "clockUs": 7120506
+      },
+      {
+        "stage": "done",
+        "pid": 27476,
+        "utc": "2026-10-19T05:26:13.491486Z",
+        "clockUs": 7134914
+      }
+    ],
+    "phases": [
+      {
+        "name": "record-only",
+        "seconds": 4,
+        "before": {
+          "rawBytes": 0,
+          "videoFrames": 0,
+          "injectedAudio": 0,
+          "injectedVideo": 0
+        },
+        "after": {
+          "rawBytes": 377280,
+          "videoFrames": 100,
+          "injectedAudio": 0,
+          "injectedVideo": 0
+        },
+        "delta": {
+          "rawBytes": 377280,
+          "videoFrames": 100,
+          "injectedAudio": 0,
+          "injectedVideo": 0
+        }
+      },
+      {
+        "name": "source-only",
+        "seconds": 3,
+        "before": {
+          "rawBytes": 385920,
+          "videoFrames": 102,
+          "injectedAudio": 0,
+          "injectedVideo": 0
+        },
+        "after": {
+          "rawBytes": 673920,
+          "videoFrames": 177,
+          "injectedAudio": 0,
+          "injectedVideo": 0
+        },
+        "delta": {
+          "rawBytes": 288000,
+          "videoFrames": 75,
+          "injectedAudio": 0,
+          "injectedVideo": 0
+        }
+      }
+    ],
+    "receiver": [],
+    "recordingAudit": "not available in stock DLL; independent ETW required",
+    "additionalCaptureZero": null,
+    "sdkIdentity": {
+      "customPlayoutExportPresent": false,
+      "customRecordingAuditExportPresent": false,
+      "recordingAudit": "unavailable in stock SDK; external observation required",
+      "sha256": "f3e2a50471e52dd9e0a1c597ba42232086063675621172940d7ce91703ed2273"
+    },
+    "errors": [],
+    "captureStarts": {
+      "record": 1,
+      "camera": 0
+    },
+    "selectedMicrophone": "\u30d8\u30c3\u30c9\u30bb\u30c3\u30c8 \u30de\u30a4\u30af (2- DualSense Wireless Controller)",
+    "videoSource": "explicit synthetic video; physical camera unavailable",
+    "totals": {
+      "rawBytes": 673920,
+      "videoFrames": 177,
+      "injectedAudio": 0,
+      "injectedVideo": 0
+    },
+    "sourceRms": 0.0005109711012589638,
+    "maxAudioGapMs": 88.509,
+    "maxVideoGapMs": 52.916,
+    "busyDroppedAudioBytes": 0,
+    "busyDroppedVideoFrames": 0,
+    "loopbackReceiverVolume": 0,
+    "functionalTransportPass": false,
+    "scope": "physical Windows camera is not established by synthetic mode; no AEC/playout-quality claim"
+  },
+  "observation": {
+    "schemaVersion": 1,
+    "pid": 27476,
+    "captureInitializeEvents": 1,
+    "captureInitializeSuccessEvents": 1,
+    "captureInitializeWithStack": 1,
+    "captureStartedClients": [
+      {
+        "audioClientGuidId": "{96ee1c5c-09a6-46c9-add5-ab68379216a8}",
+        "initialize": {
+          "event": "AudioClientInitialize",
+          "data": {
+            "TimeStamp": "1289650",
+            "Process Name ( PID)": "stock_capture_app.exe (27476)",
+            "ThreadID": "24364",
+            "CPU": "6",
+            "etw:ActivityId": "{96ee1c5c-09a6-46c9-add5-ab68379216a8}",
+            "etw:Related ActivityId": "",
+            "AudioClientGuidId": "{96ee1c5c-09a6-46c9-add5-ab68379216a8}",
+            "ContextId": "{00000000-0000-0000-0000-000000000000}",
+            "StreamType": "1",
+            "serverCategory": "0",
+            "ShareMode": "0",
+            "RawStreamRequested": "0",
+            "MatchFormatRequested": "0",
+            "OffloadRequested": "0",
+            "UseAmbisonics": "0",
+            "PeriodRequestPriority": "0",
+            "StreamFlags": "0x00000002",
+            "StreamId": "58",
+            "EndpointIdSha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd",
+            "EndpointInstanceIdSha256": "f239f7acb03e7fca5baf72f282267cc3027b0a6c35758f64df5e22bcc15bfefb",
+            "RequestedBufferDuration": "2000000",
+            "RequestedPeriodicity": "0",
+            "HResult": "0x00000000",
+            "HResultMapped": "0x00000000",
+            "FormatType": "WAVEFORMATEXTENSIBLE",
+            "ExpectedAlignmentFailure": "0",
+            "ConsecutiveFailures": "0",
+            "ClientQuiesced": "0",
+            "TimeToInitializeInSec": "0.024282",
+            "HistoryProducer": "0",
+            "BridgeStreamProperties": "0",
+            "BridgeStreamSource": "0",
+            "IsGameProcess": "0",
+            "IsProcessLoopbackStream": "0",
+            "CrossProcessLayoutVersion": "1",
+            "NumberOfChannels": "2",
+            "SampleRate": "48000",
+            "AvgBytesPerSec": "384000",
+            "SubFormat": "{00000003-0000-0010-8000-00aa00389b71}",
+            "ChannelMask": "0x00000003",
+            "ValidBitsPerSample": "32"
+          },
+          "pid": 27476,
+          "tid": 24364,
+          "qpc": 258106405167,
+          "stack": [
+            {
+              "module": "ntdll.dll",
+              "rva": "0x166f94"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0x8bb71"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18173"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x2fb3"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x1a242"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18e3d"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18c8d"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18bc3"
+            },
+            {
+              "module": "mfcore.dll",
+              "rva": "0x2aa08e"
+            },
+            {
+              "module": "mfcore.dll",
+              "rva": "0x2ac98a"
+            },
+            {
+              "module": "mfcore.dll",
+              "rva": "0x2a94eb"
+            },
+            {
+              "module": "mfcore.dll",
+              "rva": "0x2a8453"
+            },
+            {
+              "module": "mfcore.dll",
+              "rva": "0x99424"
+            },
+            {
+              "module": "mfcore.dll",
+              "rva": "0x99167"
+            },
+            {
+              "module": "mfcore.dll",
+              "rva": "0x985cf"
+            },
+            {
+              "module": "mfcore.dll",
+              "rva": "0x9843d"
+            },
+            {
+              "module": "mfcore.dll",
+              "rva": "0x12a4e1"
+            },
+            {
+              "module": "mfcore.dll",
+              "rva": "0x12a41d"
+            },
+            {
+              "module": "RTWorkQ.dll",
+              "rva": "0xdeff"
+            },
+            {
+              "module": "RTWorkQ.dll",
+              "rva": "0xcd81"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0x238f0"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0x25191"
+            },
+            {
+              "module": "kernel32.dll",
+              "rva": "0x2dda7"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0xc9c5c"
+            }
+          ]
+        },
+        "start": {
+          "event": "AudioClientStart",
+          "data": {
+            "TimeStamp": "1291188",
+            "Process Name ( PID)": "stock_capture_app.exe (27476)",
+            "ThreadID": "24364",
+            "CPU": "6",
+            "etw:ActivityId": "{96ee1c5c-09a6-46c9-add5-ab68379216a8}",
+            "etw:Related ActivityId": "",
+            "AudioClientGuidId": "{96ee1c5c-09a6-46c9-add5-ab68379216a8}",
+            "ContextId": "{00000000-0000-0000-0000-000000000000}",
+            "HResultInternal": "0x00000000",
+            "HResult": "0x00000000",
+            "TimeToStartInSec": "0.001278",
+            "ClientProcessSuspensionState": "0",
+            "ActualStreamState": "1"
+          },
+          "pid": 27476,
+          "tid": 24364,
+          "qpc": 258106420546,
+          "stack": [
+            {
+              "module": "ntdll.dll",
+              "rva": "0x166f94"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0x8bb71"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0xa54c"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0xa36c"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0xa17d"
+            },
+            {
+              "module": "mfcore.dll",
+              "rva": "0x2acb19"
+            },
+            {
+              "module": "mfcore.dll",
+              "rva": "0x2a94eb"
+            },
+            {
+              "module": "mfcore.dll",
+              "rva": "0x2a8453"
+            },
+            {
+              "module": "mfcore.dll",
+              "rva": "0x99424"
+            },
+            {
+              "module": "mfcore.dll",
+              "rva": "0x99167"
+            },
+            {
+              "module": "mfcore.dll",
+              "rva": "0x985cf"
+            },
+            {
+              "module": "mfcore.dll",
+              "rva": "0x9843d"
+            },
+            {
+              "module": "mfcore.dll",
+              "rva": "0x12a4e1"
+            },
+            {
+              "module": "mfcore.dll",
+              "rva": "0x12a41d"
+            },
+            {
+              "module": "RTWorkQ.dll",
+              "rva": "0xdeff"
+            },
+            {
+              "module": "RTWorkQ.dll",
+              "rva": "0xcd81"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0x238f0"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0x25191"
+            },
+            {
+              "module": "kernel32.dll",
+              "rva": "0x2dda7"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0xc9c5c"
+            }
+          ]
+        }
+      }
+    ],
+    "sdkCaptureInitializeSuccessEvents": 0,
+    "sdkCaptureStartedClients": 0,
+    "lostEvents": 0,
+    "lostBuffers": 0,
+    "events": [
+      {
+        "event": "AudioClientInitialize",
+        "data": {
+          "TimeStamp": "1289650",
+          "Process Name ( PID)": "stock_capture_app.exe (27476)",
+          "ThreadID": "24364",
+          "CPU": "6",
+          "etw:ActivityId": "{96ee1c5c-09a6-46c9-add5-ab68379216a8}",
+          "etw:Related ActivityId": "",
+          "AudioClientGuidId": "{96ee1c5c-09a6-46c9-add5-ab68379216a8}",
+          "ContextId": "{00000000-0000-0000-0000-000000000000}",
+          "StreamType": "1",
+          "serverCategory": "0",
+          "ShareMode": "0",
+          "RawStreamRequested": "0",
+          "MatchFormatRequested": "0",
+          "OffloadRequested": "0",
+          "UseAmbisonics": "0",
+          "PeriodRequestPriority": "0",
+          "StreamFlags": "0x00000002",
+          "StreamId": "58",
+          "EndpointIdSha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd",
+          "EndpointInstanceIdSha256": "f239f7acb03e7fca5baf72f282267cc3027b0a6c35758f64df5e22bcc15bfefb",
+          "RequestedBufferDuration": "2000000",
+          "RequestedPeriodicity": "0",
+          "HResult": "0x00000000",
+          "HResultMapped": "0x00000000",
+          "FormatType": "WAVEFORMATEXTENSIBLE",
+          "ExpectedAlignmentFailure": "0",
+          "ConsecutiveFailures": "0",
+          "ClientQuiesced": "0",
+          "TimeToInitializeInSec": "0.024282",
+          "HistoryProducer": "0",
+          "BridgeStreamProperties": "0",
+          "BridgeStreamSource": "0",
+          "IsGameProcess": "0",
+          "IsProcessLoopbackStream": "0",
+          "CrossProcessLayoutVersion": "1",
+          "NumberOfChannels": "2",
+          "SampleRate": "48000",
+          "AvgBytesPerSec": "384000",
+          "SubFormat": "{00000003-0000-0010-8000-00aa00389b71}",
+          "ChannelMask": "0x00000003",
+          "ValidBitsPerSample": "32"
+        },
+        "pid": 27476,
+        "tid": 24364,
+        "qpc": 258106405167,
+        "stack": [
+          {
+            "module": "ntdll.dll",
+            "rva": "0x166f94"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0x8bb71"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0x18173"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0x2fb3"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0x1a242"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0x18e3d"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0x18c8d"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0x18bc3"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2aa08e"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2ac98a"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2a94eb"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2a8453"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x99424"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x99167"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x985cf"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x9843d"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x12a4e1"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x12a41d"
+          },
+          {
+            "module": "RTWorkQ.dll",
+            "rva": "0xdeff"
+          },
+          {
+            "module": "RTWorkQ.dll",
+            "rva": "0xcd81"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0x238f0"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0x25191"
+          },
+          {
+            "module": "kernel32.dll",
+            "rva": "0x2dda7"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0xc9c5c"
+          }
+        ]
+      },
+      {
+        "event": "IAudioClient::Initialize",
+        "data": {
+          "TimeStamp": "1289653",
+          "Process Name ( PID)": "stock_capture_app.exe (27476)",
+          "ThreadID": "24364",
+          "CPU": "6",
+          "etw:ActivityId": "{96ee1c5c-09a6-46c9-add5-ab68379216a8}",
+          "etw:Related ActivityId": "",
+          "this": "0x0000025fe0ddd680",
+          "ShareMode": "0",
+          "StreamFlags": "0",
+          "hnsBufferDuration": "2000000",
+          "hnsPeriodicity": "0",
+          "pRequestedFormat": "0x0000025fe0cb33a0",
+          "format {cbSize; nAvgBytesPerSec; nBlockAlign; nChannels; nSamplesPerSec; wBitsPerSample; wFormatTag; waveFormatExData.Length; waveFormatExData}": "{cbSize : 22; nAvgBytesPerSec : 384000; nBlockAlign : 8; nChannels : 2; nSamplesPerSec : 48000; wBitsPerSample : 32; wFormatTag : 65534; waveFormatExData.Length : 22; waveFormatExData : 00000016 20 00 03 00 00 00 03 00 00 00 00 00 10 00 80 00 00 aa 00 38 9b 71}",
+          "AudioSessionGuid": "0x0000000000000000",
+          "val_AudioSessionGuid": "{00000000-0000-0000-0000-000000000000}",
+          "HResult": "0x00000000"
+        },
+        "pid": 27476,
+        "tid": 24364,
+        "qpc": 258106405196,
+        "stack": [
+          {
+            "module": "ntdll.dll",
+            "rva": "0x166f94"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0x8bb71"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0x18b44"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0x18cc3"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0x18bc3"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2aa08e"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2ac98a"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2a94eb"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2a8453"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x99424"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x99167"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x985cf"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x9843d"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x12a4e1"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x12a41d"
+          },
+          {
+            "module": "RTWorkQ.dll",
+            "rva": "0xdeff"
+          },
+          {
+            "module": "RTWorkQ.dll",
+            "rva": "0xcd81"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0x238f0"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0x25191"
+          },
+          {
+            "module": "kernel32.dll",
+            "rva": "0x2dda7"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0xc9c5c"
+          }
+        ]
+      },
+      {
+        "event": "IAudioClient::GetService",
+        "data": {
+          "TimeStamp": "1289663",
+          "Process Name ( PID)": "stock_capture_app.exe (27476)",
+          "ThreadID": "24364",
+          "CPU": "6",
+          "etw:ActivityId": "{96ee1c5c-09a6-46c9-add5-ab68379216a8}",
+          "etw:Related ActivityId": "",
+          "this": "0x0000025fe0ddd680",
+          "riid": "{c8adbd64-e71e-48a0-a4de-185c395cd317}",
+          "ppv": "0x000000b6548fef20",
+          "pv": "0x0000025fe1183b70",
+          "HResult": "0x00000000"
+        },
+        "pid": 27476,
+        "tid": 24364,
+        "qpc": 258106405304,
+        "stack": [
+          {
+            "module": "ntdll.dll",
+            "rva": "0x166f94"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0x8bb71"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0xb725"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0x80546"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0x35962"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2aa10c"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2ac98a"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2a94eb"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2a8453"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x99424"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x99167"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x985cf"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x9843d"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x12a4e1"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x12a41d"
+          },
+          {
+            "module": "RTWorkQ.dll",
+            "rva": "0xdeff"
+          },
+          {
+            "module": "RTWorkQ.dll",
+            "rva": "0xcd81"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0x238f0"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0x25191"
+          },
+          {
+            "module": "kernel32.dll",
+            "rva": "0x2dda7"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0xc9c5c"
+          }
+        ]
+      },
+      {
+        "event": "IAudioClient::Start",
+        "data": {
+          "TimeStamp": "1291182",
+          "Process Name ( PID)": "stock_capture_app.exe (27476)",
+          "ThreadID": "24364",
+          "CPU": "6",
+          "etw:ActivityId": "{96ee1c5c-09a6-46c9-add5-ab68379216a8}",
+          "etw:Related ActivityId": "",
+          "this": "0x0000025fe0ddd680",
+          "HResult": "0x00000000"
+        },
+        "pid": 27476,
+        "tid": 24364,
+        "qpc": 258106420486,
+        "stack": [
+          {
+            "module": "ntdll.dll",
+            "rva": "0x166f94"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0x8bb71"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0xb381"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0xa2f3"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0xa17d"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2acb19"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2a94eb"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2a8453"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x99424"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x99167"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x985cf"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x9843d"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x12a4e1"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x12a41d"
+          },
+          {
+            "module": "RTWorkQ.dll",
+            "rva": "0xdeff"
+          },
+          {
+            "module": "RTWorkQ.dll",
+            "rva": "0xcd81"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0x238f0"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0x25191"
+          },
+          {
+            "module": "kernel32.dll",
+            "rva": "0x2dda7"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0xc9c5c"
+          }
+        ]
+      },
+      {
+        "event": "AudioClientStart",
+        "data": {
+          "TimeStamp": "1291188",
+          "Process Name ( PID)": "stock_capture_app.exe (27476)",
+          "ThreadID": "24364",
+          "CPU": "6",
+          "etw:ActivityId": "{96ee1c5c-09a6-46c9-add5-ab68379216a8}",
+          "etw:Related ActivityId": "",
+          "AudioClientGuidId": "{96ee1c5c-09a6-46c9-add5-ab68379216a8}",
+          "ContextId": "{00000000-0000-0000-0000-000000000000}",
+          "HResultInternal": "0x00000000",
+          "HResult": "0x00000000",
+          "TimeToStartInSec": "0.001278",
+          "ClientProcessSuspensionState": "0",
+          "ActualStreamState": "1"
+        },
+        "pid": 27476,
+        "tid": 24364,
+        "qpc": 258106420546,
+        "stack": [
+          {
+            "module": "ntdll.dll",
+            "rva": "0x166f94"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0x8bb71"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0xa54c"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0xa36c"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0xa17d"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2acb19"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2a94eb"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2a8453"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x99424"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x99167"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x985cf"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x9843d"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x12a4e1"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x12a41d"
+          },
+          {
+            "module": "RTWorkQ.dll",
+            "rva": "0xdeff"
+          },
+          {
+            "module": "RTWorkQ.dll",
+            "rva": "0xcd81"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0x238f0"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0x25191"
+          },
+          {
+            "module": "kernel32.dll",
+            "rva": "0x2dda7"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0xc9c5c"
+          }
+        ]
+      },
+      {
+        "event": "AudioClientStop",
+        "data": {
+          "TimeStamp": "8352096",
+          "Process Name ( PID)": "stock_capture_app.exe (27476)",
+          "ThreadID": "11080",
+          "CPU": "12",
+          "etw:ActivityId": "{96ee1c5c-09a6-46c9-add5-ab68379216a8}",
+          "etw:Related ActivityId": "",
+          "endpointInstanceId": "SWD\\MMDEVAPI\\{0.0.1.00000000}.{929cc85c-bea3-4d61-9956-8a275859cd63}",
+          "AudioClientGuidId": "{96ee1c5c-09a6-46c9-add5-ab68379216a8}",
+          "ContextId": "{00000000-0000-0000-0000-000000000000}",
+          "HResultInternal": "0x00000000",
+          "HResult": "0x00000000",
+          "GetBufferFailures": "0",
+          "ReleaseBufferFailures": "0",
+          "Duration": "7.060896",
+          "ContentDuration": "7.020000",
+          "ClientProcessSuspensionState": "0",
+          "ActualStreamState": "0"
+        },
+        "pid": 27476,
+        "tid": 11080,
+        "qpc": 258177029630,
+        "stack": [
+          {
+            "module": "ntdll.dll",
+            "rva": "0x166f94"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0x8bb71"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0xffa7"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0xf44b"
+          },
+          {
+            "module": "AudioSes.dll",
+            "rva": "0xfa8b"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2acf7b"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2a9646"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x2a8271"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x9995b"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x9976b"
+          },
+          {
+            "module": "mfcore.dll",
+            "rva": "0x5ff6b"
+          },
+          {
+            "module": "mfreadwrite.dll",
+            "rva": "0x43890"
+          },
+          {
+            "module": "mfreadwrite.dll",
+            "rva": "0x43525"
+          },
+          {
+            "module": "record_windows_plugin.dll",
+            "rva": "0x15d41"
+          },
+          {
+            "module": "record_windows_plugin.dll",
+            "rva": "0x15c5c"
+          },
+          {
+            "module": "record_windows_plugin.dll",
+            "rva": "0x11eb5"
+          },
+          {
+            "module": "record_windows_plugin.dll",
+            "rva": "0x127a9"
+          },
+          {
+            "module": "record_windows_plugin.dll",
+            "rva": "0xd621"
+          },
+          {
+            "module": "ucrtbase.dll",
+            "rva": "0x2cd30"
+          },
+          {
+            "module": "kernel32.dll",
+            "rva": "0x2dda7"
+          },
+          {
+            "module": "ntdll.dll",
+            "rva": "0xc9c5c"
+          }
+        ]
+      }
+    ],
+    "limitations": [
+      "Capture initialization and streaming are separate; creation of an AEC DMO alone is not capture.",
+      "Missing events/stacks or unvalidated DMO paths cannot prove zero additional capture.",
+      "Provider events sharing AudioClientGuidId are lifecycle views, not separate streams."
+    ],
+    "inputSha256": {
+      "events.csv": "beeeec753a137f35dd777092bed0ed55e4799205093d500b549d3cddf7807f9b",
+      "stacks.jsonl": "3cc6e22063e6603b8d2437285d11c25955644a662d60c103b958ceee5bf52c74"
+    }
+  }
+}

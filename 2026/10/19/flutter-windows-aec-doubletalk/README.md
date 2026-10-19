@@ -126,8 +126,9 @@ revision is unspecified and is not claimed identical to the transport SDK.
 See [legacy diagnosis](docs/legacy.md), [methodology history](docs/methodology-history.md),
 [speech fixture hashes](results/speech-fixture.json),
 [known-speech near replay](results/offline-speech-near.json), and
-[digital linear fixture](results/digital-linear.json). Real human near speech,
-Bluetooth, long drift and other Windows hardware remain unverified.
+[digital linear fixture](results/digital-linear.json). Physical human near speech was
+checked in the limited [HUMAN protocol](HUMAN.md); Bluetooth, long drift and other
+Windows hardware remain unverified.
 
 ## Diagnostic limitations
 
@@ -142,8 +143,9 @@ The original chirp had an incorrect phase expression and excessive aliased energ
 its old scalar1.29dB value is not comparable with this lab's coherent spectral
 metric. Neither a better stimulus nor a corrected estimator alone is an AEC gain.
 The MF/RAW microphone path can still be nonlinear or time-varying; the exact cause
-of trial1 silence is unproven. Real human near speech, other capture hardware,
-Bluetooth, high-band DT fidelity and long drift remain unverified. No product or
+of trial1 silence is unproven. Real human near speech has the limited HUMAN result
+above; other capture hardware, Bluetooth, high-band DT fidelity and long drift
+remain unverified. No product or
 five-platform adoption policy is changed by this Windows-only experiment.
 
 See [Windows SDK requirements and alternatives](docs/windows-sdk-alternatives.md)

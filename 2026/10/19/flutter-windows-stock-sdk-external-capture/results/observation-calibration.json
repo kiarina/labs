@@ -1,0 +1,533 @@
+{
+  "schemaVersion": 1,
+  "pid": 16280,
+  "captureInitializeEvents": 1,
+  "captureInitializeSuccessEvents": 1,
+  "captureInitializeWithStack": 1,
+  "events": [
+    {
+      "event": "AudioClientInitialize",
+      "data": {
+        "TimeStamp": "296141",
+        "Process Name ( PID)": "mic-control.exe (16280)",
+        "ThreadID": "5160",
+        "CPU": "4",
+        "etw:ActivityId": "{846bc800-50f8-4190-9a59-4bd042f109b9}",
+        "etw:Related ActivityId": "",
+        "AudioClientGuidId": "{846bc800-50f8-4190-9a59-4bd042f109b9}",
+        "ContextId": "{00000000-0000-0000-0000-000000000000}",
+        "StreamType": "1",
+        "serverCategory": "0",
+        "ShareMode": "0",
+        "RawStreamRequested": "0",
+        "MatchFormatRequested": "0",
+        "OffloadRequested": "0",
+        "UseAmbisonics": "0",
+        "PeriodRequestPriority": "0",
+        "StreamFlags": "0x04000002",
+        "StreamId": "54",
+        "EndpointIdSha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd",
+        "EndpointInstanceIdSha256": "f239f7acb03e7fca5baf72f282267cc3027b0a6c35758f64df5e22bcc15bfefb",
+        "RequestedBufferDuration": "200000",
+        "RequestedPeriodicity": "0",
+        "HResult": "0x00000000",
+        "HResultMapped": "0x00000000",
+        "FormatType": "WAVEFORMATEXTENSIBLE",
+        "ExpectedAlignmentFailure": "0",
+        "ConsecutiveFailures": "0",
+        "ClientQuiesced": "0",
+        "TimeToInitializeInSec": "0.043093",
+        "HistoryProducer": "0",
+        "BridgeStreamProperties": "0",
+        "BridgeStreamSource": "0",
+        "IsGameProcess": "0",
+        "IsProcessLoopbackStream": "0",
+        "CrossProcessLayoutVersion": "1",
+        "NumberOfChannels": "2",
+        "SampleRate": "48000",
+        "AvgBytesPerSec": "384000",
+        "SubFormat": "{00000003-0000-0010-8000-00aa00389b71}",
+        "ChannelMask": "0x00000003",
+        "ValidBitsPerSample": "32"
+      },
+      "pid": 16280,
+      "tid": 5160,
+      "qpc": 252070308059,
+      "stack": [
+        {
+          "module": "ntdll.dll",
+          "rva": "0x166f94"
+        },
+        {
+          "module": "ntdll.dll",
+          "rva": "0x8bb71"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0x18173"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0x2fb3"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0x1a242"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0x18e3d"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0x18c8d"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0x18bc3"
+        },
+        {
+          "module": "mic-control.exe",
+          "rva": "0x5c5d"
+        },
+        {
+          "module": "mic-control.exe",
+          "rva": "0x8c4c"
+        },
+        {
+          "module": "kernel32.dll",
+          "rva": "0x2dda7"
+        },
+        {
+          "module": "ntdll.dll",
+          "rva": "0xc9c5c"
+        }
+      ]
+    },
+    {
+      "event": "IAudioClient::Initialize",
+      "data": {
+        "TimeStamp": "296144",
+        "Process Name ( PID)": "mic-control.exe (16280)",
+        "ThreadID": "5160",
+        "CPU": "4",
+        "etw:ActivityId": "{846bc800-50f8-4190-9a59-4bd042f109b9}",
+        "etw:Related ActivityId": "",
+        "this": "0x000002b16c640260",
+        "ShareMode": "0",
+        "StreamFlags": "0",
+        "hnsBufferDuration": "200000",
+        "hnsPeriodicity": "0",
+        "pRequestedFormat": "0x000002b16c63c4e0",
+        "format {cbSize; nAvgBytesPerSec; nBlockAlign; nChannels; nSamplesPerSec; wBitsPerSample; wFormatTag; waveFormatExData.Length; waveFormatExData}": "{cbSize : 22; nAvgBytesPerSec : 384000; nBlockAlign : 8; nChannels : 2; nSamplesPerSec : 48000; wBitsPerSample : 32; wFormatTag : 65534; waveFormatExData.Length : 22; waveFormatExData : 00000016 20 00 03 00 00 00 03 00 00 00 00 00 10 00 80 00 00 aa 00 38 9b 71}",
+        "AudioSessionGuid": "0x0000000000000000",
+        "val_AudioSessionGuid": "{00000000-0000-0000-0000-000000000000}",
+        "HResult": "0x00000000"
+      },
+      "pid": 16280,
+      "tid": 5160,
+      "qpc": 252070308089,
+      "stack": [
+        {
+          "module": "ntdll.dll",
+          "rva": "0x166f94"
+        },
+        {
+          "module": "ntdll.dll",
+          "rva": "0x8bb71"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0x18b44"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0x18cc3"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0x18bc3"
+        },
+        {
+          "module": "mic-control.exe",
+          "rva": "0x5c5d"
+        },
+        {
+          "module": "mic-control.exe",
+          "rva": "0x8c4c"
+        },
+        {
+          "module": "kernel32.dll",
+          "rva": "0x2dda7"
+        },
+        {
+          "module": "ntdll.dll",
+          "rva": "0xc9c5c"
+        }
+      ]
+    },
+    {
+      "event": "IAudioClient::GetService",
+      "data": {
+        "TimeStamp": "296188",
+        "Process Name ( PID)": "mic-control.exe (16280)",
+        "ThreadID": "5160",
+        "CPU": "4",
+        "etw:ActivityId": "{846bc800-50f8-4190-9a59-4bd042f109b9}",
+        "etw:Related ActivityId": "",
+        "this": "0x000002b16c640260",
+        "riid": "{c8adbd64-e71e-48a0-a4de-185c395cd317}",
+        "ppv": "0x000000b1d62ffe40",
+        "pv": "0x000002b16c657f10",
+        "HResult": "0x00000000"
+      },
+      "pid": 16280,
+      "tid": 5160,
+      "qpc": 252070308530,
+      "stack": [
+        {
+          "module": "ntdll.dll",
+          "rva": "0x166f94"
+        },
+        {
+          "module": "ntdll.dll",
+          "rva": "0x8bb71"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0xb725"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0x80546"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0x35962"
+        },
+        {
+          "module": "mic-control.exe",
+          "rva": "0x5ccc"
+        },
+        {
+          "module": "mic-control.exe",
+          "rva": "0x8c4c"
+        },
+        {
+          "module": "kernel32.dll",
+          "rva": "0x2dda7"
+        },
+        {
+          "module": "ntdll.dll",
+          "rva": "0xc9c5c"
+        }
+      ]
+    },
+    {
+      "event": "IAudioClient::Start",
+      "data": {
+        "TimeStamp": "298152",
+        "Process Name ( PID)": "mic-control.exe (16280)",
+        "ThreadID": "5160",
+        "CPU": "4",
+        "etw:ActivityId": "{846bc800-50f8-4190-9a59-4bd042f109b9}",
+        "etw:Related ActivityId": "",
+        "this": "0x000002b16c640260",
+        "HResult": "0x00000000"
+      },
+      "pid": 16280,
+      "tid": 5160,
+      "qpc": 252070328169,
+      "stack": [
+        {
+          "module": "ntdll.dll",
+          "rva": "0x166f94"
+        },
+        {
+          "module": "ntdll.dll",
+          "rva": "0x8bb71"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0xb381"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0xa2f3"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0xa17d"
+        },
+        {
+          "module": "mic-control.exe",
+          "rva": "0x5cdc"
+        },
+        {
+          "module": "mic-control.exe",
+          "rva": "0x8c4c"
+        },
+        {
+          "module": "kernel32.dll",
+          "rva": "0x2dda7"
+        },
+        {
+          "module": "ntdll.dll",
+          "rva": "0xc9c5c"
+        }
+      ]
+    },
+    {
+      "event": "AudioClientStart",
+      "data": {
+        "TimeStamp": "298156",
+        "Process Name ( PID)": "mic-control.exe (16280)",
+        "ThreadID": "5160",
+        "CPU": "4",
+        "etw:ActivityId": "{846bc800-50f8-4190-9a59-4bd042f109b9}",
+        "etw:Related ActivityId": "",
+        "AudioClientGuidId": "{846bc800-50f8-4190-9a59-4bd042f109b9}",
+        "ContextId": "{00000000-0000-0000-0000-000000000000}",
+        "HResultInternal": "0x00000000",
+        "HResult": "0x00000000",
+        "TimeToStartInSec": "0.001964",
+        "ClientProcessSuspensionState": "0",
+        "ActualStreamState": "1"
+      },
+      "pid": 16280,
+      "tid": 5160,
+      "qpc": 252070328211,
+      "stack": [
+        {
+          "module": "ntdll.dll",
+          "rva": "0x166f94"
+        },
+        {
+          "module": "ntdll.dll",
+          "rva": "0x8bb71"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0xa54c"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0xa36c"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0xa17d"
+        },
+        {
+          "module": "mic-control.exe",
+          "rva": "0x5cdc"
+        },
+        {
+          "module": "mic-control.exe",
+          "rva": "0x8c4c"
+        },
+        {
+          "module": "kernel32.dll",
+          "rva": "0x2dda7"
+        },
+        {
+          "module": "ntdll.dll",
+          "rva": "0xc9c5c"
+        }
+      ]
+    },
+    {
+      "event": "AudioClientStop",
+      "data": {
+        "TimeStamp": "2294072",
+        "Process Name ( PID)": "mic-control.exe (16280)",
+        "ThreadID": "5160",
+        "CPU": "6",
+        "etw:ActivityId": "{846bc800-50f8-4190-9a59-4bd042f109b9}",
+        "etw:Related ActivityId": "",
+        "endpointInstanceId": "SWD\\MMDEVAPI\\{0.0.1.00000000}.{929cc85c-bea3-4d61-9956-8a275859cd63}",
+        "AudioClientGuidId": "{846bc800-50f8-4190-9a59-4bd042f109b9}",
+        "ContextId": "{00000000-0000-0000-0000-000000000000}",
+        "HResultInternal": "0x00000000",
+        "HResult": "0x00000000",
+        "GetBufferFailures": "0",
+        "ReleaseBufferFailures": "0",
+        "Duration": "1.995864",
+        "ContentDuration": "1.970000",
+        "ClientProcessSuspensionState": "0",
+        "ActualStreamState": "0"
+      },
+      "pid": 16280,
+      "tid": 5160,
+      "qpc": 252090287372,
+      "stack": [
+        {
+          "module": "ntdll.dll",
+          "rva": "0x166f94"
+        },
+        {
+          "module": "ntdll.dll",
+          "rva": "0x8bb71"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0xffa7"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0xf44b"
+        },
+        {
+          "module": "AudioSes.dll",
+          "rva": "0xfa8b"
+        },
+        {
+          "module": "mic-control.exe",
+          "rva": "0x5db9"
+        },
+        {
+          "module": "mic-control.exe",
+          "rva": "0x8c4c"
+        },
+        {
+          "module": "kernel32.dll",
+          "rva": "0x2dda7"
+        },
+        {
+          "module": "ntdll.dll",
+          "rva": "0xc9c5c"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Capture initialization and streaming are separate; creation of an AEC DMO alone is not capture.",
+    "Missing events/stacks or unvalidated DMO paths cannot prove zero additional capture.",
+    "Provider events sharing AudioClientGuidId are lifecycle views, not separate streams."
+  ],
+  "inputSha256": {
+    "stock-events.csv": "37f30b925ca72e815144f5fb13dd57016e2d57ff86edb5f08a38ad68c6ac5886",
+    "stock-mic-stacks.jsonl": "87ab43a5c600b5896498eea9873bd09be87e70aabcc25668e37c0a608b390378"
+  },
+  "kind": "direct-WASAPI-positive-control",
+  "framesDiscarded": 94560,
+  "pcmSaved": false,
+  "traceSeconds": 2.7839451,
+  "traceBytes": 27656192,
+  "lostEvents": 0,
+  "lostBuffers": 0,
+  "calibrationProfile": "20-provider discovery; application trials use validated Audio.Client provider only",
+  "mutedSdkCaptureTiming": {
+    "trial": "03-muted",
+    "traceStartUtc": "2026-10-19T05:35:30.393998+00:00",
+    "appUnmuteUtc": "2026-10-19T05:35:41.619297+00:00",
+    "captureClientGuidId": "{0eb522e7-0b0e-4fc9-a38f-81e7c056807a}",
+    "lostEvents": 0,
+    "lostBuffers": 0,
+    "initialize": {
+      "csvTraceRelativeMicroseconds": 8728877.0,
+      "utc": "2026-10-19T05:35:39.122875+00:00",
+      "secondsBeforeUnmute": 2.496422,
+      "hresult": "0x00000000",
+      "sdkFrames": [
+        {
+          "module": "MFWMAAEC.DLL",
+          "rva": "0xcf97"
+        },
+        {
+          "module": "MFWMAAEC.DLL",
+          "rva": "0x8e5c"
+        },
+        {
+          "module": "MFWMAAEC.DLL",
+          "rva": "0x5535"
+        },
+        {
+          "module": "libwebrtc.dll",
+          "rva": "0x655633"
+        },
+        {
+          "module": "libwebrtc.dll",
+          "rva": "0x6557d7"
+        },
+        {
+          "module": "libwebrtc.dll",
+          "rva": "0x47ff10"
+        },
+        {
+          "module": "libwebrtc.dll",
+          "rva": "0x564064"
+        },
+        {
+          "module": "libwebrtc.dll",
+          "rva": "0xb7df40"
+        },
+        {
+          "module": "libwebrtc.dll",
+          "rva": "0x2c742a"
+        },
+        {
+          "module": "libwebrtc.dll",
+          "rva": "0x2c5fe6"
+        },
+        {
+          "module": "libwebrtc.dll",
+          "rva": "0x2c7916"
+        }
+      ]
+    },
+    "start": {
+      "csvTraceRelativeMicroseconds": 8736353.0,
+      "utc": "2026-10-19T05:35:39.130351+00:00",
+      "secondsBeforeUnmute": 2.488946,
+      "hresult": "0x00000000",
+      "sdkFrames": [
+        {
+          "module": "MFWMAAEC.DLL",
+          "rva": "0x9103"
+        },
+        {
+          "module": "MFWMAAEC.DLL",
+          "rva": "0x5535"
+        },
+        {
+          "module": "libwebrtc.dll",
+          "rva": "0x655633"
+        },
+        {
+          "module": "libwebrtc.dll",
+          "rva": "0x6557d7"
+        },
+        {
+          "module": "libwebrtc.dll",
+          "rva": "0x47ff10"
+        },
+        {
+          "module": "libwebrtc.dll",
+          "rva": "0x564064"
+        },
+        {
+          "module": "libwebrtc.dll",
+          "rva": "0xb7df40"
+        },
+        {
+          "module": "libwebrtc.dll",
+          "rva": "0x2c742a"
+        },
+        {
+          "module": "libwebrtc.dll",
+          "rva": "0x2c5fe6"
+        },
+        {
+          "module": "libwebrtc.dll",
+          "rva": "0x2c7916"
+        }
+      ]
+    },
+    "provenanceSha256": {
+      "stock_capture_result.json": "f9ec792a249b3c3517d74e0a890b8653869c368f6472fd658cbbe084d99f76f4",
+      "normalized.json": "5ebdf8600f602b82d4449febad494a968e9512adfa589b78c0d31ded0e764c1f",
+      "trace-stats.txt": "c95410f3a16d3a57fdc18160392e84b9dec0cac556553494211339dae6ef48bb"
+    }
+  }
+}

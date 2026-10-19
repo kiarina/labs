@@ -1,0 +1,27 @@
+name: external_capture_app
+publish_to: none
+version: 1.0.0+1
+environment:
+  sdk: ^3.13.2
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_webrtc: 1.6.2+hotfix.4
+  dart_webrtc: 1.8.2
+  record: 7.1.2
+  camera: 0.12.1
+  camera_desktop: 2.0.0
+  web: ^1.1.1
+  external_capture:
+    path: ../external_capture
+  media_taps:
+    path: ../media_taps
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+flutter:
+  uses-material-design: true
+dependency_overrides:
+  flutter_webrtc:
+    path: ../vendor/flutter_webrtc
