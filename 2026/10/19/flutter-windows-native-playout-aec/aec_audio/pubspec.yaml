@@ -1,0 +1,14 @@
+name: aec_audio
+version: 0.0.1
+publish_to: none
+environment:
+  sdk: ^3.13.2
+dependencies:
+  flutter:
+    sdk: flutter
+  web: ^1.1.1
+flutter:
+  plugin:
+    platforms:
+      windows:
+        pluginClass: AecAudioPluginCApi

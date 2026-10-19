@@ -1,0 +1,197 @@
+--- a/app/lib/main.dart
++++ b/app/lib/main.dart
+@@ -41,12 +41,14 @@
+     final human=Platform.environment['AEC_HUMAN']=='1';final session=Platform.environment['AEC_SESSION']??'synthetic-1';
+     final recorder=AudioRecorder(),bridge=CaptureBridge(),clock=Stopwatch()..start();
+     final raw=BytesBuilder(copy:false),near=BytesBuilder(copy:false),mixed=BytesBuilder(copy:false);
+-    final outputs={'baseline':BytesBuilder(copy:false),'clockDrift':BytesBuilder(copy:false)};
++    final outputs={'baseline':BytesBuilder(copy:false),'clockDrift':BytesBuilder(copy:false),'conditioned':BytesBuilder(copy:false)};
++    final captureGaps=<Map<String,dynamic>>[];
++    final selectedOutput=Platform.environment['AEC_OUTPUT']??'baseline';
+     final errors=<String>[],phases=<Map<String,dynamic>>[],timeline=<Map<String,dynamic>>[];
+     StreamSubscription<Uint8List>? sub;Timer? camera;RTCPeerConnection? pc;MediaStream? stream;
+     Future<void> chain=Future.value();bool send=false,synthNear=false;int rawBytes=0,cleanBytes=0,videoFrames=0,injected=0,lastAudio=0,gap=0,videoSent=0;int sampleIndex=0;double rawEnergy=0;int rawSamples=0;
+     Map<String,dynamic>? finalStats,stoppedStats,peerResult;String selectedMic='',selectedSpeaker='',selectedSpeakerId='';
+-    final report=<String,dynamic>{'kind':'normal-native-playout-aec','humanNear':human,'syntheticNearInjection':!human,'session':session,'phases':phases,'timeline':timeline,'errors':errors,'normalNativePlayout':true,'videoSource':'synthetic; physical camera unvalidated'};
++    final report=<String,dynamic>{'kind':'normal-native-playout-aec','humanNear':human,'syntheticNearInjection':!human,'session':session,'phases':phases,'timeline':timeline,'errors':errors,'normalNativePlayout':true,'selectedOutput':selectedOutput,'captureGaps':captureGaps,'videoSource':'synthetic; physical camera unvalidated'};
+     void mark(String stage){timeline.add({'stage':stage,'utc':DateTime.now().toUtc().toIso8601String(),'clockUs':clock.elapsedMicroseconds,'rawBytes':rawBytes});}
+     Map<String,dynamic> counts()=>{'rawBytes':rawBytes,'cleanBytes':cleanBytes,'cameraFrames':videoFrames,'injectedAudioBytes':injected,'injectedVideoFrames':videoSent};
+     Future<void> gate(bool enabled)async{if(enabled)await bridge.flush();send=enabled;stream?.getAudioTracks().single.enabled=enabled;mark(enabled?'send-on':'send-off');}
+@@ -69,19 +71,19 @@
+       final input=(await recorder.listInputDevices()).firstWhere((d)=>d.id==inputId);selectedMic=input.label;
+       File('${Directory.systemTemp.path}/native_aec_input.json').writeAsStringSync(jsonEncode({'id':input.id,'label':input.label}));
+       sub=(await recorder.startStream(RecordConfig(encoder:AudioEncoder.pcm16bits,sampleRate:48000,numChannels:1,device:input,echoCancel:false,autoGain:false,noiseSuppress:false))).listen((data){
+-        final now=clock.elapsedMicroseconds;if(lastAudio>0)gap=math.max(gap,now-lastAudio);lastAudio=now;rawBytes+=data.length;raw.add(data);
++        final now=clock.elapsedMicroseconds;if(lastAudio>0){gap=math.max(gap,now-lastAudio);if(now-lastAudio>30000)captureGaps.add({'rawSample':rawBytes~/2,'gapUs':now-lastAudio,'clockUs':now});}lastAudio=now;rawBytes+=data.length;raw.add(data);
+         double chunkEnergy=0;final measured=ByteData.sublistView(data);for(var i=0;i<data.length~/2;i++){final v=measured.getInt16(i*2,Endian.little)/32768;chunkEnergy+=v*v;}rawEnergy+=chunkEnergy;rawSamples+=data.length~/2;liveDb=10*math.log(chunkEnergy/(data.length~/2)+1e-24)/math.ln10;
+         final useNear=synthNear;final values=ByteData.sublistView(data);final inputBytes=Uint8List(data.length),knownNear=Uint8List(data.length);final inView=ByteData.sublistView(inputBytes),nearView=ByteData.sublistView(knownNear);
+         for(var i=0;i<data.length~/2;i++){
+           final position=((sampleIndex++*.93+speech.length/2).floor())%speech.length;
+-          final n=useNear?(speech[position]*2/3).round():0;
++          final n=useNear?(speech[position]*(double.tryParse(Platform.environment['AEC_NEAR_GAIN']??'')??(2/3))).round():0;
+           nearView.setInt16(i*2,n,Endian.little);inView.setInt16(i*2,(values.getInt16(i*2,Endian.little)+n).clamp(-32768,32767),Endian.little);
+         }
+         near.add(knownNear);mixed.add(inputBytes);
+         chain=chain.then((_)async{
+           final result=(await aec.invokeMapMethod<String,dynamic>('captureCompare',{'bytes':inputBytes}))!;
+           for(final name in outputs.keys)outputs[name]!.add(result[name] as Uint8List);
+-          final clean=result['baseline'] as Uint8List;cleanBytes+=clean.length;
++          final clean=result[selectedOutput] as Uint8List;cleanBytes+=clean.length;
+           if(send&&clean.isNotEmpty){await bridge.pushAudio(clean);injected+=clean.length;}
+         }).catchError((Object e){errors.add('$e');});
+       });
+@@ -116,9 +118,12 @@
+     finally{
+       send=false;camera?.cancel();await sub?.cancel();await chain;await recorder.dispose();
+       if(stream!=null){await pc?.close();await pc?.dispose();await bridge.dispose();}
++      await aec.invokeMethod<void>('freeze');
+       final render=await aec.invokeMethod<Uint8List>('renderTrace');
++      final events=await aec.invokeMethod<Uint8List>('dspEvents');
+       stoppedStats=await aec.invokeMapMethod<String,dynamic>('dispose');
+       final folder=Directory('${Directory.systemTemp.path}/native_aec_$session')..createSync(recursive:true);
++      File('${folder.path}/dsp-events.bin').writeAsBytesSync(events??Uint8List(0));
+       for(final entry in {'raw':raw.takeBytes(),'near':near.takeBytes(),'mixed':mixed.takeBytes(),for(final e in outputs.entries)e.key:e.value.takeBytes(),'actual_render':render??Uint8List(0)}.entries){File('${folder.path}/${entry.key}.pcm').writeAsBytesSync(entry.value);}
+       report.addAll({'selectedMic':selectedMic,'selectedSpeaker':selectedSpeaker,'selectedSpeakerId':selectedSpeakerId,'captureStarts':{'record':sub==null?0:1,'camera':camera==null?0:1},'totals':counts(),'maxAudioGapMs':gap/1000,'finalStats':finalStats,'stoppedStats':stoppedStats,'peer':peerResult,'elapsedMs':clock.elapsedMilliseconds});
+       File('${folder.path}/report.json').writeAsStringSync(jsonEncode(report));
+@@ -127,5 +132,5 @@
+       if(Platform.environment['AEC_EXIT']!='0'){if(human)await Future<void>.delayed(const Duration(seconds:5));exit(errors.isEmpty?0:1);}
+     }
+   }
+-  @override Widget build(BuildContext context)=>Scaffold(appBar:AppBar(title:const Text('Native speaker AEC / continuous record')),body:Padding(padding:const EdgeInsets.all(24),child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[Text(status,style:const TextStyle(fontSize:30)),if(!started&&inputs.isNotEmpty)DropdownButton<String>(isExpanded:true,value:inputId,items:inputs.map((d)=>DropdownMenuItem(value:d.id,child:Text(d.label))).toList(),onChanged:(id){if(id!=null)setState((){inputId=id;inputName=inputs.firstWhere((d)=>d.id==id).label;});}),Text('入力: $inputName\nマイクレベル: ${liveDb.toStringAsFixed(1)} dBFS',style:const TextStyle(fontSize:22)),Text('$remaining',style:const TextStyle(fontSize:54)),Text(instruction,style:const TextStyle(fontSize:28)),if(!started&&inputs.isNotEmpty)ElevatedButton(onPressed:run,child:const Text('開始'))])));
++  @override Widget build(BuildContext context)=>Scaffold(appBar:AppBar(title:const Text('Native speaker AEC / continuous record')),body:Padding(padding:const EdgeInsets.all(24),child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[Text(status,style:const TextStyle(fontSize:30)),if(!started&&inputs.isNotEmpty)DropdownButton<String>(isExpanded:true,value:inputId,items:inputs.map((d)=>DropdownMenuItem(value:d.id,child:Text(d.label))).toList(),onChanged:(id){if(id!=null)setState((){inputId=id;inputName=inputs.firstWhere((d)=>d.id==id).label;});}),Text('入力: $inputName\nマイクレベル: ${started?'${liveDb.toStringAsFixed(1)} dBFS':'未開始（開始後に動きます）'}',style:const TextStyle(fontSize:22)),Text('$remaining',style:const TextStyle(fontSize:54)),Text(instruction,style:const TextStyle(fontSize:28)),if(!started&&inputs.isNotEmpty)ElevatedButton(onPressed:run,child:const Text('開始'))])));
+ }
+--- a/aec_audio/windows/aec_audio_plugin.cpp
++++ b/aec_audio/windows/aec_audio_plugin.cpp
+@@ -26,8 +26,8 @@
+ }
+ class State {
+  public:
+-  std::array<void*,2> engines{};
+-  const std::array<const char*,2> names{"baseline","clockDrift"};
++  std::array<void*,3> engines{};
++  const std::array<const char*,3> names{"baseline","clockDrift","conditioned"};
+   std::atomic<bool> stop{false};
+   std::thread thread;
+   std::atomic<uint64_t> reverse_blocks{0},capture_samples{0},dsp_errors{0},discontinuities{0},silent_packets{0};
+@@ -35,13 +35,15 @@
+   uint32_t rate=0,channels=0;
+   int delay_ms=20;
+   std::vector<int16_t> pending,trace;
+-  std::mutex trace_mutex;
++  std::mutex trace_mutex,dsp_mutex;
++  std::vector<uint8_t> events;
++  uint64_t conditioned_overrange=0;
+   ~State(){Dispose();}
+   void Dispose(){stop=true;if(thread.joinable())thread.join();for(auto& e:engines){if(e)aec_destroy(e);e=nullptr;}pending.clear();}
+   HRESULT Configure(const std::string& endpoint,int delay){
+-    Dispose();stop=false;hresult=0;reverse_blocks=0;capture_samples=0;dsp_errors=0;discontinuities=0;silent_packets=0;trace.clear();delay_ms=delay;
+-    engines[0]=aec_create_config(1,0);engines[1]=aec_create_config(1,1);
+-    if(!engines[0]||!engines[1])return E_FAIL;
++    Dispose();stop=false;hresult=0;reverse_blocks=0;capture_samples=0;dsp_errors=0;discontinuities=0;silent_packets=0;trace.clear();events.clear();conditioned_overrange=0;delay_ms=delay;
++    engines[0]=aec_create_config(1,0);engines[1]=aec_create_config(1,1);engines[2]=aec_create_config(1,18);
++    if(!engines[0]||!engines[1]||!engines[2])return E_FAIL;
+     auto ready=std::make_shared<std::promise<HRESULT>>();auto future=ready->get_future();
+     thread=std::thread([this,endpoint,ready]{Loop(endpoint,ready);});
+     return future.get();
+@@ -80,7 +82,8 @@
+             if(++count==static_cast<int>(rate/48000)){
+               block.push_back(static_cast<int16_t>(std::clamp(std::lrint(accumulated/count*32768),-32768L,32767L)));count=0;accumulated=0;
+               if(block.size()==480){
+-                for(auto e:engines)if(aec_reverse(e,block.data(),480)!=0)++dsp_errors;
++                {std::lock_guard<std::mutex> dsp_lock(dsp_mutex);
++                for(auto e:engines)if(aec_reverse(e,block.data(),480)!=0)++dsp_errors;events.push_back(1);}
+                 {std::lock_guard<std::mutex> lock(trace_mutex);if(trace.size()+480<=48000*180)trace.insert(trace.end(),block.begin(),block.end());else ++dsp_errors;}
+                 ++reverse_blocks;block.clear();
+               }
+@@ -96,6 +99,7 @@
+   }
+   EncodableMap Stats(){
+     EncodableMap m{{EncodableValue("reverseBlocks"),Count(reverse_blocks)},{EncodableValue("captureSamples"),Count(capture_samples)},{EncodableValue("dspErrors"),Count(dsp_errors)},{EncodableValue("loopbackHresult"),EncodableValue(hresult.load())},{EncodableValue("discontinuities"),Count(discontinuities)},{EncodableValue("silentPackets"),Count(silent_packets)},{EncodableValue("renderRate"),Count(rate)},{EncodableValue("renderChannels"),Count(channels)},{EncodableValue("referenceKind"),EncodableValue("selected render endpoint LOOPBACK; no microphone or speaker owner")}};
++    m[EncodableValue("conditionedGain")]=EncodableValue(8);m[EncodableValue("conditionedOverrangeSamples")]=Count(conditioned_overrange);
+     using Audit=uint64_t(__cdecl*)(int);auto module=GetModuleHandleW(L"record_windows_plugin.dll");auto audit=module?reinterpret_cast<Audit>(GetProcAddress(module,"RecordRawAudit")):nullptr;
+     if(audit){const char* keys[]={"rawRequests","rawPropertiesAccepted","rawStarts","nativeCaptureFrames","lastHresult","mfCreateRequests","activeRawCaptures"};EncodableMap a;for(int i=0;i<7;++i)a[EncodableValue(keys[i])]=Count(audit(i));m[EncodableValue("recordRawAudit")]=EncodableValue(a);}else m[EncodableValue("recordRawAuditMissing")]=EncodableValue(true);
+     return m;
+@@ -116,11 +120,14 @@
+  if(call.method_name()=="captureCompare"){
+   auto value=Arg(a,"bytes");if(!value||!std::holds_alternative<std::vector<uint8_t>>(*value)||!s.engines[0]){result->Error("aec","not configured or missing PCM");return;}
+   const auto& b=std::get<std::vector<uint8_t>>(*value);for(size_t i=0;i+1<b.size();i+=2)s.pending.push_back(static_cast<int16_t>(b[i]|(b[i+1]<<8)));
+-  std::array<std::vector<int16_t>,2> output;size_t offset=0;
+-  while(s.pending.size()-offset>=480){for(size_t j=0;j<2;++j){int16_t block[480];if(aec_capture(s.engines[j],s.pending.data()+offset,block,480,s.delay_ms)!=0)++s.dsp_errors;output[j].insert(output[j].end(),block,block+480);}offset+=480;s.capture_samples+=480;}
+-  s.pending.erase(s.pending.begin(),s.pending.begin()+offset);EncodableMap m;for(size_t j=0;j<2;++j)m[EncodableValue(s.names[j])]=EncodableValue(Bytes(output[j]));result->Success(EncodableValue(m));return;
++  std::array<std::vector<int16_t>,3> output;size_t offset=0;
++  std::lock_guard<std::mutex> dsp_lock(s.dsp_mutex);
++  while(s.pending.size()-offset>=480){for(int k=0;k<480;++k)if(std::abs(static_cast<int>(s.pending[offset+k]))>4095)++s.conditioned_overrange;for(size_t j=0;j<3;++j){int16_t block[480];if(aec_capture(s.engines[j],s.pending.data()+offset,block,480,s.delay_ms)!=0)++s.dsp_errors;output[j].insert(output[j].end(),block,block+480);}s.events.push_back(2);offset+=480;s.capture_samples+=480;}
++  s.pending.erase(s.pending.begin(),s.pending.begin()+offset);EncodableMap m;for(size_t j=0;j<3;++j)m[EncodableValue(s.names[j])]=EncodableValue(Bytes(output[j]));result->Success(EncodableValue(m));return;
+  }
+  if(call.method_name()=="stats"){result->Success(EncodableValue(s.Stats()));return;}
++ if(call.method_name()=="freeze"){s.stop=true;if(s.thread.joinable())s.thread.join();result->Success();return;}
++ if(call.method_name()=="dspEvents"){std::lock_guard<std::mutex> lock(s.dsp_mutex);result->Success(EncodableValue(s.events));return;}
+  if(call.method_name()=="renderTrace"){std::lock_guard<std::mutex> lock(s.trace_mutex);result->Success(EncodableValue(Bytes(s.trace)));return;}
+  if(call.method_name()=="dispose"){s.Dispose();result->Success(EncodableValue(s.Stats()));return;}
+  result->NotImplemented();
+--- a/native/aec_engine.cc
++++ b/native/aec_engine.cc
+@@ -27,14 +27,14 @@
+     linear_history.fill(0);linear_position=0;
+     lab_aec_webrtc::EchoCanceller3Config config;
+     if(preset==1 || preset==4)config.echo_removal_control.has_clock_drift=true;
+-    if(preset==2 || preset==4 || preset==6 || preset>=13){
++    if(preset==2 || preset==4 || preset==6 || (preset>=13 && preset<=15)){
+       config.filter.refined.length_blocks=26;
+       config.filter.coarse.length_blocks=26;
+       config.filter.refined_initial.length_blocks=26;
+       config.filter.coarse_initial.length_blocks=26;
+     }
+     if(preset==3 || preset==7)config.suppressor.nearend_tuning=config.suppressor.normal_tuning;
+-    if(preset>=5)config.delay.use_external_delay_estimator=true;
++    if(preset>=5 && preset<=15)config.delay.use_external_delay_estimator=true;
+     if(preset==8 || preset==9 || preset==11 || preset==15){
+       const float factor=preset==8?2.f:5.f;
+       config.suppressor.nearend_tuning.mask_lf.enr_transparent*=factor;
+@@ -42,8 +42,18 @@
+       config.suppressor.nearend_tuning.mask_hf.enr_transparent*=factor;
+       config.suppressor.nearend_tuning.mask_hf.enr_suppress*=factor;
+     }
+-    if(preset>=10)config.filter.enable_coarse_filter_output_usage=false;
++    if(preset>=10 && preset<=15)config.filter.enable_coarse_filter_output_usage=false;
+     if(preset==12 || preset==13)config.filter.export_linear_aec_output=true;
++    if(preset==16 || preset==17){
++      config.suppressor.dominant_nearend_detection.snr_threshold=3.f;
++      config.suppressor.dominant_nearend_detection.trigger_threshold=3;
++    }
++    if(preset==17){
++      config.suppressor.nearend_tuning.mask_lf.enr_transparent*=5.f;
++      config.suppressor.nearend_tuning.mask_lf.enr_suppress*=5.f;
++      config.suppressor.nearend_tuning.mask_hf.enr_transparent*=5.f;
++      config.suppressor.nearend_tuning.mask_hf.enr_suppress*=5.f;
++    }
+     lab_aec_webrtc::EchoCanceller3Config::Validate(&config);
+     lab_aec_webrtc::Environment environment;
+     lab_aec_webrtc::EchoCanceller3Factory factory(config);
+@@ -54,7 +64,7 @@
+ }
+ extern "C" {
+ void* aec_create(int enabled){try{return new Engine(enabled!=0);}catch(...){return nullptr;}}
+-void* aec_create_config(int enabled,int preset){if(preset<0||preset>15)return nullptr;try{return new Engine(enabled!=0,preset);}catch(...){return nullptr;}}
++void* aec_create_config(int enabled,int preset){if(preset<0||preset>18)return nullptr;try{return new Engine(enabled!=0,preset);}catch(...){return nullptr;}}
+ int aec_reverse(void* handle,const int16_t* pcm,int samples){
+   if(!handle||!pcm||samples!=480)return -1;
+   auto& e=*static_cast<Engine*>(handle);std::lock_guard<std::mutex> lock(e.mutex);
+@@ -67,7 +77,7 @@
+   if(!handle||!pcm||!out||samples!=480||delay_ms<0||delay_ms>1000)return -1;
+   auto& e=*static_cast<Engine*>(handle);std::lock_guard<std::mutex> lock(e.mutex);
+   if(!e.enabled){std::copy(pcm,pcm+480,out);return 0;}
+-  for(int i=0;i<480;i++)e.capture.channels()[0][i]=pcm[i];
++  for(int i=0;i<480;i++)e.capture.channels()[0][i]=pcm[i]*(e.preset==18?8.f:1.f);
+   e.echo->SetAudioBufferDelay(delay_ms);
+   e.echo->AnalyzeCapture(&e.capture);
+   e.capture.SplitIntoFrequencyBands();
+@@ -82,7 +92,7 @@
+     }
+   }else e.echo->ProcessCapture(&e.capture,false);
+   e.capture.MergeFrequencyBands();
+-  for(int i=0;i<480;i++)out[i]=static_cast<int16_t>(std::clamp(std::lrint(e.capture.channels_const()[0][i]),-32768L,32767L));
++  for(int i=0;i<480;i++)out[i]=static_cast<int16_t>(std::clamp(std::lrint(e.capture.channels_const()[0][i]/(e.preset==18?8.f:1.f)),-32768L,32767L));
+   return 0;
+ }
+ void aec_reset(void* handle){if(!handle)return;auto& e=*static_cast<Engine*>(handle);std::lock_guard<std::mutex> lock(e.mutex);e.reset();}

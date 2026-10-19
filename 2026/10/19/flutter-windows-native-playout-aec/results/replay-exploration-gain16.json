@@ -1,0 +1,516 @@
+{
+  "kind": "exploratory-approximate-replay",
+  "leadReverseBlocks": 86,
+  "originalEventOrderAvailable": false,
+  "librarySha256": "4595a67438dda23cda483f1181dc870d39ee3f294818c7c19cdd187e1bf9891a",
+  "rawSha256": "994bebdb62a4b8c0fc5e09ec7b51692606774be35182b80b6118bd05a8db52f2",
+  "presets": [
+    {
+      "preset": 0,
+      "phases": [
+        {
+          "phase": "mic-check",
+          "rawRmsDbfs": -58.04183210717217,
+          "outputRmsDbfs": -58.304148857018674,
+          "activeWindows": 25,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.5368831981177331
+        },
+        {
+          "phase": "quiet",
+          "rawRmsDbfs": -72.31384822315025,
+          "outputRmsDbfs": -72.76933265940879,
+          "activeWindows": 0,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": null
+        },
+        {
+          "phase": "near-only",
+          "rawRmsDbfs": -54.313218342255595,
+          "outputRmsDbfs": -54.60256621607406,
+          "activeWindows": 51,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.4656408005802306
+        },
+        {
+          "phase": "far-warmup",
+          "rawRmsDbfs": -62.377815335189254,
+          "outputRmsDbfs": -69.25756769021228,
+          "activeWindows": 30,
+          "windowsBelowMinus6Db": 20,
+          "worstRawRatioDb": -30.48264120168501
+        },
+        {
+          "phase": "far-1",
+          "rawRmsDbfs": -68.14410050772528,
+          "outputRmsDbfs": -71.51665029524214,
+          "activeWindows": 0,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": null
+        },
+        {
+          "phase": "doubletalk-1",
+          "rawRmsDbfs": -49.64183348968219,
+          "outputRmsDbfs": -50.76686997944964,
+          "activeWindows": 41,
+          "windowsBelowMinus6Db": 8,
+          "worstRawRatioDb": -22.078943401500467
+        },
+        {
+          "phase": "doubletalk-gate-off",
+          "rawRmsDbfs": -60.73666062779105,
+          "outputRmsDbfs": -69.49126903614142,
+          "activeWindows": 4,
+          "windowsBelowMinus6Db": 2,
+          "worstRawRatioDb": -21.467020547247365
+        },
+        {
+          "phase": "doubletalk-2",
+          "rawRmsDbfs": -52.29202458561292,
+          "outputRmsDbfs": -53.3857303148162,
+          "activeWindows": 33,
+          "windowsBelowMinus6Db": 2,
+          "worstRawRatioDb": -21.81418914899499
+        },
+        {
+          "phase": "quiet-after",
+          "rawRmsDbfs": -65.00521014159757,
+          "outputRmsDbfs": -65.39684541642376,
+          "activeWindows": 5,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.512036169380501
+        },
+        {
+          "phase": "far-2",
+          "rawRmsDbfs": -67.72009899482241,
+          "outputRmsDbfs": -71.55337862432951,
+          "activeWindows": 1,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -3.081495843624836
+        },
+        {
+          "phase": "near-recovery",
+          "rawRmsDbfs": -49.52824707299537,
+          "outputRmsDbfs": -49.810141073904674,
+          "activeWindows": 45,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.42591074924341527
+        },
+        {
+          "phase": "final-quiet",
+          "rawRmsDbfs": -52.49492826234844,
+          "outputRmsDbfs": -53.02989492977673,
+          "activeWindows": 11,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.5651703498340162
+        }
+      ]
+    },
+    {
+      "preset": 14,
+      "phases": [
+        {
+          "phase": "mic-check",
+          "rawRmsDbfs": -58.04183210717217,
+          "outputRmsDbfs": -58.304148857018674,
+          "activeWindows": 25,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.5368831981177331
+        },
+        {
+          "phase": "quiet",
+          "rawRmsDbfs": -72.31384822315025,
+          "outputRmsDbfs": -72.76933265940879,
+          "activeWindows": 0,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": null
+        },
+        {
+          "phase": "near-only",
+          "rawRmsDbfs": -54.313218342255595,
+          "outputRmsDbfs": -54.60256621607406,
+          "activeWindows": 51,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.4656408005802306
+        },
+        {
+          "phase": "far-warmup",
+          "rawRmsDbfs": -62.377815335189254,
+          "outputRmsDbfs": -80.53714055648453,
+          "activeWindows": 30,
+          "windowsBelowMinus6Db": 30,
+          "worstRawRatioDb": -36.988623706398734
+        },
+        {
+          "phase": "far-1",
+          "rawRmsDbfs": -68.14410050772528,
+          "outputRmsDbfs": -71.35898349713466,
+          "activeWindows": 0,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": null
+        },
+        {
+          "phase": "doubletalk-1",
+          "rawRmsDbfs": -49.64183348968219,
+          "outputRmsDbfs": -51.00302793410822,
+          "activeWindows": 41,
+          "windowsBelowMinus6Db": 7,
+          "worstRawRatioDb": -26.124525920905338
+        },
+        {
+          "phase": "doubletalk-gate-off",
+          "rawRmsDbfs": -60.73666062779105,
+          "outputRmsDbfs": -70.7413349217906,
+          "activeWindows": 4,
+          "windowsBelowMinus6Db": 4,
+          "worstRawRatioDb": -20.958637808265568
+        },
+        {
+          "phase": "doubletalk-2",
+          "rawRmsDbfs": -52.29202458561292,
+          "outputRmsDbfs": -52.950472759580364,
+          "activeWindows": 33,
+          "windowsBelowMinus6Db": 3,
+          "worstRawRatioDb": -18.176826579940503
+        },
+        {
+          "phase": "quiet-after",
+          "rawRmsDbfs": -65.00521014159757,
+          "outputRmsDbfs": -65.39684541642376,
+          "activeWindows": 5,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.512036169380501
+        },
+        {
+          "phase": "far-2",
+          "rawRmsDbfs": -67.72009899482241,
+          "outputRmsDbfs": -71.71223709895871,
+          "activeWindows": 1,
+          "windowsBelowMinus6Db": 1,
+          "worstRawRatioDb": -6.850080776238708
+        },
+        {
+          "phase": "near-recovery",
+          "rawRmsDbfs": -49.52824707299537,
+          "outputRmsDbfs": -49.810141073904674,
+          "activeWindows": 45,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.42591074924341527
+        },
+        {
+          "phase": "final-quiet",
+          "rawRmsDbfs": -52.49492826234844,
+          "outputRmsDbfs": -53.02989492977673,
+          "activeWindows": 11,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.5651703498340162
+        }
+      ]
+    },
+    {
+      "preset": 16,
+      "phases": [
+        {
+          "phase": "mic-check",
+          "rawRmsDbfs": -58.04183210717217,
+          "outputRmsDbfs": -58.304148857018674,
+          "activeWindows": 25,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.5368831981177331
+        },
+        {
+          "phase": "quiet",
+          "rawRmsDbfs": -72.31384822315025,
+          "outputRmsDbfs": -72.76933265940879,
+          "activeWindows": 0,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": null
+        },
+        {
+          "phase": "near-only",
+          "rawRmsDbfs": -54.313218342255595,
+          "outputRmsDbfs": -54.60256621607406,
+          "activeWindows": 51,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.4656408005802306
+        },
+        {
+          "phase": "far-warmup",
+          "rawRmsDbfs": -62.377815335189254,
+          "outputRmsDbfs": -69.07235351101806,
+          "activeWindows": 30,
+          "windowsBelowMinus6Db": 20,
+          "worstRawRatioDb": -28.226421282095483
+        },
+        {
+          "phase": "far-1",
+          "rawRmsDbfs": -68.14410050772528,
+          "outputRmsDbfs": -71.36034497770764,
+          "activeWindows": 0,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": null
+        },
+        {
+          "phase": "doubletalk-1",
+          "rawRmsDbfs": -49.64183348968219,
+          "outputRmsDbfs": -50.738638847586714,
+          "activeWindows": 41,
+          "windowsBelowMinus6Db": 7,
+          "worstRawRatioDb": -21.91966553392342
+        },
+        {
+          "phase": "doubletalk-gate-off",
+          "rawRmsDbfs": -60.73666062779105,
+          "outputRmsDbfs": -67.15993989606132,
+          "activeWindows": 4,
+          "windowsBelowMinus6Db": 2,
+          "worstRawRatioDb": -14.44450163136269
+        },
+        {
+          "phase": "doubletalk-2",
+          "rawRmsDbfs": -52.29202458561292,
+          "outputRmsDbfs": -53.34501110177352,
+          "activeWindows": 33,
+          "windowsBelowMinus6Db": 2,
+          "worstRawRatioDb": -21.688543574455924
+        },
+        {
+          "phase": "quiet-after",
+          "rawRmsDbfs": -65.00521014159757,
+          "outputRmsDbfs": -65.39684541642376,
+          "activeWindows": 5,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.512036169380501
+        },
+        {
+          "phase": "far-2",
+          "rawRmsDbfs": -67.72009899482241,
+          "outputRmsDbfs": -71.29425841823388,
+          "activeWindows": 1,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -2.6178003296986447
+        },
+        {
+          "phase": "near-recovery",
+          "rawRmsDbfs": -49.52824707299537,
+          "outputRmsDbfs": -49.810141073904674,
+          "activeWindows": 45,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.42591074924341527
+        },
+        {
+          "phase": "final-quiet",
+          "rawRmsDbfs": -52.49492826234844,
+          "outputRmsDbfs": -53.02989492977673,
+          "activeWindows": 11,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.5651703498340162
+        }
+      ]
+    },
+    {
+      "preset": 17,
+      "phases": [
+        {
+          "phase": "mic-check",
+          "rawRmsDbfs": -58.04183210717217,
+          "outputRmsDbfs": -58.304148857018674,
+          "activeWindows": 25,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.5368831981177331
+        },
+        {
+          "phase": "quiet",
+          "rawRmsDbfs": -72.31384822315025,
+          "outputRmsDbfs": -72.76933265940879,
+          "activeWindows": 0,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": null
+        },
+        {
+          "phase": "near-only",
+          "rawRmsDbfs": -54.313218342255595,
+          "outputRmsDbfs": -54.60256621607406,
+          "activeWindows": 51,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.4656408005802306
+        },
+        {
+          "phase": "far-warmup",
+          "rawRmsDbfs": -62.377815335189254,
+          "outputRmsDbfs": -68.3798644158019,
+          "activeWindows": 30,
+          "windowsBelowMinus6Db": 19,
+          "worstRawRatioDb": -28.226421282095483
+        },
+        {
+          "phase": "far-1",
+          "rawRmsDbfs": -68.14410050772528,
+          "outputRmsDbfs": -71.17035003554103,
+          "activeWindows": 0,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": null
+        },
+        {
+          "phase": "doubletalk-1",
+          "rawRmsDbfs": -49.64183348968219,
+          "outputRmsDbfs": -50.41947666139543,
+          "activeWindows": 41,
+          "windowsBelowMinus6Db": 3,
+          "worstRawRatioDb": -20.906546551620316
+        },
+        {
+          "phase": "doubletalk-gate-off",
+          "rawRmsDbfs": -60.73666062779105,
+          "outputRmsDbfs": -67.01946859805676,
+          "activeWindows": 4,
+          "windowsBelowMinus6Db": 2,
+          "worstRawRatioDb": -13.357283883199237
+        },
+        {
+          "phase": "doubletalk-2",
+          "rawRmsDbfs": -52.29202458561292,
+          "outputRmsDbfs": -53.167336272374904,
+          "activeWindows": 33,
+          "windowsBelowMinus6Db": 2,
+          "worstRawRatioDb": -21.652564429623972
+        },
+        {
+          "phase": "quiet-after",
+          "rawRmsDbfs": -65.00521014159757,
+          "outputRmsDbfs": -65.39684541642376,
+          "activeWindows": 5,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.512036169380501
+        },
+        {
+          "phase": "far-2",
+          "rawRmsDbfs": -67.72009899482241,
+          "outputRmsDbfs": -71.10610247076625,
+          "activeWindows": 1,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -2.4154843484443616
+        },
+        {
+          "phase": "near-recovery",
+          "rawRmsDbfs": -49.52824707299537,
+          "outputRmsDbfs": -49.810141073904674,
+          "activeWindows": 45,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.42591074924341527
+        },
+        {
+          "phase": "final-quiet",
+          "rawRmsDbfs": -52.49492826234844,
+          "outputRmsDbfs": -53.02989492977673,
+          "activeWindows": 11,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.5651703498340162
+        }
+      ]
+    },
+    {
+      "preset": 18,
+      "phases": [
+        {
+          "phase": "mic-check",
+          "rawRmsDbfs": -58.04183210717217,
+          "outputRmsDbfs": -58.304148857018674,
+          "activeWindows": 25,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.5368831981177331
+        },
+        {
+          "phase": "quiet",
+          "rawRmsDbfs": -72.31384822315025,
+          "outputRmsDbfs": -72.76933265940879,
+          "activeWindows": 0,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": null
+        },
+        {
+          "phase": "near-only",
+          "rawRmsDbfs": -54.313218342255595,
+          "outputRmsDbfs": -54.60256621607406,
+          "activeWindows": 51,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.4656408005802306
+        },
+        {
+          "phase": "far-warmup",
+          "rawRmsDbfs": -62.377815335189254,
+          "outputRmsDbfs": -67.7067559465182,
+          "activeWindows": 30,
+          "windowsBelowMinus6Db": 15,
+          "worstRawRatioDb": -29.315409559527833
+        },
+        {
+          "phase": "far-1",
+          "rawRmsDbfs": -68.14410050772528,
+          "outputRmsDbfs": -68.84306113318699,
+          "activeWindows": 0,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": null
+        },
+        {
+          "phase": "doubletalk-1",
+          "rawRmsDbfs": -49.64183348968219,
+          "outputRmsDbfs": -50.02149858211793,
+          "activeWindows": 41,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.5589998364618566
+        },
+        {
+          "phase": "doubletalk-gate-off",
+          "rawRmsDbfs": -60.73666062779105,
+          "outputRmsDbfs": -61.323730630913786,
+          "activeWindows": 4,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -1.3657793296221743
+        },
+        {
+          "phase": "doubletalk-2",
+          "rawRmsDbfs": -52.29202458561292,
+          "outputRmsDbfs": -52.60180314320134,
+          "activeWindows": 33,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.4379132235116434
+        },
+        {
+          "phase": "quiet-after",
+          "rawRmsDbfs": -65.00521014159757,
+          "outputRmsDbfs": -65.39684541642376,
+          "activeWindows": 5,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.512036169380501
+        },
+        {
+          "phase": "far-2",
+          "rawRmsDbfs": -67.72009899482241,
+          "outputRmsDbfs": -68.51280084124562,
+          "activeWindows": 1,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -1.4522521240025132
+        },
+        {
+          "phase": "near-recovery",
+          "rawRmsDbfs": -49.52824707299537,
+          "outputRmsDbfs": -49.810141073904674,
+          "activeWindows": 45,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.42591074924341527
+        },
+        {
+          "phase": "final-quiet",
+          "rawRmsDbfs": -52.49492826234844,
+          "outputRmsDbfs": -53.02989492977673,
+          "activeWindows": 11,
+          "windowsBelowMinus6Db": 0,
+          "worstRawRatioDb": -0.5651703498340162
+        }
+      ]
+    }
+  ],
+  "caveat": "Cadence is approximated; cannot claim byte-identical replay or isolated near gain.",
+  "conditionedInputGain": 16
+}

@@ -1,0 +1,176 @@
+{
+  "session": "positive-control-3",
+  "externalOnly": false,
+  "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+  "sdkIdentityMatches": true,
+  "lostEvents": 0,
+  "lostBuffers": 0,
+  "recordRawOwnershipPass": true,
+  "sdkMicrophoneAttempts": 2,
+  "recordMicrophoneAttempts": 1,
+  "aecRenderLoopbackClients": 1,
+  "nativeSpeakerClients": 1,
+  "zeroAdditionalSdkMicPass": false,
+  "recordRawAudit": {
+    "activeRawCaptures": 0,
+    "lastHresult": 0,
+    "mfCreateRequests": 0,
+    "nativeCaptureFrames": 402720,
+    "rawPropertiesAccepted": 1,
+    "rawRequests": 1,
+    "rawStarts": 1
+  },
+  "clients": [
+    {
+      "kind": "render-loopback",
+      "modules": [
+        "aec_audio_plugin.dll",
+        "audioses.dll",
+        "kernel32.dll",
+        "ntdll.dll",
+        "ucrtbase.dll"
+      ],
+      "endpointSha256": "9c5b6b287ee93d72d9f7b95abcad12126248d741340b9c5ff48f414bcd62bb7b",
+      "streamType": "2",
+      "streamFlags": "0x00020002",
+      "rawRequested": "0",
+      "initialize": "0x00000000",
+      "started": true,
+      "stackAvailable": true,
+      "rate": "96000",
+      "channels": "2"
+    },
+    {
+      "kind": "record-raw-microphone",
+      "modules": [
+        "audioses.dll",
+        "kernel32.dll",
+        "ntdll.dll",
+        "record_windows_plugin.dll",
+        "ucrtbase.dll"
+      ],
+      "endpointSha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd",
+      "streamType": "1",
+      "streamFlags": "0x00000002",
+      "rawRequested": "1",
+      "initialize": "0x00000000",
+      "started": true,
+      "stackAvailable": true,
+      "rate": "48000",
+      "channels": "2"
+    },
+    {
+      "kind": "sdk-microphone",
+      "modules": [
+        "audioses.dll",
+        "kernel32.dll",
+        "libwebrtc.dll",
+        "mfwmaaec.dll",
+        "ntdll.dll"
+      ],
+      "endpointSha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd",
+      "streamType": "1",
+      "streamFlags": "0x00000002",
+      "rawRequested": "0",
+      "initialize": "0x00000000",
+      "started": true,
+      "stackAvailable": true,
+      "rate": "48000",
+      "channels": "2"
+    },
+    {
+      "kind": "render-loopback",
+      "modules": [
+        "audioses.dll",
+        "kernel32.dll",
+        "libwebrtc.dll",
+        "mfwmaaec.dll",
+        "ntdll.dll"
+      ],
+      "endpointSha256": "9c5b6b287ee93d72d9f7b95abcad12126248d741340b9c5ff48f414bcd62bb7b",
+      "streamType": "2",
+      "streamFlags": "0x00020002",
+      "rawRequested": "0",
+      "initialize": "0x00000000",
+      "started": true,
+      "stackAvailable": true,
+      "rate": "96000",
+      "channels": "2"
+    },
+    {
+      "kind": "speaker",
+      "modules": [
+        "audioses.dll",
+        "kernel32.dll",
+        "libwebrtc.dll",
+        "ntdll.dll"
+      ],
+      "endpointSha256": "9c5b6b287ee93d72d9f7b95abcad12126248d741340b9c5ff48f414bcd62bb7b",
+      "streamType": "0",
+      "streamFlags": "0x00040002",
+      "rawRequested": "0",
+      "initialize": "0x00000000",
+      "started": true,
+      "stackAvailable": true,
+      "rate": "96000",
+      "channels": "2"
+    },
+    {
+      "kind": "sdk-microphone",
+      "modules": [
+        "audioses.dll",
+        "kernel32.dll",
+        "libwebrtc.dll",
+        "mfwmaaec.dll",
+        "ntdll.dll"
+      ],
+      "endpointSha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd",
+      "streamType": "1",
+      "streamFlags": "0x00000002",
+      "rawRequested": "0",
+      "initialize": "0x00000000",
+      "started": true,
+      "stackAvailable": true,
+      "rate": "48000",
+      "channels": "2"
+    },
+    {
+      "kind": "render-loopback",
+      "modules": [
+        "audioses.dll",
+        "kernel32.dll",
+        "libwebrtc.dll",
+        "mfwmaaec.dll",
+        "ntdll.dll"
+      ],
+      "endpointSha256": "9c5b6b287ee93d72d9f7b95abcad12126248d741340b9c5ff48f414bcd62bb7b",
+      "streamType": "2",
+      "streamFlags": "0x00020002",
+      "rawRequested": "0",
+      "initialize": "0x00000000",
+      "started": true,
+      "stackAvailable": true,
+      "rate": "96000",
+      "channels": "2"
+    }
+  ],
+  "captureStarts": {
+    "record": 1,
+    "camera": 1
+  },
+  "phases": [
+    {
+      "name": "positive-capture-control",
+      "rawBytesDelta": 768960,
+      "cameraFramesDelta": 243,
+      "injectedAudioBytesDelta": 768960,
+      "peerSamplesDelta": 381120
+    }
+  ],
+  "endpointVolumeMuteUnchanged": true,
+  "errors": [],
+  "inputSha256": {
+    "events.csv": "13adfa339edef8378a0c3fba723faef5cd8b93b63b72b7733fff36ea81cf41ce",
+    "stacks.jsonl": "412742e5ff2d85dc8b67448d71ffc4b00d9cbd04dac4e0ba94fbff758fc82925"
+  }
+}

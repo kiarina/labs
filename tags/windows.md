@@ -7,6 +7,7 @@
 - 2026/10/19 [Real-time camera frame analysis in Flutter (YuNet faces, SFace, D-FINE objects, SigLIP2 scenes) with entity tracking that keeps embeddings, on macOS, Windows, Android, iOS and web](../2026/10/19/flutter-realtime-image-analysis/README.md)
 - 2026/10/19 [Always-on camera and record capture into on-demand WebRTC media tracks](../2026/10/19/flutter-webrtc-external-capture/README.md)
 - 2026/10/19 [Windows double-talk echo cancellation with continuous camera and record capture](../2026/10/19/flutter-windows-aec-doubletalk/README.md)
+- 2026/10/19 [Windows normal native playout with continuous record and standalone AEC3](../2026/10/19/flutter-windows-native-playout-aec/README.md)
 - 2026/10/19 [Stock Windows WebRTC SDK with continuous camera and record capture: recording isolation feasibility](../2026/10/19/flutter-windows-stock-sdk-external-capture/README.md)
 - 2026/10/19 [Validating upstream recording policy and external-only factories in native Flutter on Windows](../2026/10/19/flutter-windows-upstream-external-input/README.md)
 - 2026/10/18 [Real-time microphone analysis in Flutter (VAD, speaker change, whisper.cpp ASR, speaker and sound embeddings, YAMNet) on macOS, Windows, Android, iOS and web](../2026/10/18/flutter-realtime-audio-analysis/README.md)
