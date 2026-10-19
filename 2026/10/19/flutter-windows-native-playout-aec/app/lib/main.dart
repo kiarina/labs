@@ -27,7 +27,8 @@ class _Probe extends State<Probe>{
       final saved=File('${Directory.systemTemp.path}/native_aec_input.json');
       if(wanted==null&&saved.existsSync())wanted=(jsonDecode(saved.readAsStringSync()) as Map<String,dynamic>)['id'] as String?;
       final selected=devices.where((d)=>d.id==wanted).firstOrNull??devices.where((d)=>d.label.contains('DualSense')).firstOrNull??devices.first;
-      if(mounted)setState((){inputs=devices;inputId=selected.id;inputName=selected.label;});
+      final explicitChoice=Platform.environment['AEC_HUMAN']=='1'&&Platform.environment['AEC_MIC_ID']==null;
+      if(mounted)setState((){inputs=devices;inputId=explicitChoice?null:selected.id;inputName=explicitChoice?'未選択':selected.label;});
       if(Platform.environment['AEC_AUTO_START']!='0')unawaited(run());
     }catch(e){if(mounted)setState(()=>status='入力一覧エラー: $e');}finally{await discovery.dispose();}
   }
@@ -37,7 +38,7 @@ class _Probe extends State<Probe>{
     }finally{client.close();}
   }
   Future<void> run()async{
-    if(started)return;started=true;
+    if(started||inputId==null)return;started=true;
     final human=Platform.environment['AEC_HUMAN']=='1';final session=Platform.environment['AEC_SESSION']??'synthetic-1';
     final recorder=AudioRecorder(),bridge=CaptureBridge(),clock=Stopwatch()..start();
     final raw=BytesBuilder(copy:false),near=BytesBuilder(copy:false),mixed=BytesBuilder(copy:false);
@@ -99,7 +100,7 @@ class _Probe extends State<Probe>{
       }else{
       if(human)await phase('mic-check',8,nearSignal:true,cue:'マイク確認：「こんにちは、マイクの確認です」と話してください。入力レベルが上がるか見てください');
       await phase('quiet',4,gateOn:false,cue:'声を出さず待ってください');
-      if(human){final check=(phases.firstWhere((p)=>p['name']=='mic-check')['rawLevelDbfs'] as num).toDouble();final quiet=(phases.firstWhere((p)=>p['name']=='quiet')['rawLevelDbfs'] as num).toDouble();report['micCheck']={'speechDbfs':check,'quietDbfs':quiet,'snrDb':check-quiet};if(check-quiet<6)throw StateError('声の入力を十分に検出できません。選んだマイクと位置を確認してください。');}
+      if(human){final check=(phases.firstWhere((p)=>p['name']=='mic-check')['rawLevelDbfs'] as num).toDouble();final quiet=(phases.firstWhere((p)=>p['name']=='quiet')['rawLevelDbfs'] as num).toDouble();report['micCheck']={'speechDbfs':check,'quietDbfs':quiet,'snrDb':check-quiet};if(check-quiet<6)throw StateError('声の入力を十分に検出できません。選んだマイクと位置を確認してください。');if(selectedOutput=='conditioned'){final preflight=await aec.invokeMapMethod<String,dynamic>('stats');if((preflight?['conditionedOverrangeSamples'] as num? ??0)>0)throw StateError('入力が低入力向けAECの範囲を超えています。baselineを使用するか、マイクと入力レベルを確認してください。');}}
 
       await phase('near-only',10,nearSignal:true,cue:human?'「今日はよい天気です。カメラとマイクは動き続けています。」と繰り返してください':'capture-only known near speech');
       await phase('far-warmup',12,far:true,gateOn:false,cue:'相手の声を聞き、声を出さず待ってください');
@@ -132,5 +133,5 @@ class _Probe extends State<Probe>{
       if(Platform.environment['AEC_EXIT']!='0'){if(human)await Future<void>.delayed(const Duration(seconds:5));exit(errors.isEmpty?0:1);}
     }
   }
-  @override Widget build(BuildContext context)=>Scaffold(appBar:AppBar(title:const Text('Native speaker AEC / continuous record')),body:Padding(padding:const EdgeInsets.all(24),child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[Text(status,style:const TextStyle(fontSize:30)),if(!started&&inputs.isNotEmpty)DropdownButton<String>(isExpanded:true,value:inputId,items:inputs.map((d)=>DropdownMenuItem(value:d.id,child:Text(d.label))).toList(),onChanged:(id){if(id!=null)setState((){inputId=id;inputName=inputs.firstWhere((d)=>d.id==id).label;});}),Text('入力: $inputName\nマイクレベル: ${started?'${liveDb.toStringAsFixed(1)} dBFS':'未開始（開始後に動きます）'}',style:const TextStyle(fontSize:22)),Text('$remaining',style:const TextStyle(fontSize:54)),Text(instruction,style:const TextStyle(fontSize:28)),if(!started&&inputs.isNotEmpty)ElevatedButton(onPressed:run,child:const Text('開始'))])));
+  @override Widget build(BuildContext context)=>Scaffold(appBar:AppBar(title:const Text('Native speaker AEC / continuous record')),body:Padding(padding:const EdgeInsets.all(24),child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[Text(status,style:const TextStyle(fontSize:30)),if(!started&&inputs.isNotEmpty)DropdownButton<String>(isExpanded:true,value:inputId,hint:const Text('使うマイクを選択してください'),items:inputs.map((d)=>DropdownMenuItem(value:d.id,child:Text(d.label))).toList(),onChanged:(id){if(id!=null)setState((){inputId=id;inputName=inputs.firstWhere((d)=>d.id==id).label;});}),Text('入力: $inputName\nマイクレベル: ${started?'${liveDb.toStringAsFixed(1)} dBFS':'未開始（開始後に動きます）'}',style:const TextStyle(fontSize:22)),Text('$remaining',style:const TextStyle(fontSize:54)),Text(instruction,style:const TextStyle(fontSize:28)),if(!started&&inputs.isNotEmpty)ElevatedButton(onPressed:inputId==null?null:run,child:const Text('開始'))])));
 }
