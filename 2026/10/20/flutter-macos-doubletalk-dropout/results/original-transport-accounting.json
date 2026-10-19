@@ -1,0 +1,13 @@
+{
+  "nativeInputSubmittedBytes": 5376000,
+  "nativePumpedNonUnderflowPlusFlushedDroppedQueuedBytes": 5376000,
+  "balanced": true,
+  "nativeUnderflows": 68,
+  "explicitFlushedBytes": 42240,
+  "nativeDroppedBytes": 0,
+  "caveats": [
+    "Counters do not locate zero-insertion timestamps within phases.",
+    "Flushes occur even on redundant enable requests in the predecessor application/library.",
+    "No decoder100ms loss>12dB in prior diagnostics; shorter gaps remain to be tested."
+  ]
+}

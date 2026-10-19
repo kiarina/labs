@@ -1,0 +1,14 @@
+{
+  "installed": true,
+  "recordInputNodeEngines": 0,
+  "sdkInputNodeEngines": 1,
+  "unattributedInputNodeEngines": 0,
+  "sdkInputEnabledAudioUnits": 1,
+  "recordInputEnabledAudioUnits": 0,
+  "sdkStartedAudioUnits": 1,
+  "notes": [
+    "InputNode and SDK input EnableIO are independently attributed through runtime call stacks.",
+    "Speaker-only device starts are not counted as microphone capture.",
+    "Positive negotiated SDK control is required before interpreting zero SDK input."
+  ]
+}

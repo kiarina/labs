@@ -1,0 +1,29 @@
+name: fork_media_aec_lab
+publish_to: none
+version: 0.1.0+1
+environment:
+  sdk: ^3.13.2
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_webrtc:
+    git:
+      url: https://github.com/kiarina/flutter-webrtc.git
+      ref: 4477798aa6b47440dc1d6ad5a2d9f9f983bbad87
+  flutter_webrtc_external_media:
+    git:
+      url: https://github.com/kiarina/flutter_webrtc_external_media.git
+      ref: 9f5e2da7959094aaf79e90dd12cb56f224eb77e1
+  record: 7.1.2
+  camera: 0.12.1
+  camera_desktop: 2.0.0
+  aec_audio:
+    path: ../aec_audio
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/far_speech.pcm

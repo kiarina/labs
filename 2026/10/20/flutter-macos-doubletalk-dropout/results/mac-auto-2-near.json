@@ -1,0 +1,52 @@
+{
+  "kind": "known-near-short-window-retention",
+  "candidate": "baseline",
+  "analysisExpectedCandidateGain": 1,
+  "audioGainRestored": false,
+  "activeTargetRmsMinimum": 20,
+  "variants": [
+    {
+      "variant": "baseline",
+      "lag": 431,
+      "phases": [
+        {
+          "name": "near-only",
+          "active100msWindows": 68,
+          "minimumSignedProjectionGainDb": -12.582139981296423,
+          "windowsBelowMinus6Db": 1,
+          "longestRunBelowMinus6DbMs": 100
+        },
+        {
+          "name": "doubletalk-1",
+          "active100msWindows": 49,
+          "minimumSignedProjectionGainDb": -240.0,
+          "windowsBelowMinus6Db": 23,
+          "longestRunBelowMinus6DbMs": 500
+        },
+        {
+          "name": "doubletalk-gate-off",
+          "active100msWindows": 5,
+          "minimumSignedProjectionGainDb": -25.845574246996502,
+          "windowsBelowMinus6Db": 4,
+          "longestRunBelowMinus6DbMs": 300
+        },
+        {
+          "name": "doubletalk-2",
+          "active100msWindows": 57,
+          "minimumSignedProjectionGainDb": -34.181379145639326,
+          "windowsBelowMinus6Db": 30,
+          "longestRunBelowMinus6DbMs": 700
+        },
+        {
+          "name": "near-recovery",
+          "active100msWindows": 55,
+          "minimumSignedProjectionGainDb": -0.9343280820267161,
+          "windowsBelowMinus6Db": 0,
+          "longestRunBelowMinus6DbMs": 0
+        }
+      ]
+    }
+  ],
+  "candidateNoLossPass": false,
+  "caveat": "Known capture-only speech mixed with real mic; not physical human near or proof of acoustic echo rejection."
+}
