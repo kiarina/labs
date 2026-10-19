@@ -76,4 +76,4 @@ ASR中央値98ms・最大271ms、音声区間末尾→表示は約198〜5305ms�
 `results/app-fixture.json` を現在の結果とする。実マイクのhardware sample clockにはこの人工sleepを使わない。
 
 `results/app-validation.json` は失敗・未確定を含めた整合性の検算であり、実マイクや人物識別の合格ではない。
-現在の逐次方式の比較は [STREAMING.md](STREAMING.md)。本物のマイクは本人が開始する体験確認が残る。音声も文字も検証ファイルへ保存しない。
+現在の逐次方式の比較は [STREAMING.md](STREAMING.md)。本人から逐次SCD版の性能は問題ないという体験評価を得た（詳細は同文書）。話者IDの正確さ・長時間は別の未確認事項。音声も文字も検証ファイルへ保存しない。
