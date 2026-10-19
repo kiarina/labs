@@ -168,5 +168,6 @@ The Windows DLL and test target build successfully; all 25 wrapper tests pass,
 including four AudioDevice tests. This separate proposal includes a minimal
 eight-file patch, API contract, source/patch/DLL hashes, retained results and
 ready PR body. [Wrapper Draft PR #158](https://github.com/webrtc-sdk/libwebrtc/pull/158) is submitted. The original SDK pins, DLL and runtime
-results above remain unchanged; runtime ETW/ABI and other OS validation have
-not been repeated for the new proposal.
+results above remain unchanged. The submitted DLL now has separate
+[runtime ETW/stop-resume/PCM/old-binary results](upstream/wrapper/runtime/README.md);
+other OS validation remains unperformed.

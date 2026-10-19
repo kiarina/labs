@@ -1,0 +1,4257 @@
+{
+  "kind": "candidate-native-external-input-validation",
+  "sdk": {
+    "wrapperCommit": "f9a23f98e19c2784fd293941b9e67a43977f1635",
+    "wrapperBase": "9f6a87af46a5810a452aa20306c705b7c5269fbe",
+    "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+    "nativeCommit": "51c367e209f8f12b39bd8dd0ca70bf588f42cb48",
+    "kind": "submitted core314-wrapper158 candidate, not official",
+    "importLibrarySha256": "f92bfb58df178b654ddce4016138f0c0d29ebb2a2595ff62973328941f813cdb",
+    "coreCommit": "543b9cb70ee7b07311d4f4ddefc014278d6066d4"
+  },
+  "controlsValid": true,
+  "captureIsolationPass": true,
+  "mediaFlowPass": false,
+  "officialSdkValidated": false,
+  "aecValidated": false,
+  "physicalWindowsCameraValidated": false,
+  "upstreamPRCreated": true,
+  "trials": {
+    "record-only": {
+      "variant": "record-only",
+      "externalOnly": true,
+      "nativePlayoutDiagnostic": null,
+      "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+      "errors": [],
+      "lateModeChangeRejected": null,
+      "traceLossFree": true,
+      "allCaptureStacksAvailable": true,
+      "sdkCaptureAttempts": 0,
+      "sdkCaptureInitialized": 0,
+      "sdkCaptureStarted": 0,
+      "recordCaptureStarted": 1,
+      "unknownCaptureClients": 0,
+      "captureClients": [
+        {
+          "kind": "record-mf",
+          "initializeSucceeded": true,
+          "started": true,
+          "stackAvailable": true,
+          "endpointSha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd",
+          "modules": [
+            "audioses.dll",
+            "kernel32.dll",
+            "mfcore.dll",
+            "ntdll.dll",
+            "rtworkq.dll"
+          ]
+        }
+      ],
+      "singleRecordContinuity": true,
+      "sourceRms": 0.0006838915638946846,
+      "physicalCameraValidated": false,
+      "receiver": [],
+      "stopWindows": [],
+      "totals": {
+        "rawBytes": 375360,
+        "videoFrames": 99,
+        "injectedAudio": 0,
+        "injectedVideo": 0
+      },
+      "maxAudioGapMs": 49.643,
+      "maxVideoGapMs": 41.639,
+      "capturePhaseDeltas": [
+        {
+          "name": "record-only",
+          "delta": {
+            "rawBytes": 375360,
+            "videoFrames": 99,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        }
+      ],
+      "nativeTrackTransitions": [],
+      "videoSource": "explicit synthetic video; physical camera not tested",
+      "audioRtpReceived": false,
+      "audioRtpAdvancedAcrossGates": false,
+      "audioDecoded": false,
+      "videoDecoded": false,
+      "functionalTransportPass": false,
+      "renderInitializeEvents": [],
+      "endpointVolumeMuteUnchanged": true,
+      "traceInputSha256": {
+        "events.csv": "a5ae65a68506f73f1b9963a93961b63952de110857240cb7a3957ce7e53154cf",
+        "stacks.jsonl": "d2f535efb9b50c599e686626af09332302d5d2bc126a9f4b3ad5aa3bd40dfdb6"
+      }
+    },
+    "native-mic-default": {
+      "variant": "native-mic",
+      "externalOnly": false,
+      "nativePlayoutDiagnostic": null,
+      "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+      "errors": [],
+      "lateModeChangeRejected": true,
+      "traceLossFree": true,
+      "allCaptureStacksAvailable": true,
+      "sdkCaptureAttempts": 1,
+      "sdkCaptureInitialized": 1,
+      "sdkCaptureStarted": 1,
+      "recordCaptureStarted": 0,
+      "unknownCaptureClients": 0,
+      "captureClients": [
+        {
+          "kind": "sdk",
+          "initializeSucceeded": true,
+          "started": true,
+          "stackAvailable": true,
+          "endpointSha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd",
+          "modules": [
+            "audioses.dll",
+            "kernel32.dll",
+            "libwebrtc.dll",
+            "mfwmaaec.dll",
+            "ntdll.dll"
+          ]
+        }
+      ],
+      "singleRecordContinuity": false,
+      "sourceRms": 0,
+      "physicalCameraValidated": false,
+      "receiver": [
+        {
+          "gate": 1,
+          "pcmSamples": 0,
+          "rms": 0,
+          "videoFrames": 0,
+          "audioPacketsReceived": 0
+        },
+        {
+          "gate": 2,
+          "pcmSamples": 0,
+          "rms": 0,
+          "videoFrames": 0,
+          "audioPacketsReceived": 0
+        }
+      ],
+      "stopWindows": [
+        {
+          "name": "idle-after-1",
+          "settleMs": 1000,
+          "observeMs": 1000,
+          "pcmSamples": 0,
+          "nonzeroSamples": 0,
+          "rms": 0,
+          "videoFrames": 0,
+          "beforeInbound": [],
+          "afterInbound": []
+        },
+        {
+          "name": "idle-after-2",
+          "settleMs": 1000,
+          "observeMs": 1000,
+          "pcmSamples": 0,
+          "nonzeroSamples": 0,
+          "rms": 0,
+          "videoFrames": 0,
+          "beforeInbound": [],
+          "afterInbound": []
+        }
+      ],
+      "totals": {
+        "rawBytes": 0,
+        "videoFrames": 0,
+        "injectedAudio": 0,
+        "injectedVideo": 0
+      },
+      "maxAudioGapMs": 0.0,
+      "maxVideoGapMs": 0.0,
+      "capturePhaseDeltas": [
+        {
+          "name": "source-only",
+          "delta": {
+            "rawBytes": 0,
+            "videoFrames": 0,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "negotiated-before-external-injection",
+          "delta": {
+            "rawBytes": 0,
+            "videoFrames": 0,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-1",
+          "delta": {
+            "rawBytes": 0,
+            "videoFrames": 0,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "idle-after-1",
+          "delta": {
+            "rawBytes": 0,
+            "videoFrames": 0,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-2",
+          "delta": {
+            "rawBytes": 0,
+            "videoFrames": 0,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "idle-after-2",
+          "delta": {
+            "rawBytes": 0,
+            "videoFrames": 0,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        }
+      ],
+      "nativeTrackTransitions": [],
+      "videoSource": "not started",
+      "audioRtpReceived": false,
+      "audioRtpAdvancedAcrossGates": false,
+      "audioDecoded": false,
+      "videoDecoded": false,
+      "functionalTransportPass": false,
+      "renderInitializeEvents": [
+        {
+          "event": "AudioClientInitialize",
+          "data": {
+            "TimeStamp": "4619472",
+            "Process Name ( PID)": "upstream_input_app.exe (12464)",
+            "ThreadID": "16208",
+            "CPU": "12",
+            "etw:ActivityId": "{314c4fcc-67a9-41e9-9d02-d31ed00dfe13}",
+            "etw:Related ActivityId": "",
+            "AudioClientGuidId": "{314c4fcc-67a9-41e9-9d02-d31ed00dfe13}",
+            "ContextId": "{00000000-0000-0000-0000-000000000000}",
+            "StreamType": "0",
+            "serverCategory": "0",
+            "ShareMode": "0",
+            "RawStreamRequested": "0",
+            "MatchFormatRequested": "0",
+            "OffloadRequested": "0",
+            "UseAmbisonics": "0",
+            "PeriodRequestPriority": "0",
+            "StreamFlags": "0x02040002",
+            "StreamId": "0",
+            "EndpointIdSha256": "cc1a393cd490fa5588389cb846fc6e6b69f2d2687539cfd123c2111d0af12cc8",
+            "EndpointInstanceIdSha256": "64eecc59fc366c2e0225502d91fefe47fbb05343f866edac5350a2fceff120a6",
+            "RequestedBufferDuration": "0",
+            "RequestedPeriodicity": "0",
+            "HResult": "0x887c0030",
+            "HResultMapped": "0x88890008",
+            "FormatType": "WAVEFORMATEX",
+            "ExpectedAlignmentFailure": "0",
+            "ConsecutiveFailures": "1",
+            "ClientQuiesced": "0",
+            "TimeToInitializeInSec": "0.005112",
+            "HistoryProducer": "0",
+            "BridgeStreamProperties": "0",
+            "BridgeStreamSource": "0",
+            "IsGameProcess": "0",
+            "IsProcessLoopbackStream": "0",
+            "CrossProcessLayoutVersion": "1",
+            "NumberOfChannels": "1",
+            "SampleRate": "192000",
+            "AvgBytesPerSec": "384000",
+            "SubFormat": "{00000001-0000-0010-8000-00aa00389b71}"
+          },
+          "pid": 12464,
+          "tid": 16208,
+          "qpc": 408609406003,
+          "stack": [
+            {
+              "module": "ntdll.dll",
+              "rva": "0x166f94"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0x8bb71"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18173"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x2bb7"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x19b15"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18e3d"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18c8d"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18bc3"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x657457"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x48455d"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x77d975"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x766fe5"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x56e23e"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0xb8ca59"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0xb899e2"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0xb8843d"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x9a7f74"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x9c9933"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x2c758a"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x2c6026"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x2c7a76"
+            },
+            {
+              "module": "kernel32.dll",
+              "rva": "0x2dda7"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0xc9c5c"
+            }
+          ],
+          "utc": "2026-10-19T09:36:56.739667+00:00"
+        },
+        {
+          "event": "AudioClientInitialize",
+          "data": {
+            "TimeStamp": "4745257",
+            "Process Name ( PID)": "upstream_input_app.exe (12464)",
+            "ThreadID": "16208",
+            "CPU": "6",
+            "etw:ActivityId": "{afd8e82b-3d43-44ae-aa55-e69a6ef2590d}",
+            "etw:Related ActivityId": "",
+            "AudioClientGuidId": "{afd8e82b-3d43-44ae-aa55-e69a6ef2590d}",
+            "ContextId": "{00000000-0000-0000-0000-000000000000}",
+            "StreamType": "0",
+            "serverCategory": "0",
+            "ShareMode": "0",
+            "RawStreamRequested": "0",
+            "MatchFormatRequested": "0",
+            "OffloadRequested": "0",
+            "UseAmbisonics": "0",
+            "PeriodRequestPriority": "0",
+            "StreamFlags": "0x02040002",
+            "StreamId": "0",
+            "EndpointIdSha256": "cc1a393cd490fa5588389cb846fc6e6b69f2d2687539cfd123c2111d0af12cc8",
+            "EndpointInstanceIdSha256": "64eecc59fc366c2e0225502d91fefe47fbb05343f866edac5350a2fceff120a6",
+            "RequestedBufferDuration": "0",
+            "RequestedPeriodicity": "0",
+            "HResult": "0x887c0030",
+            "HResultMapped": "0x88890008",
+            "FormatType": "WAVEFORMATEX",
+            "ExpectedAlignmentFailure": "0",
+            "ConsecutiveFailures": "2",
+            "ClientQuiesced": "0",
+            "TimeToInitializeInSec": "0.003510",
+            "HistoryProducer": "0",
+            "BridgeStreamProperties": "0",
+            "BridgeStreamSource": "0",
+            "IsGameProcess": "0",
+            "IsProcessLoopbackStream": "0",
+            "CrossProcessLayoutVersion": "1",
+            "NumberOfChannels": "1",
+            "SampleRate": "192000",
+            "AvgBytesPerSec": "384000",
+            "SubFormat": "{00000001-0000-0010-8000-00aa00389b71}"
+          },
+          "pid": 12464,
+          "tid": 16208,
+          "qpc": 408610663851,
+          "stack": [
+            {
+              "module": "ntdll.dll",
+              "rva": "0x166f94"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0x8bb71"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18173"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x2bb7"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x19b15"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18e3d"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18c8d"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18bc3"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x657457"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x48455d"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x77dc8d"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x764879"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x568954"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0xb8cab0"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x2c758a"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x2c6026"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x2c7a76"
+            },
+            {
+              "module": "kernel32.dll",
+              "rva": "0x2dda7"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0xc9c5c"
+            }
+          ],
+          "utc": "2026-10-19T09:36:56.865452+00:00"
+        }
+      ],
+      "endpointVolumeMuteUnchanged": true,
+      "traceInputSha256": {
+        "events.csv": "7f4dd38c1cec08de1f6d6c32f0e8bf41081442dba733108502c51cbc177a4d20",
+        "stacks.jsonl": "ef18762e1ef2f2d5eb41b7ad7d72e02704d23b4cad04ba8eb56a7fa9c64200eb"
+      }
+    },
+    "external-default": {
+      "variant": "external",
+      "externalOnly": false,
+      "nativePlayoutDiagnostic": null,
+      "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+      "errors": [],
+      "lateModeChangeRejected": true,
+      "traceLossFree": true,
+      "allCaptureStacksAvailable": true,
+      "sdkCaptureAttempts": 1,
+      "sdkCaptureInitialized": 1,
+      "sdkCaptureStarted": 1,
+      "recordCaptureStarted": 1,
+      "unknownCaptureClients": 0,
+      "captureClients": [
+        {
+          "kind": "record-mf",
+          "initializeSucceeded": true,
+          "started": true,
+          "stackAvailable": true,
+          "endpointSha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd",
+          "modules": [
+            "audioses.dll",
+            "kernel32.dll",
+            "mfcore.dll",
+            "ntdll.dll",
+            "rtworkq.dll"
+          ]
+        },
+        {
+          "kind": "sdk",
+          "initializeSucceeded": true,
+          "started": true,
+          "stackAvailable": true,
+          "endpointSha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd",
+          "modules": [
+            "audioses.dll",
+            "kernel32.dll",
+            "libwebrtc.dll",
+            "mfwmaaec.dll",
+            "ntdll.dll"
+          ]
+        }
+      ],
+      "singleRecordContinuity": true,
+      "sourceRms": 0.0007563705010459528,
+      "physicalCameraValidated": false,
+      "receiver": [
+        {
+          "gate": 1,
+          "pcmSamples": 0,
+          "rms": 0,
+          "videoFrames": 101,
+          "audioPacketsReceived": 203
+        },
+        {
+          "gate": 2,
+          "pcmSamples": 0,
+          "rms": 0,
+          "videoFrames": 94,
+          "audioPacketsReceived": 404
+        }
+      ],
+      "stopWindows": [
+        {
+          "name": "idle-after-1",
+          "settleMs": 1000,
+          "observeMs": 1000,
+          "pcmSamples": 0,
+          "nonzeroSamples": 0,
+          "rms": 0,
+          "videoFrames": 0,
+          "beforeInbound": [
+            {
+              "id": "IT01A1494086122",
+              "audioLevel": 0.0,
+              "bytesReceived": 10148,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 0,
+              "concealmentEvents": 0,
+              "delayedPacketOutageSamples": 0,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 5684,
+              "insertedSamplesForDeceleration": 0,
+              "interruptionCount": 0,
+              "jitter": 0.022,
+              "jitterBufferDelay": 0.0,
+              "jitterBufferEmittedCount": 0,
+              "jitterBufferFlushes": 2,
+              "jitterBufferMinimumDelay": 0.0,
+              "jitterBufferTargetDelay": 0.0,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402660691.0,
+              "mid": "0",
+              "packetsDiscarded": 200,
+              "packetsLost": 0,
+              "packetsReceived": 203,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 0.0,
+              "remoteId": "ROA1494086122",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 0,
+              "ssrc": 1494086122,
+              "totalAudioEnergy": 0.0,
+              "totalInterruptionDuration": 0.0,
+              "totalProcessingDelay": 0.0,
+              "totalSamplesDuration": 0.0,
+              "totalSamplesReceived": 0,
+              "trackIdentifier": "external-40894969726600-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V1081093565",
+              "bytesReceived": 21216,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 102,
+              "framesDropped": 0,
+              "framesPerSecond": 1.0,
+              "framesReceived": 102,
+              "freezeCount": 0,
+              "headerBytesReceived": 4628,
+              "jitter": 0.0,
+              "jitterBufferDelay": 1.2229999999999999,
+              "jitterBufferEmittedCount": 102,
+              "jitterBufferMinimumDelay": 1.14629,
+              "jitterBufferTargetDelay": 1.14629,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402660722.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.0,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 121,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 640,
+              "remoteId": "ROV1081093565",
+              "retransmittedBytesReceived": 2730,
+              "retransmittedPacketsReceived": 19,
+              "rtxSsrc": 3891077194,
+              "ssrc": 1081093565,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.0,
+              "totalFreezesDuration": 0.0,
+              "totalInterFrameDelay": 4.048,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 1.2229999999999999,
+              "totalSquaredInterFrameDelay": 0.16251199999999985,
+              "trackIdentifier": "external-40894969726600-1-video",
+              "transportId": "T01"
+            }
+          ],
+          "afterInbound": [
+            {
+              "id": "IT01A1494086122",
+              "audioLevel": 0.0,
+              "bytesReceived": 10148,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 0,
+              "concealmentEvents": 0,
+              "delayedPacketOutageSamples": 0,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 5684,
+              "insertedSamplesForDeceleration": 0,
+              "interruptionCount": 0,
+              "jitter": 0.022,
+              "jitterBufferDelay": 0.0,
+              "jitterBufferEmittedCount": 0,
+              "jitterBufferFlushes": 2,
+              "jitterBufferMinimumDelay": 0.0,
+              "jitterBufferTargetDelay": 0.0,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402660691.0,
+              "mid": "0",
+              "packetsDiscarded": 200,
+              "packetsLost": 0,
+              "packetsReceived": 203,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 0.0,
+              "remoteId": "ROA1494086122",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 0,
+              "ssrc": 1494086122,
+              "totalAudioEnergy": 0.0,
+              "totalInterruptionDuration": 0.0,
+              "totalProcessingDelay": 0.0,
+              "totalSamplesDuration": 0.0,
+              "totalSamplesReceived": 0,
+              "trackIdentifier": "external-40894969726600-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V1081093565",
+              "bytesReceived": 21216,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 102,
+              "framesDropped": 0,
+              "framesReceived": 102,
+              "freezeCount": 0,
+              "headerBytesReceived": 4628,
+              "jitter": 0.0,
+              "jitterBufferDelay": 1.2229999999999999,
+              "jitterBufferEmittedCount": 102,
+              "jitterBufferMinimumDelay": 1.14629,
+              "jitterBufferTargetDelay": 1.14629,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402660722.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.0,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 121,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 640,
+              "remoteId": "ROV1081093565",
+              "retransmittedBytesReceived": 2730,
+              "retransmittedPacketsReceived": 19,
+              "rtxSsrc": 3891077194,
+              "ssrc": 1081093565,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.0,
+              "totalFreezesDuration": 0.0,
+              "totalInterFrameDelay": 4.048,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 1.2229999999999999,
+              "totalSquaredInterFrameDelay": 0.16251199999999985,
+              "trackIdentifier": "external-40894969726600-1-video",
+              "transportId": "T01"
+            }
+          ]
+        },
+        {
+          "name": "idle-after-2",
+          "settleMs": 1000,
+          "observeMs": 1000,
+          "pcmSamples": 0,
+          "nonzeroSamples": 0,
+          "rms": 0,
+          "videoFrames": 0,
+          "beforeInbound": [
+            {
+              "id": "IT01A1494086122",
+              "audioLevel": 0.0,
+              "bytesReceived": 21328,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 0,
+              "concealmentEvents": 0,
+              "delayedPacketOutageSamples": 0,
+              "estimatedPlayoutTimestamp": 4001361872953.0,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 11312,
+              "insertedSamplesForDeceleration": 0,
+              "interruptionCount": 0,
+              "jitter": 0.022,
+              "jitterBufferDelay": 0.0,
+              "jitterBufferEmittedCount": 0,
+              "jitterBufferFlushes": 3,
+              "jitterBufferMinimumDelay": 0.0,
+              "jitterBufferTargetDelay": 0.0,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402666762.0,
+              "mid": "0",
+              "packetsDiscarded": 400,
+              "packetsLost": 0,
+              "packetsReceived": 404,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 0.0,
+              "remoteId": "ROA1494086122",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 0,
+              "ssrc": 1494086122,
+              "totalAudioEnergy": 0.0,
+              "totalInterruptionDuration": 0.0,
+              "totalProcessingDelay": 0.0,
+              "totalSamplesDuration": 0.0,
+              "totalSamplesReceived": 0,
+              "trackIdentifier": "external-40894969726600-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V1081093565",
+              "bytesReceived": 42113,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "estimatedPlayoutTimestamp": 4001391467485.0,
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 204,
+              "framesDropped": 0,
+              "framesPerSecond": 8.0,
+              "framesReceived": 204,
+              "freezeCount": 1,
+              "googTimingFrameInfo": "3832426190,-1,-1,-1,-1,-1,-1,-1,40910696,40910696,40911007,40911007,40911017,0,1",
+              "headerBytesReceived": 7428,
+              "jitter": 0.0,
+              "jitterBufferDelay": 19.192,
+              "jitterBufferEmittedCount": 204,
+              "jitterBufferMinimumDelay": 2.2356599999999998,
+              "jitterBufferTargetDelay": 19.323397,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402666803.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.32,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 225,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 844,
+              "remoteId": "ROV1081093565",
+              "retransmittedBytesReceived": 2730,
+              "retransmittedPacketsReceived": 19,
+              "rtxSsrc": 3891077194,
+              "ssrc": 1081093565,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.009,
+              "totalFreezesDuration": 2.041,
+              "totalInterFrameDelay": 10.427,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 19.201999999999998,
+              "totalSquaredInterFrameDelay": 4.536106999999992,
+              "trackIdentifier": "external-40894969726600-1-video",
+              "transportId": "T01"
+            }
+          ],
+          "afterInbound": [
+            {
+              "id": "IT01A1494086122",
+              "audioLevel": 0.0,
+              "bytesReceived": 21328,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 0,
+              "concealmentEvents": 0,
+              "delayedPacketOutageSamples": 0,
+              "estimatedPlayoutTimestamp": 4001361873971.0,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 11312,
+              "insertedSamplesForDeceleration": 0,
+              "interruptionCount": 0,
+              "jitter": 0.022,
+              "jitterBufferDelay": 0.0,
+              "jitterBufferEmittedCount": 0,
+              "jitterBufferFlushes": 3,
+              "jitterBufferMinimumDelay": 0.0,
+              "jitterBufferTargetDelay": 0.0,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402666762.0,
+              "mid": "0",
+              "packetsDiscarded": 400,
+              "packetsLost": 0,
+              "packetsReceived": 404,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 0.0,
+              "remoteId": "ROA1494086122",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 0,
+              "ssrc": 1494086122,
+              "totalAudioEnergy": 0.0,
+              "totalInterruptionDuration": 0.0,
+              "totalProcessingDelay": 0.0,
+              "totalSamplesDuration": 0.0,
+              "totalSamplesReceived": 0,
+              "trackIdentifier": "external-40894969726600-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V1081093565",
+              "bytesReceived": 42113,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "estimatedPlayoutTimestamp": 4001391468503.0,
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 204,
+              "framesDropped": 0,
+              "framesReceived": 204,
+              "freezeCount": 1,
+              "headerBytesReceived": 7428,
+              "jitter": 0.0,
+              "jitterBufferDelay": 19.192,
+              "jitterBufferEmittedCount": 204,
+              "jitterBufferMinimumDelay": 2.2356599999999998,
+              "jitterBufferTargetDelay": 19.323397,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402666803.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.32,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 225,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 844,
+              "remoteId": "ROV1081093565",
+              "retransmittedBytesReceived": 2730,
+              "retransmittedPacketsReceived": 19,
+              "rtxSsrc": 3891077194,
+              "ssrc": 1081093565,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.009,
+              "totalFreezesDuration": 2.041,
+              "totalInterFrameDelay": 10.427,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 19.201999999999998,
+              "totalSquaredInterFrameDelay": 4.536106999999992,
+              "trackIdentifier": "external-40894969726600-1-video",
+              "transportId": "T01"
+            }
+          ]
+        }
+      ],
+      "totals": {
+        "rawBytes": 2117760,
+        "videoFrames": 552,
+        "injectedAudio": 776640,
+        "injectedVideo": 204
+      },
+      "maxAudioGapMs": 57.065,
+      "maxVideoGapMs": 53.171,
+      "capturePhaseDeltas": [
+        {
+          "name": "record-only",
+          "delta": {
+            "rawBytes": 380160,
+            "videoFrames": 99,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "source-only",
+          "delta": {
+            "rawBytes": 289920,
+            "videoFrames": 75,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "negotiated-before-external-injection",
+          "delta": {
+            "rawBytes": 192000,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-1",
+          "delta": {
+            "rawBytes": 390720,
+            "videoFrames": 102,
+            "injectedAudio": 390720,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-1",
+          "delta": {
+            "rawBytes": 196800,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-2",
+          "delta": {
+            "rawBytes": 385920,
+            "videoFrames": 102,
+            "injectedAudio": 385920,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-2",
+          "delta": {
+            "rawBytes": 196800,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        }
+      ],
+      "nativeTrackTransitions": [],
+      "videoSource": "explicit synthetic video; physical camera not tested",
+      "audioRtpReceived": true,
+      "audioRtpAdvancedAcrossGates": true,
+      "audioDecoded": false,
+      "videoDecoded": true,
+      "functionalTransportPass": false,
+      "renderInitializeEvents": [
+        {
+          "event": "AudioClientInitialize",
+          "data": {
+            "TimeStamp": "8705555",
+            "Process Name ( PID)": "upstream_input_app.exe (9796)",
+            "ThreadID": "3388",
+            "CPU": "7",
+            "etw:ActivityId": "{6339e3a0-d0f2-4203-8242-8dbdb31364cb}",
+            "etw:Related ActivityId": "",
+            "AudioClientGuidId": "{6339e3a0-d0f2-4203-8242-8dbdb31364cb}",
+            "ContextId": "{00000000-0000-0000-0000-000000000000}",
+            "StreamType": "0",
+            "serverCategory": "0",
+            "ShareMode": "0",
+            "RawStreamRequested": "0",
+            "MatchFormatRequested": "0",
+            "OffloadRequested": "0",
+            "UseAmbisonics": "0",
+            "PeriodRequestPriority": "0",
+            "StreamFlags": "0x02040002",
+            "StreamId": "0",
+            "EndpointIdSha256": "cc1a393cd490fa5588389cb846fc6e6b69f2d2687539cfd123c2111d0af12cc8",
+            "EndpointInstanceIdSha256": "64eecc59fc366c2e0225502d91fefe47fbb05343f866edac5350a2fceff120a6",
+            "RequestedBufferDuration": "0",
+            "RequestedPeriodicity": "0",
+            "HResult": "0x887c0030",
+            "HResultMapped": "0x88890008",
+            "FormatType": "WAVEFORMATEX",
+            "ExpectedAlignmentFailure": "0",
+            "ConsecutiveFailures": "1",
+            "ClientQuiesced": "0",
+            "TimeToInitializeInSec": "0.003670",
+            "HistoryProducer": "0",
+            "BridgeStreamProperties": "0",
+            "BridgeStreamSource": "0",
+            "IsGameProcess": "0",
+            "IsProcessLoopbackStream": "0",
+            "CrossProcessLayoutVersion": "1",
+            "NumberOfChannels": "1",
+            "SampleRate": "192000",
+            "AvgBytesPerSec": "384000",
+            "SubFormat": "{00000001-0000-0010-8000-00aa00389b71}"
+          },
+          "pid": 9796,
+          "tid": 3388,
+          "qpc": 408982491290,
+          "stack": [
+            {
+              "module": "ntdll.dll",
+              "rva": "0x166f94"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0x8bb71"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18173"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x2bb7"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x19b15"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18e3d"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18c8d"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18bc3"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x657457"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x48455d"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x77d975"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x766fe5"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x56e23e"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0xb8ca59"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0xb899e2"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0xb8843d"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x9a7f74"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x9c9933"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x2c758a"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x2c6026"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x2c7a76"
+            },
+            {
+              "module": "kernel32.dll",
+              "rva": "0x2dda7"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0xc9c5c"
+            }
+          ],
+          "utc": "2026-10-19T09:37:34.050269+00:00"
+        },
+        {
+          "event": "AudioClientInitialize",
+          "data": {
+            "TimeStamp": "8833117",
+            "Process Name ( PID)": "upstream_input_app.exe (9796)",
+            "ThreadID": "3388",
+            "CPU": "4",
+            "etw:ActivityId": "{a5d13856-4dd8-45e2-8d5d-9218f39a11ac}",
+            "etw:Related ActivityId": "",
+            "AudioClientGuidId": "{a5d13856-4dd8-45e2-8d5d-9218f39a11ac}",
+            "ContextId": "{00000000-0000-0000-0000-000000000000}",
+            "StreamType": "0",
+            "serverCategory": "0",
+            "ShareMode": "0",
+            "RawStreamRequested": "0",
+            "MatchFormatRequested": "0",
+            "OffloadRequested": "0",
+            "UseAmbisonics": "0",
+            "PeriodRequestPriority": "0",
+            "StreamFlags": "0x02040002",
+            "StreamId": "0",
+            "EndpointIdSha256": "cc1a393cd490fa5588389cb846fc6e6b69f2d2687539cfd123c2111d0af12cc8",
+            "EndpointInstanceIdSha256": "64eecc59fc366c2e0225502d91fefe47fbb05343f866edac5350a2fceff120a6",
+            "RequestedBufferDuration": "0",
+            "RequestedPeriodicity": "0",
+            "HResult": "0x887c0030",
+            "HResultMapped": "0x88890008",
+            "FormatType": "WAVEFORMATEX",
+            "ExpectedAlignmentFailure": "0",
+            "ConsecutiveFailures": "2",
+            "ClientQuiesced": "0",
+            "TimeToInitializeInSec": "0.003461",
+            "HistoryProducer": "0",
+            "BridgeStreamProperties": "0",
+            "BridgeStreamSource": "0",
+            "IsGameProcess": "0",
+            "IsProcessLoopbackStream": "0",
+            "CrossProcessLayoutVersion": "1",
+            "NumberOfChannels": "1",
+            "SampleRate": "192000",
+            "AvgBytesPerSec": "384000",
+            "SubFormat": "{00000001-0000-0010-8000-00aa00389b71}"
+          },
+          "pid": 9796,
+          "tid": 3388,
+          "qpc": 408983766919,
+          "stack": [
+            {
+              "module": "ntdll.dll",
+              "rva": "0x166f94"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0x8bb71"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18173"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x2bb7"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x19b15"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18e3d"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18c8d"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18bc3"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x657457"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x48455d"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x77dc8d"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x764879"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x568954"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0xb8cab0"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x2c758a"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x2c6026"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x2c7a76"
+            },
+            {
+              "module": "kernel32.dll",
+              "rva": "0x2dda7"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0xc9c5c"
+            }
+          ],
+          "utc": "2026-10-19T09:37:34.177831+00:00"
+        }
+      ],
+      "endpointVolumeMuteUnchanged": true,
+      "traceInputSha256": {
+        "events.csv": "aa8106c00a628865d9a3aa6aedfe5014de923d73d09bed0b19ab10f609f9eea3",
+        "stacks.jsonl": "f1ebcb0eda5a216dad2a6f30078dc7bbec3c286e64feac6333740f9580f17f35"
+      }
+    },
+    "external-only": {
+      "variant": "external",
+      "externalOnly": true,
+      "nativePlayoutDiagnostic": null,
+      "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+      "errors": [],
+      "lateModeChangeRejected": true,
+      "traceLossFree": true,
+      "allCaptureStacksAvailable": true,
+      "sdkCaptureAttempts": 0,
+      "sdkCaptureInitialized": 0,
+      "sdkCaptureStarted": 0,
+      "recordCaptureStarted": 1,
+      "unknownCaptureClients": 0,
+      "captureClients": [
+        {
+          "kind": "record-mf",
+          "initializeSucceeded": true,
+          "started": true,
+          "stackAvailable": true,
+          "endpointSha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd",
+          "modules": [
+            "audioses.dll",
+            "kernel32.dll",
+            "mfcore.dll",
+            "ntdll.dll",
+            "rtworkq.dll"
+          ]
+        }
+      ],
+      "singleRecordContinuity": true,
+      "sourceRms": 0.001153013121517517,
+      "physicalCameraValidated": false,
+      "receiver": [
+        {
+          "gate": 1,
+          "pcmSamples": 0,
+          "rms": 0,
+          "videoFrames": 101,
+          "audioPacketsReceived": 205
+        },
+        {
+          "gate": 2,
+          "pcmSamples": 0,
+          "rms": 0,
+          "videoFrames": 94,
+          "audioPacketsReceived": 407
+        }
+      ],
+      "stopWindows": [
+        {
+          "name": "idle-after-1",
+          "settleMs": 1000,
+          "observeMs": 1000,
+          "pcmSamples": 0,
+          "nonzeroSamples": 0,
+          "rms": 0,
+          "videoFrames": 0,
+          "beforeInbound": [
+            {
+              "id": "IT01A1366641581",
+              "audioLevel": 0.0,
+              "bytesReceived": 9037,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 0,
+              "concealmentEvents": 0,
+              "delayedPacketOutageSamples": 0,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 5740,
+              "insertedSamplesForDeceleration": 0,
+              "interruptionCount": 0,
+              "jitter": 0.022,
+              "jitterBufferDelay": 0.0,
+              "jitterBufferEmittedCount": 0,
+              "jitterBufferFlushes": 2,
+              "jitterBufferMinimumDelay": 0.0,
+              "jitterBufferTargetDelay": 0.0,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402697707.0,
+              "mid": "0",
+              "packetsDiscarded": 200,
+              "packetsLost": 0,
+              "packetsReceived": 205,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 0.0,
+              "remoteId": "ROA1366641581",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 0,
+              "ssrc": 1366641581,
+              "totalAudioEnergy": 0.0,
+              "totalInterruptionDuration": 0.0,
+              "totalProcessingDelay": 0.0,
+              "totalSamplesDuration": 0.0,
+              "totalSamplesReceived": 0,
+              "trackIdentifier": "external-40931976948600-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V1388587938",
+              "bytesReceived": 20641,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 101,
+              "framesDropped": 0,
+              "framesReceived": 101,
+              "freezeCount": 0,
+              "headerBytesReceived": 4755,
+              "jitter": 0.0,
+              "jitterBufferDelay": 1.222,
+              "jitterBufferEmittedCount": 101,
+              "jitterBufferMinimumDelay": 1.132064,
+              "jitterBufferTargetDelay": 1.132064,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402697687.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.0,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 119,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 638,
+              "remoteId": "ROV1388587938",
+              "retransmittedBytesReceived": 2366,
+              "retransmittedPacketsReceived": 18,
+              "rtxSsrc": 1289841594,
+              "ssrc": 1388587938,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.001,
+              "totalFreezesDuration": 0.0,
+              "totalInterFrameDelay": 4.007,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 1.2229999999999999,
+              "totalSquaredInterFrameDelay": 0.16076899999999986,
+              "trackIdentifier": "external-40931976948600-1-video",
+              "transportId": "T01"
+            }
+          ],
+          "afterInbound": [
+            {
+              "id": "IT01A1366641581",
+              "audioLevel": 0.0,
+              "bytesReceived": 9037,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 0,
+              "concealmentEvents": 0,
+              "delayedPacketOutageSamples": 0,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 5740,
+              "insertedSamplesForDeceleration": 0,
+              "interruptionCount": 0,
+              "jitter": 0.022,
+              "jitterBufferDelay": 0.0,
+              "jitterBufferEmittedCount": 0,
+              "jitterBufferFlushes": 2,
+              "jitterBufferMinimumDelay": 0.0,
+              "jitterBufferTargetDelay": 0.0,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402697707.0,
+              "mid": "0",
+              "packetsDiscarded": 200,
+              "packetsLost": 0,
+              "packetsReceived": 205,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 0.0,
+              "remoteId": "ROA1366641581",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 0,
+              "ssrc": 1366641581,
+              "totalAudioEnergy": 0.0,
+              "totalInterruptionDuration": 0.0,
+              "totalProcessingDelay": 0.0,
+              "totalSamplesDuration": 0.0,
+              "totalSamplesReceived": 0,
+              "trackIdentifier": "external-40931976948600-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V1388587938",
+              "bytesReceived": 20641,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 101,
+              "framesDropped": 0,
+              "framesReceived": 101,
+              "freezeCount": 0,
+              "headerBytesReceived": 4755,
+              "jitter": 0.0,
+              "jitterBufferDelay": 1.222,
+              "jitterBufferEmittedCount": 101,
+              "jitterBufferMinimumDelay": 1.132064,
+              "jitterBufferTargetDelay": 1.132064,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402697687.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.0,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 119,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 638,
+              "remoteId": "ROV1388587938",
+              "retransmittedBytesReceived": 2366,
+              "retransmittedPacketsReceived": 18,
+              "rtxSsrc": 1289841594,
+              "ssrc": 1388587938,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.001,
+              "totalFreezesDuration": 0.0,
+              "totalInterFrameDelay": 4.007,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 1.2229999999999999,
+              "totalSquaredInterFrameDelay": 0.16076899999999986,
+              "trackIdentifier": "external-40931976948600-1-video",
+              "transportId": "T01"
+            }
+          ]
+        },
+        {
+          "name": "idle-after-2",
+          "settleMs": 1000,
+          "observeMs": 1000,
+          "pcmSamples": 0,
+          "nonzeroSamples": 0,
+          "rms": 0,
+          "videoFrames": 0,
+          "beforeInbound": [
+            {
+              "id": "IT01A1366641581",
+              "audioLevel": 0.0,
+              "bytesReceived": 17625,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 0,
+              "concealmentEvents": 0,
+              "delayedPacketOutageSamples": 0,
+              "estimatedPlayoutTimestamp": 4001436519097.0,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 11396,
+              "insertedSamplesForDeceleration": 0,
+              "interruptionCount": 0,
+              "jitter": 0.022,
+              "jitterBufferDelay": 0.0,
+              "jitterBufferEmittedCount": 0,
+              "jitterBufferFlushes": 3,
+              "jitterBufferMinimumDelay": 0.0,
+              "jitterBufferTargetDelay": 0.0,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402703765.0,
+              "mid": "0",
+              "packetsDiscarded": 400,
+              "packetsLost": 0,
+              "packetsReceived": 407,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 0.0,
+              "remoteId": "ROA1366641581",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 0,
+              "ssrc": 1366641581,
+              "totalAudioEnergy": 0.0,
+              "totalInterruptionDuration": 0.0,
+              "totalProcessingDelay": 0.0,
+              "totalSamplesDuration": 0.0,
+              "totalSamplesReceived": 0,
+              "trackIdentifier": "external-40931976948600-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V1388587938",
+              "bytesReceived": 41482,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "estimatedPlayoutTimestamp": 4001391504518.0,
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 202,
+              "framesDropped": 0,
+              "framesPerSecond": 6.0,
+              "framesReceived": 202,
+              "freezeCount": 1,
+              "googTimingFrameInfo": "3354289562,-3,-3,-1,-1,-1,-3,-3,40947745,40947745,40948024,40948024,40948033,0,1",
+              "headerBytesReceived": 7531,
+              "jitter": 0.0,
+              "jitterBufferDelay": 18.221999999999998,
+              "jitterBufferEmittedCount": 202,
+              "jitterBufferMinimumDelay": 2.245091,
+              "jitterBufferTargetDelay": 18.341071,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402703768.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.314,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 222,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 840,
+              "remoteId": "ROV1388587938",
+              "retransmittedBytesReceived": 2366,
+              "retransmittedPacketsReceived": 18,
+              "rtxSsrc": 1289841594,
+              "ssrc": 1388587938,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.005,
+              "totalFreezesDuration": 2.08,
+              "totalInterFrameDelay": 10.356,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 18.227,
+              "totalSquaredInterFrameDelay": 4.687447999999991,
+              "trackIdentifier": "external-40931976948600-1-video",
+              "transportId": "T01"
+            }
+          ],
+          "afterInbound": [
+            {
+              "id": "IT01A1366641581",
+              "audioLevel": 0.0,
+              "bytesReceived": 17625,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 0,
+              "concealmentEvents": 0,
+              "delayedPacketOutageSamples": 0,
+              "estimatedPlayoutTimestamp": 4001436520114.0,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 11396,
+              "insertedSamplesForDeceleration": 0,
+              "interruptionCount": 0,
+              "jitter": 0.022,
+              "jitterBufferDelay": 0.0,
+              "jitterBufferEmittedCount": 0,
+              "jitterBufferFlushes": 3,
+              "jitterBufferMinimumDelay": 0.0,
+              "jitterBufferTargetDelay": 0.0,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402703765.0,
+              "mid": "0",
+              "packetsDiscarded": 400,
+              "packetsLost": 0,
+              "packetsReceived": 407,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 0.0,
+              "remoteId": "ROA1366641581",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 0,
+              "ssrc": 1366641581,
+              "totalAudioEnergy": 0.0,
+              "totalInterruptionDuration": 0.0,
+              "totalProcessingDelay": 0.0,
+              "totalSamplesDuration": 0.0,
+              "totalSamplesReceived": 0,
+              "trackIdentifier": "external-40931976948600-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V1388587938",
+              "bytesReceived": 41482,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "estimatedPlayoutTimestamp": 4001391505536.0,
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 202,
+              "framesDropped": 0,
+              "framesReceived": 202,
+              "freezeCount": 1,
+              "headerBytesReceived": 7531,
+              "jitter": 0.0,
+              "jitterBufferDelay": 18.221999999999998,
+              "jitterBufferEmittedCount": 202,
+              "jitterBufferMinimumDelay": 2.245091,
+              "jitterBufferTargetDelay": 18.341071,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402703768.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.314,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 222,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 840,
+              "remoteId": "ROV1388587938",
+              "retransmittedBytesReceived": 2366,
+              "retransmittedPacketsReceived": 18,
+              "rtxSsrc": 1289841594,
+              "ssrc": 1388587938,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.005,
+              "totalFreezesDuration": 2.08,
+              "totalInterFrameDelay": 10.356,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 18.227,
+              "totalSquaredInterFrameDelay": 4.687447999999991,
+              "trackIdentifier": "external-40931976948600-1-video",
+              "transportId": "T01"
+            }
+          ]
+        }
+      ],
+      "totals": {
+        "rawBytes": 2116800,
+        "videoFrames": 552,
+        "injectedAudio": 782400,
+        "injectedVideo": 202
+      },
+      "maxAudioGapMs": 48.61,
+      "maxVideoGapMs": 41.974,
+      "capturePhaseDeltas": [
+        {
+          "name": "record-only",
+          "delta": {
+            "rawBytes": 380160,
+            "videoFrames": 99,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "source-only",
+          "delta": {
+            "rawBytes": 288000,
+            "videoFrames": 75,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "negotiated-before-external-injection",
+          "delta": {
+            "rawBytes": 188160,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-1",
+          "delta": {
+            "rawBytes": 393600,
+            "videoFrames": 101,
+            "injectedAudio": 393600,
+            "injectedVideo": 101
+          }
+        },
+        {
+          "name": "idle-after-1",
+          "delta": {
+            "rawBytes": 192000,
+            "videoFrames": 51,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-2",
+          "delta": {
+            "rawBytes": 388800,
+            "videoFrames": 101,
+            "injectedAudio": 388800,
+            "injectedVideo": 101
+          }
+        },
+        {
+          "name": "idle-after-2",
+          "delta": {
+            "rawBytes": 196800,
+            "videoFrames": 51,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        }
+      ],
+      "nativeTrackTransitions": [],
+      "videoSource": "explicit synthetic video; physical camera not tested",
+      "audioRtpReceived": true,
+      "audioRtpAdvancedAcrossGates": true,
+      "audioDecoded": false,
+      "videoDecoded": true,
+      "functionalTransportPass": false,
+      "renderInitializeEvents": [
+        {
+          "event": "AudioClientInitialize",
+          "data": {
+            "TimeStamp": "8573265",
+            "Process Name ( PID)": "upstream_input_app.exe (7356)",
+            "ThreadID": "14088",
+            "CPU": "6",
+            "etw:ActivityId": "{6f7b408b-7ff6-4c03-b9a8-884aa486fdfb}",
+            "etw:Related ActivityId": "",
+            "AudioClientGuidId": "{6f7b408b-7ff6-4c03-b9a8-884aa486fdfb}",
+            "ContextId": "{00000000-0000-0000-0000-000000000000}",
+            "StreamType": "0",
+            "serverCategory": "0",
+            "ShareMode": "0",
+            "RawStreamRequested": "0",
+            "MatchFormatRequested": "0",
+            "OffloadRequested": "0",
+            "UseAmbisonics": "0",
+            "PeriodRequestPriority": "0",
+            "StreamFlags": "0x02040002",
+            "StreamId": "0",
+            "EndpointIdSha256": "cc1a393cd490fa5588389cb846fc6e6b69f2d2687539cfd123c2111d0af12cc8",
+            "EndpointInstanceIdSha256": "64eecc59fc366c2e0225502d91fefe47fbb05343f866edac5350a2fceff120a6",
+            "RequestedBufferDuration": "0",
+            "RequestedPeriodicity": "0",
+            "HResult": "0x887c0030",
+            "HResultMapped": "0x88890008",
+            "FormatType": "WAVEFORMATEX",
+            "ExpectedAlignmentFailure": "0",
+            "ConsecutiveFailures": "1",
+            "ClientQuiesced": "0",
+            "TimeToInitializeInSec": "0.004092",
+            "HistoryProducer": "0",
+            "BridgeStreamProperties": "0",
+            "BridgeStreamSource": "0",
+            "IsGameProcess": "0",
+            "IsProcessLoopbackStream": "0",
+            "CrossProcessLayoutVersion": "1",
+            "NumberOfChannels": "1",
+            "SampleRate": "192000",
+            "AvgBytesPerSec": "384000",
+            "SubFormat": "{00000001-0000-0010-8000-00aa00389b71}"
+          },
+          "pid": 7356,
+          "tid": 14088,
+          "qpc": 409352385894,
+          "stack": [
+            {
+              "module": "ntdll.dll",
+              "rva": "0x166f94"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0x8bb71"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18173"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x2bb7"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x19b15"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18e3d"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18c8d"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18bc3"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x657457"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x48455d"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x77d975"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x766fe5"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x56e23e"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0xb8ca59"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0xb899e2"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0xb8843d"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x9a7f74"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x9c9933"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x2c758a"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x2c6026"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x2c7a76"
+            },
+            {
+              "module": "kernel32.dll",
+              "rva": "0x2dda7"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0xc9c5c"
+            }
+          ],
+          "utc": "2026-10-19T09:38:11.042045+00:00"
+        }
+      ],
+      "endpointVolumeMuteUnchanged": true,
+      "traceInputSha256": {
+        "events.csv": "d0a96ca6a77f3f7e2411d6085885005f8f62941d3ae74f9409f664a737eef742",
+        "stacks.jsonl": "acd6bf9f8c1c6ae0c7729a5a9653caa16e0a9dbc4dc933062c2fd18d85e025aa"
+      }
+    },
+    "external-muted": {
+      "variant": "muted",
+      "externalOnly": true,
+      "nativePlayoutDiagnostic": null,
+      "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+      "errors": [],
+      "lateModeChangeRejected": true,
+      "traceLossFree": true,
+      "allCaptureStacksAvailable": true,
+      "sdkCaptureAttempts": 0,
+      "sdkCaptureInitialized": 0,
+      "sdkCaptureStarted": 0,
+      "recordCaptureStarted": 1,
+      "unknownCaptureClients": 0,
+      "captureClients": [
+        {
+          "kind": "record-mf",
+          "initializeSucceeded": true,
+          "started": true,
+          "stackAvailable": true,
+          "endpointSha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd",
+          "modules": [
+            "audioses.dll",
+            "kernel32.dll",
+            "mfcore.dll",
+            "ntdll.dll",
+            "rtworkq.dll"
+          ]
+        }
+      ],
+      "singleRecordContinuity": true,
+      "sourceRms": 0.0013292777034572985,
+      "physicalCameraValidated": false,
+      "receiver": [
+        {
+          "gate": 1,
+          "pcmSamples": 0,
+          "rms": 0,
+          "videoFrames": 101,
+          "audioPacketsReceived": 205
+        },
+        {
+          "gate": 2,
+          "pcmSamples": 0,
+          "rms": 0,
+          "videoFrames": 101,
+          "audioPacketsReceived": 407
+        }
+      ],
+      "stopWindows": [
+        {
+          "name": "idle-after-1",
+          "settleMs": 1000,
+          "observeMs": 1000,
+          "pcmSamples": 0,
+          "nonzeroSamples": 0,
+          "rms": 0,
+          "videoFrames": 0,
+          "beforeInbound": [
+            {
+              "id": "IT01A1936779822",
+              "audioLevel": 0.0,
+              "bytesReceived": 9377,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 0,
+              "concealmentEvents": 0,
+              "delayedPacketOutageSamples": 0,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 5740,
+              "insertedSamplesForDeceleration": 0,
+              "interruptionCount": 0,
+              "jitter": 0.022,
+              "jitterBufferDelay": 0.0,
+              "jitterBufferEmittedCount": 0,
+              "jitterBufferFlushes": 2,
+              "jitterBufferMinimumDelay": 0.0,
+              "jitterBufferTargetDelay": 0.0,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402734790.0,
+              "mid": "0",
+              "packetsDiscarded": 200,
+              "packetsLost": 0,
+              "packetsReceived": 205,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 0.0,
+              "remoteId": "ROA1936779822",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 0,
+              "ssrc": 1936779822,
+              "totalAudioEnergy": 0.0,
+              "totalInterruptionDuration": 0.0,
+              "totalProcessingDelay": 0.0,
+              "totalSamplesDuration": 0.0,
+              "totalSamplesReceived": 0,
+              "trackIdentifier": "external-40969050511500-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V2526748537",
+              "bytesReceived": 19786,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 101,
+              "framesDropped": 0,
+              "framesReceived": 101,
+              "freezeCount": 0,
+              "headerBytesReceived": 4520,
+              "jitter": 0.0,
+              "jitterBufferDelay": 1.224,
+              "jitterBufferEmittedCount": 101,
+              "jitterBufferMinimumDelay": 1.125453,
+              "jitterBufferTargetDelay": 1.125453,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402734765.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.0,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 118,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 929,
+              "remoteId": "ROV2526748537",
+              "retransmittedBytesReceived": 2366,
+              "retransmittedPacketsReceived": 17,
+              "rtxSsrc": 2535044829,
+              "ssrc": 2526748537,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.002,
+              "totalFreezesDuration": 0.0,
+              "totalInterFrameDelay": 4.008,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 1.226,
+              "totalSquaredInterFrameDelay": 0.16087999999999986,
+              "trackIdentifier": "external-40969050511500-1-video",
+              "transportId": "T01"
+            }
+          ],
+          "afterInbound": [
+            {
+              "id": "IT01A1936779822",
+              "audioLevel": 0.0,
+              "bytesReceived": 9377,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 0,
+              "concealmentEvents": 0,
+              "delayedPacketOutageSamples": 0,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 5740,
+              "insertedSamplesForDeceleration": 0,
+              "interruptionCount": 0,
+              "jitter": 0.022,
+              "jitterBufferDelay": 0.0,
+              "jitterBufferEmittedCount": 0,
+              "jitterBufferFlushes": 2,
+              "jitterBufferMinimumDelay": 0.0,
+              "jitterBufferTargetDelay": 0.0,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402734790.0,
+              "mid": "0",
+              "packetsDiscarded": 200,
+              "packetsLost": 0,
+              "packetsReceived": 205,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 0.0,
+              "remoteId": "ROA1936779822",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 0,
+              "ssrc": 1936779822,
+              "totalAudioEnergy": 0.0,
+              "totalInterruptionDuration": 0.0,
+              "totalProcessingDelay": 0.0,
+              "totalSamplesDuration": 0.0,
+              "totalSamplesReceived": 0,
+              "trackIdentifier": "external-40969050511500-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V2526748537",
+              "bytesReceived": 19786,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 101,
+              "framesDropped": 0,
+              "framesReceived": 101,
+              "freezeCount": 0,
+              "headerBytesReceived": 4520,
+              "jitter": 0.0,
+              "jitterBufferDelay": 1.224,
+              "jitterBufferEmittedCount": 101,
+              "jitterBufferMinimumDelay": 1.125453,
+              "jitterBufferTargetDelay": 1.125453,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402734765.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.0,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 118,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 929,
+              "remoteId": "ROV2526748537",
+              "retransmittedBytesReceived": 2366,
+              "retransmittedPacketsReceived": 17,
+              "rtxSsrc": 2535044829,
+              "ssrc": 2526748537,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.002,
+              "totalFreezesDuration": 0.0,
+              "totalInterFrameDelay": 4.008,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 1.226,
+              "totalSquaredInterFrameDelay": 0.16087999999999986,
+              "trackIdentifier": "external-40969050511500-1-video",
+              "transportId": "T01"
+            }
+          ]
+        },
+        {
+          "name": "idle-after-2",
+          "settleMs": 1000,
+          "observeMs": 1000,
+          "pcmSamples": 0,
+          "nonzeroSamples": 0,
+          "rms": 0,
+          "videoFrames": 0,
+          "beforeInbound": [
+            {
+              "id": "IT01A1936779822",
+              "audioLevel": 0.0,
+              "bytesReceived": 18218,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 0,
+              "concealmentEvents": 0,
+              "delayedPacketOutageSamples": 0,
+              "estimatedPlayoutTimestamp": 4001392050045.0,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 11396,
+              "insertedSamplesForDeceleration": 0,
+              "interruptionCount": 0,
+              "jitter": 0.022,
+              "jitterBufferDelay": 0.0,
+              "jitterBufferEmittedCount": 0,
+              "jitterBufferFlushes": 3,
+              "jitterBufferMinimumDelay": 0.0,
+              "jitterBufferTargetDelay": 0.0,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402740854.0,
+              "mid": "0",
+              "packetsDiscarded": 400,
+              "packetsLost": 0,
+              "packetsReceived": 407,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 0.0,
+              "remoteId": "ROA1936779822",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 0,
+              "ssrc": 1936779822,
+              "totalAudioEnergy": 0.0,
+              "totalInterruptionDuration": 0.0,
+              "totalProcessingDelay": 0.0,
+              "totalSamplesDuration": 0.0,
+              "totalSamplesReceived": 0,
+              "trackIdentifier": "external-40969050511500-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V2526748537",
+              "bytesReceived": 40651,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "estimatedPlayoutTimestamp": 4001391541871.0,
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 203,
+              "framesDropped": 0,
+              "framesPerSecond": 1.0,
+              "framesReceived": 203,
+              "freezeCount": 1,
+              "headerBytesReceived": 7320,
+              "jitter": 0.0,
+              "jitterBufferDelay": 2.411,
+              "jitterBufferEmittedCount": 203,
+              "jitterBufferMinimumDelay": 2.249113,
+              "jitterBufferTargetDelay": 2.249113,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402740885.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.0,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 222,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 1133,
+              "remoteId": "ROV2526748537",
+              "retransmittedBytesReceived": 2366,
+              "retransmittedPacketsReceived": 17,
+              "rtxSsrc": 2535044829,
+              "ssrc": 2526748537,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.002,
+              "totalFreezesDuration": 2.08,
+              "totalInterFrameDelay": 10.129,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 2.413,
+              "totalSquaredInterFrameDelay": 4.649146999999991,
+              "trackIdentifier": "external-40969050511500-1-video",
+              "transportId": "T01"
+            }
+          ],
+          "afterInbound": [
+            {
+              "id": "IT01A1936779822",
+              "audioLevel": 0.0,
+              "bytesReceived": 18218,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 0,
+              "concealmentEvents": 0,
+              "delayedPacketOutageSamples": 0,
+              "estimatedPlayoutTimestamp": 4001392051060.0,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 11396,
+              "insertedSamplesForDeceleration": 0,
+              "interruptionCount": 0,
+              "jitter": 0.022,
+              "jitterBufferDelay": 0.0,
+              "jitterBufferEmittedCount": 0,
+              "jitterBufferFlushes": 3,
+              "jitterBufferMinimumDelay": 0.0,
+              "jitterBufferTargetDelay": 0.0,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402740854.0,
+              "mid": "0",
+              "packetsDiscarded": 400,
+              "packetsLost": 0,
+              "packetsReceived": 407,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 0.0,
+              "remoteId": "ROA1936779822",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 0,
+              "ssrc": 1936779822,
+              "totalAudioEnergy": 0.0,
+              "totalInterruptionDuration": 0.0,
+              "totalProcessingDelay": 0.0,
+              "totalSamplesDuration": 0.0,
+              "totalSamplesReceived": 0,
+              "trackIdentifier": "external-40969050511500-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V2526748537",
+              "bytesReceived": 40651,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "estimatedPlayoutTimestamp": 4001391542886.0,
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 203,
+              "framesDropped": 0,
+              "framesReceived": 203,
+              "freezeCount": 1,
+              "headerBytesReceived": 7320,
+              "jitter": 0.0,
+              "jitterBufferDelay": 2.411,
+              "jitterBufferEmittedCount": 203,
+              "jitterBufferMinimumDelay": 2.249113,
+              "jitterBufferTargetDelay": 2.249113,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402740885.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.0,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 222,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 1133,
+              "remoteId": "ROV2526748537",
+              "retransmittedBytesReceived": 2366,
+              "retransmittedPacketsReceived": 17,
+              "rtxSsrc": 2535044829,
+              "ssrc": 2526748537,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.002,
+              "totalFreezesDuration": 2.08,
+              "totalInterFrameDelay": 10.129,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 2.413,
+              "totalSquaredInterFrameDelay": 4.649146999999991,
+              "trackIdentifier": "external-40969050511500-1-video",
+              "transportId": "T01"
+            }
+          ]
+        }
+      ],
+      "totals": {
+        "rawBytes": 2117760,
+        "videoFrames": 552,
+        "injectedAudio": 782400,
+        "injectedVideo": 203
+      },
+      "maxAudioGapMs": 58.097,
+      "maxVideoGapMs": 42.127,
+      "capturePhaseDeltas": [
+        {
+          "name": "record-only",
+          "delta": {
+            "rawBytes": 378240,
+            "videoFrames": 100,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "source-only",
+          "delta": {
+            "rawBytes": 290880,
+            "videoFrames": 75,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "negotiated-before-external-injection",
+          "delta": {
+            "rawBytes": 192000,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-1",
+          "delta": {
+            "rawBytes": 393600,
+            "videoFrames": 101,
+            "injectedAudio": 393600,
+            "injectedVideo": 101
+          }
+        },
+        {
+          "name": "idle-after-1",
+          "delta": {
+            "rawBytes": 192960,
+            "videoFrames": 51,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-2",
+          "delta": {
+            "rawBytes": 388800,
+            "videoFrames": 102,
+            "injectedAudio": 388800,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-2",
+          "delta": {
+            "rawBytes": 196800,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        }
+      ],
+      "nativeTrackTransitions": [],
+      "videoSource": "explicit synthetic video; physical camera not tested",
+      "audioRtpReceived": true,
+      "audioRtpAdvancedAcrossGates": true,
+      "audioDecoded": false,
+      "videoDecoded": true,
+      "functionalTransportPass": false,
+      "renderInitializeEvents": [
+        {
+          "event": "AudioClientInitialize",
+          "data": {
+            "TimeStamp": "8581239",
+            "Process Name ( PID)": "upstream_input_app.exe (29968)",
+            "ThreadID": "26728",
+            "CPU": "5",
+            "etw:ActivityId": "{cdae0bf5-6358-4ed2-96e2-bb83df1980e4}",
+            "etw:Related ActivityId": "",
+            "AudioClientGuidId": "{cdae0bf5-6358-4ed2-96e2-bb83df1980e4}",
+            "ContextId": "{00000000-0000-0000-0000-000000000000}",
+            "StreamType": "0",
+            "serverCategory": "0",
+            "ShareMode": "0",
+            "RawStreamRequested": "0",
+            "MatchFormatRequested": "0",
+            "OffloadRequested": "0",
+            "UseAmbisonics": "0",
+            "PeriodRequestPriority": "0",
+            "StreamFlags": "0x02040002",
+            "StreamId": "0",
+            "EndpointIdSha256": "cc1a393cd490fa5588389cb846fc6e6b69f2d2687539cfd123c2111d0af12cc8",
+            "EndpointInstanceIdSha256": "64eecc59fc366c2e0225502d91fefe47fbb05343f866edac5350a2fceff120a6",
+            "RequestedBufferDuration": "0",
+            "RequestedPeriodicity": "0",
+            "HResult": "0x887c0030",
+            "HResultMapped": "0x88890008",
+            "FormatType": "WAVEFORMATEX",
+            "ExpectedAlignmentFailure": "0",
+            "ConsecutiveFailures": "1",
+            "ClientQuiesced": "0",
+            "TimeToInitializeInSec": "0.004184",
+            "HistoryProducer": "0",
+            "BridgeStreamProperties": "0",
+            "BridgeStreamSource": "0",
+            "IsGameProcess": "0",
+            "IsProcessLoopbackStream": "0",
+            "CrossProcessLayoutVersion": "1",
+            "NumberOfChannels": "1",
+            "SampleRate": "192000",
+            "AvgBytesPerSec": "384000",
+            "SubFormat": "{00000001-0000-0010-8000-00aa00389b71}"
+          },
+          "pid": 29968,
+          "tid": 26728,
+          "qpc": 409723135059,
+          "stack": [
+            {
+              "module": "ntdll.dll",
+              "rva": "0x166f94"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0x8bb71"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18173"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x2bb7"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x19b15"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18e3d"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18c8d"
+            },
+            {
+              "module": "AudioSes.dll",
+              "rva": "0x18bc3"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x657457"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x48455d"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x77d975"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x766fe5"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x56e23e"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0xb8ca59"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0xb899e2"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0xb8843d"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x9a7f74"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x9c9933"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x2c758a"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x2c6026"
+            },
+            {
+              "module": "libwebrtc.dll",
+              "rva": "0x2c7a76"
+            },
+            {
+              "module": "kernel32.dll",
+              "rva": "0x2dda7"
+            },
+            {
+              "module": "ntdll.dll",
+              "rva": "0xc9c5c"
+            }
+          ],
+          "utc": "2026-10-19T09:38:48.119276+00:00"
+        }
+      ],
+      "endpointVolumeMuteUnchanged": true,
+      "traceInputSha256": {
+        "events.csv": "625eee6a042110a06e9cd608c70d09042544ae3388cc8a8e46a6104bc2412cca",
+        "stacks.jsonl": "d521db02d6d952dcae2c79ff583794e518212ba012ea9f90eba7e08e8af93cdf"
+      },
+      "captureIsolationPass": true
+    },
+    "external-native-playout-off": {
+      "variant": "external",
+      "externalOnly": true,
+      "nativePlayoutDiagnostic": {
+        "connections": 2,
+        "nativeAudioPlayout": false,
+        "scope": "source-matched internals for diagnosis; standard native SetAudioPlayout(false)/NullAudioPoller"
+      },
+      "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+      "errors": [],
+      "lateModeChangeRejected": true,
+      "traceLossFree": true,
+      "allCaptureStacksAvailable": true,
+      "sdkCaptureAttempts": 0,
+      "sdkCaptureInitialized": 0,
+      "sdkCaptureStarted": 0,
+      "recordCaptureStarted": 1,
+      "unknownCaptureClients": 0,
+      "captureClients": [
+        {
+          "kind": "record-mf",
+          "initializeSucceeded": true,
+          "started": true,
+          "stackAvailable": true,
+          "endpointSha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd",
+          "modules": [
+            "audioses.dll",
+            "kernel32.dll",
+            "mfcore.dll",
+            "ntdll.dll",
+            "rtworkq.dll"
+          ]
+        }
+      ],
+      "singleRecordContinuity": true,
+      "sourceRms": 0.0010698686991794655,
+      "physicalCameraValidated": false,
+      "receiver": [
+        {
+          "gate": 1,
+          "pcmSamples": 238080,
+          "rms": 0.0003298164391640075,
+          "videoFrames": 101,
+          "audioPacketsReceived": 202
+        },
+        {
+          "gate": 2,
+          "pcmSamples": 195360,
+          "rms": 0.0002867414960857984,
+          "videoFrames": 94,
+          "audioPacketsReceived": 405
+        }
+      ],
+      "stopWindows": [
+        {
+          "name": "idle-after-1",
+          "settleMs": 1000,
+          "observeMs": 1000,
+          "pcmSamples": 48960,
+          "nonzeroSamples": 0,
+          "rms": 0.0,
+          "videoFrames": 0,
+          "beforeInbound": [
+            {
+              "id": "IT01A2995394195",
+              "audioLevel": 0.0,
+              "bytesReceived": 9599,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 45862,
+              "concealmentEvents": 2,
+              "delayedPacketOutageSamples": 2567,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 5656,
+              "insertedSamplesForDeceleration": 1457,
+              "interruptionCount": 0,
+              "jitter": 0.022,
+              "jitterBufferDelay": 11644.8,
+              "jitterBufferEmittedCount": 193920,
+              "jitterBufferFlushes": 1,
+              "jitterBufferMinimumDelay": 12134.4,
+              "jitterBufferTargetDelay": 12134.4,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402771855.0,
+              "mid": "0",
+              "packetsDiscarded": 0,
+              "packetsLost": 0,
+              "packetsReceived": 202,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 3.65,
+              "remoteId": "ROA2995394195",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 31001,
+              "ssrc": 2995394195,
+              "totalAudioEnergy": 1.3159105909993609e-05,
+              "totalInterruptionDuration": 0.0,
+              "totalProcessingDelay": 10836.48,
+              "totalSamplesDuration": 7.679999999999881,
+              "totalSamplesReceived": 240960,
+              "trackIdentifier": "external-41006142665600-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V484862202",
+              "bytesReceived": 20266,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 102,
+              "framesDropped": 0,
+              "framesReceived": 102,
+              "freezeCount": 0,
+              "headerBytesReceived": 4640,
+              "jitter": 0.0,
+              "jitterBufferDelay": 1.212,
+              "jitterBufferEmittedCount": 102,
+              "jitterBufferMinimumDelay": 1.125097,
+              "jitterBufferTargetDelay": 1.125097,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402771860.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.0,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 121,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 1017,
+              "remoteId": "ROV484862202",
+              "retransmittedBytesReceived": 2730,
+              "retransmittedPacketsReceived": 19,
+              "rtxSsrc": 2400931087,
+              "ssrc": 484862202,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.002,
+              "totalFreezesDuration": 0.0,
+              "totalInterFrameDelay": 4.049,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 1.214,
+              "totalSquaredInterFrameDelay": 0.16256899999999982,
+              "trackIdentifier": "external-41006142665600-1-video",
+              "transportId": "T01"
+            }
+          ],
+          "afterInbound": [
+            {
+              "id": "IT01A2995394195",
+              "audioLevel": 0.0,
+              "bytesReceived": 9599,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 94822,
+              "concealmentEvents": 2,
+              "delayedPacketOutageSamples": 2567,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 5656,
+              "insertedSamplesForDeceleration": 1457,
+              "interruptionCount": 0,
+              "jitter": 0.022,
+              "jitterBufferDelay": 11644.8,
+              "jitterBufferEmittedCount": 193920,
+              "jitterBufferFlushes": 1,
+              "jitterBufferMinimumDelay": 12134.4,
+              "jitterBufferTargetDelay": 12134.4,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402771855.0,
+              "mid": "0",
+              "packetsDiscarded": 0,
+              "packetsLost": 0,
+              "packetsReceived": 202,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 3.65,
+              "remoteId": "ROA2995394195",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 79961,
+              "ssrc": 2995394195,
+              "totalAudioEnergy": 1.3159105909993609e-05,
+              "totalInterruptionDuration": 0.0,
+              "totalProcessingDelay": 10836.48,
+              "totalSamplesDuration": 8.699999999999859,
+              "totalSamplesReceived": 289920,
+              "trackIdentifier": "external-41006142665600-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V484862202",
+              "bytesReceived": 20266,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 102,
+              "framesDropped": 0,
+              "framesReceived": 102,
+              "freezeCount": 0,
+              "headerBytesReceived": 4640,
+              "jitter": 0.0,
+              "jitterBufferDelay": 1.212,
+              "jitterBufferEmittedCount": 102,
+              "jitterBufferMinimumDelay": 1.125097,
+              "jitterBufferTargetDelay": 1.125097,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402771860.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.0,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 121,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 1017,
+              "remoteId": "ROV484862202",
+              "retransmittedBytesReceived": 2730,
+              "retransmittedPacketsReceived": 19,
+              "rtxSsrc": 2400931087,
+              "ssrc": 484862202,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.002,
+              "totalFreezesDuration": 0.0,
+              "totalInterFrameDelay": 4.049,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 1.214,
+              "totalSquaredInterFrameDelay": 0.16256899999999982,
+              "trackIdentifier": "external-41006142665600-1-video",
+              "transportId": "T01"
+            }
+          ]
+        },
+        {
+          "name": "idle-after-2",
+          "settleMs": 1000,
+          "observeMs": 1000,
+          "pcmSamples": 48960,
+          "nonzeroSamples": 0,
+          "rms": 0.0,
+          "videoFrames": 0,
+          "beforeInbound": [
+            {
+              "id": "IT01A2995394195",
+              "audioLevel": 0.0,
+              "bytesReceived": 18180,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 142854,
+              "concealmentEvents": 3,
+              "delayedPacketOutageSamples": 17062,
+              "estimatedPlayoutTimestamp": 4001391576883.0,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 11340,
+              "insertedSamplesForDeceleration": 2043,
+              "interruptionCount": 1,
+              "jitter": 0.022,
+              "jitterBufferDelay": 18336.0,
+              "jitterBufferEmittedCount": 388800,
+              "jitterBufferFlushes": 1,
+              "jitterBufferMinimumDelay": 23827.2,
+              "jitterBufferTargetDelay": 23827.2,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402777927.0,
+              "mid": "0",
+              "packetsDiscarded": 0,
+              "packetsLost": 0,
+              "packetsReceived": 405,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 208.8,
+              "remoteId": "ROA2995394195",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 119352,
+              "ssrc": 2995394195,
+              "totalAudioEnergy": 1.6930354322092935e-05,
+              "totalInterruptionDuration": 1.981,
+              "totalProcessingDelay": 16710.72,
+              "totalSamplesDuration": 13.76999999999975,
+              "totalSamplesReceived": 533280,
+              "trackIdentifier": "external-41006142665600-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V484862202",
+              "bytesReceived": 42834,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "estimatedPlayoutTimestamp": 4001391578565.0,
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 204,
+              "framesDropped": 0,
+              "framesPerSecond": 8.0,
+              "framesReceived": 204,
+              "freezeCount": 1,
+              "googTimingFrameInfo": "1305646046,-2,-2,-1,-1,-1,-2,-2,41021900,41021900,41022211,41022211,41022220,0,1",
+              "headerBytesReceived": 7464,
+              "jitter": 0.0,
+              "jitterBufferDelay": 19.235,
+              "jitterBufferEmittedCount": 204,
+              "jitterBufferMinimumDelay": 2.2720569999999998,
+              "jitterBufferTargetDelay": 19.464484,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402777941.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.4,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 226,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 1221,
+              "remoteId": "ROV484862202",
+              "retransmittedBytesReceived": 2730,
+              "retransmittedPacketsReceived": 19,
+              "rtxSsrc": 2400931087,
+              "ssrc": 484862202,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.012,
+              "totalFreezesDuration": 2.04,
+              "totalInterFrameDelay": 10.507,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 19.247,
+              "totalSquaredInterFrameDelay": 4.545002999999994,
+              "trackIdentifier": "external-41006142665600-1-video",
+              "transportId": "T01"
+            }
+          ],
+          "afterInbound": [
+            {
+              "id": "IT01A2995394195",
+              "audioLevel": 0.0,
+              "bytesReceived": 18180,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 191814,
+              "concealmentEvents": 3,
+              "delayedPacketOutageSamples": 17062,
+              "estimatedPlayoutTimestamp": 4001391577904.0,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 11340,
+              "insertedSamplesForDeceleration": 2043,
+              "interruptionCount": 1,
+              "jitter": 0.022,
+              "jitterBufferDelay": 18336.0,
+              "jitterBufferEmittedCount": 388800,
+              "jitterBufferFlushes": 1,
+              "jitterBufferMinimumDelay": 23827.2,
+              "jitterBufferTargetDelay": 23827.2,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402777927.0,
+              "mid": "0",
+              "packetsDiscarded": 0,
+              "packetsLost": 0,
+              "packetsReceived": 405,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 208.8,
+              "remoteId": "ROA2995394195",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 168312,
+              "ssrc": 2995394195,
+              "totalAudioEnergy": 1.6930354322092935e-05,
+              "totalInterruptionDuration": 1.981,
+              "totalProcessingDelay": 16710.72,
+              "totalSamplesDuration": 14.78999999999973,
+              "totalSamplesReceived": 582240,
+              "trackIdentifier": "external-41006142665600-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V484862202",
+              "bytesReceived": 42834,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "estimatedPlayoutTimestamp": 4001391579586.0,
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 204,
+              "framesDropped": 0,
+              "framesReceived": 204,
+              "freezeCount": 1,
+              "headerBytesReceived": 7464,
+              "jitter": 0.0,
+              "jitterBufferDelay": 19.235,
+              "jitterBufferEmittedCount": 204,
+              "jitterBufferMinimumDelay": 2.2720569999999998,
+              "jitterBufferTargetDelay": 19.464484,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402777941.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.4,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 226,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 1221,
+              "remoteId": "ROV484862202",
+              "retransmittedBytesReceived": 2730,
+              "retransmittedPacketsReceived": 19,
+              "rtxSsrc": 2400931087,
+              "ssrc": 484862202,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.012,
+              "totalFreezesDuration": 2.04,
+              "totalInterFrameDelay": 10.507,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 19.247,
+              "totalSquaredInterFrameDelay": 4.545002999999994,
+              "trackIdentifier": "external-41006142665600-1-video",
+              "transportId": "T01"
+            }
+          ]
+        }
+      ],
+      "totals": {
+        "rawBytes": 2116800,
+        "videoFrames": 552,
+        "injectedAudio": 778560,
+        "injectedVideo": 204
+      },
+      "maxAudioGapMs": 57.758,
+      "maxVideoGapMs": 42.871,
+      "capturePhaseDeltas": [
+        {
+          "name": "record-only",
+          "delta": {
+            "rawBytes": 379200,
+            "videoFrames": 99,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "source-only",
+          "delta": {
+            "rawBytes": 290880,
+            "videoFrames": 75,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "negotiated-before-external-injection",
+          "delta": {
+            "rawBytes": 192000,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-1",
+          "delta": {
+            "rawBytes": 388800,
+            "videoFrames": 102,
+            "injectedAudio": 388800,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-1",
+          "delta": {
+            "rawBytes": 192960,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-2",
+          "delta": {
+            "rawBytes": 389760,
+            "videoFrames": 102,
+            "injectedAudio": 389760,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-2",
+          "delta": {
+            "rawBytes": 197760,
+            "videoFrames": 51,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        }
+      ],
+      "nativeTrackTransitions": [],
+      "videoSource": "explicit synthetic video; physical camera not tested",
+      "audioRtpReceived": true,
+      "audioRtpAdvancedAcrossGates": true,
+      "audioDecoded": true,
+      "videoDecoded": true,
+      "functionalTransportPass": true,
+      "renderInitializeEvents": [],
+      "endpointVolumeMuteUnchanged": true,
+      "traceInputSha256": {
+        "events.csv": "c1e65d0638b8d0e5c5279231787a4f399b93d15a83ef560a7ed720fea80030a1",
+        "stacks.jsonl": "c71e3e886b3f6c75fa66c19d4f0379c4fa2139f5f34e024255f4017b559724f1"
+      },
+      "captureIsolationPass": true,
+      "offWindowPass": true,
+      "twoResumptionsPass": true
+    },
+    "external-track-gates-playout-off": {
+      "variant": "track-gates",
+      "externalOnly": true,
+      "nativePlayoutDiagnostic": {
+        "connections": 2,
+        "nativeAudioPlayout": false,
+        "scope": "source-matched internals for diagnosis; standard native SetAudioPlayout(false)/NullAudioPoller"
+      },
+      "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+      "errors": [],
+      "lateModeChangeRejected": true,
+      "traceLossFree": true,
+      "allCaptureStacksAvailable": true,
+      "sdkCaptureAttempts": 0,
+      "sdkCaptureInitialized": 0,
+      "sdkCaptureStarted": 0,
+      "recordCaptureStarted": 1,
+      "unknownCaptureClients": 0,
+      "captureClients": [
+        {
+          "kind": "record-mf",
+          "initializeSucceeded": true,
+          "started": true,
+          "stackAvailable": true,
+          "endpointSha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd",
+          "modules": [
+            "audioses.dll",
+            "kernel32.dll",
+            "mfcore.dll",
+            "ntdll.dll",
+            "rtworkq.dll"
+          ]
+        }
+      ],
+      "singleRecordContinuity": true,
+      "sourceRms": 0.000799798326074843,
+      "physicalCameraValidated": false,
+      "receiver": [
+        {
+          "gate": 1,
+          "pcmSamples": 238080,
+          "rms": 0.00046878907399620955,
+          "videoFrames": 102,
+          "audioPacketsReceived": 202
+        },
+        {
+          "gate": 2,
+          "pcmSamples": 195360,
+          "rms": 0.00015612076373742545,
+          "videoFrames": 97,
+          "audioPacketsReceived": 405
+        }
+      ],
+      "stopWindows": [
+        {
+          "name": "idle-after-1",
+          "settleMs": 1000,
+          "observeMs": 1000,
+          "pcmSamples": 48960,
+          "nonzeroSamples": 0,
+          "rms": 0.0,
+          "videoFrames": 0,
+          "beforeInbound": [
+            {
+              "id": "IT01A1196422296",
+              "audioLevel": 0.0,
+              "bytesReceived": 10697,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 47055,
+              "concealmentEvents": 2,
+              "delayedPacketOutageSamples": 2393,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 5656,
+              "insertedSamplesForDeceleration": 1486,
+              "interruptionCount": 0,
+              "jitter": 0.022,
+              "jitterBufferDelay": 10483.2,
+              "jitterBufferEmittedCount": 193920,
+              "jitterBufferFlushes": 1,
+              "jitterBufferMinimumDelay": 12134.4,
+              "jitterBufferTargetDelay": 12134.4,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402808881.0,
+              "mid": "0",
+              "packetsDiscarded": 0,
+              "packetsLost": 0,
+              "packetsReceived": 202,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 4.74,
+              "remoteId": "ROA1196422296",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 37254,
+              "ssrc": 1196422296,
+              "totalAudioEnergy": 6.686737961482522e-05,
+              "totalInterruptionDuration": 0.0,
+              "totalProcessingDelay": 9716.16,
+              "totalSamplesDuration": 7.69999999999988,
+              "totalSamplesReceived": 242400,
+              "trackIdentifier": "external-41043182142000-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V2751621195",
+              "bytesReceived": 20096,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 102,
+              "framesDropped": 0,
+              "framesReceived": 102,
+              "freezeCount": 0,
+              "headerBytesReceived": 4460,
+              "jitter": 0.0,
+              "jitterBufferDelay": 1.194,
+              "jitterBufferEmittedCount": 102,
+              "jitterBufferMinimumDelay": 1.123206,
+              "jitterBufferTargetDelay": 1.123206,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402808899.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.0,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 120,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 931,
+              "remoteId": "ROV2751621195",
+              "retransmittedBytesReceived": 2548,
+              "retransmittedPacketsReceived": 18,
+              "rtxSsrc": 1798944562,
+              "ssrc": 2751621195,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.003,
+              "totalFreezesDuration": 0.0,
+              "totalInterFrameDelay": 4.043,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 1.1969999999999998,
+              "totalSquaredInterFrameDelay": 0.1621089999999999,
+              "trackIdentifier": "external-41043182142000-1-video",
+              "transportId": "T01"
+            }
+          ],
+          "afterInbound": [
+            {
+              "id": "IT01A1196422296",
+              "audioLevel": 0.0,
+              "bytesReceived": 10697,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 96015,
+              "concealmentEvents": 2,
+              "delayedPacketOutageSamples": 2393,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 5656,
+              "insertedSamplesForDeceleration": 1486,
+              "interruptionCount": 0,
+              "jitter": 0.022,
+              "jitterBufferDelay": 10483.2,
+              "jitterBufferEmittedCount": 193920,
+              "jitterBufferFlushes": 1,
+              "jitterBufferMinimumDelay": 12134.4,
+              "jitterBufferTargetDelay": 12134.4,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402808881.0,
+              "mid": "0",
+              "packetsDiscarded": 0,
+              "packetsLost": 0,
+              "packetsReceived": 202,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 4.74,
+              "remoteId": "ROA1196422296",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 86214,
+              "ssrc": 1196422296,
+              "totalAudioEnergy": 6.686737961482522e-05,
+              "totalInterruptionDuration": 0.0,
+              "totalProcessingDelay": 9716.16,
+              "totalSamplesDuration": 8.719999999999859,
+              "totalSamplesReceived": 291360,
+              "trackIdentifier": "external-41043182142000-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V2751621195",
+              "bytesReceived": 20096,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 102,
+              "framesDropped": 0,
+              "framesReceived": 102,
+              "freezeCount": 0,
+              "headerBytesReceived": 4460,
+              "jitter": 0.0,
+              "jitterBufferDelay": 1.194,
+              "jitterBufferEmittedCount": 102,
+              "jitterBufferMinimumDelay": 1.123206,
+              "jitterBufferTargetDelay": 1.123206,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402808899.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.0,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 120,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 931,
+              "remoteId": "ROV2751621195",
+              "retransmittedBytesReceived": 2548,
+              "retransmittedPacketsReceived": 18,
+              "rtxSsrc": 1798944562,
+              "ssrc": 2751621195,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.003,
+              "totalFreezesDuration": 0.0,
+              "totalInterFrameDelay": 4.043,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 1.1969999999999998,
+              "totalSquaredInterFrameDelay": 0.1621089999999999,
+              "trackIdentifier": "external-41043182142000-1-video",
+              "transportId": "T01"
+            }
+          ]
+        },
+        {
+          "name": "idle-after-2",
+          "settleMs": 1000,
+          "observeMs": 1000,
+          "pcmSamples": 48960,
+          "nonzeroSamples": 0,
+          "rms": 0.0,
+          "videoFrames": 0,
+          "beforeInbound": [
+            {
+              "id": "IT01A1196422296",
+              "audioLevel": 0.0,
+              "bytesReceived": 19777,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 146088,
+              "concealmentEvents": 4,
+              "delayedPacketOutageSamples": 12468,
+              "estimatedPlayoutTimestamp": 4001391616049.0,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 11340,
+              "insertedSamplesForDeceleration": 1486,
+              "interruptionCount": 1,
+              "jitter": 0.022,
+              "jitterBufferDelay": 17548.8,
+              "jitterBufferEmittedCount": 388800,
+              "jitterBufferFlushes": 1,
+              "jitterBufferMinimumDelay": 23827.2,
+              "jitterBufferTargetDelay": 23827.2,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402814991.0,
+              "mid": "0",
+              "packetsDiscarded": 0,
+              "packetsLost": 0,
+              "packetsReceived": 405,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 214.45,
+              "remoteId": "ROA1196422296",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 126802,
+              "ssrc": 1196422296,
+              "totalAudioEnergy": 6.982382936836936e-05,
+              "totalInterruptionDuration": 2.02,
+              "totalProcessingDelay": 16031.04,
+              "totalSamplesDuration": 13.81999999999975,
+              "totalSamplesReceived": 536160,
+              "trackIdentifier": "external-41043182142000-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V2751621195",
+              "bytesReceived": 40962,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "estimatedPlayoutTimestamp": 4001391615849.0,
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 204,
+              "framesDropped": 0,
+              "framesPerSecond": 5.0,
+              "framesReceived": 204,
+              "freezeCount": 1,
+              "googTimingFrameInfo": "3472638163,-2,-2,-1,-1,-1,-2,-2,41059104,41059104,41059301,41059301,41059310,0,1",
+              "headerBytesReceived": 7260,
+              "jitter": 0.0,
+              "jitterBufferDelay": 15.838,
+              "jitterBufferEmittedCount": 204,
+              "jitterBufferMinimumDelay": 2.282565,
+              "jitterBufferTargetDelay": 15.857657,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402815025.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.206,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 224,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 1135,
+              "remoteId": "ROV2751621195",
+              "retransmittedBytesReceived": 2548,
+              "retransmittedPacketsReceived": 18,
+              "rtxSsrc": 1798944562,
+              "ssrc": 2751621195,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.006999999999999999,
+              "totalFreezesDuration": 2.082,
+              "totalInterFrameDelay": 10.351,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 15.844999999999999,
+              "totalSquaredInterFrameDelay": 4.685204999999994,
+              "trackIdentifier": "external-41043182142000-1-video",
+              "transportId": "T01"
+            }
+          ],
+          "afterInbound": [
+            {
+              "id": "IT01A1196422296",
+              "audioLevel": 0.0,
+              "bytesReceived": 19777,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 195048,
+              "concealmentEvents": 4,
+              "delayedPacketOutageSamples": 12468,
+              "estimatedPlayoutTimestamp": 4001391617066.0,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 11340,
+              "insertedSamplesForDeceleration": 1486,
+              "interruptionCount": 1,
+              "jitter": 0.022,
+              "jitterBufferDelay": 17548.8,
+              "jitterBufferEmittedCount": 388800,
+              "jitterBufferFlushes": 1,
+              "jitterBufferMinimumDelay": 23827.2,
+              "jitterBufferTargetDelay": 23827.2,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402814991.0,
+              "mid": "0",
+              "packetsDiscarded": 0,
+              "packetsLost": 0,
+              "packetsReceived": 405,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 214.45,
+              "remoteId": "ROA1196422296",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 175762,
+              "ssrc": 1196422296,
+              "totalAudioEnergy": 6.982382936836936e-05,
+              "totalInterruptionDuration": 2.02,
+              "totalProcessingDelay": 16031.04,
+              "totalSamplesDuration": 14.839999999999728,
+              "totalSamplesReceived": 585120,
+              "trackIdentifier": "external-41043182142000-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V2751621195",
+              "bytesReceived": 40962,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "estimatedPlayoutTimestamp": 4001391616866.0,
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 204,
+              "framesDropped": 0,
+              "framesReceived": 204,
+              "freezeCount": 1,
+              "headerBytesReceived": 7260,
+              "jitter": 0.0,
+              "jitterBufferDelay": 15.838,
+              "jitterBufferEmittedCount": 204,
+              "jitterBufferMinimumDelay": 2.282565,
+              "jitterBufferTargetDelay": 15.857657,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402815025.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.206,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 224,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 1135,
+              "remoteId": "ROV2751621195",
+              "retransmittedBytesReceived": 2548,
+              "retransmittedPacketsReceived": 18,
+              "rtxSsrc": 1798944562,
+              "ssrc": 2751621195,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.006999999999999999,
+              "totalFreezesDuration": 2.082,
+              "totalInterFrameDelay": 10.351,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 15.844999999999999,
+              "totalSquaredInterFrameDelay": 4.685204999999994,
+              "trackIdentifier": "external-41043182142000-1-video",
+              "transportId": "T01"
+            }
+          ]
+        }
+      ],
+      "totals": {
+        "rawBytes": 2117760,
+        "videoFrames": 553,
+        "injectedAudio": 777600,
+        "injectedVideo": 204
+      },
+      "maxAudioGapMs": 81.345,
+      "maxVideoGapMs": 42.122,
+      "capturePhaseDeltas": [
+        {
+          "name": "record-only",
+          "delta": {
+            "rawBytes": 376320,
+            "videoFrames": 99,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "source-only",
+          "delta": {
+            "rawBytes": 287040,
+            "videoFrames": 75,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "negotiated-before-external-injection",
+          "delta": {
+            "rawBytes": 192960,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-1",
+          "delta": {
+            "rawBytes": 388800,
+            "videoFrames": 102,
+            "injectedAudio": 388800,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-1",
+          "delta": {
+            "rawBytes": 196800,
+            "videoFrames": 51,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-2",
+          "delta": {
+            "rawBytes": 388800,
+            "videoFrames": 102,
+            "injectedAudio": 388800,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-2",
+          "delta": {
+            "rawBytes": 196800,
+            "videoFrames": 51,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        }
+      ],
+      "nativeTrackTransitions": [
+        "native-track-enable-1",
+        "native-track-disable-1",
+        "native-track-enable-2",
+        "native-track-disable-2"
+      ],
+      "videoSource": "explicit synthetic video; physical camera not tested",
+      "audioRtpReceived": true,
+      "audioRtpAdvancedAcrossGates": true,
+      "audioDecoded": true,
+      "videoDecoded": true,
+      "functionalTransportPass": true,
+      "renderInitializeEvents": [],
+      "endpointVolumeMuteUnchanged": true,
+      "traceInputSha256": {
+        "events.csv": "95a80c5867a891f7f369cd741b61bb061c49c308c122c42210880e235adf7c93",
+        "stacks.jsonl": "63a25e18a840be4d20ef5df9c86fefe19d8df82a7ef4ae5548ff2de1089f37b4"
+      },
+      "captureIsolationPass": true,
+      "offWindowPass": true,
+      "twoResumptionsPass": true
+    },
+    "external-replace-gates-playout-off": {
+      "variant": "replace-gates",
+      "externalOnly": true,
+      "nativePlayoutDiagnostic": {
+        "connections": 2,
+        "nativeAudioPlayout": false,
+        "scope": "source-matched internals for diagnosis; standard native SetAudioPlayout(false)/NullAudioPoller"
+      },
+      "dllSha256": "73b672f90beba282e04ae6dd9dbcb7b3af574d192977ae9224c382075dbcd740",
+      "errors": [],
+      "lateModeChangeRejected": true,
+      "traceLossFree": true,
+      "allCaptureStacksAvailable": true,
+      "sdkCaptureAttempts": 0,
+      "sdkCaptureInitialized": 0,
+      "sdkCaptureStarted": 0,
+      "recordCaptureStarted": 1,
+      "unknownCaptureClients": 0,
+      "captureClients": [
+        {
+          "kind": "record-mf",
+          "initializeSucceeded": true,
+          "started": true,
+          "stackAvailable": true,
+          "endpointSha256": "06703ccaa71ba2ffc92d04e19bd0f1f065f179317f681040e78e69ba20a0f3fd",
+          "modules": [
+            "audioses.dll",
+            "kernel32.dll",
+            "mfcore.dll",
+            "ntdll.dll",
+            "rtworkq.dll"
+          ]
+        }
+      ],
+      "singleRecordContinuity": true,
+      "sourceRms": 0.0004203591523650838,
+      "physicalCameraValidated": false,
+      "receiver": [
+        {
+          "gate": 1,
+          "pcmSamples": 238560,
+          "rms": 0.00015916936377504892,
+          "videoFrames": 102,
+          "audioPacketsReceived": 205
+        },
+        {
+          "gate": 2,
+          "pcmSamples": 195360,
+          "rms": 0.00031982857906251346,
+          "videoFrames": 94,
+          "audioPacketsReceived": 408
+        }
+      ],
+      "stopWindows": [
+        {
+          "name": "idle-after-1",
+          "settleMs": 1000,
+          "observeMs": 1000,
+          "pcmSamples": 48960,
+          "nonzeroSamples": 0,
+          "rms": 0.0,
+          "videoFrames": 0,
+          "beforeInbound": [
+            {
+              "id": "IT01A4097722968",
+              "audioLevel": 0.0,
+              "bytesReceived": 10464,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 45804,
+              "concealmentEvents": 1,
+              "delayedPacketOutageSamples": 1920,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 5740,
+              "insertedSamplesForDeceleration": 1558,
+              "interruptionCount": 0,
+              "jitter": 0.023,
+              "jitterBufferDelay": 10339.2,
+              "jitterBufferEmittedCount": 196800,
+              "jitterBufferFlushes": 1,
+              "jitterBufferMinimumDelay": 12307.2,
+              "jitterBufferTargetDelay": 12307.2,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402846045.0,
+              "mid": "0",
+              "packetsDiscarded": 0,
+              "packetsLost": 0,
+              "packetsReceived": 205,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 4.91,
+              "remoteId": "ROA4097722968",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 38137,
+              "ssrc": 4097722968,
+              "totalAudioEnergy": 3.088407589859706e-06,
+              "totalInterruptionDuration": 0.0,
+              "totalProcessingDelay": 9570.24,
+              "totalSamplesDuration": 7.70999999999988,
+              "totalSamplesReceived": 243840,
+              "trackIdentifier": "external-41080311217900-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V1179718120",
+              "bytesReceived": 20259,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 102,
+              "framesDropped": 0,
+              "framesReceived": 102,
+              "freezeCount": 0,
+              "headerBytesReceived": 4632,
+              "jitter": 0.0,
+              "jitterBufferDelay": 1.2109999999999999,
+              "jitterBufferEmittedCount": 102,
+              "jitterBufferMinimumDelay": 1.129878,
+              "jitterBufferTargetDelay": 1.129878,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402846038.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.0,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 121,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 1017,
+              "remoteId": "ROV1179718120",
+              "retransmittedBytesReceived": 2730,
+              "retransmittedPacketsReceived": 19,
+              "rtxSsrc": 2806051082,
+              "ssrc": 1179718120,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.003,
+              "totalFreezesDuration": 0.0,
+              "totalInterFrameDelay": 4.049,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 1.214,
+              "totalSquaredInterFrameDelay": 0.16252899999999984,
+              "trackIdentifier": "external-41080311217900-1-video",
+              "transportId": "T01"
+            }
+          ],
+          "afterInbound": [
+            {
+              "id": "IT01A4097722968",
+              "audioLevel": 0.0,
+              "bytesReceived": 10464,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 94764,
+              "concealmentEvents": 1,
+              "delayedPacketOutageSamples": 1920,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 5740,
+              "insertedSamplesForDeceleration": 1558,
+              "interruptionCount": 0,
+              "jitter": 0.023,
+              "jitterBufferDelay": 10339.2,
+              "jitterBufferEmittedCount": 196800,
+              "jitterBufferFlushes": 1,
+              "jitterBufferMinimumDelay": 12307.2,
+              "jitterBufferTargetDelay": 12307.2,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402846045.0,
+              "mid": "0",
+              "packetsDiscarded": 0,
+              "packetsLost": 0,
+              "packetsReceived": 205,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 4.91,
+              "remoteId": "ROA4097722968",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 87097,
+              "ssrc": 4097722968,
+              "totalAudioEnergy": 3.088407589859706e-06,
+              "totalInterruptionDuration": 0.0,
+              "totalProcessingDelay": 9570.24,
+              "totalSamplesDuration": 8.729999999999858,
+              "totalSamplesReceived": 292800,
+              "trackIdentifier": "external-41080311217900-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V1179718120",
+              "bytesReceived": 20259,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 102,
+              "framesDropped": 0,
+              "framesReceived": 102,
+              "freezeCount": 0,
+              "headerBytesReceived": 4632,
+              "jitter": 0.0,
+              "jitterBufferDelay": 1.2109999999999999,
+              "jitterBufferEmittedCount": 102,
+              "jitterBufferMinimumDelay": 1.129878,
+              "jitterBufferTargetDelay": 1.129878,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402846038.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.0,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 121,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 1017,
+              "remoteId": "ROV1179718120",
+              "retransmittedBytesReceived": 2730,
+              "retransmittedPacketsReceived": 19,
+              "rtxSsrc": 2806051082,
+              "ssrc": 1179718120,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.003,
+              "totalFreezesDuration": 0.0,
+              "totalInterFrameDelay": 4.049,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 1.214,
+              "totalSquaredInterFrameDelay": 0.16252899999999984,
+              "trackIdentifier": "external-41080311217900-1-video",
+              "transportId": "T01"
+            }
+          ]
+        },
+        {
+          "name": "idle-after-2",
+          "settleMs": 1000,
+          "observeMs": 1000,
+          "pcmSamples": 48480,
+          "nonzeroSamples": 0,
+          "rms": 0.0,
+          "videoFrames": 0,
+          "beforeInbound": [
+            {
+              "id": "IT01A4097722968",
+              "audioLevel": 0.0,
+              "bytesReceived": 21494,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 144033,
+              "concealmentEvents": 3,
+              "delayedPacketOutageSamples": 10449,
+              "estimatedPlayoutTimestamp": 4001391651086.0,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 11424,
+              "insertedSamplesForDeceleration": 1558,
+              "interruptionCount": 1,
+              "jitter": 0.023,
+              "jitterBufferDelay": 16857.6,
+              "jitterBufferEmittedCount": 391680,
+              "jitterBufferFlushes": 1,
+              "jitterBufferMinimumDelay": 24000.0,
+              "jitterBufferTargetDelay": 24000.0,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402852136.0,
+              "mid": "0",
+              "packetsDiscarded": 0,
+              "packetsLost": 0,
+              "packetsReceived": 408,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 214.17,
+              "remoteId": "ROA4097722968",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 127225,
+              "ssrc": 4097722968,
+              "totalAudioEnergy": 1.1229632360820444e-05,
+              "totalInterruptionDuration": 2.014,
+              "totalProcessingDelay": 15329.28,
+              "totalSamplesDuration": 13.81999999999975,
+              "totalSamplesReceived": 537120,
+              "trackIdentifier": "external-41080311217900-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V1179718120",
+              "bytesReceived": 41125,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "estimatedPlayoutTimestamp": 4001391652780.0,
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 204,
+              "framesDropped": 0,
+              "framesPerSecond": 8.0,
+              "framesReceived": 204,
+              "freezeCount": 1,
+              "googTimingFrameInfo": "1421880202,-2,-2,-1,-1,-1,-2,-2,41096108,41096108,41096418,41096418,41096428,0,1",
+              "headerBytesReceived": 7448,
+              "jitter": 0.0,
+              "jitterBufferDelay": 19.654999999999998,
+              "jitterBufferEmittedCount": 204,
+              "jitterBufferMinimumDelay": 2.217121,
+              "jitterBufferTargetDelay": 19.846006,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402852153.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.4,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 225,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 1221,
+              "remoteId": "ROV1179718120",
+              "retransmittedBytesReceived": 2730,
+              "retransmittedPacketsReceived": 19,
+              "rtxSsrc": 2806051082,
+              "ssrc": 1179718120,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.009,
+              "totalFreezesDuration": 2.077,
+              "totalInterFrameDelay": 10.544,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 19.663999999999998,
+              "totalSquaredInterFrameDelay": 4.697761999999992,
+              "trackIdentifier": "external-41080311217900-1-video",
+              "transportId": "T01"
+            }
+          ],
+          "afterInbound": [
+            {
+              "id": "IT01A4097722968",
+              "audioLevel": 0.0,
+              "bytesReceived": 21494,
+              "codecId": "CIT01_111_minptime=10;useinbandfec=1",
+              "concealedSamples": 192993,
+              "concealmentEvents": 3,
+              "delayedPacketOutageSamples": 10449,
+              "estimatedPlayoutTimestamp": 4001391652104.0,
+              "fecPacketsDiscarded": 0,
+              "fecPacketsReceived": 0,
+              "headerBytesReceived": 11424,
+              "insertedSamplesForDeceleration": 1558,
+              "interruptionCount": 1,
+              "jitter": 0.023,
+              "jitterBufferDelay": 16857.6,
+              "jitterBufferEmittedCount": 391680,
+              "jitterBufferFlushes": 1,
+              "jitterBufferMinimumDelay": 24000.0,
+              "jitterBufferTargetDelay": 24000.0,
+              "kind": "audio",
+              "lastPacketReceivedTimestamp": 1792402852136.0,
+              "mid": "0",
+              "packetsDiscarded": 0,
+              "packetsLost": 0,
+              "packetsReceived": 408,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "relativePacketArrivalDelay": 214.17,
+              "remoteId": "ROA4097722968",
+              "removedSamplesForAcceleration": 0,
+              "silentConcealedSamples": 176185,
+              "ssrc": 4097722968,
+              "totalAudioEnergy": 1.1229632360820444e-05,
+              "totalInterruptionDuration": 2.014,
+              "totalProcessingDelay": 15329.28,
+              "totalSamplesDuration": 14.839999999999728,
+              "totalSamplesReceived": 586080,
+              "trackIdentifier": "external-41080311217900-1-audio",
+              "transportId": "T01"
+            },
+            {
+              "id": "IT01V1179718120",
+              "bytesReceived": 41125,
+              "codecId": "CIT01_96",
+              "decoderImplementation": "libvpx",
+              "estimatedPlayoutTimestamp": 4001391653798.0,
+              "firCount": 0,
+              "frameHeight": 240,
+              "frameWidth": 320,
+              "framesAssembledFromMultiplePackets": 0,
+              "framesDecoded": 204,
+              "framesDropped": 0,
+              "framesReceived": 204,
+              "freezeCount": 1,
+              "headerBytesReceived": 7448,
+              "jitter": 0.0,
+              "jitterBufferDelay": 19.654999999999998,
+              "jitterBufferEmittedCount": 204,
+              "jitterBufferMinimumDelay": 2.217121,
+              "jitterBufferTargetDelay": 19.846006,
+              "keyFramesDecoded": 1,
+              "kind": "video",
+              "lastPacketReceivedTimestamp": 1792402852153.0,
+              "mid": "1",
+              "minPlayoutDelay": 0.4,
+              "nackCount": 0,
+              "packetsLost": 0,
+              "packetsReceived": 225,
+              "packetsReceivedWithCe": 0,
+              "packetsReceivedWithEct1": 0,
+              "pauseCount": 0,
+              "pliCount": 0,
+              "powerEfficientDecoder": false,
+              "qpSum": 1221,
+              "remoteId": "ROV1179718120",
+              "retransmittedBytesReceived": 2730,
+              "retransmittedPacketsReceived": 19,
+              "rtxSsrc": 2806051082,
+              "ssrc": 1179718120,
+              "totalAssemblyTime": 0.0,
+              "totalDecodeTime": 0.009,
+              "totalFreezesDuration": 2.077,
+              "totalInterFrameDelay": 10.544,
+              "totalPausesDuration": 0.0,
+              "totalProcessingDelay": 19.663999999999998,
+              "totalSquaredInterFrameDelay": 4.697761999999992,
+              "trackIdentifier": "external-41080311217900-1-video",
+              "transportId": "T01"
+            }
+          ]
+        }
+      ],
+      "totals": {
+        "rawBytes": 2119680,
+        "videoFrames": 553,
+        "injectedAudio": 783360,
+        "injectedVideo": 204
+      },
+      "maxAudioGapMs": 55.224,
+      "maxVideoGapMs": 43.065,
+      "capturePhaseDeltas": [
+        {
+          "name": "record-only",
+          "delta": {
+            "rawBytes": 380160,
+            "videoFrames": 100,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "source-only",
+          "delta": {
+            "rawBytes": 286080,
+            "videoFrames": 75,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "negotiated-before-external-injection",
+          "delta": {
+            "rawBytes": 192000,
+            "videoFrames": 50,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-1",
+          "delta": {
+            "rawBytes": 393600,
+            "videoFrames": 102,
+            "injectedAudio": 393600,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-1",
+          "delta": {
+            "rawBytes": 195840,
+            "videoFrames": 51,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        },
+        {
+          "name": "send-2",
+          "delta": {
+            "rawBytes": 389760,
+            "videoFrames": 102,
+            "injectedAudio": 389760,
+            "injectedVideo": 102
+          }
+        },
+        {
+          "name": "idle-after-2",
+          "delta": {
+            "rawBytes": 196800,
+            "videoFrames": 51,
+            "injectedAudio": 0,
+            "injectedVideo": 0
+          }
+        }
+      ],
+      "nativeTrackTransitions": [
+        "native-replace-enable-1",
+        "native-replace-disable-1",
+        "native-replace-enable-2",
+        "native-replace-disable-2"
+      ],
+      "videoSource": "explicit synthetic video; physical camera not tested",
+      "audioRtpReceived": true,
+      "audioRtpAdvancedAcrossGates": true,
+      "audioDecoded": true,
+      "videoDecoded": true,
+      "functionalTransportPass": true,
+      "renderInitializeEvents": [],
+      "endpointVolumeMuteUnchanged": true,
+      "traceInputSha256": {
+        "events.csv": "e73949d4738df00ea4e9959aa4240a0a5bb77fe1f2153e8af3b6da5ef5aac3f7",
+        "stacks.jsonl": "947d2d969db85752a819733098b1840c080e73bdb2bb3564c89edb609f66e353"
+      },
+      "captureIsolationPass": true,
+      "offWindowPass": true,
+      "twoResumptionsPass": true
+    }
+  },
+  "sameCaptureEndpointControls": true,
+  "diagnosticDecodedMediaPass": true,
+  "publicWrapperPlayoutApiValidated": false,
+  "nativeTrackGateDiagnosticPass": true,
+  "nativeReplaceGateDiagnosticPass": true,
+  "corePR": "https://github.com/webrtc-sdk/webrtc/pull/314",
+  "wrapperPR": "https://github.com/webrtc-sdk/libwebrtc/pull/158",
+  "stopObservation": {
+    "settleMs": 1000,
+    "observeMs": 1000,
+    "silenceRmsLimit": 3.0517578125e-05,
+    "packetSilenceRequired": false
+  },
+  "stopResumeAndPcmPass": true,
+  "oldFlutterBinaryCompatibilityPass": true
+}

@@ -76,7 +76,9 @@ on Windows x64 (including four AudioDevice tests). Requires
 
 The original `sdk/factory-policy.patch` and f7e9 source pin remain the measured
 ETW/ABI candidate. They are not replaced by the latest-main proposal. Latest-main
-build/test evidence is in `upstream/wrapper/validation.json`; ETW, old-binary
-runtime, other OS builds and full presubmit were not repeated for the new DLL.
+build/test evidence is in `upstream/wrapper/validation.json`. Subsequent
+[runtime validation](upstream/wrapper/runtime/README.md) confirms ETW isolation,
+stop/resume with decoded PCM in the diagnostic path and old-binary execution.
+Other OS builds and full presubmit remain unperformed.
 Submitted as [Draft PR #158](https://github.com/webrtc-sdk/libwebrtc/pull/158) from
 [kiarina/libwebrtc](https://github.com/kiarina/libwebrtc), commit `f9a23f98e19c2784fd293941b9e67a43977f1635`.

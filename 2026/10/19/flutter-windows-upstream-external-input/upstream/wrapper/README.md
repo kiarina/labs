@@ -87,7 +87,8 @@ core tests were not rerun for this wrapper preparation.
 
 The earlier candidate's ETW isolation, decoded-PCM diagnostic and old-header
 runtime compatibility results remain in the parent lab with their original
-pins and DLL hash. Those runtime trials have not been repeated on this new DLL.
+pins and DLL hash. A separate [submitted-DLL runtime run](runtime/README.md) now repeats ETW,
+stop/resume, diagnostic decoded PCM and old-header binary execution.
 These wrapper tests do not measure microphone client counts, negotiate media,
 or prove recording-policy application by themselves. Other OS builds and full
 presubmit were not run. Speaker/AEC, physical camera, public wrapper playout

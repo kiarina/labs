@@ -8,9 +8,10 @@ from pathlib import Path
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('trials', type=Path)
 parser.add_argument('output', type=Path)
+parser.add_argument('--sdk-manifest', type=Path, help='candidate identity; defaults to the original measured DLL')
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
-expected = json.loads((root / 'results/candidate-sdk.json').read_text())
+expected = json.loads((args.sdk_manifest or (root / 'results/candidate-sdk.json')).read_text())
 
 
 def read(folder, name):
@@ -70,6 +71,7 @@ def assess(label):
             ph['delta']['rawBytes'] > 0 and ph['delta']['videoFrames'] > 0 for ph in app['phases']),
         'sourceRms': app['sourceRms'], 'physicalCameraValidated': False,
         'receiver': [{'gate': phase['gate'], 'pcmSamples': phase['pcmSamples'], 'rms': phase['rms'], 'videoFrames': phase['videoFrames'], 'audioPacketsReceived': audio_packets[i]} for i, phase in enumerate(receiver)],
+        'stopWindows': app.get('stopWindows', []),
         'totals': app['totals'],
         'maxAudioGapMs': app['maxAudioGapMs'], 'maxVideoGapMs': app['maxVideoGapMs'],
         'capturePhaseDeltas': [{'name': phase['name'], 'delta': phase['delta']} for phase in app['phases']],
