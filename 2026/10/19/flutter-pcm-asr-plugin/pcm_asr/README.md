@@ -39,7 +39,7 @@ print('${result.id}: ${result.text} (${result.elapsed.inMilliseconds} ms, ${resu
 | --- | --- | --- | --- |
 | macOS 26+ | `SpeechAnalyzer` + `SpeechTranscriber` | yes | one analyzer per request, `finalizeAndFinish`; model assets managed by the OS |
 | iOS 26+ | same (shared `darwin/` source) | yes | needs hardware that reports `SpeechTranscriber.isAvailable`; no Simulator |
-| Android 13+ (API 33) | `android.speech.SpeechRecognizer` fed by a pipe (`EXTRA_AUDIO_SOURCE`) | when the device has an on-device recognizer | audio is written at real-time pace, so a request takes about the clip's length; not yet run on a device |
+| Android 13+ (API 33) | `android.speech.SpeechRecognizer` fed by a pipe (`EXTRA_AUDIO_SOURCE`) | when the device has an on-device recognizer | verified on a Pixel 6; PCM is written as fast as the pipe accepts (a lab knob restores real-time pace); a 0.6 s silent tail is appended; `stopListening` is never called |
 | Web | `SpeechRecognition.start(MediaStreamTrack)` | no (cloud, unless the user installed Chrome's language pack) | desktop Chrome/Edge 135+ only; audio goes to the browser vendor's servers |
 | Windows | none | – | no OS engine takes external PCM for Japanese; `support()` reports `unsupportedPlatform` |
 

@@ -20,7 +20,8 @@ OS ごとの API の調査は [research/apple.md](research/apple.md)・[research
 
 - Apple M1 Max、macOS 27.0.1、Xcode 27.1、Flutter 3.47.2 / Dart 3.13.2。iOS は iPad Air（第 4 世代、A14）、iOS 27.0.1。
   Web は Google Chrome 155（ブランド版。Chromium 単体は Google の音声サービスに届かない）。
-  Windows は Core i9-12900K、Windows 11 25H2（build 26220）、日本語ロケール。Android は Pixel 6 を予定（未実行）。
+  Windows は Core i9-12900K、Windows 11 25H2（build 26220）、日本語ロケール。Android は Pixel 6（Android 17、build CP2A.260705.006、
+  Android System Intelligence の `AiAiSpeechRecognitionService`、debug build）。
 - 共有素材 `tests/assets/mp3/conversation_2speaker_14s_16k.mp3` を 16 kHz mono PCM16 に decode し、`fixtures/scd.json` の
   境界で 6 区間に切る（`tools/prepare.py`。切り出しの hash は `fixtures/segments.json`）。例題アプリは区間を raw PCM の
   asset として読み、plugin に 3 パス渡して `PCM_ASR {json}` の行を出す。`tools/evaluate.py` が正規化 CER
@@ -46,9 +47,10 @@ Windows は plugin を作らず、`tools/windows/` の PowerShell と C++（MSVC
 | Web（Chrome 155） | `SpeechRecognition.start(track)`、cloud | いいえ | 18/18、ID 一致 18/18、cancel・無音は通過、未対応 locale は検出不能 | 5.8 %（うち 3 字は「本当／ほんと」の表記） | 3444 / 3895 / 2910 ms（区間長＋前後の無音 1 秒） |
 | Windows 11 25H2 | SAPI desktop（MS-1041-80-DESK） | はい | 18/18 返るが 1〜2 文字ずつ | 97 % | 18 ms（意味なし） |
 | Windows 11 25H2 | OneCore DNN ja-JP（SAPI 経由） | – | `LoadDictation` が `SPERR_NOT_FOUND`。認識できない | – | – |
-| Android | `SpeechRecognizer` + `EXTRA_AUDIO_SOURCE`（pipe） | 端末次第 | **未実行**（Kotlin は build 済み。Pixel 6 に到達できず） | – | – |
+| Android 17（Pixel 6） | `SpeechRecognizer` + `EXTRA_AUDIO_SOURCE`（pipe、端末内の認識器） | はい | 18/18、ID 一致 18/18、異常系 3/3 | 4.7 %（「助かる→助かり」と「本当／ほんと」） | **458 / 674 / 798 ms**（待たずに書く）。実時間で書くと 3311 / 3719 / 2621 ms |
 
-証拠: `results/macos.json`・`results/ios.json`・`results/web.json`（`pass` と区間ごとの文字・時間）、`results/windows/`（probe のログ）。
+証拠: `results/macos.json`・`results/ios.json`・`results/android.json`・`results/android-pace-1.0.json`・`results/web.json`（`pass` と区間ごとの文字・時間）、
+`results/windows/`（probe のログ）。
 Web の `prepare` は何もしない（Chrome の端末内モデルは約 60 MB の download と確認が要り、アプリの判断にする）。
 
 ### 読み方
@@ -66,20 +68,27 @@ Web の `prepare` は何もしない（Chrome の端末内モデルは約 60 MB 
   使えず（1〜2 文字しか返さない）、新しい OneCore DNN は SAPI から辞書を読めない。`Windows.Media.SpeechRecognition` はマイク専用、
   Windows AI の Speech は英語のみ・experimental・MSIX の identity が要る（[research/windows.md](research/windows.md)）。
   Windows の日本語は whisper.cpp などの非 OS backend になる。
-- **Android は実装したが未検証。** 設計は field report（Pixel 6・ja-JP・`RECORD_AUDIO` なしで動いた例）に合わせた:
-  pipe に実時間で書く、`stopListening` を呼ばない、1 つの recognizer を直列に使う、`final_result=true` の partial と
-  最後の partial を保険にする。実時間で書くため要求の時間は区間長程度になる見込み。
+- **Android は Pixel 6 で端末内・日本語・`RECORD_AUDIO` なしで成立した。** 日本語の端末内モデルは入っていた（`checkRecognitionSupport` が
+  installed、`prepare` 50 ms）。service は要求ごとに "Create input stream from external audio PFD" を記録する。
+  **実時間で書く必要はなかった**: 待たずに書いても文字は同じで、要求→確定が 3.3 秒から 0.46 秒に縮んだ（field report と
+  ML Kit の文書は実時間を求めている。他の端末・認識サービスでは要確認で、`PACE` で戻せる）。pipe を閉じた直後に終えると末尾の
+  1〜2 音節が落ちたので、無音 0.6 秒を書いてから閉じる。service が pipe を開く前（`onReadyForSpeech` の前）に閉じると
+  セッションが終わらないので、writer は ready を待つ。locale 不正などで service が読まない pipe に書く writer は詰まるので、
+  要求ごとに thread を分け、終わった要求は両端を閉じて writer を解く（1 本の executor で直列にしていたときは後続の要求が 20 秒待った）。
+  `stopListening` は呼ばず、cancel の後は recognizer を作り直す。無音 1 秒は service が `ERROR_NO_MATCH` を 0.3 秒で返し、空文字にする。
 
 ## 判断と限界
 
-**外部 PCM → OS 標準 ASR → 要求ごとの最終結果、という契約は Apple（macOS・iOS）で成立し、Web は cloud 前提で成立、
-Windows は不成立、Android は未検証。** 5 環境で同じ API・端末内・日本語を保証する plugin は作れない。公開するなら、
+**外部 PCM → OS 標準 ASR → 要求ごとの最終結果、という契約は Apple（macOS・iOS）と Android（Pixel 6）で端末内で成立し、
+Web は cloud 前提で成立、Windows は不成立。** 5 環境で同じ API・端末内・日本語を保証する plugin は作れない。公開するなら、
 対応表を `support()` の各フィールドで正直に返し、Windows（と端末内が要る Web）は別 backend に委ねる形になる。
 
 - 14 秒・6 発話の日本語だけ。長文・雑音・固有名詞・実マイク・同時発話・長時間・同時要求は未確認。
 - Apple の cancel は要求が約 100 ms で終わるため、検証では cancel が間に合わず「cancel 前に完了」で通過している。
   Web では cancel が効いた。Apple の cancel の実効は長い区間で別に確かめる。
 - iOS は 1 機種・profile build。Apple Intelligence 非対応の古い機種（A13 以前）は `isAvailable` が偽になると報告がある。
+- Android は Pixel 6・Google の端末内認識器・debug build の 1 条件。他社端末や端末内認識器の無い端末、cloud の既定認識器に
+  `EXTRA_AUDIO_SOURCE` を渡したときの挙動（マイクに黙って切り替わる可能性）は未確認。
 - Web の時間は Chrome の cloud の応答を含み、回線で変わる。
 - `pcm_asr` の名前・所有 repo・publisher・ライセンス（lab は MIT）・初期公開の範囲は未決定。
 

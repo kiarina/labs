@@ -106,3 +106,31 @@ recognizer that ignores the extra opens the microphone.
 3. No `RECORD_AUDIO` in the manifest and no microphone indicator.
 4. One recognizer instance, no `stopListening`, session ends on pipe close.
 5. Whether feeding faster than real time is tolerated (latency would otherwise equal clip length).
+
+## Probe on this project's Pixel 6 (2026-10-19)
+
+Pixel 6, Android 17 (build CP2A.260705.006), on-device recognizer
+`com.google.android.as` (`AiAiSpeechRecognitionService`, SODA), ja-JP already
+installed. Results in `results/android.json` (fast delivery) and
+`results/android-pace-1.0.json` (real time).
+
+- 18/18 results, request IDs echoed, CER 4.7 % on the six segments; no
+  `RECORD_AUDIO` in the manifest; the service logs "Create input stream from
+  external audio PFD" per request.
+- Real-time delivery was **not** needed: writing the PCM as fast as the pipe
+  accepts gave the same text with request→final 458 ms median (798 ms first)
+  instead of 3.3 s. Other devices and the cloud default recognizer are
+  unverified; keep the pace configurable.
+- Closing the pipe right after the audio cut the last one or two syllables
+  ("そっちは"→"そ"); a 0.6 s silent tail fixed it.
+- Closing the pipe before `onReadyForSpeech` left the session open until the
+  caller's timeout; the writer now waits for ready.
+- A writer stuck on a pipe the service never reads (unsupported locale →
+  immediate `ERROR_LANGUAGE_NOT_SUPPORTED`) delayed the following requests by
+  20 s when all requests shared one writer thread; one thread per request and
+  closing both pipe ends on completion fixed it.
+- One second of silence ends with `ERROR_NO_MATCH` about 0.3 s after the pipe
+  closes; the plugin returns empty text. An 8 s watchdog remains as a guard.
+- After `cancel()` the recognizer is destroyed and re-created for the next
+  request; `ERROR_SERVER_DISCONNECTED` / `ERROR_RECOGNIZER_BUSY` are retried up
+  to three times with a growing delay.

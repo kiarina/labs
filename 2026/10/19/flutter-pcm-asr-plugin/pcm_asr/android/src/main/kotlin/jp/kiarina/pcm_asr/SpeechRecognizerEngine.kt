@@ -9,6 +9,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.ParcelFileDescriptor
 import android.os.SystemClock
+import android.util.Log
 import android.speech.ModelDownloadListener
 import android.speech.RecognitionListener
 import android.speech.RecognitionSupport
@@ -35,13 +36,23 @@ import java.util.concurrent.Executors
 class SpeechRecognizerEngine(private val context: Context) {
   companion object {
     const val ENGINE_ID = "android.speech-recognizer"
-    /** 1.0 = real time. Lower values write faster (0.5 = twice real time). */
-    @JvmStatic var PACE = 1.0
+    private const val TAG = "pcm_asr"
+    /**
+     * 1.0 = real time, 0 = as fast as the pipe accepts. Field reports said Google's
+     * recognizers need real-time delivery; on a Pixel 6 (Android 17) the lab got the
+     * same text at 0 with a sixth of the latency, so 0 is the default here. The writer
+     * always waits for onReadyForSpeech first: closing the pipe before the service
+     * opened it stalled the session.
+     */
+    @JvmStatic var PACE = 0.0
+    /** Silence written after the segment before the pipe is closed; closing right away cut the last syllable. */
+    @JvmStatic var TAIL_MS = 600L
     private const val CHUNK_MS = 100L
+    /** A session with no speech never ends after the pipe closes; end it ourselves after this. */
+    @JvmStatic var SILENCE_WATCHDOG_MS = 8000L
   }
 
   private val main = Handler(Looper.getMainLooper())
-  private val writer = Executors.newSingleThreadExecutor()
   private var recognizer: SpeechRecognizer? = null
   private var onDevice = false
   private val queue = ArrayDeque<Request>()
@@ -60,7 +71,12 @@ class SpeechRecognizerEngine(private val context: Context) {
     var finalText: String? = null
     var readFd: ParcelFileDescriptor? = null
     var writeFd: ParcelFileDescriptor? = null
+    var retries = 0
     @Volatile var cancelled = false
+    /** Set when the request has been answered; the writer stops and the pipe is closed. */
+    @Volatile var done = false
+    @Volatile var ready = java.util.concurrent.CountDownLatch(1)
+    fun readyReset() { ready = java.util.concurrent.CountDownLatch(1) }
   }
 
   // MARK: support / prepare
@@ -220,13 +236,17 @@ class SpeechRecognizerEngine(private val context: Context) {
     val r = queue.removeFirstOrNull() ?: return
     current = r
     try {
+      r.readyReset()
+      r.done = false
       val pipe = ParcelFileDescriptor.createPipe()
       r.readFd = pipe[0]
       r.writeFd = pipe[1]
       val intent = intentFor(r.locale, r)
       r.startedAt = SystemClock.elapsedRealtime()
+      Log.d(TAG, "startListening ${r.id} bytes=${r.pcm.size}")
       ensureRecognizer().startListening(intent)
-      writer.execute { write(r) }
+      // One thread per request: a writer blocked on a dead pipe must not delay the next request.
+      Thread({ write(r) }, "pcm_asr-writer").start()
     } catch (e: Exception) {
       finish(r, error = "engineFailure" to e.toString())
     }
@@ -235,25 +255,41 @@ class SpeechRecognizerEngine(private val context: Context) {
   private fun write(r: Request) {
     val out = ParcelFileDescriptor.AutoCloseOutputStream(r.writeFd)
     try {
+      // Do not close the pipe before the service has opened it.
+      val ready = r.ready.await(5, java.util.concurrent.TimeUnit.SECONDS)
+      Log.d(TAG, "write ${r.id} begins ready=$ready done=${r.done}")
+      if (r.done) return
       val bytesPerMs = r.sampleRate * r.channels * 2 / 1000
       val chunk = (bytesPerMs * CHUNK_MS).toInt()
-      var offset = 0
+      val tail = ByteArray((bytesPerMs * TAIL_MS).toInt())
       val origin = SystemClock.elapsedRealtime()
       var written = 0L
-      while (offset < r.pcm.size && !r.cancelled) {
-        val n = minOf(chunk, r.pcm.size - offset)
-        out.write(r.pcm, offset, n)
-        out.flush()
-        offset += n
-        written += n
-        val due = origin + (written * PACE / bytesPerMs).toLong()
-        val wait = due - SystemClock.elapsedRealtime()
-        if (wait > 0) Thread.sleep(wait)
+      for (data in listOf(r.pcm, tail)) {
+        var offset = 0
+        while (offset < data.size && !r.cancelled && !r.done) {
+          val n = minOf(chunk, data.size - offset)
+          out.write(data, offset, n)
+          out.flush()
+          offset += n
+          written += n
+          val due = origin + (written * PACE / bytesPerMs).toLong()
+          val wait = due - SystemClock.elapsedRealtime()
+          if (wait > 0) Thread.sleep(wait)
+        }
       }
     } catch (e: Exception) {
       main.post { if (current === r) finish(r, error = "engineFailure" to "pipe write failed: $e") }
     } finally {
       try { out.close() } catch (_: Exception) {}
+      Log.d(TAG, "write ${r.id} closed pipe after ${SystemClock.elapsedRealtime() - r.startedAt} ms")
+      main.postDelayed({
+        if (current === r && !r.cancelled) {
+          // Nothing came back after the audio ended: treat it as "no speech".
+          Log.d(TAG, "watchdog ${r.id}")
+          recognizer?.cancel()
+          finish(r, text = r.finalText ?: r.lastPartial ?: "", source = "watchdog")
+        }
+      }, SILENCE_WATCHDOG_MS)
     }
   }
 
@@ -274,15 +310,16 @@ class SpeechRecognizerEngine(private val context: Context) {
   }
 
   private val listener = object : RecognitionListener {
-    override fun onReadyForSpeech(params: Bundle?) {}
+    override fun onReadyForSpeech(params: Bundle?) { Log.d(TAG, "onReadyForSpeech ${current?.id}"); current?.ready?.countDown() }
     override fun onBeginningOfSpeech() {}
     override fun onRmsChanged(rmsdB: Float) {}
     override fun onBufferReceived(buffer: ByteArray?) {}
-    override fun onEndOfSpeech() {}
+    override fun onEndOfSpeech() { Log.d(TAG, "onEndOfSpeech ${current?.id}") }
 
     override fun onPartialResults(partialResults: Bundle?) {
       val r = current ?: return
       val list = partialResults?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+      Log.d(TAG, "onPartialResults ${r.id} final=${partialResults?.getBoolean("final_result", false)} ${list?.firstOrNull()}")
       val text = list?.firstOrNull { it.isNotBlank() } ?: return
       r.lastPartial = text
       // Google's recognizers mark the settled hypothesis with final_result=true.
@@ -291,6 +328,7 @@ class SpeechRecognizerEngine(private val context: Context) {
 
     override fun onResults(results: Bundle?) {
       val r = current ?: return
+      Log.d(TAG, "onResults ${r.id} ${results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)}")
       val list = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
       val text = list?.firstOrNull { it.isNotBlank() } ?: r.finalText ?: r.lastPartial ?: ""
       finish(r, text = text, source = if (list?.firstOrNull { it.isNotBlank() } != null) "onResults" else if (r.finalText != null) "final_partial" else "last_partial")
@@ -298,12 +336,28 @@ class SpeechRecognizerEngine(private val context: Context) {
 
     override fun onError(error: Int) {
       val r = current ?: return
+      Log.d(TAG, "onError ${r.id} $error")
       if (r.cancelled) return
       when (error) {
         SpeechRecognizer.ERROR_NO_MATCH, SpeechRecognizer.ERROR_SPEECH_TIMEOUT ->
           finish(r, text = r.finalText ?: r.lastPartial ?: "", source = "error_$error")
         SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS ->
           finish(r, error = "engineFailure" to "recognizer ignored EXTRA_AUDIO_SOURCE and asked for the microphone (error $error)")
+        SpeechRecognizer.ERROR_SERVER_DISCONNECTED, SpeechRecognizer.ERROR_RECOGNIZER_BUSY -> {
+          // The service connection was lost (seen after cancel()); retry once on a fresh recognizer.
+          if (r.retries < 3) {
+            r.retries++
+            current = null
+            r.done = true
+            r.ready.countDown()
+            try { r.writeFd?.close() } catch (_: Exception) {}
+            try { r.readFd?.close() } catch (_: Exception) {}
+            recognizer?.destroy()
+            recognizer = null
+            queue.addFirst(r)
+            main.postDelayed({ pump() }, 300L * r.retries)
+          } else finish(r, error = "engineFailure" to "SpeechRecognizer error $error after ${r.retries} retries")
+        }
         SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED -> finish(r, error = "unsupportedLocale" to "error $error")
         SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE -> finish(r, error = "modelUnavailable" to "error $error")
         else -> finish(r, error = "engineFailure" to "SpeechRecognizer error $error")
@@ -317,6 +371,10 @@ class SpeechRecognizerEngine(private val context: Context) {
   private fun finish(r: Request, text: String? = null, source: String? = null, error: Pair<String, String>? = null) {
     if (current !== r) return
     current = null
+    r.done = true
+    r.ready.countDown()
+    // Closing both ends unblocks a writer stuck on a pipe nobody reads.
+    try { r.writeFd?.close() } catch (_: Exception) {}
     try { r.readFd?.close() } catch (_: Exception) {}
     if (error != null) {
       r.reply.error(error.first, error.second)
@@ -332,8 +390,8 @@ class SpeechRecognizerEngine(private val context: Context) {
         "source" to source,
       ))
     }
-    if (error != null && error.first != "cancelled") {
-      // Reset the service connection after a failure; the next request recreates it.
+    if (error != null) {
+      // Reset the service connection after a failure or cancel; the next request recreates it.
       recognizer?.destroy()
       recognizer = null
     }

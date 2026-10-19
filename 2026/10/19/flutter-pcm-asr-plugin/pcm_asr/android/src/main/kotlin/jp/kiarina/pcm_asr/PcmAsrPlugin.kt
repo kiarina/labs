@@ -52,6 +52,12 @@ class PcmAsrPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
           }
           engine().transcribe(id, locale, pcm, sampleRate, channels, reply)
         }
+        "configure" -> {
+          // Lab knobs, not part of the Dart contract.
+          (call.argument<Double>("pace"))?.let { SpeechRecognizerEngine.PACE = it }
+          (call.argument<Int>("tail_ms"))?.let { SpeechRecognizerEngine.TAIL_MS = it.toLong() }
+          reply.success(emptyMap<String, Any?>())
+        }
         "cancel" -> {
           engine?.cancel(call.argument<String>("id") ?: "")
           reply.success(emptyMap<String, Any?>())

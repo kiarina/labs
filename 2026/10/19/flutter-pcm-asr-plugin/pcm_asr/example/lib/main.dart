@@ -12,6 +12,10 @@ import 'package:pcm_asr/pcm_asr.dart';
 const autotest = String.fromEnvironment('PCM_ASR_AUTOTEST') == '1';
 const locale = String.fromEnvironment('PCM_ASR_LOCALE', defaultValue: 'ja-JP');
 
+/// Android lab knobs: write pace (1.0 = real time) and silent tail in ms.
+const androidPace = String.fromEnvironment('PCM_ASR_ANDROID_PACE');
+const androidTailMs = String.fromEnvironment('PCM_ASR_ANDROID_TAIL_MS');
+
 void main() => runApp(const MaterialApp(home: FixturePage()));
 
 class FixturePage extends StatefulWidget {
@@ -54,6 +58,13 @@ class _FixturePageState extends State<FixturePage> {
     String? unsupportedReason;
     try {
       log('platform', {'os': kIsWeb ? 'web' : defaultTargetPlatform.name, 'locale': locale});
+      if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android && (androidPace.isNotEmpty || androidTailMs.isNotEmpty)) {
+        await const MethodChannel('pcm_asr').invokeMethod('configure', {
+          'pace': ?double.tryParse(androidPace),
+          'tail_ms': ?int.tryParse(androidTailMs),
+        });
+        log('configure', {'pace': androidPace, 'tail_ms': androidTailMs});
+      }
       final support = await asr.support(locale: locale);
       log('support', support.toJson());
       if (!support.supported) {
