@@ -1,0 +1,219 @@
+{
+  "name": "macos",
+  "platform": {
+    "kind": "platform",
+    "os": "macOS",
+    "locale": "ja-JP"
+  },
+  "support": {
+    "kind": "support",
+    "engine": "apple.speech-analyzer",
+    "supported": true,
+    "accepts_external_pcm": true,
+    "on_device": true,
+    "model_state": "installed",
+    "locale": "ja-JP",
+    "sample_rates": [
+      16000
+    ],
+    "needs_network_for_model": true,
+    "reason": null
+  },
+  "prepare": {
+    "kind": "prepare",
+    "ms": 71,
+    "model_state_before": "installed"
+  },
+  "expected_results": 18,
+  "results": 18,
+  "errors": [],
+  "non_empty": 18,
+  "id_matches": 18,
+  "cer": 0.0,
+  "cer_detail": "0/258",
+  "elapsed_ms": {
+    "first": 217,
+    "median": 99.5,
+    "p95": 111,
+    "max": 217,
+    "median_after_first": 99
+  },
+  "round_trip_ms_median": 100.5,
+  "error_checks": {
+    "unsupported_locale": {
+      "ok": true,
+      "code": "unsupportedLocale"
+    },
+    "cancel": {
+      "ok": true,
+      "code": "cancelled"
+    },
+    "silence": {
+      "ok": true,
+      "text": "",
+      "elapsed_ms": 66
+    },
+    "short": {
+      "ok": true,
+      "text": "",
+      "elapsed_ms": 61
+    },
+    "long": {
+      "ok": true,
+      "seconds": 28.342,
+      "characters": 191,
+      "elapsed_ms": 520
+    },
+    "concurrent": {
+      "ok": true,
+      "elapsed_ms": [
+        91,
+        100,
+        103
+      ]
+    },
+    "duplicate_id": {
+      "ok": true,
+      "second": "engineFailure"
+    },
+    "timeout": {
+      "ok": true,
+      "after_timeout_text": "もしもし、もう駅に着いた"
+    },
+    "invalid_pcm": {
+      "ok": true
+    },
+    "dispose_resume": {
+      "ok": true,
+      "after_dispose": "text"
+    }
+  },
+  "known_limits": [],
+  "per_segment": {
+    "segment-1": [
+      {
+        "trial": 0,
+        "text": "もしもしもう駅に着いた",
+        "distance": 0,
+        "elapsed_ms": 217
+      },
+      {
+        "trial": 1,
+        "text": "もしもし、もう駅に着いた",
+        "distance": 0,
+        "elapsed_ms": 87
+      },
+      {
+        "trial": 2,
+        "text": "もしもし、もう駅に着いた",
+        "distance": 0,
+        "elapsed_ms": 88
+      }
+    ],
+    "segment-2": [
+      {
+        "trial": 0,
+        "text": "うん、今改札出たところそっちは。",
+        "distance": 0,
+        "elapsed_ms": 111
+      },
+      {
+        "trial": 1,
+        "text": "うん、今改札出たところそっちは。",
+        "distance": 0,
+        "elapsed_ms": 100
+      },
+      {
+        "trial": 2,
+        "text": "うん、今改札出たところそっちは。",
+        "distance": 0,
+        "elapsed_ms": 96
+      }
+    ],
+    "segment-3": [
+      {
+        "trial": 0,
+        "text": "こっちはまだ電車あと 5分くらいかな。",
+        "distance": 0,
+        "elapsed_ms": 108
+      },
+      {
+        "trial": 1,
+        "text": "こっちはまだ電車あと 5分くらいかな。",
+        "distance": 0,
+        "elapsed_ms": 102
+      },
+      {
+        "trial": 2,
+        "text": "こっちはまだ電車あと 5分くらいかな。",
+        "distance": 0,
+        "elapsed_ms": 106
+      }
+    ],
+    "segment-4": [
+      {
+        "trial": 0,
+        "text": "了解。じゃあカフェの前で待ってるね。",
+        "distance": 0,
+        "elapsed_ms": 101
+      },
+      {
+        "trial": 1,
+        "text": "了解。じゃあカフェの前で待ってるね。",
+        "distance": 0,
+        "elapsed_ms": 95
+      },
+      {
+        "trial": 2,
+        "text": "了解。じゃあカフェの前で待ってるね。",
+        "distance": 0,
+        "elapsed_ms": 99
+      }
+    ],
+    "segment-5": [
+      {
+        "trial": 0,
+        "text": "助かる。今日は結構寒いね。",
+        "distance": 0,
+        "elapsed_ms": 96
+      },
+      {
+        "trial": 1,
+        "text": "助かる。今日は結構寒いね。",
+        "distance": 0,
+        "elapsed_ms": 92
+      },
+      {
+        "trial": 2,
+        "text": "助かる。今日は結構寒いね。",
+        "distance": 0,
+        "elapsed_ms": 86
+      }
+    ],
+    "segment-6": [
+      {
+        "trial": 0,
+        "text": "ほんとマフラー持ってきて正解だった。",
+        "distance": 0,
+        "elapsed_ms": 102
+      },
+      {
+        "trial": 1,
+        "text": "ほんとマフラー持ってきて正解だった。",
+        "distance": 0,
+        "elapsed_ms": 99
+      },
+      {
+        "trial": 2,
+        "text": "ほんとマフラー持ってきて正解だった。",
+        "distance": 0,
+        "elapsed_ms": 101
+      }
+    ]
+  },
+  "done": {
+    "kind": "done",
+    "ok": true
+  },
+  "pass": true
+}

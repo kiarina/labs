@@ -137,6 +137,27 @@ GPU（Vulkan、RTX 3080 Ti。Vulkan SDK 1.4.363 で build。DLL は 46.9 MB、CP
   `auto` で確認した: large-v3-turbo q5_0 が選ばれ、CER 0 %、中央値 95 ms、最初の要求 103 ms、準備 654 ms（`results/windows-whisper-auto.json`）。
   ただしこのときドライバーのシェーダーキャッシュは温まっていたので、cold での暖機の効果は未確認。
 
+## 堅牢性（段階 2、2026-10-20）
+
+`pcm_asr` の例題に、契約が約束する境界の確認を足して 5 環境で流した（`results/robustness-*.json`、Windows は
+`results/windows-whisper-auto-gpu1-robust.json`・`-gpu0-cpuonly.json`）。
+
+| 確認 | macOS | iOS | Android | Web | Windows GPU / CPU |
+| --- | --- | --- | --- | --- | --- |
+| 100 ms の極短（空文字でよい、失敗しない） | 59 ms | 72 ms | 689 ms | 1.1 秒 | ○ |
+| 28 秒（6 区間 × 2） | 501 ms、190 字 | 595 ms、191 字 | 3.1 秒、170 字 | 29.4 秒、151 字 | ○ |
+| 同時 3 件（ID が合う） | ○ | ○（直列化後） | ○ | ○ | ○ |
+| 同じ ID を 2 回（2 件目を拒む） | ○（登録を await の前に） | ○ | ○ | ○ | ○ |
+| timeout 1 ms → timeout を返し、次の要求が通る | ○ | ○ | ○（ERROR_CLIENT を再試行） | ○（1 ms 内に終わった） | ○ |
+| 奇数バイトの PCM を拒む | ○ | ○ | ○ | ○ | ○ |
+| dispose を 2 回 → 再び prepare・transcribe | ○ | ○ | ○ | ○ | ○ |
+| 未対応 locale・cancel・無音 | ○ | ○ | ○ | locale は検出不能 | ○ |
+
+直したこと: iOS は同時 3 件で `SFSpeechErrorDomain 16 "Maximum number of recognizers reached"` になったので Apple の engine は
+1 件ずつ直列にした（macOS は 3 件同時でも通っていた）。同じ ID の 2 件目は最初の await の前に登録しないと両方通った。
+Android は cancel で recognizer を作り直した直後の `startListening` が `ERROR_CLIENT`（5）になったので、再試行の対象に足した。
+Windows は CPU のみの build（`PCM_ASR_VULKAN=0`）でも通り、`gpuAvailable` が偽で small が自動で選ばれた（CER 7.0 %、中央値 1.42 秒）。
+
 ## 判断と限界
 
 **外部 PCM → OS 標準 ASR → 要求ごとの最終結果、という契約は Apple（macOS・iOS）と Android（Pixel 6）で端末内で成立し、
