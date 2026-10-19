@@ -6,25 +6,27 @@
 
 2026-10-19、macOS 27.0.1 / arm64 で検証。既存 CLI 0.159.3 と、lab 内だけに入れた最新安定版 0.163.0 を比較した。WebRTC の追加検証も同じ0.163.0で実施し、デスクトップアプリの接続先を読み取りで照合した。グローバル CLI、ログイン、製品コード、ユーザーの設定ファイルは変更していない。録音は行わず、ファイル試験には共有テスト素材を使った。後述の実マイク試験は本人が開始を指示し、音声・会話文を検証ファイルに保存していない。
 
-前提の [司令塔と app-server の lab](../08/flutter-agent-orchestrator-kiapi/README.md) とは独立した小さい Python クライアントを使う。
+前提の [司令塔と app-server の lab](../../08/flutter-agent-orchestrator-kiapi/README.md) とは独立した小さい Python クライアントを使う。
 
-2本の同時WebRTCを交互利用する検証は [TWO_CONNECTIONS.md](TWO_CONNECTIONS.md) を参照。
+## 現在の判断と読む順序
 
-境界指示・確定操作・後着文字の検証は [BOUNDARIES.md](BOUNDARIES.md) を参照。
+**ChatGPTログインで音声対話と連続字幕は取得できる。全ての文字への正確な話者・音声時刻の付与と、音声応答の生成抑止は未解決。prototypeへの導入は保留する。**
 
-話者IDと音声時計の追加改善は [REFINEMENT.md](REFINEMENT.md) を参照。話者の誤分割は改善したが、単語ごとの話者対応は多数を保留するため未解決。
+| 目的・方式 | 到達点と制約 | 正典 |
+| --- | --- | --- |
+| record → WebRTC → 自前Thinker → 音声 | Macの独立アプリで往復し、本人が利用可能と評価。ASR専用の評価とは別 | [DEMO.md](DEMO.md)、[DELEGATION.md](DELEGATION.md) |
+| 1接続を維持する字幕 | 実マイク1人・30秒で本人が速さと内容を実用的と評価。正しい話者付与は未完 | [PERSISTENT_ASR.md](PERSISTENT_ASR.md) |
+| 話者ID・音声時計の改善 | 誤分割は改善。時計補正だけでは単語境界を得られず、多数を保留 | [REFINEMENT.md](REFINEMENT.md) |
+| WebSocketの境界確定・ID通知 | commitは拒否。指示受付はASR完了ではなく、要求したID付き委譲も未取得 | [BOUNDARIES.md](BOUNDARIES.md) |
+| 2接続を交互再利用 | 同時接続成功。通常素材では区間混入0。短い交代は後着、quiet待機は数秒のキュー遅延 | [TWO_CONNECTIONS.md](TWO_CONNECTIONS.md) |
+| 区間ごとの新規接続 | 区間の所有は分かるが待ち時間が本人評価で実用外。採用しない | [SEGMENTED_ASR.md](SEGMENTED_ASR.md) |
 
-接続を維持して送るASR・表示遅延・暫定話者IDの試験は [PERSISTENT_ASR.md](PERSISTENT_ASR.md) を参照。実マイク1人・30秒で本人が速さと内容を実用的と評価。話者の再登場・境界・時計の推定には制約がある。
+2接続試験の11字は同じ人物の別区間への混入で、別人物への誤割当を実証した数字ではない。
+本文が届くこと、話者IDが分かること、音声時計が合うこと、文字を単語の位置へ置くことは別に検証する。
+無発声に成功した試行があっても、区間別・2接続では応答生成を観測している。再生しないことと生成しないことも区別する。
 
-VAD・話者分割後の区間だけを送るASR試験は [SEGMENTED_ASR.md](SEGMENTED_ASR.md) を参照。区間対応は確認したが、無発声は失敗し、本人の実マイク試験でも待ち時間が実用に不向きと評価された。この区間ごとの新規接続方式は採用しない。
-
-Mac で会話を体験する小型アプリは [DEMO.md](DEMO.md) を参照。
-
-`record` の外部入力ブリッジとの接続候補と未検証点は [RECORD_INPUT.md](RECORD_INPUT.md) を参照。
-
-自前 Thinker への委譲・ツール実行・音声返却の実証は [DELEGATION.md](DELEGATION.md) を参照。
-
-公開 gpt-live-1 との違い、primary / sideband / アプリ側 WebSocket の区別、バックエンドから音声への実測は [BACKEND_COMPARISON.md](BACKEND_COMPARISON.md) を参照。
+[RECORD_INPUT.md](RECORD_INPUT.md) は単一captureの接続条件、[BACKEND_COMPARISON.md](BACKEND_COMPARISON.md) は公開APIとCodex経路の違いを扱う。
+以下は初期の認証・transport・5分文字起こしの検証記録。後続の方式への一般化は上表の範囲に限る。
 
 ## 実測したこと
 
@@ -104,7 +106,7 @@ WebRTC の現在の成功条件と、最初に失敗した条件を併記する�
 
 **RPC の `{}` だけで成功と扱わない。** これは操作の投入を受理した応答であり、started の後でも session.update がサービスに拒否される例がある。実際の文字起こしや接続状態まで監視する必要がある。appendAudio を開始前に呼んだ場合も RPC は `{}` で、別途 `conversation is not running` の error 通知になった。
 
-v2 の transcript 通知には上流の item_id / content_index が付かない。複数発話の厳密な対応づけや音声上のタイムスタンプを、この通知だけから得られるとは考えない。サンプル時刻をアプリで持つ必要がある。WebSocket の音声出力通知の転送は模擬上流で検証した。WebRTC の実サービスでは、RTP 経由の受信音声をデコードしてフレーム数を数えた。スピーカーでの再生は未検証。
+v2 の transcript 通知には上流の item_id / content_index が付かない。複数発話の厳密な対応づけや音声上のタイムスタンプを、この通知だけから得られるとは考えない。サンプル時刻をアプリで持つ必要がある。WebSocket の音声出力通知の転送は模擬上流で検証した。初期のWebRTC試験ではRTP受信音声のフレーム数を計測した。Macでの再生経路と本人の会話体験は [DEMO.md](DEMO.md) で確認済み。
 
 ## transcription モードが標準設定で失敗した理由
 
@@ -198,12 +200,12 @@ This session is only for listening to prerecorded fictional speech so its INPUT 
 
 ## 認証・費用・未確認範囲
 
-- ChatGPT ログインだけの WebSocket は両版で失敗。既存の Platform API キーをプロセスへ渡すと、0.163.0 の会話モードは動作した。API キーの保存・login/start・ログアウトは実行していない。
+- 主音声を新規開始するprimary WebSocketは、ChatGPTログインだけでは両版で失敗。既存WebRTCへのsideband WebSocketはChatGPT認証で成功している（[BACKEND_COMPARISON.md](BACKEND_COMPARISON.md)）。既存の Platform API キーをプロセスへ渡すと、0.163.0 の会話モードは動作した。API キーの保存・login/start・ログアウトは実行していない。
 - WebRTC は ChatGPT 認証で実際に動作した。成功条件は次節。標準の codex 接続先で失敗した試験と区別する。API キーなしという認証条件を検証したが、請求明細やプランごとの使用枠は未測定。
 - Platform の短い疎通には gpt-realtime-mini と、内部設定の gpt-4o-mini-transcribe を使った。高単価の Codex モデルは呼んでいない。通常 turn の捕捉はローカル模擬サーバーだけで完結し、誤って委譲されても実モデルへ接続しないようにした。
 - この試験は料金明細・使用量の請求内訳を測らない。「Codex 契約内で別料金なし」「汎用 ASR として無制限に使える」という結論は出せない。
 - 公式 app-server 文書はローカル / OSS と商用・ホスト型サービスの認証の扱いを区別している。接続成功は配布・商用利用の許諾の確認ではない。製品採用時の条件は同文書と Sign in with ChatGPT を確認する。
-- 実マイクは Mac の内蔵マイクで5分確認。Mac 以外の OS、マイク切替、音声出力の再生、5分を超える連続運転、並列・割り込みを伴う委譲、正解文と比較する認識精度は未検証。
+- 実マイクは Mac の内蔵マイクで5分確認。Mac以外のOSでのChatGPT接続、マイク切替、5分を超える連続運転、並列・割り込みを伴う委譲、正解文と比較する認識精度は未検証。2本同時接続は共有素材で確認済みだが、並列委譲や長時間の保証ではない。
 
 ## ChatGPT ログインだけの WebRTC：成功条件と原因
 

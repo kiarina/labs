@@ -21,7 +21,7 @@
 | backend 制御 | 既存セッションへ sideband WebSocket を attach できる | app-server が OAuth の情報を再利用して sideband WebSocket を張る。通知受信と情報投入を実測 |
 | backend の選択 | Responses delegation、またはアプリが自前backendを動かす client delegation | Codex の backing thread / handoff が組み込まれている。別backendへ任意に置換する完成機能とは扱わない |
 | 設定・操作 | 公開 Live の session / delegation / context API | thread/realtime の実験 RPC と、内部の旧 wire protocol。公開 Live 全設定が使える保証はない |
-| 文字起こし | 現行文書は session.input_transcript.delta 等、近似時刻付き | CLI通知は thread/realtime/transcript/delta。今回の無発声運用では最終doneなし、正確な発話時刻の対応は未確認 |
+| 文字起こし | 現行文書は session.input_transcript.delta 等、近似時刻付き | CLI通知は thread/realtime/transcript/delta。最終doneなし。sidebandで時刻を保持して波形校正したが、単語ごとの対応は未解決（REFINEMENT.md） |
 | 画像 | voice frontend の入力はaudio/text。視覚対応backendへ画像を渡し、説明を戻す構成 | カメラ映像をこのvoiceモデルが直接理解することは未実証。別の視覚解析・backendで扱う候補 |
 | 費用・制限 | Live の時間とbackendモデル・toolの費用は別扱いという公開仕様 | 今回のログインで動作。全プラン・上限・請求内訳は未測定。公開料金表をそのまま流用しない |
 

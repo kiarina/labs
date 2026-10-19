@@ -1,6 +1,6 @@
 # WebRTC を維持する VAD・話者ゲート付き ChatGPT ASR
 
-話者IDと時刻対応の追加改善・残る限界は [REFINEMENT.md](REFINEMENT.md) を参照。この文書は初版の接続維持方式の検証条件と結果を扱う。
+話者IDと時刻対応の追加改善・残る限界は [REFINEMENT.md](REFINEMENT.md) を参照。この文書は初版の接続維持方式の検証条件と結果を扱う。境界指示の不成立は [BOUNDARIES.md](BOUNDARIES.md)、2接続での再利用と待機の制約は [TWO_CONNECTIONS.md](TWO_CONNECTIONS.md) を参照。
 
 ## 問いと評価方法
 
