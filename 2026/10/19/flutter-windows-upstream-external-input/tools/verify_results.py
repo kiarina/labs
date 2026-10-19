@@ -32,7 +32,9 @@ def capture_pass(data, label):
         target = trials[label]
         return bool(endpoints and endpoints == positive and target['externalOnly']
                     and target['recordCaptureStarted'] == 1 and not target['sdkCaptureAttempts']
-                    and target['singleRecordContinuity'])
+                    and target['singleRecordContinuity'] and not target['errors']
+                    and target['audioRtpAdvancedAcrossGates'] and target['videoDecoded']
+                    and target['sourceRms'] > 1e-6)
     except (KeyError, TypeError):
         return False
 
@@ -52,7 +54,7 @@ for name in ['external-native-playout-off', 'external-track-gates-playout-off', 
     assert len(trial['receiver']) == 2 and all(p['pcmSamples'] > 0 and p['rms'] > 1e-6 and p['videoFrames'] > 0 for p in trial['receiver'])
 assert len(result['trials']['external-track-gates-playout-off']['nativeTrackTransitions']) == 4
 assert len(result['trials']['external-replace-gates-playout-off']['nativeTrackTransitions']) == 4
-for field, value in [('traceLossFree', False), ('sdkCaptureAttempts', 1), ('captureClients', []), ('dllSha256', '0' * 64)]:
+for field, value in [('traceLossFree', False), ('sdkCaptureAttempts', 1), ('captureClients', []), ('dllSha256', '0' * 64), ('audioRtpAdvancedAcrossGates', False)]:
     altered = copy.deepcopy(result)
     altered['trials']['external-only'][field] = value
     assert not capture_pass(altered, 'external-only'), field

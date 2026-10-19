@@ -148,3 +148,9 @@ collecting all eight private trials. Raw trace/app files stay ignored.
 `python3 tools/check_sdk_patches.py core` and `factory` check pinned-source hashes
 and patch application only, not compilation. The native runtime, unit and
 compatibility observations above are separate evidence.
+
+Wrapper main was rechecked at `9f6a87af46a5810a452aa20306c705b7c5269fbe` after
+its desktop-capture update. The eight candidate target files are byte-identical
+to the tested f7e9 source and the factory patch applies. That main revision was
+not built; keep the tested pin and rebuild before the dependent wrapper PR.
+See [head audit](results/wrapper-head-audit.json).

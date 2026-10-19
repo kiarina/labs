@@ -74,6 +74,7 @@
       "nativeTrackTransitions": [],
       "videoSource": "explicit synthetic video; physical camera unavailable",
       "audioRtpReceived": false,
+      "audioRtpAdvancedAcrossGates": false,
       "audioDecoded": false,
       "videoDecoded": false,
       "functionalTransportPass": false,
@@ -122,13 +123,15 @@
           "gate": 1,
           "pcmSamples": 0,
           "rms": 0,
-          "videoFrames": 0
+          "videoFrames": 0,
+          "audioPacketsReceived": 0
         },
         {
           "gate": 2,
           "pcmSamples": 0,
           "rms": 0,
-          "videoFrames": 0
+          "videoFrames": 0,
+          "audioPacketsReceived": 0
         }
       ],
       "totals": {
@@ -198,6 +201,7 @@
       "nativeTrackTransitions": [],
       "videoSource": "not started",
       "audioRtpReceived": false,
+      "audioRtpAdvancedAcrossGates": false,
       "audioDecoded": false,
       "videoDecoded": false,
       "functionalTransportPass": false,
@@ -529,13 +533,15 @@
           "gate": 1,
           "pcmSamples": 0,
           "rms": 0,
-          "videoFrames": 101
+          "videoFrames": 101,
+          "audioPacketsReceived": 204
         },
         {
           "gate": 2,
           "pcmSamples": 0,
           "rms": 0,
-          "videoFrames": 95
+          "videoFrames": 95,
+          "audioPacketsReceived": 408
         }
       ],
       "totals": {
@@ -614,6 +620,7 @@
       "nativeTrackTransitions": [],
       "videoSource": "explicit synthetic video; physical camera unavailable",
       "audioRtpReceived": true,
+      "audioRtpAdvancedAcrossGates": true,
       "audioDecoded": false,
       "videoDecoded": true,
       "functionalTransportPass": false,
@@ -931,13 +938,15 @@
           "gate": 1,
           "pcmSamples": 0,
           "rms": 0,
-          "videoFrames": 102
+          "videoFrames": 102,
+          "audioPacketsReceived": 203
         },
         {
           "gate": 2,
           "pcmSamples": 0,
           "rms": 0,
-          "videoFrames": 94
+          "videoFrames": 94,
+          "audioPacketsReceived": 405
         }
       ],
       "totals": {
@@ -1016,6 +1025,7 @@
       "nativeTrackTransitions": [],
       "videoSource": "explicit synthetic video; physical camera unavailable",
       "audioRtpReceived": true,
+      "audioRtpAdvancedAcrossGates": true,
       "audioDecoded": false,
       "videoDecoded": true,
       "functionalTransportPass": false,
@@ -1207,13 +1217,15 @@
           "gate": 1,
           "pcmSamples": 0,
           "rms": 0,
-          "videoFrames": 102
+          "videoFrames": 102,
+          "audioPacketsReceived": 205
         },
         {
           "gate": 2,
           "pcmSamples": 0,
           "rms": 0,
-          "videoFrames": 95
+          "videoFrames": 95,
+          "audioPacketsReceived": 410
         }
       ],
       "totals": {
@@ -1292,6 +1304,7 @@
       "nativeTrackTransitions": [],
       "videoSource": "explicit synthetic video; physical camera unavailable",
       "audioRtpReceived": true,
+      "audioRtpAdvancedAcrossGates": true,
       "audioDecoded": false,
       "videoDecoded": true,
       "functionalTransportPass": false,
@@ -1488,13 +1501,15 @@
           "gate": 1,
           "pcmSamples": 238080,
           "rms": 0.0017071131323573511,
-          "videoFrames": 102
+          "videoFrames": 102,
+          "audioPacketsReceived": 203
         },
         {
           "gate": 2,
           "pcmSamples": 238560,
           "rms": 0.007221434167030183,
-          "videoFrames": 94
+          "videoFrames": 94,
+          "audioPacketsReceived": 408
         }
       ],
       "totals": {
@@ -1573,6 +1588,7 @@
       "nativeTrackTransitions": [],
       "videoSource": "explicit synthetic video; physical camera unavailable",
       "audioRtpReceived": true,
+      "audioRtpAdvancedAcrossGates": true,
       "audioDecoded": true,
       "videoDecoded": true,
       "functionalTransportPass": true,
@@ -1626,13 +1642,15 @@
           "gate": 1,
           "pcmSamples": 237600,
           "rms": 0.004748103122535383,
-          "videoFrames": 101
+          "videoFrames": 101,
+          "audioPacketsReceived": 203
         },
         {
           "gate": 2,
           "pcmSamples": 238560,
           "rms": 0.008887014513068453,
-          "videoFrames": 95
+          "videoFrames": 95,
+          "audioPacketsReceived": 406
         }
       ],
       "totals": {
@@ -1716,6 +1734,7 @@
       ],
       "videoSource": "explicit synthetic video; physical camera unavailable",
       "audioRtpReceived": true,
+      "audioRtpAdvancedAcrossGates": true,
       "audioDecoded": true,
       "videoDecoded": true,
       "functionalTransportPass": true,
@@ -1769,13 +1788,15 @@
           "gate": 1,
           "pcmSamples": 237600,
           "rms": 0.005826399735566082,
-          "videoFrames": 101
+          "videoFrames": 101,
+          "audioPacketsReceived": 203
         },
         {
           "gate": 2,
           "pcmSamples": 238560,
           "rms": 0.006364385836934975,
-          "videoFrames": 95
+          "videoFrames": 95,
+          "audioPacketsReceived": 407
         }
       ],
       "totals": {
@@ -1859,6 +1880,7 @@
       ],
       "videoSource": "explicit synthetic video; physical camera unavailable",
       "audioRtpReceived": true,
+      "audioRtpAdvancedAcrossGates": true,
       "audioDecoded": true,
       "videoDecoded": true,
       "functionalTransportPass": true,

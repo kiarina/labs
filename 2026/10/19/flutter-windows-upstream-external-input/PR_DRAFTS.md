@@ -90,3 +90,9 @@ missing public wrapper playout/clock control remain separate limitations.
 Do not include the diagnostic protected-member access, lab environment controls,
 media-tap plugin, AEC, mixer-pull APIs or observation tools in this PR. Flutter's
 initialize integration is a later thin change after official SDK support exists.
+
+Wrapper main was rechecked at `9f6a87af46a5810a452aa20306c705b7c5269fbe` after
+its desktop-capture update. The eight candidate target files are byte-identical
+to the tested f7e9 source and the factory patch applies. That main revision was
+not built; keep the tested pin and rebuild before the dependent wrapper PR.
+See [head audit](results/wrapper-head-audit.json).

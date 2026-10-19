@@ -52,6 +52,7 @@ def assess(label):
     sdk_clients = [c for c in values if c['kind'] == 'sdk']
     mf = [c for c in values if c['kind'] == 'record-mf']
     receiver = app.get('receiver', [])
+    audio_packets = [sum(int(float(stat.get('packetsReceived', 0))) for stat in phase.get('inbound', []) if stat.get('kind') == 'audio') for phase in receiver]
     return {
         'variant': app['variant'], 'externalOnly': policy['externalOnly'],
         'nativePlayoutDiagnostic': app.get('nativePlayoutDiagnostic'),
@@ -68,13 +69,14 @@ def assess(label):
         'singleRecordContinuity': app['captureStarts']['record'] == 1 and bool(app['phases']) and all(
             ph['delta']['rawBytes'] > 0 and ph['delta']['videoFrames'] > 0 for ph in app['phases']),
         'sourceRms': app['sourceRms'], 'physicalCameraValidated': False,
-        'receiver': [{'gate': phase['gate'], 'pcmSamples': phase['pcmSamples'], 'rms': phase['rms'], 'videoFrames': phase['videoFrames']} for phase in receiver],
+        'receiver': [{'gate': phase['gate'], 'pcmSamples': phase['pcmSamples'], 'rms': phase['rms'], 'videoFrames': phase['videoFrames'], 'audioPacketsReceived': audio_packets[i]} for i, phase in enumerate(receiver)],
         'totals': app['totals'],
         'maxAudioGapMs': app['maxAudioGapMs'], 'maxVideoGapMs': app['maxVideoGapMs'],
         'capturePhaseDeltas': [{'name': phase['name'], 'delta': phase['delta']} for phase in app['phases']],
         'nativeTrackTransitions': [entry['stage'] for entry in app['timeline'] if entry['stage'].startswith(('native-track-', 'native-replace-'))],
         'videoSource': app['videoSource'],
         'audioRtpReceived': bool(receiver) and all(any(s.get('kind') == 'audio' and float(s.get('packetsReceived', 0)) > 0 for s in phase.get('inbound', [])) for phase in receiver),
+        'audioRtpAdvancedAcrossGates': len(audio_packets) == 2 and audio_packets[0] > 0 and audio_packets[1] > audio_packets[0],
         'audioDecoded': bool(receiver) and all(phase.get('pcmSamples', 0) > 0 for phase in receiver),
         'videoDecoded': bool(receiver) and all(phase.get('videoFrames', 0) > 0 for phase in receiver),
         'functionalTransportPass': app['functionalTransportPass'],
@@ -100,7 +102,7 @@ controls = (
     and trials['external-default']['externalOnly'] is False
 )
 ext = trials['external-only']
-zero = controls and ext['externalOnly'] is True and ext['recordCaptureStarted'] == 1 and ext['sdkCaptureAttempts'] == 0 and ext['singleRecordContinuity']
+zero = controls and ext['externalOnly'] is True and ext['recordCaptureStarted'] == 1 and ext['sdkCaptureAttempts'] == 0 and ext['singleRecordContinuity'] and not ext['errors'] and ext['audioRtpAdvancedAcrossGates'] and ext['videoDecoded'] and ext['sourceRms'] > 1e-6
 result = {
     'kind': 'candidate-native-external-input-validation',
     'sdk': expected, 'controlsValid': controls,
@@ -119,7 +121,7 @@ for label in ['external-muted', 'external-native-playout-off', 'external-track-g
     if label not in trials:
         continue
     trial = trials[label]
-    trial['captureIsolationPass'] = bool(result['controlsValid'] and trial['traceLossFree'] and trial['endpointVolumeMuteUnchanged'] and trial['externalOnly'] and trial['singleRecordContinuity'] and trial['recordCaptureStarted'] == 1 and trial['sdkCaptureAttempts'] == 0 and trial['unknownCaptureClients'] == 0)
+    trial['captureIsolationPass'] = bool(result['controlsValid'] and trial['traceLossFree'] and trial['endpointVolumeMuteUnchanged'] and trial['externalOnly'] and trial['singleRecordContinuity'] and trial['recordCaptureStarted'] == 1 and trial['sdkCaptureAttempts'] == 0 and trial['unknownCaptureClients'] == 0 and not trial['errors'] and trial['audioRtpAdvancedAcrossGates'] and trial['videoDecoded'] and trial['sourceRms'] > 1e-6)
 if 'external-native-playout-off' in trials:
     diagnostic = trials['external-native-playout-off']
     result['diagnosticDecodedMediaPass'] = bool(diagnostic['captureIsolationPass'] and diagnostic['audioDecoded'] and diagnostic['videoDecoded'] and diagnostic['functionalTransportPass'])
