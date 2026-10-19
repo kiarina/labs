@@ -1,0 +1,221 @@
+{
+  "name": "web",
+  "platform": {
+    "kind": "platform",
+    "os": "web",
+    "locale": "ja-JP"
+  },
+  "support": {
+    "kind": "support",
+    "engine": "web.speech-recognition",
+    "supported": true,
+    "accepts_external_pcm": true,
+    "on_device": false,
+    "model_state": "downloadable",
+    "locale": "ja-JP",
+    "sample_rates": [
+      16000
+    ],
+    "needs_network_for_model": true,
+    "reason": null
+  },
+  "prepare": {
+    "kind": "prepare",
+    "ms": 0,
+    "model_state_before": "downloadable",
+    "progress": []
+  },
+  "expected_results": 18,
+  "results": 18,
+  "errors": [],
+  "non_empty": 18,
+  "id_matches": 18,
+  "cer": 0.0581,
+  "cer_detail": "15/258",
+  "elapsed_ms": {
+    "first": 2943,
+    "median": 3597.0,
+    "p95": 4054,
+    "max": 4118,
+    "median_after_first": 3622
+  },
+  "round_trip_ms_median": 3625.5,
+  "error_checks": {
+    "unsupported_locale": {
+      "ok": false
+    },
+    "cancel": {
+      "ok": true,
+      "code": "cancelled"
+    },
+    "silence": {
+      "ok": true,
+      "text": "",
+      "elapsed_ms": 2041
+    },
+    "short": {
+      "ok": true,
+      "text": "",
+      "elapsed_ms": 1150
+    },
+    "long": {
+      "ok": true,
+      "seconds": 28.342,
+      "characters": 152,
+      "elapsed_ms": 29412
+    },
+    "concurrent": {
+      "ok": true,
+      "elapsed_ms": [
+        2857,
+        3891,
+        3634
+      ]
+    },
+    "duplicate_id": {
+      "ok": true,
+      "second": "engineFailure"
+    },
+    "timeout": {
+      "ok": true,
+      "note": "finished within 1 ms"
+    },
+    "invalid_pcm": {
+      "ok": true
+    },
+    "dispose_resume": {
+      "ok": true,
+      "after_dispose": "text"
+    }
+  },
+  "known_limits": [
+    "unsupported_locale"
+  ],
+  "per_segment": {
+    "segment-1": [
+      {
+        "trial": 0,
+        "text": "もしもし もう駅に着いた",
+        "distance": 0,
+        "elapsed_ms": 2943
+      },
+      {
+        "trial": 1,
+        "text": "もしもし もう駅に着いた",
+        "distance": 0,
+        "elapsed_ms": 3051
+      },
+      {
+        "trial": 2,
+        "text": "もしもし もう駅に着いた",
+        "distance": 0,
+        "elapsed_ms": 3020
+      }
+    ],
+    "segment-2": [
+      {
+        "trial": 0,
+        "text": "今 改札出たところ そっちは",
+        "distance": 2,
+        "elapsed_ms": 3949
+      },
+      {
+        "trial": 1,
+        "text": "今 改札出たところ そっちは",
+        "distance": 2,
+        "elapsed_ms": 4118
+      },
+      {
+        "trial": 2,
+        "text": "今 改札出たところ そっちは",
+        "distance": 2,
+        "elapsed_ms": 4054
+      }
+    ],
+    "segment-3": [
+      {
+        "trial": 0,
+        "text": "こっちはまだ電車 あと5分くらいかな",
+        "distance": 0,
+        "elapsed_ms": 3797
+      },
+      {
+        "trial": 1,
+        "text": "こっちはまだ電車 あと5分くらいかな",
+        "distance": 0,
+        "elapsed_ms": 3808
+      },
+      {
+        "trial": 2,
+        "text": "こっちはまだ電車 あと5分くらいかな",
+        "distance": 0,
+        "elapsed_ms": 3803
+      }
+    ],
+    "segment-4": [
+      {
+        "trial": 0,
+        "text": "了解 じゃあカフェの前で待ってるね",
+        "distance": 0,
+        "elapsed_ms": 3572
+      },
+      {
+        "trial": 1,
+        "text": "了解 じゃあカフェの前で待ってるね",
+        "distance": 0,
+        "elapsed_ms": 3545
+      },
+      {
+        "trial": 2,
+        "text": "了解 じゃあカフェの前で待ってるね",
+        "distance": 0,
+        "elapsed_ms": 3555
+      }
+    ],
+    "segment-5": [
+      {
+        "trial": 0,
+        "text": "助かる 今日は結構寒いね",
+        "distance": 0,
+        "elapsed_ms": 3377
+      },
+      {
+        "trial": 1,
+        "text": "助かる 今日は結構寒いね",
+        "distance": 0,
+        "elapsed_ms": 3377
+      },
+      {
+        "trial": 2,
+        "text": "助かる 今日は結構寒いね",
+        "distance": 0,
+        "elapsed_ms": 3393
+      }
+    ],
+    "segment-6": [
+      {
+        "trial": 0,
+        "text": "本当 マフラー 持ってきて正解だった",
+        "distance": 3,
+        "elapsed_ms": 3669
+      },
+      {
+        "trial": 1,
+        "text": "本当 マフラー 持ってきて正解だった",
+        "distance": 3,
+        "elapsed_ms": 3622
+      },
+      {
+        "trial": 2,
+        "text": "本当 マフラー 持ってきて正解だった",
+        "distance": 3,
+        "elapsed_ms": 3652
+      }
+    ]
+  },
+  "done": {
+    "kind": "done",
+    "ok": true
+  },
+  "pass": true
+}

@@ -158,6 +158,24 @@ GPU（Vulkan、RTX 3080 Ti。Vulkan SDK 1.4.363 で build。DLL は 46.9 MB、CP
 Android は cancel で recognizer を作り直した直後の `startListening` が `ERROR_CLIENT`（5）になったので、再試行の対象に足した。
 Windows は CPU のみの build（`PCM_ASR_VULKAN=0`）でも通り、`gpuAvailable` が偽で small が自動で選ばれた（CER 7.0 %、中央値 1.42 秒）。
 
+## 連続要求（soak、2026-10-20）
+
+同じ 6 区間を順に繰り返し、要求ごとの時間と前後の RSS を見た（`results/soak-*.json` は同じ run の通しの判定。soak の数値はログの `soak` 行）。
+
+| 環境 | 件数 | 失敗 | 中央値 / p95 | RSS 前 → 後 |
+| --- | ---: | ---: | --- | --- |
+| macOS 27（M1 Max） | 300 | 0 | 101 / 109 ms | 148 → 128 MB |
+| iOS 27（iPad Air 4） | 300 | 0 | 120 / 128 ms | 92 → 101 MB |
+| Android 17（Pixel 6） | 100 | 0 | 500 / 636 ms | 355 → 348 MB |
+| Web（Chrome 155、cloud） | 30 | 0 | 3645 / 4078 ms | –（ブラウザー） |
+| Windows 11（RTX 3080 Ti、Vulkan、large-v3-turbo q5_0） | 300 | 0 | 91 / 96 ms | 283 → 293 MB |
+
+- どの環境も件数に比例してメモリが増えることはなく、速さも最初と同じだった。Android の logcat は既定のバッファで溢れて通しの
+  結果行が消えるので、`adb logcat -G 16M` にして取り直した。
+- 同時に、`prepare()` の進捗（download / install / load / warmup）を契約に足した。Windows は取得のバイト数と load・warmup、
+  Apple は asset の install の割合、Android は言語パックの取得の % を流す。Web は何も流さない。区間の上限は 60 秒
+  （`PcmAsr.maxSegment`。超えると `invalidPcm`）。pub.dev の `publish --dry-run` は警告 0（308 KB）。
+
 ## 判断と限界
 
 **外部 PCM → OS 標準 ASR → 要求ごとの最終結果、という契約は Apple（macOS・iOS）と Android（Pixel 6）で端末内で成立し、
