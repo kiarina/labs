@@ -8,4 +8,5 @@ mise run //:test-assets:download v1 labs v1
 uv sync --quiet
 uv sync --quiet --project engines/qwen3_tts
 uv sync --quiet --project engines/cosyvoice3
+uv sync --quiet --project engines/qwen3_tts_mlx
 LABS_REPO_ROOT="$repo_root" uv run python server.py "$@"

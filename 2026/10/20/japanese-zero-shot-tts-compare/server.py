@@ -24,8 +24,18 @@ LAB_DIR = Path(__file__).resolve().parent
 WEB_DIR = LAB_DIR / "web"
 AUDIO_DIR = LAB_DIR / "output/webui"
 ENGINES = {
-    "qwen3_tts": "Qwen3-TTS",
+    # worker directory under engines/ -> label
+    "qwen3_tts": "Qwen3-TTS（PyTorch）",
     "cosyvoice3": "CosyVoice 3",
+    "qwen3_tts_mlx": "Qwen3-TTS（MLX）",
+}
+# Columns the UI can compare: id -> (worker, label, extra request fields)
+COLUMNS = {
+    "qwen3_tts": ("qwen3_tts", "Qwen3-TTS PyTorch", {}),
+    "cosyvoice3": ("cosyvoice3", "CosyVoice 3", {}),
+    "mlx-bf16": ("qwen3_tts_mlx", "Qwen3-TTS MLX bf16", {"quantization": "bf16"}),
+    "mlx-8bit": ("qwen3_tts_mlx", "Qwen3-TTS MLX 8bit", {"quantization": "8bit"}),
+    "mlx-4bit": ("qwen3_tts_mlx", "Qwen3-TTS MLX 4bit", {"quantization": "4bit"}),
 }
 REFERENCE_RATE = 24_000
 MAX_UPLOAD_BYTES = 64 * 1024 * 1024
@@ -170,7 +180,7 @@ class App:
         self.transcribe = Transcriber()
         self.references: dict[str, dict] = {}
         self.lock = threading.Lock()
-        self.pool = ThreadPoolExecutor(max_workers=len(ENGINES))
+        self.pool = ThreadPoolExecutor(max_workers=len(COLUMNS))
 
     def add_reference(self, audio: np.ndarray, label: str, transcript: str | None, language: str = "ja") -> dict:
         if len(audio) < REFERENCE_RATE:
@@ -211,7 +221,10 @@ class App:
             self.add_reference(np.concatenate(pieces), label, transcript)
 
     def status(self) -> dict:
-        return {name: {"label": ENGINES[name], "state": worker.state, "error": worker.error} for name, worker in self.workers.items()}
+        return {
+            "engines": {name: {"label": ENGINES[name], "state": worker.state, "error": worker.error} for name, worker in self.workers.items()},
+            "columns": {column: {"label": label, "engine": name} for column, (name, label, _) in COLUMNS.items()},
+        }
 
     def synthesize(self, request: dict) -> dict:
         reference = self.references.get(request.get("reference_id", ""))
@@ -225,16 +238,19 @@ class App:
         language = request.get("language", "ja")
         use_transcript = bool(request.get("use_transcript", True))
         reference_text = reference["transcript"] if use_transcript else ""
-        engines = [name for name in request.get("engines", list(ENGINES)) if name in ENGINES]
+        columns = [column for column in request.get("columns", list(COLUMNS)) if column in COLUMNS]
+        if not columns:
+            raise ValueError("比べる列を 1 つ以上選んでください")
         stem = f"{int(time.time() * 1000)}"
 
-        def run(name: str) -> dict:
+        def run(column: str) -> dict:
+            name, label, extra = COLUMNS[column]
             engine_text, engine_reference_text = text, reference_text
             # Upstream: "for Japanese usage, you must translate it to katakana" (CosyVoice example.py).
             if name == "cosyvoice3" and language == "ja" and request.get("katakana", True):
                 engine_text = self.katakana(text)
                 engine_reference_text = self.katakana(reference_text) if reference_text else ""
-            output = AUDIO_DIR / f"{stem}-{name}.wav"
+            output = AUDIO_DIR / f"{stem}-{column}.wav"
             started = time.perf_counter()
             try:
                 reply = self.workers[name].request(
@@ -246,14 +262,19 @@ class App:
                         "output_wav": str(output),
                         "model": request.get("qwen_model", "1.7B"),
                         "seed": int(request.get("seed", 0)),
+                        "stream": bool(request.get("stream", False)),
+                        "streaming_interval": float(request.get("streaming_interval", 0.5)),
+                        **extra,
                     }
                 )
             except Exception as error:
-                return {"engine": name, "label": ENGINES[name], "ok": False, "error": str(error)}
+                return {"column": column, "engine": name, "label": label, "ok": False, "error": str(error)}
             wall = time.perf_counter() - started
+            optional = ("first_audio_seconds", "chunks", "stall_seconds", "peak_memory_gb")
             return {
+                "column": column,
                 "engine": name,
-                "label": ENGINES[name],
+                "label": label,
                 "ok": True,
                 "url": f"/audio/{output.name}",
                 "model": reply["model"],
@@ -265,9 +286,15 @@ class App:
                 "wall_seconds": round(wall, 2),
                 "real_time_factor": round(reply["timings"]["generate"] / max(reply["seconds"], 1e-6), 2),
                 "peak_dbfs": describe(output)["peak_dbfs"],
+                **{key: round(reply[key], 2) for key in optional if key in reply},
+                "arrivals": reply.get("arrivals"),
             }
 
-        results = list(self.pool.map(run, engines))
+        if request.get("sequential", True):
+            # One at a time, so engines sharing the GPU or CPU do not slow each other's timings.
+            results = [run(column) for column in columns]
+        else:
+            results = list(self.pool.map(run, columns))
         return {"text": text, "reference": self.public(reference), "results": results}
 
 

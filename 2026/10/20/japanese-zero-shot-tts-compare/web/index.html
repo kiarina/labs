@@ -23,6 +23,7 @@ header p { margin: 0; color: var(--muted); font-size: 13px; flex: 1 1 320px; }
 .badge::before { content: "●"; margin-right: 4px; }
 .badge.ready::before { color: var(--ok); } .badge.starting::before { color: var(--wait); } .badge.failed::before { color: var(--error); }
 main { display: grid; grid-template-columns: minmax(320px, 440px) 1fr; gap: 16px; padding: 16px 24px 40px; }
+main > div { min-width: 0; }
 @media (max-width: 900px) { main { grid-template-columns: 1fr; padding: 12px 16px 32px; } header { padding: 16px 16px 4px; } }
 section { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
 section + section { margin-top: 16px; }
@@ -60,8 +61,15 @@ button:disabled { opacity: .5; cursor: default; }
 .result { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
 .result .title { font-size: 14px; font-weight: 600; }
 .result .sub { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
-.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-@media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+.columns { display: flex; flex-wrap: wrap; gap: 2px 14px; }
+.columns label.check { margin: 2px 0; }
+table.summary { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; margin-bottom: 4px; }
+table.summary th, table.summary td { border-bottom: 1px solid var(--line); padding: 4px 6px; text-align: right; white-space: nowrap; }
+table.summary th:first-child, table.summary td:first-child { text-align: left; }
+.summary-wrap { overflow-x: auto; }
+.timeline { position: relative; height: 10px; background: var(--bg); border-radius: 3px; margin-top: 4px; overflow: hidden; }
+.timeline span { position: absolute; top: 2px; height: 6px; background: var(--accent); border-radius: 2px; opacity: .8; }
 .cell { border: 1px solid var(--line); border-radius: 8px; padding: 8px; min-width: 0; }
 .cell .name { font-size: 13px; font-weight: 600; }
 .cell audio { width: 100%; height: 34px; margin: 4px 0; }
@@ -73,7 +81,7 @@ button:disabled { opacity: .5; cursor: default; }
 <body>
 <header>
   <h1>声のクローン比較</h1>
-  <p>参照の声をまねて、Qwen3-TTS と CosyVoice 3 が同じ文を読みます。手元の Mac で動きます（Qwen3-TTS は GPU、CosyVoice 3 は CPU）。</p>
+  <p>参照の声をまねて、Qwen3-TTS（PyTorch・MLX の量子化ごと）と CosyVoice 3 が同じ文を読みます。手元の Mac で動きます。</p>
   <div class="engines" id="engines"></div>
 </header>
 <main>
@@ -95,13 +103,21 @@ button:disabled { opacity: .5; cursor: default; }
       <div class="kana" id="kana"></div>
       <label class="check"><input type="checkbox" id="useTranscript" checked> 参照の声の文字起こしを渡す（外すと声だけでまねる）</label>
       <label class="check"><input type="checkbox" id="katakana" checked> CosyVoice 3 にはカタカナにして渡す（公式の例の指示）</label>
+      <label>比べる列</label>
+      <div class="columns" id="columns"></div>
+      <label class="check"><input type="checkbox" id="stream"> MLX はストリーミングで生成する（チャンクの届いた時刻を測る）</label>
       <div class="row">
-        <div><label for="qwenModel">Qwen3-TTS のモデル</label>
+        <div><label for="interval">チャンクの長さ（MLX のストリーミング）</label>
+          <select id="interval"><option value="0.25">0.25 秒</option><option value="0.5" selected>0.5 秒</option><option value="1">1 秒</option><option value="2">2 秒</option></select></div>
+      </div>
+      <label class="check"><input type="checkbox" id="sequential" checked> 1 列ずつ順に動かす（同時に動かすと GPU・CPU を取り合い、時間が正しく測れない）</label>
+      <div class="row">
+        <div><label for="qwenModel">Qwen3-TTS PyTorch のモデル</label>
           <select id="qwenModel"><option value="1.7B">1.7B</option><option value="0.6B">0.6B</option></select></div>
         <div style="flex:.6"><label for="seed">seed</label><input type="number" id="seed" value="0" min="0"></div>
       </div>
       <div class="row" style="margin-top:12px">
-        <button class="primary" id="go">両方で読ませる</button>
+        <button class="primary" id="go">読ませる</button>
         <button id="goAll">文の例をすべて</button>
       </div>
       <div class="status" id="status"></div>
@@ -109,8 +125,12 @@ button:disabled { opacity: .5; cursor: default; }
   </div>
   <div>
     <section>
+      <h2>時間のまとめ（このページで生成した分）</h2>
+      <div class="summary-wrap"><table class="summary" id="summary"></table></div>
+    </section>
+    <section>
       <h2>結果（新しいものが上）</h2>
-      <div class="results" id="results"><div class="empty">まだありません。左で参照の声を選び、「両方で読ませる」を押してください。</div></div>
+      <div class="results" id="results"><div class="empty">まだありません。左で参照の声を選び、「読ませる」を押してください。</div></div>
     </section>
   </div>
 </main>
@@ -135,18 +155,53 @@ async function api(path, options) {
   return body;
 }
 
+const DEFAULT_COLUMNS = ["qwen3_tts", "mlx-bf16", "mlx-8bit", "mlx-4bit"];
+function renderColumns(columns) {
+  for (const [id, column] of Object.entries(columns)) {
+    const label = document.createElement("label");
+    label.className = "check";
+    label.innerHTML = `<input type="checkbox" value="${id}"${DEFAULT_COLUMNS.includes(id) ? " checked" : ""}> <span></span>`;
+    label.querySelector("span").textContent = column.label;
+    $("columns").appendChild(label);
+  }
+}
+const selectedColumns = () => [...$("columns").querySelectorAll("input:checked")].map((input) => input.value);
+
+const measurements = {};  // label -> list of results
+function renderSummary() {
+  const rows = Object.entries(measurements);
+  if (!rows.length) { $("summary").innerHTML = ""; return; }
+  const mean = (values) => values.length ? values.reduce((a, b) => a + b, 0) / values.length : null;
+  const fmt = (value, digits = 2) => value === null ? "—" : value.toFixed(digits);
+  $("summary").innerHTML = `<tr><th>列</th><th>回数</th><th>生成（平均）</th><th>音声（平均）</th><th>倍率</th><th>最初の音</th><th>途切れ</th><th>MLX のピーク（3 モデル込み）</th></tr>`;
+  for (const [label, list] of rows) {
+    const stream = list.filter((r) => r.chunks > 1);
+    const tr = document.createElement("tr");
+    tr.innerHTML = [label, list.length,
+      `${fmt(mean(list.map((r) => r.generate_seconds)))} 秒`, `${fmt(mean(list.map((r) => r.seconds)))} 秒`,
+      fmt(mean(list.map((r) => r.real_time_factor))),
+      stream.length ? `${fmt(mean(stream.map((r) => r.first_audio_seconds)))} 秒` : "—",
+      stream.length ? `${fmt(stream.reduce((a, r) => a + (r.stall_seconds || 0), 0))} 秒` : "—",
+      list.some((r) => r.peak_memory_gb) ? `${fmt(Math.max(...list.map((r) => r.peak_memory_gb || 0)))} GB` : "—",
+    ].map((value) => `<td>${value}</td>`).join("");
+    tr.firstChild.textContent = label;
+    $("summary").appendChild(tr);
+  }
+}
+
 async function pollStatus() {
   try {
     const status = await api("/api/status");
+    if (!$("columns").children.length) renderColumns(status.columns);
     $("engines").innerHTML = "";
-    for (const engine of Object.values(status)) {
+    for (const engine of Object.values(status.engines)) {
       const badge = document.createElement("span");
       badge.className = "badge " + engine.state;
       badge.textContent = `${engine.label} ${({ ready: "準備完了", starting: "読み込み中", failed: "失敗" })[engine.state]}`;
       if (engine.error) badge.title = engine.error;
       $("engines").appendChild(badge);
     }
-    if (Object.values(status).some((engine) => engine.state === "starting")) setTimeout(pollStatus, 2000);
+    if (Object.values(status.engines).some((engine) => engine.state === "starting")) setTimeout(pollStatus, 2000);
   } catch { setTimeout(pollStatus, 3000); }
 }
 
@@ -256,7 +311,7 @@ function addResult(response) {
   element.querySelector(".title").textContent = response.text;
   element.querySelector(".sub").textContent = `参照: ${response.reference.label}`;
   const grid = element.querySelector(".grid");
-  const cell = (name, url, numbers, error) => {
+  const cell = (name, url, numbers, error, arrivals) => {
     const div = document.createElement("div");
     div.className = "cell";
     div.innerHTML = `<div class="name"></div>${url ? "<audio controls></audio>" : ""}<div class="numbers"></div>`;
@@ -264,23 +319,44 @@ function addResult(response) {
     if (url) div.querySelector("audio").src = url;
     div.querySelector(".numbers").textContent = numbers || "";
     if (error) { const e = document.createElement("div"); e.className = "error"; e.textContent = error; div.appendChild(e); }
+    if (arrivals && arrivals.length > 1) {
+      // Each bar spans from the chunk's arrival; its width is the audio it carries, on a scale of the whole audio.
+      const end = Math.max(...arrivals.map(([at, duration]) => at + duration));
+      const line = document.createElement("div");
+      line.className = "timeline";
+      line.title = "チャンクの届いた時刻（左端）と長さ（幅）";
+      for (const [at, duration] of arrivals) {
+        const bar = document.createElement("span");
+        bar.style.left = `${(at / end) * 100}%`; bar.style.width = `${Math.max(0.5, (duration / end) * 100 - 0.3)}%`;
+        line.appendChild(bar);
+      }
+      div.appendChild(line);
+    }
     grid.appendChild(div);
   };
   cell("参照の声", response.reference.url, `${response.reference.seconds} 秒`);
   for (const result of response.results) {
     if (!result.ok) { cell(result.label, null, "", result.error); continue; }
     const parts = [`${result.model} · ${result.device} · ${result.mode}`,
-      `生成 ${result.generate_seconds} 秒（音声 ${result.seconds} 秒、${result.real_time_factor} 倍）`, `ピーク ${result.peak_dbfs} dBFS`];
+      `生成 ${result.generate_seconds} 秒（音声 ${result.seconds} 秒、${result.real_time_factor} 倍）`];
+    if (result.chunks > 1) parts.push(`最初の音 ${result.first_audio_seconds} 秒 · チャンク ${result.chunks} · 途切れ ${result.stall_seconds} 秒`);
+    if (result.peak_memory_gb) parts.push(`MLX のピーク ${result.peak_memory_gb} GB（読み込んだ 3 モデル込み）`);
+    parts.push(`ピーク ${result.peak_dbfs} dBFS`);
     if (result.engine === "cosyvoice3" && result.input_text !== response.text) parts.push(`入力: ${result.input_text}`);
-    cell(result.label, result.url, parts.join(" · "));
+    cell(result.label, result.url, parts.join(" · "), null, result.arrivals);
+    const key = result.label + (result.chunks > 1 ? `（ストリーミング ${$("interval").value} 秒）` : "");
+    (measurements[key] ||= []).push(result);
   }
   $("results").prepend(element);
+  renderSummary();
 }
 
 async function generate(text) {
   const response = await api("/api/synthesize", { method: "POST", body: JSON.stringify({
     text, reference_id: referenceId, language: "ja", use_transcript: $("useTranscript").checked,
-    katakana: $("katakana").checked, qwen_model: $("qwenModel").value, seed: Number($("seed").value) }) });
+    katakana: $("katakana").checked, qwen_model: $("qwenModel").value, seed: Number($("seed").value),
+    columns: selectedColumns(), stream: $("stream").checked, streaming_interval: Number($("interval").value),
+    sequential: $("sequential").checked }) });
   addResult(response);
 }
 async function guarded(task) {
@@ -291,7 +367,7 @@ async function guarded(task) {
 }
 $("go").addEventListener("click", () => guarded(async () => {
   const started = Date.now();
-  setStatus("生成中…（2 つを同時に動かします。CosyVoice 3 は 20〜30 秒ほどかかります）");
+  setStatus(`生成中…（${selectedColumns().length} 列。CosyVoice 3 は 20〜30 秒ほどかかります）`);
   await generate($("text").value.trim());
   setStatus(`できました（${((Date.now() - started) / 1000).toFixed(0)} 秒）`);
 }));

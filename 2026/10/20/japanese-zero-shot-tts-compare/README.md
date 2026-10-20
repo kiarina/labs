@@ -26,26 +26,31 @@ macOS（Apple Silicon）、[uv](https://docs.astral.sh/uv/)、[mise](https://mis
 mise -C 2026/10/20/japanese-zero-shot-tts-compare run
 ```
 
-初回は、CosyVoice のコード（Matcha-TTS を含む）と 2 つのモデル、Whisper を取ります（合わせて約 10 GB）。
-`http://127.0.0.1:8776/` を開き、画面の右上で 2 つのエンジンが「準備完了」になるのを待ちます。
+初回は、CosyVoice のコード（Matcha-TTS を含む）、各モデル（MLX の 3 つの量子化を含む）、Whisper を取ります（合わせて約 20 GB）。
+`http://127.0.0.1:8776/` を開き、画面の上で 3 つの worker が「準備完了」になるのを待ちます。MLX の worker は 3 つの量子化を全部読み込みます（約 10 GB）。
 
 1. **参照の声**: ファイルをドロップするか、マイクで録る。追加すると Whisper が自動で文字起こしする。
    違っていたら欄を直す（次の生成から使う）。共有の会話の素材の 2 人の話者も最初から選べる
 2. **読ませる文**: 文を入れる（文の例のボタンあり）。CosyVoice 3 に渡すカタカナが下に出る
-3. **両方で読ませる**: 2 つのエンジンを同時に動かし、結果に「参照の声・Qwen3-TTS・CosyVoice 3」を並べる。
-   「文の例をすべて」は例の 7 文を順に生成する
+3. **比べる列**を選ぶ: Qwen3-TTS PyTorch、CosyVoice 3、Qwen3-TTS MLX の bf16・8bit・4bit（既定は CosyVoice 3 以外）
+4. **読ませる**: 結果に参照の声と選んだ列を並べる。「文の例をすべて」は例の 7 文を順に生成する。
+   上の「時間のまとめ」に、列ごとの生成時間・倍率（生成時間 ÷ 音声の長さ）・最初の音までの時間・途切れの平均を出す
 
 オプション:
 
 - 「参照の声の文字起こしを渡す」を外すと、声だけでまねる（Qwen3-TTS は x-vector だけ、CosyVoice 3 は cross-lingual）
 - 「CosyVoice 3 にはカタカナにして渡す」を外すと、漢字かな交じりのまま渡す
-- Qwen3-TTS のモデル（1.7B・0.6B）と seed
+- 「MLX はストリーミングで生成する」: mlx-audio の `stream=True` でチャンクごとに受け取り、届いた時刻を測る。チャンクの長さ（`streaming_interval`）は 0.25〜2 秒。
+  最初のチャンクが届いた時に再生を始め、チャンクを続けて鳴らしたとすると何秒途切れるか（途切れ）も出す。結果の帯は、各チャンクの届いた時刻と長さ。
+  保存する音声はチャンクをつないだもの（つなぎ目も聞ける）。ブラウザへのストリーミング再生はしない
+- 「1 列ずつ順に動かす」（既定）: 外すと worker ごとに同時に動かす（GPU・CPU を取り合うので時間は正しくない）
+- Qwen3-TTS PyTorch のモデル（1.7B・0.6B）と seed
 
 生成した音声は `output/webui/` に残ります（Git の対象外）。
 
 ## Structure
 
-2 つのエンジンは依存がぶつかる（CosyVoice は torch 2.3.1・transformers 4.51.3、Qwen3-TTS は transformers 4.57.3）ので、
+エンジンは依存がぶつかる（CosyVoice は torch 2.3.1・transformers 4.51.3、Qwen3-TTS は transformers 4.57.3）ので、
 それぞれ `engines/<name>/` に別の Python 環境と worker を持ちます。
 
 - `server.py`（Python 3.12）: Web UI、参照の声の変換（`afconvert` で 24 kHz mono）、Whisper の文字起こし、カタカナへの変換。
@@ -53,6 +58,8 @@ mise -C 2026/10/20/japanese-zero-shot-tts-compare run
   （ライブラリが stdout に書くので、返事と分ける）
 - `engines/qwen3_tts/worker.py`（Python 3.12、torch 2.14.1、`qwen-tts` 0.1.1）
 - `engines/cosyvoice3/worker.py`（Python 3.11、upstream の `requirements.txt` のうち推論に要るものを同じ版で）
+- `engines/qwen3_tts_mlx/worker.py`（Python 3.12、mlx 0.32.4、`mlx-audio` 0.6.0。バッファのキャッシュは 1 GB まで）
+- `bench/qwen3_tts_mlx/bench.py`: MLX 版の速さとメモリを、Web UI を使わずに測る
 
 ## Components
 
@@ -181,11 +188,47 @@ uv run python bench.py 8bit
 - 3 つとも whisper.cpp（`ggml-medium`）で文のとおりに文字になりました（句読点だけが違う）。量子化で声の質がどれだけ変わるかは聞いていません
 - 計測は、同じ Mac で 2 つの Web UI（この lab と前の lab）を動かしたまま行いました
 
+### Quantization and streaming in the web UI (7 sentences)
+
+参照はサンプルの話者 1（文字起こしあり）、文は文の例の 7 つ（音声 2.6〜10.9 秒）。「1 列ずつ順に動かす」で、
+Qwen3-TTS PyTorch（1.7B）と MLX の bf16・8bit・4bit を、ストリーミングなしとあり（チャンク 0.5 秒）で 1 回ずつ生成しました。
+PyTorch はストリーミングの設定に関係なく同じ処理なので 14 回です。同じ Mac で前の lab の Web UI も動いていました。
+
+| Column | Runs | Generate (mean) | Audio (mean) | Ratio (mean, min–max) | First audio (mean, max) | Stalls |
+|---|---:|---:|---:|---:|---:|---:|
+| PyTorch 1.7B（MPS bf16） | 14 | 9.81 秒 | 5.61 秒 | 1.74（1.60–2.03） | — | — |
+| MLX bf16 | 7 | 3.18 秒 | 5.87 秒 | 0.55（0.51–0.58） | — | — |
+| MLX 8bit | 7 | 2.53 秒 | 5.93 秒 | 0.44（0.40–0.47） | — | — |
+| MLX 4bit | 7 | 2.25 秒 | 5.70 秒 | 0.40（0.36–0.46） | — | — |
+| MLX bf16 streaming 0.5 秒 | 7 | 3.13 秒 | 5.87 秒 | 0.54（0.50–0.63） | 0.40 秒、0.55 秒 | 0 |
+| MLX 8bit streaming 0.5 秒 | 7 | 2.46 秒 | 5.93 秒 | 0.42（0.38–0.53） | 0.32 秒、0.33 秒 | 0 |
+| MLX 4bit streaming 0.5 秒 | 7 | 2.11 秒 | 5.70 秒 | 0.37（0.34–0.48） | 0.30 秒、0.36 秒 | 0 |
+
+倍率は生成時間 ÷ 音声の長さ（1 より小さいと実時間より速い）。最初の音は、生成を始めてから最初のチャンクが届くまで。
+途切れは、最初のチャンクが届いた時に再生を始め、チャンクを続けて鳴らしたときに足りなくなる秒数です（Web UI が計算する。ブラウザで実際に流して鳴らしてはいない）。
+
+- **ストリーミングで取得できた。** mlx-audio の `stream=True` で、0.48 秒ずつのチャンクが届き、最初の音は 0.3〜0.55 秒、7 文とも途切れは 0 でした
+  （生成が実時間の 0.34〜0.63 倍の速さなので、後のチャンクほど余裕が増える）。ストリーミングにしても全体の生成時間はほぼ同じでした
+- ストリーミングなしの場合、最初の音を出せるのは生成が終わった時（MLX で最大 3.8〜5.4 秒、PyTorch で約 10 秒）
+- MLX の worker のメモリのピーク（`mx.get_peak_memory`、読み込んだ 3 つのモデル約 10.3 GB を含む）は、ストリーミングなしで 15.2〜15.3 GB、
+  ストリーミングで 10.9 GB でした。生成中の上乗せは、ストリーミングなしで約 5 GB、ストリーミングで約 0.6 GB です（少しずつ音声に復号するためと推測）
+- PyTorch 版（`qwen-tts` 0.1.1）は、生成のストリーミングの口がありません（`non_streaming_mode` は文字の入力を流す真似だけ、と upstream の説明にある）
+
+whisper.cpp（`ggml-medium`）で、ストリーミングで作った 4bit・8bit の 14 本を文字にしました。13 本は文のとおり（句読点の違いだけ）でした。
+「八重洲口」だけは 4bit が「八戸市口」、8bit が「八重杉地」になりました。同じ文を bf16 は「八重洲口」、PyTorch は 2 回とも「安口」でした。
+固有名詞 1 つ・ASR 1 つの観測で、読みの誤りなのか ASR の誤りなのかは聞いて確かめていません。
+
+### CosyVoice 3 text normalization
+
+CosyVoice 3 の worker は起動のたびに ModelScope から `pengzhendong/wetext` を取ろうとして 403 になり、`no frontend is avaliable` と出して
+文の正規化（数字の読みなど）なしで動いていました。この lab の CosyVoice 3 の結果は、正規化なしの値です。
+
 ## Limitations and next steps
 
-- 聞き比べは 1 人で、組み合わせを記録していない。量子化（bf16・8bit・4bit）の聞き比べもまだ
+- 聞き比べは 1 人で、組み合わせを記録していない。量子化（bf16・8bit・4bit）とストリーミングのつなぎ目は、Web UI で聞ける状態にしたがまだ聞いていない
+- ブラウザや body で、チャンクを届いた順に実際に鳴らす（今は届いた時刻からの計算だけ）
 - 参照（人の録音・長さ・音質）と文を増やし、文字の誤り率（CER）としてまとめる
 - 話者の近さを、両方と独立した埋め込み（ECAPA など）で測る
 - CosyVoice 3 の RL 版の LLM（`llm.rl.pt`、モデルカードでは CER が低い）、Qwen3-TTS の VoiceDesign（文章で声を作る）、streaming の生成
-- 速さ: MLX 版の Qwen3-TTS を Web UI の worker にする、streaming での最初の音までの時間、Mac Studio・CUDA の環境。製品に使うなら、どこで動かすか（body・brain・サーバー）と合わせて決める
+- 速さ: Mac Studio・iPhone・Windows（MLX は Apple Silicon だけ）での速さ、チャンクを 0.25 秒にしたときの最初の音。製品に使うなら、どこで動かすか（body・brain・サーバー）と合わせて決める
 - 数字や英字はカタカナに変換されない（UniDic に発音が無い）。CosyVoice 3 での読みは未確認
