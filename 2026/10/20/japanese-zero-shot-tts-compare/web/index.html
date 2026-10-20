@@ -107,6 +107,10 @@ table.summary th:first-child, table.summary td:first-child { text-align: left; }
       <div class="columns" id="columns"></div>
       <label class="check"><input type="checkbox" id="stream"> MLX はストリーミングで生成する（チャンクの届いた時刻を測る）</label>
       <div class="row">
+        <div><label for="prime">話し始めの補正（ストリーミングの復号器を、参照の声の符号で温めてから始める）</label>
+          <select id="prime"><option value="off">なし</option><option value="12">参照の末尾 1 秒</option><option value="25">参照の末尾 2 秒</option><option value="50">参照の末尾 4 秒</option><option value="0" selected>参照の全部（ストリーミングなしと同じ音）</option></select></div>
+      </div>
+      <div class="row">
         <div><label for="interval">チャンクの長さ（MLX のストリーミング）</label>
           <select id="interval"><option value="0.25">0.25 秒</option><option value="0.5" selected>0.5 秒</option><option value="1">1 秒</option><option value="2">2 秒</option></select></div>
       </div>
@@ -344,7 +348,7 @@ function addResult(response) {
     parts.push(`ピーク ${result.peak_dbfs} dBFS`);
     if (result.engine === "cosyvoice3" && result.input_text !== response.text) parts.push(`入力: ${result.input_text}`);
     cell(result.label, result.url, parts.join(" · "), null, result.arrivals);
-    const key = result.label + (result.chunks > 1 ? `（ストリーミング ${$("interval").value} 秒）` : "");
+    const key = result.label + (result.chunks > 1 ? `（ストリーミング ${$("interval").value} 秒・補正 ${$("prime").selectedOptions[0].textContent.replace("（ストリーミングなしと同じ音）", "")}）` : "");
     (measurements[key] ||= []).push(result);
   }
   $("results").prepend(element);
@@ -355,7 +359,7 @@ async function generate(text) {
   const response = await api("/api/synthesize", { method: "POST", body: JSON.stringify({
     text, reference_id: referenceId, language: "ja", use_transcript: $("useTranscript").checked,
     katakana: $("katakana").checked, qwen_model: $("qwenModel").value, seed: Number($("seed").value),
-    columns: selectedColumns(), stream: $("stream").checked, streaming_interval: Number($("interval").value),
+    columns: selectedColumns(), stream: $("stream").checked, streaming_interval: Number($("interval").value), prime_decoder: $("prime").value !== "off", prime_tokens: $("prime").value === "off" ? 0 : Number($("prime").value),
     sequential: $("sequential").checked }) });
   addResult(response);
 }

@@ -264,6 +264,8 @@ class App:
                         "seed": int(request.get("seed", 0)),
                         "stream": bool(request.get("stream", False)),
                         "streaming_interval": float(request.get("streaming_interval", 0.5)),
+                        "prime_decoder": bool(request.get("prime_decoder", True)),
+                        "prime_tokens": int(request.get("prime_tokens", 0)),
                         **extra,
                     }
                 )

@@ -23,7 +23,35 @@ import mlx.core as mx  # noqa: E402
 import numpy as np  # noqa: E402
 import soundfile as sf  # noqa: E402
 from huggingface_hub import snapshot_download  # noqa: E402
+from mlx_audio.tts.models.qwen3_tts.qwen3_tts import Model as Qwen3TTSModel  # noqa: E402
+from mlx_audio.tts.models.qwen3_tts.speech_tokenizer import Qwen3TTSSpeechTokenizerDecoder  # noqa: E402
 from mlx_audio.tts.utils import load_model  # noqa: E402
+
+# mlx-audio 0.6.0 decodes voice-clone output without streaming as [reference codes + generated codes] and trims the
+# reference part, but its streaming path resets the decoder and decodes the generated codes with no left context, so
+# the first chunk differs (README). Priming the streaming decoder with the reference codes makes both paths match.
+prime = {"enabled": False, "codes": None, "tokens": 0}
+_prepare_icl = Qwen3TTSModel._prepare_icl_generation_inputs
+_reset = Qwen3TTSSpeechTokenizerDecoder.reset_streaming_state
+
+
+def _prepare_icl_and_keep_reference(self, *args, **kwargs):
+    result = _prepare_icl(self, *args, **kwargs)
+    prime["codes"] = result[3]  # ref_codes [1, 16, ref_time]
+    return result
+
+
+def _reset_and_prime(self):
+    _reset(self)
+    codes, prime["codes"] = prime["codes"], None
+    if prime["enabled"] and codes is not None:
+        if prime["tokens"] > 0:
+            codes = codes[:, :, -prime["tokens"] :]  # only the end of the reference, as left context
+        mx.eval(self.streaming_step(codes))  # output discarded; only the decoder state is kept
+
+
+Qwen3TTSModel._prepare_icl_generation_inputs = _prepare_icl_and_keep_reference
+Qwen3TTSSpeechTokenizerDecoder.reset_streaming_state = _reset_and_prime
 
 mx.set_cache_limit(1 << 30)  # keep the buffer cache from holding several GB between requests
 models: dict[str, object] = {}
@@ -64,6 +92,8 @@ def synthesize(request: dict) -> dict:
         kwargs["ref_text"] = request["reference_text"]
     if stream:
         kwargs.update(stream=True, streaming_interval=interval)
+    prime["enabled"] = stream and bool(request.get("prime_decoder", True)) and bool(request.get("reference_text"))
+    prime["tokens"] = int(request.get("prime_tokens", 0))  # 0: the whole reference
 
     mx.random.seed(int(request.get("seed", 0)))
     mx.reset_peak_memory()
@@ -81,7 +111,9 @@ def synthesize(request: dict) -> dict:
         "model": f"1.7B {quantization}",
         "device": "MLX",
         "input_text": request["text"],
-        "mode": "voice clone" + (f" · streaming {interval:g} 秒" if stream else ""),
+        "mode": "voice clone"
+        + (f" · streaming {interval:g} 秒" if stream else "")
+        + ((" · 話し始めの補正 " + (f"末尾 {prime['tokens']} 符号" if prime["tokens"] else "参照の全部")) if prime["enabled"] else ""),
         "sample_rate": tts.sample_rate,
         "seconds": len(audio) / tts.sample_rate,
         "timings": {"load": load, "generate": generate},
