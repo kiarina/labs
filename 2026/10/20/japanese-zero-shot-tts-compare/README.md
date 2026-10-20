@@ -100,7 +100,9 @@ UniDic に発音の無い語（数字や英字など）は、表記のまま残�
 
 ## Observed results (2026-10-20, first run)
 
-人の耳での評価はまだです。ここまでは、動作と、時間・ASR による補助の観測です。
+### Listening (2026-10-20, one listener)
+
+Web UI で聞いた lab の作者の評価: **Qwen3-TTS のほうが質が高い**。聞いた参照・文・組み合わせの数は記録していません。
 
 ### Device and speed (before the web UI, one engine at a time)
 
@@ -146,11 +148,44 @@ Web UI で作った 3 組（2 文、文字起こしあり・なし）を同じ�
 
 文 2 つ・参照 1 つの観測です。ASR が正しく読めることは、話し方の自然さや参照の声らしさとは別です。
 
+### Memory (PyTorch, the web UI's workers)
+
+両方の worker が 1 文以上生成した後、`footprint -p` で測りました（Qwen3-TTS は 1.7B だけを読み込んだ状態）。
+
+| Worker | phys_footprint | Peak | 内訳 |
+|---|---:|---:|---|
+| Qwen3-TTS 1.7B（MPS bf16） | 6.95 GB | 7.02 GB | GPU（IOAccelerator）6.0 GB、プロセスの RSS 1.2 GB |
+| CosyVoice 3（CPU fp32） | 7.35 GB | 8.78 GB | ほぼ RSS |
+
+PyTorch の MPS は解放したメモリをキャッシュとして持つので、6.0 GB は実際に要る量より多い可能性があります（未確認）。
+
+### Qwen3-TTS on MLX
+
+[mlx-audio](https://github.com/Blaizzy/mlx-audio) 0.6.0 が Qwen3-TTS の Base（`ref_audio` + `ref_text` での声のクローン）に対応し、
+mlx-community が bf16・8bit・4bit に変換したモデルを出しています（Apache-2.0）。`bench/qwen3_tts_mlx/bench.py` で、
+上と同じ参照（サンプルの話者 1、24 kHz）と文を 3 回ずつ生成しました。MLX のバッファのキャッシュは 0 に制限しています（`--keep-cache` で外せる）。
+
+```sh
+cd 2026/10/20/japanese-zero-shot-tts-compare/bench/qwen3_tts_mlx
+uv run python bench.py 8bit
+```
+
+| Model | Revision | Resident after load | Generate（2・3 回目） | Audio | Peak footprint |
+|---|---|---:|---:|---:|---:|
+| bf16 | `a6eb4f68e4b056f1215157bb696209bc82a6db48` | 4.57 GB | 4.0〜4.1 秒 | 7.6 秒 | 8.81 GB |
+| 8bit | `e7dd0585652209fa0d7783659aad4e8a324de11c` | 3.20 GB | 2.7 秒 | 6.4 秒 | 7.32 GB |
+| 4bit | `37e955a1deb861c088ae5f3a67043185f3d1a60c` | 2.46 GB | 2.6 秒 | 6.4 秒 | 6.58 GB |
+
+- 同じ Mac の PyTorch（MPS bf16、約 10 秒）より 2.5〜4 倍速く、どれも実時間より速くなりました（音声の長さの 0.4〜0.55 倍）。1 回目は 4〜7 秒
+- 生成の間だけ、どの量子化でも約 4.1 GB が上乗せされ、終わると読み込み直後の量に戻りました。どの処理が使うのか（参照の音声の符号化、音声への復号など）は切り分けていません
+- 3 つとも whisper.cpp（`ggml-medium`）で文のとおりに文字になりました（句読点だけが違う）。量子化で声の質がどれだけ変わるかは聞いていません
+- 計測は、同じ Mac で 2 つの Web UI（この lab と前の lab）を動かしたまま行いました
+
 ## Limitations and next steps
 
-- 人の耳で、話し方の自然さ・参照の声らしさを比べる（この Web UI で行う）
+- 聞き比べは 1 人で、組み合わせを記録していない。量子化（bf16・8bit・4bit）の聞き比べもまだ
 - 参照（人の録音・長さ・音質）と文を増やし、文字の誤り率（CER）としてまとめる
 - 話者の近さを、両方と独立した埋め込み（ECAPA など）で測る
 - CosyVoice 3 の RL 版の LLM（`llm.rl.pt`、モデルカードでは CER が低い）、Qwen3-TTS の VoiceDesign（文章で声を作る）、streaming の生成
-- 速さ: Mac Studio・CUDA の環境、CosyVoice 3 の MPS 化、MLX などへの移植。製品に使うなら、どこで動かすか（body・brain・サーバー）と合わせて決める
+- 速さ: MLX 版の Qwen3-TTS を Web UI の worker にする、streaming での最初の音までの時間、Mac Studio・CUDA の環境。製品に使うなら、どこで動かすか（body・brain・サーバー）と合わせて決める
 - 数字や英字はカタカナに変換されない（UniDic に発音が無い）。CosyVoice 3 での読みは未確認

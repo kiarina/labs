@@ -1,0 +1,12 @@
+[project]
+name = "qwen3-tts-mlx-bench"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "mlx==0.32.4",
+    "mlx-audio==0.6.0",
+    "soundfile==0.14.0",
+]
+
+[tool.uv]
+package = false
