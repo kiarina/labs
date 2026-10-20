@@ -30,6 +30,9 @@ OS の TTS の声を MeanVC2 で変換すると、声の質は変わるが話し
 - mlx-audio のストリーミングは話し始めの調子が崩れます（参照の文脈なしで復号するため）。復号器を参照の声の符号の末尾 1 秒で温めると、聞いて気にならなくなりました（最初の音の遅れは約 0.05 秒）
 - 日本語の読み: whisper.cpp で文字にすると、ほぼ文のとおりでした（固有名詞「八重洲口」だけが揺れた）
 
+その後: この結果をもとに、Qwen3-TTS の MLX bf16 を 2 つの直し（生成の設定、話し始めの補正）ごと
+[kiapi](https://github.com/kiarina/kiapi/tree/main/src/kiapi/capabilities/speech) の OpenAI 互換 `POST /v1/audio/speech` として出しました（2026-10-21）。
+
 ## Run
 
 macOS（Apple Silicon）、[uv](https://docs.astral.sh/uv/)、[mise](https://mise.jdx.dev/) が要ります。
