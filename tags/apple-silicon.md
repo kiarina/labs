@@ -1,5 +1,6 @@
 # apple-silicon
 
+- 2026/10/20 [CosyVoice 3 and Qwen3-TTS zero-shot voice cloning in Japanese](../2026/10/20/japanese-zero-shot-tts-compare/README.md)
 - 2026/10/20 [MeanVC2 voice conversion on Japanese OS text-to-speech](../2026/10/20/meanvc2-japanese-os-tts/README.md)
 - 2026/10/04 [MiniMax H3 Ref2VA (reference-to-video) on a 128 GB M4 Max: h3.c vs mlx-serve, with and without Turbo](../2026/10/04/minimax-h3-ref2va-eval/README.md)
 - 2026/09/29 [flutter_scene master crashes the Metal shader compiler on an M4 Max Mac](../2026/09/29/flutter-scene-m4-metal-crash/README.md)

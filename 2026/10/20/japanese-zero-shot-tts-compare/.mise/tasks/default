@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Open the web UI comparing CosyVoice 3 and Qwen3-TTS voice cloning"
+set -euo pipefail
+
+repo_root=$(git rev-parse --show-toplevel)
+
+mise run //:test-assets:download v1 labs v1
+uv sync --quiet
+uv sync --quiet --project engines/qwen3_tts
+uv sync --quiet --project engines/cosyvoice3
+LABS_REPO_ROOT="$repo_root" uv run python server.py "$@"

@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>声のクローン比較</title>
+<style>
+:root {
+  --bg: #f6f5f2; --panel: #ffffff; --text: #1f1d1a; --muted: #6b665e; --line: #e2ded6;
+  --accent: #3b5bdb; --accent-text: #ffffff; --soft: #eef1fb; --error: #c92a2a; --ok: #2b8a3e; --wait: #e67700;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #161513; --panel: #201f1c; --text: #ece9e3; --muted: #a39e94; --line: #34322d;
+    --accent: #748ffc; --accent-text: #10121a; --soft: #262b3d; --error: #ff8787; --ok: #69db7c; --wait: #ffc078; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 15px/1.6 -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif; }
+header { padding: 20px 24px 8px; display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap; }
+h1 { font-size: 20px; margin: 0; }
+header p { margin: 0; color: var(--muted); font-size: 13px; flex: 1 1 320px; }
+.engines { display: flex; gap: 10px; font-size: 13px; }
+.badge::before { content: "●"; margin-right: 4px; }
+.badge.ready::before { color: var(--ok); } .badge.starting::before { color: var(--wait); } .badge.failed::before { color: var(--error); }
+main { display: grid; grid-template-columns: minmax(320px, 440px) 1fr; gap: 16px; padding: 16px 24px 40px; }
+@media (max-width: 900px) { main { grid-template-columns: 1fr; padding: 12px 16px 32px; } header { padding: 16px 16px 4px; } }
+section { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+section + section { margin-top: 16px; }
+h2 { font-size: 15px; margin: 0 0 10px; }
+label { display: block; font-size: 13px; color: var(--muted); margin: 10px 0 4px; }
+label.check { display: flex; gap: 6px; align-items: center; color: var(--text); margin: 6px 0; }
+select, textarea, input[type=number] { width: 100%; font: inherit; color: var(--text); background: var(--bg);
+  border: 1px solid var(--line); border-radius: 6px; padding: 7px 9px; }
+textarea { min-height: 84px; resize: vertical; }
+button { font: inherit; border: 1px solid var(--line); background: var(--bg); color: var(--text);
+  border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; }
+button:disabled { opacity: .5; cursor: default; }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.row > * { flex: 1; }
+.row > button, .row > .status { flex: none; }
+.drop { border: 1.5px dashed var(--line); border-radius: 8px; padding: 14px; text-align: center; color: var(--muted);
+  font-size: 13px; cursor: pointer; }
+.drop.over { border-color: var(--accent); background: var(--soft); color: var(--text); }
+.refs { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.ref { padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; }
+.ref.selected { border-color: var(--accent); background: var(--soft); }
+.ref .head { display: flex; gap: 8px; align-items: center; cursor: pointer; font-size: 13px; overflow-wrap: anywhere; }
+.ref .head span:last-child { margin-left: auto; color: var(--muted); font-size: 12px; white-space: nowrap; }
+.ref audio { width: 100%; height: 32px; margin-top: 4px; }
+.ref textarea { min-height: 44px; font-size: 13px; padding: 5px 7px; margin-top: 4px; }
+.ref .hint { font-size: 11px; color: var(--muted); }
+.presets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.presets button { font-size: 12px; padding: 3px 8px; }
+.status { font-size: 13px; color: var(--muted); min-height: 1.4em; margin-top: 8px; }
+.status.error { color: var(--error); }
+.kana { font-size: 12px; color: var(--muted); margin-top: 4px; overflow-wrap: anywhere; }
+.results { display: flex; flex-direction: column; gap: 12px; }
+.empty { color: var(--muted); font-size: 14px; }
+.result { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.result .title { font-size: 14px; font-weight: 600; }
+.result .sub { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+@media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+.cell { border: 1px solid var(--line); border-radius: 8px; padding: 8px; min-width: 0; }
+.cell .name { font-size: 13px; font-weight: 600; }
+.cell audio { width: 100%; height: 34px; margin: 4px 0; }
+.cell .numbers { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.cell .error { font-size: 12px; color: var(--error); overflow-wrap: anywhere; }
+.rec { color: var(--error); font-weight: 600; }
+</style>
+</head>
+<body>
+<header>
+  <h1>声のクローン比較</h1>
+  <p>参照の声をまねて、Qwen3-TTS と CosyVoice 3 が同じ文を読みます。手元の Mac で動きます（Qwen3-TTS は GPU、CosyVoice 3 は CPU）。</p>
+  <div class="engines" id="engines"></div>
+</header>
+<main>
+  <div>
+    <section>
+      <h2>1. 参照の声（この声にする）</h2>
+      <div class="drop" id="drop">ファイルをドロップ、またはクリックして選ぶ<br>（wav・mp3・m4a・aiff など。5〜15 秒の一人の声）</div>
+      <input type="file" id="file" accept="audio/*" hidden>
+      <div class="row" style="margin-top:8px">
+        <button id="rec">マイクで録る</button>
+        <span id="recState" class="status" style="margin:0"></span>
+      </div>
+      <div class="refs" id="refs"></div>
+    </section>
+    <section>
+      <h2>2. 読ませる文</h2>
+      <textarea id="text">こんにちは。今日はいい天気ですね。少し散歩してから、駅前のカフェでコーヒーを飲みませんか？</textarea>
+      <div class="presets" id="presets"></div>
+      <div class="kana" id="kana"></div>
+      <label class="check"><input type="checkbox" id="useTranscript" checked> 参照の声の文字起こしを渡す（外すと声だけでまねる）</label>
+      <label class="check"><input type="checkbox" id="katakana" checked> CosyVoice 3 にはカタカナにして渡す（公式の例の指示）</label>
+      <div class="row">
+        <div><label for="qwenModel">Qwen3-TTS のモデル</label>
+          <select id="qwenModel"><option value="1.7B">1.7B</option><option value="0.6B">0.6B</option></select></div>
+        <div style="flex:.6"><label for="seed">seed</label><input type="number" id="seed" value="0" min="0"></div>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <button class="primary" id="go">両方で読ませる</button>
+        <button id="goAll">文の例をすべて</button>
+      </div>
+      <div class="status" id="status"></div>
+    </section>
+  </div>
+  <div>
+    <section>
+      <h2>結果（新しいものが上）</h2>
+      <div class="results" id="results"><div class="empty">まだありません。左で参照の声を選び、「両方で読ませる」を押してください。</div></div>
+    </section>
+  </div>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const PRESETS = [
+  ["挨拶", "こんにちは。今日はいい天気ですね。少し散歩してから、駅前のカフェでコーヒーを飲みませんか？"],
+  ["促音・長音", "ちょっと待って。チケットはもう買ってあるから、ゆっくり行こうよ。"],
+  ["数字", "明日の朝、七時三十分に、東京駅の八重洲口で待ち合わせしましょう。"],
+  ["感情", "えっ、本当に？すごい！ずっと楽しみにしてたんだ、ありがとう！"],
+  ["説明", "この機能を使うには、設定の画面を開いて、スピーカーで話すをオンにしてください。"],
+  ["英語混じり", "MacBook の Bluetooth をオフにしてから、もう一度 iPhone とつないでみて。"],
+  ["長め", "昔々、ある山のふもとに、小さな村がありました。村の人たちは毎朝、川で水をくみ、畑を耕して、静かに暮らしていました。"],
+];
+let referenceId = null, references = [];
+
+function setStatus(text, error = false) { $("status").textContent = text; $("status").className = "status" + (error ? " error" : ""); }
+async function api(path, options) {
+  const response = await fetch(path, options);
+  const body = await response.json();
+  if (!response.ok) throw new Error(body.error || response.statusText);
+  return body;
+}
+
+async function pollStatus() {
+  try {
+    const status = await api("/api/status");
+    $("engines").innerHTML = "";
+    for (const engine of Object.values(status)) {
+      const badge = document.createElement("span");
+      badge.className = "badge " + engine.state;
+      badge.textContent = `${engine.label} ${({ ready: "準備完了", starting: "読み込み中", failed: "失敗" })[engine.state]}`;
+      if (engine.error) badge.title = engine.error;
+      $("engines").appendChild(badge);
+    }
+    if (Object.values(status).some((engine) => engine.state === "starting")) setTimeout(pollStatus, 2000);
+  } catch { setTimeout(pollStatus, 3000); }
+}
+
+async function renderRefs() {
+  references = await api("/api/references");
+  if (!referenceId && references.length) referenceId = references[0].id;
+  $("refs").innerHTML = "";
+  for (const reference of references) {
+    const element = document.createElement("div");
+    element.className = "ref" + (reference.id === referenceId ? " selected" : "");
+    element.innerHTML = `<div class="head"><input type="radio" name="ref"><span class="label"></span><span>${reference.seconds} 秒</span></div>
+      <audio controls preload="none"></audio>
+      <textarea placeholder="参照の声の文字起こし（話した内容）"></textarea>
+      <div class="hint">文字起こしは自動（Whisper）。違っていたら直してください（直すと次の生成から使います）</div>`;
+    element.querySelector(".label").textContent = reference.label;
+    element.querySelector("audio").src = reference.url;
+    const radio = element.querySelector("input");
+    radio.checked = reference.id === referenceId;
+    element.querySelector(".head").addEventListener("click", () => { referenceId = reference.id; renderRefs(); });
+    const transcript = element.querySelector("textarea");
+    transcript.value = reference.transcript || "";
+    transcript.addEventListener("change", async () => {
+      try { await api("/api/transcript", { method: "POST", body: JSON.stringify({ id: reference.id, transcript: transcript.value }) });
+        setStatus("文字起こしを直しました"); } catch (error) { setStatus(error.message, true); }
+    });
+    $("refs").appendChild(element);
+  }
+}
+
+async function upload(file) {
+  setStatus(`${file.name} を読み込み、文字起こししています…`);
+  try {
+    const reference = await api("/api/references", {
+      method: "POST", body: file, headers: { "X-Filename": encodeURIComponent(file.name), "X-Language": "ja" } });
+    referenceId = reference.id;
+    await renderRefs();
+    setStatus(`${file.name}（${reference.seconds} 秒）を追加しました。文字起こしを確かめてください`);
+  } catch (error) { setStatus(error.message, true); }
+}
+$("drop").addEventListener("click", () => $("file").click());
+$("file").addEventListener("change", () => { if ($("file").files[0]) upload($("file").files[0]); $("file").value = ""; });
+$("drop").addEventListener("dragover", (event) => { event.preventDefault(); $("drop").classList.add("over"); });
+$("drop").addEventListener("dragleave", () => $("drop").classList.remove("over"));
+$("drop").addEventListener("drop", (event) => {
+  event.preventDefault(); $("drop").classList.remove("over");
+  if (event.dataTransfer.files[0]) upload(event.dataTransfer.files[0]);
+});
+
+// Microphone recording as 16-bit PCM WAV (Core Audio on the server cannot read webm).
+let recorder = null;
+function encodeWav(chunks, sampleRate) {
+  const length = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
+  const buffer = new ArrayBuffer(44 + length * 2), view = new DataView(buffer);
+  const write = (offset, text) => [...text].forEach((c, i) => view.setUint8(offset + i, c.charCodeAt(0)));
+  write(0, "RIFF"); view.setUint32(4, 36 + length * 2, true); write(8, "WAVEfmt ");
+  view.setUint32(16, 16, true); view.setUint16(20, 1, true); view.setUint16(22, 1, true);
+  view.setUint32(24, sampleRate, true); view.setUint32(28, sampleRate * 2, true);
+  view.setUint16(32, 2, true); view.setUint16(34, 16, true); write(36, "data"); view.setUint32(40, length * 2, true);
+  let offset = 44;
+  for (const chunk of chunks) for (const sample of chunk) {
+    view.setInt16(offset, Math.max(-1, Math.min(1, sample)) * 0x7fff, true); offset += 2;
+  }
+  return new Blob([buffer], { type: "audio/wav" });
+}
+$("rec").addEventListener("click", async () => {
+  if (recorder) {
+    const { stream, context, node, chunks, started } = recorder; recorder = null;
+    node.disconnect(); stream.getTracks().forEach((track) => track.stop()); await context.close();
+    $("rec").textContent = "マイクで録る"; $("recState").textContent = "";
+    upload(new File([encodeWav(chunks, context.sampleRate)], `録音 ${new Date(started).toLocaleTimeString("ja-JP")}.wav`));
+    return;
+  }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+    const context = new AudioContext();
+    const input = context.createMediaStreamSource(stream);
+    const node = context.createScriptProcessor(4096, 1, 1);
+    const chunks = [], started = Date.now();
+    node.onaudioprocess = (event) => {
+      chunks.push(new Float32Array(event.inputBuffer.getChannelData(0)));
+      $("recState").innerHTML = `<span class="rec">● 録音中</span> ${((Date.now() - started) / 1000).toFixed(1)} 秒`;
+    };
+    input.connect(node); node.connect(context.destination);
+    recorder = { stream, context, node, chunks, started };
+    $("rec").textContent = "止めて使う";
+  } catch (error) { setStatus(`マイクを開けませんでした: ${error.message}`, true); }
+});
+
+let kanaTimer = null;
+function updateKana() {
+  clearTimeout(kanaTimer);
+  kanaTimer = setTimeout(async () => {
+    if (!$("katakana").checked || !$("text").value.trim()) { $("kana").textContent = ""; return; }
+    try { const { katakana } = await api("/api/katakana", { method: "POST", body: JSON.stringify({ text: $("text").value }) });
+      $("kana").textContent = `CosyVoice 3 へ: ${katakana}`; } catch {}
+  }, 250);
+}
+$("text").addEventListener("input", updateKana);
+$("katakana").addEventListener("change", updateKana);
+
+function addResult(response) {
+  $("results").querySelector(".empty")?.remove();
+  const element = document.createElement("div");
+  element.className = "result";
+  element.innerHTML = `<div class="title"></div><div class="sub"></div><div class="grid"></div>`;
+  element.querySelector(".title").textContent = response.text;
+  element.querySelector(".sub").textContent = `参照: ${response.reference.label}`;
+  const grid = element.querySelector(".grid");
+  const cell = (name, url, numbers, error) => {
+    const div = document.createElement("div");
+    div.className = "cell";
+    div.innerHTML = `<div class="name"></div>${url ? "<audio controls></audio>" : ""}<div class="numbers"></div>`;
+    div.querySelector(".name").textContent = name;
+    if (url) div.querySelector("audio").src = url;
+    div.querySelector(".numbers").textContent = numbers || "";
+    if (error) { const e = document.createElement("div"); e.className = "error"; e.textContent = error; div.appendChild(e); }
+    grid.appendChild(div);
+  };
+  cell("参照の声", response.reference.url, `${response.reference.seconds} 秒`);
+  for (const result of response.results) {
+    if (!result.ok) { cell(result.label, null, "", result.error); continue; }
+    const parts = [`${result.model} · ${result.device} · ${result.mode}`,
+      `生成 ${result.generate_seconds} 秒（音声 ${result.seconds} 秒、${result.real_time_factor} 倍）`, `ピーク ${result.peak_dbfs} dBFS`];
+    if (result.engine === "cosyvoice3" && result.input_text !== response.text) parts.push(`入力: ${result.input_text}`);
+    cell(result.label, result.url, parts.join(" · "));
+  }
+  $("results").prepend(element);
+}
+
+async function generate(text) {
+  const response = await api("/api/synthesize", { method: "POST", body: JSON.stringify({
+    text, reference_id: referenceId, language: "ja", use_transcript: $("useTranscript").checked,
+    katakana: $("katakana").checked, qwen_model: $("qwenModel").value, seed: Number($("seed").value) }) });
+  addResult(response);
+}
+async function guarded(task) {
+  if (!referenceId) { setStatus("参照の声を選んでください", true); return; }
+  $("go").disabled = $("goAll").disabled = true;
+  try { await task(); } catch (error) { setStatus(error.message, true); }
+  finally { $("go").disabled = $("goAll").disabled = false; }
+}
+$("go").addEventListener("click", () => guarded(async () => {
+  const started = Date.now();
+  setStatus("生成中…（2 つを同時に動かします。CosyVoice 3 は 20〜30 秒ほどかかります）");
+  await generate($("text").value.trim());
+  setStatus(`できました（${((Date.now() - started) / 1000).toFixed(0)} 秒）`);
+}));
+$("goAll").addEventListener("click", () => guarded(async () => {
+  for (const [index, [label, text]] of PRESETS.entries()) {
+    setStatus(`生成中… ${index + 1} / ${PRESETS.length}（${label}）`);
+    await generate(text);
+  }
+  setStatus(`${PRESETS.length} 文を生成しました`);
+}));
+
+for (const [label, text] of PRESETS) {
+  const button = document.createElement("button");
+  button.textContent = label;
+  button.addEventListener("click", () => { $("text").value = text; updateKana(); });
+  $("presets").appendChild(button);
+}
+pollStatus();
+renderRefs();
+updateKana();
+</script>
+</body>
+</html>
