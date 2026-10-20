@@ -43,7 +43,7 @@ macOS ではファイル（書類フォルダの決まった場所）にしか�
 
 ## 作ったもの
 
-`packages/tts_pcm`（この lab の中だけの plugin。公開していない）:
+`packages/tts_pcm`（この lab の中の plugin。続きは [kiarina/tts_pcm](https://github.com/kiarina/tts_pcm) に移し、声の一覧の形をそろえた。この lab とは同期しない）:
 
 ```dart
 final voices = await TtsPcm.instance.voices(language: 'ja');
