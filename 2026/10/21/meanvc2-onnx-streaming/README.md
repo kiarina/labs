@@ -63,6 +63,21 @@ ASR の重みの元のファイルは 235 MB（5,700 万）だが、流しなが
 - **DiT** は、上流が offset を Python の int で渡し（trace で固定される）、KV キャッシュの長さを `if` で切っている（同じく固定される）。offset をテンソルの入力にし、
   `[-max:]` の切り出し（短ければそのまま）に置き換えた。`F.rms_norm` は opset 17 に無いので式で書いた。最初の chunk は長さ 0 のキャッシュで呼ぶ（ORT は Python・アプリとも受け付けた）
 
+### 話者の encoder（参照の声の登録）
+
+`py/export_speaker.py`。WavLM-Large + ECAPA-TDNN（上流の `preprocess/models/ecapa_tdnn.py`、`wavlm_large_finetune.pth`）を、波形 [1, T] → 埋め込み [1, 256] の 1 つのグラフにした。
+s3prl の包み（波形の list・`pad_sequence`・Python の長さ）は trace が追えないので、1 本の波形について同じ隠れ状態（24 層それぞれの入力と最後の出力）と重み付けを書き直した。
+波形の正規化の `F.layer_norm(wav, wav.shape)` も、長さが変わると書き出せないので式で書いた。
+
+| | 大きさ | 上流とのコサイン（3〜20 s の参照） | 7.6 s の参照の時間（Mac、Python、4 スレッド） |
+|---|---:|---|---:|
+| fp32 | 1.30 GB | 1.0000 | 1.0 s |
+| int8 | 387 MB | 0.9993〜0.9997 | 0.52 s |
+
+int8 の埋め込みで変換した音は、fp32 の埋め込みのときと LSD 5.7 dB 違う（`results/speaker-int8-effect.json`。ほかの int8 と同じ大きさ。聞いてはいない）。
+**この重みは microsoft/UniSpeech の CC BY-SA 3.0**（MeanVC2 の Apache-2.0 ではない）。配るときはライセンスを分ける。
+書き出しの道具と Dart の package は、このあと `kiarina/meanvc2_onnx`（公開の準備中）が持つ。この lab とは同期しない。
+
 ## 一致
 
 部品ごと（`results/export-check.json`、同じ入力を上流の部品と ONNX に入れる）の最大の差は、fbank 6e-5（値の幅 26）、ASR 1.2e-5、DiT 3.8e-6、Vocos 3.3e-5。
