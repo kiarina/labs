@@ -39,6 +39,7 @@ class _LabState extends State<Lab> {
   bool started = false, finished = false;
   final List<String> log = [];
   Completer<void>? stopRequest;
+  void Function(String)? onHumanChange;
   CameraCapture? activeCamera;
 
   @override
@@ -292,6 +293,8 @@ class _LabState extends State<Lab> {
       }
       report['playoutStart'] = await playout.invokeMapMethod<String, dynamic>(
           'configure', {'delayMs': 20, 'deviceId': speakerId});
+      pc.onConnectionState = (state) => mark('pc-${state.name}');
+      pc.onIceConnectionState = (state) => mark('ice-${state.name}');
       pc.onTrack = (event) {
         if (event.track.kind != 'audio' || attached) return;
         attached = true;
@@ -470,6 +473,7 @@ class _LabState extends State<Lab> {
         // Owner run: speak freely; switch modes on screen; stop when done.
         await gate(true);
         await setMode('passthrough');
+        onHumanChange = (what) => mark(what);
         stopRequest = Completer<void>();
         setState(() => instruction = 'スピーカーで話しかけてください。終わったら「終了」');
         await Future.any([stopRequest!.future, Future<void>.delayed(const Duration(minutes: 6))]);
@@ -542,10 +546,14 @@ class _LabState extends State<Lab> {
                   chip(m, mode == m, () async {
                     setState(() => mode = m);
                     await playout.invokeMethod('setMode', {'mode': modes[m]});
+                    onHumanChange?.call('ui-mode-$m');
                   }),
                 const SizedBox(width: 16),
                 for (final src in ['post', 'pre'])
-                  chip(src == 'post' ? '参照: 加工後' : '参照: 加工前（比較）', sendSource == src, () => setState(() => sendSource = src)),
+                  chip(src == 'post' ? '参照: 加工後' : '参照: 加工前（比較）', sendSource == src, () {
+                    setState(() => sendSource = src);
+                    onHumanChange?.call('ui-send-$src');
+                  }),
                 const SizedBox(width: 16),
                 FilledButton(
                   onPressed: () => stopRequest?.isCompleted == false ? stopRequest!.complete() : null,

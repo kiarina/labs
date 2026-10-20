@@ -11,8 +11,12 @@ raw, post, pre, ref = L('raw'), L('post'), L('pre'), L('reference')
 cm = np.fromfile(d / 'clock_map.i64', '<i8').reshape(-1, 2); m = cm[cm[:, 1] > 48000]
 clag = float(np.median(m[:, 0] - m[:, 1]))
 db = lambda v: None if len(v) == 0 else float(10 * np.log10(np.mean(v * v) / 32768 ** 2 + 1e-12))
-win = slice(48000 * 8, 48000 * 60)
-extra = max(range(0, 12000, 48), key=lambda x: np.dot(raw[win], ref[int(48000 * 8 - clag - x):int(48000 * 8 - clag - x) + 48000 * 52]))
+w0, w1 = 48000 * 8, min(48000 * 60, len(raw) - 48000)
+def _score(x):
+    j = int(w0 - clag - x)
+    seg = ref[max(j, 0):j + (w1 - w0)]
+    return np.dot(raw[w0 + (max(j, 0) - j):w0 + (max(j, 0) - j) + len(seg)], seg) if len(seg) else 0
+extra = max(range(0, 12000, 48), key=_score)
 lag = clag + extra
 pts = [(e['clockMs'], e['rawSample']) for e in r['events']]
 (c0, s0), (c1, s1) = pts[0], pts[-1]

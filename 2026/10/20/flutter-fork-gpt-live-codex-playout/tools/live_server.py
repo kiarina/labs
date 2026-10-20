@@ -8,7 +8,7 @@ sideband events. Event kinds, roles and statuses are forwarded; transcript text
 is forwarded for display (the app stores it only for synthetic sessions).
 No Thinker: delegations receive a fixed short reply. OPENAI_API_KEY is removed.
 """
-import asyncio, json, os, re, secrets, signal, sys
+import asyncio, json, os, re, secrets, signal, sys, time
 from pathlib import Path
 from urllib.parse import urlsplit, parse_qs
 from websockets.asyncio.server import serve
@@ -141,7 +141,7 @@ class Session:
                 done, _ = await asyncio.wait(pair, return_when=asyncio.FIRST_COMPLETED)
                 for t in done:
                     if t.exception():
-                        print('relay ended', type(t.exception()).__name__, t.exception(), flush=True)
+                        print('relay ended', time.strftime('%H:%M:%S'), type(t.exception()).__name__, t.exception(), flush=True)
             finally:
                 for t in pair:
                     t.cancel()
