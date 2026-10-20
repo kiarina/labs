@@ -1,0 +1,461 @@
+{
+    "platform": "macos",
+    "voicesMs": 100,
+    "voiceCount": 180,
+    "jaVoices": [
+        {
+            "id": "com.apple.voice.compact.ja-JP.Kyoko",
+            "name": "Kyoko",
+            "language": "ja-JP",
+            "quality": "default"
+        },
+        {
+            "id": "com.apple.eloquence.ja-JP.Eddy",
+            "name": "Eddy",
+            "language": "ja-JP",
+            "quality": "default"
+        },
+        {
+            "id": "com.apple.eloquence.ja-JP.Flo",
+            "name": "Flo",
+            "language": "ja-JP",
+            "quality": "default"
+        },
+        {
+            "id": "com.apple.eloquence.ja-JP.Grandma",
+            "name": "Grandma",
+            "language": "ja-JP",
+            "quality": "default"
+        },
+        {
+            "id": "com.apple.eloquence.ja-JP.Grandpa",
+            "name": "Grandpa",
+            "language": "ja-JP",
+            "quality": "default"
+        },
+        {
+            "id": "com.apple.eloquence.ja-JP.Reed",
+            "name": "Reed",
+            "language": "ja-JP",
+            "quality": "default"
+        },
+        {
+            "id": "com.apple.eloquence.ja-JP.Rocko",
+            "name": "Rocko",
+            "language": "ja-JP",
+            "quality": "default"
+        },
+        {
+            "id": "com.apple.eloquence.ja-JP.Sandy",
+            "name": "Sandy",
+            "language": "ja-JP",
+            "quality": "default"
+        },
+        {
+            "id": "com.apple.eloquence.ja-JP.Shelley",
+            "name": "Shelley",
+            "language": "ja-JP",
+            "quality": "default"
+        }
+    ],
+    "enVoiceCount": 41,
+    "runs": [
+        {
+            "firstChunkMs": 1299,
+            "totalMs": 1363,
+            "audioMs": 3095,
+            "realTimeFactor": 0.44038772213247174,
+            "chunks": 267,
+            "chunkSamples": {
+                "min": 151,
+                "max": 256
+            },
+            "sampleRate": 22050,
+            "nativeFormat": "float32 22050 Hz 1 ch",
+            "peakDbfs": -9.358828587314113,
+            "rmsDbfs": -25.37773959603757,
+            "leadingSilenceMs": 95,
+            "text": "ja-short",
+            "attempt": 0
+        },
+        {
+            "firstChunkMs": 747,
+            "totalMs": 815,
+            "audioMs": 3095,
+            "realTimeFactor": 0.2633279483037157,
+            "chunks": 267,
+            "chunkSamples": {
+                "min": 151,
+                "max": 256
+            },
+            "sampleRate": 22050,
+            "nativeFormat": "float32 22050 Hz 1 ch",
+            "peakDbfs": -9.358828587314113,
+            "rmsDbfs": -25.37773959603757,
+            "leadingSilenceMs": 95,
+            "text": "ja-short",
+            "attempt": 1,
+            "asr": {
+                "engine": "apple.speech-analyzer",
+                "text": "こんにちは。今日はいい天気ですね。",
+                "cer": 0.0,
+                "elapsedMs": 241
+            }
+        },
+        {
+            "firstChunkMs": 841,
+            "totalMs": 1003,
+            "audioMs": 10694,
+            "realTimeFactor": 0.09379091079109782,
+            "chunks": 922,
+            "chunkSamples": {
+                "min": 29,
+                "max": 256
+            },
+            "sampleRate": 22050,
+            "nativeFormat": "float32 22050 Hz 1 ch",
+            "peakDbfs": -9.077687461497586,
+            "rmsDbfs": -24.429322172793896,
+            "leadingSilenceMs": 15,
+            "text": "ja-long",
+            "attempt": 0
+        },
+        {
+            "firstChunkMs": 843,
+            "totalMs": 1006,
+            "audioMs": 10694,
+            "realTimeFactor": 0.09407144193005423,
+            "chunks": 922,
+            "chunkSamples": {
+                "min": 29,
+                "max": 256
+            },
+            "sampleRate": 22050,
+            "nativeFormat": "float32 22050 Hz 1 ch",
+            "peakDbfs": -9.077687461497586,
+            "rmsDbfs": -24.429322172793896,
+            "leadingSilenceMs": 15,
+            "text": "ja-long",
+            "attempt": 1,
+            "asr": {
+                "engine": "apple.speech-analyzer",
+                "text": "岐阜県の白川郷は、合唱作りの集落として知られています。冬になると雪に覆われ、夜にはライトアップが行われることもあります。",
+                "cer": 0.03571428571428571,
+                "elapsedMs": 209
+            }
+        },
+        {
+            "firstChunkMs": 472,
+            "totalMs": 532,
+            "audioMs": 3015,
+            "realTimeFactor": 0.17645107794361525,
+            "chunks": 260,
+            "chunkSamples": {
+                "min": 184,
+                "max": 256
+            },
+            "sampleRate": 22050,
+            "nativeFormat": "float32 22050 Hz 1 ch",
+            "peakDbfs": -2.7457665080961013,
+            "rmsDbfs": -16.870202450470963,
+            "leadingSilenceMs": 14,
+            "text": "en-short",
+            "attempt": 0
+        },
+        {
+            "firstChunkMs": 437,
+            "totalMs": 503,
+            "audioMs": 3015,
+            "realTimeFactor": 0.16683250414593698,
+            "chunks": 260,
+            "chunkSamples": {
+                "min": 184,
+                "max": 256
+            },
+            "sampleRate": 22050,
+            "nativeFormat": "float32 22050 Hz 1 ch",
+            "peakDbfs": -2.7457665080961013,
+            "rmsDbfs": -16.870202450470963,
+            "leadingSilenceMs": 14,
+            "text": "en-short",
+            "attempt": 1,
+            "asr": {
+                "engine": "apple.speech-analyzer",
+                "text": "Hello, the weather is nice today, isn't it?",
+                "cer": 0.0,
+                "elapsedMs": 199
+            }
+        }
+    ],
+    "jaPerVoice": [
+        {
+            "firstChunkMs": 732,
+            "totalMs": 799,
+            "audioMs": 3095,
+            "realTimeFactor": 0.25815831987075927,
+            "chunks": 267,
+            "chunkSamples": {
+                "min": 151,
+                "max": 256
+            },
+            "sampleRate": 22050,
+            "nativeFormat": "float32 22050 Hz 1 ch",
+            "peakDbfs": -9.358828587314113,
+            "rmsDbfs": -25.37773959603757,
+            "leadingSilenceMs": 95,
+            "voice": "Kyoko",
+            "quality": "default",
+            "asr": {
+                "engine": "apple.speech-analyzer",
+                "text": "こんにちは。今日はいい天気ですね。",
+                "cer": 0.0,
+                "elapsedMs": 99
+            }
+        },
+        {
+            "firstChunkMs": 153,
+            "totalMs": 209,
+            "audioMs": 3321,
+            "realTimeFactor": 0.06293285155073773,
+            "chunks": 288,
+            "chunkSamples": {
+                "min": 51,
+                "max": 185
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "float32 16000 Hz 1 ch",
+            "peakDbfs": -4.96697276799498,
+            "rmsDbfs": -22.22520981830756,
+            "leadingSilenceMs": 0,
+            "voice": "Eddy",
+            "quality": "default",
+            "asr": {
+                "engine": "apple.speech-analyzer",
+                "text": "こんにちは。今日はいい天気ですね。",
+                "cer": 0.0,
+                "elapsedMs": 100
+            }
+        },
+        {
+            "firstChunkMs": 20,
+            "totalMs": 78,
+            "audioMs": 3321,
+            "realTimeFactor": 0.023486901535682024,
+            "chunks": 288,
+            "chunkSamples": {
+                "min": 51,
+                "max": 185
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "float32 16000 Hz 1 ch",
+            "peakDbfs": -6.079112466002462,
+            "rmsDbfs": -20.515822840302306,
+            "leadingSilenceMs": 0,
+            "voice": "Flo",
+            "quality": "default",
+            "asr": {
+                "engine": "apple.speech-analyzer",
+                "text": "こんにちは。今日はいい天気ですね。",
+                "cer": 0.0,
+                "elapsedMs": 117
+            }
+        },
+        {
+            "firstChunkMs": 23,
+            "totalMs": 80,
+            "audioMs": 3321,
+            "realTimeFactor": 0.02408912978018669,
+            "chunks": 288,
+            "chunkSamples": {
+                "min": 51,
+                "max": 185
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "float32 16000 Hz 1 ch",
+            "peakDbfs": -6.029086371832659,
+            "rmsDbfs": -22.20464677605072,
+            "leadingSilenceMs": 0,
+            "voice": "Grandma",
+            "quality": "default",
+            "asr": {
+                "engine": "apple.speech-analyzer",
+                "text": "こんにちは。今日はいい天気ですね。",
+                "cer": 0.0,
+                "elapsedMs": 108
+            }
+        },
+        {
+            "firstChunkMs": 20,
+            "totalMs": 81,
+            "audioMs": 3321,
+            "realTimeFactor": 0.024390243902439025,
+            "chunks": 288,
+            "chunkSamples": {
+                "min": 51,
+                "max": 185
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "float32 16000 Hz 1 ch",
+            "peakDbfs": -6.61573780660075,
+            "rmsDbfs": -23.694410537529198,
+            "leadingSilenceMs": 0,
+            "voice": "Grandpa",
+            "quality": "default",
+            "asr": {
+                "engine": "apple.speech-analyzer",
+                "text": "こんにちは。今日はいい天気ですね。",
+                "cer": 0.0,
+                "elapsedMs": 108
+            }
+        },
+        {
+            "firstChunkMs": 19,
+            "totalMs": 78,
+            "audioMs": 3321,
+            "realTimeFactor": 0.023486901535682024,
+            "chunks": 288,
+            "chunkSamples": {
+                "min": 51,
+                "max": 185
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "float32 16000 Hz 1 ch",
+            "peakDbfs": -4.951959072882257,
+            "rmsDbfs": -22.36441265159149,
+            "leadingSilenceMs": 0,
+            "voice": "Reed",
+            "quality": "default",
+            "asr": {
+                "engine": "apple.speech-analyzer",
+                "text": "こんにちは。今日はいい天気ですね。",
+                "cer": 0.0,
+                "elapsedMs": 106
+            }
+        },
+        {
+            "firstChunkMs": 19,
+            "totalMs": 77,
+            "audioMs": 3321,
+            "realTimeFactor": 0.02318578741342969,
+            "chunks": 288,
+            "chunkSamples": {
+                "min": 51,
+                "max": 185
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "float32 16000 Hz 1 ch",
+            "peakDbfs": -5.634358511873438,
+            "rmsDbfs": -22.925415242667214,
+            "leadingSilenceMs": 0,
+            "voice": "Rocko",
+            "quality": "default",
+            "asr": {
+                "engine": "apple.speech-analyzer",
+                "text": "こんにちは。今日はいい連中ですね。",
+                "cer": 0.13333333333333333,
+                "elapsedMs": 108
+            }
+        },
+        {
+            "firstChunkMs": 19,
+            "totalMs": 78,
+            "audioMs": 3321,
+            "realTimeFactor": 0.023486901535682024,
+            "chunks": 288,
+            "chunkSamples": {
+                "min": 51,
+                "max": 185
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "float32 16000 Hz 1 ch",
+            "peakDbfs": -6.308413368118951,
+            "rmsDbfs": -20.617724867583874,
+            "leadingSilenceMs": 0,
+            "voice": "Sandy",
+            "quality": "default",
+            "asr": {
+                "engine": "apple.speech-analyzer",
+                "text": "こんにちは。今日はいい天気ですね。",
+                "cer": 0.0,
+                "elapsedMs": 107
+            }
+        },
+        {
+            "firstChunkMs": 20,
+            "totalMs": 77,
+            "audioMs": 3321,
+            "realTimeFactor": 0.02318578741342969,
+            "chunks": 288,
+            "chunkSamples": {
+                "min": 51,
+                "max": 185
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "float32 16000 Hz 1 ch",
+            "peakDbfs": -5.686746118067309,
+            "rmsDbfs": -20.066845081506987,
+            "leadingSilenceMs": 0,
+            "voice": "Shelley",
+            "quality": "default",
+            "asr": {
+                "engine": "apple.speech-analyzer",
+                "text": "こんにちは。今日はいい天気ですね。",
+                "cer": 0.0,
+                "elapsedMs": 107
+            }
+        }
+    ],
+    "cancel": {
+        "chunksAfterCancel": 0,
+        "nextRequest": {
+            "firstChunkMs": 753,
+            "totalMs": 820,
+            "audioMs": 3095,
+            "realTimeFactor": 0.2649434571890145,
+            "chunks": 267,
+            "chunkSamples": {
+                "min": 151,
+                "max": 256
+            },
+            "sampleRate": 22050,
+            "nativeFormat": "float32 22050 Hz 1 ch",
+            "peakDbfs": -9.358828587314113,
+            "rmsDbfs": -25.37773959603757,
+            "leadingSilenceMs": 95
+        }
+    },
+    "concurrent": [
+        {
+            "firstChunkMs": 1028,
+            "totalMs": 1096,
+            "audioMs": 3095,
+            "realTimeFactor": 0.35411954765751213,
+            "chunks": 267,
+            "chunkSamples": {
+                "min": 151,
+                "max": 256
+            },
+            "sampleRate": 22050,
+            "nativeFormat": "float32 22050 Hz 1 ch",
+            "peakDbfs": -9.358828587314113,
+            "rmsDbfs": -25.37773959603757,
+            "leadingSilenceMs": 95
+        },
+        {
+            "firstChunkMs": 754,
+            "totalMs": 798,
+            "audioMs": 3015,
+            "realTimeFactor": 0.2646766169154229,
+            "chunks": 260,
+            "chunkSamples": {
+                "min": 184,
+                "max": 256
+            },
+            "sampleRate": 22050,
+            "nativeFormat": "float32 22050 Hz 1 ch",
+            "peakDbfs": -2.7457665080961013,
+            "rmsDbfs": -16.870202450470963,
+            "leadingSilenceMs": 14
+        }
+    ]
+}

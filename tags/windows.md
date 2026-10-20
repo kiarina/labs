@@ -1,6 +1,7 @@
 # windows
 
 - 2026/10/20 [Physical camera and microphone AEC through the external-media fork and bridge](../2026/10/20/flutter-fork-external-media-aec/README.md)
+- 2026/10/20 [OS text-to-speech as PCM in Flutter on macOS, iOS, Windows and Android](../2026/10/20/flutter-tts-pcm/README.md)
 - 2026/10/19 [Always-on Flutter camera and record capture with speaker playback and standalone AEC3](../2026/10/19/flutter-external-capture-aec/README.md)
 - 2026/10/19 [FFmpeg file and microphone inputs for one Dart analysis pipeline across five platforms](../2026/10/19/flutter-ffmpeg-media-input/README.md)
 - 2026/10/19 [Bounded streaming video decoding and Dart VAD across native Flutter and WebAssembly](../2026/10/19/flutter-ffmpeg-streaming-input/README.md)

@@ -1,0 +1,30 @@
+name: tts_pcm
+description: Speech synthesis to PCM with the OS voices (lab). The caller owns the speaker.
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ^3.13.2
+  flutter: '>=3.47.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: jp.kiarina.tts_pcm
+        pluginClass: TtsPcmPlugin
+      ios:
+        pluginClass: TtsPcmPlugin
+        sharedDarwinSource: true
+      macos:
+        pluginClass: TtsPcmPlugin
+        sharedDarwinSource: true
+      windows:
+        pluginClass: TtsPcmPluginCApi

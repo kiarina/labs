@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Analyze the plugin and the probe app"
+set -euo pipefail
+(cd packages/tts_pcm && flutter pub get && flutter analyze)
+(cd app && flutter pub get && flutter analyze)

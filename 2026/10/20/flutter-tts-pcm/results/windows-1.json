@@ -1,0 +1,281 @@
+{
+    "platform": "windows",
+    "voicesMs": 32,
+    "voiceCount": 3,
+    "jaVoices": [
+        {
+            "id": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Speech_OneCore\\Voices\\Tokens\\MSTTS_V110_jaJP_AyumiM",
+            "name": "Microsoft Ayumi",
+            "language": "ja-JP",
+            "quality": "onecore"
+        },
+        {
+            "id": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Speech_OneCore\\Voices\\Tokens\\MSTTS_V110_jaJP_HarukaM",
+            "name": "Microsoft Haruka",
+            "language": "ja-JP",
+            "quality": "onecore"
+        },
+        {
+            "id": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Speech_OneCore\\Voices\\Tokens\\MSTTS_V110_jaJP_IchiroM",
+            "name": "Microsoft Ichiro",
+            "language": "ja-JP",
+            "quality": "onecore"
+        }
+    ],
+    "enVoiceCount": 0,
+    "runs": [
+        {
+            "firstChunkMs": 143,
+            "totalMs": 143,
+            "audioMs": 4050,
+            "realTimeFactor": 0.03530864197530864,
+            "chunks": 1,
+            "chunkSamples": {
+                "min": 64800,
+                "max": 64800
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "pcm16 16000 Hz 1 ch",
+            "peakDbfs": -3.3405647419058657,
+            "rmsDbfs": -20.847058697504128,
+            "leadingSilenceMs": 175,
+            "text": "ja-short",
+            "attempt": 0
+        },
+        {
+            "firstChunkMs": 32,
+            "totalMs": 32,
+            "audioMs": 4050,
+            "realTimeFactor": 0.007901234567901235,
+            "chunks": 1,
+            "chunkSamples": {
+                "min": 64800,
+                "max": 64800
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "pcm16 16000 Hz 1 ch",
+            "peakDbfs": -3.3405647419058657,
+            "rmsDbfs": -20.849196715549716,
+            "leadingSilenceMs": 175,
+            "text": "ja-short",
+            "attempt": 1,
+            "asr": {
+                "engine": "whisper.cpp/large-v3-turbo-q5_0",
+                "text": "こんにちは。今日はいい天気ですね。",
+                "cer": 0.0,
+                "elapsedMs": 100
+            }
+        },
+        {
+            "firstChunkMs": 66,
+            "totalMs": 66,
+            "audioMs": 12880,
+            "realTimeFactor": 0.005124223602484472,
+            "chunks": 1,
+            "chunkSamples": {
+                "min": 206080,
+                "max": 206080
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "pcm16 16000 Hz 1 ch",
+            "peakDbfs": -2.564406575183772,
+            "rmsDbfs": -19.535818893296746,
+            "leadingSilenceMs": 162,
+            "text": "ja-long",
+            "attempt": 0
+        },
+        {
+            "firstChunkMs": 57,
+            "totalMs": 57,
+            "audioMs": 12880,
+            "realTimeFactor": 0.004425465838509317,
+            "chunks": 1,
+            "chunkSamples": {
+                "min": 206080,
+                "max": 206080
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "pcm16 16000 Hz 1 ch",
+            "peakDbfs": -2.564406575183772,
+            "rmsDbfs": -19.535818893296746,
+            "leadingSilenceMs": 162,
+            "text": "ja-long",
+            "attempt": 1,
+            "asr": {
+                "engine": "whisper.cpp/large-v3-turbo-q5_0",
+                "text": "岐阜県の白川郷は、合唱作りの集落として知られています。冬になると雪に覆われ、夜にはライトアップが行われることもあります。",
+                "cer": 0.03571428571428571,
+                "elapsedMs": 177
+            }
+        },
+        {
+            "firstChunkMs": 36,
+            "totalMs": 36,
+            "audioMs": 5295,
+            "realTimeFactor": 0.006798866855524079,
+            "chunks": 1,
+            "chunkSamples": {
+                "min": 84720,
+                "max": 84720
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "pcm16 16000 Hz 1 ch",
+            "peakDbfs": -3.8869767152379096,
+            "rmsDbfs": -21.372660614248126,
+            "leadingSilenceMs": 156,
+            "text": "en-short",
+            "attempt": 0
+        },
+        {
+            "firstChunkMs": 36,
+            "totalMs": 36,
+            "audioMs": 5295,
+            "realTimeFactor": 0.006798866855524079,
+            "chunks": 1,
+            "chunkSamples": {
+                "min": 84720,
+                "max": 84720
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "pcm16 16000 Hz 1 ch",
+            "peakDbfs": -3.8869767152379096,
+            "rmsDbfs": -21.372660614248126,
+            "leadingSilenceMs": 156,
+            "text": "en-short",
+            "attempt": 1,
+            "asr": {
+                "engine": "whisper.cpp/large-v3-turbo-q5_0",
+                "text": "Hello! The weather is nice today, isn't it?",
+                "cer": 0.0,
+                "elapsedMs": 99
+            }
+        }
+    ],
+    "jaPerVoice": [
+        {
+            "firstChunkMs": 30,
+            "totalMs": 30,
+            "audioMs": 4050,
+            "realTimeFactor": 0.007407407407407408,
+            "chunks": 1,
+            "chunkSamples": {
+                "min": 64800,
+                "max": 64800
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "pcm16 16000 Hz 1 ch",
+            "peakDbfs": -3.3405647419058657,
+            "rmsDbfs": -20.849196715549716,
+            "leadingSilenceMs": 175,
+            "voice": "Microsoft Ayumi",
+            "quality": "onecore",
+            "asr": {
+                "engine": "whisper.cpp/large-v3-turbo-q5_0",
+                "text": "こんにちは。今日はいい天気ですね。",
+                "cer": 0.0,
+                "elapsedMs": 91
+            }
+        },
+        {
+            "firstChunkMs": 54,
+            "totalMs": 54,
+            "audioMs": 3705,
+            "realTimeFactor": 0.014574898785425101,
+            "chunks": 1,
+            "chunkSamples": {
+                "min": 59280,
+                "max": 59280
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "pcm16 16000 Hz 1 ch",
+            "peakDbfs": -0.9986649249517624,
+            "rmsDbfs": -19.146018306166752,
+            "leadingSilenceMs": 162,
+            "voice": "Microsoft Haruka",
+            "quality": "onecore",
+            "asr": {
+                "engine": "whisper.cpp/large-v3-turbo-q5_0",
+                "text": "こんにちは。今日はいい天気ですね。",
+                "cer": 0.0,
+                "elapsedMs": 92
+            }
+        },
+        {
+            "firstChunkMs": 56,
+            "totalMs": 56,
+            "audioMs": 4061,
+            "realTimeFactor": 0.013789706968726915,
+            "chunks": 1,
+            "chunkSamples": {
+                "min": 64976,
+                "max": 64976
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "pcm16 16000 Hz 1 ch",
+            "peakDbfs": -5.097554536724506,
+            "rmsDbfs": -22.91662587106676,
+            "leadingSilenceMs": 156,
+            "voice": "Microsoft Ichiro",
+            "quality": "onecore",
+            "asr": {
+                "engine": "whisper.cpp/large-v3-turbo-q5_0",
+                "text": "こんにちは今日はいい天気ですね",
+                "cer": 0.0,
+                "elapsedMs": 88
+            }
+        }
+    ],
+    "cancel": {
+        "chunksAfterCancel": 0,
+        "nextRequest": {
+            "firstChunkMs": 34,
+            "totalMs": 35,
+            "audioMs": 4050,
+            "realTimeFactor": 0.008641975308641974,
+            "chunks": 1,
+            "chunkSamples": {
+                "min": 64800,
+                "max": 64800
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "pcm16 16000 Hz 1 ch",
+            "peakDbfs": -3.3405647419058657,
+            "rmsDbfs": -20.849196715549716,
+            "leadingSilenceMs": 175
+        }
+    },
+    "concurrent": [
+        {
+            "firstChunkMs": 32,
+            "totalMs": 32,
+            "audioMs": 4050,
+            "realTimeFactor": 0.007901234567901235,
+            "chunks": 1,
+            "chunkSamples": {
+                "min": 64800,
+                "max": 64800
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "pcm16 16000 Hz 1 ch",
+            "peakDbfs": -3.3405647419058657,
+            "rmsDbfs": -20.847058697504128,
+            "leadingSilenceMs": 175
+        },
+        {
+            "firstChunkMs": 37,
+            "totalMs": 37,
+            "audioMs": 5295,
+            "realTimeFactor": 0.006987724268177526,
+            "chunks": 1,
+            "chunkSamples": {
+                "min": 84720,
+                "max": 84720
+            },
+            "sampleRate": 16000,
+            "nativeFormat": "pcm16 16000 Hz 1 ch",
+            "peakDbfs": -3.8869767152379096,
+            "rmsDbfs": -21.372660614248126,
+            "leadingSilenceMs": 156
+        }
+    ]
+}
