@@ -1,0 +1,505 @@
+{
+  "session": "win-fake-1",
+  "kind": "fake-peer-playout-slot",
+  "platform": "windows",
+  "microphone": "ヘッドセット マイク (2- DualSense Wireless Controller)",
+  "speaker": "スピーカー (EDIFIER M60)",
+  "camera": "Pixel Fold (Windows 仮想カメラ) (\\\\?\\swd#vcamdevapi#7df0f10d09d1a412f093d13e45d01495a23074a6a429f8a77563c10a441c014b#{e5323777-f976-4f5b-9b55-b94699c46e44}\\{fcebba03-9d13-4c13-9940-cc84fcd132d1})",
+  "errors": [],
+  "captureStarts": {
+    "record": 1,
+    "camera": 1
+  },
+  "maxAudioGapMs": 14.464,
+  "nativePlayoutReferenceDbfs": null,
+  "clockMapLagSamples": 20958.0,
+  "playout": {
+    "attached": true,
+    "bufferFrames": 1122,
+    "captureSamples": 3157920,
+    "controlReferenceBlocks": 6535,
+    "dspErrors": 0,
+    "mixChannels": 2,
+    "mixRate": 96000,
+    "overflowSamples": 0,
+    "playedSamples": 3137442,
+    "primed": 1,
+    "queuedSamples": 1440,
+    "receivedChannels": 1,
+    "receivedFrames": 3137280,
+    "receivedRate": 48000,
+    "referenceBlocks": 6535,
+    "referenceKind": "PCM handed to the application WASAPI render client (post-slot)",
+    "renderCalls": 6535,
+    "renderHresult": 0,
+    "renderWaitTimeouts": 0,
+    "sinkCallbacks": 6536,
+    "sinkNon16": 0,
+    "slotBlocks": 6536,
+    "slotLatencySamples": 960,
+    "slotMode": 2,
+    "traceDroppedSamples": 0,
+    "underflowSamples": 0
+  },
+  "bridge": {
+    "sending": false,
+    "faulted": false,
+    "queuedAudioFrames": 0,
+    "maxQueuedAudioFrames": 10,
+    "partialAudioBytes": 0,
+    "audioFramesSubmitted": 6018,
+    "audioFramesDropped": 0,
+    "videoFramesSubmitted": 432,
+    "videoFramesDropped": 0,
+    "bytesDiscardedWhileGated": 0,
+    "native": {
+      "audioBlocks": 6018,
+      "flushes": 4,
+      "videoFrames": 432
+    }
+  },
+  "phases": [
+    {
+      "name": "quiet",
+      "mode": "passthrough",
+      "far": false,
+      "near": false,
+      "gate": true,
+      "send": null,
+      "seconds": 2.01,
+      "rawDbfs": -22.051109161836774,
+      "mixedDbfs": -22.051109161836774,
+      "postDbfs": -22.457738018220578,
+      "preDbfs": -22.457738018220578,
+      "postReductionDb": 0.4066288563838043,
+      "preReductionDb": 0.4066288563838043,
+      "captureDuringPhase": {
+        "rawSamples": 144480,
+        "cameraSourceFrames": 90,
+        "sentSamples": 144480,
+        "videoSent": 21
+      },
+      "postAboveQuietDb": -0.4066288563838043,
+      "preAboveQuietDb": -0.4066288563838043,
+      "mixedAboveQuietDb": 0.0
+    },
+    {
+      "name": "passthrough-warmup",
+      "mode": "passthrough",
+      "far": true,
+      "near": false,
+      "gate": true,
+      "send": null,
+      "seconds": 4.01,
+      "rawDbfs": -15.15912000678517,
+      "mixedDbfs": -15.15912000678517,
+      "postDbfs": -26.964051674005326,
+      "preDbfs": -26.964051674005326,
+      "postReductionDb": 11.804931667220156,
+      "preReductionDb": 11.804931667220156,
+      "micVsPlayed": {
+        "correlation": 0.4610506542073655,
+        "extraMs": 187.0
+      },
+      "micVsPreSlot": {
+        "correlation": 0.4610506542073655,
+        "extraMs": 187.0
+      },
+      "captureDuringPhase": {
+        "rawSamples": 240480,
+        "cameraSourceFrames": 151,
+        "sentSamples": 240480,
+        "videoSent": 36
+      },
+      "postAboveQuietDb": -4.912942512168552,
+      "preAboveQuietDb": -4.912942512168552,
+      "mixedAboveQuietDb": 6.891989155051604
+    },
+    {
+      "name": "passthrough-far",
+      "mode": "passthrough",
+      "far": true,
+      "near": false,
+      "gate": true,
+      "send": null,
+      "seconds": 7.02,
+      "rawDbfs": -17.498436716607866,
+      "mixedDbfs": -17.498436716607866,
+      "postDbfs": -29.05542021378267,
+      "preDbfs": -29.05542021378267,
+      "postReductionDb": 11.556983497174805,
+      "preReductionDb": 11.556983497174805,
+      "micVsPlayed": {
+        "correlation": 0.3068449176412821,
+        "extraMs": 187.0
+      },
+      "micVsPreSlot": {
+        "correlation": 0.3068449176412821,
+        "extraMs": 187.0
+      },
+      "captureDuringPhase": {
+        "rawSamples": 384960,
+        "cameraSourceFrames": 243,
+        "sentSamples": 384960,
+        "videoSent": 58
+      },
+      "postAboveQuietDb": -7.004311051945898,
+      "preAboveQuietDb": -7.004311051945898,
+      "mixedAboveQuietDb": 4.552672445228907
+    },
+    {
+      "name": "delay-warmup",
+      "mode": "delay",
+      "far": true,
+      "near": false,
+      "gate": true,
+      "send": null,
+      "seconds": 4.0,
+      "rawDbfs": -15.018463646396894,
+      "mixedDbfs": -15.018463646396894,
+      "postDbfs": -29.026662607314677,
+      "preDbfs": -18.091188026125465,
+      "postReductionDb": 14.008198960917783,
+      "preReductionDb": 3.0727243797285713,
+      "micVsPlayed": {
+        "correlation": 0.4337609010481433,
+        "extraMs": 187.0
+      },
+      "micVsPreSlot": {
+        "correlation": 0.4337609010481433,
+        "extraMs": 387.0
+      },
+      "captureDuringPhase": {
+        "rawSamples": 240480,
+        "cameraSourceFrames": 152,
+        "sentSamples": 240000,
+        "videoSent": 36
+      },
+      "postAboveQuietDb": -6.975553445477903,
+      "preAboveQuietDb": 3.9599211357113084,
+      "mixedAboveQuietDb": 7.03264551543988
+    },
+    {
+      "name": "delay-far",
+      "mode": "delay",
+      "far": true,
+      "near": false,
+      "gate": true,
+      "send": null,
+      "seconds": 7.01,
+      "rawDbfs": -17.231971679805742,
+      "mixedDbfs": -17.231971679805742,
+      "postDbfs": -29.527839743436097,
+      "preDbfs": -25.738622438999876,
+      "postReductionDb": 12.295868063630355,
+      "preReductionDb": 8.506650759194134,
+      "micVsPlayed": {
+        "correlation": 0.2684682306431367,
+        "extraMs": 187.0
+      },
+      "micVsPreSlot": {
+        "correlation": 0.2684682306431367,
+        "extraMs": 387.0
+      },
+      "captureDuringPhase": {
+        "rawSamples": 384480,
+        "cameraSourceFrames": 243,
+        "sentSamples": 384480,
+        "videoSent": 58
+      },
+      "postAboveQuietDb": -7.476730581599323,
+      "preAboveQuietDb": -3.6875132771631023,
+      "mixedAboveQuietDb": 4.8191374820310315
+    },
+    {
+      "name": "pitch-warmup",
+      "mode": "pitch",
+      "far": true,
+      "near": false,
+      "gate": true,
+      "send": null,
+      "seconds": 4.01,
+      "rawDbfs": -16.865626281414063,
+      "mixedDbfs": -16.865626281414063,
+      "postDbfs": -29.69451797296122,
+      "preDbfs": -18.618739463813135,
+      "postReductionDb": 12.828891691547156,
+      "preReductionDb": 1.7531131823990727,
+      "micVsPlayed": {
+        "correlation": 0.40320641139077434,
+        "extraMs": 187.0
+      },
+      "micVsPreSlot": {
+        "correlation": 0.12093553112096891,
+        "extraMs": 250.0
+      },
+      "captureDuringPhase": {
+        "rawSamples": 240480,
+        "cameraSourceFrames": 152,
+        "sentSamples": 240480,
+        "videoSent": 37
+      },
+      "postAboveQuietDb": -7.643408811124445,
+      "preAboveQuietDb": 3.4323696980236384,
+      "mixedAboveQuietDb": 5.185482880422711
+    },
+    {
+      "name": "pitch-far",
+      "mode": "pitch",
+      "far": true,
+      "near": false,
+      "gate": true,
+      "send": null,
+      "seconds": 7.0,
+      "rawDbfs": -18.21274318595899,
+      "mixedDbfs": -18.21274318595899,
+      "postDbfs": -28.546919113439614,
+      "preDbfs": -19.029172782676206,
+      "postReductionDb": 10.334175927480626,
+      "preReductionDb": 0.8164295967172173,
+      "micVsPlayed": {
+        "correlation": 0.25503896418632155,
+        "extraMs": 187.0
+      },
+      "micVsPreSlot": {
+        "correlation": 0.09859491171297678,
+        "extraMs": 231.0
+      },
+      "captureDuringPhase": {
+        "rawSamples": 384000,
+        "cameraSourceFrames": 243,
+        "sentSamples": 384480,
+        "videoSent": 56
+      },
+      "postAboveQuietDb": -6.4958099516028405,
+      "preAboveQuietDb": 3.021936379160568,
+      "mixedAboveQuietDb": 3.8383659758777853
+    },
+    {
+      "name": "pitch-far-gate-off",
+      "mode": "pitch",
+      "far": true,
+      "near": false,
+      "gate": false,
+      "send": null,
+      "seconds": 2.0,
+      "rawDbfs": -14.680360511786203,
+      "mixedDbfs": -14.680360511786203,
+      "postDbfs": -29.364331957779903,
+      "preDbfs": -15.220579440467501,
+      "postReductionDb": 14.6839714459937,
+      "preReductionDb": 0.5402189286812984,
+      "micVsPlayed": {
+        "correlation": 0.48541181100448766,
+        "extraMs": 187.0
+      },
+      "micVsPreSlot": {
+        "correlation": 0.17040620938847678,
+        "extraMs": 237.0
+      },
+      "captureDuringPhase": {
+        "rawSamples": 144480,
+        "cameraSourceFrames": 91,
+        "sentSamples": 0,
+        "videoSent": 0
+      },
+      "postAboveQuietDb": -7.31322279594313,
+      "preAboveQuietDb": 6.830529721369272,
+      "mixedAboveQuietDb": 7.370748650050571
+    },
+    {
+      "name": "pitch-far-gate-on",
+      "mode": "pitch",
+      "far": true,
+      "near": false,
+      "gate": true,
+      "send": null,
+      "seconds": 3.01,
+      "rawDbfs": -16.5500848570241,
+      "mixedDbfs": -16.5500848570241,
+      "postDbfs": -29.2583638225365,
+      "preDbfs": -17.951161046088885,
+      "postReductionDb": 12.708278965512399,
+      "preReductionDb": 1.401076189064785,
+      "micVsPlayed": {
+        "correlation": 0.3938239293674209,
+        "extraMs": 187.0
+      },
+      "micVsPreSlot": {
+        "correlation": 0.0979716083933158,
+        "extraMs": 525.0
+      },
+      "captureDuringPhase": {
+        "rawSamples": 192480,
+        "cameraSourceFrames": 121,
+        "sentSamples": 192480,
+        "videoSent": 30
+      },
+      "postAboveQuietDb": -7.207254660699725,
+      "preAboveQuietDb": 4.099948115747889,
+      "mixedAboveQuietDb": 5.501024304812674
+    },
+    {
+      "name": "near-only",
+      "mode": "pitch",
+      "far": false,
+      "near": true,
+      "gate": true,
+      "send": null,
+      "seconds": 5.01,
+      "rawDbfs": -24.518038706252586,
+      "mixedDbfs": -23.836571448752753,
+      "postDbfs": -24.19607716633501,
+      "preDbfs": -24.19607716633501,
+      "postReductionDb": 0.35950571758225536,
+      "preReductionDb": 0.35950571758225536,
+      "postLatencySamples": 432,
+      "postNearGainDb": -0.7191091897013059,
+      "postNearCorrelation": 0.37904945527779993,
+      "preLatencySamples": 432,
+      "preNearGainDb": -0.7191091897013059,
+      "preNearCorrelation": 0.37904945527779993,
+      "captureDuringPhase": {
+        "rawSamples": 288480,
+        "cameraSourceFrames": 183,
+        "sentSamples": 288480,
+        "videoSent": 41
+      },
+      "postAboveQuietDb": -2.144968004498235,
+      "preAboveQuietDb": -2.144968004498235,
+      "mixedAboveQuietDb": -1.7854622869159797
+    },
+    {
+      "name": "pitch-doubletalk",
+      "mode": "pitch",
+      "far": true,
+      "near": true,
+      "gate": true,
+      "send": null,
+      "seconds": 7.01,
+      "rawDbfs": -18.222445127926193,
+      "mixedDbfs": -18.08862533450139,
+      "postDbfs": -28.4876827666789,
+      "preDbfs": -18.82415260521939,
+      "postReductionDb": 10.39905743217751,
+      "preReductionDb": 0.7355272707179985,
+      "postLatencySamples": 432,
+      "postNearGainDb": -7.491897478417158,
+      "postNearCorrelation": 0.2472369713169881,
+      "preLatencySamples": 432,
+      "preNearGainDb": -1.168152863338714,
+      "preNearCorrelation": 0.1681398950176521,
+      "captureDuringPhase": {
+        "rawSamples": 384480,
+        "cameraSourceFrames": 243,
+        "sentSamples": 384480,
+        "videoSent": 59
+      },
+      "postAboveQuietDb": -6.436573604842128,
+      "preAboveQuietDb": 3.2269565566173846,
+      "mixedAboveQuietDb": 3.962483827335383
+    },
+    {
+      "name": "final-quiet",
+      "mode": "pitch",
+      "far": false,
+      "near": false,
+      "gate": false,
+      "send": null,
+      "seconds": 1.01,
+      "rawDbfs": -24.494337607833145,
+      "mixedDbfs": -24.494337607833145,
+      "postDbfs": -24.85906572285433,
+      "preDbfs": -24.85906572285433,
+      "postReductionDb": 0.3647281150211832,
+      "preReductionDb": 0.3647281150211832,
+      "captureDuringPhase": {
+        "rawSamples": 96480,
+        "cameraSourceFrames": 61,
+        "sentSamples": 0,
+        "videoSent": 0
+      },
+      "postAboveQuietDb": -2.807956561017555,
+      "preAboveQuietDb": -2.807956561017555,
+      "mixedAboveQuietDb": -2.443228445996372
+    }
+  ],
+  "peerReceived": [
+    {
+      "phase": "quiet",
+      "far": false,
+      "receivedSamples": 140160,
+      "receivedDbfs": -23.608005032560136
+    },
+    {
+      "phase": "passthrough-warmup",
+      "far": true,
+      "receivedSamples": 240960,
+      "receivedDbfs": -27.548705964339227
+    },
+    {
+      "phase": "passthrough-far",
+      "far": true,
+      "receivedSamples": 384960,
+      "receivedDbfs": -29.960457614129396
+    },
+    {
+      "phase": "delay-warmup",
+      "far": true,
+      "receivedSamples": 241920,
+      "receivedDbfs": -29.400279272878898
+    },
+    {
+      "phase": "delay-far",
+      "far": true,
+      "receivedSamples": 384960,
+      "receivedDbfs": -29.84042320121354
+    },
+    {
+      "phase": "pitch-warmup",
+      "far": true,
+      "receivedSamples": 240000,
+      "receivedDbfs": -30.46514673698564
+    },
+    {
+      "phase": "pitch-far",
+      "far": true,
+      "receivedSamples": 384960,
+      "receivedDbfs": -29.541379414580927
+    },
+    {
+      "phase": "pitch-far-gate-off",
+      "far": true,
+      "receivedSamples": 0,
+      "receivedDbfs": null
+    },
+    {
+      "phase": "pitch-far-gate-on",
+      "far": true,
+      "receivedSamples": 192000,
+      "receivedDbfs": -29.877113851899235
+    },
+    {
+      "phase": "near-only",
+      "far": false,
+      "receivedSamples": 288960,
+      "receivedDbfs": -24.944303563540497
+    },
+    {
+      "phase": "pitch-doubletalk",
+      "far": true,
+      "receivedSamples": 385920,
+      "receivedDbfs": -29.02570655340297
+    },
+    {
+      "phase": "final-quiet",
+      "far": false,
+      "receivedSamples": 0,
+      "receivedDbfs": null
+    }
+  ],
+  "caveats": [
+    "Energy reduction is not ERLE against an independent echo-only reference.",
+    "Single short run in one room; speaker and microphone of the same notebook."
+  ]
+}

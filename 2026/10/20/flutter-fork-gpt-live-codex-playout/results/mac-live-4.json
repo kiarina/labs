@@ -1,0 +1,130 @@
+{
+  "session": "mac-live-4",
+  "errors": [],
+  "microphone": "MacBook Proのマイク",
+  "speaker": "system default output",
+  "clockLagSamples": 207120.0,
+  "acousticMs": 95.0,
+  "eventCounts": {
+    "input_transcript.added": 44,
+    "output_transcript.added": 170,
+    "session.started": 1,
+    "session.usage.updated": 4,
+    "turn.created": 10,
+    "turn.delta": 173,
+    "turn.done": 9
+  },
+  "asks": [
+    {
+      "question": "q1",
+      "questionText": "日本の四季について、それぞれ一文ずつ話してください。",
+      "mode": "passthrough",
+      "sent": "post",
+      "userTurns": 1,
+      "assistantTurns": 1,
+      "recognizedExtraCharacters": 0,
+      "serviceVoicePlayingSeconds": 13.6,
+      "duringPlayback": {
+        "micDbfs": -32.330407406225966,
+        "sentDbfs": -55.78399884726813,
+        "postDbfs": -55.78399884726813,
+        "preDbfs": -55.78399884726813
+      },
+      "echoComponentDbfs": {
+        "mic": -42.97437532584371,
+        "post": -98.15516276121491,
+        "pre": -98.15516276121491
+      },
+      "whilePlayoutSilent": {
+        "micDbfs": -49.599106839050854,
+        "sentDbfs": -50.16081563666547
+      }
+    },
+    {
+      "question": "q2",
+      "questionText": "富士山について、三つの文で説明してください。",
+      "mode": "pitch",
+      "sent": "post",
+      "userTurns": 2,
+      "assistantTurns": 2,
+      "recognizedExtraCharacters": 0,
+      "serviceVoicePlayingSeconds": 4.9,
+      "duringPlayback": {
+        "micDbfs": -31.67521775857207,
+        "sentDbfs": -36.04723630026287,
+        "postDbfs": -36.04723630026287,
+        "preDbfs": -33.03989189761686
+      },
+      "echoComponentDbfs": {
+        "mic": -43.74892726785919,
+        "post": -84.97094551749932,
+        "pre": -50.20509993672973
+      },
+      "whilePlayoutSilent": {
+        "micDbfs": -32.98831543271667,
+        "sentDbfs": -33.50792504202577
+      }
+    },
+    {
+      "question": "q3",
+      "questionText": "東京のおすすめの観光地を三つ、短く教えてください。",
+      "mode": "pitch",
+      "sent": "pre",
+      "userTurns": 2,
+      "assistantTurns": 2,
+      "recognizedExtraCharacters": 29,
+      "serviceVoicePlayingSeconds": 11.4,
+      "duringPlayback": {
+        "micDbfs": -32.779214335908556,
+        "sentDbfs": -33.72931439490578,
+        "postDbfs": -42.48275194846962,
+        "preDbfs": -33.72931439490578
+      },
+      "echoComponentDbfs": {
+        "mic": -43.4176065149872,
+        "post": -98.25838208556162,
+        "pre": -47.25630399514653
+      },
+      "whilePlayoutSilent": {
+        "micDbfs": -38.21468418414871,
+        "sentDbfs": -38.96918315797425
+      }
+    }
+  ],
+  "serviceOutputCharacters": 265,
+  "playout": {
+    "dspErrors": 0,
+    "renderCalls": 6392,
+    "nodeFormat": "<AVAudioFormat 0x7acf08b0c0:  1 ch,  48000 Hz, Float32>",
+    "overflowSamples": 0,
+    "nativePlayoutVolume": 0.0,
+    "underflowSamples": 0,
+    "slotLatencySamples": 960,
+    "renderBufferChannels": 1,
+    "renderFrames": 512,
+    "referenceKind": "PCM handed to the application AVAudioEngine (post-slot)",
+    "traceDroppedSamples": 0,
+    "rendererCallbacks": 6820,
+    "previousNativeVolume": 1.0,
+    "outputFormat": "<AVAudioFormat 0x7acf088f50:  2 ch,  48000 Hz, Float32, deinterleaved>",
+    "primed": 1,
+    "slotBlocks": 6820,
+    "slotMode": 2,
+    "receivedChannels": 1,
+    "playedSamples": 3272704,
+    "renderBuffers": 1,
+    "receivedRate": 48000,
+    "receivedFrames": 3273600,
+    "controlReferenceBlocks": 6797,
+    "queuedSamples": 1408,
+    "captureSamples": 3465600,
+    "engineRunning": true,
+    "referenceBlocks": 6797,
+    "renderBufferBytes": 2048
+  },
+  "captureStarts": {
+    "record": 1,
+    "camera": 1
+  },
+  "maxAudioGapMs": 111.329
+}

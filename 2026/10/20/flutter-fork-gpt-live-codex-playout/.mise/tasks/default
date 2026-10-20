@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+#MISE description="Device-free check: slot + pipeline + AEC with the played vs pre-slot reference"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mise run //:test-assets:download
+python3 tools/prepare_speech.py
+python3 tools/prepare_aec.py
+cmake -S native -B build/native -DAEC_BUILD_PROBE=ON -DCMAKE_BUILD_TYPE=Release
+cmake --build build/native -j 8
+build/native/playout_probe app/assets/far_speech.pcm | tee build/digital-probe.json
+python3 - <<'PY'
+import json
+d=json.load(open('build/digital-probe.json'))['modes']
+assert d['passthrough']['postReductionDb']>40 and d['pitchUp']['postReductionDb']>40, d
+assert d['pitchUp']['preReductionDb']<6, d
+print('ok: pitch-shifted playout needs the played (post-slot) reference')
+PY
