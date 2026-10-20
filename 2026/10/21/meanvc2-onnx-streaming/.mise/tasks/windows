@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+#MISE description="Ship the app to a Windows PC over ssh, build it (profile) and run it as an interactive task (py/serve.py must be running and reachable at BASE_URL). WIN_HOST, MODE, TAG, EXTRA_DEFINES"
+# A Flutter Windows app is a GUI process: ssh (session 0) can neither show it nor
+# resolve plugin symlinks, so build and run are interactive scheduled tasks.
+set -euo pipefail
+: "${WIN_HOST:?set WIN_HOST, e.g. user@windows-pc}"
+: "${BASE_URL:?set BASE_URL to the address of py/serve.py that the PC can reach}"
+MODE="${MODE:-parity,bench}"; TAG="${TAG:-${MODE//,/-}}"
+WIN_USER="$(echo "$WIN_HOST" | cut -d@ -f1)"
+D="labtmp_meanvc2_app"
+WIN_DIR="C:\\Users\\$WIN_USER\\$D"
+LAB="$(cd "$(dirname "$0")/../.." && pwd)"
+ssh_() { ssh -o LogLevel=ERROR "$WIN_HOST" "$@"; }
+task() { # name, body; waits for "done=" in <name>.log
+  local name="$1" body="$2" cmd; cmd="$(mktemp)"
+  printf '%s\r\n' "$body" > "$cmd"
+  scp -q -o LogLevel=ERROR "$cmd" "${WIN_HOST}:$D/$name.cmd"
+  ssh_ "del /q $WIN_DIR\\$name.log 2>nul & schtasks /create /tn MeanVc2$name /tr $WIN_DIR\\$name.cmd /sc once /st 23:59 /it /f >nul && schtasks /run /tn MeanVc2$name >nul"
+  for _ in $(seq 1 720); do
+    if ssh_ "findstr /c:done= $WIN_DIR\\$name.log >nul 2>&1"; then break; fi
+    sleep 5
+  done
+  ssh_ "schtasks /delete /tn MeanVc2$name /f >nul" || true
+}
+if [ "${SKIP_SHIP:-}" != 1 ]; then
+  tgz="$(mktemp).tgz"
+  (cd "$LAB" && COPYFILE_DISABLE=1 tar czf "$tgz" --exclude app/build --exclude app/.dart_tool --exclude app/ios \
+    --exclude app/android --exclude app/macos app)
+  ssh_ "if exist $WIN_DIR rmdir /s /q $WIN_DIR" || true
+  ssh_ "mkdir $WIN_DIR"
+  scp -q -o LogLevel=ERROR "$tgz" "${WIN_HOST}:$D/lab.tgz"
+  ssh_ "cd $WIN_DIR && tar xzf lab.tgz"
+fi
+task build "cd /d $WIN_DIR\\app
+call flutter pub get > $WIN_DIR\\build.log 2>&1
+call flutter build windows --profile --dart-define=BASE_URL=$BASE_URL --dart-define=MODE=$MODE --dart-define=TAG=$TAG --dart-define=AUTO_EXIT=true ${EXTRA_DEFINES:-} >> $WIN_DIR\\build.log 2>&1
+echo done=%ERRORLEVEL% >> $WIN_DIR\\build.log"
+ssh_ "type $WIN_DIR\\build.log" | LC_ALL=C tr -d '\r' | tail -3
+REPORT="$LAB/results/device/windows-$TAG.json"
+rm -f "$REPORT"
+task run "\"$WIN_DIR\\app\\build\\windows\\x64\\runner\\Profile\\meanvc2_onnx.exe\"
+echo done=%ERRORLEVEL% > $WIN_DIR\\run.log"
+ssh_ "taskkill /im meanvc2_onnx.exe /f >nul 2>&1" || true
+echo "report: ${REPORT#$LAB/} $( [ -f "$REPORT" ] && echo ok || echo missing)"

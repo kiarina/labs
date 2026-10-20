@@ -1,0 +1,477 @@
+{
+ "platform": "macos",
+ "osVersion": "Version 27.0.1 (Build 26A434)",
+ "processors": 10,
+ "mode": "parity,bench",
+ "kReleaseMode": false,
+ "kProfileMode": true,
+ "startedAt": "2026-10-21T01:03:29.130930",
+ "device": {
+  "rssMb": 122.21875,
+  "maxRssMb": 122.21875,
+  "thermalState": 0
+ },
+ "downloadSeconds": 2.437,
+ "downloadedBytes": 0,
+ "manifest": {
+  "models": {
+   "asr.int8.onnx": {
+    "sha256": "553869e3159af4497582072e66f09c16032a3b98ac2bad5c195b7443627616be",
+    "bytes": 28655587
+   },
+   "asr.onnx": {
+    "sha256": "27b03b3c64ef89d7d0b60e686b62f84ee5ef4f9ca943d1fab6def306721e33d9",
+    "bytes": 75781489
+   },
+   "dit.int8.onnx": {
+    "sha256": "52ac682ed1790b196333d1dbf99fa2806b6c52076c85e438c9dede968572675a",
+    "bytes": 13849138
+   },
+   "dit.onnx": {
+    "sha256": "6e56208ad1de532ffac9c0fc622049049908096dabb1b9816e9ded45a505dce3",
+    "bytes": 53572968
+   },
+   "fbank.int8.onnx": {
+    "sha256": "ecbe193170abe98a8c0ba9299e8fe21b418145aca924e351c667b9257c3e28c8",
+    "bytes": 908339
+   },
+   "fbank.onnx": {
+    "sha256": "ecbe193170abe98a8c0ba9299e8fe21b418145aca924e351c667b9257c3e28c8",
+    "bytes": 908339
+   },
+   "gtm.int8.onnx": {
+    "sha256": "f03ff1e9da3c373445f7518fa36fc99980fe4326447235fa89ea1923f57ee224",
+    "bytes": 17441893
+   },
+   "gtm.onnx": {
+    "sha256": "f03ff1e9da3c373445f7518fa36fc99980fe4326447235fa89ea1923f57ee224",
+    "bytes": 17441893
+   },
+   "vocos.int8.onnx": {
+    "sha256": "a0dbd4c83708f6e787ceebf1c1b0833398dbdea6af770887d27b19119bba2e16",
+    "bytes": 12998461
+   },
+   "vocos.onnx": {
+    "sha256": "f5f08602215204d1da27df5f74939084f0a9f7709fa1a1c976e330fa0391c95d",
+    "bytes": 36489112
+   }
+  },
+  "fixtures": {
+   "source.f32": {
+    "sha256": "639b77ca997a36c85a377172e2c5803c7443603e966912cf7d9f68425fbea6ae",
+    "bytes": 512000
+   },
+   "spk.f32": {
+    "sha256": "97df320ae5528ded787dc9be26ea14d9e1217e29f08cc5f68873901191e652cb",
+    "bytes": 1024
+   },
+   "noise.f32": {
+    "sha256": "657d22c044d86b6dbb4f35fe2c2e7ea75e86ab2660f420bc6834937d9a6d8881",
+    "bytes": 1024000
+   },
+   "expected_fp32_s3.f32": {
+    "sha256": "11833416426288aadd4a654dd13e1d64d9641e8a18bcff83c9ac940b581fb8a5",
+    "bytes": 497920
+   },
+   "expected_int8_s3.f32": {
+    "sha256": "b7ed7dc3db9cc744b139845333ff91e067e5a30f86102191d3cca411ef86c5c3",
+    "bytes": 497920
+   }
+  },
+  "seed": 20261021,
+  "steps": 3
+ },
+ "parity": [
+  {
+   "variant": "fp32",
+   "steps": 3,
+   "samples": 124480,
+   "expectedSamples": 124480,
+   "maxAbs": 0.00863615795969963,
+   "snrDb": 60.63636848400702
+  },
+  {
+   "variant": "int8",
+   "steps": 3,
+   "samples": 124480,
+   "expectedSamples": 124480,
+   "maxAbs": 1.2102436125278473,
+   "snrDb": 3.147488216976363
+  }
+ ],
+ "bench": [
+  {
+   "variant": "fp32",
+   "threads": 1,
+   "steps": 2,
+   "loadMs": 199.445,
+   "chunks": 150,
+   "p50Ms": 19.459,
+   "p95Ms": 34.025,
+   "maxMs": 35.275,
+   "meanMs": 23.334353333333333,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    338.22,
+    338.676,
+    337.752
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.3597666666666667,
+    "asr": 4.523726666666667,
+    "dit": 12.4525,
+    "vocos": 5.910406666666667,
+    "host": 0.08573333333333474
+   },
+   "rssBeforeMb": 411.109375,
+   "rssLoadedMb": 456.03125,
+   "status": {
+    "rssMb": 442.78125,
+    "maxRssMb": 460.125,
+    "thermalState": 0
+   }
+  },
+  {
+   "variant": "fp32",
+   "threads": 1,
+   "steps": 3,
+   "loadMs": 199.445,
+   "chunks": 150,
+   "p50Ms": 25.226,
+   "p95Ms": 45.839,
+   "maxMs": 48.083,
+   "meanMs": 30.31149333333331,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    342.516,
+    343.612,
+    342.224
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.36672666666666665,
+    "asr": 4.709493333333334,
+    "dit": 19.129526666666667,
+    "vocos": 6.0117466666666655,
+    "host": 0.09168666666666335
+   },
+   "rssBeforeMb": 411.109375,
+   "rssLoadedMb": 456.03125,
+   "status": {
+    "rssMb": 438.546875,
+    "maxRssMb": 460.125,
+    "thermalState": 0
+   }
+  },
+  {
+   "variant": "fp32",
+   "threads": 2,
+   "steps": 2,
+   "loadMs": 198.325,
+   "chunks": 150,
+   "p50Ms": 15.753,
+   "p95Ms": 28.072,
+   "maxMs": 34.435,
+   "meanMs": 18.852106666666657,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    333.936,
+    334.316,
+    335.483
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.3574,
+    "asr": 3.970213333333333,
+    "dit": 10.31538666666667,
+    "vocos": 4.117240000000001,
+    "host": 0.08953999999999886
+   },
+   "rssBeforeMb": 438.5625,
+   "rssLoadedMb": 453.4375,
+   "status": {
+    "rssMb": 464.015625,
+    "maxRssMb": 471.640625,
+    "thermalState": 0
+   }
+  },
+  {
+   "variant": "fp32",
+   "threads": 2,
+   "steps": 3,
+   "loadMs": 198.325,
+   "chunks": 150,
+   "p50Ms": 19.448,
+   "p95Ms": 35.607,
+   "maxMs": 36.241,
+   "meanMs": 23.712619999999998,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    339.243,
+    337.483,
+    337.973
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.36526666666666663,
+    "asr": 4.01892,
+    "dit": 15.107240000000001,
+    "vocos": 4.127059999999999,
+    "host": 0.09179999999999916
+   },
+   "rssBeforeMb": 438.5625,
+   "rssLoadedMb": 453.4375,
+   "status": {
+    "rssMb": 448.671875,
+    "maxRssMb": 471.640625,
+    "thermalState": 0
+   }
+  },
+  {
+   "variant": "fp32",
+   "threads": 4,
+   "steps": 2,
+   "loadMs": 205.795,
+   "chunks": 150,
+   "p50Ms": 22.383,
+   "p95Ms": 39.046,
+   "maxMs": 45.538,
+   "meanMs": 24.265286666666672,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    341.433,
+    343.775,
+    336.879
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.41469333333333347,
+    "asr": 6.12116,
+    "dit": 12.278580000000002,
+    "vocos": 5.36386,
+    "host": 0.08475999999999594
+   },
+   "rssBeforeMb": 448.40625,
+   "rssLoadedMb": 456.96875,
+   "status": {
+    "rssMb": 451.625,
+    "maxRssMb": 471.640625,
+    "thermalState": 0
+   }
+  },
+  {
+   "variant": "fp32",
+   "threads": 4,
+   "steps": 3,
+   "loadMs": 205.795,
+   "chunks": 150,
+   "p50Ms": 24.582,
+   "p95Ms": 39.882,
+   "maxMs": 49.844,
+   "meanMs": 27.195780000000006,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    339.33,
+    340.988,
+    340.021
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.42145333333333335,
+    "asr": 5.895419999999999,
+    "dit": 16.573526666666666,
+    "vocos": 4.216273333333333,
+    "host": 0.0868333333333366
+   },
+   "rssBeforeMb": 448.40625,
+   "rssLoadedMb": 456.96875,
+   "status": {
+    "rssMb": 447.90625,
+    "maxRssMb": 471.640625,
+    "thermalState": 0
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 1,
+   "steps": 2,
+   "loadMs": 161.141,
+   "chunks": 150,
+   "p50Ms": 12.483,
+   "p95Ms": 21.204,
+   "maxMs": 22.41,
+   "meanMs": 14.557313333333328,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    331.815,
+    332.17,
+    330.908
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.35538000000000003,
+    "asr": 3.399273333333334,
+    "dit": 7.370500000000001,
+    "vocos": 3.347353333333333,
+    "host": 0.08255333333333432
+   },
+   "rssBeforeMb": 447.109375,
+   "rssLoadedMb": 451.953125,
+   "status": {
+    "rssMb": 456.15625,
+    "maxRssMb": 471.640625,
+    "thermalState": 0
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 1,
+   "steps": 3,
+   "loadMs": 161.141,
+   "chunks": 150,
+   "p50Ms": 15.405,
+   "p95Ms": 27.0,
+   "maxMs": 28.189,
+   "meanMs": 18.299806666666658,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    334.19,
+    333.9,
+    334.989
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.3637266666666667,
+    "asr": 3.4712066666666668,
+    "dit": 10.988993333333335,
+    "vocos": 3.385660000000001,
+    "host": 0.08791999999999847
+   },
+   "rssBeforeMb": 447.109375,
+   "rssLoadedMb": 451.953125,
+   "status": {
+    "rssMb": 420.234375,
+    "maxRssMb": 471.640625,
+    "thermalState": 0
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 2,
+   "steps": 2,
+   "loadMs": 161.54,
+   "chunks": 150,
+   "p50Ms": 11.493,
+   "p95Ms": 19.504,
+   "maxMs": 21.984,
+   "meanMs": 13.337353333333331,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    331.862,
+    331.074,
+    329.897
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.34624666666666665,
+    "asr": 3.1617333333333333,
+    "dit": 7.048106666666664,
+    "vocos": 2.6909533333333338,
+    "host": 0.08793333333333608
+   },
+   "rssBeforeMb": 374.921875,
+   "rssLoadedMb": 380.234375,
+   "status": {
+    "rssMb": 362.84375,
+    "maxRssMb": 471.640625,
+    "thermalState": 0
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 2,
+   "steps": 3,
+   "loadMs": 161.54,
+   "chunks": 150,
+   "p50Ms": 13.546,
+   "p95Ms": 23.723,
+   "maxMs": 25.519,
+   "meanMs": 16.16362666666666,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    333.312,
+    333.996,
+    332.72
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.36034666666666676,
+    "asr": 3.081466666666667,
+    "dit": 10.00342,
+    "vocos": 2.6257933333333336,
+    "host": 0.09021999999999863
+   },
+   "rssBeforeMb": 374.921875,
+   "rssLoadedMb": 380.234375,
+   "status": {
+    "rssMb": 363.046875,
+    "maxRssMb": 471.640625,
+    "thermalState": 0
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 4,
+   "steps": 2,
+   "loadMs": 160.349,
+   "chunks": 150,
+   "p50Ms": 15.573,
+   "p95Ms": 25.916,
+   "maxMs": 33.705,
+   "meanMs": 16.265193333333333,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    337.706,
+    330.745,
+    331.061
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.43395333333333336,
+    "asr": 4.71652,
+    "dit": 7.57506,
+    "vocos": 3.4548,
+    "host": 0.0826599999999995
+   },
+   "rssBeforeMb": 362.8125,
+   "rssLoadedMb": 371.078125,
+   "status": {
+    "rssMb": 374.28125,
+    "maxRssMb": 471.640625,
+    "thermalState": 0
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 4,
+   "steps": 3,
+   "loadMs": 160.349,
+   "chunks": 150,
+   "p50Ms": 19.511,
+   "p95Ms": 32.184,
+   "maxMs": 47.582,
+   "meanMs": 20.56181999999999,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    340.588,
+    335.186,
+    336.316
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.3803733333333333,
+    "asr": 4.92254,
+    "dit": 11.818773333333333,
+    "vocos": 3.309346666666666,
+    "host": 0.12855333333333221
+   },
+   "rssBeforeMb": 362.8125,
+   "rssLoadedMb": 371.078125,
+   "status": {
+    "rssMb": 364.171875,
+    "maxRssMb": 471.640625,
+    "thermalState": 0
+   }
+  }
+ ],
+ "finishedAt": "2026-10-21T01:04:13.292471"
+}

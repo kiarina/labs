@@ -1,0 +1,23 @@
+[project]
+name = "meanvc2-onnx-streaming"
+version = "0.1.0"
+description = "Export streaming MeanVC2 to ONNX and compare it with the upstream PyTorch streaming path"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "einops==0.8.0",
+    "gdown==5.2.2",
+    "huggingface-hub==0.36.0",
+    "librosa==0.11.0",
+    "numpy==2.0.2",
+    "onnx==1.23.2",
+    "onnxruntime==1.31.0",
+    "safetensors==0.6.2",
+    "soundfile==0.13.1",
+    "soxr==1.0.0",
+    "torch==2.5.1",
+    "torchaudio==2.5.1",
+    "x-transformers==2.2.11",
+]
+
+[tool.uv]
+package = false

@@ -1,6 +1,7 @@
 # flutter
 
 - 2026/10/21 [Official remote audio tap in the external-media fork: decoded remote PCM, silenced native playout, application playout with AEC on the played voice](../2026/10/21/flutter-remote-audio-tap-playout/README.md)
+- 2026/10/21 [Streaming MeanVC2 voice conversion exported to ONNX: parity with upstream PyTorch and real-time speed in Flutter on macOS, Windows, Android and iOS](../2026/10/21/meanvc2-onnx-streaming/README.md)
 - 2026/10/20 [Physical camera and microphone AEC through the external-media fork and bridge](../2026/10/20/flutter-fork-external-media-aec/README.md)
 - 2026/10/20 [gpt-live-1-codex over the external-media fork with a playout processing slot and AEC on the played reference](../2026/10/20/flutter-fork-gpt-live-codex-playout/README.md)
 - 2026/10/20 [Streaming MeanVC2 voice conversion of gpt-live-1-codex replies in the playout slot, with AEC on the played voice](../2026/10/20/flutter-gpt-live-codex-meanvc2-playout/README.md)

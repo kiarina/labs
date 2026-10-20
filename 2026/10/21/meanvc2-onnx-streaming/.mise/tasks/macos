@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Build the app for macOS (profile), run it and wait for its report (py/serve.py must be running). MODE, TAG, EXTRA_DEFINES"
+set -euo pipefail
+MODE="${MODE:-parity,bench}"; TAG="${TAG:-${MODE//,/-}}"
+LAB="$(cd "$(dirname "$0")/../.." && pwd)"
+cd "$LAB/app"
+# shellcheck disable=SC2086
+flutter build macos --profile --dart-define=BASE_URL="${BASE_URL:-http://127.0.0.1:8823}" --dart-define=MODE="$MODE" \
+  --dart-define=TAG="$TAG" --dart-define=AUTO_EXIT=true ${EXTRA_DEFINES:-} | tail -1
+build/macos/Build/Products/Profile/meanvc2_onnx.app/Contents/MacOS/meanvc2_onnx 2>&1 | grep '\[meanvc2\]'
+echo "report: results/device/macos-$TAG.json"

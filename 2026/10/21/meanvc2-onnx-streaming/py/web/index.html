@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MeanVC2 聞き比べ</title>
+<style>
+  :root { --bg:#f6f5f2; --card:#fff; --ink:#1d1d1f; --mute:#6b6b70; --line:#e2e0da; --accent:#2f6fdb; --warn:#b5541c; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#161618; --card:#202024; --ink:#ececf0; --mute:#9a9aa3; --line:#34343a; --accent:#7aa7ff; --warn:#f0a070; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.6 -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  p.lead { color: var(--mute); margin: 0 0 20px; }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin: 14px 0; }
+  h2 { font-size: 16px; margin: 0 0 2px; }
+  .desc { color: var(--mute); font-size: 13px; margin-bottom: 10px; }
+  .item { display: grid; grid-template-columns: minmax(150px, 260px) 1fr auto; gap: 10px; align-items: center; padding: 6px 0; border-top: 1px solid var(--line); }
+  .item:first-of-type { border-top: 0; }
+  .label { font-weight: 600; font-size: 14px; }
+  .metric { color: var(--mute); font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  audio { width: 100%; height: 34px; }
+  .bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  button { font: inherit; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
+  button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  label.f { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--mute); }
+  .note { font-size: 13px; color: var(--mute); }
+  .err { color: var(--warn); }
+  @media (max-width: 640px) { .item { grid-template-columns: 1fr; gap: 4px; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>MeanVC2 聞き比べ: PyTorch と ONNX</h1>
+  <p class="lead">同じ元の声・同じ参照・同じ乱数で、上流の PyTorch の流しながらの変換と、ONNX に書き出した変換（fp32・int8）を並べています。
+    「PyTorch・別の乱数」は、上流そのものでも乱数が変わればこれだけ変わる、という差の目安です。数値は PyTorch との差（SNR は大きいほど近い、LSD はスペクトルの差で小さいほど近い）。
+    各行は PyTorch の出力の最大値で音量をそろえ、振り切れないようにしています。</p>
+
+  <section>
+    <div class="bar">
+      <label><input type="checkbox" id="blind"> 名前を隠して聞く（PyTorch・fp32・int8 の順を入れ替える）</label>
+      <button id="reveal" hidden>答えを見る</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>自分の声で試す</h2>
+    <div class="desc">元の声（必須）と参照の声（任意。空なら共有の素材の話者 2）を選ぶか録音して、3 つの変換を流しながら行います。160 ms ずつ、同じ乱数です。</div>
+    <div class="bar">
+      <label class="f">元の声 <input type="file" id="src" accept="audio/*"></label>
+      <button id="recSrc">● 元の声を録音</button>
+      <label class="f">参照の声 <input type="file" id="ref" accept="audio/*"></label>
+      <button id="recRef">● 参照を録音</button>
+      <label class="f">steps <select id="steps"><option>2</option><option selected>3</option></select></label>
+      <button class="primary" id="go">変換する</button>
+    </div>
+    <div class="note" id="status"></div>
+  </section>
+
+  <div id="live"></div>
+  <div id="rows"></div>
+</main>
+<script>
+const $ = (s) => document.querySelector(s);
+const MAIN = ["torch", "onnx_fp32", "onnx_int8"];
+let blind = false, revealed = false;
+const recorded = { src: null, ref: null };
+
+function metric(it) {
+  const p = [];
+  if (it.snrDb != null) p.push(`SNR ${it.snrDb} dB`);
+  if (it.lsdDb != null) p.push(`LSD ${it.lsdDb} dB`);
+  if (it.convertSeconds != null) p.push(`変換 ${it.convertSeconds} 秒`);
+  p.push(`${it.seconds} 秒`);
+  return p.join(" · ");
+}
+
+function renderRow(row) {
+  const sec = document.createElement("section");
+  sec.innerHTML = `<h2>${row.case} · steps ${row.steps}</h2><div class="desc">${row.description || ""}（音量 ×${row.gain}）</div>`;
+  let items = row.items.slice();
+  if (blind && !revealed) {
+    const main = items.filter((i) => MAIN.includes(i.key));
+    const shuffled = main.map((v) => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map((x) => x[1]);
+    const letters = "ABC";
+    items = items.filter((i) => !MAIN.includes(i.key) && !i.key.startsWith("device_"));
+    shuffled.forEach((it, k) => items.splice(1 + k, 0, { ...it, label: `${letters[k]}`, snrDb: null, lsdDb: null, convertSeconds: null }));
+  }
+  for (const it of items) {
+    const d = document.createElement("div");
+    d.className = "item";
+    d.innerHTML = `<div class="label">${it.label}</div><audio controls preload="none" src="${it.url}"></audio><div class="metric">${metric(it)}</div>`;
+    sec.appendChild(d);
+  }
+  return sec;
+}
+
+let ROWS = [], LIVE = [];
+function render() {
+  const rows = $("#rows"), live = $("#live");
+  rows.innerHTML = ""; live.innerHTML = "";
+  LIVE.forEach((r) => live.appendChild(renderRow(r)));
+  ROWS.forEach((r) => rows.appendChild(renderRow(r)));
+}
+
+$("#blind").addEventListener("change", (e) => { blind = e.target.checked; revealed = false; $("#reveal").hidden = !blind; render(); });
+$("#reveal").addEventListener("click", () => { revealed = true; render(); });
+
+async function record(btn, key) {
+  if (btn.dataset.rec) { btn._mr.stop(); return; }
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  const mr = new MediaRecorder(stream); const chunks = [];
+  mr.ondataavailable = (e) => chunks.push(e.data);
+  mr.onstop = () => { stream.getTracks().forEach((t) => t.stop()); recorded[key] = new Blob(chunks, { type: mr.mimeType });
+    delete btn.dataset.rec; btn.textContent = key === "src" ? "● 元の声を録音（済）" : "● 参照を録音（済）"; };
+  btn._mr = mr; btn.dataset.rec = "1"; btn.textContent = "■ 止める"; mr.start();
+}
+$("#recSrc").addEventListener("click", (e) => record(e.target, "src"));
+$("#recRef").addEventListener("click", (e) => record(e.target, "ref"));
+
+$("#go").addEventListener("click", async () => {
+  const fd = new FormData();
+  const src = $("#src").files[0] || recorded.src; if (!src) { $("#status").textContent = "元の声を選ぶか録音してください"; return; }
+  fd.append("source", src, "source");
+  const ref = $("#ref").files[0] || recorded.ref; if (ref) fd.append("reference", ref, "reference");
+  fd.append("steps", $("#steps").value);
+  $("#status").textContent = "変換中…"; $("#go").disabled = true;
+  try {
+    const r = await (await fetch("/api/convert", { method: "POST", body: fd })).json();
+    if (r.error) throw new Error(r.error);
+    LIVE.unshift(r); render(); $("#status").textContent = "";
+  } catch (e) { $("#status").innerHTML = `<span class="err">失敗: ${e.message}</span>`; }
+  $("#go").disabled = false;
+});
+
+fetch("/api/rows").then((r) => r.json()).then((rows) => { ROWS = rows; render(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,529 @@
+{
+ "platform": "ios",
+ "osVersion": "Version 27.0.1 (Build 24A446)",
+ "processors": 6,
+ "mode": "parity,bench",
+ "kReleaseMode": false,
+ "kProfileMode": true,
+ "startedAt": "2026-10-21T00:53:09.714290",
+ "device": {
+  "rssMb": 55.953125,
+  "maxRssMb": 55.953125,
+  "batteryState": 3,
+  "thermalState": 0,
+  "lowPowerMode": false,
+  "model": "iPad",
+  "batteryLevel": 1.0
+ },
+ "downloadSeconds": 3.082,
+ "downloadedBytes": 260580083,
+ "manifest": {
+  "models": {
+   "asr.int8.onnx": {
+    "sha256": "553869e3159af4497582072e66f09c16032a3b98ac2bad5c195b7443627616be",
+    "bytes": 28655587
+   },
+   "asr.onnx": {
+    "sha256": "27b03b3c64ef89d7d0b60e686b62f84ee5ef4f9ca943d1fab6def306721e33d9",
+    "bytes": 75781489
+   },
+   "dit.int8.onnx": {
+    "sha256": "52ac682ed1790b196333d1dbf99fa2806b6c52076c85e438c9dede968572675a",
+    "bytes": 13849138
+   },
+   "dit.onnx": {
+    "sha256": "6e56208ad1de532ffac9c0fc622049049908096dabb1b9816e9ded45a505dce3",
+    "bytes": 53572968
+   },
+   "fbank.int8.onnx": {
+    "sha256": "ecbe193170abe98a8c0ba9299e8fe21b418145aca924e351c667b9257c3e28c8",
+    "bytes": 908339
+   },
+   "fbank.onnx": {
+    "sha256": "ecbe193170abe98a8c0ba9299e8fe21b418145aca924e351c667b9257c3e28c8",
+    "bytes": 908339
+   },
+   "gtm.int8.onnx": {
+    "sha256": "f03ff1e9da3c373445f7518fa36fc99980fe4326447235fa89ea1923f57ee224",
+    "bytes": 17441893
+   },
+   "gtm.onnx": {
+    "sha256": "f03ff1e9da3c373445f7518fa36fc99980fe4326447235fa89ea1923f57ee224",
+    "bytes": 17441893
+   },
+   "vocos.int8.onnx": {
+    "sha256": "a0dbd4c83708f6e787ceebf1c1b0833398dbdea6af770887d27b19119bba2e16",
+    "bytes": 12998461
+   },
+   "vocos.onnx": {
+    "sha256": "f5f08602215204d1da27df5f74939084f0a9f7709fa1a1c976e330fa0391c95d",
+    "bytes": 36489112
+   }
+  },
+  "fixtures": {
+   "source.f32": {
+    "sha256": "639b77ca997a36c85a377172e2c5803c7443603e966912cf7d9f68425fbea6ae",
+    "bytes": 512000
+   },
+   "spk.f32": {
+    "sha256": "97df320ae5528ded787dc9be26ea14d9e1217e29f08cc5f68873901191e652cb",
+    "bytes": 1024
+   },
+   "noise.f32": {
+    "sha256": "657d22c044d86b6dbb4f35fe2c2e7ea75e86ab2660f420bc6834937d9a6d8881",
+    "bytes": 1024000
+   },
+   "expected_fp32_s3.f32": {
+    "sha256": "11833416426288aadd4a654dd13e1d64d9641e8a18bcff83c9ac940b581fb8a5",
+    "bytes": 497920
+   },
+   "expected_int8_s3.f32": {
+    "sha256": "b7ed7dc3db9cc744b139845333ff91e067e5a30f86102191d3cca411ef86c5c3",
+    "bytes": 497920
+   }
+  },
+  "seed": 20261021,
+  "steps": 3
+ },
+ "parity": [
+  {
+   "variant": "fp32",
+   "steps": 3,
+   "samples": 124480,
+   "expectedSamples": 124480,
+   "maxAbs": 0.00863615795969963,
+   "snrDb": 60.63636848400702
+  },
+  {
+   "variant": "int8",
+   "steps": 3,
+   "samples": 124480,
+   "expectedSamples": 124480,
+   "maxAbs": 1.2102436125278473,
+   "snrDb": 3.147488216976363
+  }
+ ],
+ "bench": [
+  {
+   "variant": "fp32",
+   "threads": 1,
+   "steps": 2,
+   "loadMs": 282.671,
+   "chunks": 150,
+   "p50Ms": 23.331,
+   "p95Ms": 41.185,
+   "maxMs": 43.771,
+   "meanMs": 28.283446666666666,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    341.959,
+    342.569,
+    342.199
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.56656,
+    "asr": 5.510906666666666,
+    "dit": 15.502060000000002,
+    "vocos": 6.606706666666668,
+    "host": 0.09477333333333211
+   },
+   "rssBeforeMb": 185.234375,
+   "rssLoadedMb": 303.015625,
+   "status": {
+    "rssMb": 307.9375,
+    "maxRssMb": 333.921875,
+    "batteryState": 3,
+    "model": "iPad",
+    "lowPowerMode": false,
+    "thermalState": 0,
+    "batteryLevel": 1.0
+   }
+  },
+  {
+   "variant": "fp32",
+   "threads": 1,
+   "steps": 3,
+   "loadMs": 282.671,
+   "chunks": 150,
+   "p50Ms": 29.012,
+   "p95Ms": 51.974,
+   "maxMs": 52.739,
+   "meanMs": 35.54719333333335,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    347.609,
+    347.183,
+    347.313
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.5576533333333333,
+    "asr": 5.474093333333332,
+    "dit": 22.819466666666667,
+    "vocos": 6.592899999999998,
+    "host": 0.09953333333333532
+   },
+   "rssBeforeMb": 185.234375,
+   "rssLoadedMb": 303.015625,
+   "status": {
+    "rssMb": 309.890625,
+    "maxRssMb": 333.921875,
+    "model": "iPad",
+    "batteryState": 3,
+    "batteryLevel": 1.0,
+    "thermalState": 0,
+    "lowPowerMode": false
+   }
+  },
+  {
+   "variant": "fp32",
+   "threads": 2,
+   "steps": 2,
+   "loadMs": 267.984,
+   "chunks": 150,
+   "p50Ms": 22.515,
+   "p95Ms": 38.166,
+   "maxMs": 39.036,
+   "meanMs": 26.329553333333333,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    339.687,
+    340.581,
+    340.348
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.44795333333333337,
+    "asr": 5.6469733333333325,
+    "dit": 13.869833333333334,
+    "vocos": 6.259553333333332,
+    "host": 0.10287333333333393
+   },
+   "rssBeforeMb": 186.734375,
+   "rssLoadedMb": 308.546875,
+   "status": {
+    "rssMb": 312.984375,
+    "maxRssMb": 339.015625,
+    "thermalState": 0,
+    "lowPowerMode": false,
+    "batteryLevel": 1.0,
+    "model": "iPad",
+    "batteryState": 3
+   }
+  },
+  {
+   "variant": "fp32",
+   "threads": 2,
+   "steps": 3,
+   "loadMs": 267.984,
+   "chunks": 150,
+   "p50Ms": 29.371,
+   "p95Ms": 51.158,
+   "maxMs": 57.517,
+   "meanMs": 34.58298666666667,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    346.74,
+    345.797,
+    347.852
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.4723133333333333,
+    "asr": 5.911093333333334,
+    "dit": 21.764093333333335,
+    "vocos": 6.319806666666668,
+    "host": 0.11309999999999826
+   },
+   "rssBeforeMb": 186.734375,
+   "rssLoadedMb": 308.546875,
+   "status": {
+    "rssMb": 316.296875,
+    "maxRssMb": 339.015625,
+    "model": "iPad",
+    "batteryLevel": 1.0,
+    "thermalState": 0,
+    "batteryState": 3,
+    "lowPowerMode": false
+   }
+  },
+  {
+   "variant": "fp32",
+   "threads": 4,
+   "steps": 2,
+   "loadMs": 286.596,
+   "chunks": 150,
+   "p50Ms": 38.427,
+   "p95Ms": 66.429,
+   "maxMs": 101.392,
+   "meanMs": 40.870860000000015,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    345.711,
+    344.634,
+    364.197
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.4267466666666666,
+    "asr": 9.34288,
+    "dit": 21.269839999999995,
+    "vocos": 9.718980000000002,
+    "host": 0.10986666666666943
+   },
+   "rssBeforeMb": 192.859375,
+   "rssLoadedMb": 310.21875,
+   "status": {
+    "rssMb": 317.1875,
+    "maxRssMb": 341.296875,
+    "model": "iPad",
+    "lowPowerMode": false,
+    "batteryLevel": 1.0,
+    "thermalState": 0,
+    "batteryState": 3
+   }
+  },
+  {
+   "variant": "fp32",
+   "threads": 4,
+   "steps": 3,
+   "loadMs": 286.596,
+   "chunks": 150,
+   "p50Ms": 49.34,
+   "p95Ms": 78.002,
+   "maxMs": 90.396,
+   "meanMs": 50.72893333333334,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    372.702,
+    353.734,
+    376.068
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.4390133333333333,
+    "asr": 9.653793333333333,
+    "dit": 31.931373333333337,
+    "vocos": 8.586753333333332,
+    "host": 0.11546000000000126
+   },
+   "rssBeforeMb": 192.859375,
+   "rssLoadedMb": 310.21875,
+   "status": {
+    "rssMb": 317.546875,
+    "maxRssMb": 341.296875,
+    "batteryLevel": 1.0,
+    "batteryState": 3,
+    "lowPowerMode": false,
+    "thermalState": 0,
+    "model": "iPad"
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 1,
+   "steps": 2,
+   "loadMs": 191.77,
+   "chunks": 150,
+   "p50Ms": 14.603,
+   "p95Ms": 24.712,
+   "maxMs": 25.783,
+   "meanMs": 17.36164666666667,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    333.802,
+    333.806,
+    333.537
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.5562133333333333,
+    "asr": 3.916940000000001,
+    "dit": 9.126393333333334,
+    "vocos": 3.66368,
+    "host": 0.09537333333333009
+   },
+   "rssBeforeMb": 193.5,
+   "rssLoadedMb": 216.953125,
+   "status": {
+    "rssMb": 222.90625,
+    "maxRssMb": 341.296875,
+    "batteryState": 3,
+    "model": "iPad",
+    "thermalState": 0,
+    "batteryLevel": 1.0,
+    "lowPowerMode": false
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 1,
+   "steps": 3,
+   "loadMs": 191.77,
+   "chunks": 150,
+   "p50Ms": 17.897,
+   "p95Ms": 31.55,
+   "maxMs": 33.948,
+   "meanMs": 21.65686,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    337.20799999999997,
+    336.691,
+    337.454
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.5609466666666668,
+    "asr": 3.903139999999999,
+    "dit": 13.387786666666663,
+    "vocos": 3.706273333333333,
+    "host": 0.09593333333333495
+   },
+   "rssBeforeMb": 193.5,
+   "rssLoadedMb": 216.953125,
+   "status": {
+    "rssMb": 224.703125,
+    "maxRssMb": 341.296875,
+    "lowPowerMode": false,
+    "batteryState": 3,
+    "model": "iPad",
+    "thermalState": 0,
+    "batteryLevel": 1.0
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 2,
+   "steps": 2,
+   "loadMs": 182.396,
+   "chunks": 150,
+   "p50Ms": 15.036,
+   "p95Ms": 25.416,
+   "maxMs": 26.175,
+   "meanMs": 17.355099999999997,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    332.908,
+    334.254,
+    334.429
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.45536,
+    "asr": 4.228113333333334,
+    "dit": 8.748013333333335,
+    "vocos": 3.8110800000000014,
+    "host": 0.10997333333333024
+   },
+   "rssBeforeMb": 196.515625,
+   "rssLoadedMb": 220.453125,
+   "status": {
+    "rssMb": 225.3125,
+    "maxRssMb": 341.296875,
+    "batteryState": 3,
+    "lowPowerMode": false,
+    "thermalState": 0,
+    "model": "iPad",
+    "batteryLevel": 1.0
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 2,
+   "steps": 3,
+   "loadMs": 182.396,
+   "chunks": 150,
+   "p50Ms": 18.889,
+   "p95Ms": 33.359,
+   "maxMs": 33.927,
+   "meanMs": 22.407339999999998,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    337.875,
+    336.636,
+    336.288
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.47012,
+    "asr": 4.555479999999999,
+    "dit": 13.386106666666667,
+    "vocos": 3.873673333333333,
+    "host": 0.11933999999999856
+   },
+   "rssBeforeMb": 196.515625,
+   "rssLoadedMb": 220.453125,
+   "status": {
+    "rssMb": 225.625,
+    "maxRssMb": 341.296875,
+    "batteryLevel": 1.0,
+    "batteryState": 3,
+    "lowPowerMode": false,
+    "thermalState": 0,
+    "model": "iPad"
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 4,
+   "steps": 2,
+   "loadMs": 223.366,
+   "chunks": 150,
+   "p50Ms": 25.715,
+   "p95Ms": 54.944,
+   "maxMs": 67.872,
+   "meanMs": 28.77088,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    341.488,
+    340.77,
+    362.275
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.5413399999999999,
+    "asr": 8.248780000000002,
+    "dit": 13.130760000000002,
+    "vocos": 6.727766666666665,
+    "host": 0.11964666666666039
+   },
+   "rssBeforeMb": 197.21875,
+   "rssLoadedMb": 222.03125,
+   "status": {
+    "rssMb": 226.703125,
+    "maxRssMb": 341.296875,
+    "lowPowerMode": false,
+    "model": "iPad",
+    "batteryLevel": 1.0,
+    "batteryState": 3,
+    "thermalState": 0
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 4,
+   "steps": 3,
+   "loadMs": 223.366,
+   "chunks": 150,
+   "p50Ms": 34.305,
+   "p95Ms": 63.178,
+   "maxMs": 83.287,
+   "meanMs": 34.94056666666668,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    340.439,
+    340.637,
+    341.02
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.6184466666666666,
+    "asr": 8.569906666666666,
+    "dit": 18.422293333333336,
+    "vocos": 7.198360000000003,
+    "host": 0.128926666666663
+   },
+   "rssBeforeMb": 197.21875,
+   "rssLoadedMb": 222.03125,
+   "status": {
+    "rssMb": 227.015625,
+    "maxRssMb": 341.296875,
+    "batteryLevel": 1.0,
+    "lowPowerMode": false,
+    "batteryState": 3,
+    "model": "iPad",
+    "thermalState": 0
+   }
+  }
+ ],
+ "finishedAt": "2026-10-21T00:54:12.785855"
+}

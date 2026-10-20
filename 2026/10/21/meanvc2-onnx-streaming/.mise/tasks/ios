@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+#MISE description="Build the app for an iOS device (profile, OFFLINE: models bundled), install it with devicectl, run it and copy its report back. IOS_DEVICE=<udid>, MODE, TAG, EXTRA_DEFINES"
+# OFFLINE because the first request to the LAN shows the local network prompt,
+# which needs a person to tap it.
+set -euo pipefail
+: "${IOS_DEVICE:?set IOS_DEVICE to the device UDID (xcrun devicectl list devices)}"
+MODE="${MODE:-parity,bench}"; TAG="${TAG:-${MODE//,/-}}"
+LAB="$(cd "$(dirname "$0")/../.." && pwd)"
+BUNDLE=com.kiarina.labs.meanvc2Onnx
+cd "$LAB/app"
+for g in models fixtures; do cp -c "$LAB"/build/serve/$g/* assets/serve/$g/; done
+cp "$LAB/build/serve/manifest.json" assets/serve/
+trap 'find assets/serve -type f ! -name .gitkeep ! -name .gitignore -delete' EXIT
+# shellcheck disable=SC2086
+flutter build ios --profile --dart-define=OFFLINE=true --dart-define=MODE="$MODE" --dart-define=TAG="$TAG" \
+  --dart-define=AUTO_EXIT=true ${EXTRA_DEFINES:-} | tail -1
+xcrun devicectl device install app --device "$IOS_DEVICE" build/ios/iphoneos/Runner.app | tail -1
+xcrun devicectl device process launch --device "$IOS_DEVICE" --terminate-existing "$BUNDLE" | tail -1
+OUT="$LAB/results/device/ios-$TAG.json"
+rm -f "$OUT"
+for _ in $(seq 1 720); do
+  sleep 10
+  xcrun devicectl device copy from --device "$IOS_DEVICE" --domain-type appDataContainer --domain-identifier "$BUNDLE" \
+    --source "Documents/report-ios-$TAG.json" --destination "$OUT" >/dev/null 2>&1 && break
+done
+mkdir -p "$LAB/build/device"
+for v in fp32 int8; do
+  xcrun devicectl device copy from --device "$IOS_DEVICE" --domain-type appDataContainer --domain-identifier "$BUNDLE" \
+    --source "Documents/ios-$TAG-parity_$v.f32" --destination "$LAB/build/device/ios-$TAG-parity_$v.f32" >/dev/null 2>&1 || true
+done
+echo "report: ${OUT#$LAB/}"

@@ -1,0 +1,584 @@
+{
+ "platform": "windows",
+ "osVersion": "\"Windows 10 Home\" 10.0 (Build 26220)",
+ "processors": 24,
+ "mode": "parity,bench",
+ "kReleaseMode": false,
+ "kProfileMode": true,
+ "startedAt": "2026-10-21T01:01:01.877197",
+ "device": {
+  "rssMb": 117.2265625,
+  "maxRssMb": 117.2265625
+ },
+ "downloadSeconds": 7.716,
+ "downloadedBytes": 260580083,
+ "manifest": {
+  "models": {
+   "asr.int8.onnx": {
+    "sha256": "553869e3159af4497582072e66f09c16032a3b98ac2bad5c195b7443627616be",
+    "bytes": 28655587
+   },
+   "asr.onnx": {
+    "sha256": "27b03b3c64ef89d7d0b60e686b62f84ee5ef4f9ca943d1fab6def306721e33d9",
+    "bytes": 75781489
+   },
+   "dit.int8.onnx": {
+    "sha256": "52ac682ed1790b196333d1dbf99fa2806b6c52076c85e438c9dede968572675a",
+    "bytes": 13849138
+   },
+   "dit.onnx": {
+    "sha256": "6e56208ad1de532ffac9c0fc622049049908096dabb1b9816e9ded45a505dce3",
+    "bytes": 53572968
+   },
+   "fbank.int8.onnx": {
+    "sha256": "ecbe193170abe98a8c0ba9299e8fe21b418145aca924e351c667b9257c3e28c8",
+    "bytes": 908339
+   },
+   "fbank.onnx": {
+    "sha256": "ecbe193170abe98a8c0ba9299e8fe21b418145aca924e351c667b9257c3e28c8",
+    "bytes": 908339
+   },
+   "gtm.int8.onnx": {
+    "sha256": "f03ff1e9da3c373445f7518fa36fc99980fe4326447235fa89ea1923f57ee224",
+    "bytes": 17441893
+   },
+   "gtm.onnx": {
+    "sha256": "f03ff1e9da3c373445f7518fa36fc99980fe4326447235fa89ea1923f57ee224",
+    "bytes": 17441893
+   },
+   "vocos.int8.onnx": {
+    "sha256": "a0dbd4c83708f6e787ceebf1c1b0833398dbdea6af770887d27b19119bba2e16",
+    "bytes": 12998461
+   },
+   "vocos.onnx": {
+    "sha256": "f5f08602215204d1da27df5f74939084f0a9f7709fa1a1c976e330fa0391c95d",
+    "bytes": 36489112
+   }
+  },
+  "fixtures": {
+   "source.f32": {
+    "sha256": "639b77ca997a36c85a377172e2c5803c7443603e966912cf7d9f68425fbea6ae",
+    "bytes": 512000
+   },
+   "spk.f32": {
+    "sha256": "97df320ae5528ded787dc9be26ea14d9e1217e29f08cc5f68873901191e652cb",
+    "bytes": 1024
+   },
+   "noise.f32": {
+    "sha256": "657d22c044d86b6dbb4f35fe2c2e7ea75e86ab2660f420bc6834937d9a6d8881",
+    "bytes": 1024000
+   },
+   "expected_fp32_s3.f32": {
+    "sha256": "11833416426288aadd4a654dd13e1d64d9641e8a18bcff83c9ac940b581fb8a5",
+    "bytes": 497920
+   },
+   "expected_int8_s3.f32": {
+    "sha256": "b7ed7dc3db9cc744b139845333ff91e067e5a30f86102191d3cca411ef86c5c3",
+    "bytes": 497920
+   }
+  },
+  "seed": 20261021,
+  "steps": 3
+ },
+ "parity": [
+  {
+   "variant": "fp32",
+   "steps": 3,
+   "samples": 124480,
+   "expectedSamples": 124480,
+   "maxAbs": 0.008618682622909546,
+   "snrDb": 60.61187008491542
+  },
+  {
+   "variant": "int8",
+   "steps": 3,
+   "samples": 124480,
+   "expectedSamples": 124480,
+   "maxAbs": 1.211660385131836,
+   "snrDb": 3.729427681708733
+  }
+ ],
+ "bench": [
+  {
+   "variant": "fp32",
+   "threads": 1,
+   "steps": 2,
+   "loadMs": 424.49,
+   "chunks": 150,
+   "p50Ms": 24.121,
+   "p95Ms": 42.318,
+   "maxMs": 43.708,
+   "meanMs": 28.272546666666663,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    341.434,
+    342.134,
+    340.642
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.39318000000000003,
+    "asr": 6.167166666666666,
+    "dit": 15.497086666666666,
+    "vocos": 6.12738,
+    "host": 0.08436000000000135
+   },
+   "rssBeforeMb": 174.078125,
+   "rssLoadedMb": 356.0546875,
+   "status": {
+    "rssMb": 359.91015625,
+    "maxRssMb": 362.69921875
+   }
+  },
+  {
+   "variant": "fp32",
+   "threads": 1,
+   "steps": 3,
+   "loadMs": 424.49,
+   "chunks": 150,
+   "p50Ms": 30.317,
+   "p95Ms": 54.2,
+   "maxMs": 60.79,
+   "meanMs": 35.980793333333345,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    347.021,
+    346.347,
+    348.638
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.3974133333333333,
+    "asr": 6.1537733333333335,
+    "dit": 23.21358666666667,
+    "vocos": 6.12866,
+    "host": 0.08450666666666314
+   },
+   "rssBeforeMb": 174.078125,
+   "rssLoadedMb": 356.0546875,
+   "status": {
+    "rssMb": 361.484375,
+    "maxRssMb": 362.69921875
+   }
+  },
+  {
+   "variant": "fp32",
+   "threads": 2,
+   "steps": 2,
+   "loadMs": 452.21,
+   "chunks": 150,
+   "p50Ms": 19.584,
+   "p95Ms": 33.21,
+   "maxMs": 36.965,
+   "meanMs": 22.516000000000005,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    339.3,
+    339.312,
+    338.66
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.3880666666666667,
+    "asr": 4.9962133333333325,
+    "dit": 12.678573333333334,
+    "vocos": 4.362606666666667,
+    "host": 0.0861733333333334
+   },
+   "rssBeforeMb": 171.89453125,
+   "rssLoadedMb": 351.25390625,
+   "status": {
+    "rssMb": 362.85546875,
+    "maxRssMb": 362.87109375
+   }
+  },
+  {
+   "variant": "fp32",
+   "threads": 2,
+   "steps": 3,
+   "loadMs": 452.21,
+   "chunks": 150,
+   "p50Ms": 24.698,
+   "p95Ms": 44.182,
+   "maxMs": 49.242,
+   "meanMs": 28.94675333333335,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    345.957,
+    340.96,
+    340.621
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.39086666666666664,
+    "asr": 5.017833333333333,
+    "dit": 19.053646666666666,
+    "vocos": 4.394653333333334,
+    "host": 0.08643333333333217
+   },
+   "rssBeforeMb": 171.89453125,
+   "rssLoadedMb": 351.25390625,
+   "status": {
+    "rssMb": 364.33203125,
+    "maxRssMb": 365.859375
+   }
+  },
+  {
+   "variant": "fp32",
+   "threads": 4,
+   "steps": 2,
+   "loadMs": 487.151,
+   "chunks": 150,
+   "p50Ms": 20.327,
+   "p95Ms": 34.857,
+   "maxMs": 37.855,
+   "meanMs": 22.561459999999993,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    339.451,
+    340.446,
+    335.692
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.4610666666666666,
+    "asr": 4.891286666666667,
+    "dit": 13.215433333333337,
+    "vocos": 3.8868866666666673,
+    "host": 0.10301333333333028
+   },
+   "rssBeforeMb": 175.53125,
+   "rssLoadedMb": 358.3203125,
+   "status": {
+    "rssMb": 367.625,
+    "maxRssMb": 367.64453125
+   }
+  },
+  {
+   "variant": "fp32",
+   "threads": 4,
+   "steps": 3,
+   "loadMs": 487.151,
+   "chunks": 150,
+   "p50Ms": 25.379,
+   "p95Ms": 46.04,
+   "maxMs": 48.583,
+   "meanMs": 29.184693333333325,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    342.503,
+    342.483,
+    342.387
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.48904666666666663,
+    "asr": 4.978446666666667,
+    "dit": 19.689726666666665,
+    "vocos": 3.9232533333333337,
+    "host": 0.10037999999999926
+   },
+   "rssBeforeMb": 175.53125,
+   "rssLoadedMb": 358.3203125,
+   "status": {
+    "rssMb": 367.6875,
+    "maxRssMb": 368.11328125
+   }
+  },
+  {
+   "variant": "fp32",
+   "threads": 8,
+   "steps": 2,
+   "loadMs": 591.357,
+   "chunks": 150,
+   "p50Ms": 37.744,
+   "p95Ms": 84.168,
+   "maxMs": 94.288,
+   "meanMs": 40.119919999999986,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    339.95799999999997,
+    335.705,
+    382.985
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.72694,
+    "asr": 9.575086666666667,
+    "dit": 21.580033333333336,
+    "vocos": 8.1067,
+    "host": 0.1259933333333361
+   },
+   "rssBeforeMb": 178.83984375,
+   "rssLoadedMb": 370.09375,
+   "status": {
+    "rssMb": 377.515625,
+    "maxRssMb": 377.53125
+   }
+  },
+  {
+   "variant": "fp32",
+   "threads": 8,
+   "steps": 3,
+   "loadMs": 591.357,
+   "chunks": 150,
+   "p50Ms": 48.467,
+   "p95Ms": 95.738,
+   "maxMs": 118.06,
+   "meanMs": 51.979573333333335,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    339.739,
+    386.496,
+    364.049
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.42568000000000006,
+    "asr": 9.47128,
+    "dit": 33.732800000000005,
+    "vocos": 8.24522,
+    "host": 0.10139333333333107
+   },
+   "rssBeforeMb": 178.83984375,
+   "rssLoadedMb": 370.09375,
+   "status": {
+    "rssMb": 380.4921875,
+    "maxRssMb": 383.5078125
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 1,
+   "steps": 2,
+   "loadMs": 330.776,
+   "chunks": 150,
+   "p50Ms": 14.002,
+   "p95Ms": 24.156,
+   "maxMs": 26.46,
+   "meanMs": 16.213580000000004,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    332.682,
+    332.179,
+    333.952
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.37852666666666673,
+    "asr": 3.6794133333333328,
+    "dit": 8.670113333333333,
+    "vocos": 3.403466666666666,
+    "host": 0.07752000000000027
+   },
+   "rssBeforeMb": 184.015625,
+   "rssLoadedMb": 262.296875,
+   "status": {
+    "rssMb": 273.04296875,
+    "maxRssMb": 383.5078125
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 1,
+   "steps": 3,
+   "loadMs": 330.776,
+   "chunks": 150,
+   "p50Ms": 17.383,
+   "p95Ms": 30.589,
+   "maxMs": 34.319,
+   "meanMs": 20.407440000000005,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    337.016,
+    334.828,
+    335.272
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.37699999999999995,
+    "asr": 3.750173333333334,
+    "dit": 12.798713333333332,
+    "vocos": 3.395593333333332,
+    "host": 0.0807333333333365
+   },
+   "rssBeforeMb": 184.015625,
+   "rssLoadedMb": 262.296875,
+   "status": {
+    "rssMb": 273.06640625,
+    "maxRssMb": 383.5078125
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 2,
+   "steps": 2,
+   "loadMs": 360.072,
+   "chunks": 150,
+   "p50Ms": 12.309,
+   "p95Ms": 21.56,
+   "maxMs": 22.522,
+   "meanMs": 14.365833333333333,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    332.839,
+    330.984,
+    330.903
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.36260666666666674,
+    "asr": 3.1981599999999997,
+    "dit": 7.964613333333333,
+    "vocos": 2.7567266666666668,
+    "host": 0.08054666666666725
+   },
+   "rssBeforeMb": 184.40234375,
+   "rssLoadedMb": 266.37890625,
+   "status": {
+    "rssMb": 274.05859375,
+    "maxRssMb": 383.5078125
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 2,
+   "steps": 3,
+   "loadMs": 360.072,
+   "chunks": 150,
+   "p50Ms": 15.308,
+   "p95Ms": 27.202,
+   "maxMs": 28.515,
+   "meanMs": 17.976866666666666,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    333.097,
+    334.012,
+    334.25
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.3551266666666666,
+    "asr": 3.175986666666667,
+    "dit": 11.614866666666666,
+    "vocos": 2.7441666666666666,
+    "host": 0.08373333333333383
+   },
+   "rssBeforeMb": 184.40234375,
+   "rssLoadedMb": 266.37890625,
+   "status": {
+    "rssMb": 274.11328125,
+    "maxRssMb": 383.5078125
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 4,
+   "steps": 2,
+   "loadMs": 380.565,
+   "chunks": 150,
+   "p50Ms": 14.987,
+   "p95Ms": 25.713,
+   "maxMs": 29.245,
+   "meanMs": 16.28467333333334,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    332.863,
+    333.629,
+    334.021
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.45919333333333334,
+    "asr": 3.4186266666666665,
+    "dit": 9.410566666666664,
+    "vocos": 2.8840000000000003,
+    "host": 0.1075266666666686
+   },
+   "rssBeforeMb": 189.2109375,
+   "rssLoadedMb": 268.1171875,
+   "status": {
+    "rssMb": 280.234375,
+    "maxRssMb": 383.5078125
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 4,
+   "steps": 3,
+   "loadMs": 380.565,
+   "chunks": 150,
+   "p50Ms": 18.595,
+   "p95Ms": 33.097,
+   "maxMs": 36.803,
+   "meanMs": 20.725946666666665,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    333.777,
+    333.605,
+    335.609
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.4548466666666666,
+    "asr": 3.478933333333334,
+    "dit": 13.869619999999998,
+    "vocos": 2.813500000000001,
+    "host": 0.10575333333333518
+   },
+   "rssBeforeMb": 189.2109375,
+   "rssLoadedMb": 268.1171875,
+   "status": {
+    "rssMb": 280.77734375,
+    "maxRssMb": 383.5078125
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 8,
+   "steps": 2,
+   "loadMs": 522.242,
+   "chunks": 150,
+   "p50Ms": 18.323,
+   "p95Ms": 42.726,
+   "maxMs": 81.483,
+   "meanMs": 20.174500000000005,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    333.594,
+    346.686,
+    329.851
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.36489333333333335,
+    "asr": 5.14884,
+    "dit": 9.759673333333334,
+    "vocos": 4.80378,
+    "host": 0.09173999999999766
+   },
+   "rssBeforeMb": 190.0625,
+   "rssLoadedMb": 276.08984375,
+   "status": {
+    "rssMb": 286.1640625,
+    "maxRssMb": 383.5078125
+   }
+  },
+  {
+   "variant": "int8",
+   "threads": 8,
+   "steps": 3,
+   "loadMs": 522.242,
+   "chunks": 150,
+   "p50Ms": 18.959,
+   "p95Ms": 45.076,
+   "maxMs": 57.774,
+   "meanMs": 22.765473333333325,
+   "deadlineMisses": 0,
+   "firstOutputMs": [
+    333.663,
+    333.244,
+    333.515
+   ],
+   "stageMsPerChunk": {
+    "fbank": 0.42038,
+    "asr": 5.299413333333333,
+    "dit": 12.725193333333333,
+    "vocos": 4.2233133333333335,
+    "host": 0.0941733333333341
+   },
+   "rssBeforeMb": 190.0625,
+   "rssLoadedMb": 276.08984375,
+   "status": {
+    "rssMb": 292.22265625,
+    "maxRssMb": 383.5078125
+   }
+  }
+ ],
+ "finishedAt": "2026-10-21T01:02:19.483886"
+}

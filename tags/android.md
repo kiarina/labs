@@ -1,5 +1,6 @@
 # android
 
+- 2026/10/21 [Streaming MeanVC2 voice conversion exported to ONNX: parity with upstream PyTorch and real-time speed in Flutter on macOS, Windows, Android and iOS](../2026/10/21/meanvc2-onnx-streaming/README.md)
 - 2026/10/20 [What record's echoCancel actually does on macOS, iOS, Android and Web: far-end echo and near-end speech](../2026/10/20/flutter-record-echo-cancel/README.md)
 - 2026/10/20 [OS text-to-speech as PCM in Flutter on macOS, iOS, Windows and Android](../2026/10/20/flutter-tts-pcm/README.md)
 - 2026/10/19 [Always-on Flutter camera and record capture with speaker playback and standalone AEC3](../2026/10/19/flutter-external-capture-aec/README.md)

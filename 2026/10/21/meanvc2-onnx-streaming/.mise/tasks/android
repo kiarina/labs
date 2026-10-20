@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+#MISE description="Build the app for Android (profile, arm64), install it on the adb device, run it and wait for its report (py/serve.py must be running). MODE, TAG, EXTRA_DEFINES"
+set -euo pipefail
+MODE="${MODE:-parity,bench}"; TAG="${TAG:-${MODE//,/-}}"
+ADB="${ADB:-$HOME/Library/Android/sdk/platform-tools/adb}"
+S="${ANDROID_SERIAL:-$("$ADB" devices | awk 'NR>1 && $2=="device"{print $1; exit}')}"
+: "${BASE_URL:?set BASE_URL to the address of py/serve.py that the device can reach, e.g. http://<lan-ip>:8823}"
+LAB="$(cd "$(dirname "$0")/../.." && pwd)"
+cd "$LAB/app"
+# shellcheck disable=SC2086
+flutter build apk --profile --target-platform android-arm64 --dart-define=BASE_URL="$BASE_URL" \
+  --dart-define=MODE="$MODE" --dart-define=TAG="$TAG" --dart-define=AUTO_EXIT=true ${EXTRA_DEFINES:-} | tail -1
+REPORT="$LAB/results/device/android-$TAG.json"
+rm -f "$REPORT"
+"$ADB" -s "$S" shell am force-stop com.kiarina.labs.meanvc2_onnx || true
+"$ADB" -s "$S" install -r build/app/outputs/flutter-apk/app-profile.apk | tail -1
+"$ADB" -s "$S" logcat -c
+"$ADB" -s "$S" shell am start -n com.kiarina.labs.meanvc2_onnx/.MainActivity >/dev/null
+for _ in $(seq 1 1440); do
+  [ -f "$REPORT" ] && break
+  sleep 5
+done
+"$ADB" -s "$S" logcat -d -s flutter:I | grep meanvc2 | tail -40
+echo "report: ${REPORT#$LAB/}"

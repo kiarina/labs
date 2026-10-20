@@ -1,0 +1,108 @@
+{
+ "platform": "android",
+ "osVersion": "CP2A.260705.006",
+ "processors": 8,
+ "mode": "parity",
+ "kReleaseMode": false,
+ "kProfileMode": true,
+ "startedAt": "2026-10-21T00:43:33.192456",
+ "device": {
+  "rssMb": 176.21875,
+  "maxRssMb": 176.21875,
+  "thermalHeadroom10s": 0.6112252473831177,
+  "model": "Pixel 6",
+  "batteryTempC": 31.1,
+  "thermalStatus": 0,
+  "plugged": 1,
+  "batteryLevel": 0.77
+ },
+ "downloadSeconds": 16.913,
+ "downloadedBytes": 260580083,
+ "manifest": {
+  "models": {
+   "asr.int8.onnx": {
+    "sha256": "553869e3159af4497582072e66f09c16032a3b98ac2bad5c195b7443627616be",
+    "bytes": 28655587
+   },
+   "asr.onnx": {
+    "sha256": "27b03b3c64ef89d7d0b60e686b62f84ee5ef4f9ca943d1fab6def306721e33d9",
+    "bytes": 75781489
+   },
+   "dit.int8.onnx": {
+    "sha256": "52ac682ed1790b196333d1dbf99fa2806b6c52076c85e438c9dede968572675a",
+    "bytes": 13849138
+   },
+   "dit.onnx": {
+    "sha256": "6e56208ad1de532ffac9c0fc622049049908096dabb1b9816e9ded45a505dce3",
+    "bytes": 53572968
+   },
+   "fbank.int8.onnx": {
+    "sha256": "ecbe193170abe98a8c0ba9299e8fe21b418145aca924e351c667b9257c3e28c8",
+    "bytes": 908339
+   },
+   "fbank.onnx": {
+    "sha256": "ecbe193170abe98a8c0ba9299e8fe21b418145aca924e351c667b9257c3e28c8",
+    "bytes": 908339
+   },
+   "gtm.int8.onnx": {
+    "sha256": "f03ff1e9da3c373445f7518fa36fc99980fe4326447235fa89ea1923f57ee224",
+    "bytes": 17441893
+   },
+   "gtm.onnx": {
+    "sha256": "f03ff1e9da3c373445f7518fa36fc99980fe4326447235fa89ea1923f57ee224",
+    "bytes": 17441893
+   },
+   "vocos.int8.onnx": {
+    "sha256": "a0dbd4c83708f6e787ceebf1c1b0833398dbdea6af770887d27b19119bba2e16",
+    "bytes": 12998461
+   },
+   "vocos.onnx": {
+    "sha256": "f5f08602215204d1da27df5f74939084f0a9f7709fa1a1c976e330fa0391c95d",
+    "bytes": 36489112
+   }
+  },
+  "fixtures": {
+   "source.f32": {
+    "sha256": "639b77ca997a36c85a377172e2c5803c7443603e966912cf7d9f68425fbea6ae",
+    "bytes": 512000
+   },
+   "spk.f32": {
+    "sha256": "97df320ae5528ded787dc9be26ea14d9e1217e29f08cc5f68873901191e652cb",
+    "bytes": 1024
+   },
+   "noise.f32": {
+    "sha256": "657d22c044d86b6dbb4f35fe2c2e7ea75e86ab2660f420bc6834937d9a6d8881",
+    "bytes": 1024000
+   },
+   "expected_fp32_s3.f32": {
+    "sha256": "11833416426288aadd4a654dd13e1d64d9641e8a18bcff83c9ac940b581fb8a5",
+    "bytes": 497920
+   },
+   "expected_int8_s3.f32": {
+    "sha256": "b7ed7dc3db9cc744b139845333ff91e067e5a30f86102191d3cca411ef86c5c3",
+    "bytes": 497920
+   }
+  },
+  "seed": 20261021,
+  "steps": 3
+ },
+ "parity": [
+  {
+   "variant": "fp32",
+   "steps": 3,
+   "samples": 124480,
+   "expectedSamples": 124480,
+   "maxAbs": 0.00863615795969963,
+   "snrDb": 60.63636848400702
+  },
+  {
+   "variant": "int8",
+   "steps": 3,
+   "samples": 124480,
+   "expectedSamples": 124480,
+   "maxAbs": 1.2102436125278473,
+   "snrDb": 3.147488216976363
+  }
+ ],
+ "finishedAt": "2026-10-21T00:44:03.428726"
+}

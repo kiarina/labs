@@ -1,0 +1,713 @@
+{
+ "platform": "android",
+ "osVersion": "CP2A.260705.006",
+ "processors": 8,
+ "mode": "soak",
+ "kReleaseMode": false,
+ "kProfileMode": true,
+ "startedAt": "2026-10-21T00:48:52.306430",
+ "device": {
+  "rssMb": 176.8359375,
+  "maxRssMb": 176.8359375,
+  "thermalHeadroom10s": 0.7298133969306946,
+  "model": "Pixel 6",
+  "batteryTempC": 32.6,
+  "thermalStatus": 0,
+  "plugged": 1,
+  "batteryLevel": 0.77
+ },
+ "downloadSeconds": 4.234,
+ "downloadedBytes": 0,
+ "manifest": {
+  "models": {
+   "asr.int8.onnx": {
+    "sha256": "553869e3159af4497582072e66f09c16032a3b98ac2bad5c195b7443627616be",
+    "bytes": 28655587
+   },
+   "asr.onnx": {
+    "sha256": "27b03b3c64ef89d7d0b60e686b62f84ee5ef4f9ca943d1fab6def306721e33d9",
+    "bytes": 75781489
+   },
+   "dit.int8.onnx": {
+    "sha256": "52ac682ed1790b196333d1dbf99fa2806b6c52076c85e438c9dede968572675a",
+    "bytes": 13849138
+   },
+   "dit.onnx": {
+    "sha256": "6e56208ad1de532ffac9c0fc622049049908096dabb1b9816e9ded45a505dce3",
+    "bytes": 53572968
+   },
+   "fbank.int8.onnx": {
+    "sha256": "ecbe193170abe98a8c0ba9299e8fe21b418145aca924e351c667b9257c3e28c8",
+    "bytes": 908339
+   },
+   "fbank.onnx": {
+    "sha256": "ecbe193170abe98a8c0ba9299e8fe21b418145aca924e351c667b9257c3e28c8",
+    "bytes": 908339
+   },
+   "gtm.int8.onnx": {
+    "sha256": "f03ff1e9da3c373445f7518fa36fc99980fe4326447235fa89ea1923f57ee224",
+    "bytes": 17441893
+   },
+   "gtm.onnx": {
+    "sha256": "f03ff1e9da3c373445f7518fa36fc99980fe4326447235fa89ea1923f57ee224",
+    "bytes": 17441893
+   },
+   "vocos.int8.onnx": {
+    "sha256": "a0dbd4c83708f6e787ceebf1c1b0833398dbdea6af770887d27b19119bba2e16",
+    "bytes": 12998461
+   },
+   "vocos.onnx": {
+    "sha256": "f5f08602215204d1da27df5f74939084f0a9f7709fa1a1c976e330fa0391c95d",
+    "bytes": 36489112
+   }
+  },
+  "fixtures": {
+   "source.f32": {
+    "sha256": "639b77ca997a36c85a377172e2c5803c7443603e966912cf7d9f68425fbea6ae",
+    "bytes": 512000
+   },
+   "spk.f32": {
+    "sha256": "97df320ae5528ded787dc9be26ea14d9e1217e29f08cc5f68873901191e652cb",
+    "bytes": 1024
+   },
+   "noise.f32": {
+    "sha256": "657d22c044d86b6dbb4f35fe2c2e7ea75e86ab2660f420bc6834937d9a6d8881",
+    "bytes": 1024000
+   },
+   "expected_fp32_s3.f32": {
+    "sha256": "11833416426288aadd4a654dd13e1d64d9641e8a18bcff83c9ac940b581fb8a5",
+    "bytes": 497920
+   },
+   "expected_int8_s3.f32": {
+    "sha256": "b7ed7dc3db9cc744b139845333ff91e067e5a30f86102191d3cca411ef86c5c3",
+    "bytes": 497920
+   }
+  },
+  "seed": 20261021,
+  "steps": 3
+ },
+ "soak": {
+  "variant": "fp32",
+  "threads": 2,
+  "steps": 3,
+  "seconds": 300,
+  "producedSeconds": 299.86,
+  "lateStarts": 0,
+  "windows": [
+   {
+    "t": 9.887,
+    "chunks": 62,
+    "p50Ms": 88.977,
+    "p95Ms": 168.258,
+    "maxMs": 195.292,
+    "meanMs": 104.12169354838709,
+    "deadlineMisses": 6
+   },
+   {
+    "t": 19.771,
+    "chunks": 62,
+    "p50Ms": 86.138,
+    "p95Ms": 157.626,
+    "maxMs": 199.131,
+    "meanMs": 103.28027419354841,
+    "deadlineMisses": 3
+   },
+   {
+    "t": 29.701,
+    "chunks": 62,
+    "p50Ms": 93.315,
+    "p95Ms": 175.076,
+    "maxMs": 219.893,
+    "meanMs": 107.2500483870968,
+    "deadlineMisses": 6
+   },
+   {
+    "t": 39.661,
+    "chunks": 62,
+    "p50Ms": 89.606,
+    "p95Ms": 175.633,
+    "maxMs": 196.202,
+    "meanMs": 107.05756451612903,
+    "deadlineMisses": 4
+   },
+   {
+    "t": 49.543,
+    "chunks": 62,
+    "p50Ms": 87.256,
+    "p95Ms": 176.233,
+    "maxMs": 193.125,
+    "meanMs": 105.118,
+    "deadlineMisses": 6
+   },
+   {
+    "t": 59.452,
+    "chunks": 62,
+    "p50Ms": 87.523,
+    "p95Ms": 160.456,
+    "maxMs": 170.533,
+    "meanMs": 101.67827419354839,
+    "deadlineMisses": 4
+   },
+   {
+    "t": 69.45,
+    "chunks": 62,
+    "p50Ms": 93.359,
+    "p95Ms": 153.206,
+    "maxMs": 219.927,
+    "meanMs": 103.66509677419353,
+    "deadlineMisses": 3
+   },
+   {
+    "t": 79.286,
+    "chunks": 62,
+    "p50Ms": 93.648,
+    "p95Ms": 167.158,
+    "maxMs": 204.668,
+    "meanMs": 107.23604838709674,
+    "deadlineMisses": 5
+   },
+   {
+    "t": 89.191,
+    "chunks": 62,
+    "p50Ms": 88.187,
+    "p95Ms": 167.257,
+    "maxMs": 175.656,
+    "meanMs": 103.02638709677417,
+    "deadlineMisses": 5
+   },
+   {
+    "t": 99.214,
+    "chunks": 62,
+    "p50Ms": 92.666,
+    "p95Ms": 159.131,
+    "maxMs": 201.724,
+    "meanMs": 104.86349999999999,
+    "deadlineMisses": 3
+   },
+   {
+    "t": 109.042,
+    "chunks": 62,
+    "p50Ms": 86.094,
+    "p95Ms": 164.845,
+    "maxMs": 196.096,
+    "meanMs": 104.62590322580645,
+    "deadlineMisses": 6
+   },
+   {
+    "t": 118.948,
+    "chunks": 62,
+    "p50Ms": 85.964,
+    "p95Ms": 145.331,
+    "maxMs": 164.795,
+    "meanMs": 100.35956451612903,
+    "deadlineMisses": 2
+   },
+   {
+    "t": 128.932,
+    "chunks": 62,
+    "p50Ms": 89.645,
+    "p95Ms": 151.147,
+    "maxMs": 180.292,
+    "meanMs": 99.9826451612903,
+    "deadlineMisses": 2
+   },
+   {
+    "t": 138.8,
+    "chunks": 62,
+    "p50Ms": 83.429,
+    "p95Ms": 145.487,
+    "maxMs": 195.166,
+    "meanMs": 99.1341129032258,
+    "deadlineMisses": 3
+   },
+   {
+    "t": 148.736,
+    "chunks": 62,
+    "p50Ms": 90.992,
+    "p95Ms": 170.623,
+    "maxMs": 218.429,
+    "meanMs": 105.5702741935484,
+    "deadlineMisses": 5
+   },
+   {
+    "t": 158.699,
+    "chunks": 62,
+    "p50Ms": 87.793,
+    "p95Ms": 144.652,
+    "maxMs": 159.401,
+    "meanMs": 99.75156451612902,
+    "deadlineMisses": 0
+   },
+   {
+    "t": 168.561,
+    "chunks": 62,
+    "p50Ms": 85.544,
+    "p95Ms": 155.548,
+    "maxMs": 165.696,
+    "meanMs": 98.89030645161289,
+    "deadlineMisses": 2
+   },
+   {
+    "t": 178.467,
+    "chunks": 62,
+    "p50Ms": 88.209,
+    "p95Ms": 146.179,
+    "maxMs": 170.361,
+    "meanMs": 100.25954838709679,
+    "deadlineMisses": 3
+   },
+   {
+    "t": 188.46,
+    "chunks": 62,
+    "p50Ms": 85.904,
+    "p95Ms": 171.559,
+    "maxMs": 180.475,
+    "meanMs": 102.75640322580648,
+    "deadlineMisses": 6
+   },
+   {
+    "t": 198.33,
+    "chunks": 62,
+    "p50Ms": 89.315,
+    "p95Ms": 156.519,
+    "maxMs": 169.591,
+    "meanMs": 101.28232258064519,
+    "deadlineMisses": 3
+   },
+   {
+    "t": 208.226,
+    "chunks": 62,
+    "p50Ms": 88.706,
+    "p95Ms": 163.687,
+    "maxMs": 196.056,
+    "meanMs": 103.17582258064516,
+    "deadlineMisses": 5
+   },
+   {
+    "t": 218.214,
+    "chunks": 62,
+    "p50Ms": 82.814,
+    "p95Ms": 166.878,
+    "maxMs": 199.219,
+    "meanMs": 101.33724193548386,
+    "deadlineMisses": 4
+   },
+   {
+    "t": 228.09,
+    "chunks": 62,
+    "p50Ms": 88.464,
+    "p95Ms": 155.465,
+    "maxMs": 170.786,
+    "meanMs": 100.41651612903227,
+    "deadlineMisses": 1
+   },
+   {
+    "t": 237.989,
+    "chunks": 62,
+    "p50Ms": 86.226,
+    "p95Ms": 153.43,
+    "maxMs": 168.249,
+    "meanMs": 101.08504838709678,
+    "deadlineMisses": 2
+   },
+   {
+    "t": 248.006,
+    "chunks": 62,
+    "p50Ms": 86.979,
+    "p95Ms": 146.402,
+    "maxMs": 176.973,
+    "meanMs": 99.72248387096774,
+    "deadlineMisses": 3
+   },
+   {
+    "t": 257.852,
+    "chunks": 62,
+    "p50Ms": 90.694,
+    "p95Ms": 169.816,
+    "maxMs": 177.846,
+    "meanMs": 104.96693548387098,
+    "deadlineMisses": 6
+   },
+   {
+    "t": 267.754,
+    "chunks": 62,
+    "p50Ms": 91.651,
+    "p95Ms": 186.25,
+    "maxMs": 201.795,
+    "meanMs": 110.48358064516131,
+    "deadlineMisses": 7
+   },
+   {
+    "t": 277.744,
+    "chunks": 62,
+    "p50Ms": 90.82,
+    "p95Ms": 164.078,
+    "maxMs": 185.189,
+    "meanMs": 107.4871774193549,
+    "deadlineMisses": 4
+   },
+   {
+    "t": 287.603,
+    "chunks": 62,
+    "p50Ms": 89.82,
+    "p95Ms": 167.218,
+    "maxMs": 206.138,
+    "meanMs": 105.50280645161293,
+    "deadlineMisses": 5
+   },
+   {
+    "t": 297.515,
+    "chunks": 62,
+    "p50Ms": 90.789,
+    "p95Ms": 173.94,
+    "maxMs": 213.908,
+    "meanMs": 107.16343548387098,
+    "deadlineMisses": 5
+   }
+  ],
+  "samples": [
+   {
+    "t": 0,
+    "rssMb": 449.80078125,
+    "maxRssMb": 449.80859375,
+    "thermalHeadroom10s": 0.7241979241371155,
+    "model": "Pixel 6",
+    "batteryTempC": 32.6,
+    "thermalStatus": 0,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 9.887,
+    "rssMb": 469.80078125,
+    "maxRssMb": 478.82421875,
+    "thermalHeadroom10s": 0.7293028235435486,
+    "model": "Pixel 6",
+    "batteryTempC": 32.6,
+    "thermalStatus": 0,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 19.771,
+    "rssMb": 453.609375,
+    "maxRssMb": 478.82421875,
+    "thermalHeadroom10s": 0.7270334959030151,
+    "model": "Pixel 6",
+    "batteryTempC": 33.9,
+    "thermalStatus": 0,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 29.701,
+    "rssMb": 478.14453125,
+    "maxRssMb": 478.82421875,
+    "thermalHeadroom10s": 0.7309327721595764,
+    "model": "Pixel 6",
+    "batteryTempC": 33.9,
+    "thermalStatus": 0,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 39.661,
+    "rssMb": 462.00390625,
+    "maxRssMb": 490.703125,
+    "thermalHeadroom10s": 0.7351861596107483,
+    "model": "Pixel 6",
+    "batteryTempC": 33.9,
+    "thermalStatus": 0,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 49.543,
+    "rssMb": 464.02734375,
+    "maxRssMb": 490.703125,
+    "thermalHeadroom10s": 0.7429426908493042,
+    "model": "Pixel 6",
+    "batteryTempC": 33.9,
+    "thermalStatus": 0,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 59.452,
+    "rssMb": 457.58203125,
+    "maxRssMb": 490.703125,
+    "thermalHeadroom10s": 0.7498602271080017,
+    "model": "Pixel 6",
+    "batteryTempC": 33.9,
+    "thermalStatus": 0,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 69.45,
+    "rssMb": 471.16015625,
+    "maxRssMb": 490.703125,
+    "thermalHeadroom10s": 0.7594388127326965,
+    "model": "Pixel 6",
+    "batteryTempC": 33.9,
+    "thermalStatus": 0,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 79.286,
+    "rssMb": 464.35546875,
+    "maxRssMb": 490.703125,
+    "thermalHeadroom10s": 0.7655254602432251,
+    "model": "Pixel 6",
+    "batteryTempC": 33.9,
+    "thermalStatus": 0,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 89.191,
+    "rssMb": 462.859375,
+    "maxRssMb": 490.703125,
+    "thermalHeadroom10s": 0.7714985013008118,
+    "model": "Pixel 6",
+    "batteryTempC": 33.9,
+    "thermalStatus": 0,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 99.214,
+    "rssMb": 474.22265625,
+    "maxRssMb": 490.703125,
+    "thermalHeadroom10s": 0.7757154107093811,
+    "model": "Pixel 6",
+    "batteryTempC": 33.9,
+    "thermalStatus": 0,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 109.042,
+    "rssMb": 472.765625,
+    "maxRssMb": 490.703125,
+    "thermalHeadroom10s": 0.7799273133277893,
+    "model": "Pixel 6",
+    "batteryTempC": 33.9,
+    "thermalStatus": 0,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 118.948,
+    "rssMb": 479.19140625,
+    "maxRssMb": 490.703125,
+    "thermalHeadroom10s": 0.7855068445205688,
+    "model": "Pixel 6",
+    "batteryTempC": 33.9,
+    "thermalStatus": 0,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 128.932,
+    "rssMb": 466.03515625,
+    "maxRssMb": 490.703125,
+    "thermalHeadroom10s": 0.7897452116012573,
+    "model": "Pixel 6",
+    "batteryTempC": 33.9,
+    "thermalStatus": 0,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 138.8,
+    "rssMb": 476.265625,
+    "maxRssMb": 490.703125,
+    "thermalHeadroom10s": 0.7903319001197815,
+    "model": "Pixel 6",
+    "batteryTempC": 35.0,
+    "thermalStatus": 0,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 148.736,
+    "rssMb": 474.48046875,
+    "maxRssMb": 490.703125,
+    "thermalHeadroom10s": 0.7942877411842346,
+    "model": "Pixel 6",
+    "batteryTempC": 35.0,
+    "thermalStatus": 0,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 158.699,
+    "rssMb": 471.1171875,
+    "maxRssMb": 490.703125,
+    "thermalHeadroom10s": 0.7993983030319214,
+    "model": "Pixel 6",
+    "batteryTempC": 35.0,
+    "thermalStatus": 0,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 168.561,
+    "rssMb": 469.9140625,
+    "maxRssMb": 490.703125,
+    "thermalHeadroom10s": 0.8040952086448669,
+    "model": "Pixel 6",
+    "batteryTempC": 35.0,
+    "thermalStatus": 0,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 178.467,
+    "rssMb": 495.96875,
+    "maxRssMb": 495.96875,
+    "thermalHeadroom10s": 0.802563488483429,
+    "model": "Pixel 6",
+    "batteryTempC": 35.0,
+    "thermalStatus": 0,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 188.46,
+    "rssMb": 473.171875,
+    "maxRssMb": 496.671875,
+    "thermalHeadroom10s": 0.8051682710647583,
+    "model": "Pixel 6",
+    "batteryTempC": 35.0,
+    "thermalStatus": 1,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 198.33,
+    "rssMb": 474.05859375,
+    "maxRssMb": 496.671875,
+    "thermalHeadroom10s": 0.807293176651001,
+    "model": "Pixel 6",
+    "batteryTempC": 35.0,
+    "thermalStatus": 1,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 208.226,
+    "rssMb": 475.11328125,
+    "maxRssMb": 496.671875,
+    "thermalHeadroom10s": 0.8128744959831238,
+    "model": "Pixel 6",
+    "batteryTempC": 35.0,
+    "thermalStatus": 1,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 218.214,
+    "rssMb": 469.92578125,
+    "maxRssMb": 496.671875,
+    "thermalHeadroom10s": 0.815035879611969,
+    "model": "Pixel 6",
+    "batteryTempC": 35.6,
+    "thermalStatus": 1,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 228.09,
+    "rssMb": 482.19921875,
+    "maxRssMb": 499.09375,
+    "thermalHeadroom10s": 0.8194016814231873,
+    "model": "Pixel 6",
+    "batteryTempC": 35.6,
+    "thermalStatus": 1,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 237.989,
+    "rssMb": 484.1875,
+    "maxRssMb": 499.09375,
+    "thermalHeadroom10s": 0.8203991055488586,
+    "model": "Pixel 6",
+    "batteryTempC": 35.6,
+    "thermalStatus": 1,
+    "plugged": 1,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 248.006,
+    "rssMb": 487.171875,
+    "maxRssMb": 499.09375,
+    "thermalHeadroom10s": 0.8258534669876099,
+    "model": "Pixel 6",
+    "batteryTempC": 35.9,
+    "thermalStatus": 1,
+    "plugged": 0,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 257.852,
+    "rssMb": 476.19921875,
+    "maxRssMb": 503.984375,
+    "thermalHeadroom10s": 0.8286277651786804,
+    "model": "Pixel 6",
+    "batteryTempC": 35.9,
+    "thermalStatus": 1,
+    "plugged": 0,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 267.754,
+    "rssMb": 467.62109375,
+    "maxRssMb": 503.984375,
+    "thermalHeadroom10s": 0.8148545622825623,
+    "model": "Pixel 6",
+    "batteryTempC": 35.9,
+    "thermalStatus": 1,
+    "plugged": 0,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 277.744,
+    "rssMb": 470.875,
+    "maxRssMb": 503.984375,
+    "thermalHeadroom10s": 0.8026630282402039,
+    "model": "Pixel 6",
+    "batteryTempC": 35.9,
+    "thermalStatus": 1,
+    "plugged": 0,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 287.603,
+    "rssMb": 483.94921875,
+    "maxRssMb": 503.984375,
+    "thermalHeadroom10s": 0.7990875244140625,
+    "model": "Pixel 6",
+    "batteryTempC": 35.9,
+    "thermalStatus": 1,
+    "plugged": 0,
+    "batteryLevel": 0.77
+   },
+   {
+    "t": 297.515,
+    "rssMb": 476.98828125,
+    "maxRssMb": 503.984375,
+    "thermalHeadroom10s": 0.8019590973854065,
+    "model": "Pixel 6",
+    "batteryTempC": 35.9,
+    "thermalStatus": 1,
+    "plugged": 0,
+    "batteryLevel": 0.77
+   }
+  ]
+ },
+ "finishedAt": "2026-10-21T00:53:57.463941"
+}
