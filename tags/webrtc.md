@@ -2,6 +2,7 @@
 
 - 2026/10/20 [Physical camera and microphone AEC through the external-media fork and bridge](../2026/10/20/flutter-fork-external-media-aec/README.md)
 - 2026/10/20 [gpt-live-1-codex over the external-media fork with a playout processing slot and AEC on the played reference](../2026/10/20/flutter-fork-gpt-live-codex-playout/README.md)
+- 2026/10/20 [Streaming MeanVC2 voice conversion of gpt-live-1-codex replies in the playout slot, with AEC on the played voice](../2026/10/20/flutter-gpt-live-codex-meanvc2-playout/README.md)
 - 2026/10/20 [Mac double-talk dropout localization with caller-owned camera and record](../2026/10/20/flutter-macos-doubletalk-dropout/README.md)
 - 2026/10/19 [Always-on Flutter camera and record capture with speaker playback and standalone AEC3](../2026/10/19/flutter-external-capture-aec/README.md)
 - 2026/10/19 [Always-on camera and record capture into on-demand WebRTC media tracks](../2026/10/19/flutter-webrtc-external-capture/README.md)

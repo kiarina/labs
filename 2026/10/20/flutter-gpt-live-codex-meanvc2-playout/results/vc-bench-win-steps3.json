@@ -1,0 +1,30 @@
+{
+  "machine": "AMD64",
+  "system": "Windows",
+  "processor": "Intel64 Family 6 Model 151 Stepping 2, GenuineIntel",
+  "torch": "2.5.1+cpu",
+  "model": "120ms",
+  "steps": 3,
+  "chunkMs": 160.0,
+  "sourceSeconds": 6.588,
+  "runs": [
+    {
+      "threads": 1,
+      "loadSeconds": 8.67,
+      "targetEmbeddingSeconds": 7.075,
+      "chunks": 126,
+      "p50Ms": 80.9484499914106,
+      "p95Ms": 142.54545000585495,
+      "p99Ms": 143.51577500929125,
+      "maxMs": 143.74309999402612,
+      "deadlineMisses": 0,
+      "realTimeFactor": 0.6058775595236165,
+      "firstOutputMs": [
+        393.46260000485927,
+        394.8569999996107,
+        396.99309999588877
+      ],
+      "outputSeconds": 6.46
+    }
+  ]
+}

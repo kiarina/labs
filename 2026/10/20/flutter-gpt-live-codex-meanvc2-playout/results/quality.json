@@ -1,0 +1,43 @@
+{
+  "note": "Listening comparisons on the same gpt-live reply. Audio and the owner reference are private and not committed.",
+  "distortionCause": "In the app the converted voice was ~5 dB louder than the received voice and clipped (43 samples at full scale in mac-vc-human-2). Loudness-matched files (2/3/4) were heard as much less distorted; the server now matches level and soft-limits.",
+  "ownerRanking": "2 (streaming, 2 steps) < 3 (streaming, 3 steps) < 4 (file mode, 3 steps); 5 (3 + original >7 kHz), 6 (6 steps), 7 (40ms model) did not exceed 3.",
+  "appVsOfflineSameContent": "A (what the app handed to the speaker) and B (same received voice converted offline the same way) sounded the same to the owner; band levels within 1.4 dB.",
+  "f0Hz": {
+    "gptLiveDefaultVoice": {
+      "median": 121.4,
+      "p10": 88.4,
+      "p90": 176.7
+    },
+    "ownerReference": {
+      "median": 415.5,
+      "p10": 363.8,
+      "p90": 466.1
+    },
+    "convertedFromDefault": {
+      "median": 233.2,
+      "p10": 199.5,
+      "p90": 288.7
+    },
+    "sharedAssetSpeaker2": {
+      "median": 114.6
+    },
+    "preShiftSemitones_vs_convertedMedian": {
+      "0": 238.6,
+      "4": 248.5,
+      "7": 248.5,
+      "10": 257.2
+    },
+    "gptLiveHimari": {
+      "median": 275.7,
+      "p10": 206.5,
+      "p90": 370.1
+    },
+    "convertedFromHimari": {
+      "median": 283.8,
+      "p10": 216.3,
+      "p90": 378.8
+    }
+  },
+  "ownerOnHimari": "かなりよくなったかも (switching the gpt-live voice to himari, a higher voice)"
+}

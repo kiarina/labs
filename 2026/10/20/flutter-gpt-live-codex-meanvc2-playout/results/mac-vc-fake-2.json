@@ -1,0 +1,146 @@
+{
+  "session": "mac-vc-fake-2",
+  "kind": "fake-peer-playout-slot",
+  "platform": "macos",
+  "microphone": "MacBook Proのマイク",
+  "speaker": "system default output",
+  "camera": "FaceTime HDカメラ (47B4B64B-7067-4B9C-AD2B-AE273A71F4B5)",
+  "errors": [],
+  "captureStarts": {
+    "record": 1,
+    "camera": 1
+  },
+  "maxAudioGapMs": 0.0,
+  "nativePlayoutReferenceDbfs": -239.99999999999997,
+  "clockMapLagSamples": null,
+  "playout": {
+    "externalReturnedSamples": 1714624,
+    "previousNativeVolume": 1.0,
+    "slotLatencySamples": 0,
+    "renderFrames": 960,
+    "slotBlocks": 5242,
+    "nativePlayoutVolume": 0.0,
+    "externalDroppedSamples": 0,
+    "traceDroppedSamples": 0,
+    "renderBufferBytes": 3840,
+    "externalMaxPendingSamples": 29596,
+    "receivedChannels": 1,
+    "nodeFormat": "<AVAudioFormat 0x78fa9105f0:  1 ch,  48000 Hz, Float32>",
+    "externalPulledSamples": 1741440,
+    "renderCalls": 2620,
+    "controlReferenceBlocks": 0,
+    "slotMode": 3,
+    "queuedSamples": 2780,
+    "referenceBlocks": 0,
+    "engineRunning": true,
+    "overflowSamples": 0,
+    "primed": 1,
+    "receivedRate": 48000,
+    "underflowSamples": 9,
+    "rendererCallbacks": 5242,
+    "receivedFrames": 2516160,
+    "renderBuffers": 1,
+    "outputFormat": "<AVAudioFormat 0x78fc37b520:  1 ch,  16000 Hz, Float32>",
+    "externalPendingSamples": 26816,
+    "referenceKind": "PCM handed to the application AVAudioEngine (post-slot)",
+    "renderBufferChannels": 1,
+    "captureSamples": 0,
+    "dspErrors": 0,
+    "playedSamples": 2515200
+  },
+  "bridge": {
+    "sending": false,
+    "faulted": false,
+    "queuedAudioFrames": 0,
+    "maxQueuedAudioFrames": 10,
+    "partialAudioBytes": 0,
+    "audioFramesSubmitted": 0,
+    "audioFramesDropped": 0,
+    "videoFramesSubmitted": 351,
+    "videoFramesDropped": 0,
+    "bytesDiscardedWhileGated": 0,
+    "native": {
+      "captureQueueCapacityBytes": 19200,
+      "renderReferenceDroppedBytes": 1920,
+      "captureUnderflows": 4727,
+      "captureDroppedBytes": 0,
+      "videoFrames": 351,
+      "captureOverflowDroppedBytes": 0,
+      "captureRecording": false,
+      "captureInactiveDroppedBytes": 0,
+      "renderSamples": 2516160,
+      "captureQueuedBytes": 0,
+      "capturePeakQueuedBytes": 0,
+      "speakerRunning": true,
+      "audioBlocks": 4727,
+      "captureFlushedBytes": 0
+    }
+  },
+  "phases": [],
+  "peerReceived": [
+    {
+      "phase": "quiet",
+      "far": false,
+      "receivedSamples": 145920,
+      "receivedDbfs": -112.35019852575286
+    },
+    {
+      "phase": "passthrough-warmup",
+      "far": true,
+      "receivedSamples": 240960,
+      "receivedDbfs": -112.35019852575286
+    },
+    {
+      "phase": "passthrough-far",
+      "far": true,
+      "receivedSamples": 384960,
+      "receivedDbfs": -112.35019852575286
+    },
+    {
+      "phase": "vc-warmup",
+      "far": true,
+      "receivedSamples": 240960,
+      "receivedDbfs": -112.35019852575286
+    },
+    {
+      "phase": "vc-far",
+      "far": true,
+      "receivedSamples": 384960,
+      "receivedDbfs": -112.35019852575286
+    },
+    {
+      "phase": "vc-far-gate-off",
+      "far": true,
+      "receivedSamples": 0,
+      "receivedDbfs": null
+    },
+    {
+      "phase": "vc-far-gate-on",
+      "far": true,
+      "receivedSamples": 192960,
+      "receivedDbfs": -112.35019852575286
+    },
+    {
+      "phase": "near-only",
+      "far": false,
+      "receivedSamples": 288960,
+      "receivedDbfs": -112.35019852575286
+    },
+    {
+      "phase": "vc-doubletalk",
+      "far": true,
+      "receivedSamples": 384960,
+      "receivedDbfs": -112.35019852575286
+    },
+    {
+      "phase": "final-quiet",
+      "far": false,
+      "receivedSamples": 0,
+      "receivedDbfs": null
+    }
+  ],
+  "caveats": [
+    "Energy reduction is not ERLE against an independent echo-only reference.",
+    "Single short run in one room; speaker and microphone of the same notebook."
+  ]
+}

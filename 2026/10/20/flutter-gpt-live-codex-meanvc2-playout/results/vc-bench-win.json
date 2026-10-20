@@ -1,0 +1,65 @@
+{
+  "machine": "AMD64",
+  "system": "Windows",
+  "processor": "Intel64 Family 6 Model 151 Stepping 2, GenuineIntel",
+  "torch": "2.5.1+cpu",
+  "model": "120ms",
+  "chunkMs": 160.0,
+  "sourceSeconds": 6.588,
+  "runs": [
+    {
+      "threads": 1,
+      "loadSeconds": 9.36,
+      "targetEmbeddingSeconds": 7.05,
+      "chunks": 126,
+      "p50Ms": 64.24934999085963,
+      "p95Ms": 109.35187500581378,
+      "p99Ms": 110.00017500191461,
+      "maxMs": 115.47270001028664,
+      "deadlineMisses": 0,
+      "realTimeFactor": 0.4740299900659588,
+      "firstOutputMs": [
+        379.95500000426546,
+        381.5873000060674,
+        378.11480002012104
+      ],
+      "outputSeconds": 6.46
+    },
+    {
+      "threads": 2,
+      "loadSeconds": 8.45,
+      "targetEmbeddingSeconds": 3.939,
+      "chunks": 126,
+      "p50Ms": 65.60595000337344,
+      "p95Ms": 112.80377500224859,
+      "p99Ms": 114.87815000873525,
+      "maxMs": 118.4722000034526,
+      "deadlineMisses": 0,
+      "realTimeFactor": 0.48524671131287633,
+      "firstOutputMs": [
+        384.16549999266863,
+        383.9789999986533,
+        383.58450002153404
+      ],
+      "outputSeconds": 6.46
+    },
+    {
+      "threads": 4,
+      "loadSeconds": 7.91,
+      "targetEmbeddingSeconds": 2.241,
+      "chunks": 126,
+      "p50Ms": 67.21345000551082,
+      "p95Ms": 113.76675000065006,
+      "p99Ms": 118.38872499356512,
+      "maxMs": 133.53839999763295,
+      "deadlineMisses": 0,
+      "realTimeFactor": 0.4965119394881416,
+      "firstOutputMs": [
+        384.92989999242127,
+        385.30950000160374,
+        386.3049000140745
+      ],
+      "outputSeconds": 6.46
+    }
+  ]
+}

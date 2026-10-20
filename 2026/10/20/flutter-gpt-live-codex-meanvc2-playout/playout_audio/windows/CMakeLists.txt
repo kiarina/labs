@@ -1,0 +1,20 @@
+cmake_minimum_required(VERSION 3.16)
+project(playout_audio LANGUAGES CXX)
+set(PLUGIN_NAME playout_audio_plugin)
+get_filename_component(PLAYOUT_LAB_ROOT "${CMAKE_SOURCE_DIR}/../.." ABSOLUTE)
+add_subdirectory("${PLAYOUT_LAB_ROOT}/native" "${CMAKE_CURRENT_BINARY_DIR}/aec_engine")
+add_library(${PLUGIN_NAME} SHARED playout_audio_plugin.cpp playout_audio_plugin.h playout_audio_plugin_c_api.cpp
+  include/playout_audio/playout_audio_plugin_c_api.h)
+apply_standard_settings(${PLUGIN_NAME})
+target_compile_features(${PLUGIN_NAME} PRIVATE cxx_std_17)
+# Same macros as flutter_webrtc so the libwebrtc wrapper vtables match.
+target_compile_definitions(${PLUGIN_NAME} PRIVATE FLUTTER_PLUGIN_IMPL NOMINMAX LIB_WEBRTC_API_DLL RTC_DESKTOP_DEVICE)
+if(MSVC)
+  target_compile_options(${PLUGIN_NAME} PRIVATE /utf-8)
+endif()
+target_include_directories(${PLUGIN_NAME} INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+get_target_property(FLUTTER_WEBRTC_DIR flutter_webrtc_plugin SOURCE_DIR)
+set(FORK_SDK "${FLUTTER_WEBRTC_DIR}/../third_party/external-media-sdk-20261020.1/libwebrtc")
+target_link_libraries(${PLUGIN_NAME} PRIVATE flutter flutter_wrapper_plugin flutter_webrtc_plugin aec_engine
+  "${FORK_SDK}/lib/libwebrtc.dll.lib" ole32 avrt uuid ksuser)
+set(playout_audio_bundled_libraries "$<TARGET_FILE:aec_engine>" PARENT_SCOPE)

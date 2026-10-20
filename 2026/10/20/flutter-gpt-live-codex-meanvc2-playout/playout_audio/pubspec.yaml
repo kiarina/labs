@@ -1,0 +1,21 @@
+name: playout_audio
+description: Lab-local received-voice playout slot, application speaker and AEC.
+version: 0.0.1
+publish_to: none
+environment:
+  sdk: ^3.13.2
+dependencies:
+  flutter:
+    sdk: flutter
+  # The native code reaches into flutter_webrtc's remote tracks; same fork pin.
+  flutter_webrtc:
+    git:
+      url: https://github.com/kiarina/flutter-webrtc.git
+      ref: 4477798aa6b47440dc1d6ad5a2d9f9f983bbad87
+flutter:
+  plugin:
+    platforms:
+      macos:
+        pluginClass: PlayoutAudioPlugin
+      windows:
+        pluginClass: PlayoutAudioPluginCApi

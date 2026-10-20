@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#MISE description="Prepare fixtures and build the macOS debug app (re-signed so permissions persist)"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mise run //:test-assets:download
+python3 tools/prepare_speech.py
+python3 tools/prepare_questions.py
+python3 tools/prepare_aec.py
+python3 tools/prepare_record.py
+(cd app && flutter pub get && flutter build macos --debug)
+app=app/build/macos/Build/Products/Debug/gpt_live_meanvc2_lab.app
+if security find-identity -v -p codesigning | grep -q '"Apple Development'; then
+  codesign --force --deep --sign "Apple Development" \
+    --entitlements app/macos/Runner/DebugProfile.entitlements "$app"
+fi
