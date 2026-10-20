@@ -13,6 +13,9 @@ MODELS = {
     "bf16": ("mlx-community/Qwen3-TTS-12Hz-1.7B-Base-bf16", "a6eb4f68e4b056f1215157bb696209bc82a6db48"),
     "8bit": ("mlx-community/Qwen3-TTS-12Hz-1.7B-Base-8bit", "e7dd0585652209fa0d7783659aad4e8a324de11c"),
     "4bit": ("mlx-community/Qwen3-TTS-12Hz-1.7B-Base-4bit", "37e955a1deb861c088ae5f3a67043185f3d1a60c"),
+    # The bf16 weights cast to float32 (the original PyTorch weights are the same bf16 values, so nothing is lost);
+    # computation then runs in float32, as in the parity check (bench/qwen3_tts_parity/mlx_compare.py).
+    "fp32": ("mlx-community/Qwen3-TTS-12Hz-1.7B-Base-bf16", "a6eb4f68e4b056f1215157bb696209bc82a6db48"),
 }
 LANGUAGES = {"ja": "japanese", "en": "english", "zh": "chinese", "ko": "korean"}
 
@@ -20,6 +23,7 @@ replies = os.fdopen(int(os.environ["WORKER_REPLY_FD"]), "w", buffering=1)
 sys.stdout = sys.stderr
 
 import mlx.core as mx  # noqa: E402
+from mlx.utils import tree_map  # noqa: E402
 import numpy as np  # noqa: E402
 import soundfile as sf  # noqa: E402
 from huggingface_hub import snapshot_download  # noqa: E402
@@ -115,7 +119,22 @@ models: dict[str, object] = {}
 def model(quantization: str):
     if quantization not in models:
         repo, revision = MODELS[quantization]
-        models[quantization] = load_model(snapshot_download(repo, revision=revision))
+        path = snapshot_download(repo, revision=revision)
+        if quantization == "fp32":
+            # load_model compiles the speech decoder, and a compiled module cannot be updated. Load it uncompiled, cast,
+            # then compile it as load_model does (as in bench/qwen3_tts_parity/mlx_compare.py).
+            compile_ = mx.compile
+            mx.compile = lambda fn, *args, **kwargs: fn
+            try:
+                loaded = load_model(path)
+            finally:
+                mx.compile = compile_
+            loaded.update(tree_map(lambda p: p.astype(mx.float32) if mx.issubdtype(p.dtype, mx.floating) else p, loaded.parameters()))
+            mx.eval(loaded.parameters())
+            loaded.speech_tokenizer.decoder = mx.compile(loaded.speech_tokenizer.decoder)
+        else:
+            loaded = load_model(path)
+        models[quantization] = loaded
     return models[quantization]
 
 

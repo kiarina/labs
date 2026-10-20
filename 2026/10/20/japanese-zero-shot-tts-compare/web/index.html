@@ -160,7 +160,7 @@ async function api(path, options) {
   return body;
 }
 
-const DEFAULT_COLUMNS = ["qwen3_tts", "mlx-bf16", "mlx-8bit", "mlx-4bit"];
+const DEFAULT_COLUMNS = ["qwen3_tts", "mlx-fp32", "mlx-bf16", "mlx-8bit", "mlx-4bit"];
 function renderColumns(columns) {
   for (const [id, column] of Object.entries(columns)) {
     const label = document.createElement("label");

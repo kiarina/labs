@@ -32,7 +32,8 @@ mise -C 2026/10/20/japanese-zero-shot-tts-compare run
 1. **参照の声**: ファイルをドロップするか、マイクで録る。追加すると Whisper が自動で文字起こしする。
    違っていたら欄を直す（次の生成から使う）。共有の会話の素材の 2 人の話者も最初から選べる
 2. **読ませる文**: 文を入れる（文の例のボタンあり）。CosyVoice 3 に渡すカタカナが下に出る
-3. **比べる列**を選ぶ: Qwen3-TTS PyTorch、CosyVoice 3、Qwen3-TTS MLX の bf16・8bit・4bit（既定は CosyVoice 3 以外）
+3. **比べる列**を選ぶ: Qwen3-TTS PyTorch、CosyVoice 3、Qwen3-TTS MLX の fp32・bf16・8bit・4bit（既定は CosyVoice 3 以外）。
+   MLX の fp32 は、mlx-community の bf16 の重みを float32 に変えて float32 で計算する（元の PyTorch の重みも同じ bf16 の値なので、重みの情報は失わない）
 4. **読ませる**: 結果に参照の声と選んだ列を並べる。「文の例をすべて」は例の 7 文を順に生成する。
    上の「時間のまとめ」に、列ごとの生成時間・倍率（生成時間 ÷ 音声の長さ）・最初の音までの時間・途切れの平均を出す
 
@@ -332,6 +333,22 @@ worker で両方を qwen-tts に合わせると（`match_pytorch`）、prefill �
 - 付け加えて言えること: 罰則 1.5 の理由（長い参照で符号が崩れる）が、qwen-tts の並べ方でも起きるかは確かめていない。この lab の参照は 6.6 秒だけ
 - コードを読んで気づいたが確かめていないこと: `Qwen3TTSSpeechTokenizer.decode` は有効な長さを「1 つ目の符号が 0 より大きいフレームの数」で数える。符号 0 は有効な値なので、
   生成に 0 が出ると末尾が切れる可能性がある
+
+### MLX fp32
+
+Web UI に MLX の fp32 の列を足しました（`engines/qwen3_tts_mlx/worker.py`）。mlx-audio の `load_model` は音声への復号器を `mx.compile` し、
+compile した後は重みを変えられないので、compile を止めて読み込み、重みを float32 に変えてから復号器を compile します
+（`bench/qwen3_tts_parity/mlx_compare.py` と同じ読み込み方。上の補正もそのまま効く）。
+
+同じ参照（サンプルの話者 1）と挨拶の文、1 列ずつ順に。2 回目以降の値です。
+
+| Column | Generate | Audio | Ratio | First audio（streaming 0.5 秒・末尾 1 秒の補正） |
+|---|---:|---:|---:|---:|
+| MLX fp32 | 4.6 秒 | 6.4 秒 | 0.71 | 0.52〜0.54 秒 |
+| MLX bf16 | 3.2 秒 | 6.2 秒 | 0.51〜0.53 | 0.37 秒 |
+
+fp32 も実時間より速いままでした。4 つのモデル（fp32・bf16・8bit・4bit）を読み込んだ MLX の worker は `phys_footprint` 18 GB（ピーク 23 GB）で、
+3 つだった時（約 10 GB）から、fp32 の分が約 8 GB 増えました。whisper.cpp で文のとおりに文字になりました。fp32 と bf16 の聞き比べはまだです。
 
 ### CosyVoice 3 text normalization
 

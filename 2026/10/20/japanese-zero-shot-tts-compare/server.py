@@ -33,6 +33,7 @@ ENGINES = {
 COLUMNS = {
     "qwen3_tts": ("qwen3_tts", "Qwen3-TTS PyTorch", {}),
     "cosyvoice3": ("cosyvoice3", "CosyVoice 3", {}),
+    "mlx-fp32": ("qwen3_tts_mlx", "Qwen3-TTS MLX fp32", {"quantization": "fp32"}),
     "mlx-bf16": ("qwen3_tts_mlx", "Qwen3-TTS MLX bf16", {"quantization": "bf16"}),
     "mlx-8bit": ("qwen3_tts_mlx", "Qwen3-TTS MLX 8bit", {"quantization": "8bit"}),
     "mlx-4bit": ("qwen3_tts_mlx", "Qwen3-TTS MLX 4bit", {"quantization": "4bit"}),
