@@ -136,6 +136,7 @@ Kyoko だけで、ほかの 8 個は「天気」「カフェ」「コーヒー�
 
 - 聴取は 1 人で、文・組み合わせを記録していない。声ごとの違いを聞き分けるなら、条件を決めて記録する
 - 自然な話し方の TTS（クラウドの TTS、zero-shot の TTS など）を元にしたときの質。元の声の話し方が質を決めるという解釈を確かめる
+- 続き: 声の変換をせず、参照の声で最初から話す zero-shot の TTS を比べた lab は [CosyVoice 3 and Qwen3-TTS zero-shot voice cloning in Japanese](../japanese-zero-shot-tts-compare/README.md)（Qwen3-TTS の MLX bf16 が速さと質の両方で使えると分かった）
 - 文・参照の声・OS の声を増やし、文字の誤り率（CER）としてまとめる
 - 話者の近さを、MeanVC2 の encoder とは別の埋め込み（前の lab の ECAPA の ONNX など）で測る
 - 人の日本語の声を元にした変換と比べ、TTS 特有の問題かを分ける

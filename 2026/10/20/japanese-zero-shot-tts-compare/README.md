@@ -1,9 +1,9 @@
 # CosyVoice 3 and Qwen3-TTS zero-shot voice cloning in Japanese
 
-参照の声を数秒〜十数秒与えて、その声で日本語の文を読ませる zero-shot の TTS を 2 つ比べます。
+参照の声を数秒〜十数秒与えて、その声で日本語の文を読ませる zero-shot の TTS を比べます。
 [CosyVoice 3](https://github.com/FunAudioLLM/CosyVoice)（Fun-CosyVoice3-0.5B-2512）と
-[Qwen3-TTS](https://github.com/QwenLM/Qwen3-TTS)（12Hz Base）に同じ参照・同じ文を渡し、
-Web UI で並べて聞きます。
+[Qwen3-TTS](https://github.com/QwenLM/Qwen3-TTS)（12Hz Base。PyTorch 版と、[mlx-audio](https://github.com/Blaizzy/mlx-audio) の MLX 版の fp32・bf16・8bit・4bit）に
+同じ参照・同じ文を渡し、Web UI で並べて聞きます。
 
 前の lab [MeanVC2 voice conversion on Japanese OS text-to-speech](../meanvc2-japanese-os-tts/README.md) では、
 OS の TTS の声を MeanVC2 で変換すると、声の質は変わるが話し方（抑揚・リズム）は元の TTS のまま残り、
@@ -18,6 +18,18 @@ OS の TTS の声を MeanVC2 で変換すると、声の質は変わるが話し
 
 評価は、まず人が Web UI で聞いて判断します。補助として、生成した音声を ASR で文字にし、時間を測ります。
 
+## Summary
+
+2026-10-20、MacBook Pro（Apple M1 Max）。聞いた評価は lab の作者 1 人で、文と回数は記録していません。詳細は下の各節です。
+
+- **Qwen3-TTS が CosyVoice 3 より質が高い**（聞いた評価）。CosyVoice 3 は日本語をカタカナで渡す必要があり、Mac では CPU でしか動かず、実時間の約 3〜4 倍かかります
+- **Qwen3-TTS は MLX bf16 で十分**: 生成の設定を PyTorch 版に合わせると（mlx-audio の既定は繰り返しの罰則が 1.5 になる。「MLX vs PyTorch, stage by stage」）、
+  聞いた質は PyTorch と同じレベルになりました。fp32 は bf16 より良くありませんでした。8bit・4bit は設定を合わせる前の評価で bf16 より下です
+- 速さとメモリ（1.7B、この Mac）: MLX bf16 は実時間の約 0.5 倍の時間で生成し、読み込み後のメモリは約 4.6 GB。PyTorch（MPS bf16）は実時間の約 1.7 倍で約 7 GB
+- **ストリーミング**: MLX は `stream=True` で 0.5 秒ずつ受け取れ、最初の音は約 0.4 秒、7 文とも途切れませんでした。PyTorch 版（`qwen-tts`）には生成のストリーミングがありません
+- mlx-audio のストリーミングは話し始めの調子が崩れます（参照の文脈なしで復号するため）。復号器を参照の声の符号の末尾 1 秒で温めると、聞いて気にならなくなりました（最初の音の遅れは約 0.05 秒）
+- 日本語の読み: whisper.cpp で文字にすると、ほぼ文のとおりでした（固有名詞「八重洲口」だけが揺れた）
+
 ## Run
 
 macOS（Apple Silicon）、[uv](https://docs.astral.sh/uv/)、[mise](https://mise.jdx.dev/) が要ります。
@@ -27,7 +39,8 @@ mise -C 2026/10/20/japanese-zero-shot-tts-compare run
 ```
 
 初回は、CosyVoice のコード（Matcha-TTS を含む）、各モデル（MLX の 3 つの量子化を含む）、Whisper を取ります（合わせて約 20 GB）。
-`http://127.0.0.1:8776/` を開き、画面の上で 3 つの worker が「準備完了」になるのを待ちます。MLX の worker は 3 つの量子化を全部読み込みます（約 10 GB）。
+`http://127.0.0.1:8776/` を開き、画面の上で 3 つの worker が「準備完了」になるのを待ちます。MLX の worker は fp32・bf16・8bit・4bit を全部読み込みます（約 18 GB）。
+3 つの worker を合わせると 30 GB ほど使うので、メモリが 64 GB の Mac で動かしています。
 
 1. **参照の声**: ファイルをドロップするか、マイクで録る。追加すると Whisper が自動で文字起こしする。
    違っていたら欄を直す（次の生成から使う）。共有の会話の素材の 2 人の話者も最初から選べる
@@ -103,7 +116,8 @@ UniDic に発音の無い語（数字や英字など）は、表記のまま残�
 ## Conditions
 
 - MacBook Pro、Apple M1 Max、macOS 27.0.1
-- Qwen3-TTS: MPS、bfloat16、`attn_implementation="sdpa"`（flash-attn は無い）
+- Qwen3-TTS PyTorch: MPS、bfloat16、`attn_implementation="sdpa"`（flash-attn は無い）
+- Qwen3-TTS MLX: mlx 0.32.4・mlx-audio 0.6.0、Apple GPU。生成の設定は既定で PyTorch 版に合わせる（`match_pytorch`）
 - CosyVoice 3: CPU、float32、`stream=False`
 - 乱数の seed は生成ごとに 0（UI で変えられる）
 - 参照の声は 24 kHz mono に変換して両方に同じファイルを渡す
@@ -140,7 +154,7 @@ fp32 は計算の精度だけを上げたものです。聞いた文と回数は
 | CosyVoice 3（カタカナ） | CPU float32 | 23.1 秒 | 6.7 秒 |
 
 MPS では 1.7B と 0.6B がほぼ同じ速さでした（1 歩ずつの生成の手間が支配的と推測）。そこで Qwen3-TTS は 1.7B・MPS・bfloat16 を既定にしました。
-どちらも実時間より遅く（音声の長さの 1.5〜3.5 倍）、この Mac では会話の応答にそのまま使える速さではありません。
+どちらも実時間より遅く（音声の長さの 1.5〜3.5 倍）、この Mac の PyTorch では会話の応答にそのまま使える速さではありません（MLX 版は下の「Qwen3-TTS on MLX」）。
 
 ### Web UI (both engines at the same time)
 
@@ -200,7 +214,7 @@ uv run python bench.py 8bit
 
 - 同じ Mac の PyTorch（MPS bf16、約 10 秒）より 2.5〜4 倍速く、どれも実時間より速くなりました（音声の長さの 0.4〜0.55 倍）。1 回目は 4〜7 秒
 - 生成の間だけ、どの量子化でも約 4.1 GB が上乗せされ、終わると読み込み直後の量に戻りました。どの処理が使うのか（参照の音声の符号化、音声への復号など）は切り分けていません
-- 3 つとも whisper.cpp（`ggml-medium`）で文のとおりに文字になりました（句読点だけが違う）。量子化で声の質がどれだけ変わるかは聞いていません
+- 3 つとも whisper.cpp（`ggml-medium`）で文のとおりに文字になりました（句読点だけが違う）。聞いた質は上の「Listening」
 - 計測は、同じ Mac で 2 つの Web UI（この lab と前の lab）を動かしたまま行いました
 
 ### Quantization and streaming in the web UI (7 sentences)
@@ -323,7 +337,7 @@ worker で両方を qwen-tts に合わせると（`match_pytorch`）、prefill �
   MLX は speech tokenizer を float32 で動かし、float32 の PyTorch とほぼ同じ符号です。どちらが聞いて良いかは分けて聞いていません
 - 速さは変わりません（Web UI で 3.5 秒の文が 2.0〜2.1 秒、ストリーミングの最初の音 0.37 秒）。上の「Qwen3-TTS on MLX」「Quantization and streaming」の表は合わせる前の値です
 
-**聞いて確かめるのはこれから**です。Web UI の「MLX を PyTorch 版と同じ生成の設定にする」（既定でオン）を切り替えて、同じ seed で比べられます。
+合わせた後に聞いた評価は、PyTorch と MLX bf16 が同じレベルでした（上の「Listening」）。Web UI の「MLX を PyTorch 版と同じ生成の設定にする」（既定でオン）を切り替えて、同じ seed で比べられます。
 
 #### mlx-audio への報告の材料（未報告。報告はオーナーに確認してから）
 
@@ -361,10 +375,10 @@ CosyVoice 3 の worker は起動のたびに ModelScope から `pengzhendong/wet
 
 ## Limitations and next steps
 
-- 聞き比べは 1 人で、組み合わせを記録していない
-- `match_pytorch` で MLX が PyTorch に追いついたかを聞いて確かめる。残る違い（長い文の長さ、参照の符号の bf16、`min_new_tokens`）を詰めるかはその結果で決める
-- mlx-audio へ報告するか（上の「報告の材料」）をオーナーと決める
-- 温めた後の復号器の状態を参照ごとに取っておき、使い回す（最初の音の遅れを無くす）。mlx-audio への報告・修正の提案
+- 聞き比べは 1 人で、組み合わせを記録していない。8bit・4bit は `match_pytorch` の後に聞き直していない
+- `match_pytorch` の後も残る違い（長い文が約 0.8 秒長い、参照の符号の bf16、`min_new_tokens`）。聞いた質は同じレベルだったので、詰めていない
+- mlx-audio へ報告するか（上の「報告の材料」。罰則・並べ方と、ストリーミングの話し始め）をオーナーと決める
+- 温めた後の復号器の状態を参照ごとに取っておき、使い回す（最初の音の遅れを無くす）
 - ブラウザや body で、チャンクを届いた順に実際に鳴らす（今は届いた時刻からの計算だけ）
 - 参照（人の録音・長さ・音質）と文を増やし、文字の誤り率（CER）としてまとめる
 - 話者の近さを、両方と独立した埋め込み（ECAPA など）で測る
