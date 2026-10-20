@@ -85,7 +85,7 @@ button:disabled { opacity: .5; cursor: default; }
       <h2>2. 元の声（変える前）</h2>
       <div class="tabs">
         <button id="tabTts" class="on">OS の音声合成</button>
-        <button id="tabFile">音声ファイル</button>
+        <button id="tabFile">録音・ファイル</button>
       </div>
       <div id="ttsPane">
         <label for="voice">OS の声</label>
@@ -97,8 +97,12 @@ button:disabled { opacity: .5; cursor: default; }
         <input type="number" id="rate" min="80" max="400" placeholder="既定">
       </div>
       <div id="filePane" hidden>
-        <div class="drop" id="srcDrop">変えたい声のファイルをドロップ、またはクリックして選ぶ</div>
+        <div class="drop" id="srcDrop">変えたい声のファイルをドロップ、またはクリックして選ぶ<br>（自分の声をその場で録るなら下の「マイクで録る」）</div>
         <input type="file" id="srcFile" accept="audio/*" hidden>
+        <div class="row" style="margin-top:8px">
+          <button id="srcRecButton">マイクで録る</button>
+          <span id="srcRecState" class="status" style="margin:0"></span>
+        </div>
         <div class="clips" id="srcClips"></div>
       </div>
     </section>
@@ -207,31 +211,37 @@ function encodeWav(chunks, sampleRate) {
   }
   return new Blob([buffer], { type: "audio/wav" });
 }
-$("recButton").addEventListener("click", async () => {
-  if (recorder) {
-    const { stream, context, node, chunks, started } = recorder; recorder = null;
-    node.disconnect(); stream.getTracks().forEach((track) => track.stop()); await context.close();
-    $("recButton").textContent = "マイクで録る"; $("recState").textContent = "";
-    const stamp = new Date(started).toLocaleTimeString("ja-JP");
-    upload(new File([encodeWav(chunks, context.sampleRate)], `マイクの録音 ${stamp}.wav`), "reference");
-    return;
-  }
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
-    const context = new AudioContext();
-    const input = context.createMediaStreamSource(stream);
-    const node = context.createScriptProcessor(4096, 1, 1);
-    const chunks = [], started = Date.now();
-    node.onaudioprocess = (event) => {
-      chunks.push(new Float32Array(event.inputBuffer.getChannelData(0)));
-      $("recState").innerHTML = `<span class="rec">● 録音中</span> ${((Date.now() - started) / 1000).toFixed(1)} 秒`;
-    };
-    input.connect(node); node.connect(context.destination);
-    recorder = { stream, context, node, chunks, started };
-    $("recButton").textContent = "止めて使う";
-  } catch (error) { setStatus(`マイクを開けませんでした: ${error.message}`, true); }
-});
+function wireRecorder(buttonId, stateId, kind, label) {
+  const button = $(buttonId), state = $(stateId);
+  button.addEventListener("click", async () => {
+    if (recorder && recorder.button === button) {
+      const { stream, context, node, chunks, started } = recorder; recorder = null;
+      node.disconnect(); stream.getTracks().forEach((track) => track.stop()); await context.close();
+      button.textContent = "マイクで録る"; state.textContent = "";
+      const stamp = new Date(started).toLocaleTimeString("ja-JP");
+      upload(new File([encodeWav(chunks, context.sampleRate)], `${label} ${stamp}.wav`), kind);
+      return;
+    }
+    if (recorder) { setStatus("ほかの欄で録音中です。先に止めてください", true); return; }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+      const context = new AudioContext();
+      const input = context.createMediaStreamSource(stream);
+      const node = context.createScriptProcessor(4096, 1, 1);
+      const chunks = [], started = Date.now();
+      node.onaudioprocess = (event) => {
+        chunks.push(new Float32Array(event.inputBuffer.getChannelData(0)));
+        state.innerHTML = `<span class="rec">● 録音中</span> ${((Date.now() - started) / 1000).toFixed(1)} 秒`;
+      };
+      input.connect(node); node.connect(context.destination);
+      recorder = { button, stream, context, node, chunks, started };
+      button.textContent = "止めて使う";
+    } catch (error) { setStatus(`マイクを開けませんでした: ${error.message}`, true); }
+  });
+}
+wireRecorder("recButton", "recState", "reference", "参照の録音");
+wireRecorder("srcRecButton", "srcRecState", "source", "元の声の録音");
 
 function setMode(mode) {
   sourceMode = mode;
@@ -257,7 +267,7 @@ function addResult(result, text) {
     <div><span>変換後</span><audio controls></audio></div></div><div class="numbers"></div>`;
   element.querySelector(".title").textContent =
     `${result.source_label} → ${result.reference.label}（${result.model}・steps ${result.steps}）`;
-  element.querySelector(".text").textContent = text || "（音声ファイル）";
+  element.querySelector(".text").textContent = text || "（録音・音声ファイル）";
   const [sourceAudio, convertedAudio] = element.querySelectorAll("audio");
   sourceAudio.src = result.source.url; convertedAudio.src = result.converted.url;
   element.querySelector(".numbers").textContent = parts.join(" · ");
