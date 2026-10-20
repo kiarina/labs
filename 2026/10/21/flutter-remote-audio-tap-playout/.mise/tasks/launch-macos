@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#MISE description="Launch the macOS app with LAB_* settings (args: NAME=VALUE ...)"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+app="$PWD/app/build/macos/Build/Products/Debug/remote_audio_tap_lab.app"
+args=()
+for kv in "$@"; do args+=(--env "$kv"); done
+mkdir -p build/logs
+log="$PWD/build/logs/$(date +%Y%m%d-%H%M%S).log"
+env -i HOME="$HOME" USER="$USER" LOGNAME="$USER" PATH=/usr/bin:/bin:/usr/sbin:/sbin \
+  open -n "${args[@]}" --stdout "$log" --stderr "$log" "$app"
+echo "$log"

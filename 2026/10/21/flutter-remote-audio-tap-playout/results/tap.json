@@ -1,0 +1,96 @@
+{
+ "mac-tap-fake-1": {
+  "receivedTap": {
+   "native": {
+    "events": 6098,
+    "overflowFrames": 0,
+    "formatDroppedFrames": 0,
+    "silencedNativePlayout": true,
+    "deliveredFrames": 3149760,
+    "unsupportedFrames": 0,
+    "contendedFrames": 480,
+    "callbacks": 6564
+   },
+   "inputFrames": 3149760,
+   "outputSamples": 3149760,
+   "events": 6098,
+   "formatChanges": 0
+  },
+  "playout": {
+   "receivedFrames": 3144480,
+   "playedSamples": 3149312,
+   "underflowSamples": 14,
+   "overflowSamples": 0
+  },
+  "latency": {
+   "passthrough": {
+    "samples": 64,
+    "medianMs": 41.333333333333336,
+    "p95Ms": 68.0,
+    "maxMs": 110.0,
+    "processorBacklogMedianMs": 0.0
+   },
+   "pitch": {
+    "samples": 52,
+    "medianMs": 88.66666666666666,
+    "p95Ms": 111.33333333333333,
+    "maxMs": 112.66666666666667,
+    "processorBacklogMedianMs": 0.0
+   },
+   "vc": {
+    "samples": 146,
+    "medianMs": 653.5,
+    "p95Ms": 704.8333333333334,
+    "maxMs": 718.8333333333334,
+    "processorBacklogMedianMs": 479.375
+   }
+  }
+ },
+ "win-tap-fake-1": {
+  "receivedTap": {
+   "native": {
+    "callbacks": 6536,
+    "contendedFrames": 0,
+    "deliveredFrames": 3137280,
+    "events": 6536,
+    "formatDroppedFrames": 0,
+    "overflowFrames": 0,
+    "silencedNativePlayout": true,
+    "unsupportedFrames": 0
+   },
+   "inputFrames": 3137280,
+   "outputSamples": 3137280,
+   "events": 6536,
+   "formatChanges": 0
+  },
+  "playout": {
+   "receivedFrames": 3136800,
+   "playedSamples": 3137922,
+   "underflowSamples": 9,
+   "overflowSamples": 0
+  },
+  "latency": {
+   "passthrough": {
+    "samples": 64,
+    "medianMs": 30.0,
+    "p95Ms": 30.0,
+    "maxMs": 30.0,
+    "processorBacklogMedianMs": 0.0
+   },
+   "pitch": {
+    "samples": 52,
+    "medianMs": 30.0,
+    "p95Ms": 30.0,
+    "maxMs": 30.0,
+    "processorBacklogMedianMs": 0.0
+   },
+   "vc": {
+    "samples": 145,
+    "medianMs": 656.1666666666666,
+    "p95Ms": 675.5833333333334,
+    "maxMs": 675.5833333333334,
+    "processorBacklogMedianMs": 477.9166666666667
+   }
+  }
+ }
+}

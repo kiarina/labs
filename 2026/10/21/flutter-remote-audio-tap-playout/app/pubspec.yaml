@@ -1,0 +1,34 @@
+name: remote_audio_tap_lab
+publish_to: none
+version: 0.1.0+1
+environment:
+  sdk: ^3.13.2
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_webrtc:
+    git:
+      url: https://github.com/kiarina/flutter-webrtc.git
+      ref: fce27274d2b07b78f9a4dea2c8ae5ba5482ca45b
+  flutter_webrtc_external_media:
+    git:
+      url: https://github.com/kiarina/flutter_webrtc_external_media.git
+      ref: 88903a66c74a4e1b9a48397ca4b2c8fc25a4d2b8
+  record: 7.1.2
+  camera: 0.12.1
+  camera_desktop: 2.0.0
+  playout_audio:
+    path: ../playout_audio
+  file_selector: 1.1.0
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/far_speech.pcm
+    - assets/questions/
+dependency_overrides:
+  record_windows:
+    path: ../vendor/record_windows
