@@ -1,0 +1,353 @@
+diff -ru record_macos-2.1.1/macos/record_macos/Sources/record_macos/delegate/RecorderStreamDelegate.swift record_macos/macos/record_macos/Sources/record_macos/delegate/RecorderStreamDelegate.swift
+--- record_macos-2.1.1/macos/record_macos/Sources/record_macos/delegate/RecorderStreamDelegate.swift	2026-09-26 04:35:42
++++ record_macos/macos/record_macos/Sources/record_macos/delegate/RecorderStreamDelegate.swift	2026-10-20 10:51:18
+@@ -1,150 +1,199 @@
+-import AVFoundation
+-import Foundation
+-import FlutterMacOS
+-
+-class RecorderStreamDelegate: NSObject, AudioRecordingStreamDelegate {
+-  var config: RecordConfig?
+-
+-  private var m_audioEngine: AVAudioEngine?
+-  private var m_processor: AudioStreamProcessor?
+-  private var m_isPaused = false
+-  private let m_lock = NSLock()
+-  private let m_bus = 0
+-  private let m_queue: DispatchQueue
+-  private var m_onRecord: () -> ()
+-  private var m_onPause:  () -> ()
+-  private var m_onStop:   () -> ()
+-
+-  init(
+-    queue: DispatchQueue,
+-    onRecord: @escaping () -> (),
+-    onPause:  @escaping () -> (),
+-    onStop:   @escaping () -> ()
+-  ) {
+-    m_queue = queue
+-    m_onRecord = onRecord
+-    m_onPause  = onPause
+-    m_onStop   = onStop
+-  }
+-
+-  func start(config: RecordConfig, recordEventHandler: RecordStreamHandler) throws {
+-    let engine = AVAudioEngine()
+-
+-    if let deviceId = config.device?.id,
+-       let inputDeviceId = getAudioDeviceIDFromUID(uid: deviceId) {
+-      do {
+-        try engine.inputNode.auAudioUnit.setDeviceID(inputDeviceId)
+-      } catch {
+-        throw RecorderError.error(
+-          message: "Failed to start recording",
+-          details: "Setting input device: \(deviceId) \(error)"
+-        )
+-      }
+-    }
+-
+-    try setVoiceProcessing(echoCancel: config.echoCancel, autoGain: config.autoGain, audioEngine: engine)
+-
+-    let srcFormat = engine.inputNode.inputFormat(forBus: 0)
+-    let processor = try AudioStreamProcessor(config: config, srcFormat: srcFormat)
+-
+-    engine.inputNode.installTap(
+-      onBus: m_bus,
+-      bufferSize: AVAudioFrameCount(config.streamBufferSize ?? 1024),
+-      format: srcFormat
+-    ) { [weak self] buffer, _ in
+-      self?.handleTap(buffer: buffer, recordEventHandler: recordEventHandler)
+-    }
+-
+-    engine.prepare()
+-    do {
+-      try engine.start()
+-    } catch {
+-      processor.dispose()
+-      throw error
+-    }
+-
+-    m_audioEngine = engine
+-    m_lock.withLock { m_processor = processor }
+-    self.config = config
+-    m_onRecord()
+-  }
+-
+-  @discardableResult
+-  func stop() -> String? {
+-    if let engine = m_audioEngine {
+-      do { try setVoiceProcessing(echoCancel: false, autoGain: false, audioEngine: engine) } catch {}
+-      engine.inputNode.removeTap(onBus: m_bus)
+-      engine.stop()
+-    }
+-    m_audioEngine = nil
+-
+-    m_lock.withLock {
+-      m_isPaused = false
+-      m_processor?.dispose()
+-      m_processor = nil
+-    }
+-
+-    config = nil
+-    m_onStop()
+-    return nil
+-  }
+-
+-  func pause() {
+-    m_lock.withLock { m_isPaused = true }
+-    m_audioEngine?.pause()
+-    m_onPause()
+-  }
+-
+-  func resume() throws {
+-    try m_audioEngine?.start()
+-    m_lock.withLock { m_isPaused = false }
+-    m_onRecord()
+-  }
+-
+-  func cancel() throws { _ = stop() }
+-
+-  func getAmplitude() -> Float {
+-    m_lock.withLock { m_processor?.getAmplitude() ?? -160.0 }
+-  }
+-
+-  func dispose() { _ = stop() }
+-
+-  // MARK: - Private
+-
+-  private func handleTap(buffer: AVAudioPCMBuffer, recordEventHandler: RecordStreamHandler) {
+-    let processor = m_lock.withLock { m_isPaused ? nil : m_processor }
+-
+-    guard let processor else { return }
+-
+-    guard let dataList = processor.process(buffer: buffer) else {
+-      let toDispose = m_lock.withLock { () -> AudioStreamProcessor? in
+-        let p = m_processor
+-        m_processor = nil
+-        return p
+-      }
+-      guard toDispose != nil else { return }
+-      m_queue.async {
+-        toDispose?.dispose()
+-        self.stop()
+-      }
+-      return
+-    }
+-
+-    guard let sink = recordEventHandler.eventSink else { return }
+-    for data in dataList {
+-      DispatchQueue.main.async { sink(FlutterStandardTypedData(bytes: data)) }
+-    }
+-  }
+-
+-  private func setVoiceProcessing(echoCancel: Bool, autoGain: Bool, audioEngine: AVAudioEngine) throws {
+-    do {
+-      try audioEngine.inputNode.setVoiceProcessingEnabled(echoCancel)
+-      audioEngine.inputNode.isVoiceProcessingAGCEnabled = autoGain
+-    } catch {
+-      throw RecorderError.error(
+-        message: "Failed to setup voice processing",
+-        details: "Echo cancel error: \(error)"
+-      )
+-    }
+-  }
+-}
++import AVFoundation
++import Foundation
++import FlutterMacOS
++
++class RecorderStreamDelegate: NSObject, AudioRecordingStreamDelegate {
++  var config: RecordConfig?
++
++  private var m_audioEngine: AVAudioEngine?
++  private var m_processor: AudioStreamProcessor?
++  private var m_isPaused = false
++  private let m_lock = NSLock()
++  private let m_bus = 0
++  private let m_queue: DispatchQueue
++  private var m_onRecord: () -> ()
++  private var m_onPause:  () -> ()
++  private var m_onStop:   () -> ()
++  private var m_monoFrom: AVAudioFormat?
++  private var m_tapCount = 0
++
++  init(
++    queue: DispatchQueue,
++    onRecord: @escaping () -> (),
++    onPause:  @escaping () -> (),
++    onStop:   @escaping () -> ()
++  ) {
++    m_queue = queue
++    m_onRecord = onRecord
++    m_onPause  = onPause
++    m_onStop   = onStop
++  }
++
++  func start(config: RecordConfig, recordEventHandler: RecordStreamHandler) throws {
++    let engine = AVAudioEngine()
++
++    if let deviceId = config.device?.id,
++       let inputDeviceId = getAudioDeviceIDFromUID(uid: deviceId) {
++      do {
++        try engine.inputNode.auAudioUnit.setDeviceID(inputDeviceId)
++      } catch {
++        throw RecorderError.error(
++          message: "Failed to start recording",
++          details: "Setting input device: \(deviceId) \(error)"
++        )
++      }
++    }
++
++    try setVoiceProcessing(echoCancel: config.echoCancel, autoGain: config.autoGain, audioEngine: engine)
++
++    // Lab patch (ECHO_RECORD_MACOS_PATCH, comma separated):
++    //   mixer  - pull the output side into the graph (engine.mainMixerNode is
++    //            connected to outputNode on first access), so the voice
++    //            processing unit has a running output half.
++    //   format - tap with inputNode.outputFormat(forBus: 0) instead of
++    //            inputFormat(forBus: 0).
++    //   mono   - convert only the first channel of the tap buffer.
++    let patch = Set((ProcessInfo.processInfo.environment["ECHO_RECORD_MACOS_PATCH"] ?? "")
++      .split(separator: ",").map(String.init))
++    m_monoFrom = nil
++    m_tapCount = 0
++    if patch.contains("mixer") {
++      _ = engine.mainMixerNode
++    }
++    let inFmt = engine.inputNode.inputFormat(forBus: 0)
++    let outFmt = engine.inputNode.outputFormat(forBus: 0)
++    print("ECHO_PATCH patch=\(patch.sorted()) vp=\(engine.inputNode.isVoiceProcessingEnabled) inputFormat=\(inFmt) outputFormat=\(outFmt)")
++    var srcFormat = patch.contains("format") ? outFmt : inFmt
++    if patch.contains("mono"), srcFormat.channelCount > 1,
++       let mono = AVAudioFormat(commonFormat: srcFormat.commonFormat, sampleRate: srcFormat.sampleRate, channels: 1, interleaved: false) {
++      m_monoFrom = srcFormat
++      srcFormat = mono
++    }
++    let processor = try AudioStreamProcessor(config: config, srcFormat: srcFormat)
++
++    engine.inputNode.installTap(
++      onBus: m_bus,
++      bufferSize: AVAudioFrameCount(config.streamBufferSize ?? 1024),
++      format: m_monoFrom ?? srcFormat
++    ) { [weak self] buffer, _ in
++      guard let self else { return }
++      var b = buffer
++      if let mono = self.monoBuffer(buffer, format: srcFormat) { b = mono }
++      self.m_tapCount += 1
++      if self.m_tapCount <= 3 || self.m_tapCount % 100 == 0 {
++        var peaks: [String] = []
++        if let ch = buffer.floatChannelData {
++          for c in 0..<Int(buffer.format.channelCount) {
++            var p: Float = 0
++            for i in 0..<Int(buffer.frameLength) { p = max(p, abs(ch[c][i])) }
++            peaks.append(String(format: "%.4f", p))
++          }
++        }
++        print("ECHO_TAP n=\(self.m_tapCount) channels=\(buffer.format.channelCount) frames=\(buffer.frameLength) peaks=\(peaks.joined(separator: ","))")
++      }
++      self.handleTap(buffer: b, recordEventHandler: recordEventHandler)
++    }
++
++    engine.prepare()
++    do {
++      try engine.start()
++    } catch {
++      processor.dispose()
++      throw error
++    }
++
++    m_audioEngine = engine
++    m_lock.withLock { m_processor = processor }
++    self.config = config
++    m_onRecord()
++  }
++
++  @discardableResult
++  func stop() -> String? {
++    if let engine = m_audioEngine {
++      do { try setVoiceProcessing(echoCancel: false, autoGain: false, audioEngine: engine) } catch {}
++      engine.inputNode.removeTap(onBus: m_bus)
++      engine.stop()
++    }
++    m_audioEngine = nil
++
++    m_lock.withLock {
++      m_isPaused = false
++      m_processor?.dispose()
++      m_processor = nil
++    }
++
++    config = nil
++    m_onStop()
++    return nil
++  }
++
++  func pause() {
++    m_lock.withLock { m_isPaused = true }
++    m_audioEngine?.pause()
++    m_onPause()
++  }
++
++  func resume() throws {
++    try m_audioEngine?.start()
++    m_lock.withLock { m_isPaused = false }
++    m_onRecord()
++  }
++
++  func cancel() throws { _ = stop() }
++
++  func getAmplitude() -> Float {
++    m_lock.withLock { m_processor?.getAmplitude() ?? -160.0 }
++  }
++
++  func dispose() { _ = stop() }
++
++  // MARK: - Private
++
++  private func handleTap(buffer: AVAudioPCMBuffer, recordEventHandler: RecordStreamHandler) {
++    let processor = m_lock.withLock { m_isPaused ? nil : m_processor }
++
++    guard let processor else { return }
++
++    guard let dataList = processor.process(buffer: buffer) else {
++      let toDispose = m_lock.withLock { () -> AudioStreamProcessor? in
++        let p = m_processor
++        m_processor = nil
++        return p
++      }
++      guard toDispose != nil else { return }
++      m_queue.async {
++        toDispose?.dispose()
++        self.stop()
++      }
++      return
++    }
++
++    guard let sink = recordEventHandler.eventSink else { return }
++    for data in dataList {
++      DispatchQueue.main.async { sink(FlutterStandardTypedData(bytes: data)) }
++    }
++  }
++
++  /// First channel of a multi-channel float buffer (lab patch "mono").
++  private func monoBuffer(_ buffer: AVAudioPCMBuffer, format: AVAudioFormat) -> AVAudioPCMBuffer? {
++    guard m_monoFrom != nil, let src = buffer.floatChannelData,
++          let out = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: buffer.frameLength),
++          let dst = out.floatChannelData else { return nil }
++    out.frameLength = buffer.frameLength
++    dst[0].update(from: src[0], count: Int(buffer.frameLength))
++    return out
++  }
++
++  private func setVoiceProcessing(echoCancel: Bool, autoGain: Bool, audioEngine: AVAudioEngine) throws {
++    do {
++      try audioEngine.inputNode.setVoiceProcessingEnabled(echoCancel)
++      audioEngine.inputNode.isVoiceProcessingAGCEnabled = autoGain
++    } catch {
++      throw RecorderError.error(
++        message: "Failed to setup voice processing",
++        details: "Echo cancel error: \(error)"
++      )
++    }
++  }
++}

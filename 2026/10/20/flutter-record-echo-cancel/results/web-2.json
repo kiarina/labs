@@ -1,0 +1,138 @@
+{
+  "platform": "web",
+  "label": "web-2",
+  "startEpochMs": 1792462473383,
+  "periodMs": 27000,
+  "referenceCrossCorrelation": 0.26953588128653133,
+  "results": [
+    {
+      "variant": {
+        "name": "raw",
+        "echoCancel": false,
+        "noiseSuppress": false,
+        "autoGain": false,
+        "androidVoice": false
+      },
+      "error": "TimeoutException after 0:00:30.000000: Future not completed",
+      "farPlayCalledAtMs": [
+        4428
+      ],
+      "chunks": 809,
+      "samples": 552277,
+      "maxGapMs": 48,
+      "nonZeroSamples": 547568,
+      "firstSampleAtMs": 874,
+      "silenceDbfs": -51.868957945440506,
+      "far": {
+        "correlation": 0.060348595160079975,
+        "offsetMs": -80,
+        "dbfs": -52.029333156458094
+      },
+      "near": {
+        "correlation": 0.5437655372886334,
+        "offsetMs": 58,
+        "dbfs": -41.71785178267763
+      },
+      "doubleTalk": {
+        "far": {
+          "correlation": 0.23338763963977657,
+          "offsetMs": 425,
+          "dbfs": -42.21294446582236
+        },
+        "near": {
+          "correlation": 0.543677628973775,
+          "offsetMs": -22,
+          "dbfs": -41.763105086039666
+        }
+      }
+    },
+    {
+      "variant": {
+        "name": "ec",
+        "echoCancel": true,
+        "noiseSuppress": false,
+        "autoGain": false,
+        "androidVoice": false
+      },
+      "error": "TimeoutException after 0:00:30.000000: Future not completed",
+      "farPlayCalledAtMs": [
+        8938
+      ],
+      "chunks": 714,
+      "samples": 487424,
+      "maxGapMs": 56,
+      "nonZeroSamples": 482325,
+      "firstSampleAtMs": 8930,
+      "silenceDbfs": null,
+      "far": {
+        "correlation": 0,
+        "offsetMs": 5430,
+        "dbfs": -42.972714858259685
+      },
+      "near": {
+        "correlation": 0.5475420103001782,
+        "offsetMs": 19,
+        "dbfs": -42.14615262401336
+      },
+      "doubleTalk": {
+        "far": {
+          "correlation": 0.22392732050902892,
+          "offsetMs": 446,
+          "dbfs": -42.60947317277103
+        },
+        "near": {
+          "correlation": 0.5459395871116135,
+          "offsetMs": -1,
+          "dbfs": -42.17014201722752
+        }
+      }
+    },
+    {
+      "variant": {
+        "name": "ec-ns-agc",
+        "echoCancel": true,
+        "noiseSuppress": true,
+        "autoGain": true,
+        "androidVoice": false
+      },
+      "error": "TimeoutException after 0:00:30.000000: Future not completed",
+      "farPlayCalledAtMs": [
+        12887
+      ],
+      "chunks": 715,
+      "samples": 488106,
+      "maxGapMs": 56,
+      "nonZeroSamples": 479814,
+      "firstSampleAtMs": 12886,
+      "silenceDbfs": null,
+      "far": {
+        "correlation": 0,
+        "offsetMs": 9386,
+        "dbfs": -28.836637504665855
+      },
+      "near": {
+        "correlation": 0.5732341277090482,
+        "offsetMs": 50,
+        "dbfs": -28.84974651644048
+      },
+      "doubleTalk": {
+        "far": {
+          "correlation": 0.2419848075687451,
+          "offsetMs": 453,
+          "dbfs": -29.2275729492862
+        },
+        "near": {
+          "correlation": 0.5135660198992728,
+          "offsetMs": 4,
+          "dbfs": -28.64550278589554
+        }
+      }
+    }
+  ],
+  "helper": "android",
+  "environment": {
+    "macVolume": "50",
+    "androidMusicVolume": "[V] volume is 24 in range [0..25]",
+    "androidClockMinusMacMs": 312
+  }
+}

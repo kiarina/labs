@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#MISE description="Prepare the signals, analyze the app and build the web app"
+set -euo pipefail
+
+mise run prepare
+cd app
+flutter pub get
+flutter analyze
+flutter build web --release

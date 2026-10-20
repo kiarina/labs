@@ -1,0 +1,136 @@
+{
+  "platform": "ios",
+  "label": "ios-1",
+  "startEpochMs": 1792462254670,
+  "periodMs": 27000,
+  "referenceCrossCorrelation": 0.26953588128653133,
+  "results": [
+    {
+      "variant": {
+        "name": "raw",
+        "echoCancel": false,
+        "noiseSuppress": false,
+        "autoGain": false,
+        "androidVoice": false
+      },
+      "farPlayCalledAtMs": [
+        3502,
+        17503
+      ],
+      "chunks": 243,
+      "samples": 388554,
+      "maxGapMs": 117,
+      "nonZeroSamples": 387071,
+      "firstSampleAtMs": 166,
+      "silenceDbfs": -55.18505152742267,
+      "far": {
+        "correlation": 0.609582308481492,
+        "offsetMs": 241,
+        "dbfs": -20.637701602252747
+      },
+      "near": {
+        "correlation": 0.5785139371785974,
+        "offsetMs": 270,
+        "dbfs": -43.24405646256792
+      },
+      "doubleTalk": {
+        "far": {
+          "correlation": 0.600484081397934,
+          "offsetMs": 299,
+          "dbfs": -20.046971828965187
+        },
+        "near": {
+          "correlation": 0.2298307622276456,
+          "offsetMs": -2108,
+          "dbfs": -22.095565570034076
+        }
+      }
+    },
+    {
+      "variant": {
+        "name": "ec",
+        "echoCancel": true,
+        "noiseSuppress": false,
+        "autoGain": false,
+        "androidVoice": false
+      },
+      "farPlayCalledAtMs": [
+        3503,
+        17502
+      ],
+      "chunks": 242,
+      "samples": 386954,
+      "maxGapMs": 117,
+      "nonZeroSamples": 379731,
+      "firstSampleAtMs": 268,
+      "silenceDbfs": -55.36686247356473,
+      "far": {
+        "correlation": 0.26257231317633595,
+        "offsetMs": 241,
+        "dbfs": -51.08209280332343
+      },
+      "near": {
+        "correlation": 0.4067727261748937,
+        "offsetMs": 257,
+        "dbfs": -40.1507323257708
+      },
+      "doubleTalk": {
+        "far": {
+          "correlation": 0.1545393944776138,
+          "offsetMs": 807,
+          "dbfs": -33.767195100464306
+        },
+        "near": {
+          "correlation": 0.16215831706628703,
+          "offsetMs": -2375,
+          "dbfs": -37.47994071549832
+        }
+      }
+    },
+    {
+      "variant": {
+        "name": "ec-ns-agc",
+        "echoCancel": true,
+        "noiseSuppress": true,
+        "autoGain": true,
+        "androidVoice": false
+      },
+      "farPlayCalledAtMs": [
+        3503,
+        17503
+      ],
+      "chunks": 242,
+      "samples": 386954,
+      "maxGapMs": 117,
+      "nonZeroSamples": 300582,
+      "firstSampleAtMs": 227,
+      "silenceDbfs": -49.64316527802488,
+      "far": {
+        "correlation": 0.18617200313029159,
+        "offsetMs": 566,
+        "dbfs": -50.850630123356304
+      },
+      "near": {
+        "correlation": 0.5099138550005314,
+        "offsetMs": 287,
+        "dbfs": -41.56614152021125
+      },
+      "doubleTalk": {
+        "far": {
+          "correlation": 0.20328061055346539,
+          "offsetMs": 150,
+          "dbfs": -42.40892994547772
+        },
+        "near": {
+          "correlation": 0.34665202086970587,
+          "offsetMs": 263,
+          "dbfs": -42.41632817568977
+        }
+      }
+    }
+  ],
+  "helper": "mac",
+  "environment": {
+    "macVolume": "50"
+  }
+}

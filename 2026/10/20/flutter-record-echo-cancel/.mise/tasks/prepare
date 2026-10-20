@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Cut the far-end and near-end speech (16 kHz mono WAV) from the shared conversation asset into app/assets/"
+set -euo pipefail
+
+mise run //:test-assets:download
+src=../../../../tests/assets/mp3/conversation_2speaker_14s_16k.mp3
+mkdir -p app/assets
+ffmpeg -v error -y -i "$src" -ss 0 -t 6 -ac 1 -ar 16000 -c:a pcm_s16le app/assets/far.wav
+ffmpeg -v error -y -i "$src" -ss 7.5 -t 6 -ac 1 -ar 16000 -c:a pcm_s16le app/assets/near.wav
+ls -l app/assets

@@ -1,0 +1,158 @@
+{
+  "platform": "macos",
+  "label": "macos-patch-mono",
+  "startEpochMs": 1792461114030,
+  "periodMs": 27000,
+  "referenceCrossCorrelation": 0.26953588128653133,
+  "results": [
+    {
+      "variant": {
+        "name": "raw",
+        "echoCancel": false,
+        "noiseSuppress": false,
+        "autoGain": false,
+        "androidVoice": false
+      },
+      "farPlayCalledAtMs": [
+        11223,
+        17501
+      ],
+      "chunks": 132,
+      "samples": 210954,
+      "maxGapMs": 112,
+      "nonZeroSamples": 209784,
+      "firstSampleAtMs": 11244,
+      "silenceDbfs": null,
+      "far": {
+        "correlation": 0.0,
+        "offsetMs": 7744,
+        "dbfs": -30.20937020097321
+      },
+      "near": {
+        "correlation": 0.29255093447791297,
+        "offsetMs": -1506,
+        "dbfs": -30.21541706579239
+      },
+      "doubleTalk": {
+        "far": {
+          "correlation": 0.7296990291805185,
+          "offsetMs": 204,
+          "dbfs": -29.969336302842613
+        },
+        "near": {
+          "correlation": 0.21762483431771742,
+          "offsetMs": -2214,
+          "dbfs": -30.112418128932266
+        }
+      }
+    },
+    {
+      "variant": {
+        "name": "ec",
+        "echoCancel": true,
+        "noiseSuppress": false,
+        "autoGain": false,
+        "androidVoice": false
+      },
+      "farPlayCalledAtMs": [
+        3503,
+        17502
+      ],
+      "chunks": 232,
+      "samples": 370954,
+      "maxGapMs": 108,
+      "nonZeroSamples": 205104,
+      "firstSampleAtMs": 1295,
+      "silenceDbfs": -54.775028038363864,
+      "far": {
+        "correlation": 0.1632089702637503,
+        "offsetMs": 2,
+        "dbfs": -53.594214743176074
+      },
+      "near": {
+        "correlation": 0.5027078955074535,
+        "offsetMs": 41,
+        "dbfs": -42.71337113683511
+      },
+      "doubleTalk": {
+        "far": {
+          "correlation": 0.20156274247475886,
+          "offsetMs": -73,
+          "dbfs": -45.935741797059684
+        },
+        "near": {
+          "correlation": 0.2813110384147858,
+          "offsetMs": 26,
+          "dbfs": -45.94046065386813
+        }
+      }
+    },
+    {
+      "variant": {
+        "name": "ec-ns-agc",
+        "echoCancel": true,
+        "noiseSuppress": true,
+        "autoGain": true,
+        "androidVoice": false
+      },
+      "farPlayCalledAtMs": [
+        3502,
+        17503
+      ],
+      "chunks": 235,
+      "samples": 375754,
+      "maxGapMs": 109,
+      "nonZeroSamples": 228175,
+      "firstSampleAtMs": 998,
+      "silenceDbfs": -55.89030383946429,
+      "far": {
+        "correlation": 0.1416638520399221,
+        "offsetMs": 192,
+        "dbfs": -48.875188249455405
+      },
+      "near": {
+        "correlation": 0.536290955016252,
+        "offsetMs": 60,
+        "dbfs": -39.75843327429386
+      },
+      "doubleTalk": {
+        "far": {
+          "correlation": 0.21422014524287336,
+          "offsetMs": -101,
+          "dbfs": -44.204466668299865
+        },
+        "near": {
+          "correlation": 0.2593651049462147,
+          "offsetMs": 5,
+          "dbfs": -44.21315440845396
+        }
+      }
+    }
+  ],
+  "macPatch": "mono",
+  "macPatchLog": [
+    "ECHO_PATCH patch=[\"mono\"] vp=false inputFormat=<AVAudioFormat 0x7a3301c500:  1 ch,  48000 Hz, Float32> outputFormat=<AVAudioFormat 0x7a3301c550:  1 ch,  48000 Hz, Float32>",
+    "ECHO_TAP n=1 channels=1 frames=4800 peaks=0.0026",
+    "ECHO_TAP n=2 channels=1 frames=4800 peaks=0.0172",
+    "ECHO_TAP n=3 channels=1 frames=4800 peaks=0.0209",
+    "ECHO_TAP n=100 channels=1 frames=4800 peaks=0.0811",
+    "ECHO_PATCH patch=[\"mono\"] vp=true inputFormat=<AVAudioFormat 0x7a3301c5a0:  9 ch,  48000 Hz, Float32, deinterleaved> outputFormat=<AVAudioFormat 0x7a3301cd70:  9 ch,  48000 Hz, Float32, deinterleaved>",
+    "ECHO_TAP n=1 channels=9 frames=4800 peaks=0.0053,0.0053,0.0053,0.0053,0.0053,0.0053,0.0053,0.0053,0.0053",
+    "ECHO_TAP n=2 channels=9 frames=4800 peaks=0.0089,0.0089,0.0089,0.0089,0.0089,0.0089,0.0089,0.0089,0.0089",
+    "ECHO_TAP n=3 channels=9 frames=4800 peaks=0.0107,0.0107,0.0107,0.0107,0.0107,0.0107,0.0107,0.0107,0.0107",
+    "ECHO_TAP n=100 channels=9 frames=4800 peaks=0.0598,0.0598,0.0598,0.0598,0.0598,0.0598,0.0598,0.0598,0.0598",
+    "ECHO_TAP n=200 channels=9 frames=4800 peaks=0.0001,0.0001,0.0001,0.0001,0.0001,0.0001,0.0001,0.0001,0.0001",
+    "ECHO_PATCH patch=[\"mono\"] vp=true inputFormat=<AVAudioFormat 0x7a3301cc80:  9 ch,  48000 Hz, Float32, deinterleaved> outputFormat=<AVAudioFormat 0x7a3301cdc0:  9 ch,  48000 Hz, Float32, deinterleaved>",
+    "ECHO_TAP n=1 channels=9 frames=4800 peaks=0.0048,0.0048,0.0048,0.0048,0.0048,0.0048,0.0048,0.0048,0.0048",
+    "ECHO_TAP n=2 channels=9 frames=4800 peaks=0.0065,0.0065,0.0065,0.0065,0.0065,0.0065,0.0065,0.0065,0.0065",
+    "ECHO_TAP n=3 channels=9 frames=4800 peaks=0.0067,0.0067,0.0067,0.0067,0.0067,0.0067,0.0067,0.0067,0.0067",
+    "ECHO_TAP n=100 channels=9 frames=4800 peaks=0.0133,0.0133,0.0133,0.0133,0.0133,0.0133,0.0133,0.0133,0.0133",
+    "ECHO_TAP n=200 channels=9 frames=4800 peaks=0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000,0.0000"
+  ],
+  "helper": "android",
+  "environment": {
+    "macVolume": "50",
+    "androidMusicVolume": "[V] volume is 19 in range [0..25]",
+    "androidClockMinusMacMs": 288
+  }
+}

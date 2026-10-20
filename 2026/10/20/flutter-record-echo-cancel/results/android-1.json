@@ -1,0 +1,220 @@
+{
+  "platform": "android",
+  "label": "android-1",
+  "startEpochMs": 1792461769404,
+  "periodMs": 27000,
+  "referenceCrossCorrelation": 0.26953588128653133,
+  "results": [
+    {
+      "variant": {
+        "name": "raw",
+        "echoCancel": false,
+        "noiseSuppress": false,
+        "autoGain": false,
+        "androidVoice": false
+      },
+      "farPlayCalledAtMs": [
+        3503,
+        17502
+      ],
+      "chunks": 605,
+      "samples": 387200,
+      "maxGapMs": 96,
+      "nonZeroSamples": 384606,
+      "firstSampleAtMs": 331,
+      "silenceDbfs": -49.19385112459157,
+      "far": {
+        "correlation": 0.5333808966293379,
+        "offsetMs": 370,
+        "dbfs": -30.559421364561523
+      },
+      "near": {
+        "correlation": 0.44894279034566115,
+        "offsetMs": 543,
+        "dbfs": -46.079944452082515
+      },
+      "doubleTalk": {
+        "far": {
+          "correlation": 0.5250953637438257,
+          "offsetMs": 279,
+          "dbfs": -30.503769718435002
+        },
+        "near": {
+          "correlation": 0.22833467950288133,
+          "offsetMs": 1989,
+          "dbfs": -31.053307923306882
+        }
+      }
+    },
+    {
+      "variant": {
+        "name": "ec",
+        "echoCancel": true,
+        "noiseSuppress": false,
+        "autoGain": false,
+        "androidVoice": false
+      },
+      "farPlayCalledAtMs": [
+        3503,
+        17501
+      ],
+      "chunks": 605,
+      "samples": 387200,
+      "maxGapMs": 100,
+      "nonZeroSamples": 384300,
+      "firstSampleAtMs": 341,
+      "silenceDbfs": -52.070089774879136,
+      "far": {
+        "correlation": 0.5485497042888965,
+        "offsetMs": 360,
+        "dbfs": -30.675277095703212
+      },
+      "near": {
+        "correlation": 0.525364508180844,
+        "offsetMs": 526,
+        "dbfs": -46.785811339885946
+      },
+      "doubleTalk": {
+        "far": {
+          "correlation": 0.5271086881388848,
+          "offsetMs": 299,
+          "dbfs": -30.519075817043486
+        },
+        "near": {
+          "correlation": 0.23137033396619794,
+          "offsetMs": -2116,
+          "dbfs": -34.39639764755336
+        }
+      }
+    },
+    {
+      "variant": {
+        "name": "ec-ns-agc",
+        "echoCancel": true,
+        "noiseSuppress": true,
+        "autoGain": true,
+        "androidVoice": false
+      },
+      "farPlayCalledAtMs": [
+        3503,
+        17500
+      ],
+      "chunks": 604,
+      "samples": 386560,
+      "maxGapMs": 86,
+      "nonZeroSamples": 383643,
+      "firstSampleAtMs": 350,
+      "silenceDbfs": -51.36270244483763,
+      "far": {
+        "correlation": 0.5462226122556182,
+        "offsetMs": 369,
+        "dbfs": -30.65858608457265
+      },
+      "near": {
+        "correlation": 0.508427091566619,
+        "offsetMs": 539,
+        "dbfs": -46.53493820617491
+      },
+      "doubleTalk": {
+        "far": {
+          "correlation": 0.5136611192281713,
+          "offsetMs": 228,
+          "dbfs": -29.924814774880634
+        },
+        "near": {
+          "correlation": 0.2301715537622128,
+          "offsetMs": 1938,
+          "dbfs": -31.072466252218902
+        }
+      }
+    },
+    {
+      "variant": {
+        "name": "voice-raw",
+        "echoCancel": false,
+        "noiseSuppress": false,
+        "autoGain": false,
+        "androidVoice": true
+      },
+      "farPlayCalledAtMs": [
+        3502,
+        17503
+      ],
+      "chunks": 594,
+      "samples": 380160,
+      "maxGapMs": 49,
+      "nonZeroSamples": 378643,
+      "firstSampleAtMs": 783,
+      "silenceDbfs": -48.69396093262525,
+      "far": {
+        "correlation": 0.5779097657941997,
+        "offsetMs": 400,
+        "dbfs": -22.742130961646616
+      },
+      "near": {
+        "correlation": 0.5583769475409773,
+        "offsetMs": 576,
+        "dbfs": -42.30084438997094
+      },
+      "doubleTalk": {
+        "far": {
+          "correlation": 0.5446791259372276,
+          "offsetMs": 260,
+          "dbfs": -23.029619887531315
+        },
+        "near": {
+          "correlation": 0.27112436168767495,
+          "offsetMs": 54,
+          "dbfs": -23.563399728775458
+        }
+      }
+    },
+    {
+      "variant": {
+        "name": "voice-ec-ns-agc",
+        "echoCancel": true,
+        "noiseSuppress": true,
+        "autoGain": true,
+        "androidVoice": true
+      },
+      "farPlayCalledAtMs": [
+        3501,
+        17503
+      ],
+      "chunks": 597,
+      "samples": 382080,
+      "maxGapMs": 57,
+      "nonZeroSamples": 285959,
+      "firstSampleAtMs": 653,
+      "silenceDbfs": -79.3788224026028,
+      "far": {
+        "correlation": 0.13909265636391707,
+        "offsetMs": 5,
+        "dbfs": -68.72404979659669
+      },
+      "near": {
+        "correlation": 0.6020477685940325,
+        "offsetMs": 573,
+        "dbfs": -46.69795246738919
+      },
+      "doubleTalk": {
+        "far": {
+          "correlation": 0.07835190762869196,
+          "offsetMs": 805,
+          "dbfs": -64.17611417049213
+        },
+        "near": {
+          "correlation": 0.17582614705102473,
+          "offsetMs": -688,
+          "dbfs": -62.74403264417175
+        }
+      }
+    }
+  ],
+  "helper": "mac",
+  "environment": {
+    "macVolume": "50",
+    "androidMusicVolume": "[V] volume is 19 in range [0..25]",
+    "androidClockMinusMacMs": 284
+  }
+}
