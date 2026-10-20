@@ -1,7 +1,7 @@
 # Upstream report: macOS echoCancel stream is all zeros
 
 `record_macos` 2.1.1（`record` 7.1.2）の `startStream` に `echoCancel: true` を渡すと全サンプルが 0 になる件を、
-llfbandit/record へ報告するための材料です。**まだ送っていません（オーナーの承認待ち）。**
+llfbandit/record へ報告するための材料です。2026-10-20 に [llfbandit/record#633](https://github.com/llfbandit/record/pull/633) として出しました（本文は `draft-pr.md`、head は `kiarina/record` の `fix/macos-voice-processing-channel-map`）。
 
 ## 分かったこと
 

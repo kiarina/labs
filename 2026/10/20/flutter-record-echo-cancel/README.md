@@ -188,7 +188,7 @@ python3 tools/summarize.py results/*.json
 - 各条件 1〜3 回。部屋・端末の位置・音量に左右される。iPad の音量は記録していない
 - 相関と音量は包絡で見たもので、人の声の明瞭さ（欠け・ひずみ）を人が聞いて確かめてはいない
 - 人の声は別の端末のスピーカーで代用した。本物の人の声・距離では測っていない
-- macOS の修正は `record_macos` の 1 か所を lab の中で直したもの。上流へは報告していない。ほかのマイク（外付け・Bluetooth）、
+- macOS の修正は `record_macos` の 1 か所を lab の中で直したもの。上流へは llfbandit/record#633 で、`main`（`record_darwin`）への修正（`AVAudioConverter` の channel map）として出した（`upstream/README.md`）。ほかのマイク（外付け・Bluetooth）、
   ほかの Mac では試していない。iOS の `record_ios` は同じ作り（`setVoiceProcessingEnabled`）だが、iPad では 0 にならなかった
 - Android は Pixel 6 だけ。端末によっては `AcousticEchoCanceler` が無い・効き方が違う
 - Web は macOS の Chrome だけ。Safari・Firefox、ほかの OS の Chrome は試していない
