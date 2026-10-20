@@ -4,6 +4,7 @@
 - 2026/10/20 [Mac double-talk dropout localization with caller-owned camera and record](../2026/10/20/flutter-macos-doubletalk-dropout/README.md)
 - 2026/10/20 [What record's echoCancel actually does on macOS, iOS, Android and Web: far-end echo and near-end speech](../2026/10/20/flutter-record-echo-cancel/README.md)
 - 2026/10/20 [OS text-to-speech as PCM in Flutter on macOS, iOS, Windows and Android](../2026/10/20/flutter-tts-pcm/README.md)
+- 2026/10/20 [MeanVC2 voice conversion on Japanese OS text-to-speech](../2026/10/20/meanvc2-japanese-os-tts/README.md)
 - 2026/10/19 [Apple SpeechAnalyzer vs Whisper on finalized SCD segments with speaker binding](../2026/10/19/apple-speech-scd-asr/README.md)
 - 2026/10/19 [Codex app-server audio, realtime transport and transcription boundaries](../2026/10/19/codex-app-server-audio/README.md)
 - 2026/10/19 [Always-on Flutter camera and record capture with speaker playback and standalone AEC3](../2026/10/19/flutter-external-capture-aec/README.md)

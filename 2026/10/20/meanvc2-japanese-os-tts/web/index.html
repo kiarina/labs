@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MeanVC2 声の変換</title>
+<style>
+:root {
+  --bg: #f6f5f2; --panel: #ffffff; --text: #1f1d1a; --muted: #6b665e; --line: #e2ded6;
+  --accent: #3b5bdb; --accent-text: #ffffff; --soft: #eef1fb; --error: #c92a2a;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #161513; --panel: #201f1c; --text: #ece9e3; --muted: #a39e94; --line: #34322d;
+    --accent: #748ffc; --accent-text: #10121a; --soft: #262b3d; --error: #ff8787; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 15px/1.6 -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif; }
+header { padding: 20px 24px 8px; }
+h1 { font-size: 20px; margin: 0; }
+header p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+main { display: grid; grid-template-columns: minmax(320px, 420px) 1fr; gap: 16px; padding: 16px 24px 40px; }
+@media (max-width: 860px) { main { grid-template-columns: 1fr; padding: 12px 16px 32px; } }
+section { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+section + section { margin-top: 16px; }
+h2 { font-size: 15px; margin: 0 0 10px; }
+label { display: block; font-size: 13px; color: var(--muted); margin: 10px 0 4px; }
+select, textarea, input[type=number] { width: 100%; font: inherit; color: var(--text); background: var(--bg);
+  border: 1px solid var(--line); border-radius: 6px; padding: 7px 9px; }
+textarea { min-height: 84px; resize: vertical; }
+button { font: inherit; border: 1px solid var(--line); background: var(--bg); color: var(--text);
+  border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; }
+button:disabled { opacity: .5; cursor: default; }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.row > * { flex: 1; }
+.row > button { flex: none; }
+.drop { border: 1.5px dashed var(--line); border-radius: 8px; padding: 14px; text-align: center; color: var(--muted);
+  font-size: 13px; cursor: pointer; }
+.drop.over { border-color: var(--accent); background: var(--soft); color: var(--text); }
+.clips { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+.clip { display: grid; grid-template-columns: auto 1fr; gap: 2px 8px; align-items: center; padding: 8px;
+  border: 1px solid var(--line); border-radius: 8px; }
+.clip.selected { border-color: var(--accent); background: var(--soft); }
+.clip .name { font-size: 13px; overflow-wrap: anywhere; }
+.clip .meta { grid-column: 2; font-size: 12px; color: var(--muted); }
+.clip audio { grid-column: 1 / -1; width: 100%; height: 32px; }
+.presets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.presets button { font-size: 12px; padding: 3px 8px; }
+.tabs { display: flex; gap: 6px; margin-bottom: 4px; }
+.tabs button.on { background: var(--soft); border-color: var(--accent); }
+.status { font-size: 13px; color: var(--muted); min-height: 1.4em; margin-top: 8px; }
+.status.error { color: var(--error); }
+.results { display: flex; flex-direction: column; gap: 12px; }
+.empty { color: var(--muted); font-size: 14px; }
+.result { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: var(--panel); }
+.result .title { font-size: 14px; font-weight: 600; }
+.result .text { font-size: 13px; color: var(--muted); margin: 2px 0 8px; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 600px) { .pair { grid-template-columns: 1fr; } }
+.pair div span { display: block; font-size: 12px; color: var(--muted); }
+.pair audio { width: 100%; height: 34px; }
+.numbers { font-size: 12px; color: var(--muted); margin-top: 6px; font-variant-numeric: tabular-nums; }
+.rec { color: var(--error); font-weight: 600; }
+</style>
+</head>
+<body>
+<header>
+  <h1>MeanVC2 声の変換</h1>
+  <p>参照の声を選び、OS の音声合成（macOS の say）の声を MeanVC2 でその声に変えて聞き比べます。手元の Mac の CPU で動きます。</p>
+</header>
+<main>
+  <div>
+    <section>
+      <h2>1. 参照の声（この声にする）</h2>
+      <div class="drop" id="refDrop">ファイルをドロップ、またはクリックして選ぶ<br>（wav・mp3・m4a・aiff など。5〜15 秒の一人の声）</div>
+      <input type="file" id="refFile" accept="audio/*" hidden>
+      <div class="row" style="margin-top:8px">
+        <button id="recButton">マイクで録る</button>
+        <span id="recState" class="status" style="margin:0"></span>
+      </div>
+      <div class="clips" id="refClips"></div>
+    </section>
+    <section>
+      <h2>2. 元の声（変える前）</h2>
+      <div class="tabs">
+        <button id="tabTts" class="on">OS の音声合成</button>
+        <button id="tabFile">音声ファイル</button>
+      </div>
+      <div id="ttsPane">
+        <label for="voice">OS の声</label>
+        <select id="voice"></select>
+        <label for="text">読ませる文</label>
+        <textarea id="text">こんにちは。今日はいい天気ですね。少し散歩してから、駅前のカフェでコーヒーを飲みませんか？</textarea>
+        <div class="presets" id="presets"></div>
+        <label for="rate">速さ（1 分あたりの語数。空なら声の既定）</label>
+        <input type="number" id="rate" min="80" max="400" placeholder="既定">
+      </div>
+      <div id="filePane" hidden>
+        <div class="drop" id="srcDrop">変えたい声のファイルをドロップ、またはクリックして選ぶ</div>
+        <input type="file" id="srcFile" accept="audio/*" hidden>
+        <div class="clips" id="srcClips"></div>
+      </div>
+    </section>
+    <section>
+      <h2>3. 変換</h2>
+      <div class="row">
+        <div><label for="model">モデル</label>
+          <select id="model"><option value="120ms">120ms + 40ms（質を優先）</option><option value="40ms">40ms + 40ms（遅れを優先）</option></select></div>
+        <div style="flex:.6"><label for="steps">steps</label>
+          <select id="steps"><option>1</option><option>2</option><option selected>3</option></select></div>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <button class="primary" id="convert">変換する</button>
+        <button id="convertAll">日本語の声をすべて</button>
+      </div>
+      <div class="status" id="status"></div>
+    </section>
+  </div>
+  <div>
+    <section>
+      <h2>結果（新しいものが上）</h2>
+      <div class="results" id="results"><div class="empty">まだありません。左で参照の声を選んで「変換する」を押してください。</div></div>
+    </section>
+  </div>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const PRESETS = [
+  ["挨拶", "こんにちは。今日はいい天気ですね。少し散歩してから、駅前のカフェでコーヒーを飲みませんか？"],
+  ["促音・長音", "ちょっと待って。チケットはもう買ってあるから、ゆっくり行こうよ。"],
+  ["数字", "明日の朝、七時三十分に、東京駅の八重洲口で待ち合わせしましょう。"],
+  ["感情", "えっ、本当に？すごい！ずっと楽しみにしてたんだ、ありがとう！"],
+  ["説明", "この機能を使うには、設定の画面を開いて、スピーカーで話すをオンにしてください。"],
+  ["英語混じり", "MacBook の Bluetooth をオフにしてから、もう一度 iPhone とつないでみて。"],
+];
+let referenceId = null, sourceId = null, sourceMode = "tts", voices = [];
+
+function setStatus(text, error = false) { $("status").textContent = text; $("status").className = "status" + (error ? " error" : ""); }
+
+async function api(path, options) {
+  const response = await fetch(path, options);
+  const body = await response.json();
+  if (!response.ok) throw new Error(body.error || response.statusText);
+  return body;
+}
+
+function renderClips() {
+  return api("/api/clips").then((clips) => {
+    for (const [kind, box] of [["reference", $("refClips")], ["source", $("srcClips")]]) {
+      box.innerHTML = "";
+      for (const clip of clips.filter((c) => c.kind === kind)) {
+        const selected = kind === "reference" ? referenceId : sourceId;
+        const element = document.createElement("div");
+        element.className = "clip" + (clip.id === selected ? " selected" : "");
+        element.innerHTML = `<input type="radio" name="${kind}"><span class="name"></span>
+          <span class="meta">${clip.seconds.toFixed(1)} 秒 · RMS ${clip.rms_dbfs} dBFS</span><audio controls preload="none"></audio>`;
+        element.querySelector(".name").textContent = clip.label;
+        element.querySelector("audio").src = clip.url;
+        const radio = element.querySelector("input");
+        radio.checked = clip.id === selected;
+        const choose = () => { if (kind === "reference") referenceId = clip.id; else sourceId = clip.id; renderClips(); };
+        radio.addEventListener("change", choose);
+        element.querySelector(".name").addEventListener("click", choose);
+        box.appendChild(element);
+      }
+    }
+  });
+}
+
+async function upload(file, kind) {
+  setStatus(`${file.name} を読み込み中…`);
+  try {
+    const clip = await api(`/api/upload?kind=${kind}`, {
+      method: "POST", body: file, headers: { "X-Filename": encodeURIComponent(file.name) } });
+    if (kind === "reference") referenceId = clip.id; else sourceId = clip.id;
+    await renderClips();
+    setStatus(`${file.name}（${clip.seconds.toFixed(1)} 秒）を追加しました`);
+  } catch (error) { setStatus(error.message, true); }
+}
+
+function wireDrop(dropId, inputId, kind) {
+  const drop = $(dropId), input = $(inputId);
+  drop.addEventListener("click", () => input.click());
+  input.addEventListener("change", () => { if (input.files[0]) upload(input.files[0], kind); input.value = ""; });
+  drop.addEventListener("dragover", (event) => { event.preventDefault(); drop.classList.add("over"); });
+  drop.addEventListener("dragleave", () => drop.classList.remove("over"));
+  drop.addEventListener("drop", (event) => {
+    event.preventDefault(); drop.classList.remove("over");
+    if (event.dataTransfer.files[0]) upload(event.dataTransfer.files[0], kind);
+  });
+}
+
+// Microphone recording as 16-bit PCM WAV (the server decodes WAV with Core Audio; it cannot read webm).
+let recorder = null;
+function encodeWav(chunks, sampleRate) {
+  const length = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
+  const buffer = new ArrayBuffer(44 + length * 2), view = new DataView(buffer);
+  const write = (offset, text) => [...text].forEach((c, i) => view.setUint8(offset + i, c.charCodeAt(0)));
+  write(0, "RIFF"); view.setUint32(4, 36 + length * 2, true); write(8, "WAVEfmt ");
+  view.setUint32(16, 16, true); view.setUint16(20, 1, true); view.setUint16(22, 1, true);
+  view.setUint32(24, sampleRate, true); view.setUint32(28, sampleRate * 2, true);
+  view.setUint16(32, 2, true); view.setUint16(34, 16, true); write(36, "data"); view.setUint32(40, length * 2, true);
+  let offset = 44;
+  for (const chunk of chunks) for (const sample of chunk) {
+    view.setInt16(offset, Math.max(-1, Math.min(1, sample)) * 0x7fff, true); offset += 2;
+  }
+  return new Blob([buffer], { type: "audio/wav" });
+}
+$("recButton").addEventListener("click", async () => {
+  if (recorder) {
+    const { stream, context, node, chunks, started } = recorder; recorder = null;
+    node.disconnect(); stream.getTracks().forEach((track) => track.stop()); await context.close();
+    $("recButton").textContent = "マイクで録る"; $("recState").textContent = "";
+    const stamp = new Date(started).toLocaleTimeString("ja-JP");
+    upload(new File([encodeWav(chunks, context.sampleRate)], `マイクの録音 ${stamp}.wav`), "reference");
+    return;
+  }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+    const context = new AudioContext();
+    const input = context.createMediaStreamSource(stream);
+    const node = context.createScriptProcessor(4096, 1, 1);
+    const chunks = [], started = Date.now();
+    node.onaudioprocess = (event) => {
+      chunks.push(new Float32Array(event.inputBuffer.getChannelData(0)));
+      $("recState").innerHTML = `<span class="rec">● 録音中</span> ${((Date.now() - started) / 1000).toFixed(1)} 秒`;
+    };
+    input.connect(node); node.connect(context.destination);
+    recorder = { stream, context, node, chunks, started };
+    $("recButton").textContent = "止めて使う";
+  } catch (error) { setStatus(`マイクを開けませんでした: ${error.message}`, true); }
+});
+
+function setMode(mode) {
+  sourceMode = mode;
+  $("tabTts").classList.toggle("on", mode === "tts"); $("tabFile").classList.toggle("on", mode === "file");
+  $("ttsPane").hidden = mode !== "tts"; $("filePane").hidden = mode !== "file";
+}
+$("tabTts").addEventListener("click", () => setMode("tts"));
+$("tabFile").addEventListener("click", () => setMode("file"));
+
+function addResult(result, text) {
+  const box = $("results");
+  box.querySelector(".empty")?.remove();
+  const element = document.createElement("div");
+  element.className = "result";
+  const t = result.timings;
+  const parts = [`変換 ${(t.content_features + t.conversion).toFixed(2)} 秒（元の長さの ${result.real_time_factor} 倍）`];
+  if (t.tts !== undefined) parts.push(`TTS ${t.tts.toFixed(2)} 秒`);
+  if (t.speaker_embedding !== undefined) parts.push(`参照の埋め込み ${t.speaker_embedding.toFixed(2)} 秒`);
+  parts.push(`元 ${result.source.seconds} 秒 / 変換後 ${result.converted.seconds} 秒`);
+  parts.push(`ピーク ${result.source.peak_dbfs} → ${result.converted.peak_dbfs} dBFS`);
+  element.innerHTML = `<div class="title"></div><div class="text"></div>
+    <div class="pair"><div><span>元の声</span><audio controls></audio></div>
+    <div><span>変換後</span><audio controls></audio></div></div><div class="numbers"></div>`;
+  element.querySelector(".title").textContent =
+    `${result.source_label} → ${result.reference.label}（${result.model}・steps ${result.steps}）`;
+  element.querySelector(".text").textContent = text || "（音声ファイル）";
+  const [sourceAudio, convertedAudio] = element.querySelectorAll("audio");
+  sourceAudio.src = result.source.url; convertedAudio.src = result.converted.url;
+  element.querySelector(".numbers").textContent = parts.join(" · ");
+  box.prepend(element);
+  return convertedAudio;
+}
+
+async function runConversion(voice) {
+  const request = { reference_id: referenceId, model: $("model").value, steps: Number($("steps").value) };
+  let text = null;
+  if (sourceMode === "file") {
+    if (!sourceId) throw new Error("元の声のファイルを選んでください");
+    request.source_id = sourceId;
+  } else {
+    text = $("text").value.trim();
+    Object.assign(request, { text, voice, rate: $("rate").value ? Number($("rate").value) : null });
+  }
+  const result = await api("/api/convert", { method: "POST", body: JSON.stringify(request) });
+  return addResult(result, text);
+}
+
+async function guarded(task) {
+  if (!referenceId) { setStatus("参照の声を選んでください", true); return; }
+  $("convert").disabled = $("convertAll").disabled = true;
+  try { await task(); } catch (error) { setStatus(error.message, true); }
+  finally { $("convert").disabled = $("convertAll").disabled = false; }
+}
+$("convert").addEventListener("click", () => guarded(async () => {
+  setStatus("変換中…");
+  const audio = await runConversion($("voice").value);
+  setStatus("できました"); audio.play().catch(() => {});
+}));
+$("convertAll").addEventListener("click", () => guarded(async () => {
+  if (sourceMode !== "tts") throw new Error("「OS の音声合成」のときだけ使えます");
+  const japanese = voices.filter((voice) => voice.locale === "ja_JP");
+  for (const [index, voice] of japanese.entries()) {
+    setStatus(`変換中… ${index + 1} / ${japanese.length}（${voice.name}）`);
+    await runConversion(voice.name);
+  }
+  setStatus(`${japanese.length} 個の声を変換しました`);
+}));
+
+for (const [label, text] of PRESETS) {
+  const button = document.createElement("button");
+  button.textContent = label; button.addEventListener("click", () => { $("text").value = text; });
+  $("presets").appendChild(button);
+}
+wireDrop("refDrop", "refFile", "reference");
+wireDrop("srcDrop", "srcFile", "source");
+api("/api/voices").then((list) => {
+  voices = list;
+  for (const voice of list) {
+    const option = document.createElement("option");
+    option.value = voice.name; option.textContent = `${voice.name} · ${voice.locale}`;
+    $("voice").appendChild(option);
+  }
+  const kyoko = list.find((voice) => voice.name.startsWith("Kyoko"));
+  if (kyoko) $("voice").value = kyoko.name;
+});
+renderClips().then(() => api("/api/clips")).then((clips) => {
+  const first = clips.find((clip) => clip.kind === "reference");
+  if (first && !referenceId) { referenceId = first.id; renderClips(); }
+});
+</script>
+</body>
+</html>
