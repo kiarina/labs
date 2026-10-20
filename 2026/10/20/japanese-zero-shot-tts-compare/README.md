@@ -43,6 +43,7 @@ mise -C 2026/10/20/japanese-zero-shot-tts-compare run
 - 「MLX はストリーミングで生成する」: mlx-audio の `stream=True` でチャンクごとに受け取り、届いた時刻を測る。チャンクの長さ（`streaming_interval`）は 0.25〜2 秒。
   最初のチャンクが届いた時に再生を始め、チャンクを続けて鳴らしたとすると何秒途切れるか（途切れ）も出す。結果の帯は、各チャンクの届いた時刻と長さ。
   保存する音声はチャンクをつないだもの（つなぎ目も聞ける）。ブラウザへのストリーミング再生はしない
+- 「MLX を PyTorch 版と同じ生成の設定にする」（既定でオン）: mlx-audio の声のクローンの設定を qwen-tts に合わせる（下の「MLX vs PyTorch, stage by stage」）。外すと mlx-audio の既定
 - 「話し始めの補正」: ストリーミングのときに、復号器を参照の声の符号で温めてから始める（下の「Streaming onset」）。既定は参照の末尾 1 秒
 - 「1 列ずつ順に動かす」（既定）: 外すと worker ごとに同時に動かす（GPU・CPU を取り合うので時間は正しくない）
 - Qwen3-TTS PyTorch のモデル（1.7B・0.6B）と seed
@@ -61,6 +62,7 @@ mise -C 2026/10/20/japanese-zero-shot-tts-compare run
 - `engines/cosyvoice3/worker.py`（Python 3.11、upstream の `requirements.txt` のうち推論に要るものを同じ版で）
 - `engines/qwen3_tts_mlx/worker.py`（Python 3.12、mlx 0.32.4、`mlx-audio` 0.6.0。バッファのキャッシュは 1 GB まで）
 - `bench/qwen3_tts_mlx/bench.py`: MLX 版の速さとメモリを、Web UI を使わずに測る
+- `bench/qwen3_tts_parity/`: MLX 版と PyTorch 版を段ごとに比べる（下の「MLX vs PyTorch, stage by stage」）
 
 ## Components
 
@@ -116,7 +118,8 @@ Qwen3-TTS の PyTorch 版と MLX 版の比較（同じ人の評価）: **PyTorch
 
 同じ重み（1.7B Base）で、生成の設定（temperature 0.9・top_k 50・top_p 1.0・repetition penalty 1.05、sub-talker も 0.9・50）も同じでした
 （`generation_config.json` と mlx-audio 0.6.0・qwen-tts 0.1.1 のコード）。参照の声の符号と話者の埋め込み（x-vector）も両方が使っています。
-差の原因は切り分けていません。候補は、mlx-audio の移植の違い（話者の埋め込みの mel、参照の声の再サンプリング、音声への復号器）と、MPS と MLX の bf16 の計算の違いです。
+段ごとに比べた結果は下の「MLX vs PyTorch, stage by stage」にあります。各部品は一致し、違いは mlx-audio の生成の設定（繰り返しの罰則と、文と参照の符号の並べ方）でした。
+上の評価は、その設定を PyTorch に合わせる前（mlx-audio の既定）の音です。
 
 ### Device and speed (before the web UI, one engine at a time)
 
@@ -256,6 +259,80 @@ Web UI の「話し始めの補正」で、なし・参照の末尾 1（既定�
 聞いた lab の作者の評価: **参照の末尾 1 秒（12 符号）で OK**（話し始めの崩れが気にならない）。サンプルの話者 1 に加え、作者が自分で録った声を参照にしても同じでした。そこで Web UI の既定を末尾 1 秒にしました（最初の音は補正なしより約 0.05 秒遅いだけ）。聞いた文と回数は記録していません。
 参照が同じなら温めた後の状態も同じなので、状態を取っておいて使い回せば、この遅れは無くせるはずです（未実装）。
 
+### MLX vs PyTorch, stage by stage
+
+聞いた評価で MLX が PyTorch に明らかに劣った原因を、段ごとに切り分けました。参照はサンプルの話者 1（6.6 秒、83 符号）と文字起こし、文は挨拶の文です。
+[MLX 移植の一致検証の型](../../../../docs/mlx-port-parity.md)に従い、まず float32 で、各段に PyTorch 側と同じ入力を与えて比べました。
+PyTorch 側は CPU float32（`torch_fixture.py`）。MLX 側は mlx-community の bf16 の重みを float32 に戻したもの（`mlx_compare.py --dtype float32`）で、
+元の重みは両方とも同じ bf16 の値です（話し言葉の tokenizer の重みは両方とも float32）。
+
+```sh
+engines/qwen3_tts/.venv/bin/python bench/qwen3_tts_parity/torch_fixture.py --generate
+engines/qwen3_tts_mlx/.venv/bin/python bench/qwen3_tts_parity/mlx_compare.py --dtype float32
+```
+
+| Stage | Compared | float32 | MLX bf16（実行時の設定） |
+|---|---|---|---|
+| 1 参照の声 | 読み込んだ波形（24 kHz のファイル。どちらも再サンプリングしない） | 差 0 | 差 0 |
+| 1 参照の符号 | speech tokenizer の encode（同じ波形） | 83 中 82 が 16 個とも同じ。11 番目だけ 8〜16 個目の符号が違う | 同じ |
+| 2 mel | 話者の埋め込みの mel | cos 1.000000（最大差 0.11、対数の小さい値） | 同じ |
+| 2 x-vector | 同じ mel から | cos 1.000000（相対誤差 6.6e-7） | cos 0.999996 |
+| 3 talker | 同じ入力の埋め込みでの 1 歩目の logits | KL 1.5e-10、最大差 3.8e-5 | KL 7.2e-4 |
+| 3 code predictor | 同じ hidden と 1 フレームの符号で、15 段を teacher forcing | KL 2.2e-10、argmax 15/15 | KL 2.2e-3、argmax 15/15 |
+| 4 復号 | 参照の 83 符号から音声へ | cos 0.99998、相対誤差 6.3e-3 | 同じ（復号器は float32 のまま） |
+
+KL は temperature 0.9 の分布で、PyTorch を基準にした値です。**部品はどれも一致しました。** bf16 の差も、PyTorch 自身を MPS の bf16 で動かした差より小さく
+（MPS bf16 と CPU float32 の 1 歩目の logits の KL は 4.7e-2）、MLX の bf16 の計算は原因ではありません。
+
+違いは、mlx-audio 0.6.0 の声のクローンが、qwen-tts 0.1.1 の `generate_voice_clone` の既定と違う設定で生成していることでした（コードで確認）。
+
+1. **繰り返しの罰則**: mlx-audio は声のクローンのときだけ `max(repetition_penalty, 1.5)` にし（`Model.generate`、コメントは「長い参照の prefill で符号が崩れるのを防ぐ」）、
+   直近 64 個の符号に掛けます。qwen-tts は checkpoint の 1.05 を、生成したすべての符号に掛けます（transformers の `RepetitionPenaltyLogitsProcessor`）
+2. **文と参照の符号の並べ方**: qwen-tts の既定（`non_streaming_mode=False`）は、文（参照の文字起こし + 読ませる文 + eos）を参照の符号に 1 つずつ重ね、
+   余った文を生成の 1 歩ごとに足します。mlx-audio は常に `non_streaming_mode=True` の並べ方（文を全部 codec pad に重ね、その後に参照の符号を tts pad に重ねる）です。
+   この参照と文では prefill が 151（mlx-audio）と 93（qwen-tts）で、同じ部品に入れた 1 歩目の logits の KL は 2.2e-2 でした
+
+worker で両方を qwen-tts に合わせると（`match_pytorch`）、prefill の埋め込みは PyTorch と一致し（同じ参照の符号を与えて float32 で cos 1.000000）、
+1 歩目の logits の KL は 1.8e-4（MLX 自身の参照の符号で）になりました。
+
+生成した符号の統計（`mlx_generate.py`、`torch_generate.py`）。文 3 つ × seed 5、参照はサンプルの話者 1。PyTorch は Web UI の worker と同じ MPS bf16 です。
+
+| Setting | Runs | 1 つ目の符号が前と同じ割合 | 異なる符号の割合 | 音声（平均） | 話者の cos（平均、最小） |
+|---|---:|---:|---:|---:|---:|
+| PyTorch MPS bf16 | 15 | 0.028 | 0.884 | 6.39 秒 | 0.977、0.966 |
+| MLX bf16 mlx-audio の既定 | 15 | **0.000** | **0.970** | 6.86 秒 | 0.985、0.983 |
+| MLX bf16 罰則だけ 1.05 | 15 | 0.020 | 0.892 | 6.96 秒 | 0.984、0.980 |
+| MLX bf16 並べ方だけ | 15 | 0.000 | 0.975 | 6.78 秒 | 0.985、0.983 |
+| MLX bf16 両方（`match_pytorch`） | 15 | 0.026 | 0.873 | 6.70 秒 | 0.985、0.983 |
+| MLX 8bit mlx-audio の既定 | 15 | 0.000 | 0.975 | 6.93 秒 | 0.985、0.976 |
+| MLX 8bit 両方（`match_pytorch`） | 15 | 0.023 | 0.886 | 7.06 秒 | 0.985、0.980 |
+
+- **mlx-audio の罰則（1.5）のままだと、1 つ目の符号が直前と同じになることがほぼ無い**（bf16・8bit、並べ方の有無を合わせた 60 本のうち 59 本で一度も無い）。
+  PyTorch は 15 本中 13 本で、約 3% のフレームが同じ符号を続けます（伸ばす音や間と推測）。
+  罰則 1.5 が、直近 64 個（約 5 秒）に出た符号をほぼ使わせないためと考えます。罰則を 1.05 にすると、PyTorch と同じ統計に戻りました
+- 話者の cos は、モデル自身の話者の埋め込み（float32）で、出力と参照を比べた値です。どの設定も 0.98 前後で、PyTorch が最も低く、聞いた評価とは合いません。
+  この指標では質の差は測れませんでした（独立した話者の埋め込みは未確認）
+- 長い文（昔話）では MLX が PyTorch より約 0.8 秒長いまま残りました（10.3 秒と 9.5 秒）。原因は確かめていません。
+  違いとして残っているのは、PyTorch は参照の声を bf16 で符号にしていること（下）と、qwen-tts の `min_new_tokens=2`（最初の 2 歩は eos を出さない）を入れていないことです
+- PyTorch の worker（MPS bf16）は speech tokenizer も bf16 で動かすので、参照の符号が float32 と違います（1 つ目の符号の一致 96%、16 個目は 5%）。
+  MLX は speech tokenizer を float32 で動かし、float32 の PyTorch とほぼ同じ符号です。どちらが聞いて良いかは分けて聞いていません
+- 速さは変わりません（Web UI で 3.5 秒の文が 2.0〜2.1 秒、ストリーミングの最初の音 0.37 秒）。上の「Qwen3-TTS on MLX」「Quantization and streaming」の表は合わせる前の値です
+
+**聞いて確かめるのはこれから**です。Web UI の「MLX を PyTorch 版と同じ生成の設定にする」（既定でオン）を切り替えて、同じ seed で比べられます。
+
+#### mlx-audio への報告の材料（未報告。報告はオーナーに確認してから）
+
+- 対象: mlx-audio 0.6.0 の `mlx_audio/tts/models/qwen3_tts/qwen3_tts.py`。`Model.generate` の `icl_rep_penalty = max(repetition_penalty, 1.5)` と、
+  `_prepare_icl_generation_inputs` が `non_streaming_mode=True` の並べ方だけを作ること
+- 参照実装: qwen-tts 0.1.1 の `Qwen3TTSModel.generate_voice_clone`（`non_streaming_mode=False` が既定）と `Qwen3TTSForConditionalGeneration.generate_icl_prompt`
+- 最小の再現: 上の 2 つのスクリプトで、部品は float32 で一致し（表）、1 つ目の符号が直前と同じになる割合が 0（PyTorch は 0.028）になることを示せる。
+  `generate(..., repetition_penalty=1.05)` と明示しても 1.5 になる
+- 直し方の案: 罰則は呼び出し側の値（checkpoint の既定 1.05）を使う。並べ方は qwen-tts と同じく文を参照の符号に重ねる形を既定にし、今の形は選べるようにする。
+  worker の差し替え（`engines/qwen3_tts_mlx/worker.py`）がそのまま実装の例になる
+- 付け加えて言えること: 罰則 1.5 の理由（長い参照で符号が崩れる）が、qwen-tts の並べ方でも起きるかは確かめていない。この lab の参照は 6.6 秒だけ
+- コードを読んで気づいたが確かめていないこと: `Qwen3TTSSpeechTokenizer.decode` は有効な長さを「1 つ目の符号が 0 より大きいフレームの数」で数える。符号 0 は有効な値なので、
+  生成に 0 が出ると末尾が切れる可能性がある
+
 ### CosyVoice 3 text normalization
 
 CosyVoice 3 の worker は起動のたびに ModelScope から `pengzhendong/wetext` を取ろうとして 403 になり、`no frontend is avaliable` と出して
@@ -264,7 +341,8 @@ CosyVoice 3 の worker は起動のたびに ModelScope から `pengzhendong/wet
 ## Limitations and next steps
 
 - 聞き比べは 1 人で、組み合わせを記録していない
-- MLX 版が PyTorch 版より質が低い原因を、段ごとに（参照の符号、話者の埋め込み、同じ入力での talker の出力、同じ符号からの復号）PyTorch と比べて切り分ける
+- `match_pytorch` で MLX が PyTorch に追いついたかを聞いて確かめる。残る違い（長い文の長さ、参照の符号の bf16、`min_new_tokens`）を詰めるかはその結果で決める
+- mlx-audio へ報告するか（上の「報告の材料」）をオーナーと決める
 - 温めた後の復号器の状態を参照ごとに取っておき、使い回す（最初の音の遅れを無くす）。mlx-audio への報告・修正の提案
 - ブラウザや body で、チャンクを届いた順に実際に鳴らす（今は届いた時刻からの計算だけ）
 - 参照（人の録音・長さ・音質）と文を増やし、文字の誤り率（CER）としてまとめる

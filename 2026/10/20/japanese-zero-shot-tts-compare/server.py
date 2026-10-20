@@ -266,6 +266,7 @@ class App:
                         "streaming_interval": float(request.get("streaming_interval", 0.5)),
                         "prime_decoder": bool(request.get("prime_decoder", True)),
                         "prime_tokens": int(request.get("prime_tokens", 0)),
+                        "match_pytorch": bool(request.get("match_pytorch", True)),
                         **extra,
                     }
                 )

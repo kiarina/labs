@@ -35,10 +35,63 @@ _prepare_icl = Qwen3TTSModel._prepare_icl_generation_inputs
 _reset = Qwen3TTSSpeechTokenizerDecoder.reset_streaming_state
 
 
-def _prepare_icl_and_keep_reference(self, *args, **kwargs):
-    result = _prepare_icl(self, *args, **kwargs)
+# mlx-audio 0.6.0 voice cloning also differs from qwen-tts 0.1.1's `generate_voice_clone` defaults in two ways, while each
+# module matches PyTorch in float32 (README, "MLX vs PyTorch, stage by stage"):
+# - prompt layout: qwen-tts defaults to non_streaming_mode=False, which overlays the text (reference + target + eos) on the
+#   reference codes, position by position, and feeds any text left over one token per generated step; mlx-audio always
+#   builds the non-streaming layout (all text over codec pad, then the reference codes over text pad).
+# - repetition penalty: mlx-audio raises it to at least 1.5 for voice cloning and applies it to the last 64 tokens;
+#   qwen-tts uses the checkpoint's 1.05 over all generated tokens (transformers' RepetitionPenaltyLogitsProcessor).
+# `match_pytorch` switches both to the qwen-tts behavior (`layout` and `penalty` separately for bench/qwen3_tts_parity).
+match = {"layout": False, "penalty": False, "repetition_penalty": 1.05}
+_generate_icl = Qwen3TTSModel._generate_icl
+_sample_token = Qwen3TTSModel._sample_token
+
+
+def _streaming_text_layout(self, input_embeds, text, ref_text, ref_codes):
+    """Rebuild the voice-clone prompt in qwen-tts's non_streaming_mode=False layout (generate_icl_prompt)."""
+    talker, config = self.talker, self.config.talker_config
+    ref_ids = mx.array(self.tokenizer.encode(f"<|im_start|>assistant\n{ref_text}<|im_end|>\n"))[None, 3:-2]
+    text_ids = mx.array(self.tokenizer.encode(f"<|im_start|>assistant\n{text}<|im_end|>\n<|im_start|>assistant\n"))[None, 3:-5]
+    special = talker.text_projection(
+        talker.get_text_embeddings()(mx.array([[self.config.tts_eos_token_id, self.config.tts_pad_token_id]]))
+    )
+    tts_eos, tts_pad = special[:, 0:1], special[:, 1:2]
+    text_embed = talker.text_projection(talker.get_text_embeddings()(mx.concatenate([ref_ids, text_ids], axis=1)))
+    text_embed = mx.concatenate([text_embed, tts_eos], axis=1)
+    codec_embed = talker.get_input_embeddings()(ref_codes[:, 0, :])
+    for i in range(config.num_code_groups - 1):
+        codec_embed = codec_embed + talker.code_predictor.codec_embedding[i](ref_codes[:, i + 1, :])
+    codec_embed = mx.concatenate([talker.get_input_embeddings()(mx.array([[config.codec_bos_id]])), codec_embed], axis=1)
+    text_lens, codec_lens = text_embed.shape[1], codec_embed.shape[1]
+    prefix = input_embeds[:, : input_embeds.shape[1] - text_lens - codec_lens]  # role + codec prefix, same in both layouts
+    if text_lens > codec_lens:
+        icl, trailing = text_embed[:, :codec_lens] + codec_embed, text_embed[:, codec_lens:]
+    else:
+        pad = mx.broadcast_to(tts_pad, (1, codec_lens - text_lens, tts_pad.shape[-1]))
+        icl, trailing = mx.concatenate([text_embed, pad], axis=1) + codec_embed, tts_pad
+    return mx.concatenate([prefix, icl], axis=1), trailing
+
+
+def _prepare_icl_and_keep_reference(self, text, ref_audio, ref_text, language="auto"):
+    result = _prepare_icl(self, text, ref_audio, ref_text, language)
     prime["codes"] = result[3]  # ref_codes [1, 16, ref_time]
+    if match["layout"]:
+        input_embeds, trailing = _streaming_text_layout(self, result[0], text, ref_text, result[3])
+        result = (input_embeds, trailing, result[2], result[3])
     return result
+
+
+def _generate_icl_matching(self, *args, **kwargs):
+    if match["penalty"]:
+        kwargs["repetition_penalty"] = match["repetition_penalty"]  # instead of max(penalty, 1.5)
+    return _generate_icl(self, *args, **kwargs)
+
+
+def _sample_token_matching(self, logits, *args, **kwargs):
+    if match["penalty"] and kwargs.get("generated_tokens"):
+        kwargs["repetition_context_size"] = len(kwargs["generated_tokens"])  # all generated tokens, not the last 64
+    return _sample_token(self, logits, *args, **kwargs)
 
 
 def _reset_and_prime(self):
@@ -52,6 +105,8 @@ def _reset_and_prime(self):
 
 Qwen3TTSModel._prepare_icl_generation_inputs = _prepare_icl_and_keep_reference
 Qwen3TTSSpeechTokenizerDecoder.reset_streaming_state = _reset_and_prime
+Qwen3TTSModel._generate_icl = _generate_icl_matching
+Qwen3TTSModel._sample_token = _sample_token_matching
 
 mx.set_cache_limit(1 << 30)  # keep the buffer cache from holding several GB between requests
 models: dict[str, object] = {}
@@ -94,6 +149,7 @@ def synthesize(request: dict) -> dict:
         kwargs.update(stream=True, streaming_interval=interval)
     prime["enabled"] = stream and bool(request.get("prime_decoder", True)) and bool(request.get("reference_text"))
     prime["tokens"] = int(request.get("prime_tokens", 0))  # 0: the whole reference
+    match["layout"] = match["penalty"] = bool(request.get("match_pytorch", True)) and bool(request.get("reference_text"))
 
     mx.random.seed(int(request.get("seed", 0)))
     mx.reset_peak_memory()
@@ -112,6 +168,7 @@ def synthesize(request: dict) -> dict:
         "device": "MLX",
         "input_text": request["text"],
         "mode": "voice clone"
+        + (" · PyTorch と同じ設定" if match["layout"] else " · mlx-audio の既定")
         + (f" · streaming {interval:g} 秒" if stream else "")
         + ((" · 話し始めの補正 " + (f"末尾 {prime['tokens']} 符号" if prime["tokens"] else "参照の全部")) if prime["enabled"] else ""),
         "sample_rate": tts.sample_rate,

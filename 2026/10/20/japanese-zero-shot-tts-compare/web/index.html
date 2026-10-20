@@ -105,6 +105,7 @@ table.summary th:first-child, table.summary td:first-child { text-align: left; }
       <label class="check"><input type="checkbox" id="katakana" checked> CosyVoice 3 にはカタカナにして渡す（公式の例の指示）</label>
       <label>比べる列</label>
       <div class="columns" id="columns"></div>
+      <label class="check"><input type="checkbox" id="matchPytorch" checked> MLX を PyTorch 版と同じ生成の設定にする（文と参照の符号の並べ方、繰り返しの罰則 1.05。外すと mlx-audio の既定）</label>
       <label class="check"><input type="checkbox" id="stream"> MLX はストリーミングで生成する（チャンクの届いた時刻を測る）</label>
       <div class="row">
         <div><label for="prime">話し始めの補正（ストリーミングの復号器を、参照の声の符号で温めてから始める）</label>
@@ -348,7 +349,7 @@ function addResult(response) {
     parts.push(`ピーク ${result.peak_dbfs} dBFS`);
     if (result.engine === "cosyvoice3" && result.input_text !== response.text) parts.push(`入力: ${result.input_text}`);
     cell(result.label, result.url, parts.join(" · "), null, result.arrivals);
-    const key = result.label + (result.chunks > 1 ? `（ストリーミング ${$("interval").value} 秒・補正 ${$("prime").selectedOptions[0].textContent.replace("（ストリーミングなしと同じ音）", "")}）` : "");
+    const key = result.label + (result.engine === "qwen3_tts_mlx" && !$("matchPytorch").checked ? "（mlx-audio の既定）" : "") + (result.chunks > 1 ? `（ストリーミング ${$("interval").value} 秒・補正 ${$("prime").selectedOptions[0].textContent.replace("（ストリーミングなしと同じ音）", "")}）` : "");
     (measurements[key] ||= []).push(result);
   }
   $("results").prepend(element);
@@ -359,7 +360,7 @@ async function generate(text) {
   const response = await api("/api/synthesize", { method: "POST", body: JSON.stringify({
     text, reference_id: referenceId, language: "ja", use_transcript: $("useTranscript").checked,
     katakana: $("katakana").checked, qwen_model: $("qwenModel").value, seed: Number($("seed").value),
-    columns: selectedColumns(), stream: $("stream").checked, streaming_interval: Number($("interval").value), prime_decoder: $("prime").value !== "off", prime_tokens: $("prime").value === "off" ? 0 : Number($("prime").value),
+    columns: selectedColumns(), stream: $("stream").checked, streaming_interval: Number($("interval").value), prime_decoder: $("prime").value !== "off", prime_tokens: $("prime").value === "off" ? 0 : Number($("prime").value), match_pytorch: $("matchPytorch").checked,
     sequential: $("sequential").checked }) });
   addResult(response);
 }
