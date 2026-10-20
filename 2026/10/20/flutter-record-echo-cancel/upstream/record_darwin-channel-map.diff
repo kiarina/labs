@@ -1,0 +1,54 @@
+diff --git a/record_darwin/darwin/Tests/CaptureOutputTests.swift b/record_darwin/darwin/Tests/CaptureOutputTests.swift
+index 8a929bb..11842a6 100644
+--- a/record_darwin/darwin/Tests/CaptureOutputTests.swift
++++ b/record_darwin/darwin/Tests/CaptureOutputTests.swift
+@@ -156,4 +156,33 @@ final class CaptureOutputTests: XCTestCase {
+     XCTAssertEqual(Double(size), 32000, accuracy: 32000 * 0.02)
+     XCTAssertNotEqual(header(path), "RIFF")
+   }
++
++  // MARK: - Voice processing input
++
++  // What the tap gives on macOS with voice processing on: 9 discrete channels, the processed one first.
++  private var voiceProcessingFormat: AVAudioFormat {
++    let layout = AVAudioChannelLayout(layoutTag: kAudioChannelLayoutTag_DiscreteInOrder | 9)!
++    return AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: rate, interleaved: false, channelLayout: layout)
++  }
++
++  // One tap buffer with a tone in channel 0 and silence elsewhere.
++  private func voiceProcessingBuffer() -> AVAudioPCMBuffer {
++    let buffer = AVAudioPCMBuffer(pcmFormat: voiceProcessingFormat, frameCapacity: 4800)!
++    buffer.frameLength = 4800
++    for c in 0..<9 {
++      for i in 0..<4800 {
++        buffer.floatChannelData![c][i] = c == 0 ? 0.5 * sin(2 * .pi * 440 * Float(i) / Float(rate)) : 0
++      }
++    }
++    return buffer
++  }
++
++  func testStreamKeepsTheVoiceProcessingChannel() throws {
++    let config = makeConfig(encoder: "pcm16bits", sampleRate: 16000, numChannels: 1)
++    let processor = try AudioStreamProcessor(config: config, srcFormat: voiceProcessingFormat)
++
++    let data = try processor.process(buffer: voiceProcessingBuffer()).reduce(Data(), +)
++    let peak = data.withUnsafeBytes { $0.bindMemory(to: Int16.self).map { $0.magnitude }.max() ?? 0 }
++    XCTAssertGreaterThan(peak, 1000)
++  }
+ }
+diff --git a/record_darwin/darwin/record_darwin/Sources/record_darwin/core/engine/CaptureOutput.swift b/record_darwin/darwin/record_darwin/Sources/record_darwin/core/engine/CaptureOutput.swift
+index f06819d..53c0d77 100644
+--- a/record_darwin/darwin/record_darwin/Sources/record_darwin/core/engine/CaptureOutput.swift
++++ b/record_darwin/darwin/record_darwin/Sources/record_darwin/core/engine/CaptureOutput.swift
+@@ -159,6 +159,11 @@ extension AVAudioConverter {
+       throw RecorderError.startFailed("Format conversion is not possible.")
+     }
+     converter.sampleRateConverterQuality = AVAudioQuality.high.rawValue
++    // With voice processing on macOS, the input has discrete channels (9 on a MacBook) and
++    // the converter maps none of them, so the output is silence. Channel 0 is the processed one.
++    if converter.channelMap.contains(where: { $0.intValue < 0 }) {
++      converter.channelMap = converter.channelMap.map { $0.intValue < 0 ? 0 : $0 }
++    }
+     return converter
+   }
+ 
