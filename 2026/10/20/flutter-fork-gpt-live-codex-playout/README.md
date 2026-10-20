@@ -153,6 +153,7 @@ Windows は `tools/windows/build.cmd`（短いパスの専用の `PUB_CACHE`）�
 - Windows の同時に話す区間で近端が落ちる件（-7.5 dB）と、Windows の 2 回目で gpt-live が音を処理しなくなった件（再現しなかった）が残る。
 - 「自分の声のエコーへの反応」は、静かな部屋で、加工前の参照（比較）を使った回でまだ判定できていない。
 - 加工の口は同期の 10 ms ブロック。実際の VC（例: MeanVC2）は非同期で遅れが大きいので、遅れを返して待ち行列で吸収する形にする必要がある。
+  この形で MeanVC2 を入れた続きは [MeanVC2 の lab](../flutter-gpt-live-codex-meanvc2-playout/README.md)（遅れ +0.5〜0.6 秒、VC の後の参照でエコーが消える）。
   その遅れの分、返事が遅れて聞こえる。
 - 受信トラックを探すのに flutter_webrtc の内部（Windows は `peerconnections_` へのアクセス）を使っている。製品では fork か bridge に正式な口を作るほうがよい。
 

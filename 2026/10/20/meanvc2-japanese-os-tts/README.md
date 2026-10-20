@@ -142,3 +142,4 @@ Kyoko だけで、ほかの 8 個は「天気」「カフェ」「コーヒー�
 - 人の日本語の声を元にした変換と比べ、TTS 特有の問題かを分ける
 - 参照の長さ、steps、`40ms` のモデルでの違い
 - 流しながらの変換、ONNX への書き出し、Windows は、質の判断の後に別の lab で扱う
+  （流しながらの変換と Windows は [gpt-live-1-codex の受信音への組み込み](../flutter-gpt-live-codex-meanvc2-playout/README.md) で確かめた。ONNX は未着手）
