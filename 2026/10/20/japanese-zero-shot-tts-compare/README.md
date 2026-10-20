@@ -122,6 +122,10 @@ Qwen3-TTS の PyTorch 版と MLX 版の比較（同じ人の評価）: **PyTorch
 段ごとに比べた結果は下の「MLX vs PyTorch, stage by stage」にあります。各部品は一致し、違いは mlx-audio の生成の設定（繰り返しの罰則と、文と参照の符号の並べ方）でした。
 上の評価は、その設定を PyTorch に合わせる前（mlx-audio の既定）の音です。
 
+設定を PyTorch に合わせた後に聞き直した評価（同じ人）: **PyTorch と MLX bf16 は同じレベル**。MLX fp32 は bf16 より良くはなく、bf16 のほうが良かった。
+**MLX bf16 で十分な質**と判断しました。重みは PyTorch 版も MLX bf16 版も同じ bf16 の値（safetensors の 480 個すべてが BF16）で、
+fp32 は計算の精度だけを上げたものです。聞いた文と回数は記録していません。
+
 ### Device and speed (before the web UI, one engine at a time)
 
 文「こんにちは。今日はいい天気ですね。少し散歩してから、駅前のカフェでコーヒーを飲みませんか？」、参照はサンプルの話者 1（6.6 秒、文字起こしあり）。
@@ -348,7 +352,7 @@ compile した後は重みを変えられないので、compile を止めて読�
 | MLX bf16 | 3.2 秒 | 6.2 秒 | 0.51〜0.53 | 0.37 秒 |
 
 fp32 も実時間より速いままでした。4 つのモデル（fp32・bf16・8bit・4bit）を読み込んだ MLX の worker は `phys_footprint` 18 GB（ピーク 23 GB）で、
-3 つだった時（約 10 GB）から、fp32 の分が約 8 GB 増えました。whisper.cpp で文のとおりに文字になりました。fp32 と bf16 の聞き比べはまだです。
+3 つだった時（約 10 GB）から、fp32 の分が約 8 GB 増えました。whisper.cpp で文のとおりに文字になりました。聞いた評価は、fp32 は bf16 より良くはなかった（上の「Listening」）。
 
 ### CosyVoice 3 text normalization
 
