@@ -1,0 +1,47 @@
+{
+  "repo": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+  "revision": "fd4b254389122332181a7c3db7f27e918eec64e3",
+  "dtype": "float32",
+  "device": "cpu",
+  "attention": "sdpa",
+  "versions": {
+    "qwen-tts": "0.1.1",
+    "torch": "2.14.1",
+    "transformers": "4.57.3"
+  },
+  "shapes": {
+    "inputs": [
+      1,
+      93,
+      2048
+    ],
+    "trailing": [
+      1,
+      1,
+      2048
+    ],
+    "pad": [
+      1,
+      1,
+      2048
+    ],
+    "logits": [
+      1,
+      3072
+    ],
+    "target_ids": [
+      25
+    ],
+    "ref_ids": [
+      32
+    ],
+    "ref_codes": [
+      83,
+      16
+    ],
+    "greedy_codes": [
+      15,
+      16
+    ]
+  }
+}

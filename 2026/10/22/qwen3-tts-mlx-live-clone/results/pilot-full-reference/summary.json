@@ -1,0 +1,71 @@
+[
+  {
+    "case": "full",
+    "trial": 0,
+    "temperature": 0.9,
+    "seed": 0,
+    "text": "こんにちは。今日はいい天気ですね。少し散歩してから、駅前のカフェでコーヒーを飲みませんか？",
+    "metrics": {
+      "first_pcm_s": 1.922767042000487,
+      "close_s": 7.77080058469437e-05,
+      "before_close": false,
+      "generate_s": 3.8605197080032667,
+      "audio_s": 6.96,
+      "rtf": 0.5546723718395499,
+      "gap_s": 0,
+      "finite": true,
+      "peak": 0.6944646239280701,
+      "frames": 87
+    },
+    "error": null
+  },
+  {
+    "case": "long_full",
+    "trial": 0,
+    "temperature": 0.9,
+    "seed": 0,
+    "text": "こんにちは。今日はいい天気ですね。少し散歩してから、駅前のカフェでコーヒーを飲みませんか？帰りに本屋へ寄って、新しい小説も探しましょう。急がなくても大丈夫です。",
+    "metrics": {
+      "first_pcm_s": 0.22093520800262922,
+      "close_s": 6.349999603116885e-05,
+      "before_close": false,
+      "generate_s": 3.643724708002992,
+      "audio_s": 12.24,
+      "rtf": 0.29768992712442743,
+      "gap_s": 0,
+      "finite": true,
+      "peak": 0.47207146883010864,
+      "frames": 153
+    },
+    "error": null
+  },
+  {
+    "case": "long_chars",
+    "trial": 0,
+    "temperature": 0.9,
+    "seed": 0,
+    "text": "こんにちは。今日はいい天気ですね。少し散歩してから、駅前のカフェでコーヒーを飲みませんか？帰りに本屋へ寄って、新しい小説も探しましょう。急がなくても大丈夫です。",
+    "metrics": {
+      "first_pcm_s": 3.940076708997367,
+      "close_s": 3.6607451669988222,
+      "before_close": false,
+      "generate_s": 7.356185459000699,
+      "audio_s": 12.24,
+      "rtf": 0.6009955440360047,
+      "gap_s": 0,
+      "finite": true,
+      "peak": 0.47207146883010864,
+      "frames": 153
+    },
+    "error": null
+  },
+  {
+    "case": "long_pause",
+    "trial": 0,
+    "temperature": 0.9,
+    "seed": 0,
+    "text": "こんにちは。今日はいい天気ですね。少し散歩してから、駅前のカフェでコーヒーを飲みませんか？帰りに本屋へ寄って、新しい小説も探しましょう。急がなくても大丈夫です。",
+    "metrics": {},
+    "error": "InterruptedError('Generation cancelled')"
+  }
+]

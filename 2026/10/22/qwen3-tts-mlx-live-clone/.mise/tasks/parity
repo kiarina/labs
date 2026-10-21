@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Export official float32 reference and verify MLX live-clone layout/logits/codes"
+set -euo pipefail
+mise run //:test-assets:download v1 labs-assets-v1
+cd "$(dirname "$0")/../.."
+uv run --frozen python -c "from inputs import make_reference; make_reference('../../../../tests/assets/mp3/conversation_2speaker_14s_16k.mp3', 'output-parity')"
+uv run --project reference --frozen reference/export.py --audio output-parity/reference.wav --output output-parity/torch-fixture.npz
+uv run --frozen parity.py --output output-parity

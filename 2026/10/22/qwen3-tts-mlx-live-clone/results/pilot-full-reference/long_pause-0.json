@@ -1,0 +1,43 @@
+{
+  "case": "long_pause",
+  "trial": 0,
+  "temperature": 0.9,
+  "seed": 0,
+  "text": "こんにちは。今日はいい天気ですね。少し散歩してから、駅前のカフェでコーヒーを飲みませんか？帰りに本屋へ寄って、新しい小説も探しましょう。急がなくても大丈夫です。",
+  "metrics": {},
+  "error": "InterruptedError('Generation cancelled')",
+  "events": [
+    {
+      "type": "push",
+      "t": 5.666699871653691e-05,
+      "text": "こんにちは。今日はいい天気ですね。少し散歩してから、駅前のカフェでコーヒーを飲みませんか？帰りに本屋へ寄って、"
+    },
+    {
+      "type": "audio_gate",
+      "t": 30.00903466699674,
+      "reached": false
+    },
+    {
+      "type": "producer_error",
+      "t": 30.009063041994523,
+      "error": "TimeoutError('First-PCM producer gate timed out')"
+    },
+    {
+      "type": "error",
+      "t": 30.009267666995584,
+      "error": "InterruptedError('Generation cancelled')"
+    }
+  ],
+  "trace": {
+    "codes": [],
+    "prefill": null,
+    "waits": [],
+    "commits": [
+      {
+        "t": 8.445799903711304e-05,
+        "tokens": 32,
+        "text_chars": 55
+      }
+    ]
+  }
+}

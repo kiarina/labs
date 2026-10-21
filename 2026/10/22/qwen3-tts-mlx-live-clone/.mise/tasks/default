@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Run Japanese live-input MLX ICL cloning benchmark"
+set -euo pipefail
+mise run //:test-assets:download v1 labs-assets-v1
+cd "$(dirname "$0")/../.."
+uv run --frozen bench.py "$@"
