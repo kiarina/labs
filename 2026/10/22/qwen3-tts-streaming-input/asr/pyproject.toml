@@ -1,0 +1,7 @@
+[project]
+name = "qwen3-tts-streaming-asr-check"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = ["mlx-whisper", "soundfile", "scipy"]
+[tool.uv]
+package = false

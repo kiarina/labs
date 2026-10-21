@@ -1,0 +1,34 @@
+{
+  "model": "Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice",
+  "revision": "0c0e3051f131929182e2c023b9537f8b1c68adfe",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "processor": "arm",
+  "python": "3.12.10",
+  "packages": {
+    "qwen-tts": "0.0.4",
+    "torch": "2.14.1",
+    "torchaudio": "2.11.0",
+    "transformers": "4.57.3",
+    "accelerate": "1.12.0",
+    "numpy": "2.5.4",
+    "soundfile": "0.14.0"
+  },
+  "device": "mps",
+  "dtype": "float32",
+  "attention": "eager",
+  "fast_codebook": true,
+  "text": {
+    "en": "Hello there, this is a test of streaming text input while the audio keeps playing.",
+    "ja": "こんにちは。今日はいい天気ですね。少し散歩してから、駅前のカフェでコーヒーを飲みませんか？",
+    "ja_phrases": [
+      "こんにちは。",
+      "今日はいい天気ですね。",
+      "少し散歩してから、",
+      "駅前のカフェで",
+      "コーヒーを飲みませんか？"
+    ]
+  },
+  "upstream": "6700c71755dd8cc4b100841c146062542fda484b",
+  "settings": "Stock live API defaults except max_frames=1000 safety cap. Seed 0 each run. Speaker Vivian.",
+  "load_s": 15.558296499999415
+}

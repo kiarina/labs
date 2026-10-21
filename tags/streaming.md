@@ -1,5 +1,6 @@
 # streaming
 
+- 2026/10/22 [Qwen3-TTS streaming text input and audio output on Apple Silicon](../2026/10/22/qwen3-tts-streaming-input/README.md)
 - 2026/10/21 [Streaming MeanVC2 voice conversion exported to ONNX: parity with upstream PyTorch and real-time speed in Flutter on macOS, Windows, Android and iOS](../2026/10/21/meanvc2-onnx-streaming/README.md)
 - 2026/10/19 [Bounded streaming video decoding and Dart VAD across native Flutter and WebAssembly](../2026/10/19/flutter-ffmpeg-streaming-input/README.md)
 - 2026/10/19 [Diagnosing and soaking Flutter FFmpeg and ONNX memory on macOS](../2026/10/19/flutter-streaming-memory-soak/README.md)

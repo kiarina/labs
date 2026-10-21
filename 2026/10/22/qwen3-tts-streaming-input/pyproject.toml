@@ -1,0 +1,11 @@
+[project]
+name = "qwen3-tts-streaming-input-lab"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = ["qwen-tts", "torch", "torchaudio"]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+qwen-tts = { git = "https://github.com/keless/Qwen3-TTS-streaming-input.git", rev = "6700c71755dd8cc4b100841c146062542fda484b" }
