@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Compare dedicated-PAD reference prefill with causal ICL"
+set -euo pipefail
+: "${REFERENCE_WAV:?Set REFERENCE_WAV to the complete reference WAV}"
+: "${REFERENCE_TRANSCRIPT_FILE:?Set REFERENCE_TRANSCRIPT_FILE to its transcript text file}"
+uv sync --frozen
+uv run --frozen python bench.py --reference "$REFERENCE_WAV" --transcript-file "$REFERENCE_TRANSCRIPT_FILE" "$@"

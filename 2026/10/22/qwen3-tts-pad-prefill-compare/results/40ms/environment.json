@@ -1,0 +1,28 @@
+{
+  "model": "mlx-community/Qwen3-TTS-12Hz-1.7B-Base-bf16",
+  "revision": "a6eb4f68e4b056f1215157bb696209bc82a6db48",
+  "dtype": "bf16",
+  "system": "macOS-27.0.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-audio": "0.6.1",
+    "transformers": "5.20.2",
+    "soundfile": "0.14.0",
+    "numpy": "2.5.4"
+  },
+  "reference_sha256": "c03e2da1cf1877fc829168840d894fb846716c69d80d4f00ae4cdaafea96a5c0",
+  "reference_samples": 256283,
+  "reference_s": 10.678458333333333,
+  "transcript_sha256": "f8ee31ee35b5dc1065480fdc226948e628b2f2e9b79e7e9363c533805e6754d6",
+  "transcript_chars": 60,
+  "load_s": 1.7855324170013773,
+  "prepare_s": {
+    "reference": 0.04081683300319128
+  },
+  "max_frames": 500,
+  "required_prefix_tokens": {
+    "icl": 105,
+    "pad_restart": 1
+  }
+}
