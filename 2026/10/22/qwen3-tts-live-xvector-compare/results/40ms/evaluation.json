@@ -1,0 +1,44 @@
+{
+  "ecapa_sha256": "245eb5995cfffd74494862dee33da2b00c1c2579eb0c6703847784e9901ed458",
+  "reference_self_cos": 1.0000001192092896,
+  "asr": "mlx-community/whisper-large-v3-turbo",
+  "asr_revision": "a4aaeec0636e6fef84abdcbe3544cb2bf7e9f6fb",
+  "scores": [
+    {
+      "file": "icl-short-chars-42.wav",
+      "ecapa_cos": 0.7709935307502747,
+      "pcm_16k_sha256": "a2450791725c2f92281ec454be8d00783e623bf7ffea94e4e311e3f262b49e00",
+      "asr": "こんにちは今日はいい天気ですね少し散歩してから駅前のカフェでコーヒーを飲みませんか?",
+      "cer": 0.0,
+      "target_chars": 41
+    },
+    {
+      "file": "xvector-short-chars-42.wav",
+      "ecapa_cos": 0.635944664478302,
+      "pcm_16k_sha256": "19aabc634cce8872074ca4080ea7eac872ebf6757120b907d8c3b0cb513bf037",
+      "asr": "こんにちは。今日はいい天気ですね。少し散歩してから駅前のカフェでコーヒーを飲みませんか?",
+      "cer": 0.0,
+      "target_chars": 41
+    },
+    {
+      "file": "icl-long-chars-42.wav",
+      "ecapa_cos": 0.7484939098358154,
+      "pcm_16k_sha256": "d15b0b9a003494091836c7e70bd143e4554dc2734cb5c15bc6fff4547ac85759",
+      "asr": "うん今ここまでちゃんと声を出してくれただけで十分だよ無理しなくていいしゆっくりでいいからねしんどい時はしんどいって言っていいんだよ今日もよく頑張ってるよそのままのあなたで大丈夫だからね明日は少しだけ散歩をして美味しいご飯を食べよう",
+      "cer": 0.017391304347826087,
+      "target_chars": 115
+    },
+    {
+      "file": "xvector-long-chars-42.wav",
+      "ecapa_cos": 0.6357882022857666,
+      "pcm_16k_sha256": "fb1861c64526a918b49d41ccb07b9bd07ad1a9b0c60f616ae33486ee407d9176",
+      "asr": "うん、今ここまでちゃんと声を出してくれただけで十分だよ。無理しなくていいし、ゆっくりでいいからね。しんどい時はしんどいって言っていいんだよ。今日もよく頑張ってるよ。そのままのあなたで大丈夫だからね。明日は少しだけ散歩をして、おいしいご飯を食べよう。",
+      "cer": 0.0,
+      "target_chars": 115
+    }
+  ],
+  "python": "3.12.11",
+  "onnxruntime": "1.27.0",
+  "numpy": "2.5.4",
+  "mlx_whisper": "0.4.3"
+}

@@ -1,5 +1,6 @@
 # audio
 
+- 2026/10/22 [Same-reference live Qwen3-TTS: causal ICL versus speaker embedding only](../2026/10/22/qwen3-tts-live-xvector-compare/README.md)
 - 2026/10/22 [Japanese live text and streaming PCM voice cloning with mlx-audio](../2026/10/22/qwen3-tts-mlx-live-clone/README.md)
 - 2026/10/22 [Qwen3-TTS streaming text input and audio output on Apple Silicon](../2026/10/22/qwen3-tts-streaming-input/README.md)
 - 2026/10/21 [Official remote audio tap in the external-media fork: decoded remote PCM, silenced native playout, application playout with AEC on the played voice](../2026/10/21/flutter-remote-audio-tap-playout/README.md)

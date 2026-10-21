@@ -1,5 +1,6 @@
 # mlx
 
+- 2026/10/22 [Same-reference live Qwen3-TTS: causal ICL versus speaker embedding only](../2026/10/22/qwen3-tts-live-xvector-compare/README.md)
 - 2026/10/22 [Japanese live text and streaming PCM voice cloning with mlx-audio](../2026/10/22/qwen3-tts-mlx-live-clone/README.md)
 - 2026/10/04 [MiniMax H3 Ref2VA (reference-to-video) on a 128 GB M4 Max: h3.c vs mlx-serve, with and without Turbo](../2026/10/04/minimax-h3-ref2va-eval/README.md)
 - 2026/09/24 [Qwen3.8-Flash-Next full 4-bit with a memory-mapped PLE table on a 128 GB M4 Max](../2026/09/24/qwen38-flash-next-ple-mmap/README.md)
