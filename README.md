@@ -19,7 +19,6 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 ## Labs
 
 - 2026/10
-  - [Qwen3-TTS live cloning: cropped ICL reference with full-reference speaker embedding](2026/10/22/qwen3-tts-icl-crop-xvector/README.md) - [audio](tags/audio.md), [tts](tags/tts.md), [qwen3-tts](tags/qwen3-tts.md), [mlx](tags/mlx.md), [streaming](tags/streaming.md), [voice-cloning](tags/voice-cloning.md), [japanese](tags/japanese.md)
   - [Same-reference live Qwen3-TTS: causal ICL versus speaker embedding only](2026/10/22/qwen3-tts-live-xvector-compare/README.md) - [audio](tags/audio.md), [tts](tags/tts.md), [qwen3-tts](tags/qwen3-tts.md), [mlx](tags/mlx.md), [streaming](tags/streaming.md), [voice-cloning](tags/voice-cloning.md), [japanese](tags/japanese.md)
   - [Japanese live text and streaming PCM voice cloning with mlx-audio](2026/10/22/qwen3-tts-mlx-live-clone/README.md) - [audio](tags/audio.md), [tts](tags/tts.md), [qwen3-tts](tags/qwen3-tts.md), [streaming](tags/streaming.md), [mlx](tags/mlx.md), [voice-cloning](tags/voice-cloning.md), [japanese](tags/japanese.md)
   - [Same-reference Qwen3-TTS: PAD prefill before live text](2026/10/22/qwen3-tts-pad-prefill-compare/README.md) - [audio](tags/audio.md), [tts](tags/tts.md), [qwen3-tts](tags/qwen3-tts.md), [mlx](tags/mlx.md), [streaming](tags/streaming.md), [voice-cloning](tags/voice-cloning.md), [japanese](tags/japanese.md)
