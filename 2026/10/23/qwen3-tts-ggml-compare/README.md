@@ -160,6 +160,14 @@ qwentts.cpp の使い方（`engines/qwentts_engine.py`）:
 
 （オーナーが `mise run listen` で聞いた結果をここに書く。未）
 
+### Other reference voices
+
+`REFERENCE_LABEL`・`REFERENCE_AUDIO`・`REFERENCE_TEXT_FILE` の環境変数で、話者 1 の代わりに別の参照の声を使えます（`engines/common.py`）。参照の音声は lab に含めません。
+`listen_reference.py <label>` が、その参照で作った全部の設定を並べたページ（`output/<label>.html`）を作ります。
+
+2026-10-23 に、フリー素材のキャラクターの声（10.7 秒、悲しみの読み）を参照にして、MLX bf16・qwentts.cpp（1.7B の Q8_0・BF16、Mac と Windows）・pltobing（Windows）で 7 文を作った。
+速さは話者 1 のときと同じ傾向（qwentts.cpp Q8 は Mac 0.41 倍・Windows 0.15 倍、MLX 0.58 倍）。
+
 ## Limitations
 
 - 7 文・seed 1 つ・各 1 回。速さのばらつきは測っていない

@@ -19,6 +19,12 @@ SAMPLE_RATE = 24_000
 SAMPLE_ASSET = LAB_DIR.parents[3] / "tests/assets/mp3/conversation_2speaker_14s_16k.mp3"
 SPEAKER1_SEGMENTS = [(0.000, 1.851), (4.737, 7.317), (9.677, 11.834)]
 REFERENCE_TEXT = "もしもし、もう駅に着いた？こっちはまだ電車。あと5分くらいかな。助かる。今日は結構寒いね。"
+# Another reference voice instead of speaker 1: REFERENCE_LABEL names it (output/reference-<label>.wav, and the output
+# directories get "-<label>"), REFERENCE_AUDIO is the source file (converted to 24 kHz mono once), REFERENCE_TEXT_FILE its
+# transcript (UTF-8). The audio is not part of the lab (README, "Other reference voices").
+REFERENCE_LABEL = os.environ.get("REFERENCE_LABEL", "")
+if REFERENCE_LABEL and os.environ.get("REFERENCE_TEXT_FILE"):
+    REFERENCE_TEXT = Path(os.environ["REFERENCE_TEXT_FILE"]).read_text(encoding="utf-8").strip()
 TEXTS = [
     "こんにちは。今日はいい天気ですね。少し散歩してから、駅前のカフェでコーヒーを飲みませんか？",
     "ちょっと待って。チケットはもう買ってあるから、ゆっくり行こうよ。",
@@ -32,7 +38,16 @@ WARMUP_TEXT = "こんにちは。"
 
 
 def reference_wav() -> Path:
-    """Speaker 1 at 24 kHz mono, 16-bit (afconvert on the Mac; copy the file to Windows)."""
+    """Speaker 1 (or REFERENCE_LABEL's voice) at 24 kHz mono, 16-bit (afconvert on the Mac; copy the file to Windows)."""
+    if REFERENCE_LABEL:
+        output = LAB_DIR / f"output/reference-{REFERENCE_LABEL}.wav"
+        if not output.exists():
+            output.parent.mkdir(parents=True, exist_ok=True)
+            subprocess.run(
+                ["afconvert", "-f", "WAVE", "-d", f"LEI16@{SAMPLE_RATE}", "-c", "1", os.environ["REFERENCE_AUDIO"], str(output)],
+                check=True,
+            )
+        return output
     output = LAB_DIR / "output/reference-speaker1.wav"
     if not output.exists():
         output.parent.mkdir(parents=True, exist_ok=True)
