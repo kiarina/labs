@@ -1,0 +1,10 @@
+# The Windows (CUDA) environment: drives the qwentts.cpp server. Transcription runs on the Mac.
+[project]
+name = "qwen3-tts-ggml-call-segments-windows"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = ["huggingface-hub", "numpy", "psutil", "soundfile"]
+
+[tool.uv]
+package = false
+environments = ["sys_platform == 'win32'"]

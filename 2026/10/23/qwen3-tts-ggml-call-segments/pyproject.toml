@@ -1,0 +1,10 @@
+[project]
+name = "qwen3-tts-ggml-call-segments"
+version = "0.1.0"
+description = "Spirits Garden's call speech (short spans of an incrementally arriving transcript) on qwentts.cpp"
+requires-python = ">=3.12,<3.13"
+dependencies = ["huggingface-hub", "mlx-whisper", "numpy", "soundfile"]
+
+[tool.uv]
+package = false
+environments = ["sys_platform == 'darwin'"]

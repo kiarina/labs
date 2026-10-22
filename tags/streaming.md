@@ -1,5 +1,6 @@
 # streaming
 
+- 2026/10/23 [Call speech in short spans on qwentts.cpp (Qwen3-TTS 1.7B BF16)](../2026/10/23/qwen3-tts-ggml-call-segments/README.md)
 - 2026/10/22 [Qwen3-TTS explicit reference and target boundaries for live cloning](../2026/10/22/qwen3-tts-explicit-boundary/README.md)
 - 2026/10/22 [Qwen3-TTS live cloning: cropped ICL reference with full-reference speaker embedding](../2026/10/22/qwen3-tts-icl-crop-xvector/README.md)
 - 2026/10/22 [Qwen3-TTS live cloning: decoupling text arrival from audio generation](../2026/10/22/qwen3-tts-live-audio-decoupling/README.md)
