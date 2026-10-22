@@ -1,5 +1,6 @@
 # tts
 
+- 2026/10/23 [Qwen3-TTS on ggml (qwentts.cpp, llama.cpp) vs MLX bf16 and an ONNX Runtime port](../2026/10/23/qwen3-tts-ggml-compare/README.md)
 - 2026/10/23 [Qwen3-TTS ONNX Runtime ports vs MLX bf16 on Apple Silicon](../2026/10/23/qwen3-tts-onnx-runtime-compare/README.md)
 - 2026/10/22 [Qwen3-TTS explicit reference and target boundaries for live cloning](../2026/10/22/qwen3-tts-explicit-boundary/README.md)
 - 2026/10/22 [Qwen3-TTS live cloning: cropped ICL reference with full-reference speaker embedding](../2026/10/22/qwen3-tts-icl-crop-xvector/README.md)

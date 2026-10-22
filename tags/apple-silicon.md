@@ -1,5 +1,6 @@
 # apple-silicon
 
+- 2026/10/23 [Qwen3-TTS on ggml (qwentts.cpp, llama.cpp) vs MLX bf16 and an ONNX Runtime port](../2026/10/23/qwen3-tts-ggml-compare/README.md)
 - 2026/10/23 [Qwen3-TTS ONNX Runtime ports vs MLX bf16 on Apple Silicon](../2026/10/23/qwen3-tts-onnx-runtime-compare/README.md)
 - 2026/10/22 [Qwen3-TTS streaming text input and audio output on Apple Silicon](../2026/10/22/qwen3-tts-streaming-input/README.md)
 - 2026/10/20 [CosyVoice 3 and Qwen3-TTS zero-shot voice cloning in Japanese](../2026/10/20/japanese-zero-shot-tts-compare/README.md)

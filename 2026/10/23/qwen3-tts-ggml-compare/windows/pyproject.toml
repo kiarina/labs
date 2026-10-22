@@ -1,0 +1,19 @@
+# The Windows (CUDA) environment: drives the ggml servers and runs the pltobing ONNX baseline.
+#   uv run --project windows bench.py qwentts --talker 1.7b-base-Q8_0
+[project]
+name = "qwen3-tts-ggml-compare-windows"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "huggingface-hub",
+    "librosa",
+    "numpy",
+    "onnxruntime-gpu[cuda,cudnn]==1.31.0",
+    "psutil",
+    "python-box",
+    "soundfile",
+]
+
+[tool.uv]
+package = false
+environments = ["sys_platform == 'win32'"]

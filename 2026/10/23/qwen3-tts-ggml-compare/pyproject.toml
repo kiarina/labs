@@ -1,0 +1,17 @@
+[project]
+name = "qwen3-tts-ggml-compare"
+version = "0.1.0"
+description = "Qwen3-TTS on ggml (qwentts.cpp, llama.cpp) vs MLX bf16 and an ONNX Runtime port"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "huggingface-hub",
+    "mlx==0.32.4",
+    "mlx-audio==0.6.1",
+    "mlx-whisper",
+    "numpy",
+    "soundfile",
+]
+
+[tool.uv]
+package = false
+environments = ["sys_platform == 'darwin'"]
