@@ -98,6 +98,11 @@ Six 80 ms/character outputs per mode (2 texts × 3 seeds).
 
 All character-input outputs had normalized Whisper CER 0 on the short text and 0–2.61 % on the long text; the non-zero cases are the same 「おいしい」/「美味しい」 spelling difference seen in the predecessor plus one 2.61 % case for `crop-head1`. No repeated or dropped passages were found by ASR. This does not establish natural Japanese prosody.
 
+### Human listening (owner, 2026-10-22, not blinded)
+
+- In the joined speech, the owner rated `crop-clause-spkcrop` best overall. This is the mode with the lowest independent ECAPA mean (0.619). The speaker-encoder diagnostic and the owner's overall judgment disagree here; the cosine should not be used to rank candidates.
+- In the as-delivered replay, the owner noticed choppy playback near the start. For the long text at 80 ms/character (seed 42) the stalls are 0.25, 0.80, 0.34, 0.91, 0.40 and 0.13 s, each after about 0.32–0.64 s of audio, all within the first 4 s of audio. The talker reads one text token per codec frame (12.5 tokens/s) while this input supplies about 8 tokens/s (125 characters, 79 tokens, one character per 80 ms), so generation catches up with the text and waits while queued audio drains. Starting playback 2.83 s after the first PCM would have removed every stall in that run; at 40 ms/character 0.20 s would have. Short text has no stalls because generation only starts after `text.done`.
+
 ### Conclusion and limits
 
 For this reference, shortening the ICL segment is not a usable middle ground: it gives up most of the measured similarity advantage of full ICL before the startup requirement falls low enough to matter for short replies. A lever that keeps the complete reference in ICL while removing the text requirement (for example the PAD-prefill layouts) or a different startup policy is needed instead. If cropping is used at all, keep the x-vector from the complete reference.
