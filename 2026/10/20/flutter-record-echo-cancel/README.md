@@ -162,6 +162,23 @@ iOS の録音は `IosRecordConfig(categoryOptions: [defaultToSpeaker, mixWithOth
 - どのプラットフォームでも、OS（ブラウザ）のエコー除去が参照にしているのは、同じアプリ（タブ）が流した音です。
   今回、相手の声は `audioplayers` で流しました。別のプレーヤー（TTS など）で流した音も参照に入るかは確かめていません
 
+### 作者の開発ブランチで確かめた（2026-10-23）
+
+#633 を閉じた作者が、開発中の `feature/route_change`（`record` 7.2.0・`record_darwin` 2.0.0、未公開）で直した。
+直し方は `3d09e0c`（`AVAudioConverter.make` で `channelMap` の `-1` を、同じ番号の入力チャンネル、無ければ 0 で埋める）で、#633 の案と同じ考え方。
+`f4bb8c2` を `dependency_overrides` の git で使い（差分は `patches/record-feature-route_change-f4bb8c2.diff`。lab の `record_macos` の写しは外れる）、
+上と同じ Mac・内蔵マイクとスピーカー・音量 50 で、相手の声の端末なし（`--helper none`）で流した。
+
+| run | variant | non-zero | silence dBFS | far dBFS / corr |
+| --- | --- | --- | --- | --- |
+| macos-darwin-branch-1 | raw | 100% | -37.4 | -28.5 / 0.72 |
+| macos-darwin-branch-1 | ec | 65% | -51.1 | -61.4 / 0.11 |
+| macos-darwin-branch-1 | ec-ns-agc | 80% | -27.1 | -34.8 / 0.23 |
+
+- `echoCancel` で音が 0 にならず、流した相手の声は raw より約 33 dB 下がった（相関 0.72 → 0.11）。lab の `mono` の修正（-51.2 dB / 0.17）と同じかそれ以上
+- `ec-ns-agc` は自動ゲインで全体が持ち上がる（無音区間 -27 dBFS）。相手の声との相関は 0.23 まで下がっている
+- 部屋の音（silence）が前回より大きく（raw -37 dBFS）、表の near・DT の列は相手の声の端末がないので比べていない（json には残る）。こちらの声が残るか（near）は確かめていない
+
 ## Requirements and run
 
 ```sh
@@ -188,7 +205,7 @@ python3 tools/summarize.py results/*.json
 - 各条件 1〜3 回。部屋・端末の位置・音量に左右される。iPad の音量は記録していない
 - 相関と音量は包絡で見たもので、人の声の明瞭さ（欠け・ひずみ）を人が聞いて確かめてはいない
 - 人の声は別の端末のスピーカーで代用した。本物の人の声・距離では測っていない
-- macOS の修正は `record_macos` の 1 か所を lab の中で直したもの。上流へは llfbandit/record#633 で、`main`（`record_darwin`）への修正（`AVAudioConverter` の channel map）として出した（`upstream/README.md`）。ほかのマイク（外付け・Bluetooth）、
+- macOS の修正は `record_macos` の 1 か所を lab の中で直したもの。上流へは llfbandit/record#633 で、`main`（`record_darwin`）への修正（`AVAudioConverter` の channel map）として出した（`upstream/README.md`）。作者が開発ブランチで直し、2026-10-23 にこの Mac で効くのを確かめた（上の「作者の開発ブランチで確かめた」）。ほかのマイク（外付け・Bluetooth）、
   ほかの Mac では試していない。iOS の `record_ios` は同じ作り（`setVoiceProcessingEnabled`）だが、iPad では 0 にならなかった
 - Android は Pixel 6 だけ。端末によっては `AcousticEchoCanceler` が無い・効き方が違う
 - Web は macOS の Chrome だけ。Safari・Firefox、ほかの OS の Chrome は試していない

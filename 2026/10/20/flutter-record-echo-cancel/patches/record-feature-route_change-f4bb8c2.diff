@@ -1,0 +1,27 @@
+diff --git a/2026/10/20/flutter-record-echo-cancel/app/pubspec.yaml b/2026/10/20/flutter-record-echo-cancel/app/pubspec.yaml
+index 9097eb9..6aba30b 100644
+--- a/2026/10/20/flutter-record-echo-cancel/app/pubspec.yaml
++++ b/2026/10/20/flutter-record-echo-cancel/app/pubspec.yaml
+@@ -41,8 +41,20 @@ dependencies:
+ # Lab copy of record_macos 2.1.1 with switchable fixes (ECHO_RECORD_MACOS_PATCH).
+ # Unset, it behaves as the published package.
+ dependency_overrides:
+-  record_macos:
+-    path: packages/record_macos
++  record:
++    git: {url: https://github.com/llfbandit/record.git, ref: f4bb8c2, path: record}
++  record_darwin:
++    git: {url: https://github.com/llfbandit/record.git, ref: f4bb8c2, path: record_darwin}
++  record_platform_interface:
++    git: {url: https://github.com/llfbandit/record.git, ref: f4bb8c2, path: record_platform_interface}
++  record_android:
++    git: {url: https://github.com/llfbandit/record.git, ref: f4bb8c2, path: record_android}
++  record_linux:
++    git: {url: https://github.com/llfbandit/record.git, ref: f4bb8c2, path: record_linux}
++  record_web:
++    git: {url: https://github.com/llfbandit/record.git, ref: f4bb8c2, path: record_web}
++  record_windows:
++    git: {url: https://github.com/llfbandit/record.git, ref: f4bb8c2, path: record_windows}
+ 
+ dev_dependencies:
+   flutter_test:
