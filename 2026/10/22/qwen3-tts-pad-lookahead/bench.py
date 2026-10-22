@@ -1,5 +1,6 @@
 """Isolated same-reference conditioning comparison; no production imports."""
 import argparse
+import re
 import hashlib
 import importlib.metadata
 import json
@@ -23,14 +24,27 @@ REV='a6eb4f68e4b056f1215157bb696209bc82a6db48'
 TEXTS={
  'short':'こんにちは。今日はいい天気ですね。少し散歩してから、駅前のカフェでコーヒーを飲みませんか？',
  'long':'うん、今ここまでちゃんと声を出してくれただけで十分だよ。無理しなくていいし、ゆっくりでいいからね。しんどい時は、しんどいって言っていいんだよ。今日もよく頑張ってるよ。そのままのあなたで大丈夫だからね。明日は少しだけ散歩をして、おいしいご飯を食べよう。',
+ # Follow-up: only 言っていいんだよ -> 言ってもかまわないよ, to remove the 〜ていい echo.
+ 'long_alt':'うん、今ここまでちゃんと声を出してくれただけで十分だよ。無理しなくていいし、ゆっくりでいいからね。しんどい時は、しんどいって言ってもかまわないよ。今日もよく頑張ってるよ。そのままのあなたで大丈夫だからね。明日は少しだけ散歩をして、おいしいご飯を食べよう。',
 }
 
 # pad_k{K}: PAD restart with K target tokens shown before codec_BOS.
 # *_sil: ICL codes from the reference plus SILENCE_S of trailing zeros; the
 # x-vector still comes from the unmodified reference.
+# *_p{N}: text pacing, a real text row at most every N frames (follow-up).
 LOOKAHEAD=[0,4,8,16];SILENCE_S=0.8
 MODES=['icl']+[f'pad_k{k}{s}' for s in ['','_sil'] for k in LOOKAHEAD]
-def lookahead(mode):return int(mode.removeprefix('pad_k').removesuffix('_sil'))
+FOLLOWUP_MODES=[f'pad_k{k}_sil_p{n}' for k in [0,16] for n in [2,3]]
+# *_c{name}: ICL segment cut to a pause-aligned tail of the private 60-char
+# reference (start_s, transcript char slice); x-vector from the complete reference.
+CROPS={'clause':(8.5,(45,60)),'tail3':(6.6,(41,60))}
+FOLLOWUP_MODES+=[f'pad_k{k}_sil_c{c}' for c in CROPS for k in [0,16]]
+def parse(mode):
+ m=re.fullmatch(r'pad_k(\d+)(_sil)?(?:_p(\d+))?(?:_c(\w+))?',mode)
+ return int(m[1]),bool(m[2]),int(m[3] or 1)
+def crop_of(mode):
+ m=re.search(r'_c(\w+)$',mode);return m[1] if m else None
+def lookahead(mode):return parse(mode)[0]
 
 def digest(b): return hashlib.sha256(b).hexdigest()
 def vector(model,audio):
@@ -54,7 +68,7 @@ def run(model,prompt,reference_vector,text,mode,case,schedule,seed,interval,out,
    events.append({'type':'producer_error','t':now(),'error':str(exc)});source.cancel()
  producer=threading.Thread(target=feed,daemon=True);producer.start();mx.random.seed(seed)
  try:
-  generator=(generate_live(model,prompt,source,max_frames=500,temperature=.9,trace=trace,require_text_consumed=eos_guard) if mode=='icl' else generate_pad(model,prompt,source,session,temperature=.9,trace=trace,require_text_consumed=eos_guard))
+  generator=(generate_live(model,prompt,source,max_frames=500,temperature=.9,trace=trace,require_text_consumed=eos_guard) if mode=='icl' else generate_pad(model,prompt,source,session,temperature=.9,trace=trace,require_text_consumed=eos_guard,pace=parse(mode)[2]))
   for pcm in generator:
    a=np.array(pcm,dtype=np.float32);chunks.append(a)
    events.append({'type':'pcm','t':now(),'samples':len(a),'chars':len(source.text)})
@@ -62,7 +76,7 @@ def run(model,prompt,reference_vector,text,mode,case,schedule,seed,interval,out,
   failure=repr(exc);source.cancel()
  elapsed=now();producer.join(5)
  stem=f'{mode}-{case}-{schedule}-{seed}'
- result={'mode':mode,'case':case,'schedule':schedule,'seed':seed,'text':text,'interval_s':interval,'error':failure,'required_prefix_tokens':prompt.required_prefix_tokens if mode=='icl' else session.required_tokens,'session_prepare_s':session.prep_s if session else 0.,'idle_before_text_s':idle_before_text,'prepared_rows':session.prepared_rows if session else 0,'eos_requires_all_text':eos_guard,'total_s':elapsed,'stop':trace.get('stop')}
+ result={'pace':1 if mode=='icl' else parse(mode)[2],'mode':mode,'case':case,'schedule':schedule,'seed':seed,'text':text,'interval_s':interval,'error':failure,'required_prefix_tokens':prompt.required_prefix_tokens if mode=='icl' else session.required_tokens,'session_prepare_s':session.prep_s if session else 0.,'idle_before_text_s':idle_before_text,'prepared_rows':session.prepared_rows if session else 0,'eos_requires_all_text':eos_guard,'total_s':elapsed,'stop':trace.get('stop')}
  if chunks:
   a=np.concatenate(chunks);sf.write(out/f'{stem}.wav',a,24000,subtype='FLOAT')
   arrivals=[x for x in events if x['type']=='pcm'];done=next((x['t'] for x in events if x['type']=='text.done'),None)
@@ -87,7 +101,7 @@ def run(model,prompt,reference_vector,text,mode,case,schedule,seed,interval,out,
 
 def main():
  p=argparse.ArgumentParser();p.add_argument('--reference',required=True);p.add_argument('--transcript-file',required=True)
- p.add_argument('--output',default='output');p.add_argument('--seeds',nargs='+',type=int,default=[42,43,44]);p.add_argument('--cases',nargs='+',default=['short','long']);p.add_argument('--schedules',nargs='+',default=['full','chars']);p.add_argument('--interval',type=float,default=.08);p.add_argument('--modes',nargs='+',choices=MODES,default=MODES)
+ p.add_argument('--output',default='output');p.add_argument('--seeds',nargs='+',type=int,default=[42,43,44]);p.add_argument('--cases',nargs='+',default=['short','long']);p.add_argument('--schedules',nargs='+',default=['full','chars']);p.add_argument('--interval',type=float,default=.08);p.add_argument('--modes',nargs='+',choices=MODES+FOLLOWUP_MODES,default=MODES)
  p.add_argument('--idle-before-text',type=float,default=2.);p.add_argument('--legacy-eos',action='store_true')
  args=p.parse_args();out=Path(args.output);out.mkdir(parents=True,exist_ok=True)
  t=time.perf_counter();model=load_model(snapshot_download(MODEL,revision=REV));load_s=time.perf_counter()-t
@@ -96,7 +110,15 @@ def main():
  t=time.perf_counter();prompt=prepare_clone(model,audio,transcript);prep['reference']=time.perf_counter()-t
  silent=mx.concatenate([audio,mx.zeros((round(SILENCE_S*24000),),dtype=audio.dtype)])
  t=time.perf_counter();prompt_sil=prepare_clone(model,silent,transcript,speaker_audio=audio);prep['reference_silence']=time.perf_counter()-t
- prompts={mode:(prompt_sil if mode.endswith('_sil') else prompt) for mode in args.modes}
+ def prompt_for(mode):
+  if mode=='icl':return prompt
+  if crop_of(mode):
+   assert len(transcript)==60,'crop slices assume the private 60-character reference transcript'
+   start,(a,b)=CROPS[crop_of(mode)];seg=audio[round(start*24000):]
+   seg=mx.concatenate([seg,mx.zeros((round(SILENCE_S*24000),),dtype=audio.dtype)])
+   return prepare_clone(model,seg,transcript[a:b],speaker_audio=audio)
+  return prompt_sil if parse(mode)[1] else prompt
+ prompts={mode:prompt_for(mode) for mode in args.modes}
  reference_vector=vector(model,np.array(audio))
  env={'model':MODEL,'revision':REV,'dtype':'bf16','system':platform.platform(),'machine':platform.machine(),
   'versions':{k:importlib.metadata.version(k) for k in ['mlx','mlx-audio','transformers','soundfile','numpy']},

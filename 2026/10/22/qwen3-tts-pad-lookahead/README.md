@@ -31,6 +31,8 @@ ASR text can contain the private reference transcript, so `results/` keeps count
 export REFERENCE_WAV=/path/to/reference.wav
 export REFERENCE_TRANSCRIPT_FILE=/path/to/transcript.txt
 mise run run
+mise run followup        # loop diagnosis: lead analysis, text pacing, wording variant
+mise run followup-crop   # loop diagnosis: short ICL segment
 uv run python -m http.server 8792   # then open output/listen.html
 ```
 
@@ -70,6 +72,60 @@ All 27 PAD outputs read correctly (CER 0), with no leak and no loop. First voice
 
 Trailing silence on the ICL reference is the useful lever found here: it largely removes the reference-tail leak at no latency cost. Target lookahead is not worth its latency for this purpose. PAD restart is still not usable for long replies because of the backtrack loop, which is now the main problem, and because silence introduced early stops. Candidate next steps, untested: an EOS guard that also requires speech to have caught up with the fed text (to target the cut), and a lighter repetition safeguard or a text-feed pacing limit (to target the loop, if it is caused by the text running far ahead of speech in this layout).
 
+Follow-up below (diagnosing the loop) was registered and run after these results.
+
 Not checked: human listening (the page `output/listen.html` is generated; no ratings assigned), other silence lengths, other references or speakers, more seeds, quantized models, real GPT-Live caption timing. ASR leak/loop counts are heuristics on Whisper output.
 
 Evidence: [summary](results/80ms/summary.json), [results](results/80ms/results.json), [scores without ASR text](results/80ms/evaluation.json), [environment](results/80ms/environment.json). Audio and raw ASR stay in ignored `output/`.
+
+## Follow-up protocol: why does the long text loop back? (registered before running)
+
+Scope: trailing silence kept (`_sil`), modes `pad_k0_sil` and `pad_k16_sil` (k16 looped 3/3 without cut-offs; k0 is the minimal-latency layout). Two hypotheses:
+
+1. **Text lead.** Text is fed one token per generated frame (12.5 tokens/s) whenever available, while this speech runs about 3.8 tokens/s. At 80 ms/character text arrives about 8 tokens/s, so by the third sentence the talker has read far ahead of what it is saying (with full input, all text is fed within the first ~6.5 s of frames). If the loop comes from losing its place, it should depend on how far ahead text has been fed.
+   - *Analysis of existing outputs* (no new generation): Whisper word timestamps locate where the second reading starts; from the trace, compute how many target tokens had been fed at that frame and how many the speech had reached.
+   - *Text pacing* (revised before running): changing the arrival rate cannot test this, because the talker consumes exactly one text row per generated frame whatever the arrival rate; slower arrival only pauses frames (the 40 ms and 80 ms runs were byte-identical). Instead change the sequence: feed a real target token at most every N frames (N = 2, 3) and a TTS PAD text row on the frames in between, so text advances about 6.3 or 4.2 tokens/s of audio, near the speech rate, and is not exhausted early. Untrained interleaving; N = 1 is the existing layout. Long text, full input and 80 ms/character, seeds 42/43/44.
+2. **Ambiguous repeated wording.** The jump goes from `しんどいって` (before `言っていいんだよ`) back to `…しなくていいし、ゆっくりでいいからね`, a similar `〜ていい` construction. *Text variant*: the long text with only `言っていいんだよ` replaced by `言ってもかまわないよ`, everything else identical, 80 ms/character and full input, seeds 42/43/44, plus the current ICL as control. If ambiguity drives it, the loop should disappear or move.
+
+Loop/leak/cut counting and privacy rules are as above. One reference, three seeds per cell; results are indicative, not statistical.
+
+## Follow-up results (2026-10-22)
+
+**戻りの原因は、文脈に入れている長い参照だった。ICL の参照を 2.2 秒の節にすると、長文 6 回すべてで戻りが消えた。ただし、声の類似度も埋め込みのみ以下まで下がった。** 戻りは本文をすべて入れ終えた後に起きる（どの回も同じ）。本文の進みを PAD で遅らせると話が完全に崩れ、言い回しを変えても戻る場所と戻り先は変わらなかった。 戻りは「しんどいって」の直後に、前の「無理しなくて」の続き（「いいし、ゆっくりでいいからね」）を話す形で起きる。
+
+### Where the loop happens (existing outputs, no new generation)
+
+Whisper word timestamps put the end of the first `しんどいって` at 9.0–12.0 s of audio in looping runs and 11.1–15.1 s in the others. At that point every PAD run, looping or not, had already fed all 79 target tokens: text is fed one token per frame from the start, so it is exhausted at about 6.3 s of audio (k = 0) while the speech has reached token 39. The talker is therefore always reading the rest of the text from rows it consumed earlier when the loop happens, about 40 tokens ahead of what it is saying. This is identical in looping and non-looping runs, so it is a precondition at most, not an explanation of which runs loop. The current ICL also has the full text in context (prefilled) and does not loop. Evidence: `results/loop-lead.json`.
+
+### Text pacing with PAD rows: not viable
+
+All 12 paced runs (`_p2`, `_p3`, k = 0 and 16, full input and 80 ms/character) reached the 500-frame cap (40 s) instead of ending. ASR shows the first sentence read with stutters, then degenerating into repeated syllables or words (for example the same 1–3 characters dozens of times). With k = 0 the reference-tail leak (≥ 8 characters) also returned in 3 of 6 runs. Interleaving TTS PAD text rows between real text rows is outside what the model handles, so this does not test the lead hypothesis and is not a usable remedy. Evidence: `results/pace-80ms/`.
+
+### Changed wording: loop unchanged
+
+With only `言っていいんだよ` changed to `言ってもかまわないよ` (`long_alt`), the PAD runs still looped at the same place and to the same place: after `しんどいって` they continued `いいし、ゆっくりでいいからね…`, the words that follow `無理しなくて` in the second sentence, then re-read correctly to the end. `pad_k16_sil`: loop 3/3 (plus full input, identical to seed 42). `pad_k0_sil`: loop 1, early cut 1, and one run (seed 42, identical in full input) that read the text and then continued with a repeated syllable until EOS at 35 s. The current ICL read the variant correctly 3/3 (CER ≤ 3 %, spelling differences only). The loop is therefore not triggered by the upcoming `〜ていい`; what both jumps share is the `〜って` / `〜くて` just before it, after which the talker continues from the earlier `無理しなくて`. That reading is an interpretation of ASR output. Evidence: `results/alt-80ms/`.
+
+### Added before running: does the reference context drive the loop?
+
+After the pacing and wording runs (results below), one more contrast was registered. The x-vector-only mode feeds text exactly like PAD restart and did not loop in [the x-vector comparison](../qwen3-tts-live-xvector-compare/README.md); PAD restart differs mainly by holding the 10.7 s reference and its transcript in context. Test: PAD restart (`_sil`, k = 0 and 16) with the ICL segment cut to the reference's last clause (2.18 s, 8.5 s–end) or last sentence (4.08 s, 6.6 s–end), each plus the same 0.8 s silence, x-vector from the complete reference, transcript sliced to match (as in [the cropped-ICL lab](../qwen3-tts-icl-crop-xvector/README.md)). Long text, 80 ms/character seeds 42/43/44 plus full input. If the loop rate falls with a shorter segment, the reference context is implicated.
+
+### Short ICL segment: the loop goes away, and so does similarity
+
+| mode (all `_sil`, x-vector from the complete reference) | ICL segment | loop | leak | CER per seed | ECAPA mean (range) |
+|---|---|---:|---:|---|---:|
+| `pad_k0_sil` (main run above) | 10.68 s | 1/3 | 0/3 | 47.8, 50.4, 23.5 % (2 cut) | 0.642 |
+| `pad_k16_sil` (main run above) | 10.68 s | 3/3 | 0/3 | 25.2, 27.0, 22.6 % | 0.735 |
+| `pad_k0_sil_ctail3` | 4.08 s | 0/3 | 0/3 | 0.0, 0.0, 0.0 % | 0.446 (0.324–0.519) |
+| `pad_k16_sil_ctail3` | 4.08 s | 3/3 | 0/3 | 21.7, 21.7, 25.2 % | 0.688 (0.658–0.721) |
+| `pad_k0_sil_cclause` | 2.18 s | 0/3 | 0/3 | 0.0, 0.0, 8.7 % | 0.632 (0.533–0.737) |
+| `pad_k16_sil_cclause` | 2.18 s | 0/3 | 0/3 | 1.7, 0.0, 1.7 % | 0.550 (0.491–0.652) |
+
+- With the 2.18 s segment, none of the 6 long-text runs looped, leaked or stopped early. The one 8.7 % CER run starts with a few garbled syllables before the text. First voice 2.8 s (k = 0) and 3.8 s (k = 16). With 4.08 s, k = 0 read cleanly 3/3 but k = 16 looped 3/3, at the same place as before.
+- So the amount of reference held in context drives the loop: the full 10.7 s reference loops in most runs, the 2.18 s clause in none. Together with the x-vector-only mode never looping, this points to the talker drawing on the reference (or its transcript rows) when it has to locate its position in already-consumed text. That is an interpretation; attention was not inspected.
+- The cost is similarity. ECAPA for the short segments is 0.45–0.69 on average, at or below x-vector only (0.654 in the predecessor lab) and well below the current ICL (0.744). Several outputs score below 0.55. As [the cropped-ICL lab](../qwen3-tts-icl-crop-xvector/README.md) found for the normal layout, shortening the ICL segment gives up what made ICL attractive; here it trades one failure (loop) for the other (similarity). Not judged by ear.
+
+### Follow-up conclusion
+
+The long-text loop in PAD restart is caused by the long reference in context, not by the upcoming wording, and it happens after all text has been consumed. Two cheap levers were ruled out: pacing text with PAD rows (breaks generation) and lookahead k (does not help, and k = 16 made the 4.08 s segment loop). Removing the loop by shortening the reference costs the similarity that PAD restart was meant to keep. Within this untrained layout no setting tried so far gives full-ICL similarity, no leak and no loop on the long text at the same time. Remaining options outside this lab's scope: splitting replies into sentences and restarting per sentence (each sentence is short, where PAD restart had no loop in any run), or adapting the model to the layout (for example self-distillation from the current ICL).
+
+Evidence: [lead analysis](results/loop-lead.json), [pacing](results/pace-80ms/), [wording variant](results/alt-80ms/), [short segment](results/crop-80ms/). Raw ASR and audio stay in ignored `output*/`.

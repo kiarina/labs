@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Loop diagnosis: PAD restart with a short ICL segment (needs REFERENCE_WAV, REFERENCE_TRANSCRIPT_FILE)"
+set -euo pipefail
+: "${REFERENCE_WAV:?}" "${REFERENCE_TRANSCRIPT_FILE:?}"
+ref=(--reference "$REFERENCE_WAV" --transcript-file "$REFERENCE_TRANSCRIPT_FILE")
+uv run python bench.py "${ref[@]}" --output output-crop --cases long \
+  --modes pad_k0_sil_cclause pad_k16_sil_cclause pad_k0_sil_ctail3 pad_k16_sil_ctail3
+uv run python evaluate.py "${ref[@]}" --output output-crop --asr
+uv run python audit.py --output output-crop
+uv run python replay.py --output output-crop
+uv run python summarize.py --output output-crop --export results/crop-80ms

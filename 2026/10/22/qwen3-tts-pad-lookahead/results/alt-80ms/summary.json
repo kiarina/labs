@@ -1,0 +1,116 @@
+[
+  {
+    "case": "long_alt",
+    "mode": "icl",
+    "n": 3,
+    "errors": 0,
+    "stops": [
+      "eos"
+    ],
+    "required_tokens": 105,
+    "first_pcm_s": 11.34836908300349,
+    "first_voiced_s": 12.025937125007623,
+    "text_done_s": 11.011888790992089,
+    "before_done": 0,
+    "gap_s": 0,
+    "ecapa": [
+      0.717,
+      0.732,
+      0.747
+    ],
+    "cer_pct": [
+      1.7,
+      1.7,
+      3.4
+    ],
+    "chars_before_target": [
+      0,
+      0,
+      null
+    ],
+    "reference_overlap": [
+      0,
+      0,
+      4
+    ],
+    "leaks": 0,
+    "loops": 0,
+    "cutoffs": 0
+  },
+  {
+    "case": "long_alt",
+    "mode": "pad_k0_sil",
+    "n": 3,
+    "errors": 0,
+    "stops": [
+      "eos"
+    ],
+    "required_tokens": 1,
+    "first_pcm_s": 2.483689333006623,
+    "first_voiced_s": 2.5436893330066233,
+    "text_done_s": 11.092250917005003,
+    "before_done": 3,
+    "gap_s": 2.867638416990518,
+    "ecapa": [
+      0.721,
+      0.784,
+      0.648
+    ],
+    "cer_pct": [
+      266.7,
+      23.9,
+      49.6
+    ],
+    "chars_before_target": [
+      0,
+      null,
+      0
+    ],
+    "reference_overlap": [
+      0,
+      4,
+      0
+    ],
+    "leaks": 0,
+    "loops": 1,
+    "cutoffs": 2
+  },
+  {
+    "case": "long_alt",
+    "mode": "pad_k16_sil",
+    "n": 3,
+    "errors": 0,
+    "stops": [
+      "eos"
+    ],
+    "required_tokens": 17,
+    "first_pcm_s": 3.5224724170111585,
+    "first_voiced_s": 3.578055959008052,
+    "text_done_s": 11.120712375006406,
+    "before_done": 3,
+    "gap_s": 3.139480124994876,
+    "ecapa": [
+      0.728,
+      0.712,
+      0.702
+    ],
+    "cer_pct": [
+      23.9,
+      23.1,
+      23.9
+    ],
+    "chars_before_target": [
+      null,
+      0,
+      null
+    ],
+    "reference_overlap": [
+      4,
+      0,
+      4
+    ],
+    "leaks": 0,
+    "loops": 3,
+    "cutoffs": 0
+  }
+]

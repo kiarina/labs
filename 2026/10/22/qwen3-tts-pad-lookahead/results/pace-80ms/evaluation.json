@@ -1,0 +1,251 @@
+{
+  "python": "3.12.11",
+  "onnxruntime": "1.27.0",
+  "numpy": "2.5.4",
+  "ecapa_sha256": "245eb5995cfffd74494862dee33da2b00c1c2579eb0c6703847784e9901ed458",
+  "reference_self_cos": 1.0000001192092896,
+  "asr": "mlx-community/whisper-large-v3-turbo",
+  "asr_revision": "a4aaeec0636e6fef84abdcbe3544cb2bf7e9f6fb",
+  "scores": [
+    {
+      "file": "pad_k0_sil-long-full-42.wav",
+      "ecapa_cos": 0.7370079755783081,
+      "pcm_16k_sha256": "fc99e6603a9e84388b487c7869b619ce3554eedd0ff86192b2546fd335b7404f",
+      "cer": 0.4782608695652174,
+      "target_chars": 115,
+      "target_prefix_found": true,
+      "chars_before_target": 0,
+      "reference_overlap_before_target": 0
+    },
+    {
+      "file": "pad_k0_sil_p2-long-full-42.wav",
+      "ecapa_cos": 0.8041340112686157,
+      "pcm_16k_sha256": "f2057938a45e2a629eb1cea2fb5199d9420eef3012807c9afc99221ef25a57e7",
+      "cer": 1.808695652173913,
+      "target_chars": 115,
+      "target_prefix_found": false,
+      "chars_before_target": null,
+      "reference_overlap_before_target": 15
+    },
+    {
+      "file": "pad_k0_sil_p3-long-full-42.wav",
+      "ecapa_cos": 0.5865495800971985,
+      "pcm_16k_sha256": "5bc479cb0bb06ed3c325d219b6e1e31f4d85c546a432b580f0a2f5b644629d6b",
+      "cer": 0.8956521739130435,
+      "target_chars": 115,
+      "target_prefix_found": false,
+      "chars_before_target": null,
+      "reference_overlap_before_target": 15
+    },
+    {
+      "file": "pad_k16_sil-long-full-42.wav",
+      "ecapa_cos": 0.7578083872795105,
+      "pcm_16k_sha256": "4f0b2b7fefb9796d4ff3b93e46cd83b473e76ea8015df719c25684712370e84a",
+      "cer": 0.25217391304347825,
+      "target_chars": 115,
+      "target_prefix_found": false,
+      "chars_before_target": null,
+      "reference_overlap_before_target": 4
+    },
+    {
+      "file": "pad_k16_sil_p2-long-full-42.wav",
+      "ecapa_cos": 0.7459584474563599,
+      "pcm_16k_sha256": "27d1ba9899099bd72b60527f813fdd446e5cb869702fc6e626c4c307c6981aac",
+      "cer": 1.5130434782608695,
+      "target_chars": 115,
+      "target_prefix_found": true,
+      "chars_before_target": 0,
+      "reference_overlap_before_target": 0
+    },
+    {
+      "file": "pad_k16_sil_p3-long-full-42.wav",
+      "ecapa_cos": 0.7676113843917847,
+      "pcm_16k_sha256": "98b998c252f9cca75d5cbebcae1d7d6478f3763d51508a60c79c5e88f834d2d3",
+      "cer": 2.878260869565217,
+      "target_chars": 115,
+      "target_prefix_found": true,
+      "chars_before_target": 0,
+      "reference_overlap_before_target": 0
+    },
+    {
+      "file": "pad_k0_sil-long-chars-42.wav",
+      "ecapa_cos": 0.7370079755783081,
+      "pcm_16k_sha256": "fc99e6603a9e84388b487c7869b619ce3554eedd0ff86192b2546fd335b7404f",
+      "cer": 0.4782608695652174,
+      "target_chars": 115,
+      "target_prefix_found": true,
+      "chars_before_target": 0,
+      "reference_overlap_before_target": 0
+    },
+    {
+      "file": "pad_k0_sil_p2-long-chars-42.wav",
+      "ecapa_cos": 0.8041340112686157,
+      "pcm_16k_sha256": "f2057938a45e2a629eb1cea2fb5199d9420eef3012807c9afc99221ef25a57e7",
+      "cer": 1.808695652173913,
+      "target_chars": 115,
+      "target_prefix_found": false,
+      "chars_before_target": null,
+      "reference_overlap_before_target": 15
+    },
+    {
+      "file": "pad_k0_sil_p3-long-chars-42.wav",
+      "ecapa_cos": 0.5865495800971985,
+      "pcm_16k_sha256": "5bc479cb0bb06ed3c325d219b6e1e31f4d85c546a432b580f0a2f5b644629d6b",
+      "cer": 0.8956521739130435,
+      "target_chars": 115,
+      "target_prefix_found": false,
+      "chars_before_target": null,
+      "reference_overlap_before_target": 15
+    },
+    {
+      "file": "pad_k16_sil-long-chars-42.wav",
+      "ecapa_cos": 0.7578083872795105,
+      "pcm_16k_sha256": "4f0b2b7fefb9796d4ff3b93e46cd83b473e76ea8015df719c25684712370e84a",
+      "cer": 0.25217391304347825,
+      "target_chars": 115,
+      "target_prefix_found": false,
+      "chars_before_target": null,
+      "reference_overlap_before_target": 4
+    },
+    {
+      "file": "pad_k16_sil_p2-long-chars-42.wav",
+      "ecapa_cos": 0.7459584474563599,
+      "pcm_16k_sha256": "27d1ba9899099bd72b60527f813fdd446e5cb869702fc6e626c4c307c6981aac",
+      "cer": 1.5130434782608695,
+      "target_chars": 115,
+      "target_prefix_found": true,
+      "chars_before_target": 0,
+      "reference_overlap_before_target": 0
+    },
+    {
+      "file": "pad_k16_sil_p3-long-chars-42.wav",
+      "ecapa_cos": 0.7676113843917847,
+      "pcm_16k_sha256": "98b998c252f9cca75d5cbebcae1d7d6478f3763d51508a60c79c5e88f834d2d3",
+      "cer": 2.878260869565217,
+      "target_chars": 115,
+      "target_prefix_found": true,
+      "chars_before_target": 0,
+      "reference_overlap_before_target": 0
+    },
+    {
+      "file": "pad_k0_sil_p2-long-chars-43.wav",
+      "ecapa_cos": 0.6971720457077026,
+      "pcm_16k_sha256": "385e4aff7f9d77b051b8346a2087b9438dcf41aefd57a26335ee5fd153efcc12",
+      "cer": 0.8608695652173913,
+      "target_chars": 115,
+      "target_prefix_found": false,
+      "chars_before_target": null,
+      "reference_overlap_before_target": 4
+    },
+    {
+      "file": "pad_k0_sil_p3-long-chars-43.wav",
+      "ecapa_cos": 0.7530832290649414,
+      "pcm_16k_sha256": "757d3d904c6f28250d7e6ce850cebe801b64a440e44f0e60a4d150af84282e6c",
+      "cer": 1.4260869565217391,
+      "target_chars": 115,
+      "target_prefix_found": false,
+      "chars_before_target": null,
+      "reference_overlap_before_target": 7
+    },
+    {
+      "file": "pad_k16_sil-long-chars-43.wav",
+      "ecapa_cos": 0.7607874870300293,
+      "pcm_16k_sha256": "e81a556e608dca00edc8ce3f8bd9f8f1a631c05488ae25fa5000b6e6d829153e",
+      "cer": 0.26956521739130435,
+      "target_chars": 115,
+      "target_prefix_found": true,
+      "chars_before_target": 0,
+      "reference_overlap_before_target": 0
+    },
+    {
+      "file": "pad_k16_sil_p2-long-chars-43.wav",
+      "ecapa_cos": 0.7508376836776733,
+      "pcm_16k_sha256": "659992181b9cbdb6e42da8596b140c46e6aa9648964fcac556835b6d2ccf7ea3",
+      "cer": 0.9217391304347826,
+      "target_chars": 115,
+      "target_prefix_found": true,
+      "chars_before_target": 0,
+      "reference_overlap_before_target": 0
+    },
+    {
+      "file": "pad_k16_sil_p3-long-chars-43.wav",
+      "ecapa_cos": 0.802573561668396,
+      "pcm_16k_sha256": "844b540854977a403013bb3496ba4d0ce0eabf72ca80ed2b47215739fb3d69ef",
+      "cer": 2.747826086956522,
+      "target_chars": 115,
+      "target_prefix_found": false,
+      "chars_before_target": null,
+      "reference_overlap_before_target": 4
+    },
+    {
+      "file": "pad_k0_sil-long-chars-43.wav",
+      "ecapa_cos": 0.7737419605255127,
+      "pcm_16k_sha256": "49e438999d15df9ee923a1f0134841b4f98530a37800d6280ab5d2a0bc6e780d",
+      "cer": 0.5043478260869565,
+      "target_chars": 115,
+      "target_prefix_found": false,
+      "chars_before_target": null,
+      "reference_overlap_before_target": 4
+    },
+    {
+      "file": "pad_k0_sil_p3-long-chars-44.wav",
+      "ecapa_cos": 0.6465514302253723,
+      "pcm_16k_sha256": "6b2943044fcfb00928ee6405554207a1684d54495cf66d8a0dd0ac0a08562c7a",
+      "cer": 1.5739130434782609,
+      "target_chars": 115,
+      "target_prefix_found": false,
+      "chars_before_target": null,
+      "reference_overlap_before_target": 15
+    },
+    {
+      "file": "pad_k16_sil-long-chars-44.wav",
+      "ecapa_cos": 0.6875945925712585,
+      "pcm_16k_sha256": "7b00a4949a9f3d8fdbefb9f9528970d4aefbc7bd08be062f91eae534d64e4964",
+      "cer": 0.22608695652173913,
+      "target_chars": 115,
+      "target_prefix_found": false,
+      "chars_before_target": null,
+      "reference_overlap_before_target": 4
+    },
+    {
+      "file": "pad_k16_sil_p2-long-chars-44.wav",
+      "ecapa_cos": 0.7463794946670532,
+      "pcm_16k_sha256": "9fd96aed97f43c4e739ad09f9ac852c120e046f9a83d769f47125e58b800d4f3",
+      "cer": 1.1391304347826088,
+      "target_chars": 115,
+      "target_prefix_found": false,
+      "chars_before_target": null,
+      "reference_overlap_before_target": 4
+    },
+    {
+      "file": "pad_k16_sil_p3-long-chars-44.wav",
+      "ecapa_cos": 0.7072463035583496,
+      "pcm_16k_sha256": "a3571828bcca38f006be2f887e2b23b93957fa767400d1dab113f626c6f5896e",
+      "cer": 1.8956521739130434,
+      "target_chars": 115,
+      "target_prefix_found": true,
+      "chars_before_target": 0,
+      "reference_overlap_before_target": 0
+    },
+    {
+      "file": "pad_k0_sil-long-chars-44.wav",
+      "ecapa_cos": 0.4165382385253906,
+      "pcm_16k_sha256": "bc2fef8e0116adbbb58e1c2d0f3d46fce9085980abc3b18353594ab8dd4132c1",
+      "cer": 0.23478260869565218,
+      "target_chars": 115,
+      "target_prefix_found": true,
+      "chars_before_target": 0,
+      "reference_overlap_before_target": 0
+    },
+    {
+      "file": "pad_k0_sil_p2-long-chars-44.wav",
+      "ecapa_cos": 0.7274866104125977,
+      "pcm_16k_sha256": "8d76e5427ca6ae3e0b8133c240ef23e1bc60db94090e8b6dfc7c0a3e3f8c1a6f",
+      "cer": 2.0608695652173914,
+      "target_chars": 115,
+      "target_prefix_found": false,
+      "chars_before_target": null,
+      "reference_overlap_before_target": 4
+    }
+  ]
+}

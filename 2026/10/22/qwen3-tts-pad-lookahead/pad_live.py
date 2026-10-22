@@ -43,7 +43,9 @@ def prepare_pad_session(model,prompt,mode):
     return PadSession(cache,bridge,int(prefill.shape[1]),time.perf_counter()-start,hold or 1)
 
 
-def generate_pad(model,prompt,source,session,*,emit_frames=4,max_frames=500,temperature=.9,trace=None,require_text_consumed=True):
+def generate_pad(model,prompt,source,session,*,emit_frames=4,max_frames=500,temperature=.9,trace=None,require_text_consumed=True,pace=1):
+    # pace=N: after the start rows, feed a real text row at most every N frames
+    # and a TTS PAD text row on the frames between (untrained; N=1 is unchanged).
     trace=trace if trace is not None else {}
     trace.update(codes=[],waits=[],commits=[],prepared_rows=session.prepared_rows)
     start=time.perf_counter();stamp=lambda:time.perf_counter()-start
@@ -77,7 +79,7 @@ def generate_pad(model,prompt,source,session,*,emit_frames=4,max_frames=500,temp
     cursor=needed;code_cache=model.talker.code_predictor.make_cache()
     decoder=model.speech_tokenizer.decoder
     trace['prefill']={'t':stamp(),'target_tokens':len(ids),'required_prefix_tokens':session.required_tokens,'cached_rows':session.prepared_rows}
-    generated=[];first_ids=[];emitted=0
+    generated=[];first_ids=[];emitted=0;since=0
     eos=model.config.talker_config.codec_eos_token_id;suppress=model._suppress_codec_tokens(eos)
     try:
         for step in range(max_frames):
@@ -95,14 +97,18 @@ def generate_pad(model,prompt,source,session,*,emit_frames=4,max_frames=500,temp
                 block=mx.transpose(mx.stack(generated[emitted:],axis=1),(0,2,1))
                 pcm=decoder.streaming_step(block).squeeze(1)[0];mx.eval(pcm)
                 emitted=len(generated);yield pcm
-            while True:
-                ids,closed,version=poll()
-                if cursor<len(ids):next_text=embed(model,[ids[cursor]]);break
-                if closed:
-                    next_text=prompt.eos if cursor==len(ids) else prompt.pad;break
-                before=stamp();source.wait(version);trace['waits'].append({'start':before,'end':stamp()})
+            if since<pace-1:
+                next_text=prompt.pad;since+=1
+            else:
+                while True:
+                    ids,closed,version=poll()
+                    if cursor<len(ids):next_text=embed(model,[ids[cursor]]);break
+                    if closed:
+                        next_text=prompt.eos if cursor==len(ids) else prompt.pad;break
+                    before=stamp();source.wait(version);trace['waits'].append({'start':before,'end':stamp()})
+                cursor+=1;since=0
             inputs=next_text+model._codec_embeds_for_tokens(parts)
-            mx.eval(inputs);cursor+=1
+            mx.eval(inputs)
         else:
             trace['stop']='frame_cap';raise RuntimeError('max_frames reached before EOS')
         if len(generated)>emitted:

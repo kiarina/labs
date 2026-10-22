@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#MISE description="Loop diagnosis: lead analysis, text pacing, wording variant (needs REFERENCE_WAV, REFERENCE_TRANSCRIPT_FILE)"
+set -euo pipefail
+: "${REFERENCE_WAV:?}" "${REFERENCE_TRANSCRIPT_FILE:?}"
+ref=(--reference "$REFERENCE_WAV" --transcript-file "$REFERENCE_TRANSCRIPT_FILE")
+uv run python locate_loop.py --output output
+uv run python bench.py "${ref[@]}" --output output-pace --cases long \
+  --modes pad_k0_sil pad_k0_sil_p2 pad_k0_sil_p3 pad_k16_sil pad_k16_sil_p2 pad_k16_sil_p3
+uv run python bench.py "${ref[@]}" --output output-alt --cases long_alt --modes icl pad_k0_sil pad_k16_sil
+for out in output-pace output-alt; do
+  uv run python evaluate.py "${ref[@]}" --output "$out" --asr
+  uv run python audit.py --output "$out"
+  uv run python replay.py --output "$out"
+  uv run python summarize.py --output "$out" --export "results/${out#output-}-80ms"
+  uv run python locate_loop.py --output "$out" --cases long long_alt
+done

@@ -18,7 +18,7 @@ med=lambda xs:st.median(xs) if xs else None
 # 3rd sentence starts (the loop seen in PAD runs). Counts only, never exported text.
 LOOP_PHRASE='ゆっくりでいいからね'
 summary=[]
-for case in ['short','long']:
+for case in ['short','long','long_alt']:
  for mode in modes:
   rs=[r for r in rows if r['mode']==mode and r['case']==case and r['schedule']=='chars']
   if not rs:continue
