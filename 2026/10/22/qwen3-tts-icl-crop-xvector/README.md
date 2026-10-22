@@ -100,7 +100,9 @@ All character-input outputs had normalized Whisper CER 0 on the short text and 0
 
 ### Human listening (owner, 2026-10-22, not blinded)
 
-- In the joined speech, the owner rated `crop-clause-spkcrop` best overall. This is the mode with the lowest independent ECAPA mean (0.619). The speaker-encoder diagnostic and the owner's overall judgment disagree here; the cosine should not be used to rank candidates.
+- Long text, joined speech: the owner rated `crop-clause-spkcrop` best overall (ECAPA 0.648 for this file, 7th of 8 on the long text).
+- Short text, joined speech: the owner found the same mode does not sound like the reference. This file has the lowest ECAPA in the lab (0.350), so here the diagnostic agrees with the ear.
+- The same short segment with its own x-vector therefore swung from best (long) to clearly unlike (short). One seed per text was heard; whether this is text- or seed-dependent is not established. It does reinforce keeping the complete-reference x-vector when ICL is short.
 - In the as-delivered replay, the owner noticed choppy playback near the start. For the long text at 80 ms/character (seed 42) the stalls are 0.25, 0.80, 0.34, 0.91, 0.40 and 0.13 s, each after about 0.32–0.64 s of audio, all within the first 4 s of audio. The talker reads one text token per codec frame (12.5 tokens/s) while this input supplies about 8 tokens/s (125 characters, 79 tokens, one character per 80 ms), so generation catches up with the text and waits while queued audio drains. Starting playback 2.83 s after the first PCM would have removed every stall in that run; at 40 ms/character 0.20 s would have. Short text has no stalls because generation only starts after `text.done`.
 
 ### Conclusion and limits
