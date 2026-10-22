@@ -1,0 +1,20 @@
+# The Windows (CUDA) environment. MLX does not exist there, so this is a separate project:
+#   uv run --project windows bench.py oc --provider cuda --precision fp16
+[project]
+name = "qwen3-tts-onnx-runtime-compare-windows"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "huggingface-hub",
+    "librosa",
+    "numpy",
+    "onnxruntime-gpu[cuda,cudnn]==1.31.0",
+    "psutil",
+    "python-box",
+    "soundfile",
+    "transformers",
+]
+
+[tool.uv]
+package = false
+environments = ["sys_platform == 'win32'"]

@@ -19,6 +19,7 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 ## Labs
 
 - 2026/10
+  - [Qwen3-TTS ONNX Runtime ports vs MLX bf16 on Apple Silicon](2026/10/23/qwen3-tts-onnx-runtime-compare/README.md) - [audio](tags/audio.md), [tts](tags/tts.md), [voice-cloning](tags/voice-cloning.md), [japanese](tags/japanese.md), [qwen3-tts](tags/qwen3-tts.md), [onnx](tags/onnx.md), [onnxruntime](tags/onnxruntime.md), [coreml](tags/coreml.md), [mlx](tags/mlx.md), [apple-silicon](tags/apple-silicon.md)
   - [Qwen3-TTS explicit reference and target boundaries for live cloning](2026/10/22/qwen3-tts-explicit-boundary/README.md) - [audio](tags/audio.md), [tts](tags/tts.md), [qwen3-tts](tags/qwen3-tts.md), [mlx](tags/mlx.md), [streaming](tags/streaming.md), [voice-cloning](tags/voice-cloning.md), [japanese](tags/japanese.md)
   - [Qwen3-TTS live cloning: cropped ICL reference with full-reference speaker embedding](2026/10/22/qwen3-tts-icl-crop-xvector/README.md) - [audio](tags/audio.md), [tts](tags/tts.md), [qwen3-tts](tags/qwen3-tts.md), [mlx](tags/mlx.md), [streaming](tags/streaming.md), [voice-cloning](tags/voice-cloning.md), [japanese](tags/japanese.md)
   - [Qwen3-TTS live cloning: decoupling text arrival from audio generation](2026/10/22/qwen3-tts-live-audio-decoupling/README.md) - [audio](tags/audio.md), [tts](tags/tts.md), [qwen3-tts](tags/qwen3-tts.md), [mlx](tags/mlx.md), [streaming](tags/streaming.md), [voice-cloning](tags/voice-cloning.md), [japanese](tags/japanese.md)

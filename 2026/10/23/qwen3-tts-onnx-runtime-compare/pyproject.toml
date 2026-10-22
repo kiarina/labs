@@ -1,0 +1,20 @@
+[project]
+name = "qwen3-tts-onnx-runtime-compare"
+version = "0.1.0"
+description = "Qwen3-TTS ONNX Runtime ports vs MLX bf16 on Apple Silicon"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "huggingface-hub",
+    "librosa",
+    "mlx==0.32.4",
+    "mlx-audio==0.6.1",
+    "mlx-whisper",
+    "numpy",
+    "onnxruntime==1.31.0",
+    "python-box",
+    "soundfile",
+    "transformers",
+]
+
+[tool.uv]
+package = false
