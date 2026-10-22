@@ -16,6 +16,7 @@ SAMPLE_RATE = 24_000
 # Speaker 1 of the shared two-speaker sample, as in the earlier labs (japanese-zero-shot-tts-compare, qwen3-tts-mlx-live-clone).
 SAMPLE_ASSET = LAB_DIR.parents[3] / "tests/assets/mp3/conversation_2speaker_14s_16k.mp3"
 SPEAKER1_SEGMENTS = [(0.000, 1.851), (4.737, 7.317), (9.677, 11.834)]
+SPEAKER2_SEGMENTS = [(1.851, 4.737), (7.317, 9.677), (11.834, 14.171)]
 REFERENCE_TEXT = "もしもし、もう駅に着いた？こっちはまだ電車。あと5分くらいかな。助かる。今日は結構寒いね。"
 # The seven example sentences of japanese-zero-shot-tts-compare.
 TEXTS = [
@@ -30,9 +31,9 @@ TEXTS = [
 WARMUP_TEXT = "こんにちは。"
 
 
-def reference_wav() -> Path:
-    """Speaker 1 at 24 kHz mono (afconvert, as the earlier labs prepare it)."""
-    output = LAB_DIR / "output/reference-speaker1.wav"
+def reference_wav(speaker: int = 1) -> Path:
+    """Speaker 1 (or 2) at 24 kHz mono (afconvert, as the earlier labs prepare it)."""
+    output = LAB_DIR / f"output/reference-speaker{speaker}.wav"
     if not output.exists():
         output.parent.mkdir(parents=True, exist_ok=True)
         decoded = output.with_suffix(".full.wav")
@@ -41,7 +42,8 @@ def reference_wav() -> Path:
         )
         audio, rate = sf.read(decoded, dtype="float32")
         decoded.unlink()
-        pieces = [audio[int(start * rate) : int(end * rate)] for start, end in SPEAKER1_SEGMENTS]
+        segments = SPEAKER1_SEGMENTS if speaker == 1 else SPEAKER2_SEGMENTS
+        pieces = [audio[int(start * rate) : int(end * rate)] for start, end in segments]
         sf.write(output, np.concatenate(pieces), rate, subtype="PCM_16")
     return output
 

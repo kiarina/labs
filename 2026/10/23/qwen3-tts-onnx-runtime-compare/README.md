@@ -64,6 +64,7 @@ uv run --project windows bench.py pl --provider cuda
 uv run --project windows bench.py oc --provider cuda --precision int4 --mode matched
 uv run --project windows bench.py oc --provider cuda --precision fp16 --mode matched
 uv run --project windows bench.py oc --provider cuda --precision fp16 --mode published
+uv run --project windows voice_switch.py --provider cuda   # 話者 2 の参照 output/reference-speaker2.wav も Mac で作って置く
 ```
 
 結果（`output/<設定>/`）を Mac の `output/windows/` に写してから `evaluate.py` を走らせると、文字起こしとページに入ります。
@@ -195,7 +196,16 @@ pltobing は変換に付く既定の設定（temperature 0.75・top-p 0.85・top
 
 ### Listening
 
-（オーナーが `mise run listen` で聞いた結果をここに書く。未）
+- 2026-10-23、lab の作者 1 人が `mise run listen` で聞いた: `windows/pl-0.6b-fp32-published-cuda` は「まあ、使えるレベル」。ほかの列の評価、MLX との並べた比較の言葉は記録していない
+
+### Switching the reference voice (pltobing, Windows CUDA)
+
+`voice_switch.py`（`output/voice-switch/`。聞くのは `mise run listen` の `/windows/voice-switch/`）。1 つのエンジンのまま、参照を共有の素材の話者 1 → 話者 2 → 話者 1 と替えて、1 文目を seed 0 で読ませた。
+
+- 変換の API には参照を替える口が無い（参照のパスは作るときに渡し、prefill のたびにそこから x-vector を計算する）。パスを差し替え、続けて話すモード用に持っている参照の切れ端の履歴を消し、`reset_turn(reset_cache=True, force_reset_codec_cache=True)` すれば替わった
+- x-vector の計算は 0.05〜0.11 秒。生成は 3 回とも実時間の 0.64 倍前後、最初の音 0.53〜0.57 秒
+- 話者 1 に戻した 3 回目は、1 回目とバイト単位で同じ音（前の声は残らない）
+- 話者 1 と 2 の x-vector のコサインは 0.967（この話者の埋め込みでは 2 人がかなり近い）。声が替わって聞こえるかは聞いて判断する
 
 ## Limitations
 
