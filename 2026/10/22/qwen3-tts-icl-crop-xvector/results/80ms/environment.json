@@ -1,0 +1,102 @@
+{
+  "model": "mlx-community/Qwen3-TTS-12Hz-1.7B-Base-bf16",
+  "revision": "a6eb4f68e4b056f1215157bb696209bc82a6db48",
+  "dtype": "bf16",
+  "system": "macOS-27.0.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "versions": {
+    "mlx": "0.32.4",
+    "mlx-audio": "0.6.1",
+    "transformers": "5.20.2",
+    "soundfile": "0.14.0",
+    "numpy": "2.5.4"
+  },
+  "reference_sha256": "c03e2da1cf1877fc829168840d894fb846716c69d80d4f00ae4cdaafea96a5c0",
+  "reference_samples": 256283,
+  "reference_s": 10.678458333333333,
+  "transcript_sha256": "f8ee31ee35b5dc1065480fdc226948e628b2f2e9b79e7e9363c533805e6754d6",
+  "transcript_chars": 60,
+  "load_s": 1.7822398330026772,
+  "prepare_s": {
+    "icl": 0.041447750001680106,
+    "crop-tail23": 0.021221374998276588,
+    "crop-tail3": 0.016173625001101755,
+    "crop-head1": 0.014891749997332226,
+    "crop-mid2": 0.014463459003309254,
+    "crop-clause": 0.013305540996952914,
+    "crop-clause-spkcrop": 0.0030996670029708184,
+    "xvector": 0.003948750003473833
+  },
+  "required_prefix_tokens": {
+    "icl": 105,
+    "crop-tail23": 75,
+    "crop-tail3": 43,
+    "crop-head1": 28,
+    "crop-mid2": 26,
+    "crop-clause": 23,
+    "crop-clause-spkcrop": 23,
+    "xvector": 1
+  },
+  "icl_frames": {
+    "icl": 135,
+    "crop-tail23": 92,
+    "crop-tail3": 52,
+    "crop-head1": 41,
+    "crop-mid2": 34,
+    "crop-clause": 29,
+    "crop-clause-spkcrop": 29,
+    "xvector": 1
+  },
+  "ref_text_tokens": {
+    "icl": 30,
+    "crop-tail23": 17,
+    "crop-tail3": 9,
+    "crop-head1": 13,
+    "crop-mid2": 8,
+    "crop-clause": 6,
+    "crop-clause-spkcrop": 6,
+    "xvector": 0
+  },
+  "crops": {
+    "tail23": {
+      "start_s": 3.4,
+      "audio_s": 7.278458333333333,
+      "transcript_chars": [
+        25,
+        60
+      ]
+    },
+    "tail3": {
+      "start_s": 6.6,
+      "audio_s": 4.078458333333334,
+      "transcript_chars": [
+        41,
+        60
+      ]
+    },
+    "head1": {
+      "start_s": 0.0,
+      "audio_s": 3.2,
+      "transcript_chars": [
+        0,
+        25
+      ]
+    },
+    "mid2": {
+      "start_s": 3.3,
+      "audio_s": 2.6,
+      "transcript_chars": [
+        25,
+        41
+      ]
+    },
+    "clause": {
+      "start_s": 8.5,
+      "audio_s": 2.1784583333333334,
+      "transcript_chars": [
+        45,
+        60
+      ]
+    }
+  }
+}

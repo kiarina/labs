@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#MISE description="Generate, evaluate and audit all conditions (needs REFERENCE_WAV, REFERENCE_TRANSCRIPT_FILE)"
+set -euo pipefail
+: "${REFERENCE_WAV:?}" "${REFERENCE_TRANSCRIPT_FILE:?}"
+uv run python bench.py --reference "$REFERENCE_WAV" --transcript-file "$REFERENCE_TRANSCRIPT_FILE" --output output
+uv run python bench.py --reference "$REFERENCE_WAV" --transcript-file "$REFERENCE_TRANSCRIPT_FILE" --output output-fast --seeds 42 --schedules chars --interval .04
+for out in output output-fast; do
+  uv run python evaluate.py --reference "$REFERENCE_WAV" --output "$out" --asr
+  uv run python audit.py --output "$out"
+  uv run python replay.py --output "$out"
+  uv run python listen.py --output "$out"
+done
