@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Run same-reference live text/audio decoupling screen"
+set -euo pipefail
+uv sync --frozen
+uv run --frozen bench.py --reference "${REFERENCE_WAV:?set REFERENCE_WAV}" --transcript-file "${REFERENCE_TRANSCRIPT:?set REFERENCE_TRANSCRIPT}" --controls

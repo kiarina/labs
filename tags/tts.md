@@ -2,6 +2,7 @@
 
 - 2026/10/22 [Qwen3-TTS explicit reference and target boundaries for live cloning](../2026/10/22/qwen3-tts-explicit-boundary/README.md)
 - 2026/10/22 [Qwen3-TTS live cloning: cropped ICL reference with full-reference speaker embedding](../2026/10/22/qwen3-tts-icl-crop-xvector/README.md)
+- 2026/10/22 [Qwen3-TTS live cloning: decoupling text arrival from audio generation](../2026/10/22/qwen3-tts-live-audio-decoupling/README.md)
 - 2026/10/22 [Same-reference live Qwen3-TTS: causal ICL versus speaker embedding only](../2026/10/22/qwen3-tts-live-xvector-compare/README.md)
 - 2026/10/22 [Japanese live text and streaming PCM voice cloning with mlx-audio](../2026/10/22/qwen3-tts-mlx-live-clone/README.md)
 - 2026/10/22 [Qwen3-TTS PAD restart: target lookahead and trailing reference silence](../2026/10/22/qwen3-tts-pad-lookahead/README.md)
