@@ -10,12 +10,14 @@ class PadSession:
     bridge: object
     prepared_rows: int
     prep_s: float
+    required_tokens: int = 1
 
 
 def prepare_pad_session(model,prompt,mode):
     start=time.perf_counter()
     length=prompt.codec_embeds.shape[1]
-    rows=length-1 if mode=='pad_last' else length
+    hold=int(mode.removeprefix('pad_hold')) if mode.startswith('pad_hold') else (1 if mode=='pad_last' else 0)
+    rows=length-hold
     if len(prompt.ref_text_ids)>rows:
         raise ValueError('Reference text longer than PAD-prefill region; never truncate it')
     reference=embed(model,prompt.ref_text_ids)
@@ -31,14 +33,14 @@ def prepare_pad_session(model,prompt,mode):
     decoder=model.speech_tokenizer.decoder
     decoder.reset_streaming_state()
     mx.eval(decoder.streaming_step(prompt.ref_codes))
-    if mode=='pad_last':bridge=prompt.codec_embeds[:,-1:]
+    if hold:bridge=prompt.codec_embeds[:,-hold:]
     elif mode=='pad_restart':
         bridge=model.talker.get_input_embeddings()(mx.array([[model.config.talker_config.codec_bos_id]]))
     elif mode=='pad_extra':
         bridge=model.talker.get_input_embeddings()(mx.array([[model.config.talker_config.codec_pad_id]]))
     else:raise ValueError(mode)
     mx.eval(bridge)
-    return PadSession(cache,bridge,int(prefill.shape[1]),time.perf_counter()-start)
+    return PadSession(cache,bridge,int(prefill.shape[1]),time.perf_counter()-start,hold or 1)
 
 
 def generate_pad(model,prompt,source,session,*,emit_frames=4,max_frames=500,temperature=.9,trace=None,require_text_consumed=True):
@@ -55,13 +57,26 @@ def generate_pad(model,prompt,source,session,*,emit_frames=4,max_frames=500,temp
         return ids,closed,version
     while True:
         ids,closed,version=poll()
-        if ids:break
+        if ids and (closed or len(ids)>=session.required_tokens):break
         if closed:raise ValueError('No target text')
         source.wait(version)
-    inputs=embed(model,[ids[0]])+session.bridge
-    cursor=1;cache=session.cache;code_cache=model.talker.code_predictor.make_cache()
+    needed=session.required_tokens
+    text=embed(model,ids[:needed])
+    if len(ids)<needed:
+        assert closed
+        text=mx.concatenate([text,prompt.eos],axis=1)
+        if text.shape[1]<needed:text=mx.concatenate([text,mx.broadcast_to(prompt.pad,(1,needed-text.shape[1],text.shape[-1]))],axis=1)
+    inputs=text+session.bridge
+    cache=session.cache
+    # mlx-audio's multi-row mask ignores an existing cache offset. Advance held
+    # reference rows one at a time, without sampling, then generate on the last.
+    for row in range(needed-1):
+        logits,hidden=model.talker(inputs[:,row:row+1],cache=cache)
+        mx.eval(logits,hidden)
+    inputs=inputs[:,-1:]
+    cursor=needed;code_cache=model.talker.code_predictor.make_cache()
     decoder=model.speech_tokenizer.decoder
-    trace['prefill']={'t':stamp(),'target_tokens':len(ids),'required_prefix_tokens':1,'cached_rows':session.prepared_rows}
+    trace['prefill']={'t':stamp(),'target_tokens':len(ids),'required_prefix_tokens':session.required_tokens,'cached_rows':session.prepared_rows}
     generated=[];first_ids=[];emitted=0
     eos=model.config.talker_config.codec_eos_token_id;suppress=model._suppress_codec_tokens(eos)
     try:

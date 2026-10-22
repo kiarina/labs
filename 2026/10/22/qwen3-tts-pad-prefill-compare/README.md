@@ -124,4 +124,26 @@ The control and newlayouts share model modules. The newlayout is an intentional 
 
 製品への反映なし。複数発話/EOS後の継続、長時間通話、別話者、他言語、量子化、実caption、AECは未検証。参照/生成音声は公開Gitに含めずローカルignored入力/出力へ保全。
 
-Evidence: [main80ms](results/80ms/results.json), [ECAPA/ASR](results/80ms/evaluation.json), [WavLM](results/80ms/wavlm-evaluation.json), [40ms](results/40ms/results.json), [guarded failures](results/guarded-pilot/results.json), [v0 failures](results/pilot-v0/results.json). `export_results.py` keeps all metrics/failures but withholds nonmatching PAD ASR strings/private-reference overlaps from publicJSON; raw transcripts and waveform remain in ignored output folders. Sixteen ASR strings were withheld, not removed from evaluation.
+Evidence: [main80ms](results/80ms/results.json), [ECAPA/ASR](results/80ms/evaluation.json), [WavLM](results/80ms/wavlm-evaluation.json), [40ms](results/40ms/results.json), [guarded failures](results/guarded-pilot/results.json), [v0 failures](results/pilot-v0/results.json). `export_results.py` keeps all metrics/failures but withholds nonmatching PAD ASR strings/private-reference overlaps from publicJSON; raw transcripts and waveform remain in ignored output folders. Sixteen ASR strings were withheld in the initial comparison, not removed from evaluation. Updated counts including follow-up are in results/export.json.
+
+## Follow-up protocol: reference-tail diagnosis and partial PAD
+
+The listener identified the extra introduction as the end of the reference and judged voice similarity not bad. Keep this subjective observation distinct from automatic cosine. Decode the exact saved seed42 long generated codes with full-reference decoder priming, last16reference frames, and no reference priming. Full priming must reproduce original floatPCMhash. Use privateASR and export only prefix/reference-overlap counts, not the extra words.
+
+Next isolate PAD amount while retaining all reference codec rows: `pad_hold8/16/32` prefill reference text plus only(105−H)PAD rows, hold the finalH reference-code rows, then overlay the firstH real target tokens on those rows before generation. No extraBOS restart. This varies how much genuine text conditions the end of referenceprefill; it is not a random offset or a cropped reference. If input closes beforeH tokens, use its real EOS/PAD to finish the held rows. Compare short/long,80ms/character,seed42 with a fresh ICL control. One-seed pilot only; preserve failures and avoid claiming general quality from it.
+
+A first held-row pilot hit mlx-audio's cached multi-row attention-mask shape error before producing PAD audio. These engineering failures are kept under `output-hold-shape-error`; they are not scored as model-quality failures. The repair advances held reference rows one at a time without sampling, then generates after the final row. It preserves the intended sequence/cache positions while avoiding the unsupported cached multi-row call. The same one-seed pilot is rerun after this repair.
+
+## Listener feedback and reference-tail diagnosis (2026-10-22)
+
+本人の聴取ではPAD再開の「類似度は悪くなさそう」、先頭の余計な発言は参照音声の最後のメッセージだった。自動cosineだけで声を不採用とは判断せず、本文の混入を独立した問題として扱う。人の評点を後付けで捏造せず、この観察を追加した。
+
+保存済みseed42長文のgeneratedcodes304frameを固定し、同じbf16モデルで3通りに再復号した。参照全体でdecoderをprimeしたcontrolは元PCMのSHA256に完全一致。末尾16frameだけのprime、prime無しでもASRは本文開始前の17文字を認識し、そのうち参照文との連続15文字一致が残った。decoderは各条件でconv/overflow/KVをresetしている。
+
+したがって、この例は単にdecoder側に参照のPCMが残って出てくる現象ではなく、生成されたcodec列自体が参照末尾の発言を表せる状態になっている。PADの行数計算は、参照codec134frame＋codecBOS1行−参照文30token＝105行で整合していた。任意に105を選んだものではない。
+
+PADの量を変える追加pilotも行った。参照を全量維持し、PADを97/89/73行に減らして、残る8/16/32行へ実本文を重ねてから生成。seed42、80ms/文字の2原稿、各1回。追加のBOS再開はせず、従来のpad_lastを一般化した配置である。短文は3条件とも有声の本文を得られず、長文も抜けや反復が出た。これは「PAD長の影響が無い」という証明ではなく、この3条件では改善しなかったという結果。
+
+この調整では最後のH参照行を1行ずつcacheへ進めてからsampleする。初回のmulti-row版はcached maskのshape errorとなったため、6件のprePCM失敗をmodel品質とは分けて保存した。主実験のpad_restartの声が悪いという本人評価へ置き換えず、参照と新本文の境界/条件付けが未解決という判断に留める。
+
+Evidence: [same-code decode](results/decoder-tail/decode.json), [ASR prefix counts](results/decoder-tail/asr-summary.json), [partial-PAD results](results/hold-80ms/results.json), [partial-PAD ASR](results/hold-80ms/evaluation.json), [engineering failures](results/held-row-shape-error/results.json). Raw audio/extra phrases remain private in ignored output folders. Production remains unchanged.

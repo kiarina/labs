@@ -6,6 +6,9 @@ import soundfile as sf
 p=argparse.ArgumentParser();p.add_argument('--output',default='output');args=p.parse_args();root=Path(args.output);rows=json.loads((root/'results.json').read_text())
 for r in rows:
  stem=f"{r['mode']}-{r['case']}-{r['schedule']}-{r['seed']}"
+ if not (root/f'{stem}.wav').exists() and r.get('error'):
+  r['no_pcm']=True
+  continue
  a,sr=sf.read(root/f'{stem}.wav',dtype='float32');events=json.loads((root/f'{stem}.json').read_text())['events'];rms=np.sqrt(np.mean(a[:len(a)//240*240].reshape(-1,240)**2,axis=1));active=np.flatnonzero(rms>.003)
  onset=(int(active[0])*240 if len(active) else len(a));clock=0;offset=0;audible=None
  for e in events:

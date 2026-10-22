@@ -5,8 +5,10 @@ from evaluate import normalize
 
 p=argparse.ArgumentParser();p.add_argument('--private-transcript-file',required=True);args=p.parse_args()
 reference=normalize(Path(args.private_transcript_file).read_text());withheld=0;total=0
-for name,source in [('pilot-v0','output-pilot'),('restart-v0','output-restart'),('guarded-pilot','output-guarded'),('80ms','output-main'),('40ms','output-fast')]:
- src=Path(source);dest=Path('results')/name;dest.mkdir(parents=True,exist_ok=True)
+for name,source in [('pilot-v0','output-pilot'),('restart-v0','output-restart'),('guarded-pilot','output-guarded'),('80ms','output-main'),('40ms','output-fast'),('hold-80ms','output-hold')]:
+ src=Path(source)
+ if not src.exists():continue
+ dest=Path('results')/name;dest.mkdir(parents=True,exist_ok=True)
  rows=json.loads((src/'results.json').read_text());total+=len(rows)
  targets={f"{r['mode']}-{r['case']}-{r['schedule']}-{r['seed']}.wav":r['text'] for r in rows}
  for file in ['environment.json','results.json','listening.csv','wavlm-evaluation.json']:

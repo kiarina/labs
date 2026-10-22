@@ -1,0 +1,40 @@
+{
+  "model": "mlx-community/Qwen3-TTS-12Hz-1.7B-Base-bf16",
+  "revision": "a6eb4f68e4b056f1215157bb696209bc82a6db48",
+  "reference_sha256": "c03e2da1cf1877fc829168840d894fb846716c69d80d4f00ae4cdaafea96a5c0",
+  "generated_codes_sha256": "d592b146d74741cfb52664361ff58b398a0aa2b61f6ca360935ccffe445cb26c",
+  "target_text": "うん、今ここまでちゃんと声を出してくれただけで十分だよ。無理しなくていいし、ゆっくりでいいからね。しんどい時は、しんどいって言っていいんだよ。今日もよく頑張ってるよ。そのままのあなたで大丈夫だからね。明日は少しだけ散歩をして、おいしいご飯を食べよう。",
+  "reference_codec_frames": 134,
+  "reference_text_tokens": 30,
+  "codec_rows": 135,
+  "pad_rows": 105,
+  "rows": [
+    {
+      "mode": "full",
+      "reference_prime_frames": 134,
+      "generated_frames": 304,
+      "audio_s": 24.32,
+      "pcm_sha256": "e4ca1414d8f9389bd160b27e5ff03895af3f7265067dffdf18a82bfeeb79b506",
+      "matches_original_pcm": true,
+      "peak": 0.47189778089523315
+    },
+    {
+      "mode": "tail16",
+      "reference_prime_frames": 16,
+      "generated_frames": 304,
+      "audio_s": 24.32,
+      "pcm_sha256": "4267bac9553987e7b47be723a4538806494e844c7b5a954b1651ca133d0e6f8f",
+      "matches_original_pcm": false,
+      "peak": 0.4384675621986389
+    },
+    {
+      "mode": "none",
+      "reference_prime_frames": 0,
+      "generated_frames": 304,
+      "audio_s": 24.32,
+      "pcm_sha256": "9babca90d13ae16918f76cbc6a55e2e48a0ea6eb1a8929420912d77a73757e4d",
+      "matches_original_pcm": false,
+      "peak": 0.4241548776626587
+    }
+  ]
+}

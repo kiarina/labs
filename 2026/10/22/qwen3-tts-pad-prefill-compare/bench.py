@@ -55,7 +55,7 @@ def run(model,prompt,reference_vector,text,mode,case,schedule,seed,interval,out,
   failure=repr(exc);source.cancel()
  elapsed=now();producer.join(5)
  stem=f'{mode}-{case}-{schedule}-{seed}'
- result={'mode':mode,'case':case,'schedule':schedule,'seed':seed,'text':text,'interval_s':interval,'error':failure,'required_prefix_tokens':prompt.required_prefix_tokens if mode=='icl' else 1,'session_prepare_s':session.prep_s if session else 0.,'idle_before_text_s':idle_before_text,'prepared_rows':session.prepared_rows if session else 0,'eos_requires_all_text':eos_guard,'total_s':elapsed,'stop':trace.get('stop')}
+ result={'mode':mode,'case':case,'schedule':schedule,'seed':seed,'text':text,'interval_s':interval,'error':failure,'required_prefix_tokens':prompt.required_prefix_tokens if mode=='icl' else session.required_tokens,'session_prepare_s':session.prep_s if session else 0.,'idle_before_text_s':idle_before_text,'prepared_rows':session.prepared_rows if session else 0,'eos_requires_all_text':eos_guard,'total_s':elapsed,'stop':trace.get('stop')}
  if chunks:
   a=np.concatenate(chunks);sf.write(out/f'{stem}.wav',a,24000,subtype='FLOAT')
   arrivals=[x for x in events if x['type']=='pcm'];done=next((x['t'] for x in events if x['type']=='text.done'),None)
@@ -80,7 +80,7 @@ def run(model,prompt,reference_vector,text,mode,case,schedule,seed,interval,out,
 
 def main():
  p=argparse.ArgumentParser();p.add_argument('--reference',required=True);p.add_argument('--transcript-file',required=True)
- p.add_argument('--output',default='output');p.add_argument('--seeds',nargs='+',type=int,default=[42,43,44]);p.add_argument('--cases',nargs='+',default=['short','long']);p.add_argument('--schedules',nargs='+',default=['full','chars']);p.add_argument('--interval',type=float,default=.08);p.add_argument('--modes',nargs='+',choices=['icl','pad_last','pad_extra','pad_restart'],default=['icl','pad_restart'])
+ p.add_argument('--output',default='output');p.add_argument('--seeds',nargs='+',type=int,default=[42,43,44]);p.add_argument('--cases',nargs='+',default=['short','long']);p.add_argument('--schedules',nargs='+',default=['full','chars']);p.add_argument('--interval',type=float,default=.08);p.add_argument('--modes',nargs='+',choices=['icl','pad_last','pad_extra','pad_restart','pad_hold8','pad_hold16','pad_hold32'],default=['icl','pad_restart'])
  p.add_argument('--idle-before-text',type=float,default=2.);p.add_argument('--legacy-eos',action='store_true')
  args=p.parse_args();out=Path(args.output);out.mkdir(parents=True,exist_ok=True)
  t=time.perf_counter();model=load_model(snapshot_download(MODEL,revision=REV));load_s=time.perf_counter()-t
@@ -93,7 +93,7 @@ def main():
   'versions':{k:importlib.metadata.version(k) for k in ['mlx','mlx-audio','transformers','soundfile','numpy']},
   'reference_sha256':digest(Path(args.reference).read_bytes()),'reference_samples':int(audio.shape[0]),'reference_s':audio.shape[0]/24000,
   'transcript_sha256':digest(transcript.encode()),'transcript_chars':len(transcript),'load_s':load_s,'prepare_s':prep,
-  'max_frames':500,'required_prefix_tokens':{k:v.required_prefix_tokens if k=='icl' else 1 for k,v in prompts.items()}}
+  'max_frames':500,'required_prefix_tokens':{k:v.required_prefix_tokens if k=='icl' else (int(k.removeprefix('pad_hold')) if k.startswith('pad_hold') else 1) for k,v in prompts.items()}}
  (out/'environment.json').write_text(json.dumps(env,indent=2));print(json.dumps(env),flush=True)
  # A complete seed0 full-input warmup per mode: record but exclude from comparisons.
  for mode in prompts:run(model,prompts[mode],reference_vector,TEXTS['short'],mode,'warmup','full',0,args.interval,out,0.,not args.legacy_eos)
