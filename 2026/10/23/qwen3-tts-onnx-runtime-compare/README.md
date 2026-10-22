@@ -207,6 +207,17 @@ pltobing は変換に付く既定の設定（temperature 0.75・top-p 0.85・top
 - 話者 1 に戻した 3 回目は、1 回目とバイト単位で同じ音（前の声は残らない）
 - 話者 1 と 2 の x-vector のコサインは 0.967（この話者の埋め込みでは 2 人がかなり近い）。声が替わって聞こえるかは聞いて判断する
 
+### Other reference voices
+
+`REFERENCE_LABEL`・`REFERENCE_AUDIO`・`REFERENCE_TEXT_FILE` の環境変数で、話者 1 の代わりに別の参照の声を使えます（`engines/common.py`）。参照の音声は lab に含めません。
+
+```sh
+REFERENCE_LABEL=mine REFERENCE_AUDIO=path/to/voice.wav REFERENCE_TEXT_FILE=path/to/transcript.txt uv run --frozen bench.py mlx
+```
+
+2026-10-23 に、フリー素材のキャラクターの声（10.7 秒、悲しみの読み）を参照にして、MLX bf16（Mac、文字起こしは Whisper）と pltobing 0.6B（Windows CUDA）で 7 文を作り、
+聞き比べた（`output/kanashimi.html`、この lab の外の音声）。速さは MLX が実時間の 0.56 倍・最初の音 0.75 秒、pltobing が 0.67 倍・0.60 秒で、話者 1 のときと同じ傾向。
+
 ## Limitations
 
 - 7 文・seed 1 つ・各 1 回。時間のばらつきは測っていない（Mac の各設定の文ごとの RTF は ±5% 程度にそろっていた）

@@ -21,7 +21,7 @@ import time
 import numpy as np
 import soundfile as sf
 
-from engines.common import LAB_DIR, SAMPLE_RATE, TEXTS, WARMUP_TEXT, footprint_gb, playback_stalls
+from engines.common import LAB_DIR, REFERENCE_LABEL, SAMPLE_RATE, TEXTS, WARMUP_TEXT, footprint_gb, playback_stalls
 
 
 def make_engine(args):
@@ -64,7 +64,7 @@ def main() -> None:
     engine.synthesize(WARMUP_TEXT, 0)
     print(f"{engine.name}: load {load:.1f}s, footprint {before:.2f} → {loaded:.2f} GB", flush=True)
 
-    out_dir = LAB_DIR / "output" / engine.name
+    out_dir = LAB_DIR / "output" / (engine.name + (f"-{REFERENCE_LABEL}" if REFERENCE_LABEL else ""))
     out_dir.mkdir(parents=True, exist_ok=True)
     runs = []
     for index in args.texts if args.texts is not None else range(len(TEXTS)):
@@ -93,7 +93,7 @@ def main() -> None:
                 flush=True,
             )
     report = {
-        "engine": engine.name,
+        "engine": out_dir.name,
         "description": engine.description,
         "machine": f"{platform.system()} {platform.machine()} {platform.mac_ver()[0] or platform.version()}",
         "load_seconds": round(load, 2),

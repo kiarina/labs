@@ -18,6 +18,12 @@ SAMPLE_ASSET = LAB_DIR.parents[3] / "tests/assets/mp3/conversation_2speaker_14s_
 SPEAKER1_SEGMENTS = [(0.000, 1.851), (4.737, 7.317), (9.677, 11.834)]
 SPEAKER2_SEGMENTS = [(1.851, 4.737), (7.317, 9.677), (11.834, 14.171)]
 REFERENCE_TEXT = "もしもし、もう駅に着いた？こっちはまだ電車。あと5分くらいかな。助かる。今日は結構寒いね。"
+# Another reference voice instead of speaker 1: REFERENCE_LABEL names it (output/reference-<label>.wav, and the output
+# directories get "-<label>"), REFERENCE_AUDIO is the source file (converted to 24 kHz mono once), REFERENCE_TEXT_FILE its
+# transcript (UTF-8). The audio is not part of the lab (README, "Other reference voices").
+REFERENCE_LABEL = os.environ.get("REFERENCE_LABEL", "")
+if REFERENCE_LABEL and os.environ.get("REFERENCE_TEXT_FILE"):
+    REFERENCE_TEXT = Path(os.environ["REFERENCE_TEXT_FILE"]).read_text(encoding="utf-8").strip()
 # The seven example sentences of japanese-zero-shot-tts-compare.
 TEXTS = [
     "こんにちは。今日はいい天気ですね。少し散歩してから、駅前のカフェでコーヒーを飲みませんか？",
@@ -32,7 +38,15 @@ WARMUP_TEXT = "こんにちは。"
 
 
 def reference_wav(speaker: int = 1) -> Path:
-    """Speaker 1 (or 2) at 24 kHz mono (afconvert, as the earlier labs prepare it)."""
+    """Speaker 1 (or 2) at 24 kHz mono (afconvert, as the earlier labs prepare it), or REFERENCE_LABEL's voice."""
+    if REFERENCE_LABEL and speaker == 1:
+        output = LAB_DIR / f"output/reference-{REFERENCE_LABEL}.wav"
+        if not output.exists():
+            subprocess.run(
+                ["afconvert", "-f", "WAVE", "-d", f"LEI16@{SAMPLE_RATE}", "-c", "1", os.environ["REFERENCE_AUDIO"], str(output)],
+                check=True,
+            )
+        return output
     output = LAB_DIR / f"output/reference-speaker{speaker}.wav"
     if not output.exists():
         output.parent.mkdir(parents=True, exist_ok=True)
