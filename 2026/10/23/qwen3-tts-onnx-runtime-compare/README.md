@@ -30,6 +30,8 @@ Mac で実時間に届かなかったので、Windows（CUDA）でも同じも�
 解釈: Mac の上で ONNX Runtime に Qwen3-TTS を任せる道は、今の ONNX Runtime と公開の変換では閉じている。ONNX という形式の限界ではなく、Mac で GPU を使う良い道が ONNX Runtime に無いことと、変換の作りの問題。
 Windows では、作りの良い変換（pltobing のような KV キャッシュ・CUDA graph）なら実用の速さになるが、1.7B で参照の符号を使うクローン（今 kiapi で使っている形）の変換は公開されていない。
 
+その後: 同じ日に ggml の実装（qwentts.cpp）を測り（[qwen3-tts-ggml-compare](../qwen3-tts-ggml-compare/README.md)）、Mac・Windows とも 1.7B・ICL で最速だったので、エンジンはそちらにした。
+
 ## Run
 
 macOS（Apple Silicon）、[uv](https://docs.astral.sh/uv/)、[mise](https://mise.jdx.dev/) が要ります。

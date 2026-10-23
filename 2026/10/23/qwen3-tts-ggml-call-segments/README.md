@@ -98,11 +98,11 @@ Windows（CUDA）は [qwen3-tts-ggml-compare](../qwen3-tts-ggml-compare/README.m
 
 ### Listening
 
-（オーナーが聞いた結果をここに書く。未）。2026-10-23 に、フリー素材のキャラクターの声（悲しみの読み）を参照にした同じ形の音も Mac で作った（`output/kanashimi.html`、lab の外の音声）。
+2026-10-23、lab の作者 1 人が、フリー素材のキャラクターの声（悲しみの読み）を参照にした同じ形の音（Mac、`output/kanashimi.html`、lab の外の音声）で区間のつなぎ目を聞き、**問題なし**とした。
 
 ## Limitations
 
 - 文は日本語と英語の 1 つずつ、seed 3 つ。長い返事、複数の返事が続く通話、本物の gpt-live との接続は試していない
 - 区間ごとに独立に作るので、区間をまたいだ抑揚のつながりは今の方式と同じく持たない（どちらも前の区間の生成を次に渡さない）。聞いて確かめる
-- 割り込みは HTTP の接続を切る形だけ。アプリに組み込んだ形（C の ABI の取り消し）は試していない
+- 割り込みは HTTP の接続を切る形だけ。アプリに組み込んだ形（C の ABI の取り消し）は、その後 [voice_clone_tts](https://github.com/kiarina/voice_clone_tts) で測った（止まるまで Mac 10 ms・Windows 5 ms、次の返事の最初の音まで 96 ms・32 ms）
 - 今の方式の数字は前の lab のもので、同時に走らせて比べたものではない

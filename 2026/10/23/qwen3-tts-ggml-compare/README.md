@@ -158,7 +158,11 @@ qwentts.cpp の使い方（`engines/qwentts_engine.py`）:
 
 ### Listening
 
-（オーナーが `mise run listen` で聞いた結果をここに書く。未）
+2026-10-23、lab の作者 1 人が聞いた。
+
+- 話者 1 の参照（`mise run listen`）では判断せず、フリー素材のキャラクターの声（10.7 秒、悲しみの読み）を参照にした 7 文で判断した（`output/kanashimi.html`、lab の外の音声）
+- **qwentts.cpp 1.7B BF16 を「いいね」**。並列はそこまで求めないので、品質を取って 1.7B BF16 にした。BF16 と Q8_0、Mac と Windows の差の言葉は記録していない
+- その後、この結果で Qwen3-TTS のエンジンを qwentts.cpp にし、Flutter の package [voice_clone_tts](https://github.com/kiarina/voice_clone_tts) を作った
 
 ### Other reference voices
 
