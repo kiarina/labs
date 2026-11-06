@@ -112,6 +112,22 @@ Mac は 1 つの組み合わせごとに、閉じさせる回を 3 回と、強�
   - 開いた直後のメッセージが、Dart がチャネルを登録する前に届くことがある。登録までは溜めておく（`impl_ldc.dart` の `_pending`）。
 - **Chrome（Mac）**: 失敗した回の後、puppeteer の node が SIGTERM で終わらないことがあった。`run_pair.sh` は子の Chrome ごと強制終了する。
 
+## 既存のパッケージ（2026-11-06 時点）
+
+Flutter なしの Dart からデータチャネルを使えるものを pub.dev で探した。GitHub で `rtcCreatePeerConnection` を呼ぶ Dart のコードも探したが、見つかったのはこの lab と下の 1 つだけだった。
+
+| パッケージ | 中身 | この用途で足りないところ |
+|---|---|---|
+| [dart_libp2p_webrtc](https://pub.dev/packages/dart_libp2p_webrtc) 0.1.0（2026-10-23、MIT） | libp2p の WebRTC の通り道。中に、libdatachannel v0.24.6 を FFI で呼ぶ汎用の層（`RtcPeerConnection`・`RtcDataChannel`）がある | libp2p の本体（`dart_libp2p`）に依存する。Windows に対応していない。自分の候補を少しずつ出さず、集め終わるまで待つ。送れるのはバイト列だけで、文字列のメッセージは送れない |
+| [webrtc_dart](https://pub.dev/packages/webrtc_dart) 0.25.3 | Pure Dart の WebRTC | この lab の結果のとおり |
+| [pure_dart_webrtc](https://pub.dev/packages/pure_dart_webrtc) 1.0.4 | Pure Dart の WebRTC | 試していない（月 18 ダウンロード） |
+| [universal_webrtc_raw](https://pub.dev/packages/universal_webrtc_raw) 0.1.0 | webrtc-rs（Rust）を別プロセスで動かし、標準入出力の JSON で操る | 別プロセスになる。作者のメモによると、片方向の受け取りが届かないことがある |
+
+dart_libp2p_webrtc の FFI の層には、この lab より良いところがある。
+
+- build hook（`hook/build.dart`）が、libdatachannel と Mbed TLS をソースから build する。システムの OpenSSL が要らない。
+- コールバックは id しか運ばない。中身は Dart の側から `rtcReceiveMessage` などで同期的に取り出す。このため C の shim が要らない。
+
 ## 環境
 
 - MacBook Pro（Apple M1 Max、64 GB）、macOS 27.0.1
