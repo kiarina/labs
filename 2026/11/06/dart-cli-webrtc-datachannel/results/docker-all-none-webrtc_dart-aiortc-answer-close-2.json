@@ -1,0 +1,50 @@
+{
+  "label": "docker-all-none-webrtc_dart-aiortc-answer-close-2",
+  "role": "answer",
+  "end": "close",
+  "stun": null,
+  "dart": "3.13.7 (stable) (Thu Oct 22 14:28:57 2026 -0700) on \"linux_arm64\"",
+  "os": "linux Linux 7.0.14-linuxkit #1 SMP PREEMPT Fri Oct 30 13:45:20 UTC 2026",
+  "executable": "probe",
+  "aot": true,
+  "checks": {},
+  "impl": {
+    "impl": "webrtc_dart",
+    "version": "0.25.3"
+  },
+  "ok": false,
+  "error": "DtlsHandshakeException: DTLS error: FormatException: Certificate message truncated: expected 350, got 115 caused by: FormatException: Certificate message truncated: expected 350, got 115\n",
+  "events": [
+    {
+      "t_ms": 0.0,
+      "what": "signal connected"
+    },
+    {
+      "t_ms": 351.4,
+      "what": "peer present"
+    },
+    {
+      "t_ms": 365.6,
+      "what": "remote offer"
+    },
+    {
+      "t_ms": 366.2,
+      "what": "local answer"
+    },
+    {
+      "t_ms": 366.4,
+      "what": "local candidate",
+      "detail": "host udp 172.17.0.2"
+    },
+    {
+      "t_ms": 366.4,
+      "what": "pc",
+      "detail": "connecting"
+    },
+    {
+      "t_ms": 400.2,
+      "what": "error",
+      "detail": "DtlsHandshakeException: DTLS error: FormatException: Certificate message truncated: expected 350, got 115 caused by: FormatException: Certificate message truncated: expected 350, got 115"
+    }
+  ]
+}

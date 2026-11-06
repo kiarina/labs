@@ -1,0 +1,135 @@
+{
+  "label": "macos-webrtc_dart-aiortc-answer-close-3",
+  "role": "answer",
+  "end": "close",
+  "stun": null,
+  "dart": "3.13.2 (stable) (Tue Aug 25 01:01:12 2026 -0700) on \"macos_arm64\"",
+  "os": "macos Version 27.0.1 (Build 26A434)",
+  "executable": "probe",
+  "aot": true,
+  "checks": {},
+  "impl": {
+    "impl": "webrtc_dart",
+    "version": "0.25.3"
+  },
+  "ok": false,
+  "error": "DtlsHandshakeException: DTLS error: FormatException: Certificate message truncated: expected 352, got 115 caused by: FormatException: Certificate message truncated: expected 352, got 115\n",
+  "events": [
+    {
+      "t_ms": 0.0,
+      "what": "signal connected"
+    },
+    {
+      "t_ms": 414.3,
+      "what": "peer present"
+    },
+    {
+      "t_ms": 425.3,
+      "what": "remote offer"
+    },
+    {
+      "t_ms": 430.0,
+      "what": "local answer"
+    },
+    {
+      "t_ms": 430.2,
+      "what": "local candidate",
+      "detail": "host udp 192.168.64.1"
+    },
+    {
+      "t_ms": 430.2,
+      "what": "local candidate",
+      "detail": "host udp ipv6-ula"
+    },
+    {
+      "t_ms": 430.3,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 430.3,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 430.4,
+      "what": "local candidate",
+      "detail": "host udp 192.168.1.101"
+    },
+    {
+      "t_ms": 430.4,
+      "what": "pc",
+      "detail": "connecting"
+    },
+    {
+      "t_ms": 430.4,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 430.4,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 430.5,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 430.5,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 430.6,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 430.6,
+      "what": "local candidate",
+      "detail": "host udp 192.168.1.7"
+    },
+    {
+      "t_ms": 430.6,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 430.7,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 430.7,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 430.7,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 430.8,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 430.8,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 430.8,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 465.9,
+      "what": "error",
+      "detail": "DtlsHandshakeException: DTLS error: FormatException: Certificate message truncated: expected 352, got 115 caused by: FormatException: Certificate message truncated: expected 352, got 115"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="The probe in a Linux container (Docker), echo peers on the host, then the tables"
+#MISE depends=["setup"]
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+docker build -q -t dart-cli-webrtc-probe .
+scripts/matrix-docker.sh docker "${REPS:-2}"
+for t in default-none default-stun all-none all-stun; do echo "## $t"; python3 scripts/summarize.py "docker-$t"; done

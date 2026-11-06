@@ -1,0 +1,236 @@
+{
+  "label": "macos-libdatachannel-chrome-answer-close-3",
+  "role": "answer",
+  "end": "close",
+  "stun": null,
+  "dart": "3.13.2 (stable) (Tue Aug 25 01:01:12 2026 -0700) on \"macos_arm64\"",
+  "os": "macos Version 27.0.1 (Build 26A434)",
+  "executable": "probe",
+  "aot": true,
+  "checks": {
+    "open": {
+      "ok": true,
+      "ms_from_peer_present": 93.1,
+      "label": "nerve"
+    },
+    "rtt_small": {
+      "ok": true,
+      "n": 200,
+      "median_ms": 0.19,
+      "p95_ms": 0.28,
+      "max_ms": 0.66
+    },
+    "scripts": {
+      "ok": true,
+      "cases": [
+        {
+          "script": "ascii",
+          "ok": true,
+          "echoed": true
+        },
+        {
+          "script": "quote_backslash_newline",
+          "ok": true,
+          "echoed": true
+        },
+        {
+          "script": "japanese",
+          "ok": true,
+          "echoed": true
+        },
+        {
+          "script": "emoji",
+          "ok": true,
+          "echoed": true
+        }
+      ]
+    },
+    "sizes": {
+      "ok": true,
+      "split_cases_equal": [
+        false,
+        false
+      ],
+      "cases": [
+        {
+          "chars": 100,
+          "frames": 1,
+          "boundaries_inside_pair": 0,
+          "equal": true,
+          "ms": 0.2
+        },
+        {
+          "chars": 15000,
+          "frames": 2,
+          "boundaries_inside_pair": 0,
+          "equal": true,
+          "ms": 3.86
+        },
+        {
+          "chars": 16001,
+          "frames": 2,
+          "boundaries_inside_pair": 0,
+          "equal": true,
+          "ms": 3.72
+        },
+        {
+          "chars": 65536,
+          "frames": 5,
+          "boundaries_inside_pair": 1,
+          "equal": false,
+          "ms": 10.69
+        },
+        {
+          "chars": 262144,
+          "frames": 19,
+          "boundaries_inside_pair": 0,
+          "equal": true,
+          "ms": 46.79
+        },
+        {
+          "chars": 1048576,
+          "frames": 74,
+          "boundaries_inside_pair": 9,
+          "equal": false,
+          "ms": 211.49
+        }
+      ]
+    },
+    "burst": {
+      "ok": true,
+      "n": 2000,
+      "bytes_each_way": 2060000,
+      "send_ms": 156.49,
+      "total_ms": 203.7,
+      "mb_per_s_each_way": 10.11
+    },
+    "remote_gone": {
+      "ok": true,
+      "end": "close",
+      "first_sign": "pc disconnected",
+      "ms": 1.34
+    }
+  },
+  "impl": {
+    "impl": "libdatachannel",
+    "version": "v0.24.6"
+  },
+  "pc_states": [
+    "connecting",
+    "connected",
+    "disconnected",
+    "closed"
+  ],
+  "local_candidates": [
+    "host udp ipv6-global",
+    "host udp ipv6-ula",
+    "host udp ipv6-ula",
+    "host udp ipv6-ula",
+    "host udp 192.168.1.7",
+    "host udp 192.168.1.101",
+    "host udp ipv4-cgnat",
+    "host udp 192.168.64.1"
+  ],
+  "remote_candidates": [
+    "host udp 192.168.1.7",
+    "host udp ipv6-global"
+  ],
+  "ok": true,
+  "events": [
+    {
+      "t_ms": 0.0,
+      "what": "signal connected"
+    },
+    {
+      "t_ms": 651.6,
+      "what": "peer present"
+    },
+    {
+      "t_ms": 737.6,
+      "what": "remote offer"
+    },
+    {
+      "t_ms": 739.5,
+      "what": "remote candidate",
+      "detail": "host udp 192.168.1.7"
+    },
+    {
+      "t_ms": 739.5,
+      "what": "remote candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 739.6,
+      "what": "local answer"
+    },
+    {
+      "t_ms": 739.8,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 739.9,
+      "what": "local candidate",
+      "detail": "host udp ipv6-ula"
+    },
+    {
+      "t_ms": 739.9,
+      "what": "local candidate",
+      "detail": "host udp ipv6-ula"
+    },
+    {
+      "t_ms": 740.0,
+      "what": "local candidate",
+      "detail": "host udp ipv6-ula"
+    },
+    {
+      "t_ms": 740.1,
+      "what": "local candidate",
+      "detail": "host udp 192.168.1.7"
+    },
+    {
+      "t_ms": 740.1,
+      "what": "local candidate",
+      "detail": "host udp 192.168.1.101"
+    },
+    {
+      "t_ms": 744.6,
+      "what": "local candidate",
+      "detail": "host udp ipv4-cgnat"
+    },
+    {
+      "t_ms": 744.7,
+      "what": "local candidate",
+      "detail": "host udp 192.168.64.1"
+    },
+    {
+      "t_ms": 744.7,
+      "what": "pc",
+      "detail": "connecting"
+    },
+    {
+      "t_ms": 744.7,
+      "what": "pc",
+      "detail": "connected"
+    },
+    {
+      "t_ms": 744.8,
+      "what": "channel open",
+      "detail": "nerve"
+    },
+    {
+      "t_ms": 1276.1,
+      "what": "pc",
+      "detail": "disconnected"
+    },
+    {
+      "t_ms": 1276.2,
+      "what": "channel closed"
+    },
+    {
+      "t_ms": 1276.2,
+      "what": "pc",
+      "detail": "closed"
+    }
+  ]
+}

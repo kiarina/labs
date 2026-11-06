@@ -1,0 +1,55 @@
+{
+  "label": "docker-all-stun-webrtc_dart-aiortc-answer-close-2",
+  "role": "answer",
+  "end": "close",
+  "stun": "stun:stun.cloudflare.com:3478",
+  "dart": "3.13.7 (stable) (Thu Oct 22 14:28:57 2026 -0700) on \"linux_arm64\"",
+  "os": "linux Linux 7.0.14-linuxkit #1 SMP PREEMPT Fri Oct 30 13:45:20 UTC 2026",
+  "executable": "probe",
+  "aot": true,
+  "checks": {},
+  "impl": {
+    "impl": "webrtc_dart",
+    "version": "0.25.3"
+  },
+  "ok": false,
+  "error": "DtlsHandshakeException: DTLS error: FormatException: Certificate message truncated: expected 351, got 115 caused by: FormatException: Certificate message truncated: expected 351, got 115\n",
+  "events": [
+    {
+      "t_ms": 0.0,
+      "what": "signal connected"
+    },
+    {
+      "t_ms": 354.1,
+      "what": "peer present"
+    },
+    {
+      "t_ms": 367.3,
+      "what": "remote offer"
+    },
+    {
+      "t_ms": 374.8,
+      "what": "local answer"
+    },
+    {
+      "t_ms": 375.3,
+      "what": "local candidate",
+      "detail": "host udp 172.17.0.2"
+    },
+    {
+      "t_ms": 375.4,
+      "what": "local candidate",
+      "detail": "srflx udp ipv4-public"
+    },
+    {
+      "t_ms": 375.5,
+      "what": "pc",
+      "detail": "connecting"
+    },
+    {
+      "t_ms": 409.8,
+      "what": "error",
+      "detail": "DtlsHandshakeException: DTLS error: FormatException: Certificate message truncated: expected 351, got 115 caused by: FormatException: Certificate message truncated: expected 351, got 115"
+    }
+  ]
+}

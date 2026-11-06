@@ -1,0 +1,229 @@
+{
+  "label": "docker-all-stun-webrtc_dart-chrome-offer-close-2",
+  "role": "offer",
+  "end": "close",
+  "stun": "stun:stun.cloudflare.com:3478",
+  "dart": "3.13.7 (stable) (Thu Oct 22 14:28:57 2026 -0700) on \"linux_arm64\"",
+  "os": "linux Linux 7.0.14-linuxkit #1 SMP PREEMPT Fri Oct 30 13:45:20 UTC 2026",
+  "executable": "probe",
+  "aot": true,
+  "checks": {
+    "open": {
+      "ok": true,
+      "ms_from_peer_present": 220.9,
+      "label": "nerve"
+    },
+    "rtt_small": {
+      "ok": true,
+      "n": 200,
+      "median_ms": 0.37,
+      "p95_ms": 0.67,
+      "max_ms": 1.64
+    },
+    "scripts": {
+      "ok": true,
+      "cases": [
+        {
+          "script": "ascii",
+          "ok": true,
+          "echoed": true
+        },
+        {
+          "script": "quote_backslash_newline",
+          "ok": true,
+          "echoed": true
+        },
+        {
+          "script": "japanese",
+          "ok": true,
+          "echoed": true
+        },
+        {
+          "script": "emoji",
+          "ok": true,
+          "echoed": true
+        }
+      ]
+    },
+    "sizes": {
+      "ok": true,
+      "split_cases_equal": [],
+      "cases": [
+        {
+          "chars": 100,
+          "frames": 1,
+          "boundaries_inside_pair": 0,
+          "equal": true,
+          "ms": 0.45
+        },
+        {
+          "chars": 15000,
+          "frames": 4,
+          "boundaries_inside_pair": 0,
+          "equal": true,
+          "ms": 22.47
+        },
+        {
+          "chars": 16001,
+          "frames": 4,
+          "boundaries_inside_pair": 0,
+          "equal": true,
+          "ms": 23.65
+        },
+        {
+          "chars": 65536,
+          "frames": 14,
+          "boundaries_inside_pair": 0,
+          "equal": true,
+          "ms": 94.13
+        },
+        {
+          "chars": 262144,
+          "frames": 53,
+          "boundaries_inside_pair": 0,
+          "equal": true,
+          "ms": 364.52
+        },
+        {
+          "chars": 1048576,
+          "frames": 208,
+          "boundaries_inside_pair": 0,
+          "equal": true,
+          "ms": 1428.73
+        }
+      ]
+    },
+    "burst": {
+      "ok": true,
+      "n": 2000,
+      "bytes_each_way": 2060000,
+      "send_ms": 31.51,
+      "total_ms": 940.79,
+      "mb_per_s_each_way": 2.19
+    },
+    "remote_gone": {
+      "ok": true,
+      "end": "close",
+      "first_sign": "pc closed",
+      "ms": 2.19
+    }
+  },
+  "impl": {
+    "impl": "webrtc_dart",
+    "version": "0.25.3"
+  },
+  "pc_states": [
+    "connecting",
+    "connected",
+    "closed"
+  ],
+  "local_candidates": [
+    "host udp 172.17.0.2",
+    "srflx udp ipv4-public"
+  ],
+  "remote_candidates": [
+    "host udp 192.168.64.1",
+    "host udp 192.168.1.7",
+    "host udp 192.168.1.101",
+    "host udp ipv4-cgnat",
+    "host udp ipv6-ula",
+    "host udp ipv6-global",
+    "host udp ipv6-global",
+    "host udp ipv6-ula",
+    "host udp ipv6-ula"
+  ],
+  "ok": true,
+  "events": [
+    {
+      "t_ms": 0.0,
+      "what": "signal connected"
+    },
+    {
+      "t_ms": 591.9,
+      "what": "peer present"
+    },
+    {
+      "t_ms": 611.6,
+      "what": "local offer"
+    },
+    {
+      "t_ms": 611.9,
+      "what": "local candidate",
+      "detail": "host udp 172.17.0.2"
+    },
+    {
+      "t_ms": 612.1,
+      "what": "local candidate",
+      "detail": "srflx udp ipv4-public"
+    },
+    {
+      "t_ms": 674.4,
+      "what": "remote answer"
+    },
+    {
+      "t_ms": 674.5,
+      "what": "pc",
+      "detail": "connecting"
+    },
+    {
+      "t_ms": 677.1,
+      "what": "remote candidate",
+      "detail": "host udp 192.168.64.1"
+    },
+    {
+      "t_ms": 677.2,
+      "what": "remote candidate",
+      "detail": "host udp 192.168.1.7"
+    },
+    {
+      "t_ms": 677.3,
+      "what": "remote candidate",
+      "detail": "host udp 192.168.1.101"
+    },
+    {
+      "t_ms": 677.4,
+      "what": "remote candidate",
+      "detail": "host udp ipv4-cgnat"
+    },
+    {
+      "t_ms": 677.5,
+      "what": "remote candidate",
+      "detail": "host udp ipv6-ula"
+    },
+    {
+      "t_ms": 677.6,
+      "what": "remote candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 677.6,
+      "what": "remote candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 677.7,
+      "what": "remote candidate",
+      "detail": "host udp ipv6-ula"
+    },
+    {
+      "t_ms": 677.7,
+      "what": "remote candidate",
+      "detail": "host udp ipv6-ula"
+    },
+    {
+      "t_ms": 808.6,
+      "what": "pc",
+      "detail": "connected"
+    },
+    {
+      "t_ms": 812.7,
+      "what": "channel open",
+      "detail": "nerve"
+    },
+    {
+      "t_ms": 3784.5,
+      "what": "pc",
+      "detail": "closed"
+    }
+  ]
+}

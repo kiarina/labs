@@ -1,0 +1,223 @@
+{
+  "label": "check-libdatachannel-aiortc-offer-close-1",
+  "role": "offer",
+  "end": "close",
+  "stun": null,
+  "dart": "3.13.2 (stable) (Tue Aug 25 01:01:12 2026 -0700) on \"macos_arm64\"",
+  "os": "macos Version 27.0.1 (Build 26A434)",
+  "executable": "dart",
+  "aot": false,
+  "checks": {
+    "open": {
+      "ok": true,
+      "ms_from_peer_present": 111.0,
+      "label": "nerve"
+    },
+    "rtt_small": {
+      "ok": true,
+      "n": 200,
+      "median_ms": 0.3,
+      "p95_ms": 0.41,
+      "max_ms": 1.6
+    },
+    "scripts": {
+      "ok": true,
+      "cases": [
+        {
+          "script": "ascii",
+          "ok": true,
+          "echoed": true
+        },
+        {
+          "script": "quote_backslash_newline",
+          "ok": true,
+          "echoed": true
+        },
+        {
+          "script": "japanese",
+          "ok": true,
+          "echoed": true
+        },
+        {
+          "script": "emoji",
+          "ok": true,
+          "echoed": true
+        }
+      ]
+    },
+    "sizes": {
+      "ok": true,
+      "split_cases_equal": [
+        false,
+        false
+      ],
+      "cases": [
+        {
+          "chars": 100,
+          "frames": 1,
+          "boundaries_inside_pair": 0,
+          "equal": true,
+          "ms": 0.93
+        },
+        {
+          "chars": 15000,
+          "frames": 2,
+          "boundaries_inside_pair": 0,
+          "equal": true,
+          "ms": 12.03
+        },
+        {
+          "chars": 16001,
+          "frames": 2,
+          "boundaries_inside_pair": 0,
+          "equal": true,
+          "ms": 5.96
+        },
+        {
+          "chars": 65536,
+          "frames": 5,
+          "boundaries_inside_pair": 1,
+          "equal": false,
+          "ms": 11.83
+        },
+        {
+          "chars": 262144,
+          "frames": 19,
+          "boundaries_inside_pair": 0,
+          "equal": true,
+          "ms": 44.28
+        },
+        {
+          "chars": 1048576,
+          "frames": 74,
+          "boundaries_inside_pair": 9,
+          "equal": false,
+          "ms": 234.08
+        }
+      ]
+    },
+    "burst": {
+      "ok": true,
+      "n": 2000,
+      "bytes_each_way": 2060000,
+      "send_ms": 91.3,
+      "total_ms": 212.25,
+      "mb_per_s_each_way": 9.71
+    },
+    "remote_gone": {
+      "ok": true,
+      "end": "close",
+      "first_sign": "channel closed",
+      "ms": 1.26
+    }
+  },
+  "impl": {
+    "impl": "libdatachannel",
+    "version": "v0.24.6"
+  },
+  "pc_states": [
+    "connecting",
+    "connected",
+    "disconnected",
+    "closed"
+  ],
+  "local_candidates": [
+    "host udp ipv6-global",
+    "host udp ipv6-ula",
+    "host udp ipv6-ula",
+    "host udp ipv6-ula",
+    "host udp 192.168.1.7",
+    "host udp 192.168.1.101",
+    "host udp ipv4-cgnat",
+    "host udp 192.168.64.1"
+  ],
+  "remote_candidates": [],
+  "ok": true,
+  "events": [
+    {
+      "t_ms": 0.1,
+      "what": "signal connected"
+    },
+    {
+      "t_ms": 10.1,
+      "what": "peer present"
+    },
+    {
+      "t_ms": 68.3,
+      "what": "local offer"
+    },
+    {
+      "t_ms": 74.4,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 74.6,
+      "what": "local candidate",
+      "detail": "host udp ipv6-ula"
+    },
+    {
+      "t_ms": 74.8,
+      "what": "local candidate",
+      "detail": "host udp ipv6-ula"
+    },
+    {
+      "t_ms": 74.9,
+      "what": "local candidate",
+      "detail": "host udp ipv6-ula"
+    },
+    {
+      "t_ms": 75.0,
+      "what": "local candidate",
+      "detail": "host udp 192.168.1.7"
+    },
+    {
+      "t_ms": 75.1,
+      "what": "local candidate",
+      "detail": "host udp 192.168.1.101"
+    },
+    {
+      "t_ms": 75.2,
+      "what": "local candidate",
+      "detail": "host udp ipv4-cgnat"
+    },
+    {
+      "t_ms": 75.3,
+      "what": "local candidate",
+      "detail": "host udp 192.168.64.1"
+    },
+    {
+      "t_ms": 75.6,
+      "what": "pc",
+      "detail": "connecting"
+    },
+    {
+      "t_ms": 84.9,
+      "what": "remote answer"
+    },
+    {
+      "t_ms": 120.4,
+      "what": "pc",
+      "detail": "connected"
+    },
+    {
+      "t_ms": 121.1,
+      "what": "channel open",
+      "detail": "nerve"
+    },
+    {
+      "t_ms": 724.4,
+      "what": "channel closed"
+    },
+    {
+      "t_ms": 724.8,
+      "what": "pc",
+      "detail": "disconnected"
+    },
+    {
+      "t_ms": 725.2,
+      "what": "pc",
+      "detail": "closed"
+    }
+  ]
+}

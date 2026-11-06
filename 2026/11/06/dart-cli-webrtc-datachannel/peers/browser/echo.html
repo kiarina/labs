@@ -1,0 +1,74 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>libwebrtc echo</title>
+<script>
+// Echo peer on the browser's libwebrtc (the same engine as flutter_webrtc).
+// Joins bin/signal.dart, links as ?role=offer|answer with trickle ICE, echoes
+// every frame back verbatim. J{"op":"close"} closes the peer connection;
+// J{"op":"kill"} asks the driver to SIGKILL the browser.
+const q = new URLSearchParams(location.search);
+const role = q.get('role') || 'answer';
+
+const ws = new WebSocket(q.get('signal') + '/ws');
+const pc = new RTCPeerConnection({iceServers: []});
+let remoteSet = false, early = [], described = false, outbox = [];
+const log = (...a) => console.log('echo', ...a);
+pc.onconnectionstatechange = async () => {
+  log('pc', pc.connectionState);
+  if (pc.connectionState === 'failed' && q.get('verbose')) {
+    const stats = await pc.getStats();
+    stats.forEach((r) => {
+      if (r.type === 'local-candidate' || r.type === 'remote-candidate') log('stat', r.type, r.candidateType, r.address, r.port);
+      if (r.type === 'candidate-pair') log('stat pair', r.state, r.localCandidateId, r.remoteCandidateId, 'req', r.requestsSent, 'resp', r.responsesReceived, 'reqIn', r.requestsReceived);
+    });
+  }
+};
+pc.onicecandidate = (e) => {
+  if (!e.candidate) return;
+  const m = {k: 'cand', candidate: e.candidate.candidate, sdpMid: e.candidate.sdpMid, sdpMLineIndex: e.candidate.sdpMLineIndex};
+  described ? ws.send(JSON.stringify(m)) : outbox.push(m);
+};
+function sendDescription(m) {
+  ws.send(JSON.stringify(m)); described = true;
+  for (const c of outbox) ws.send(JSON.stringify(c));
+  outbox = [];
+}
+async function setRemote(type, sdp) {
+  await pc.setRemoteDescription({type, sdp}); remoteSet = true;
+  for (const c of early) await pc.addIceCandidate(c);
+  early = [];
+}
+function wire(dc) {
+  dc.onopen = () => log('channel open', dc.label);
+  dc.onmessage = (e) => {
+    const m = e.data;
+    if (typeof m === 'string' && m.startsWith('J{"op":')) {
+      const op = JSON.parse(m.slice(1)).op;
+      if (op === 'kill') { log('KILL'); return; }
+      pc.close(); log('closed'); return;
+    }
+    if (q.get('verbose')) log('recv', typeof m, m.length, m.slice(0, 60));
+    dc.send(m);
+  };
+}
+pc.ondatachannel = (e) => wire(e.channel);
+window.addEventListener('unhandledrejection', (e) => log('error', String(e.reason)));
+ws.onmessage = async (e) => {
+  const m = JSON.parse(e.data);
+  log('signal', m.k);
+  if (m.k === 'peer' && role === 'offer') {
+    wire(pc.createDataChannel('nerve', {ordered: true}));
+    const o = await pc.createOffer(); await pc.setLocalDescription(o);
+    sendDescription({k: 'offer', sdp: o.sdp});
+  } else if (m.k === 'offer') {
+    await setRemote('offer', m.sdp);
+    const a = await pc.createAnswer(); await pc.setLocalDescription(a);
+    sendDescription({k: 'answer', sdp: a.sdp});
+  } else if (m.k === 'answer') {
+    await setRemote('answer', m.sdp);
+  } else if (m.k === 'cand') {
+    const c = {candidate: m.candidate, sdpMid: m.sdpMid, sdpMLineIndex: m.sdpMLineIndex};
+    remoteSet ? await pc.addIceCandidate(c) : early.push(c);
+  }
+};
+</script>

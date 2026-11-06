@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#MISE description="Quick check without Chrome or Docker: libdatachannel probe (JIT) <-> aiortc echo, both roles"
+#MISE depends=["setup"]
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+for role in offer answer; do
+  PROBE_ARGS="--impl libdatachannel" ./run_pair.sh aiortc "$role" close "check-libdatachannel-aiortc-$role-close-1" > build/check-$role.txt; cat build/check-$role.txt; grep "rc=0" build/check-$role.txt >/dev/null
+done
+echo "ok: libdatachannel <-> aiortc in both roles"

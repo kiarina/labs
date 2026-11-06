@@ -1,0 +1,150 @@
+{
+  "label": "macos-webrtc_dart-chrome-offer-close-1",
+  "role": "offer",
+  "end": "close",
+  "stun": null,
+  "dart": "3.13.2 (stable) (Tue Aug 25 01:01:12 2026 -0700) on \"macos_arm64\"",
+  "os": "macos Version 27.0.1 (Build 26A434)",
+  "executable": "probe",
+  "aot": true,
+  "checks": {},
+  "impl": {
+    "impl": "webrtc_dart",
+    "version": "0.25.3"
+  },
+  "ok": false,
+  "error": "TimeoutException after 0:00:30.000000: Future not completed\n#0      Future.timeout.<anonymous closure> (dart:async/future_impl.dart:1042)\n<asynchronous suspension>\n#1      _run (file://~/src/github.com/kiarina/labs/2026/11/06/dart-cli-webrtc-datachannel/dart/bin/probe.dart:172)\n<asynchronous suspension>\n#2      main.<anonymous closure>.<anonymous closure> (file://~/src/github.com/kiarina/labs/2026/11/06/dart-cli-webrtc-datachannel/dart/bin/probe.dart:76)\n<asynchronous suspension>\n",
+  "events": [
+    {
+      "t_ms": 0.0,
+      "what": "signal connected"
+    },
+    {
+      "t_ms": 502.2,
+      "what": "peer present"
+    },
+    {
+      "t_ms": 516.8,
+      "what": "local offer"
+    },
+    {
+      "t_ms": 517.0,
+      "what": "local candidate",
+      "detail": "host udp 192.168.64.1"
+    },
+    {
+      "t_ms": 517.0,
+      "what": "local candidate",
+      "detail": "host udp ipv6-ula"
+    },
+    {
+      "t_ms": 517.1,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 517.2,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 517.2,
+      "what": "local candidate",
+      "detail": "host udp 192.168.1.101"
+    },
+    {
+      "t_ms": 517.2,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 517.3,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 517.3,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 517.4,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 517.4,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 517.4,
+      "what": "local candidate",
+      "detail": "host udp 192.168.1.7"
+    },
+    {
+      "t_ms": 517.5,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 517.5,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 517.5,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 517.6,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 517.6,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 517.6,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 517.7,
+      "what": "local candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 602.7,
+      "what": "remote answer"
+    },
+    {
+      "t_ms": 605.6,
+      "what": "pc",
+      "detail": "connecting"
+    },
+    {
+      "t_ms": 605.7,
+      "what": "remote candidate",
+      "detail": "host udp 192.168.1.7"
+    },
+    {
+      "t_ms": 606.0,
+      "what": "remote candidate",
+      "detail": "host udp ipv6-global"
+    },
+    {
+      "t_ms": 7602.7,
+      "what": "pc",
+      "detail": "disconnected"
+    },
+    {
+      "t_ms": 30515.4,
+      "what": "error",
+      "detail": "TimeoutException after 0:00:30.000000: Future not completed"
+    }
+  ]
+}

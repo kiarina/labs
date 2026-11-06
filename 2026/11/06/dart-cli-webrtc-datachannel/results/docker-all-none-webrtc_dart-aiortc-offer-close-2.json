@@ -1,0 +1,50 @@
+{
+  "label": "docker-all-none-webrtc_dart-aiortc-offer-close-2",
+  "role": "offer",
+  "end": "close",
+  "stun": null,
+  "dart": "3.13.7 (stable) (Thu Oct 22 14:28:57 2026 -0700) on \"linux_arm64\"",
+  "os": "linux Linux 7.0.14-linuxkit #1 SMP PREEMPT Fri Oct 30 13:45:20 UTC 2026",
+  "executable": "probe",
+  "aot": true,
+  "checks": {},
+  "impl": {
+    "impl": "webrtc_dart",
+    "version": "0.25.3"
+  },
+  "ok": false,
+  "error": "DtlsHandshakeException: DTLS error: Exception: Fatal alert: AlertDescription.handshakeFailure caused by: Exception: Fatal alert: AlertDescription.handshakeFailure\n",
+  "events": [
+    {
+      "t_ms": 0.0,
+      "what": "signal connected"
+    },
+    {
+      "t_ms": 343.0,
+      "what": "peer present"
+    },
+    {
+      "t_ms": 371.8,
+      "what": "local offer"
+    },
+    {
+      "t_ms": 372.0,
+      "what": "local candidate",
+      "detail": "host udp 172.17.0.2"
+    },
+    {
+      "t_ms": 383.6,
+      "what": "remote answer"
+    },
+    {
+      "t_ms": 383.9,
+      "what": "pc",
+      "detail": "connecting"
+    },
+    {
+      "t_ms": 420.0,
+      "what": "error",
+      "detail": "DtlsHandshakeException: DTLS error: Exception: Fatal alert: AlertDescription.handshakeFailure caused by: Exception: Fatal alert: AlertDescription.handshakeFailure"
+    }
+  ]
+}

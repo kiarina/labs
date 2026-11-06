@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Build libdatachannel + the shim, fetch Dart, aiortc and puppeteer-core"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+scripts/build-libdatachannel.sh
+(cd dart && dart pub get)
+(cd peers/aiortc && uv sync)
+(cd peers/browser && npm ci)

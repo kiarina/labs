@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="macOS: both implementations x Chrome/aiortc x both roles (AOT probe), then the table"
+#MISE depends=["setup"]
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+scripts/matrix.sh macos "${REPS:-3}"
+python3 scripts/summarize.py macos

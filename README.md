@@ -18,6 +18,9 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 
 ## Labs
 
+- 2026/11
+  - [WebRTC data channels from a Flutter-free Dart CLI: webrtc_dart vs libdatachannel over FFI, against libwebrtc (Chrome) and aiortc, on macOS and in a Linux container](2026/11/06/dart-cli-webrtc-datachannel/README.md) - [webrtc](tags/webrtc.md), [datachannel](tags/datachannel.md), [dart](tags/dart.md), [ffi](tags/ffi.md), [libdatachannel](tags/libdatachannel.md), [aiortc](tags/aiortc.md), [docker](tags/docker.md), [cli](tags/cli.md), [macos](tags/macos.md), [linux](tags/linux.md)
+
 - 2026/10
   - [Call speech in short spans on qwentts.cpp (Qwen3-TTS 1.7B BF16)](2026/10/23/qwen3-tts-ggml-call-segments/README.md) - [audio](tags/audio.md), [tts](tags/tts.md), [voice-cloning](tags/voice-cloning.md), [japanese](tags/japanese.md), [qwen3-tts](tags/qwen3-tts.md), [ggml](tags/ggml.md), [streaming](tags/streaming.md), [latency](tags/latency.md), [metal](tags/metal.md), [cuda](tags/cuda.md)
   - [Qwen3-TTS on ggml (qwentts.cpp, llama.cpp) vs MLX bf16 and an ONNX Runtime port](2026/10/23/qwen3-tts-ggml-compare/README.md) - [audio](tags/audio.md), [tts](tags/tts.md), [voice-cloning](tags/voice-cloning.md), [japanese](tags/japanese.md), [qwen3-tts](tags/qwen3-tts.md), [ggml](tags/ggml.md), [llama-cpp](tags/llama-cpp.md), [metal](tags/metal.md), [cuda](tags/cuda.md), [mlx](tags/mlx.md), [onnxruntime](tags/onnxruntime.md), [apple-silicon](tags/apple-silicon.md)
