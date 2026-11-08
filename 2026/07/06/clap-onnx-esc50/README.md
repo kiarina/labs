@@ -54,6 +54,15 @@ output: embeddings [batch, 512]
 この ONNX は audio encoder のみなので、CLAP の text encoder を使う
 zero-shot classification ではありません。
 
+## Dependency advisories
+
+2026-11-09 に、advisory が出た間接依存を `uv.lock` だけで上げました。`certifi` 2026.6.17 → 2026.10.23
+（critical 1 件、侵害された emSign の中間 CA）、`filelock` 3.29.5 → 4.2.9（high・medium・low）、
+`setuptools` 83.0.0 → 84.2.1（low 1 件）です。どれも `torch`・`transformers`・`huggingface-hub` の依存として
+入るだけで、lock のほかの行は元のまま残しています。既存の `model.onnx` で `mise run` を流し、上げる前後で
+`export_model.py --verify-only` と `main.py` の出力と `output/report.json` は処理時間の項目を除いて
+一致しました（MacBook Pro M1 Max で確認）。
+
 ## Requirements and run
 
 - [mise](https://mise.jdx.dev/)
