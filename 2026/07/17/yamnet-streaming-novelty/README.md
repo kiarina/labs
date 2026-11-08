@@ -240,6 +240,11 @@ high 2・medium 1）。この lab のダウンロードは標準ライブラリ�
 `output/report.json` は処理時間の 2 項目（`feature_extraction_elapsed_seconds`、
 `real_time_factor`）を除いて一致しました（Mac Studio M4 Max で確認）。
 
+`certifi` は 2026-11-09 に **2026.6.17 から 2026.10.23 へ**（critical 1 件、侵害された emSign の中間 CA）、
+`setuptools` は **83.0.0 から 84.2.1 へ**（low 1 件、修正版は 84.1.0）上げました（`uv.lock` のみ）。
+どちらも `tensorflow` などの依存として入るだけです。上げる前後で `output/report.json` は
+同じ処理時間の 2 項目を除いて一致しました（MacBook Pro M1 Max で確認）。
+
 ## Requirements and run
 
 - [mise](https://mise.jdx.dev/)
