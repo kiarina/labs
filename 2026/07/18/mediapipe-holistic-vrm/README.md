@@ -52,6 +52,13 @@ hashで固定しています。Seed-sanはVirtualCast, Inc.によるモデルで
 `mise run`を流し、testは14件ともpassし、`dist/`の11ファイルはSHA-256がすべて一致しました
 （Mac Studio M4 Maxで確認）。
 
+2026-11-09に、advisoryが出たdevDependencyの`vite`を8.2.2から8.2.4へ（high 1・medium 4・low 1）、
+`vitest`を5.0.0から5.0.3へ（依存の`@vitest/mocker`のmedium 2件）上げました（`package.json`と
+`package-lock.json`。どちらも修正の入った最小の版）。上げる前後でtestは14件ともpassし、`dist/`の
+11ファイルはSHA-256がすべて一致しました。`npm audit`は0件です（MacBook Pro M1 Maxで確認）。
+node 22.22.0付属のnpm 10.9.4では`npm install`が`Cannot read properties of null (reading 'edgesOut')`で
+止まったため、lockの更新だけnpm 11.6.2で行い、確認は`npm ci`で入れ直してから行いました。
+
 ## Pipeline
 
 ```text
