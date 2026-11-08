@@ -114,3 +114,10 @@ Bounding box を描画した画像は `output_detections.png` に保存されま
 比較的よいため、実環境の写真や小さい物体、強い遮蔽がある画像では結果が
 変わる可能性があります。また、後処理として NMS は実装していないため、
 画像によっては近い位置の重複検出が残る可能性があります。
+
+## Dependency advisories
+
+`certifi` は 2026-11-09 に **2026.6.17 から 2026.10.23 へ上げました**（`uv.lock` のみ。critical 1 件、
+GHSA-6q48-6c7w-9gw2、侵害された emSign の中間 CA）。`httpx` 経由でモデルのダウンロードに使われます。
+上げる前後で `output_detections.png` は**バイト一致**、標準出力も処理時間を除いて同じでした。
+新しい `certifi` で `https://huggingface.co` へ接続できることも確かめました（MacBook Pro M1 Max で確認）。
