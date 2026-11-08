@@ -69,6 +69,12 @@ provider: CPUExecutionProvider
 なるため、可視化では歪みのない画像を左右に並べます。32の倍数への丸めによる最大16画素
 未満の差はあり得ますが、正方形への強制resizeは行いません。
 
+## Dependency advisories
+
+2026-11-09 に `certifi` 2026.6.17 → 2026.10.23（critical 1 件、侵害された emSign の中間 CA）、`filelock` 3.29.7 → 4.2.9（high・medium・low）、`setuptools` 83.0.0 → 84.2.1（low 1 件）を `uv.lock` だけで上げました（lock のほかの行は元のまま）。上げる前後で `output/` の 2 ファイルは**バイト一致**でした（MacBook Pro M1 Max で確認）。
+
+`Pillow` 12.3.0 の advisory（critical を含む）は**上げていません**。修正版は 13.0.0 だけで、13.0.0 は Python 3.12・3.13 で `import PIL._typing` が失敗する（2026-11-09 時点で 13.0.1 は未公開）ため、次の版を待ちます。
+
 ## Requirements and run
 
 - [mise](https://mise.jdx.dev/)

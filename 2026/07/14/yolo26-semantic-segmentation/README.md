@@ -92,6 +92,10 @@ high 2・medium 1）。`ultralytics` → `requests` 経由で入ります。
 `yolo26n-sem.onnx` は同じ環境でも export のたびにバイト列が変わる（サイズは同じ）ため、
 比較の対象から外しています。
 
+2026-11-09 に `certifi` 2026.6.17 → 2026.10.23（critical 1 件、侵害された emSign の中間 CA）、`filelock` 3.29.7 → 4.2.9（high・medium・low）、`setuptools` 83.0.0 → 84.2.1（low 1 件）を `uv.lock` だけで上げました（lock のほかの行は元のまま）。上げる前後で `output_*.png` の 4 ファイルは**バイト一致**でした（MacBook Pro M1 Max で確認）。
+
+`Pillow` 12.3.0 の advisory（critical を含む）は**上げていません**。修正版は 13.0.0 だけで、13.0.0 は Python 3.12・3.13 で `import PIL._typing` が失敗する（2026-11-09 時点で 13.0.1 は未公開）ため、次の版を待ちます。
+
 ## Requirements and run
 
 - [mise](https://mise.jdx.dev/)

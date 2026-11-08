@@ -58,6 +58,12 @@ mask内の画素単位角度差を計算します。これは正解normalに対�
 | `tests/assets/jpg/miineko1-1448x1086-221kb.jpg` | 1448x1086 | 768x576 | 3D動画、3Dキャラクター | `15f0da788e483cf33340843f2a5baa9fce3b6fa838908db8208187bc66b24a8d` |
 | `tests/assets/jpg/miineko2-1448x1086-314kb.jpg` | 1448x1086 | 768x576 | 3D動画、アニメキャラクター | `88d49e58f4aa0f311613a53be6dbaedc5fea254f3588f390aa64edb48d122b42` |
 
+## Dependency advisories
+
+2026-11-09 に `certifi` 2026.6.17 → 2026.10.23（critical 1 件、侵害された emSign の中間 CA）、`filelock` 3.29.7 → 4.2.9（high・medium・low）、`setuptools` 83.0.0 → 84.2.1（low 1 件）、`brotli` 1.2.0 → 1.2.1（critical 1 件）を `uv.lock` だけで上げました（lock のほかの行は元のまま）。上げる前後で `output/` の 394 ファイルのうち 393 は**バイト一致**、残る `output/results.json` も処理時間の項目（`*_ms`）を除いて一致しました（MacBook Pro M1 Max で確認）。
+
+`Pillow` 12.3.0 の advisory（critical を含む）は**上げていません**。修正版は 13.0.0 だけで、13.0.0 は Python 3.12・3.13 で `import PIL._typing` が失敗する（2026-11-09 時点で 13.0.1 は未公開）ため、次の版を待ちます。
+
 ## Requirements and run
 
 - [mise](https://mise.jdx.dev/)

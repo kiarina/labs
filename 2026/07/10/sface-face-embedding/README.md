@@ -77,6 +77,12 @@ output: 128-dimensional embedding
 本検証では顔検出や追加のランドマーク alignment は行いません。Olivetti Faces は
 小さい grayscale crop、LFW は funneled 版のカラー crop として扱います。
 
+## Dependency advisories
+
+2026-11-09 に `certifi` 2026.6.17 → 2026.10.23（critical 1 件、侵害された emSign の中間 CA）を `uv.lock` だけで上げました。上げる前後で `output/report.json` は**バイト一致**、`lfw_report.json`・`olivetti_report.json`・`summary.json` は処理時間の項目（`embedding_elapsed_seconds`、`seconds_per_image`）を除いて一致しました（MacBook Pro M1 Max で確認）。
+
+`Pillow` 12.3.0 の advisory（critical を含む）は**上げていません**。修正版は 13.0.0 だけで、13.0.0 は Python 3.12・3.13 で `import PIL._typing` が失敗する（2026-11-09 時点で 13.0.1 は未公開）ため、次の版を待ちます。
+
 ## Requirements and run
 
 - [mise](https://mise.jdx.dev/)

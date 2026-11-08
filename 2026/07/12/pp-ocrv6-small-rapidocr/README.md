@@ -52,6 +52,10 @@ high 2・medium 1）。この lab では `rapidocr` → `requests` 経由で、�
 ダウンロードに使われます。上げる前後で `output_ocr.jpg` は**バイト一致**、認識結果の表も
 同じでした。2.8.0 で `japan.ttc` を取り直しても SHA-256 は同じです（Mac Studio M4 Max で確認）。
 
+2026-11-09 に `certifi` 2026.6.17 → 2026.10.23（critical 1 件、侵害された emSign の中間 CA）を `uv.lock` だけで上げました。上げる前後で `output_ocr.jpg` は**バイト一致**でした（MacBook Pro M1 Max で確認）。
+
+`Pillow` 12.3.0 の advisory（critical を含む）は**上げていません**。修正版は 13.0.0 だけで、13.0.0 は Python 3.12・3.13 で `import PIL._typing` が失敗する（2026-11-09 時点で 13.0.1 は未公開）ため、次の版を待ちます。
+
 ## Requirements and run
 
 - [mise](https://mise.jdx.dev/)
