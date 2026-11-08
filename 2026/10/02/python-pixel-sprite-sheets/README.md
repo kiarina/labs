@@ -92,6 +92,13 @@ mise run   # results/ に 3 体のシート・6 倍の見本・歩きの GIF・�
 - 参考にしたのは、作者の既存キャラクター（猫のちびキャラ）の 96×128 の歩行シート 1 枚です（非公開のためこの lab には入れていません）。
   形式（32×32、3 列 = 踏み出し・直立・踏み出し、4 行 = 下・左・右・上）だけを合わせました
 
+## Dependency advisories
+
+2026-11-09 に、advisory（critical を含む 41 件。修正版は 13.0.0 だけ）が出た `Pillow` を **12.3.0 から 13.0.0 へ
+上げました**（`pyproject.toml` の固定と `uv.lock`）。Python 3.12.10 で `mise run` を流し直すと、`results/` の 15 ファイル
+（PNG・GIF・review の txt）はすべて**バイト一致**しました（MacBook Pro M1 Max で確認）。上の Environment は記録したときの版です。
+Pillow 13.0.0 は Python 3.12・3.13 で `import PIL._typing` が失敗しますが、この lab のスクリプトはそれを読まないので動きます。
+
 ## Limitations
 
 - 品質は、作者とエージェントが見本を見て「かわいい・侍らしい」と判断した範囲です。第三者の評価や、職人のドット絵との比較はしていません
