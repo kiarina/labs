@@ -62,7 +62,7 @@ mask内の画素単位角度差を計算します。これは正解normalに対�
 
 2026-11-09 に `certifi` 2026.6.17 → 2026.10.23（critical 1 件、侵害された emSign の中間 CA）、`filelock` 3.29.7 → 4.2.9（high・medium・low）、`setuptools` 83.0.0 → 84.2.1（low 1 件）、`brotli` 1.2.0 → 1.2.1（critical 1 件）を `uv.lock` だけで上げました（lock のほかの行は元のまま）。上げる前後で `output/` の 394 ファイルのうち 393 は**バイト一致**、残る `output/results.json` も処理時間の項目（`*_ms`）を除いて一致しました（MacBook Pro M1 Max で確認）。
 
-`Pillow` 12.3.0 の advisory（critical を含む）は**上げていません**。修正版は 13.0.0 だけで、13.0.0 は Python 3.12・3.13 で `import PIL._typing` が失敗する（2026-11-09 時点で 13.0.1 は未公開）ため、次の版を待ちます。
+`Pillow` 12.3.0 の advisory（critical を含む）は**上げていません**。修正版は 13.0.0 だけで、`moge` が依存する `gradio`（6.20.0。2026-11-09 時点の最新の 6.31.0 も）が `pillow<13.0` を要求するため、解決できません。
 
 ## Requirements and run
 

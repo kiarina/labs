@@ -73,7 +73,7 @@ provider: CPUExecutionProvider
 
 2026-11-09 に `certifi` 2026.6.17 → 2026.10.23（critical 1 件、侵害された emSign の中間 CA）、`filelock` 3.29.7 → 4.2.9（high・medium・low）、`setuptools` 83.0.0 → 84.2.1（low 1 件）を `uv.lock` だけで上げました（lock のほかの行は元のまま）。上げる前後で `output/` の 2 ファイルは**バイト一致**でした（MacBook Pro M1 Max で確認）。
 
-`Pillow` 12.3.0 の advisory（critical を含む）は**上げていません**。修正版は 13.0.0 だけで、13.0.0 は Python 3.12・3.13 で `import PIL._typing` が失敗する（2026-11-09 時点で 13.0.1 は未公開）ため、次の版を待ちます。
+同じ日に `Pillow` も **12.3.0 から 13.0.0 へ上げました**（`uv.lock` のみ。advisory は critical を含み、修正版は 13.0.0 だけ）。上げる前後で `output/` の 2 ファイルは**バイト一致**でした（MacBook Pro M1 Max、Python 3.12.10 で確認）。Pillow 13.0.0 は Python 3.12・3.13 で `import PIL._typing` が失敗しますが、この lab の依存はそれを読みません。
 
 ## Requirements and run
 
