@@ -63,6 +63,12 @@ export のたびに約 2,800 バイトが変わる（サイズは下の表と同
 benchmark と比べると、3 backend とも quality と performance の token 列が一致し、PTE のサイズも
 同じでした（Mac Studio M4 Max で確認）。
 
+2026-11-09 に、`hydra-core` を **1.3.7 から 1.3.8 へ**（high 1 件）、`certifi` を **2026.6.17 から 2026.10.23 へ**
+（critical 1 件、侵害された emSign の中間 CA）、`filelock` を **3.32.0 から 4.2.9 へ**（high・medium・low）上げました
+（`uv.lock` のみ。lock のほかの行は元のまま）。上げる前の環境の benchmark と、上げた環境で `--force` で export し直した
+benchmark を比べると、3 backend とも quality と performance の token 列（24 本）が一致し、PTE のサイズも同じでした
+（MacBook Pro M1 Max で確認）。`setuptools` 81.0.0 は上の表のとおり据え置きです。
+
 ## Run
 
 Apple Silicon MacとXcode Command Line Toolsが必要です。初回はPython環境、Hugging Faceの重み、
