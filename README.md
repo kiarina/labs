@@ -16,6 +16,14 @@ cd labs
 git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{slug}
 ```
 
+## Dependencies are pinned, not maintained
+
+Each lab pins the dependency versions it was measured with, so its results can
+be reproduced. Labs are records, not running services: they get no security
+updates, and Dependabot is turned off for this repository. Check and update the
+dependencies yourself before you reuse a lab's code in anything that handles
+untrusted input.
+
 ## Labs
 
 - 2026/11
