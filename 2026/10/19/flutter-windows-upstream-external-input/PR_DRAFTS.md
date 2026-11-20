@@ -1,8 +1,9 @@
 # Upstream draft pull requests
 
-Core Draft PR: [webrtc-sdk/webrtc#314](https://github.com/webrtc-sdk/webrtc/pull/314),
-submitted on 2026-10-19 from [kiarina/webrtc](https://github.com/kiarina/webrtc),
-commit `543b9cb70ee7b07311d4f4ddefc014278d6066d4`. Wrapper [Draft PR #158](https://github.com/webrtc-sdk/libwebrtc/pull/158) is submitted.
+Core Draft PR: [livekit/libwebrtc#314](https://github.com/livekit/libwebrtc/pull/314) (the repository moved from webrtc-sdk/webrtc),
+submitted on 2026-10-19 from [kiarina/webrtc](https://github.com/kiarina/webrtc).
+Rebased on 2026-11-20 onto m150_release after #336, commit `3dec523477e60f9ff6452d6d4a47dee520a1f1fa`
+([rebase results](results/rebase-314/README.md)); the body below is the original submission text. Wrapper [Draft PR #158](https://github.com/webrtc-sdk/libwebrtc/pull/158) is submitted.
 This is not a claim of a clean broad regression run or complete product support.
 
 ## Core: webrtc-sdk/webrtc → m150_release
