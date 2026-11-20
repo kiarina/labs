@@ -20,8 +20,8 @@ Windows x64, same GN args as the lab README, targets `audio_engine_tests` and
 
 | Build | AudioState | WebRtcVoiceEngine |
 | --- | --- | --- |
-| fix (`fix-*.json`) | 60/60 | 369/373; 4 adaptive-ptime fail |
-| guards removed, getter and tests kept (`control-*.json`) | 56/60 | 363/373; same 4 + 6 new cases |
+| fix (`fix-*.json`) | 60/60 | 366 pass, 3 skipped, 4 adaptive-ptime fail (of 373) |
+| guards removed, getter and tests kept (`control-*.json`) | 56/60 | 360 pass, 3 skipped, 10 fail: same 4 + 6 new cases |
 
 The 4 adaptive-ptime failures (`SetRtpParametersAdaptivePtime`,
 `AdaptivePtimeFieldTrial`) occur in both builds and are unrelated. The broad
