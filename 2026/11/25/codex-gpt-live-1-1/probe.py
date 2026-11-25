@@ -85,6 +85,11 @@ async def run(label, cmd, model):
                   'transport': {'type': 'webrtc', 'sdp': pc.localDescription.sdp}}
         if model:
             params['model'] = model
+        if voice := os.environ.get('VOICE'):
+            # As Spirits Garden does: list the v3 voices, then ask for one.
+            out['v3_voices'] = (await s.call('thread/realtime/listVoices', {}))['voices'].get('v3')
+            params['voice'] = voice
+            out['requested_voice'] = voice
         await s.call('thread/realtime/start', params)
         e = await s.until(lambda x: x.get('method') in ['thread/realtime/sdp', 'thread/realtime/error'], 30)
         if not e or e['method'] != 'thread/realtime/sdp':

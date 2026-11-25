@@ -15,6 +15,7 @@ npm i --prefix work/cli @openai/codex@0.172.0
 CODEX=codex .venv/bin/python probe.py v0170-model-1.1 gpt-live-1.1-codex     # 0.170.0 に model を渡す
 CODEX=codex .venv/bin/python probe.py v0170-model-bogus gpt-live-9-codex-nonexistent
 CODEX=work/cli/node_modules/.bin/codex .venv/bin/python probe.py v0172-default ""
+VOICE=juniper CODEX=codex .venv/bin/python probe.py v0172-brew-voice ""   # 0.172.0（brew）で listVoices → 声の指定つきで始める
 ```
 
 ## 結果
@@ -24,6 +25,7 @@ CODEX=work/cli/node_modules/.bin/codex .venv/bin/python probe.py v0172-default "
 | `v0170-model-1.1` | 0.170.0 | `gpt-live-1.1-codex` | 3.2 s | はい。 | 3.1 s |
 | `v0170-model-bogus` | 0.170.0 | `gpt-live-9-codex-nonexistent` | 1.6 s | はい。 | 2.9 s |
 | `v0172-default` | 0.172.0 | （なし。既定） | 5.4 s | はい。 | 3.4 s |
+| `v0172-brew-voice` | 0.172.0 | （なし。既定）、`voice: juniper` | 2.2 s | はい。 | 2.9 s |
 
 - **0.172.0 は既定で `gpt-live-1.1-codex` を頼む。** ソースの `DEFAULT_FRAMELESS_REALTIME_MODEL` が 0.170.0 の `gpt-live-1-codex` から
   変わった（openai/codex#61259「Update realtime model and honor provider-specific voice defaults」、2026-11-13）
@@ -38,6 +40,8 @@ CODEX=work/cli/node_modules/.bin/codex .venv/bin/python probe.py v0172-default "
 openai/codex#63810「Use ChatGPT account preferences for Codex voice chat」（2026-11-25、0.172.0 には未収録）は、
 `thread/realtime/start` から声の指定（`voice`）を外し、ChatGPT のアカウントに保存した声（`account/voiceSettings/read`・`write`）を使う形に変える。
 声を通話ごとに選んで渡しているクライアントは、この版から声を選べなくなる。
+`ThreadRealtimeStartParams` は `deny_unknown_fields` ではないので、古い `voice` を送っても要求は弾かれず、黙って無視される。
+`thread/realtime/start`（WebRTC・v3）・`model`・`thread/realtime/listVoices` は残る。
 
 ## 関連
 
