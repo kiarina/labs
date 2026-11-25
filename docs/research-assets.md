@@ -15,63 +15,45 @@
 
 ## 画像
 
-OpenAI Image API の `gpt-image-2` で作成する。API キーは環境変数
-`OPENAI_API_KEY` に設定済みであることを前提とする。
+Codex CLI の画像生成で作成する。Codex CLI に ChatGPT でログインしていることを前提とし、
+API キーは使わない（OpenAI Image API は使わない）。Codex には、画像生成ツール
+（gpt-image-2.5）で描くように依頼する。
+
+依頼文はファイルに書き、標準入力で渡す。作業フォルダはリポジトリの外の一時フォルダにし、
+できた画像だけを lab へ写す（リポジトリの中で動かすと、Codex が AGENTS.md に従って
+自分で commit することがある）。
 
 ```sh
-if [ -z "${OPENAI_API_KEY:-}" ]; then
-  echo "OPENAI_API_KEY is not set" >&2
-  exit 1
-fi
+work=$(mktemp -d)
+codex exec --skip-git-repo-check -C "$work" -o "$work/report.txt" - < prompt.txt
 ```
 
-Python SDK を使う場合は、次のように生成する。プロンプトは検証対象、構図、画風、
-照明、背景、含めない要素などを、研究目的に必要な範囲で具体的に書く。
+参照画像から描き変えるときは `-i` で渡す。`-i` の後ろに依頼文を書くと画像の引数として
+読まれるので、依頼文は必ず標準入力で渡す。
 
 ```sh
-python -m pip install openai
+codex exec --skip-git-repo-check -C "$work" -o "$work/report.txt" -i base.png - < prompt.txt
 ```
 
-```python
-import base64
+依頼文には次を書く。
 
-from openai import OpenAI
+- 何に使う画像か、「画像生成ツール（gpt-image-2.5）を使う」こと
+- 場面、入れるもの、構図、画風、照明、背景、入れないもの（文字・ロゴ・透かしなど）を、研究目的に必要な範囲で具体的に
+- 大きさの目安（例: 横長 16:9、1536x864 前後）と保存するファイル名
+- 「git は使わない」「プログラムで画像を加工しない」（大きさや色数の決まりを書くと、Codex が
+  Python で縮めたり減色したりして絵を壊すことがある）
+- 最後に、ファイル名、使ったモデル名、条件どおりにできなかった点を短く報告すること
 
-
-client = OpenAI()
-prompt = """
-研究に必要な画像の説明をここに書く。
-"""
-
-result = client.images.generate(
-    model="gpt-image-2",
-    prompt=prompt,
-    size="1024x1024",
-    quality="medium",
-)
-
-image_bytes = base64.b64decode(result.data[0].b64_json)
-with open("asset.png", "wb") as output:
-    output.write(image_bytes)
-```
-
-まず `quality="low"` で構図を確認し、採用候補だけを `medium` または `high` で
-生成すると、試行時間と費用を抑えやすい。`gpt-image-2` は透過背景をサポート
-しないため、必要なら生成後の背景除去を別工程として記録する。
+1 枚に 1〜2 分かかる。並べて走らせるのは 2〜3 本までにする。Codex は使ったモデル名を返さない
+ことがあり、大きさも頼んだとおりにならないことがある。生成した画像は 1 枚ずつ目で確かめ、
+合わなければ依頼文を直して描き直す。
 
 少なくとも次を記録する。
 
-- モデル名: `gpt-image-2`
-- プロンプト全文
-- `size`、`quality`、出力形式など、デフォルト以外を含む生成パラメータ
-- SDK のバージョンと実行日
-- 生成した候補数、採用したファイル、選定基準
+- Codex CLI のバージョンと実行日、Codex が報告したモデル名（報告がなければそう書く）
+- 依頼文の全文と、渡した参照画像
+- 生成した候補数、採用したファイル、選定基準、描き直しの回数と理由
 - リサイズ、圧縮、切り抜き、背景除去などの後処理
-- API エラーやモデレーションによる失敗と、その後に変更した条件
-
-API の仕様や対応するサイズは変わり得るため、作成時に
-[OpenAI の Image generation ガイド](https://developers.openai.com/api/docs/guides/image-generation)
-を確認する。
 
 ## ボイス音声
 
