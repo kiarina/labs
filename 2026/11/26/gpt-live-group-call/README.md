@@ -14,7 +14,10 @@ Spirits Garden のグループ通話の技術検証（2026-11-26）。想定す�
 - **v3 には「人がこう言った」を文字で入れる口がない。** `thread/realtime/appendText` は `role` を捨てて、チャネル指定のない
   `session.context.append` として送られる（Codex 0.172.0 の `codex-api/src/endpoint/realtime_websocket/methods_common.rs`。
   v3 の既定のチャネルは `speakable`）。データチャネルから直接送っても、チャネルは `speakable`・`commentary`・`developer` の 3 つだけ
-  （`user` は `invalid_value` で弾かれる）。`response.create` は「Responses delegation のあるセッションだけ」と弾かれる
+  （`user` は `invalid_value` で弾かれる）。`response.create` は「Responses delegation のあるセッションだけ」と弾かれる。
+  v3 は最初（openai/codex#33261、2026-07-15）からこの形で、`appendText` の `role`（#27936、2026-06-12）が効くのは v1・v2 だけ。
+  1 対 1 の通話で人が打った文を送ると普通に答えるのは、自分宛ての問いを `speakable` で受けると、それに答える形で話すため
+  （`probe_api.py` の宛てた問いも普通に答えた）。崩れるのは、宛てでない発言や、ほかの Spirit 宛ての問いを同じ口で渡すとき
 - **3 つのチャネルはどれも「人の発言」として振る舞わない。**
   - `speakable`（＝ `appendText`）は「話す内容」になる。宛てでない発言に「You know?」と返したり、問いをそのまま読み上げたりした（「ミオはどう? キャンプ派?」）
   - `commentary` は、中に質問があると宛て先に関係なく答える（ハル宛ての問いを 8 本中 8 本のミオが答えた。「あなた宛てではない記録」と書いても 4/4）。
