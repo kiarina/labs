@@ -1,0 +1,727 @@
+{
+ "label": "oracle-2",
+ "mode": "oracle",
+ "prompt": "あなたは「ハル」という名前の音声アシスタントです。今、田中さん・佐藤さん・鈴木さんの3人と同じ通話にいます。3人は互いに話し合い、ときどきあなたに話しかけます。「ハル」と呼びかけられたときだけ、日本語で短く（1〜2文）答えてください。人どうしの会話には口をはさまないでください。調べものや作業を頼まれることはないので、委譲はしないでください。通話のシステムが声を聞き分け、誰かが話し始めるたびに「[話者メモ] …」で誰の声かを知らせます。誰が話しているかは、このメモで判断してください。メモには返事をしないでください。",
+ "codex": "codex-cli 0.172.0",
+ "timeline": [
+  {
+   "t": 2.07,
+   "kind": "connected"
+  },
+  {
+   "t": 4.07,
+   "kind": "line_start",
+   "id": 1,
+   "who": "田中",
+   "to": "ai",
+   "text": "ハル、今日は三人で週末のバーベキューの相談をするから、聞いててね。"
+  },
+  {
+   "t": 4.07,
+   "kind": "note",
+   "who": "田中",
+   "by": "oracle"
+  },
+  {
+   "t": 10.04,
+   "kind": "line_end",
+   "id": 1
+  },
+  {
+   "t": 18.05,
+   "kind": "line_start",
+   "id": 2,
+   "who": "佐藤",
+   "to": "people",
+   "text": "僕は、肉は牛肉がいいな。あと、場所は河原がいい。"
+  },
+  {
+   "t": 18.05,
+   "kind": "note",
+   "who": "佐藤",
+   "by": "oracle"
+  },
+  {
+   "t": 22.59,
+   "kind": "line_end",
+   "id": 2
+  },
+  {
+   "t": 23.19,
+   "kind": "line_start",
+   "id": 3,
+   "who": "鈴木",
+   "to": "people",
+   "text": "私は牛肉が苦手だから、鶏肉と野菜にしてほしいな。"
+  },
+  {
+   "t": 23.19,
+   "kind": "note",
+   "who": "鈴木",
+   "by": "oracle"
+  },
+  {
+   "t": 27.33,
+   "kind": "line_end",
+   "id": 3
+  },
+  {
+   "t": 27.93,
+   "kind": "line_start",
+   "id": 4,
+   "who": "田中",
+   "to": "people",
+   "text": "場所は、駐車場がある公園のほうが楽だと思うよ。"
+  },
+  {
+   "t": 27.93,
+   "kind": "note",
+   "who": "田中",
+   "by": "oracle"
+  },
+  {
+   "t": 32.09,
+   "kind": "line_end",
+   "id": 4
+  },
+  {
+   "t": 32.69,
+   "kind": "line_start",
+   "id": 5,
+   "who": "佐藤",
+   "to": "people",
+   "text": "うーん、公園は人が多いから、やっぱり河原かな。"
+  },
+  {
+   "t": 32.69,
+   "kind": "note",
+   "who": "佐藤",
+   "by": "oracle"
+  },
+  {
+   "t": 37.19,
+   "kind": "line_end",
+   "id": 5
+  },
+  {
+   "t": 37.79,
+   "kind": "line_start",
+   "id": 6,
+   "who": "鈴木",
+   "to": "ai",
+   "text": "ハル、今のところ、誰がどの場所を推してるか整理して。"
+  },
+  {
+   "t": 37.79,
+   "kind": "note",
+   "who": "鈴木",
+   "by": "oracle"
+  },
+  {
+   "t": 41.81,
+   "kind": "line_end",
+   "id": 6
+  },
+  {
+   "t": 43.46,
+   "kind": "delegation",
+   "text": "かな春、今のとこ誰がどの場所を推してるか整理して"
+  },
+  {
+   "t": 58.06,
+   "kind": "line_start",
+   "id": 7,
+   "who": "田中",
+   "to": "people",
+   "text": "飲み物は私が買っていくね。"
+  },
+  {
+   "t": 58.06,
+   "kind": "note",
+   "who": "田中",
+   "by": "oracle"
+  },
+  {
+   "t": 60.45,
+   "kind": "line_end",
+   "id": 7
+  },
+  {
+   "t": 61.06,
+   "kind": "line_start",
+   "id": 8,
+   "who": "佐藤",
+   "to": "ai",
+   "text": "ハル、僕って、苦手な食べ物あるって言ったっけ？"
+  },
+  {
+   "t": 61.06,
+   "kind": "note",
+   "who": "佐藤",
+   "by": "oracle"
+  },
+  {
+   "t": 64.93,
+   "kind": "line_end",
+   "id": 8
+  },
+  {
+   "t": 66.85,
+   "kind": "delegation",
+   "text": "ね春、僕って苦手な食べ物あるってことだっけ"
+  },
+  {
+   "t": 79.23,
+   "kind": "line_start",
+   "id": 9,
+   "who": "鈴木",
+   "to": "people",
+   "text": "私、車出せるよ。三人乗れる。"
+  },
+  {
+   "t": 79.23,
+   "kind": "note",
+   "who": "鈴木",
+   "by": "oracle"
+  },
+  {
+   "t": 82.61,
+   "kind": "line_end",
+   "id": 9
+  },
+  {
+   "t": 83.21,
+   "kind": "line_start",
+   "id": 10,
+   "who": "田中",
+   "to": "ai",
+   "text": "ハル、車を出してくれるのは誰だっけ？"
+  },
+  {
+   "t": 83.21,
+   "kind": "note",
+   "who": "田中",
+   "by": "oracle"
+  },
+  {
+   "t": 86.29,
+   "kind": "line_end",
+   "id": 10
+  },
+  {
+   "t": 87.64,
+   "kind": "delegation",
+   "text": "れる。春、車を出してくれるのは誰だっけ"
+  },
+  {
+   "t": 96.07,
+   "kind": "line_start",
+   "id": 11,
+   "who": "佐藤",
+   "to": "people",
+   "text": "じゃあ僕は、炭とコンロを持っていくよ。"
+  },
+  {
+   "t": 96.07,
+   "kind": "note",
+   "who": "佐藤",
+   "by": "oracle"
+  },
+  {
+   "t": 98.75,
+   "kind": "line_end",
+   "id": 11
+  },
+  {
+   "t": 99.35,
+   "kind": "line_start",
+   "id": 12,
+   "who": "鈴木",
+   "to": "ai",
+   "text": "ハル、私は何を担当することになってる？"
+  },
+  {
+   "t": 99.35,
+   "kind": "note",
+   "who": "鈴木",
+   "by": "oracle"
+  },
+  {
+   "t": 102.47,
+   "kind": "line_end",
+   "id": 12
+  },
+  {
+   "t": 104.26,
+   "kind": "delegation",
+   "text": "いくよ春、私は何を担当することになってる"
+  },
+  {
+   "t": 120.67,
+   "kind": "line_start",
+   "id": 13,
+   "who": "田中",
+   "to": "ai",
+   "text": "ハル、最後に、それぞれの担当をまとめて。"
+  },
+  {
+   "t": 120.67,
+   "kind": "note",
+   "who": "田中",
+   "by": "oracle"
+  },
+  {
+   "t": 124.07,
+   "kind": "line_end",
+   "id": 13
+  },
+  {
+   "t": 125.84,
+   "kind": "delegation",
+   "text": "春、最後にそれぞれの担当をまとめて"
+  }
+ ],
+ "events": [
+  {
+   "type": "session.started",
+   "session": {
+    "id": "rtc_u23_Eo6CIp3oNPApMNjr6hCKqpya8bKtSGKe",
+    "status": "active",
+    "expires_at": 1795616130
+   },
+   "_t": 2.06
+  },
+  {
+   "type": "session.context.appended",
+   "end_ms": 2000,
+   "start_ms": 1800,
+   "_t": 4.22
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo6CLJc0UH69aP9rHb3GV",
+    "end_ms": 3000,
+    "role": "user",
+    "start_ms": 2800,
+    "transcript": "春"
+   },
+   "_t": 5.27
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo6CLJc0UH69aP9rHb3GV",
+    "end_ms": 9600,
+    "role": "user",
+    "start_ms": 2800,
+    "transcript": "春、今日は三人で週末のバーベキューの相談をするから聞いててね"
+   },
+   "_t": 12.02
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo6CSySAn8pnOKE2x9S4m",
+    "end_ms": 9600,
+    "role": "assistant",
+    "start_ms": 9400,
+    "transcript": "うん、聞いて"
+   },
+   "_t": 12.02
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo6CSySAn8pnOKE2x9S4m",
+    "end_ms": 13000,
+    "role": "assistant",
+    "start_ms": 9400,
+    "transcript": "うん、聞いてるよ。続けて。"
+   },
+   "_t": 15.23
+  },
+  {
+   "type": "session.context.appended",
+   "end_ms": 16000,
+   "start_ms": 15800,
+   "_t": 18.19
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo6CagzOp8twnzivw9lKS",
+    "end_ms": 17200,
+    "role": "user",
+    "start_ms": 17000,
+    "transcript": "僕は"
+   },
+   "_t": 19.44
+  },
+  {
+   "type": "session.context.appended",
+   "end_ms": 21200,
+   "start_ms": 21000,
+   "_t": 23.37
+  },
+  {
+   "type": "session.context.appended",
+   "end_ms": 25800,
+   "start_ms": 25600,
+   "_t": 28.08
+  },
+  {
+   "type": "session.context.appended",
+   "end_ms": 31600,
+   "start_ms": 31400,
+   "_t": 33.87
+  },
+  {
+   "type": "session.context.appended",
+   "end_ms": 35800,
+   "start_ms": 35600,
+   "_t": 37.96
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo6CyKsbHf5OArxvD8DV5",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "かな春、今のとこ誰がどの場所を推してるか整理して"
+     }
+    ],
+    "handoff_id": "handoff_1",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo6CagzOp8twnzivw9lKS"
+   },
+   "offset_ms": 40800,
+   "_t": 43.46
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo6CagzOp8twnzivw9lKS",
+    "end_ms": 41200,
+    "role": "user",
+    "start_ms": 17000,
+    "transcript": "僕は、肉は牛肉がいいな。あと、場所は川原がいい私は牛肉が苦手だから、鶏肉と野菜にしてほしいな場所は駐車場がある公園の方が楽だと思うよ。うん、公園は人が多いから、やっぱり河原かな春、今のとこ誰がどの場所を推してるか整理して"
+   },
+   "_t": 43.75
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo6CyRFKDUUOQVBjpMyK6",
+    "end_ms": 41200,
+    "role": "assistant",
+    "start_ms": 41000,
+    "transcript": "了解"
+   },
+   "_t": 43.75
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo6CyRFKDUUOQVBjpMyK6",
+    "end_ms": 53000,
+    "role": "assistant",
+    "start_ms": 41000,
+    "transcript": "了解、今の発言で整理するね。佐藤さんは河原推し、鈴木さんはまだ場所の希望は出してなくて、田中さんは駐車場のある公園がいいって言ってるよ。"
+   },
+   "_t": 55.23
+  },
+  {
+   "type": "session.context.appended",
+   "end_ms": 56000,
+   "start_ms": 55800,
+   "_t": 58.18
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo6DDaRMDWyRBBwJ0FLQs",
+    "end_ms": 57000,
+    "role": "user",
+    "start_ms": 56800,
+    "transcript": "飲み"
+   },
+   "_t": 59.27
+  },
+  {
+   "type": "session.context.appended",
+   "end_ms": 59000,
+   "start_ms": 58800,
+   "_t": 61.23
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo6DLJn6EebDy3eGWsVQM",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "ね春、僕って苦手な食べ物あるってことだっけ"
+     }
+    ],
+    "handoff_id": "handoff_2",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo6DDaRMDWyRBBwJ0FLQs"
+   },
+   "offset_ms": 64200,
+   "_t": 66.85
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo6DDaRMDWyRBBwJ0FLQs",
+    "end_ms": 64600,
+    "role": "user",
+    "start_ms": 56800,
+    "transcript": "飲み物は私が買っていくね春、僕って苦手な食べ物あるってことだっけ"
+   },
+   "_t": 67.11
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo6DLMQf28Fcs6u65ccdE",
+    "end_ms": 64600,
+    "role": "assistant",
+    "start_ms": 64400,
+    "transcript": "うん"
+   },
+   "_t": 67.12
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo6DLMQf28Fcs6u65ccdE",
+    "end_ms": 74200,
+    "role": "assistant",
+    "start_ms": 64400,
+    "transcript": "うん、そこ確認するね。今のところ、苦手って言ってたのは鈴木さんの牛肉だけだよ。佐藤さん自身の苦手は出てないと思う。"
+   },
+   "_t": 76.43
+  },
+  {
+   "type": "session.context.appended",
+   "end_ms": 77200,
+   "start_ms": 77000,
+   "_t": 79.37
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo6DZjypGRiwy40l967bE",
+    "end_ms": 78400,
+    "role": "user",
+    "start_ms": 78200,
+    "transcript": "私"
+   },
+   "_t": 80.62
+  },
+  {
+   "type": "session.context.appended",
+   "end_ms": 81200,
+   "start_ms": 81000,
+   "_t": 83.39
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo6Dg0vWyX8JKE59TA4DW",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "れる。春、車を出してくれるのは誰だっけ"
+     }
+    ],
+    "handoff_id": "handoff_3",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo6DZjypGRiwy40l967bE"
+   },
+   "offset_ms": 85000,
+   "_t": 87.64
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo6DZjypGRiwy40l967bE",
+    "end_ms": 85800,
+    "role": "user",
+    "start_ms": 78200,
+    "transcript": "私、車出せるよ。三人乗れる。春、車を出してくれるのは誰だっけ"
+   },
+   "_t": 88.2
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo6DgHowsEd3dRZFE1mwZ",
+    "end_ms": 85800,
+    "role": "assistant",
+    "start_ms": 85600,
+    "transcript": "確認する"
+   },
+   "_t": 88.2
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo6DgHowsEd3dRZFE1mwZ",
+    "end_ms": 91000,
+    "role": "assistant",
+    "start_ms": 85600,
+    "transcript": "確認するね、鈴木さんだよ、三人乗れるって言ってた。"
+   },
+   "_t": 93.24
+  },
+  {
+   "type": "session.context.appended",
+   "end_ms": 94000,
+   "start_ms": 93800,
+   "_t": 96.21
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo6DprAuzFmp5mI3J5lw1",
+    "end_ms": 95000,
+    "role": "user",
+    "start_ms": 94800,
+    "transcript": "じゃあ"
+   },
+   "_t": 97.23
+  },
+  {
+   "type": "session.context.appended",
+   "end_ms": 97200,
+   "start_ms": 97000,
+   "_t": 99.52
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo6DwaXReGbUJhmULnBMX",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "いくよ春、私は何を担当することになってる"
+     }
+    ],
+    "handoff_id": "handoff_4",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo6DprAuzFmp5mI3J5lw1"
+   },
+   "offset_ms": 101600,
+   "_t": 104.26
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo6DprAuzFmp5mI3J5lw1",
+    "end_ms": 102000,
+    "role": "user",
+    "start_ms": 94800,
+    "transcript": "じゃあ僕は炭とコンロを持っていくよ春、私は何を担当することになってる"
+   },
+   "_t": 104.48
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo6DxPlqCocKXBQRw0cJB",
+    "end_ms": 102000,
+    "role": "assistant",
+    "start_ms": 101800,
+    "transcript": "ここ"
+   },
+   "_t": 104.5
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo6DxPlqCocKXBQRw0cJB",
+    "end_ms": 115600,
+    "role": "assistant",
+    "start_ms": 101800,
+    "transcript": "ここまででまとめるね。鈴木さんは車を出す担当になってるよ。食べ物は牛肉が苦手って話も出てたね。今のところ炭とコンロは佐藤さん、飲み物は田中さんって流れだよ。"
+   },
+   "_t": 117.84
+  },
+  {
+   "type": "session.context.appended",
+   "end_ms": 118600,
+   "start_ms": 118400,
+   "_t": 120.81
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo6EEWHQyWuGI1SeHDCoH",
+    "end_ms": 119600,
+    "role": "user",
+    "start_ms": 119400,
+    "transcript": "春"
+   },
+   "_t": 121.86
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo6EIVA40JLvk6Akg6ZrU",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "春、最後にそれぞれの担当をまとめて"
+     }
+    ],
+    "handoff_id": "handoff_5",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo6EEWHQyWuGI1SeHDCoH"
+   },
+   "offset_ms": 123200,
+   "_t": 125.84
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo6EEWHQyWuGI1SeHDCoH",
+    "end_ms": 123600,
+    "role": "user",
+    "start_ms": 119400,
+    "transcript": "春、最後にそれぞれの担当をまとめて"
+   },
+   "_t": 126.14
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo6EIiux1UJPDD68X3HAT",
+    "end_ms": 123600,
+    "role": "assistant",
+    "start_ms": 123400,
+    "transcript": "うん"
+   },
+   "_t": 126.15
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo6EIiux1UJPDD68X3HAT",
+    "end_ms": 135800,
+    "role": "assistant",
+    "start_ms": 123400,
+    "transcript": "うん、全員分まとめるね。田中さんは飲み物と公園推し、佐藤さんは炭とコンロ担当で河原推し、鈴木さんは車を出す担当で牛肉は苦手って感じだよ。"
+   },
+   "_t": 138.04
+  }
+ ]
+}

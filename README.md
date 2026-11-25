@@ -20,6 +20,7 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 
 - 2026/11
   - [Starting a Codex app-server realtime call with gpt-live-1.1-codex (Codex 0.170.0 model override vs 0.172.0 default)](2026/11/25/codex-gpt-live-1-1/README.md) - [codex](tags/codex.md), [realtime](tags/realtime.md), [webrtc](tags/webrtc.md), [aiortc](tags/aiortc.md)
+  - [Who said what: speaker notes for gpt-live-1.1-codex in a three-person call (none vs oracle vs ECAPA-TDNN notes on the data channel)](2026/11/25/gpt-live-multi-speaker-notes/README.md) - [codex](tags/codex.md), [realtime](tags/realtime.md), [webrtc](tags/webrtc.md), [aiortc](tags/aiortc.md), [speaker-identification](tags/speaker-identification.md), [audio](tags/audio.md)
   - [WebRTC data channels from a Flutter-free Dart CLI: webrtc_dart vs libdatachannel over FFI, against libwebrtc (Chrome) and aiortc, on macOS and in a Linux container](2026/11/06/dart-cli-webrtc-datachannel/README.md) - [webrtc](tags/webrtc.md), [datachannel](tags/datachannel.md), [dart](tags/dart.md), [ffi](tags/ffi.md), [libdatachannel](tags/libdatachannel.md), [aiortc](tags/aiortc.md), [docker](tags/docker.md), [cli](tags/cli.md), [macos](tags/macos.md), [linux](tags/linux.md)
 
 - 2026/10
