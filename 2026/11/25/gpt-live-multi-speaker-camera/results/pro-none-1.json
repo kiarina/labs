@@ -1,0 +1,780 @@
+{
+ "label": "pro-none-1",
+ "mode": "none",
+ "keyframes": "change",
+ "video": false,
+ "scenario": "scenario-proactive.json",
+ "prompt": "あなたは「ハル」という名前の音声アシスタントです。今、田中さん・佐藤さん・鈴木さんの3人と同じ通話にいます。通話にはカメラもつながっていて、テーブルのまわりの3人が映っています。3人は互いに話し合い、ときどきあなたに話しかけます。「ハル」と呼びかけられたら、日本語で短く（1〜2文）答えてください。呼ばれていなくても、カメラで目立つ出来事（人の出入り、動物など）に気づいたら、人の話が途切れたときに一言だけ触れてかまいません。人どうしの相談に意見を言ったり、話している途中に割り込んだりはしないでください。通話のシステムが声を聞き分け、誰かが話し始めるたびに「[話者メモ] …」で誰の声かを知らせます。誰が話しているかは、このメモで判断してください。メモには返事をしないでください。あなたはカメラの映像を直接見られません。映像について答える必要があるときは、確かめたいことを委譲してください。委譲すると、カメラの直近の画像を見た答えが返ります。",
+ "note_model": [
+  "gpt-6.2-sol",
+  "low"
+ ],
+ "look_model": [
+  "gpt-6.2-sol",
+  "low"
+ ],
+ "codex": "codex-cli 0.172.0",
+ "timeline": [
+  {
+   "t": 17.71,
+   "kind": "connected"
+  },
+  {
+   "t": 20.71,
+   "kind": "frame",
+   "key": "f00"
+  },
+  {
+   "t": 20.71,
+   "kind": "line_start",
+   "id": 1,
+   "who": "田中",
+   "to": "ai",
+   "text": "ハル、今日はカメラもつけて、三人で準備の相談をするね。"
+  },
+  {
+   "t": 21.79,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは田中さんの声です。",
+   "who": "田中",
+   "scores": {
+    "田中": 0.648,
+    "佐藤": 0.16,
+    "鈴木": 0.224
+   }
+  },
+  {
+   "t": 26.35,
+   "kind": "line_end",
+   "id": 1
+  },
+  {
+   "t": 38.6,
+   "kind": "frame",
+   "key": "f02"
+  },
+  {
+   "t": 38.6,
+   "kind": "line_start",
+   "id": 2,
+   "who": "佐藤",
+   "to": "people",
+   "text": "炭は僕が持ってきたよ。"
+  },
+  {
+   "t": 39.79,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは佐藤さんの声です。",
+   "who": "佐藤",
+   "scores": {
+    "田中": 0.102,
+    "佐藤": 0.781,
+    "鈴木": 0.175
+   }
+  },
+  {
+   "t": 40.79,
+   "kind": "line_end",
+   "id": 2
+  },
+  {
+   "t": 41.89,
+   "kind": "frame",
+   "key": "f04"
+  },
+  {
+   "t": 41.89,
+   "kind": "line_start",
+   "id": 3,
+   "who": "鈴木",
+   "to": "people",
+   "text": "私は車を出すね。"
+  },
+  {
+   "t": 42.95,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは鈴木さんの声です。",
+   "who": "鈴木",
+   "scores": {
+    "田中": 0.132,
+    "佐藤": 0.246,
+    "鈴木": 0.717
+   }
+  },
+  {
+   "t": 43.89,
+   "kind": "line_end",
+   "id": 3
+  },
+  {
+   "t": 44.49,
+   "kind": "frame",
+   "key": "f05"
+  },
+  {
+   "t": 44.49,
+   "kind": "line_start",
+   "id": 4,
+   "who": "田中",
+   "to": "people",
+   "text": "飲み物はここに置いとくね。"
+  },
+  {
+   "t": 45.55,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは田中さんの声です。",
+   "who": "田中",
+   "scores": {
+    "田中": 0.746,
+    "佐藤": 0.139,
+    "鈴木": 0.079
+   }
+  },
+  {
+   "t": 47.05,
+   "kind": "line_end",
+   "id": 4
+  },
+  {
+   "t": 48.05,
+   "kind": "frame",
+   "key": "f06",
+   "event": null
+  },
+  {
+   "t": 63.13,
+   "kind": "line_start",
+   "id": 5,
+   "who": "佐藤",
+   "to": "people",
+   "text": "えっと、何の話だっけ。"
+  },
+  {
+   "t": 64.07,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは、聞き分けられない声です。",
+   "who": null,
+   "scores": {
+    "田中": 0.088,
+    "佐藤": 0.336,
+    "鈴木": 0.217
+   }
+  },
+  {
+   "t": 65.39,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは佐藤さんの声です。",
+   "who": "佐藤",
+   "scores": {
+    "田中": 0.142,
+    "佐藤": 0.813,
+    "鈴木": 0.228
+   }
+  },
+  {
+   "t": 66.0,
+   "kind": "line_end",
+   "id": 5
+  },
+  {
+   "t": 69.0,
+   "kind": "frame",
+   "key": "f07",
+   "event": "E1 猫がテーブルを横切った"
+  },
+  {
+   "t": 69.0,
+   "kind": "pause",
+   "seconds": 8.0,
+   "event": "E1 猫がテーブルを横切った"
+  },
+  {
+   "t": 81.85,
+   "kind": "line_start",
+   "id": 6,
+   "who": "佐藤",
+   "to": "people",
+   "text": "当日は何時に集合する？"
+  },
+  {
+   "t": 84.19,
+   "kind": "line_end",
+   "id": 6
+  },
+  {
+   "t": 85.2,
+   "kind": "line_start",
+   "id": 7,
+   "who": "鈴木",
+   "to": "people",
+   "text": "朝九時はどう？"
+  },
+  {
+   "t": 86.25,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは鈴木さんの声です。",
+   "who": "鈴木",
+   "scores": {
+    "田中": 0.057,
+    "佐藤": 0.238,
+    "鈴木": 0.686
+   }
+  },
+  {
+   "t": 87.0,
+   "kind": "line_end",
+   "id": 7
+  },
+  {
+   "t": 87.6,
+   "kind": "line_start",
+   "id": 8,
+   "who": "田中",
+   "to": "people",
+   "text": "いいね。ちょっと電話してくるね。"
+  },
+  {
+   "t": 88.65,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは田中さんの声です。",
+   "who": "田中",
+   "scores": {
+    "田中": 0.664,
+    "佐藤": 0.107,
+    "鈴木": 0.143
+   }
+  },
+  {
+   "t": 90.31,
+   "kind": "line_end",
+   "id": 8
+  },
+  {
+   "t": 91.31,
+   "kind": "frame",
+   "key": "f10",
+   "event": "E2 田中さんが席を外した"
+  },
+  {
+   "t": 91.31,
+   "kind": "pause",
+   "seconds": 8.0,
+   "event": "E2 田中さんが席を外した"
+  },
+  {
+   "t": 108.72,
+   "kind": "line_start",
+   "id": 9,
+   "who": "佐藤",
+   "to": "people",
+   "text": "鈴木さん、場所は河原でいいよね？"
+  },
+  {
+   "t": 109.99,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは佐藤さんの声です。",
+   "who": "佐藤",
+   "scores": {
+    "田中": 0.08,
+    "佐藤": 0.691,
+    "鈴木": 0.264
+   }
+  },
+  {
+   "t": 112.43,
+   "kind": "line_end",
+   "id": 9
+  },
+  {
+   "t": 113.03,
+   "kind": "line_start",
+   "id": 10,
+   "who": "鈴木",
+   "to": "people",
+   "text": "うん、河原にしよう。"
+  },
+  {
+   "t": 114.09,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは鈴木さんの声です。",
+   "who": "鈴木",
+   "scores": {
+    "田中": 0.019,
+    "佐藤": 0.181,
+    "鈴木": 0.492
+   }
+  },
+  {
+   "t": 115.19,
+   "kind": "line_end",
+   "id": 10
+  },
+  {
+   "t": 116.19,
+   "kind": "frame",
+   "key": "f07",
+   "event": "E3 田中さんが戻った"
+  },
+  {
+   "t": 116.19,
+   "kind": "pause",
+   "seconds": 8.0,
+   "event": "E3 田中さんが戻った"
+  },
+  {
+   "t": 133.8,
+   "kind": "line_start",
+   "id": 11,
+   "who": "田中",
+   "to": "ai",
+   "text": "ハル、私がいない間に、何か決まった？"
+  },
+  {
+   "t": 134.89,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは田中さんの声です。",
+   "who": "田中",
+   "scores": {
+    "田中": 0.672,
+    "佐藤": 0.11,
+    "鈴木": 0.195
+   }
+  },
+  {
+   "t": 137.56,
+   "kind": "line_end",
+   "id": 11
+  },
+  {
+   "t": 158.49,
+   "kind": "line_start",
+   "id": 12,
+   "who": "佐藤",
+   "to": "ai",
+   "text": "ハル、さっきから何か気づいたことある？"
+  },
+  {
+   "t": 159.65,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは佐藤さんの声です。",
+   "who": "佐藤",
+   "scores": {
+    "田中": 0.1,
+    "佐藤": 0.52,
+    "鈴木": 0.11
+   }
+  },
+  {
+   "t": 161.81,
+   "kind": "line_end",
+   "id": 12
+  }
+ ],
+ "events": [
+  {
+   "type": "session.started",
+   "session": {
+    "id": "rtc_u23_Eo8Y3p3oNPmUCqR84kTdlp2BF7PazI6I",
+    "status": "active",
+    "expires_at": 1795625167
+   },
+   "_t": 17.67
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8Y9k4wSfnyOvSNRHmec",
+    "end_ms": 5000,
+    "role": "user",
+    "start_ms": 4800,
+    "transcript": " 春、今日は"
+   },
+   "_t": 22.76
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8Y9k4wSfnyOvSNRHmec",
+    "end_ms": 10000,
+    "role": "user",
+    "start_ms": 4800,
+    "transcript": " 春、今日はカメラもつけて、三人で準備の相談をするね"
+   },
+   "_t": 27.92
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8YEL0zL3nffoAWnlAVP",
+    "end_ms": 10000,
+    "role": "assistant",
+    "start_ms": 9800,
+    "transcript": "うん"
+   },
+   "_t": 27.93
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8YEL0zL3nffoAWnlAVP",
+    "end_ms": 18200,
+    "role": "assistant",
+    "start_ms": 9800,
+    "transcript": "うん、いいね。今日は三人で何を決めたいか、まずざっくり聞かせて。順番に整理していこうか。"
+   },
+   "_t": 35.79
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8YQHEMQw9u8lV8XOnDB",
+    "end_ms": 22400,
+    "role": "user",
+    "start_ms": 22200,
+    "transcript": " 次は"
+   },
+   "_t": 39.86
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8YQHEMQw9u8lV8XOnDB",
+    "end_ms": 27600,
+    "role": "user",
+    "start_ms": 22200,
+    "transcript": " 次は僕が持っていきたい。私は車を出すね"
+   },
+   "_t": 45.22
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8YVSvLpDvFkbfUMU1m1",
+    "end_ms": 27600,
+    "role": "assistant",
+    "start_ms": 27400,
+    "transcript": "了解、いま"
+   },
+   "_t": 45.22
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8YVSvLpDvFkbfUMU1m1",
+    "end_ms": 28200,
+    "role": "assistant",
+    "start_ms": 27400,
+    "transcript": "了解、いま田中さん"
+   },
+   "_t": 45.88
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8YWDuhXrYa0ewyikvLf",
+    "end_ms": 28200,
+    "role": "user",
+    "start_ms": 28000,
+    "transcript": " 飲"
+   },
+   "_t": 45.89
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8YWDuhXrYa0ewyikvLf",
+    "end_ms": 30800,
+    "role": "user",
+    "start_ms": 28000,
+    "transcript": " 飲 み物は ここ に 置 いとく ね"
+   },
+   "_t": 48.37
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8YWCCVabZhnv9tGxAwz",
+    "end_ms": 30800,
+    "role": "assistant",
+    "start_ms": 30600,
+    "transcript": "が全体の流れ、佐藤さんが持ち"
+   },
+   "_t": 48.37
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8YWCCVabZhnv9tGxAwz",
+    "end_ms": 44000,
+    "role": "assistant",
+    "start_ms": 30600,
+    "transcript": "が全体の流れ、佐藤さんが持ち物担当、鈴木さんが車と飲み物ね。ここまで一旦まとめたけど抜け漏れあるかな?たとえば時間とか集合場所も決める?それともその辺はもう決まってる?"
+   },
+   "_t": 61.13
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8YoWedrrkpWsxwilBks",
+    "end_ms": 47200,
+    "role": "user",
+    "start_ms": 47000,
+    "transcript": " え"
+   },
+   "_t": 64.33
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8YoWedrrkpWsxwilBks",
+    "end_ms": 50200,
+    "role": "user",
+    "start_ms": 47000,
+    "transcript": " えっと、何の話だ っ け"
+   },
+   "_t": 67.57
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8YquINThrbG5ClYJizV",
+    "end_ms": 50200,
+    "role": "assistant",
+    "start_ms": 50000,
+    "transcript": "うん、今の整理の続きで"
+   },
+   "_t": 67.57
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8YquINThrbG5ClYJizV",
+    "end_ms": 63000,
+    "role": "assistant",
+    "start_ms": 50000,
+    "transcript": "うん、今の整理の続きで、役割は田中さんが進行、佐藤さんが持ち物、鈴木さんが車と飲み物ってとこまで決まってるよ。次に時間や集合場所を決めるかどうか相談したい感じだね。"
+   },
+   "_t": 79.83
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8Z7uD5kvXQoQCBBDyB5",
+    "end_ms": 66400,
+    "role": "user",
+    "start_ms": 66200,
+    "transcript": " 当"
+   },
+   "_t": 83.2
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8Z7uD5kvXQoQCBBDyB5",
+    "end_ms": 71600,
+    "role": "user",
+    "start_ms": 66200,
+    "transcript": " 当日は何時に集合する? 朝9時はどう"
+   },
+   "_t": 88.54
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8ZC7OQlYffDHQ3EP9Sd",
+    "end_ms": 71600,
+    "role": "assistant",
+    "start_ms": 71400,
+    "transcript": "う"
+   },
+   "_t": 88.54
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8ZC7OQlYffDHQ3EP9Sd",
+    "end_ms": 72200,
+    "role": "assistant",
+    "start_ms": 71400,
+    "transcript": "うんうん。"
+   },
+   "_t": 88.95
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8ZDzF28g6OqfErNnjjY",
+    "end_ms": 72200,
+    "role": "user",
+    "start_ms": 72000,
+    "transcript": " いい"
+   },
+   "_t": 88.96
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8ZDzF28g6OqfErNnjjY",
+    "end_ms": 75000,
+    "role": "user",
+    "start_ms": 72000,
+    "transcript": " いいね、ちょっと電話してくるね"
+   },
+   "_t": 91.72
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8ZGNmTJ6abDfsaIX498",
+    "end_ms": 75000,
+    "role": "assistant",
+    "start_ms": 74800,
+    "transcript": "うん、じゃ"
+   },
+   "_t": 91.72
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8ZGNmTJ6abDfsaIX498",
+    "end_ms": 90400,
+    "role": "assistant",
+    "start_ms": 74800,
+    "transcript": "うん、じゃあ今の流れだと「朝9時」案が出てて、田中さんは電話に入るみたいだから、いったん朝9時で仮置きにして、電話終わったら最終確認するのはどうかな?佐藤さん、それで困ることある?なければ「仮でOK」って一言もらえると助かる。"
+   },
+   "_t": 106.71
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8ZY2r6IYL0cPVDCdcHD",
+    "end_ms": 93600,
+    "role": "user",
+    "start_ms": 93400,
+    "transcript": " 鈴"
+   },
+   "_t": 109.88
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8ZY2r6IYL0cPVDCdcHD",
+    "end_ms": 100200,
+    "role": "user",
+    "start_ms": 93400,
+    "transcript": " 鈴木さん、場所は河原でいいよ、ね。うん、河原にしよう"
+   },
+   "_t": 116.53
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8ZeV7tJvSssXE0cO7Wh",
+    "end_ms": 100200,
+    "role": "assistant",
+    "start_ms": 100000,
+    "transcript": "じゃあ場所は河"
+   },
+   "_t": 116.53
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8ZeV7tJvSssXE0cO7Wh",
+    "end_ms": 115800,
+    "role": "assistant",
+    "start_ms": 100000,
+    "transcript": "じゃあ場所は河原で合意できたね。今の仮まとめは「朝9時・河原集合・車は鈴木さん・飲み物も鈴木さん・持ち物は佐藤さん」で、田中さんの電話後に最終確認って感じでメモしとくよ。呼び方とか変更したいところがあったら言ってね。"
+   },
+   "_t": 131.77
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8ZxykUL3go96aMPWATN",
+    "end_ms": 119000,
+    "role": "user",
+    "start_ms": 118800,
+    "transcript": " 春"
+   },
+   "_t": 134.98
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8ZxykUL3go96aMPWATN",
+    "end_ms": 122800,
+    "role": "user",
+    "start_ms": 118800,
+    "transcript": " 春、私がいない間に何が決 まった"
+   },
+   "_t": 138.87
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8a0yUIsUwwgvmPitqtB",
+    "end_ms": 122800,
+    "role": "assistant",
+    "start_ms": 122600,
+    "transcript": "朝9時に河原集合"
+   },
+   "_t": 138.87
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8a0yUIsUwwgvmPitqtB",
+    "end_ms": 140000,
+    "role": "assistant",
+    "start_ms": 122600,
+    "transcript": "朝9時に河原集合で仮決めしたよ。佐藤さんが河原OKって言って、鈴木さんも賛成してる。役割はそのまま、あなたが進行、佐藤さんが持ち物、鈴木さんが車と飲み物ね。最終確認だけ、今ここでOK出せるか聞いてもいい?もし変えたいところがあればそこから直そう。"
+   },
+   "_t": 155.65
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8aMgutBR3FoCy1BKSIt",
+    "end_ms": 144200,
+    "role": "user",
+    "start_ms": 144000,
+    "transcript": " 春"
+   },
+   "_t": 159.73
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8aMgutBR3FoCy1BKSIt",
+    "end_ms": 147400,
+    "role": "user",
+    "start_ms": 144000,
+    "transcript": " 春、さっきから何か気づいたことある"
+   },
+   "_t": 163.05
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8aPFx7iIpOVSeSuD5iE",
+    "end_ms": 147400,
+    "role": "assistant",
+    "start_ms": 147200,
+    "transcript": "うん"
+   },
+   "_t": 163.05
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8aPFx7iIpOVSeSuD5iE",
+    "end_ms": 159600,
+    "role": "assistant",
+    "start_ms": 147200,
+    "transcript": "うん、今のところ大きい矛盾はないよ。みんな自然に役割分担が決まってて、合意も順番に取れてる感じ。ただ、まだ「仮」だから、田中さんの最終OKがそろえば締まるね。"
+   },
+   "_t": 175.05
+  }
+ ]
+}

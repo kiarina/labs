@@ -1,0 +1,961 @@
+{
+ "label": "vid-interval-1",
+ "mode": "none",
+ "keyframes": "interval",
+ "interval": 8.0,
+ "video": true,
+ "speed": 0.5,
+ "scenario": "scenario-video.json",
+ "prompt": "あなたは「ハル」という名前の音声アシスタントです。今、田中さん・佐藤さん・鈴木さんの3人と同じ通話にいます。通話にはカメラもつながっていて、カメラの映像は、雪国のお祭りの会場にいる鈴木さんがスマートフォンで中継しているものです（田中さんと佐藤さんは家から見ています）。3人は互いに話し合い、ときどきあなたに話しかけます。「ハル」と呼びかけられたときだけ、日本語で短く（1〜2文）答えてください。人どうしの会話には口をはさまないでください。通話のシステムが声を聞き分け、誰かが話し始めるたびに「[話者メモ] …」で誰の声かを知らせます。誰が話しているかは、このメモで判断してください。メモには返事をしないでください。あなたはカメラの映像を直接見られません。映像について答える必要があるときは、確かめたいことを委譲してください。委譲すると、カメラの直近の画像を見た答えが返ります。",
+ "note_model": [
+  "gpt-6.2-sol",
+  "low"
+ ],
+ "look_model": [
+  "gpt-6.2-sol",
+  "low"
+ ],
+ "codex": "codex-cli 0.172.0",
+ "timeline": [
+  {
+   "t": 2.69,
+   "kind": "connected"
+  },
+  {
+   "t": 5.69,
+   "kind": "line_start",
+   "id": 1,
+   "who": "鈴木",
+   "to": "ai",
+   "text": "ハル、今、雪のお祭りの会場に来てて、カメラで中継してるよ。",
+   "video_s": 1.5,
+   "video_frame": "0002"
+  },
+  {
+   "t": 6.8,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは、聞き分けられない声です。",
+   "who": null,
+   "scores": {
+    "田中": 0.084,
+    "佐藤": 0.091,
+    "鈴木": 0.341
+   }
+  },
+  {
+   "t": 11.19,
+   "kind": "line_end",
+   "id": 1
+  },
+  {
+   "t": 51.2,
+   "kind": "no_reply",
+   "id": 1
+  },
+  {
+   "t": 52.0,
+   "kind": "line_start",
+   "id": 2,
+   "who": "田中",
+   "to": "ai",
+   "text": "ハル、今、何が映ってる？",
+   "video_s": 24.7,
+   "video_frame": "0049"
+  },
+  {
+   "t": 53.1,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは田中さんの声です。",
+   "who": "田中",
+   "scores": {
+    "田中": 0.728,
+    "佐藤": 0.197,
+    "鈴木": 0.252
+   }
+  },
+  {
+   "t": 54.66,
+   "kind": "line_end",
+   "id": 2
+  },
+  {
+   "t": 55.9,
+   "kind": "delegation",
+   "text": "。春、今何が映ってる"
+  },
+  {
+   "t": 61.47,
+   "kind": "delegation_reply",
+   "ask": "。春、今何が映ってる",
+   "text": "田中さん、雪が積もった木々の間を、鬼のようなお面をつけて、わらの衣装を着た人たちが、たいまつを手に歩いています。",
+   "seconds": 5.5,
+   "frames": [
+    "0000",
+    "0008",
+    "0016",
+    "0024",
+    "0032",
+    "0040",
+    "0048",
+    "0056"
+   ],
+   "current": "0058"
+  },
+  {
+   "t": 74.79,
+   "kind": "line_start",
+   "id": 3,
+   "who": "佐藤",
+   "to": "people",
+   "text": "うわ、すごい、来た来た！",
+   "video_s": 36.1,
+   "video_frame": "0072"
+  },
+  {
+   "t": 75.49,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは、聞き分けられない声です。",
+   "who": null,
+   "scores": {
+    "田中": 0.154,
+    "佐藤": 0.159,
+    "鈴木": 0.082
+   }
+  },
+  {
+   "t": 76.9,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは佐藤さんの声です。",
+   "who": "佐藤",
+   "scores": {
+    "田中": 0.097,
+    "佐藤": 0.736,
+    "鈴木": 0.163
+   }
+  },
+  {
+   "t": 78.03,
+   "kind": "line_end",
+   "id": 3
+  },
+  {
+   "t": 78.99,
+   "kind": "line_start",
+   "id": 4,
+   "who": "田中",
+   "to": "ai",
+   "text": "ハル、今、何人くらい映ってる？",
+   "video_s": 38.2,
+   "video_frame": "0076"
+  },
+  {
+   "t": 80.08,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは田中さんの声です。",
+   "who": "田中",
+   "scores": {
+    "田中": 0.704,
+    "佐藤": 0.18,
+    "鈴木": 0.282
+   }
+  },
+  {
+   "t": 82.17,
+   "kind": "line_end",
+   "id": 4
+  },
+  {
+   "t": 83.01,
+   "kind": "delegation",
+   "text": "。春、今何人くらい映ってる"
+  },
+  {
+   "t": 87.02,
+   "kind": "delegation_reply",
+   "ask": "。春、今何人くらい映ってる",
+   "text": "田中さん、今は4人くらい見えるよ。枝に隠れてる人もいるから、正確な人数まではわからないよ。",
+   "seconds": 3.94,
+   "frames": [
+    "0000",
+    "0008",
+    "0016",
+    "0024",
+    "0032",
+    "0040",
+    "0048",
+    "0056",
+    "0064",
+    "0072",
+    "0080"
+   ],
+   "current": "0084"
+  },
+  {
+   "t": 96.79,
+   "kind": "line_start",
+   "id": 5,
+   "who": "鈴木",
+   "to": "people",
+   "text": "火の粉がすごいね。",
+   "video_s": 47.1,
+   "video_frame": "0094"
+  },
+  {
+   "t": 97.96,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは鈴木さんの声です。",
+   "who": "鈴木",
+   "scores": {
+    "田中": 0.246,
+    "佐藤": 0.254,
+    "鈴木": 0.735
+   }
+  },
+  {
+   "t": 98.42,
+   "kind": "line_end",
+   "id": 5
+  },
+  {
+   "t": 99.98,
+   "kind": "line_start",
+   "id": 6,
+   "who": "佐藤",
+   "to": "ai",
+   "text": "ハル、お面って、どんな色のがあった？",
+   "video_s": 48.6,
+   "video_frame": "0097"
+  },
+  {
+   "t": 101.04,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは佐藤さんの声です。",
+   "who": "佐藤",
+   "scores": {
+    "田中": 0.105,
+    "佐藤": 0.657,
+    "鈴木": 0.174
+   }
+  },
+  {
+   "t": 103.22,
+   "kind": "line_end",
+   "id": 6
+  },
+  {
+   "t": 104.66,
+   "kind": "delegation",
+   "text": "、お面ってどんな色だった"
+  },
+  {
+   "t": 108.76,
+   "kind": "delegation_reply",
+   "ask": "、お面ってどんな色だった",
+   "text": "赤いお面と、黒っぽく見えるお面があったよ。黒っぽいほうは、暗くてはっきりした色までは分からなかった。",
+   "seconds": 4.01,
+   "frames": [
+    "0000",
+    "0008",
+    "0016",
+    "0024",
+    "0032",
+    "0040",
+    "0048",
+    "0056",
+    "0064",
+    "0072",
+    "0080",
+    "0088",
+    "0096",
+    "0104"
+   ],
+   "current": "0106"
+  },
+  {
+   "t": 120.03,
+   "kind": "line_start",
+   "id": 7,
+   "who": "田中",
+   "to": "ai",
+   "text": "ハル、最初に映ってた建物みたいなのって、どんなのだった？",
+   "video_s": 58.7,
+   "video_frame": "0117"
+  },
+  {
+   "t": 121.16,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは田中さんの声です。",
+   "who": "田中",
+   "scores": {
+    "田中": 0.702,
+    "佐藤": 0.122,
+    "鈴木": 0.236
+   }
+  },
+  {
+   "t": 125.19,
+   "kind": "line_end",
+   "id": 7
+  },
+  {
+   "t": 126.68,
+   "kind": "delegation",
+   "text": "、最初に映ってた建物みたいなのってどんなのだった"
+  },
+  {
+   "t": 132.02,
+   "kind": "delegation_reply",
+   "ask": "、最初に映ってた建物みたいなのってどんなのだった",
+   "text": "最初の映像の左端に、木造っぽい建物の一部が見えてたよ。柱と屋根の軒先は見えたけど、全体は映ってないから、何の建物かは分からなかったよ。",
+   "seconds": 5.23,
+   "frames": [
+    "0008",
+    "0016",
+    "0024",
+    "0032",
+    "0040",
+    "0048",
+    "0056",
+    "0064",
+    "0072",
+    "0080",
+    "0088",
+    "0096",
+    "0104",
+    "0112",
+    "0120",
+    "0128"
+   ],
+   "current": "0129"
+  },
+  {
+   "t": 149.91,
+   "kind": "line_start",
+   "id": 8,
+   "who": "鈴木",
+   "to": "ai",
+   "text": "ハル、今も、まだ誰か映ってる？",
+   "video_s": 73.6,
+   "video_frame": "0138"
+  },
+  {
+   "t": 151.02,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは鈴木さんの声です。",
+   "who": "鈴木",
+   "scores": {
+    "田中": 0.138,
+    "佐藤": 0.162,
+    "鈴木": 0.45
+   }
+  },
+  {
+   "t": 153.09,
+   "kind": "line_end",
+   "id": 8
+  },
+  {
+   "t": 154.77,
+   "kind": "delegation",
+   "text": "春、今もまだ誰か映ってる"
+  },
+  {
+   "t": 159.62,
+   "kind": "delegation_reply",
+   "ask": "春、今もまだ誰か映ってる",
+   "text": "うん、雪の積もった木の奥に、わらの衣装を着た人が少なくとも一人見えるよ。たいまつの火も見えるけど、枝に隠れて何人いるかまでは分からないよ。",
+   "seconds": 4.74,
+   "frames": [
+    "0032",
+    "0040",
+    "0048",
+    "0056",
+    "0064",
+    "0072",
+    "0080",
+    "0088",
+    "0096",
+    "0104",
+    "0112",
+    "0120",
+    "0128",
+    "0136",
+    "0138",
+    "0138"
+   ],
+   "current": "0138"
+  },
+  {
+   "t": 172.67,
+   "kind": "line_start",
+   "id": 9,
+   "who": "佐藤",
+   "to": "ai",
+   "text": "ハル、今日の中継で映ったものを、最初から順番に短くまとめて。",
+   "video_s": 85.0,
+   "video_frame": "0138"
+  },
+  {
+   "t": 173.86,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは佐藤さんの声です。",
+   "who": "佐藤",
+   "scores": {
+    "田中": 0.099,
+    "佐藤": 0.623,
+    "鈴木": 0.196
+   }
+  },
+  {
+   "t": 178.47,
+   "kind": "line_end",
+   "id": 9
+  },
+  {
+   "t": 180.07,
+   "kind": "delegation",
+   "text": "、今日の中継で映ったものを最初から順番に短くまとめて"
+  },
+  {
+   "t": 187.22,
+   "kind": "delegation_reply",
+   "ask": "、今日の中継で映ったものを最初から順番に短くまとめて",
+   "text": "最初は、画面の左端に木造っぽい建物の柱と軒先が映ってたよ。そのあと、鬼みたいなお面をつけたわらの衣装の人たちが、たいまつを手に雪の積もった木々の間を歩いてた。今は、枝の向こうにたいまつの火と、わらの衣装の人が少なくとも一人見えるよ。",
+   "seconds": 7.03,
+   "frames": [
+    "0064",
+    "0072",
+    "0080",
+    "0088",
+    "0096",
+    "0104",
+    "0112",
+    "0120",
+    "0128",
+    "0136",
+    "0138",
+    "0138",
+    "0138",
+    "0138",
+    "0138",
+    "0138"
+   ],
+   "current": "0138"
+  }
+ ],
+ "events": [
+  {
+   "type": "session.started",
+   "session": {
+    "id": "rtc_u23_Eo8wSp3oMLs5i6m7IXtTTzEUzE5v4Gjw",
+    "status": "active",
+    "expires_at": 1795626680
+   },
+   "_t": 2.73
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8wa8CTDcgdy0dMkab1u",
+    "end_ms": 6600,
+    "role": "user",
+    "start_ms": 6400,
+    "transcript": "昨日お祭"
+   },
+   "_t": 9.35
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo8xK6t9jIrU7bpPLgsPh",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "。春、今何が映ってる"
+     }
+    ],
+    "handoff_id": "handoff_1",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo8wa8CTDcgdy0dMkab1u"
+   },
+   "offset_ms": 53600,
+   "_t": 55.9
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8wa8CTDcgdy0dMkab1u",
+    "end_ms": 54000,
+    "role": "user",
+    "start_ms": 6400,
+    "transcript": "昨日お祭りの会場に来てて、カメラで中継してるよ。春、今何が映ってる"
+   },
+   "_t": 56.11
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8xKMRAyfpZ5sXO3GNxR",
+    "end_ms": 54000,
+    "role": "assistant",
+    "start_ms": 53800,
+    "transcript": "今の"
+   },
+   "_t": 56.2
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8xKMRAyfpZ5sXO3GNxR",
+    "end_ms": 58000,
+    "role": "assistant",
+    "start_ms": 53800,
+    "transcript": "今の映像を確認するね。少し待って。"
+   },
+   "_t": 59.87
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8xR0wph6GSaYwyn2NAb",
+    "end_ms": 60200,
+    "role": "assistant",
+    "start_ms": 60000,
+    "transcript": "雪が"
+   },
+   "_t": 62.3
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8xR0wph6GSaYwyn2NAb",
+    "end_ms": 70400,
+    "role": "assistant",
+    "start_ms": 60000,
+    "transcript": "雪が積もった木々の間をね、鬼みたいなお面とわらの衣装の人たちが、たいまつを持って歩いてるよ。かなり幻想的な雰囲気だね。"
+   },
+   "_t": 71.96
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8xfuJuiG5EIhsH9LBbu",
+    "end_ms": 75400,
+    "role": "user",
+    "start_ms": 75200,
+    "transcript": "うわ"
+   },
+   "_t": 76.99
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo8xlW0z8im6ld5uYbll4",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "。春、今何人くらい映ってる"
+     }
+    ],
+    "handoff_id": "handoff_2",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo8xfuJuiG5EIhsH9LBbu"
+   },
+   "offset_ms": 81400,
+   "_t": 83.01
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8xfuJuiG5EIhsH9LBbu",
+    "end_ms": 82000,
+    "role": "user",
+    "start_ms": 75200,
+    "transcript": "うわ、すごい。来た、来た。春、今何人くらい映ってる"
+   },
+   "_t": 83.79
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8xmSSxs4Jw6tjoX2x9p",
+    "end_ms": 82000,
+    "role": "assistant",
+    "start_ms": 81800,
+    "transcript": "人数"
+   },
+   "_t": 83.79
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8xmSSxs4Jw6tjoX2x9p",
+    "end_ms": 85800,
+    "role": "assistant",
+    "start_ms": 81800,
+    "transcript": "人数も見てみるね。ちょっと待って。"
+   },
+   "_t": 87.14
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8xqQMo5aOFIzjeIIu2S",
+    "end_ms": 86200,
+    "role": "assistant",
+    "start_ms": 86000,
+    "transcript": "4人"
+   },
+   "_t": 87.79
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8xqQMo5aOFIzjeIIu2S",
+    "end_ms": 92800,
+    "role": "assistant",
+    "start_ms": 86000,
+    "transcript": "4人くらい見えるよ。枝に隠れてる人もいるから、正確にはわからないけどね。"
+   },
+   "_t": 93.98
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8y0oyjEnqT34y5xGWot",
+    "end_ms": 96800,
+    "role": "user",
+    "start_ms": 96600,
+    "transcript": "火"
+   },
+   "_t": 97.96
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo8y7xclQ2vaSeij86TJb",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "、お面ってどんな色だった"
+     }
+    ],
+    "handoff_id": "handoff_3",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo8y0oyjEnqT34y5xGWot"
+   },
+   "offset_ms": 103200,
+   "_t": 104.66
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8y0oyjEnqT34y5xGWot",
+    "end_ms": 103600,
+    "role": "user",
+    "start_ms": 96600,
+    "transcript": "火の粉がすごいね。春、お面ってどんな色だった"
+   },
+   "_t": 104.96
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8y7IkE7tcYc22TnrhZi",
+    "end_ms": 103600,
+    "role": "assistant",
+    "start_ms": 103400,
+    "transcript": "色も"
+   },
+   "_t": 104.96
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8y7IkE7tcYc22TnrhZi",
+    "end_ms": 107400,
+    "role": "assistant",
+    "start_ms": 103400,
+    "transcript": "色も確認するね、少し待って。"
+   },
+   "_t": 108.33
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8yC7F6km0A2zHWJ0PmP",
+    "end_ms": 108200,
+    "role": "assistant",
+    "start_ms": 108000,
+    "transcript": "赤い"
+   },
+   "_t": 109.37
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8yC7F6km0A2zHWJ0PmP",
+    "end_ms": 116400,
+    "role": "assistant",
+    "start_ms": 108000,
+    "transcript": "赤いお面と黒っぽく見えるのがあったよ。黒っぽいほうは暗くて、はっきりした色までは分からなかったけどね。"
+   },
+   "_t": 117.2
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8yO6vPrqRlwdjxDvjQE",
+    "end_ms": 120600,
+    "role": "user",
+    "start_ms": 120400,
+    "transcript": "春"
+   },
+   "_t": 121.3
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo8yT6B2snj3p3dibKp97",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "、最初に映ってた建物みたいなのってどんなのだった"
+     }
+    ],
+    "handoff_id": "handoff_4",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo8yO6vPrqRlwdjxDvjQE"
+   },
+   "offset_ms": 125600,
+   "_t": 126.68
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8yO6vPrqRlwdjxDvjQE",
+    "end_ms": 126000,
+    "role": "user",
+    "start_ms": 120400,
+    "transcript": "春、最初に映ってた建物みたいなのってどんなのだった"
+   },
+   "_t": 126.88
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8yT2AIiOWUR3KvRTHi2",
+    "end_ms": 126000,
+    "role": "assistant",
+    "start_ms": 125800,
+    "transcript": "最初"
+   },
+   "_t": 126.89
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8yT2AIiOWUR3KvRTHi2",
+    "end_ms": 130200,
+    "role": "assistant",
+    "start_ms": 125800,
+    "transcript": "最初の建物、遡って確認するね。"
+   },
+   "_t": 130.74
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8yZqS2QAyEUANdcBHJx",
+    "end_ms": 132000,
+    "role": "assistant",
+    "start_ms": 131800,
+    "transcript": "最初"
+   },
+   "_t": 132.85
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8yZqS2QAyEUANdcBHJx",
+    "end_ms": 146800,
+    "role": "assistant",
+    "start_ms": 131800,
+    "transcript": "最初の映像の左端に木造っぽい建物の一部が映ってた。柱と軒先は見えたけど、全部は映ってなくて、何の建物かまでは分からなかったよ。もっと手がかりを探すなら、別の場面も見てみようか?"
+   },
+   "_t": 147.08
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8ysCcxaCPWQnZC5wicc",
+    "end_ms": 151200,
+    "role": "user",
+    "start_ms": 151000,
+    "transcript": "春"
+   },
+   "_t": 151.46
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo8yv3L3uYgCkaTKz1B95",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "春、今もまだ誰か映ってる"
+     }
+    ],
+    "handoff_id": "handoff_5",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo8ysCcxaCPWQnZC5wicc"
+   },
+   "offset_ms": 154200,
+   "_t": 154.77
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8ysCcxaCPWQnZC5wicc",
+    "end_ms": 154600,
+    "role": "user",
+    "start_ms": 151000,
+    "transcript": "春、今もまだ誰か映ってる"
+   },
+   "_t": 154.92
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8yvyLhCfBTICQPRmqgC",
+    "end_ms": 154600,
+    "role": "assistant",
+    "start_ms": 154400,
+    "transcript": "今の"
+   },
+   "_t": 154.93
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8yvyLhCfBTICQPRmqgC",
+    "end_ms": 158600,
+    "role": "assistant",
+    "start_ms": 154400,
+    "transcript": "今の映像、もう一度見るね。少し待って。"
+   },
+   "_t": 158.62
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8z123eB7EWWEnDgnc25",
+    "end_ms": 160000,
+    "role": "assistant",
+    "start_ms": 159800,
+    "transcript": "うん"
+   },
+   "_t": 160.34
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8z123eB7EWWEnDgnc25",
+    "end_ms": 170000,
+    "role": "assistant",
+    "start_ms": 159800,
+    "transcript": "うん、雪の積もった木の奥に、わらの衣装の人が少なくとも一人見えるよ。たいまつの火も見えるけど、枝に隠れて何人いるかまでは分からないな。"
+   },
+   "_t": 169.86
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8zEL2clR3HA3ouDi6CP",
+    "end_ms": 174200,
+    "role": "user",
+    "start_ms": 174000,
+    "transcript": "春"
+   },
+   "_t": 173.97
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo8zKZQLsoatnmnm2F37V",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "、今日の中継で映ったものを最初から順番に短くまとめて"
+     }
+    ],
+    "handoff_id": "handoff_6",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo8zEL2clR3HA3ouDi6CP"
+   },
+   "offset_ms": 180000,
+   "_t": 180.07
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8zEL2clR3HA3ouDi6CP",
+    "end_ms": 180400,
+    "role": "user",
+    "start_ms": 174000,
+    "transcript": "春、今日の中継で映ったものを最初から順番に短くまとめて"
+   },
+   "_t": 180.3
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8zLgQWikBE6uNUme9FN",
+    "end_ms": 180400,
+    "role": "assistant",
+    "start_ms": 180200,
+    "transcript": "順番"
+   },
+   "_t": 180.32
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8zLgQWikBE6uNUme9FN",
+    "end_ms": 184800,
+    "role": "assistant",
+    "start_ms": 180200,
+    "transcript": "順番に短く整理するね、ちょっと待って。"
+   },
+   "_t": 184.45
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo8zT3xgPGhxOPJzjRNAp",
+    "end_ms": 188200,
+    "role": "assistant",
+    "start_ms": 188000,
+    "transcript": "最初"
+   },
+   "_t": 188.12
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo8zT3xgPGhxOPJzjRNAp",
+    "end_ms": 203600,
+    "role": "assistant",
+    "start_ms": 188000,
+    "transcript": "最初は左端に木造っぽい建物の柱と軒先が映ってて、そのあと鬼みたいなお面とわらの衣装の人たちがたいまつを持って雪の中を歩いてた。今は枝の向こうにたいまつの火と、わらの衣装の人が少なくとも一人見えてるよ。"
+   },
+   "_t": 203.0
+  }
+ ]
+}

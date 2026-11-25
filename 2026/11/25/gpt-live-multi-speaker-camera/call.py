@@ -1,11 +1,19 @@
 """A three-person call with a camera: gpt-live hears the people, gets speaker notes and camera notes as text,
 and delegates when it needs to look (the delegation is answered by a vision model from recent keyframes).
 
-usage: python call.py <label> <none|plain|topic>
+usage: python call.py <label> <none|plain|topic|light> [--keyframes change|interval] [--interval S] [--video FRAMES_DIR] [--speed X]
+       SCENARIO=scenario-proactive.json python call.py ...   (default scenario.json)
 
 - none:  no camera notes; gpt-live must delegate to know anything about the camera
 - plain: a camera note whenever the picture changes (what changed, generic)
 - topic: the same, but the note writer also gets the recent conversation and says what matters to the topic
+- light: only short notes of eye-catching events (people coming or going, animals, ...), else nothing
+
+--keyframes change (default): keep a frame when the picture differs from the last kept one;
+            interval: keep one every --interval seconds (default 4). Up to 16 are kept for delegations.
+--video DIR: the camera plays DIR/0000.jpg, 0001.jpg, ... at VIDEO_FPS in real time (from the first line),
+             instead of the scripted still frames, at --speed (default 1.0). Lines may wait for a video time
+             (in video seconds) with "at". After the last frame the camera keeps showing it.
 
 Every condition: speaker notes from Silero VAD + ECAPA-TDNN (`[話者メモ] …`), and delegations answered by
 gpt-6.2-sol (effort low) from a 4x4 grid of the last 16 keyframes plus the current frame, the conversation so far
@@ -27,19 +35,19 @@ from speaker import Ecapa, Identifier, say
 from vision import Vision
 
 HERE = Path(__file__).parent
-SCN = json.loads((HERE / 'scenario.json').read_text())
+SCN = json.loads((HERE / os.environ.get('SCENARIO', 'scenario.json')).read_text())
 AI = SCN['assistant']
 NAMES = '・'.join(f'{n}さん' for n in SCN['people'])
-LOOKS = '\n'.join(f'- {n}さん: {v}' for n, v in SCN['looks'].items())
+LOOKS = '\n'.join(f'- {n}さん: {v}' for n, v in SCN.get('looks', {}).items()) or '（人の見た目の手がかりは無い）'
 NOTE_MODEL, LOOK_MODEL = ('gpt-6.2-sol', 'low'), ('gpt-6.2-sol', 'low')
 GAP_PEOPLE, GAP_AFTER_AI, AI_TIMEOUT, AI_SETTLE = 0.6, 0.8, 40.0, 2.0
-KEYFRAMES, CAMERA_EVERY = 16, 1.0
+KEYFRAMES, CAMERA_EVERY, INTERVAL_S, VIDEO_FPS = 16, 1.0, 4.0, 2.0
 
 BASE = (f'あなたは「{AI}」という名前の音声アシスタントです。今、{NAMES}の3人と同じ通話にいます。通話にはカメラもつながっていて、'
-        'テーブルのまわりの3人が映っています。3人は互いに話し合い、ときどきあなたに話しかけます。'
-        f'「{AI}」と呼びかけられたときだけ、日本語で短く（1〜2文）答えてください。人どうしの会話には口をはさまないでください。'
-        '通話のシステムが声を聞き分け、誰かが話し始めるたびに「[話者メモ] …」で誰の声かを知らせます。誰が話しているかは、このメモで判断してください。'
-        'メモには返事をしないでください。')
+        + SCN.get('situation', 'テーブルのまわりの3人が映っています。') + '3人は互いに話し合い、ときどきあなたに話しかけます。'
+        + SCN.get('answer_rule', f'「{AI}」と呼びかけられたときだけ、日本語で短く（1〜2文）答えてください。人どうしの会話には口をはさまないでください。')
+        + '通話のシステムが声を聞き分け、誰かが話し始めるたびに「[話者メモ] …」で誰の声かを知らせます。誰が話しているかは、このメモで判断してください。'
+        + 'メモには返事をしないでください。')
 CAMERA_RULE = {
     'none': 'あなたはカメラの映像を直接見られません。映像について答える必要があるときは、確かめたいことを委譲してください。'
             '委譲すると、カメラの直近の画像を見た答えが返ります。',
@@ -47,7 +55,7 @@ CAMERA_RULE = {
              '知らせで分かることはそのまま答え、知らせで足りないことや、もっと詳しく確かめたいことは、確かめたいことを委譲してください。'
              '委譲すると、カメラの直近の画像を見た答えが返ります。',
 }
-CAMERA_RULE['topic'] = CAMERA_RULE['plain']
+CAMERA_RULE['topic'] = CAMERA_RULE['light'] = CAMERA_RULE['plain']
 NOTE_ASK = {
     'plain': ('あなたは、ビデオ通話のカメラの映像を、目の見えない音声アシスタントに文字で伝える係です。1枚目が前の映像、2枚目が今の映像です。'
               '前から何が変わったかを、日本語の短い1文で書いてください。人は次の見た目で名前を判断してください。\n{looks}\n'
@@ -58,6 +66,10 @@ NOTE_ASK = {
               '話題に関係なくても、人の出入りや動物など目立つ出来事は短く書いてください。\n{talk}\n'
               'カメラの小さな揺れや画角の違い、物の位置の小さなずれは変化として書かないでください。大きな変化が無ければ「なし」とだけ書いてください。前に伝えた内容: {last}'),
 }
+NOTE_ASK['light'] = ('あなたは、ビデオ通話のカメラの映像を、目の見えない音声アシスタントに知らせる係です。1枚目が前の映像、2枚目が今の映像です。'
+                     '人の出入り、動物、物を落とすなど、その場にいる人なら思わず一言触れそうな目立つ出来事があったときだけ、それを15文字くらいの短い言葉で書いてください。'
+                     '人は次の見た目で名前を判断してください。\n{looks}\n'
+                     'それ以外の変化（物を置く・持つ、姿勢、カメラの揺れ）は書かず、「なし」とだけ書いてください。前に伝えた内容: {last}')
 LOOK_ASK = ('あなたは、ビデオ通話のカメラを見て、音声アシスタントの代わりに答える係です。答えはアシスタントがそのまま声で言います。'
             '1枚目は最近の映像の変化を時刻順に並べた最大16枚（左上から右へ、各コマの数字は何秒前か）、2枚目が今の映像です。'
             '人は次の見た目で名前を判断してください。\n{looks}\nここまでの会話（[ ]は声で聞き分けた話者）:\n{talk}\n\n'
@@ -67,17 +79,39 @@ SAY_NONE = '裏で調べることは何もありません。ここまでの会�
 
 class Camera:
     """The scripted camera: `show(key)` changes the picture; a keyframe is kept when the picture differs from the last kept one."""
-    def __init__(self, now):
+    def __init__(self, now, keyframes='change', video=None, interval=INTERVAL_S, speed=1.0):
         self.now, self.key, self.keyframes, self.last_arr = now, None, [], None
+        self.interval, self.speed = interval, speed
+        self.mode, self.video, self.video_t0 = keyframes, Path(video) if video else None, None
+        self.video_n = len(list(self.video.glob('*.jpg'))) if self.video else 0
 
     def show(self, key):
         self.key = key
 
+    def play(self):
+        self.video_t0 = time.monotonic()
+
+    def video_time(self):
+        return 0.0 if self.video_t0 is None else (time.monotonic() - self.video_t0) * self.speed
+
+    def follow(self):
+        if self.video and self.video_t0 is not None:
+            self.key = f'{min(int(self.video_time() * VIDEO_FPS), self.video_n - 1):04d}'
+
     def path(self, key=None):
+        if self.video:
+            return self.video / f'{key or self.key}.jpg'
         return HERE / 'frames' / f'{key or self.key}.jpg'
 
     def tick(self):
+        self.follow()
         if not self.key:
+            return False
+        if self.mode == 'interval':
+            if not self.keyframes or self.now() - self.keyframes[-1][0] >= self.interval - 0.01:
+                self.keyframes.append((self.now(), self.key))
+                self.keyframes = self.keyframes[-KEYFRAMES:]
+                return True
             return False
         a = np.asarray(Image.open(self.path()).convert('L').resize((160, 90)), np.float32)
         if self.last_arr is None or np.abs(a - self.last_arr).mean() > 2.0:
@@ -105,7 +139,10 @@ class Camera:
 
 async def main():
     label, mode = sys.argv[1], sys.argv[2]
-    assert mode in ('none', 'plain', 'topic')
+    assert mode in ('none', 'plain', 'topic', 'light')
+    opts = dict(zip(sys.argv[3::2], sys.argv[4::2]))
+    kf_mode, video = opts.get('--keyframes', 'change'), opts.get('--video')
+    interval, speed = float(opts.get('--interval', INTERVAL_S)), float(opts.get('--speed', 1.0))
     env = dict(os.environ); env.pop('OPENAI_API_KEY', None)
     t0 = time.monotonic()
     now = lambda: round(time.monotonic() - t0, 2)
@@ -117,7 +154,8 @@ async def main():
     work = HERE / 'work' / label
     work.mkdir(parents=True, exist_ok=True)
 
-    clips = {l['id']: say(SCN['people'][l['who']], l['text'], HERE / f'work/voice/{l["id"]:02d}-{l["who"]}.wav') for l in SCN['lines']}
+    voice_dir = HERE / 'work' / 'voice' / Path(os.environ.get('SCENARIO', 'scenario.json')).stem
+    clips = {l['id']: say(SCN['people'][l['who']], l['text'], voice_dir / f'{l["id"]:02d}-{l["who"]}.wav') for l in SCN['lines']}
     ident = Identifier(Ecapa(), threshold=0.35)
     for name, voice in SCN['people'].items():
         ident.enroll(name, [say(voice, t, HERE / f'work/voice/enroll-{name}-{k}.wav') for k, t in enumerate(SCN['enroll'])])
@@ -161,7 +199,7 @@ async def main():
         asyncio.ensure_future(pull())
 
     vision = await Vision(env, HERE).start()
-    cam = Camera(now)
+    cam = Camera(now, kf_mode, video, interval, speed)
     delegations = {}
 
     def talk_text(n=None):
@@ -226,7 +264,9 @@ async def main():
     await pc.setLocalDescription(await pc.createOffer())
     s = await AppServer(['codex'], env).start()
     prompt = BASE + CAMERA_RULE[mode]
-    out = {'label': label, 'mode': mode, 'prompt': prompt, 'note_model': NOTE_MODEL, 'look_model': LOOK_MODEL}
+    out = {'label': label, 'mode': mode, 'keyframes': kf_mode, 'interval': interval if kf_mode == 'interval' else None,
+           'video': bool(video), 'speed': speed if video else None, 'scenario': os.environ.get('SCENARIO', 'scenario.json'),
+           'prompt': prompt, 'note_model': NOTE_MODEL, 'look_model': LOOK_MODEL}
     cam_task = None
     try:
         out['codex'] = (await (await asyncio.create_subprocess_exec('codex', '--version', stdout=asyncio.subprocess.PIPE)).communicate())[0].decode().strip()
@@ -271,14 +311,20 @@ async def main():
             return any((x.get('type') == 'turn.created' and x['turn'].get('role') == 'assistant') or x.get('type') == 'delegation.created'
                        for x in dc_events if x['_t'] >= t)
 
-        cam.show('f00')
+        if video:
+            cam.play()
+        else:
+            cam.show(SCN.get('start_frame', 'f00'))
         await asyncio.sleep(3)
         for line in SCN['lines']:
             await settle(AI_TIMEOUT)  # the people wait until the assistant has finished (and any delegation is answered)
+            while video and cam.video_time() < line.get('at', 0):
+                await asyncio.sleep(.05)
             if line.get('frame'):
                 cam.show(line['frame'])
                 log('frame', key=line['frame'])
-            log('line_start', id=line['id'], who=line['who'], to=line['to'], text=line['text'])
+            log('line_start', id=line['id'], who=line['who'], to=line['to'], text=line['text'],
+                **({'video_s': round(cam.video_time(), 1), 'video_frame': cam.key} if video else {}))
             track.play(clips[line['id']])
             while track.pending:
                 await asyncio.sleep(.02)
@@ -299,7 +345,10 @@ async def main():
             if line.get('after'):
                 await asyncio.sleep(line.get('after_s', 0))
                 cam.show(line['after'])
-                log('frame', key=line['after'])
+                log('frame', key=line['after'], event=line.get('event'))
+            if line.get('pause'):
+                log('pause', seconds=line['pause'], event=line.get('event'))
+                await asyncio.sleep(line['pause'])
             await asyncio.sleep(gap)
         await settle(40)
         await s.call('thread/realtime/stop', {'threadId': tid})
