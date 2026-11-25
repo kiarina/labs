@@ -16,17 +16,10 @@ cd labs
 git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{slug}
 ```
 
-## Dependencies are pinned, not maintained
-
-Each lab pins the dependency versions it was measured with, so its results can
-be reproduced. Labs are records, not running services: they get no security
-updates, and Dependabot is turned off for this repository. Check and update the
-dependencies yourself before you reuse a lab's code in anything that handles
-untrusted input.
-
 ## Labs
 
 - 2026/11
+  - [Starting a Codex app-server realtime call with gpt-live-1.1-codex (Codex 0.170.0 model override vs 0.172.0 default)](2026/11/25/codex-gpt-live-1-1/README.md) - [codex](tags/codex.md), [realtime](tags/realtime.md), [webrtc](tags/webrtc.md), [aiortc](tags/aiortc.md)
   - [WebRTC data channels from a Flutter-free Dart CLI: webrtc_dart vs libdatachannel over FFI, against libwebrtc (Chrome) and aiortc, on macOS and in a Linux container](2026/11/06/dart-cli-webrtc-datachannel/README.md) - [webrtc](tags/webrtc.md), [datachannel](tags/datachannel.md), [dart](tags/dart.md), [ffi](tags/ffi.md), [libdatachannel](tags/libdatachannel.md), [aiortc](tags/aiortc.md), [docker](tags/docker.md), [cli](tags/cli.md), [macos](tags/macos.md), [linux](tags/linux.md)
 
 - 2026/10
