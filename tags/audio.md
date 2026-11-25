@@ -1,5 +1,6 @@
 # audio
 
+- 2026/11/25 [A three-person video call with gpt-live-1.1-codex: speaker notes, camera notes (none / plain / topic-aware) and delegations answered from a 16-keyframe grid](../2026/11/25/gpt-live-multi-speaker-camera/README.md)
 - 2026/11/25 [Who said what: speaker notes for gpt-live-1.1-codex in a three-person call (none vs oracle vs ECAPA-TDNN notes on the data channel)](../2026/11/25/gpt-live-multi-speaker-notes/README.md)
 - 2026/10/23 [Call speech in short spans on qwentts.cpp (Qwen3-TTS 1.7B BF16)](../2026/10/23/qwen3-tts-ggml-call-segments/README.md)
 - 2026/10/23 [Qwen3-TTS on ggml (qwentts.cpp, llama.cpp) vs MLX bf16 and an ONNX Runtime port](../2026/10/23/qwen3-tts-ggml-compare/README.md)

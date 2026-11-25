@@ -1,0 +1,1605 @@
+{
+ "label": "none-2",
+ "mode": "none",
+ "prompt": "あなたは「ハル」という名前の音声アシスタントです。今、田中さん・佐藤さん・鈴木さんの3人と同じ通話にいます。通話にはカメラもつながっていて、テーブルのまわりの3人が映っています。3人は互いに話し合い、ときどきあなたに話しかけます。「ハル」と呼びかけられたときだけ、日本語で短く（1〜2文）答えてください。人どうしの会話には口をはさまないでください。通話のシステムが声を聞き分け、誰かが話し始めるたびに「[話者メモ] …」で誰の声かを知らせます。誰が話しているかは、このメモで判断してください。メモには返事をしないでください。あなたはカメラの映像を直接見られません。映像について答える必要があるときは、確かめたいことを委譲してください。委譲すると、カメラの直近の画像を見た答えが返ります。",
+ "note_model": [
+  "gpt-6.2-sol",
+  "low"
+ ],
+ "look_model": [
+  "gpt-6.2-sol",
+  "low"
+ ],
+ "codex": "codex-cli 0.172.0",
+ "timeline": [
+  {
+   "t": 2.88,
+   "kind": "connected"
+  },
+  {
+   "t": 5.88,
+   "kind": "frame",
+   "key": "f00"
+  },
+  {
+   "t": 5.88,
+   "kind": "line_start",
+   "id": 1,
+   "who": "田中",
+   "to": "ai",
+   "text": "ハル、今日はカメラもつけて、三人でバーベキューの準備をするね。"
+  },
+  {
+   "t": 6.97,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは田中さんの声です。",
+   "who": "田中",
+   "scores": {
+    "田中": 0.685,
+    "佐藤": 0.168,
+    "鈴木": 0.227
+   }
+  },
+  {
+   "t": 11.66,
+   "kind": "line_end",
+   "id": 1
+  },
+  {
+   "t": 28.24,
+   "kind": "frame",
+   "key": "f01"
+  },
+  {
+   "t": 28.24,
+   "kind": "line_start",
+   "id": 2,
+   "who": "佐藤",
+   "to": "people",
+   "text": "炭は僕が持ってきたよ。ほら、これ。"
+  },
+  {
+   "t": 29.41,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは佐藤さんの声です。",
+   "who": "佐藤",
+   "scores": {
+    "田中": 0.143,
+    "佐藤": 0.751,
+    "鈴木": 0.169
+   }
+  },
+  {
+   "t": 32.13,
+   "kind": "line_end",
+   "id": 2
+  },
+  {
+   "t": 43.86,
+   "kind": "line_start",
+   "id": 3,
+   "who": "佐藤",
+   "to": "ai",
+   "text": "ハル、僕が今持ってるの、見える？"
+  },
+  {
+   "t": 46.94,
+   "kind": "line_end",
+   "id": 3
+  },
+  {
+   "t": 48.32,
+   "kind": "delegation",
+   "text": "春、僕が今持ってるの見える"
+  },
+  {
+   "t": 52.72,
+   "kind": "delegation_reply",
+   "ask": "春、僕が今持ってるの見える",
+   "text": "うん、見えるよ、佐藤さん。炭の絵が描いてある黒い袋を、両手で持ってるね。",
+   "seconds": 4.38,
+   "frames": [
+    "f00",
+    "f01"
+   ],
+   "current": "f01"
+  },
+  {
+   "t": 69.12,
+   "kind": "frame",
+   "key": "f03"
+  },
+  {
+   "t": 69.12,
+   "kind": "line_start",
+   "id": 4,
+   "who": "鈴木",
+   "to": "people",
+   "text": "私は車を出すね。鍵はこれ。"
+  },
+  {
+   "t": 70.17,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは鈴木さんの声です。",
+   "who": "鈴木",
+   "scores": {
+    "田中": 0.143,
+    "佐藤": 0.274,
+    "鈴木": 0.724
+   }
+  },
+  {
+   "t": 72.86,
+   "kind": "line_end",
+   "id": 4
+  },
+  {
+   "t": 72.86,
+   "kind": "frame",
+   "key": "f04"
+  },
+  {
+   "t": 73.46,
+   "kind": "line_start",
+   "id": 5,
+   "who": "田中",
+   "to": "people",
+   "text": "いいね、助かる。"
+  },
+  {
+   "t": 74.49,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは田中さんの声です。",
+   "who": "田中",
+   "scores": {
+    "田中": 0.693,
+    "佐藤": 0.108,
+    "鈴木": 0.129
+   }
+  },
+  {
+   "t": 75.2,
+   "kind": "line_end",
+   "id": 5
+  },
+  {
+   "t": 75.8,
+   "kind": "frame",
+   "key": "f05"
+  },
+  {
+   "t": 75.8,
+   "kind": "line_start",
+   "id": 6,
+   "who": "田中",
+   "to": "people",
+   "text": "飲み物は私が持ってきたよ。ここに置いとくね。"
+  },
+  {
+   "t": 80.04,
+   "kind": "line_end",
+   "id": 6
+  },
+  {
+   "t": 80.64,
+   "kind": "line_start",
+   "id": 7,
+   "who": "鈴木",
+   "to": "ai",
+   "text": "ハル、飲み物って、何が何本ある？"
+  },
+  {
+   "t": 81.69,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは鈴木さんの声です。",
+   "who": "鈴木",
+   "scores": {
+    "田中": 0.038,
+    "佐藤": 0.163,
+    "鈴木": 0.463
+   }
+  },
+  {
+   "t": 84.05,
+   "kind": "line_end",
+   "id": 7
+  },
+  {
+   "t": 84.97,
+   "kind": "delegation",
+   "text": "春、飲み物って何が何もなる"
+  },
+  {
+   "t": 89.53,
+   "kind": "delegation_reply",
+   "ask": "春、飲み物って何が何もなる",
+   "text": "机の上に、緑のキャップの飲み物が2本、オレンジ色の飲み物が1本で、全部で3本あるよ。ラベルが見えないから、何の飲み物かまでは分からないよ。",
+   "seconds": 4.52,
+   "frames": [
+    "f00",
+    "f01",
+    "f03",
+    "f04",
+    "f05"
+   ],
+   "current": "f05"
+  },
+  {
+   "t": 113.53,
+   "kind": "frame",
+   "key": "f06"
+  },
+  {
+   "t": 113.53,
+   "kind": "line_start",
+   "id": 8,
+   "who": "佐藤",
+   "to": "people",
+   "text": "あ、ちょっと待って。"
+  },
+  {
+   "t": 114.14,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは、聞き分けられない声です。",
+   "who": null,
+   "scores": {
+    "田中": 0.1,
+    "佐藤": 0.243,
+    "鈴木": 0.112
+   }
+  },
+  {
+   "t": 115.21,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは佐藤さんの声です。",
+   "who": "佐藤",
+   "scores": {
+    "田中": 0.147,
+    "佐藤": 0.652,
+    "鈴木": 0.163
+   }
+  },
+  {
+   "t": 115.51,
+   "kind": "line_end",
+   "id": 8
+  },
+  {
+   "t": 119.51,
+   "kind": "frame",
+   "key": "f07"
+  },
+  {
+   "t": 121.74,
+   "kind": "line_start",
+   "id": 9,
+   "who": "田中",
+   "to": "ai",
+   "text": "ハル、今、テーブルの上を何か通らなかった？"
+  },
+  {
+   "t": 122.85,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは田中さんの声です。",
+   "who": "田中",
+   "scores": {
+    "田中": 0.72,
+    "佐藤": 0.166,
+    "鈴木": 0.218
+   }
+  },
+  {
+   "t": 125.85,
+   "kind": "line_end",
+   "id": 9
+  },
+  {
+   "t": 126.87,
+   "kind": "delegation",
+   "text": "春、今テーブルの上を何か通らなかった"
+  },
+  {
+   "t": 131.94,
+   "kind": "delegation_reply",
+   "ask": "春、今テーブルの上を何か通らなかった",
+   "text": "うん、12秒くらい前に、灰色のしま模様の猫がテーブルの手前を左から右に歩いてたよ。今の映像には映ってないね。",
+   "seconds": 5.01,
+   "frames": [
+    "f00",
+    "f01",
+    "f03",
+    "f04",
+    "f05",
+    "f06",
+    "f07"
+   ],
+   "current": "f07"
+  },
+  {
+   "t": 149.63,
+   "kind": "line_start",
+   "id": 10,
+   "who": "鈴木",
+   "to": "ai",
+   "text": "ハル、さっき私がカメラに見せたのって、何だった？"
+  },
+  {
+   "t": 150.79,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは鈴木さんの声です。",
+   "who": "鈴木",
+   "scores": {
+    "田中": 0.115,
+    "佐藤": 0.187,
+    "鈴木": 0.428
+   }
+  },
+  {
+   "t": 154.48,
+   "kind": "line_end",
+   "id": 10
+  },
+  {
+   "t": 155.59,
+   "kind": "delegation",
+   "text": "春、さっき私がカメラに見せたのって何だった"
+  },
+  {
+   "t": 159.91,
+   "kind": "delegation_reply",
+   "ask": "春、さっき私がカメラに見せたのって何だった",
+   "text": "鈴木さんがさっき見せてくれたのは、車の鍵だよ。今はテーブルの上の、鈴木さんの手前にあるよ。",
+   "seconds": 4.25,
+   "frames": [
+    "f00",
+    "f01",
+    "f03",
+    "f04",
+    "f05",
+    "f06",
+    "f07"
+   ],
+   "current": "f07"
+  },
+  {
+   "t": 173.36,
+   "kind": "frame",
+   "key": "f08"
+  },
+  {
+   "t": 173.36,
+   "kind": "line_start",
+   "id": 11,
+   "who": "佐藤",
+   "to": "ai",
+   "text": "ハル、今、手を振ってるのが誰か分かる？"
+  },
+  {
+   "t": 174.47,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは佐藤さんの声です。",
+   "who": "佐藤",
+   "scores": {
+    "田中": 0.088,
+    "佐藤": 0.589,
+    "鈴木": 0.118
+   }
+  },
+  {
+   "t": 176.93,
+   "kind": "line_end",
+   "id": 11
+  },
+  {
+   "t": 177.95,
+   "kind": "delegation",
+   "text": "春、今、手を振ってるのが誰かわかる"
+  },
+  {
+   "t": 182.45,
+   "kind": "delegation_reply",
+   "ask": "春、今、手を振ってるのが誰かわかる",
+   "text": "うん、真ん中の佐藤さんが手を振ってるよ。",
+   "seconds": 4.41,
+   "frames": [
+    "f00",
+    "f01",
+    "f03",
+    "f04",
+    "f05",
+    "f06",
+    "f07",
+    "f08"
+   ],
+   "current": "f08"
+  },
+  {
+   "t": 189.22,
+   "kind": "frame",
+   "key": "f07"
+  },
+  {
+   "t": 190.02,
+   "kind": "frame",
+   "key": "f09"
+  },
+  {
+   "t": 190.02,
+   "kind": "line_start",
+   "id": 12,
+   "who": "鈴木",
+   "to": "people",
+   "text": "当日の場所は、ここの河原にしようと思うんだ。"
+  },
+  {
+   "t": 191.27,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは鈴木さんの声です。",
+   "who": "鈴木",
+   "scores": {
+    "田中": 0.157,
+    "佐藤": 0.209,
+    "鈴木": 0.642
+   }
+  },
+  {
+   "t": 193.92,
+   "kind": "line_end",
+   "id": 12
+  },
+  {
+   "t": 194.52,
+   "kind": "line_start",
+   "id": 13,
+   "who": "田中",
+   "to": "ai",
+   "text": "ハル、鈴木さんのスマホに何が映ってる？"
+  },
+  {
+   "t": 195.61,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは田中さんの声です。",
+   "who": "田中",
+   "scores": {
+    "田中": 0.488,
+    "佐藤": 0.032,
+    "鈴木": 0.113
+   }
+  },
+  {
+   "t": 198.35,
+   "kind": "line_end",
+   "id": 13
+  },
+  {
+   "t": 199.27,
+   "kind": "delegation",
+   "text": "、鈴木さんのスマホに何が映ってる"
+  },
+  {
+   "t": 203.71,
+   "kind": "delegation_reply",
+   "ask": "、鈴木さんのスマホに何が映ってる",
+   "text": "川沿いに赤いピンが立ってる地図だよ。さっき鈴木さんが言ってたバーベキュー候補の河原みたいだけど、場所の名前までは分からないよ。",
+   "seconds": 4.35,
+   "frames": [
+    "f00",
+    "f01",
+    "f03",
+    "f04",
+    "f05",
+    "f06",
+    "f07",
+    "f08",
+    "f07",
+    "f09"
+   ],
+   "current": "f09"
+  },
+  {
+   "t": 218.74,
+   "kind": "frame",
+   "key": "f07"
+  },
+  {
+   "t": 219.55,
+   "kind": "frame",
+   "key": "f10"
+  },
+  {
+   "t": 219.55,
+   "kind": "line_start",
+   "id": 14,
+   "who": "佐藤",
+   "to": "people",
+   "text": "ちょっと休憩しようか。"
+  },
+  {
+   "t": 220.65,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは佐藤さんの声です。",
+   "who": "佐藤",
+   "scores": {
+    "田中": 0.029,
+    "佐藤": 0.709,
+    "鈴木": 0.218
+   }
+  },
+  {
+   "t": 221.52,
+   "kind": "line_end",
+   "id": 14
+  },
+  {
+   "t": 222.74,
+   "kind": "line_start",
+   "id": 15,
+   "who": "鈴木",
+   "to": "ai",
+   "text": "ハル、今、テーブルに何人いる？"
+  },
+  {
+   "t": 223.85,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは鈴木さんの声です。",
+   "who": "鈴木",
+   "scores": {
+    "田中": 0.107,
+    "佐藤": 0.065,
+    "鈴木": 0.364
+   }
+  },
+  {
+   "t": 225.69,
+   "kind": "line_end",
+   "id": 15
+  },
+  {
+   "t": 226.88,
+   "kind": "delegation",
+   "text": "春、今テーブルに何人いる"
+  },
+  {
+   "t": 230.87,
+   "kind": "delegation_reply",
+   "ask": "春、今テーブルに何人いる",
+   "text": "今、テーブルにいるのは佐藤さんと鈴木さんの2人だよ。",
+   "seconds": 3.9,
+   "frames": [
+    "f00",
+    "f01",
+    "f03",
+    "f04",
+    "f05",
+    "f06",
+    "f07",
+    "f08",
+    "f07",
+    "f09",
+    "f07",
+    "f10"
+   ],
+   "current": "f10"
+  },
+  {
+   "t": 242.79,
+   "kind": "line_start",
+   "id": 16,
+   "who": "佐藤",
+   "to": "ai",
+   "text": "ハル、それぞれ何を持ってくることになったか、まとめて。"
+  },
+  {
+   "t": 243.91,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは佐藤さんの声です。",
+   "who": "佐藤",
+   "scores": {
+    "田中": 0.036,
+    "佐藤": 0.554,
+    "鈴木": 0.171
+   }
+  },
+  {
+   "t": 247.38,
+   "kind": "line_end",
+   "id": 16
+  },
+  {
+   "t": 248.62,
+   "kind": "delegation",
+   "text": "春、それぞれ何を持ってくることになったかまとめて"
+  },
+  {
+   "t": 254.59,
+   "kind": "delegation_reply",
+   "ask": "春、それぞれ何を持ってくることになったかまとめて",
+   "text": "田中さんが飲み物を3本、佐藤さんが炭を持ってきてくれたよ。鈴木さんは車を出してくれて、鍵も持ってきてるよ。",
+   "seconds": 5.87,
+   "frames": [
+    "f00",
+    "f01",
+    "f03",
+    "f04",
+    "f05",
+    "f06",
+    "f07",
+    "f08",
+    "f07",
+    "f09",
+    "f07",
+    "f10"
+   ],
+   "current": "f10"
+  }
+ ],
+ "events": [
+  {
+   "type": "session.started",
+   "session": {
+    "id": "rtc_u23_Eo7Uwp3oNCziUisQlJuUY5m0k3KmTzAj",
+    "status": "active",
+    "expires_at": 1795621130
+   },
+   "_t": 2.84
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7V25XpVS0ZFY0EEzpSG",
+    "end_ms": 5000,
+    "role": "user",
+    "start_ms": 4800,
+    "transcript": "春、今日は"
+   },
+   "_t": 8.05
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7V25XpVS0ZFY0EEzpSG",
+    "end_ms": 10000,
+    "role": "user",
+    "start_ms": 4800,
+    "transcript": "春、今日はカメラもつけて三人でバーベキューの準備をするね"
+   },
+   "_t": 13.25
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7V8wZpAigRK7Oyiuhmd",
+    "end_ms": 10000,
+    "role": "assistant",
+    "start_ms": 9800,
+    "transcript": "うん"
+   },
+   "_t": 13.25
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7V8wZpAigRK7Oyiuhmd",
+    "end_ms": 22600,
+    "role": "assistant",
+    "start_ms": 9800,
+    "transcript": "うん、いいね。カメラ越しでも流れが分かるように、役割や次にやることを短く整理しながら進めようか。まずは誰が何をやる予定か、今の時点で決まってるのある?"
+   },
+   "_t": 25.4
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7VOwalrgZzI0ZtYactl",
+    "end_ms": 26600,
+    "role": "user",
+    "start_ms": 26400,
+    "transcript": "炭"
+   },
+   "_t": 29.36
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7VOwalrgZzI0ZtYactl",
+    "end_ms": 28800,
+    "role": "user",
+    "start_ms": 26400,
+    "transcript": "炭は僕 が持 って きた よ"
+   },
+   "_t": 31.57
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7VPgJiD6gtA9iIUV1QF",
+    "end_ms": 28800,
+    "role": "assistant",
+    "start_ms": 28600,
+    "transcript": "うん。"
+   },
+   "_t": 31.57
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7VPgJiD6gtA9iIUV1QF",
+    "end_ms": 29000,
+    "role": "assistant",
+    "start_ms": 28600,
+    "transcript": "うん。"
+   },
+   "_t": 31.77
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7VQiyK0TN1M2MBW4OfL",
+    "end_ms": 29000,
+    "role": "user",
+    "start_ms": 28800,
+    "transcript": "。ほ"
+   },
+   "_t": 31.8
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7VQiyK0TN1M2MBW4OfL",
+    "end_ms": 30600,
+    "role": "user",
+    "start_ms": 28800,
+    "transcript": "。ほら、これ"
+   },
+   "_t": 33.44
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7VRdxbVs4dShS4tsL4w",
+    "end_ms": 30600,
+    "role": "assistant",
+    "start_ms": 30400,
+    "transcript": "お、助かる!"
+   },
+   "_t": 33.44
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7VRdxbVs4dShS4tsL4w",
+    "end_ms": 39200,
+    "role": "assistant",
+    "start_ms": 30400,
+    "transcript": "お、助かる!それじゃあ炭は佐藤さん担当で揃ったね。他に食材とか道具で、誰が持ってきたか確認したいものある?"
+   },
+   "_t": 41.82
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7VeXhKOAUrHX1OKCLFc",
+    "end_ms": 42800,
+    "role": "user",
+    "start_ms": 42600,
+    "transcript": "春"
+   },
+   "_t": 45.31
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo7Vhs8UGDYLXr4PVtLJ4",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "春、僕が今持ってるの見える"
+     }
+    ],
+    "handoff_id": "handoff_1",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo7VeXhKOAUrHX1OKCLFc"
+   },
+   "offset_ms": 45400,
+   "_t": 48.32
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7VeXhKOAUrHX1OKCLFc",
+    "end_ms": 45800,
+    "role": "user",
+    "start_ms": 42600,
+    "transcript": "春、僕が今持ってるの見える"
+   },
+   "_t": 48.56
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7VhNXtC1edMVE6MSEDO",
+    "end_ms": 45800,
+    "role": "assistant",
+    "start_ms": 45600,
+    "transcript": "そうだ"
+   },
+   "_t": 48.57
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7VhNXtC1edMVE6MSEDO",
+    "end_ms": 50600,
+    "role": "assistant",
+    "start_ms": 45600,
+    "transcript": "そうだね、いま映ってるもの確認するよ。ちょっと待ってね。"
+   },
+   "_t": 53.23
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7VmxkTEnT53WNrk6ieB",
+    "end_ms": 50800,
+    "role": "assistant",
+    "start_ms": 50600,
+    "transcript": "見える"
+   },
+   "_t": 53.48
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7VmxkTEnT53WNrk6ieB",
+    "end_ms": 64200,
+    "role": "assistant",
+    "start_ms": 50600,
+    "transcript": "見えるよ、黒い袋で炭の絵が描いてあるやつ、両手で持ってるね。それ、さっき言ってた炭の袋で確定でいいかな?じゃあ「炭は佐藤さんが持参」でメモしておくね。"
+   },
+   "_t": 66.3
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7W3X85n5WOfHv5cmVBb",
+    "end_ms": 68400,
+    "role": "user",
+    "start_ms": 68200,
+    "transcript": "私は"
+   },
+   "_t": 70.51
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7W3X85n5WOfHv5cmVBb",
+    "end_ms": 74400,
+    "role": "user",
+    "start_ms": 68200,
+    "transcript": "私は車を出すね、鍵はこれ。いいね、助 か る"
+   },
+   "_t": 76.67
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7W8RseYo2UUBotTb0hI",
+    "end_ms": 74400,
+    "role": "assistant",
+    "start_ms": 74200,
+    "transcript": "うん。ありがとう、鈴"
+   },
+   "_t": 76.67
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7W8RseYo2UUBotTb0hI",
+    "end_ms": 75000,
+    "role": "assistant",
+    "start_ms": 74200,
+    "transcript": "うん。ありがとう、鈴木さんが車"
+   },
+   "_t": 77.36
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7WAwS1ct8f5eGfcZJ2i",
+    "end_ms": 75000,
+    "role": "user",
+    "start_ms": 74800,
+    "transcript": "。飲み"
+   },
+   "_t": 77.7
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7WAwS1ct8f5eGfcZJ2i",
+    "end_ms": 79200,
+    "role": "user",
+    "start_ms": 74800,
+    "transcript": "。飲み 物は 私 が 持 って きた よ、ここ に 置 いとく ね"
+   },
+   "_t": 81.64
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7WAAcAY59Pp7I4AaXtT",
+    "end_ms": 79200,
+    "role": "assistant",
+    "start_ms": 79000,
+    "transcript": "出してくれて鍵も持ってる、で合ってるね。今の整理を画"
+   },
+   "_t": 81.65
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7WAAcAY59Pp7I4AaXtT",
+    "end_ms": 80000,
+    "role": "assistant",
+    "start_ms": 79000,
+    "transcript": "出してくれて鍵も持ってる、で合ってるね。今の整理を画面に出すね。"
+   },
+   "_t": 82.41
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7WFRyYzqBSVXY3CTqkG",
+    "end_ms": 80000,
+    "role": "user",
+    "start_ms": 79800,
+    "transcript": "春"
+   },
+   "_t": 82.43
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo7WHTwZUtswlApDIw6NO",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "春、飲み物って何が何もなる"
+     }
+    ],
+    "handoff_id": "handoff_2",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo7WFRyYzqBSVXY3CTqkG"
+   },
+   "offset_ms": 82800,
+   "_t": 84.97
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7WFRyYzqBSVXY3CTqkG",
+    "end_ms": 83600,
+    "role": "user",
+    "start_ms": 79800,
+    "transcript": "春、飲み物って何が何もなる"
+   },
+   "_t": 85.57
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7WIPXll22k4H8QEdIWJ",
+    "end_ms": 83600,
+    "role": "assistant",
+    "start_ms": 83400,
+    "transcript": "うん、飲"
+   },
+   "_t": 85.58
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7WIPXll22k4H8QEdIWJ",
+    "end_ms": 88200,
+    "role": "assistant",
+    "start_ms": 83400,
+    "transcript": "うん、飲み物の確認も合わせて整理するね。"
+   },
+   "_t": 90.44
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7WN0tFhixhr02oZfW5q",
+    "end_ms": 88400,
+    "role": "assistant",
+    "start_ms": 88200,
+    "transcript": "机に"
+   },
+   "_t": 90.44
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7WN0tFhixhr02oZfW5q",
+    "end_ms": 109400,
+    "role": "assistant",
+    "start_ms": 88200,
+    "transcript": "机にあるのは緑のキャップが2本と、オレンジ色のが1本で、合計3本見えてるよ。ラベルが読めないから種類までは分からないけど、田中さんが「飲み物は自分が持ってきた」って言ってた分って理解でいいかな?いったんメモは「飲み物3本、田中さん持参」で更新して表示しとくね。"
+   },
+   "_t": 110.7
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7WmQYlMFyDo0KPwCiFb",
+    "end_ms": 114000,
+    "role": "user",
+    "start_ms": 113800,
+    "transcript": "ちょ"
+   },
+   "_t": 115.22
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7WmQYlMFyDo0KPwCiFb",
+    "end_ms": 115400,
+    "role": "user",
+    "start_ms": 113800,
+    "transcript": "ちょっと待って"
+   },
+   "_t": 116.91
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7WnMMjAry9FRJiJxrcO",
+    "end_ms": 115400,
+    "role": "assistant",
+    "start_ms": 115200,
+    "transcript": "うん、"
+   },
+   "_t": 116.91
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7WnMMjAry9FRJiJxrcO",
+    "end_ms": 118600,
+    "role": "assistant",
+    "start_ms": 115200,
+    "transcript": "うん、止めるね、どうした?"
+   },
+   "_t": 119.71
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7WtZTUPqlskgjjnPoKg",
+    "end_ms": 122000,
+    "role": "user",
+    "start_ms": 121800,
+    "transcript": "春"
+   },
+   "_t": 123.04
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo7WxaThcSIh0kM1Lcanw",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "春、今テーブルの上を何か通らなかった"
+     }
+    ],
+    "handoff_id": "handoff_3",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo7WtZTUPqlskgjjnPoKg"
+   },
+   "offset_ms": 125400,
+   "_t": 126.87
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7WtZTUPqlskgjjnPoKg",
+    "end_ms": 126000,
+    "role": "user",
+    "start_ms": 121800,
+    "transcript": "春、今テーブルの上を何か通らなかった"
+   },
+   "_t": 127.27
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7WxG0q45lfWdtouPfH6",
+    "end_ms": 126000,
+    "role": "assistant",
+    "start_ms": 125800,
+    "transcript": "うん"
+   },
+   "_t": 127.27
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7WxG0q45lfWdtouPfH6",
+    "end_ms": 130600,
+    "role": "assistant",
+    "start_ms": 125800,
+    "transcript": "うん、今のテーブル周りの映像を確認するね。"
+   },
+   "_t": 131.49
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7X3aATRPrmo5bGxiyI0",
+    "end_ms": 131600,
+    "role": "assistant",
+    "start_ms": 131400,
+    "transcript": "うん"
+   },
+   "_t": 132.83
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7X3aATRPrmo5bGxiyI0",
+    "end_ms": 146200,
+    "role": "assistant",
+    "start_ms": 131400,
+    "transcript": "うん、12秒くらい前に、灰色のしま模様の猫がテーブルの手前を左から右に歩いてたよ。今はもう映ってないね。猫のこと、みんなにも伝える?それとも今は準備の話に戻そうか?"
+   },
+   "_t": 146.82
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7XLM3qo2xqraQrUJyTR",
+    "end_ms": 150400,
+    "role": "user",
+    "start_ms": 150200,
+    "transcript": "春"
+   },
+   "_t": 150.99
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo7XQzPik6bPeAeDVdsTg",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "春、さっき私がカメラに見せたのって何だった"
+     }
+    ],
+    "handoff_id": "handoff_4",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo7XLM3qo2xqraQrUJyTR"
+   },
+   "offset_ms": 154600,
+   "_t": 155.59
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7XLM3qo2xqraQrUJyTR",
+    "end_ms": 155000,
+    "role": "user",
+    "start_ms": 150200,
+    "transcript": "春、さっき私がカメラに見せたのって何だった"
+   },
+   "_t": 155.83
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7XQ1fOQnHIIaz1cmiLn",
+    "end_ms": 155000,
+    "role": "assistant",
+    "start_ms": 154800,
+    "transcript": "うん"
+   },
+   "_t": 155.84
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7XQ1fOQnHIIaz1cmiLn",
+    "end_ms": 159400,
+    "role": "assistant",
+    "start_ms": 154800,
+    "transcript": "うん、映像をさかのぼって確認するね。"
+   },
+   "_t": 159.9
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7XVaWNURHOui9g9wfZR",
+    "end_ms": 159800,
+    "role": "assistant",
+    "start_ms": 159600,
+    "transcript": "車の"
+   },
+   "_t": 160.55
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7XVaWNURHOui9g9wfZR",
+    "end_ms": 170200,
+    "role": "assistant",
+    "start_ms": 159600,
+    "transcript": "車の鍵だよ。今はテーブルの鈴木さんの手前に置いてあるね。さっきの共有メモの「車は鈴木さんが出す、鍵あり」でそのまま合ってるよ。"
+   },
+   "_t": 170.55
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7XjLo2t9fEGGBlgxNRW",
+    "end_ms": 174400,
+    "role": "user",
+    "start_ms": 174200,
+    "transcript": "春"
+   },
+   "_t": 174.67
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo7XmNMAs3oquQfvA4stf",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "春、今、手を振ってるのが誰かわかる"
+     }
+    ],
+    "handoff_id": "handoff_5",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo7XjLo2t9fEGGBlgxNRW"
+   },
+   "offset_ms": 177400,
+   "_t": 177.95
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7XjLo2t9fEGGBlgxNRW",
+    "end_ms": 178000,
+    "role": "user",
+    "start_ms": 174200,
+    "transcript": "春、今、手を振ってるのが誰かわかる"
+   },
+   "_t": 178.31
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7XnInCm6T6HDwHLsDx3",
+    "end_ms": 178000,
+    "role": "assistant",
+    "start_ms": 177800,
+    "transcript": "うん"
+   },
+   "_t": 178.31
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7XnInCm6T6HDwHLsDx3",
+    "end_ms": 182000,
+    "role": "assistant",
+    "start_ms": 177800,
+    "transcript": "うん、いま映ってるところ確認するね。"
+   },
+   "_t": 182.17
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7XsYKtGvx6ObLCI2Wh6",
+    "end_ms": 182800,
+    "role": "assistant",
+    "start_ms": 182600,
+    "transcript": "うん"
+   },
+   "_t": 183.15
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7XsYKtGvx6ObLCI2Wh6",
+    "end_ms": 187200,
+    "role": "assistant",
+    "start_ms": 182600,
+    "transcript": "うん、真ん中の佐藤さんが手を振ってるよ。"
+   },
+   "_t": 187.22
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7Y0L80XLd5IzjJvmg1r",
+    "end_ms": 191200,
+    "role": "user",
+    "start_ms": 191000,
+    "transcript": "当"
+   },
+   "_t": 191.16
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo7Y8XXkV0nfXfDt6fAuj",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "、鈴木さんのスマホに何が映ってる"
+     }
+    ],
+    "handoff_id": "handoff_6",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo7Y0L80XLd5IzjJvmg1r"
+   },
+   "offset_ms": 199000,
+   "_t": 199.27
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7Y0L80XLd5IzjJvmg1r",
+    "end_ms": 199600,
+    "role": "user",
+    "start_ms": 191000,
+    "transcript": "当日の場所はここの河原にしようと思うんだ。春、鈴木さんのスマホに何が映ってる"
+   },
+   "_t": 199.64
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7Y8HzlDVg5lkdbdpqB6",
+    "end_ms": 199600,
+    "role": "assistant",
+    "start_ms": 199400,
+    "transcript": "うん"
+   },
+   "_t": 199.64
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7Y8HzlDVg5lkdbdpqB6",
+    "end_ms": 215800,
+    "role": "assistant",
+    "start_ms": 199400,
+    "transcript": "うん、鈴木さんのスマホ画面を確認するね。川沿いに赤いピンが立ってる地図が映ってるよ。たぶんさっき言ってた候補の河原だと思うけど、名前までは読み取れないから、あとで確認用に一言メモしておくね。"
+   },
+   "_t": 215.52
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7YTqmluQTkv6fkRnJDP",
+    "end_ms": 221000,
+    "role": "user",
+    "start_ms": 220800,
+    "transcript": "ちょ"
+   },
+   "_t": 220.74
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7YTqmluQTkv6fkRnJDP",
+    "end_ms": 223000,
+    "role": "user",
+    "start_ms": 220800,
+    "transcript": "ちょっと休 憩し よう か"
+   },
+   "_t": 222.87
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7YUgDjPPWTsdh7Y5Lmw",
+    "end_ms": 223000,
+    "role": "assistant",
+    "start_ms": 222800,
+    "transcript": "うん、ここで区切ろう、また続"
+   },
+   "_t": 222.87
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7YUgDjPPWTsdh7Y5Lmw",
+    "end_ms": 224400,
+    "role": "assistant",
+    "start_ms": 222800,
+    "transcript": "うん、ここで区切ろう、また続きやろうね。"
+   },
+   "_t": 224.1
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7YXnT3xOebwt7eut9MF",
+    "end_ms": 224400,
+    "role": "user",
+    "start_ms": 224200,
+    "transcript": "春"
+   },
+   "_t": 224.1
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo7YZBsRNJwoGFYVBA3Jc",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "春、今テーブルに何人いる"
+     }
+    ],
+    "handoff_id": "handoff_7",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo7YXnT3xOebwt7eut9MF"
+   },
+   "offset_ms": 226800,
+   "_t": 226.88
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7YXnT3xOebwt7eut9MF",
+    "end_ms": 227200,
+    "role": "user",
+    "start_ms": 224200,
+    "transcript": "春、今テーブルに何人いる"
+   },
+   "_t": 227.1
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7YZav1c4I3LO3u3CUOe",
+    "end_ms": 227200,
+    "role": "assistant",
+    "start_ms": 227000,
+    "transcript": "うん"
+   },
+   "_t": 227.11
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7YZav1c4I3LO3u3CUOe",
+    "end_ms": 231200,
+    "role": "assistant",
+    "start_ms": 227000,
+    "transcript": "うん、いまの様子を確認するね。"
+   },
+   "_t": 230.74
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7YeiJnELFMRS6Dc14R9",
+    "end_ms": 231800,
+    "role": "assistant",
+    "start_ms": 231600,
+    "transcript": "テーブル"
+   },
+   "_t": 231.73
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7YeiJnELFMRS6Dc14R9",
+    "end_ms": 240600,
+    "role": "assistant",
+    "start_ms": 231600,
+    "transcript": "テーブルには今、佐藤さんと鈴木さんの2人がいるよ。田中さんは一瞬席を外してるみたい。戻ったらまた呼んでね。"
+   },
+   "_t": 239.98
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7Yrw5R7LbrKYaQZHJCf",
+    "end_ms": 244800,
+    "role": "user",
+    "start_ms": 244600,
+    "transcript": "春"
+   },
+   "_t": 244.31
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo7Yvu3CpPrN4Zt715xUv",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "春、それぞれ何を持ってくることになったかまとめて"
+     }
+    ],
+    "handoff_id": "handoff_8",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo7Yrw5R7LbrKYaQZHJCf"
+   },
+   "offset_ms": 249000,
+   "_t": 248.62
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7Yrw5R7LbrKYaQZHJCf",
+    "end_ms": 249400,
+    "role": "user",
+    "start_ms": 244600,
+    "transcript": "春、それぞれ何を持ってくることになったかまとめて"
+   },
+   "_t": 248.84
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7Yvw5zlyw0Jt1MeC6DC",
+    "end_ms": 249400,
+    "role": "assistant",
+    "start_ms": 249200,
+    "transcript": "うん"
+   },
+   "_t": 248.86
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7Yvw5zlyw0Jt1MeC6DC",
+    "end_ms": 254600,
+    "role": "assistant",
+    "start_ms": 249200,
+    "transcript": "うん、いまの共有メモを整理して、見やすく並べるね。"
+   },
+   "_t": 253.82
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo7Z2pXmAYCnlirEtJWuW",
+    "end_ms": 256000,
+    "role": "assistant",
+    "start_ms": 255800,
+    "transcript": "メモ"
+   },
+   "_t": 255.44
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo7Z2pXmAYCnlirEtJWuW",
+    "end_ms": 274600,
+    "role": "assistant",
+    "start_ms": 255800,
+    "transcript": "メモを更新したよ:田中さんが飲み物を3本、佐藤さんが炭を持参、鈴木さんは車を出して鍵も持ってる、って整理になってる。河原は候補の場所として鈴木さんのスマホに地図が出てたけど、名前は未確認だよ。場所の名前、あとで聞けそうなら教えて?"
+   },
+   "_t": 273.66
+  }
+ ]
+}
