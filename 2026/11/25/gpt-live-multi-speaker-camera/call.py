@@ -1,7 +1,7 @@
 """A three-person call with a camera: gpt-live hears the people, gets speaker notes and camera notes as text,
 and delegates when it needs to look (the delegation is answered by a vision model from recent keyframes).
 
-usage: python call.py <label> <none|plain|topic|light> [--keyframes change|interval] [--interval S] [--video FRAMES_DIR] [--speed X]
+usage: python call.py <label> <none|plain|topic|light> [--keyframes change|interval] [--interval S] [--video FRAMES_DIR] [--speed X] [--faces on]
        SCENARIO=scenario-proactive.json python call.py ...   (default scenario.json)
 
 - none:  no camera notes; gpt-live must delegate to know anything about the camera
@@ -14,6 +14,9 @@ usage: python call.py <label> <none|plain|topic|light> [--keyframes change|inter
 --video DIR: the camera plays DIR/0000.jpg, 0001.jpg, ... at VIDEO_FPS in real time (from the first line),
              instead of the scripted still frames, at --speed (default 1.0). Lines may wait for a video time
              (in video seconds) with "at". After the last frame the camera keeps showing it.
+--faces on: identify faces (faces.py, YuNet + SFace, a gallery of the enrollment photos frames/p-<name>-*.jpg) whenever the
+            picture changes, send `[顔メモ] …` when who is on camera changes, and draw the boxes and names on the
+            pictures a delegation sees.
 
 Every condition: speaker notes from Silero VAD + ECAPA-TDNN (`[話者メモ] …`), and delegations answered by
 gpt-6.2-sol (effort low) from a 4x4 grid of the last 16 keyframes plus the current frame, the conversation so far
@@ -33,6 +36,7 @@ from appserver import AppServer
 from media import SR, EcapaNotes, Playout
 from speaker import Ecapa, Identifier, say
 from vision import Vision
+import cv2
 
 HERE = Path(__file__).parent
 SCN = json.loads((HERE / os.environ.get('SCENARIO', 'scenario.json')).read_text())
@@ -74,6 +78,10 @@ LOOK_ASK = ('あなたは、ビデオ通話のカメラを見て、音声アシ�
             '1枚目は最近の映像の変化を時刻順に並べた最大16枚（左上から右へ、各コマの数字は何秒前か）、2枚目が今の映像です。'
             '人は次の見た目で名前を判断してください。\n{looks}\nここまでの会話（[ ]は声で聞き分けた話者）:\n{talk}\n\n'
             '確かめたいこと: {ask}\nこれを言った人（声の聞き分け）: {asker}\n\n画像と会話から分かることだけを、話し言葉の日本語1〜3文で答えてください。分からないことは分からないと言ってください。')
+FACE_RULE = ('通話のシステムがカメラに映っている顔を見分け、映っている人が変わるたびに「[顔メモ] …」で、誰がどこに映っているかを知らせます。'
+             '誰が映っているかは、このメモで判断してください。メモには返事をしないでください。')
+FACE_LOOKS = '画像の緑の枠と名前は、登録した顔の認識の結果です（橙の枠は登録されていない人）。'
+FONT = '/System/Library/Fonts/ヒラギノ角ゴシック W6.ttc'
 SAY_NONE = '裏で調べることは何もありません。ここまでの会話の内容から、あなた自身がそのまま答えてください。'
 
 
@@ -121,7 +129,8 @@ class Camera:
             return True
         return False
 
-    def grid(self, out):
+    def grid(self, out, path=None):
+        path = path or self.path
         cells = self.keyframes[-KEYFRAMES:]
         W, H = 320, 180
         img = Image.new('RGB', (W * 4, H * 4), 'black')
@@ -129,7 +138,7 @@ class Camera:
         font = ImageFont.load_default(size=22)
         for i, (t, key) in enumerate(cells):
             x, y = (i % 4) * W, (i // 4) * H
-            img.paste(Image.open(self.path(key)).convert('RGB').resize((W, H)), (x, y))
+            img.paste(Image.open(path(key)).convert('RGB').resize((W, H)), (x, y))
             label = f'-{self.now() - t:.0f}s'
             d.rectangle([x, y, x + 70, y + 28], fill='black')
             d.text((x + 4, y + 2), label, fill='white', font=font)
@@ -143,6 +152,8 @@ async def main():
     opts = dict(zip(sys.argv[3::2], sys.argv[4::2]))
     kf_mode, video = opts.get('--keyframes', 'change'), opts.get('--video')
     interval, speed = float(opts.get('--interval', INTERVAL_S)), float(opts.get('--speed', 1.0))
+    use_faces = opts.get('--faces') == 'on'
+    looks = FACE_LOOKS if use_faces else LOOKS
     env = dict(os.environ); env.pop('OPENAI_API_KEY', None)
     t0 = time.monotonic()
     now = lambda: round(time.monotonic() - t0, 2)
@@ -199,6 +210,12 @@ async def main():
         asyncio.ensure_future(pull())
 
     vision = await Vision(env, HERE).start()
+    facer = None
+    if use_faces:
+        from faces import Faces
+        facer = Faces('gallery')
+        for n in SCN['people']:
+            facer.enroll(n, sorted(HERE.glob(f'frames/p-{n}-*.jpg')))
     cam = Camera(now, kf_mode, video, interval, speed)
     delegations = {}
 
@@ -215,11 +232,44 @@ async def main():
             log('task_error', task=name, error=repr(e))
             raise
 
+    face_cache = {}
+
+    def faces_of(key):
+        if key not in face_cache:
+            face_cache[key] = facer.identify(cv2.imread(str(cam.path(key))))
+        return face_cache[key]
+
+    def annotated(key):
+        out = work / 'faces' / f'{key}.jpg'
+        if not out.exists():
+            out.parent.mkdir(exist_ok=True)
+            img = Image.open(cam.path(key)).convert('RGB')
+            d = ImageDraw.Draw(img)
+            font = ImageFont.truetype(FONT, 34) if Path(FONT).exists() else ImageFont.load_default(size=34)
+            for f in faces_of(key):
+                x, y, w, h = f['box']
+                color = (0, 220, 0) if f['name'] else (255, 150, 0)
+                d.rectangle([x, y, x + w, y + h], outline=color, width=5)
+                name = f"{f['name']}さん" if f['name'] else '登録されていない人'
+                d.rectangle([x, y - 44, x + 40 + 36 * len(name), y], fill=color)
+                d.text((x + 6, y - 42), name, fill='black', font=font)
+            img.save(out, quality=90)
+        return out
+
+    def roster(faces):
+        known = [f"{f['where']}に{f['name']}さん" for f in faces if f['name']]
+        unknown = sum(1 for f in faces if not f['name'])
+        parts = known + ([f'登録されていない人が{unknown}人'] if unknown else [])
+        return '、'.join(parts) if parts else '誰も映っていません'
+
     async def answer(item):
         d = delegations[item['id']]
         ask = item['content'][0].get('text', '')
-        grid = cam.grid(work / f'grid-{len(delegations):02d}.jpg')
-        r = await vision.ask(*LOOK_MODEL, LOOK_ASK.format(looks=LOOKS, talk=talk_text(), ask=ask, asker=(f'{d["asker"]}さん' if d['asker'] else '分からない')), [grid, cam.path()])
+        if use_faces:
+            await asyncio.to_thread(lambda: [annotated(k) for _, k in cam.keyframes] + [annotated(cam.key)])
+        grid = cam.grid(work / f'grid-{len(delegations):02d}.jpg', annotated if use_faces else None)
+        r = await vision.ask(*LOOK_MODEL, LOOK_ASK.format(looks=looks, talk=talk_text(), ask=ask, asker=(f'{d["asker"]}さん' if d['asker'] else '分からない')),
+                             [grid, annotated(cam.key) if use_faces else cam.path()])
         text = r['text'] or SAY_NONE
         dc.send(json.dumps({'type': 'delegation.context.append', 'delegation_item_id': item['id'], 'channel': 'speakable',
                             'content': [{'type': 'input_text', 'text': text}]}))
@@ -243,12 +293,22 @@ async def main():
 
     async def camera_loop():
         last_note, noted_key, busy = '（まだ伝えていない）', None, False
-        prev_key = None
+        prev_key, face_key, face_said, face_names = None, None, None, set()
         while True:
             changed = cam.tick()
+            if use_faces and cam.key and cam.key != face_key:
+                face_key = cam.key
+                found = await asyncio.to_thread(faces_of, face_key)
+                said = roster(found)
+                if said != face_said:
+                    names = {f['name'] for f in found if f['name']}
+                    gone = [f'{n}さん' for n in sorted(face_names - names)]
+                    text = f'[顔メモ] 今カメラに映っているのは、{said}。' + (f'（{"・".join(gone)}は映らなくなりました）' if gone else '')
+                    context(text, 'face_note', frame=face_key, faces=[{k: f[k] for k in ('name', 'where', 'score')} for f in found])
+                    face_said, face_names = said, names
             if mode != 'none' and cam.key != noted_key and not busy and cam.keyframes:
                 busy, key, before = True, cam.key, prev_key or cam.key
-                ask = NOTE_ASK[mode].format(looks=LOOKS, talk=talk_text(6), last=last_note)
+                ask = NOTE_ASK[mode].format(looks=looks, talk=talk_text(6), last=last_note)
                 r = await vision.ask(*NOTE_MODEL, ask, [cam.path(before), cam.path(key)])
                 text = r['text'].strip()
                 noted_key, prev_key, busy = key, key, False
@@ -263,9 +323,9 @@ async def main():
 
     await pc.setLocalDescription(await pc.createOffer())
     s = await AppServer(['codex'], env).start()
-    prompt = BASE + CAMERA_RULE[mode]
+    prompt = BASE + CAMERA_RULE[mode] + (FACE_RULE if use_faces else '')
     out = {'label': label, 'mode': mode, 'keyframes': kf_mode, 'interval': interval if kf_mode == 'interval' else None,
-           'video': bool(video), 'speed': speed if video else None, 'scenario': os.environ.get('SCENARIO', 'scenario.json'),
+           'video': bool(video), 'speed': speed if video else None, 'faces': use_faces, 'scenario': os.environ.get('SCENARIO', 'scenario.json'),
            'prompt': prompt, 'note_model': NOTE_MODEL, 'look_model': LOOK_MODEL}
     cam_task = None
     try:

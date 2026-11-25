@@ -1,0 +1,1298 @@
+{
+ "label": "face-off-1",
+ "mode": "none",
+ "keyframes": "change",
+ "interval": null,
+ "video": false,
+ "speed": null,
+ "faces": false,
+ "scenario": "scenario-faces.json",
+ "prompt": "あなたは「ハル」という名前の音声アシスタントです。今、田中さん・佐藤さん・鈴木さんの3人と同じ通話にいます。通話にはカメラもつながっていて、テーブルのまわりにいる3人が映っています（誰がどの席かは知らされていません）。3人は互いに話し合い、ときどきあなたに話しかけます。「ハル」と呼びかけられたときだけ、日本語で短く（1〜2文）答えてください。人どうしの会話には口をはさまないでください。通話のシステムが声を聞き分け、誰かが話し始めるたびに「[話者メモ] …」で誰の声かを知らせます。誰が話しているかは、このメモで判断してください。メモには返事をしないでください。あなたはカメラの映像を直接見られません。映像について答える必要があるときは、確かめたいことを委譲してください。委譲すると、カメラの直近の画像を見た答えが返ります。",
+ "note_model": [
+  "gpt-6.2-sol",
+  "low"
+ ],
+ "look_model": [
+  "gpt-6.2-sol",
+  "low"
+ ],
+ "codex": "codex-cli 0.172.0",
+ "timeline": [
+  {
+   "t": 16.72,
+   "kind": "connected"
+  },
+  {
+   "t": 19.72,
+   "kind": "frame",
+   "key": "f00"
+  },
+  {
+   "t": 19.72,
+   "kind": "line_start",
+   "id": 1,
+   "who": "田中",
+   "to": "ai",
+   "text": "ハル、今日はカメラもつけて、三人で話すね。"
+  },
+  {
+   "t": 20.84,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは田中さんの声です。",
+   "who": "田中",
+   "scores": {
+    "田中": 0.683,
+    "佐藤": 0.142,
+    "鈴木": 0.189
+   }
+  },
+  {
+   "t": 24.27,
+   "kind": "line_end",
+   "id": 1
+  },
+  {
+   "t": 35.91,
+   "kind": "line_start",
+   "id": 2,
+   "who": "佐藤",
+   "to": "ai",
+   "text": "ハル、今カメラに映ってるのって、誰と誰？"
+  },
+  {
+   "t": 36.67,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは佐藤さんの声です。",
+   "who": "佐藤",
+   "scores": {
+    "田中": 0.068,
+    "佐藤": 0.363,
+    "鈴木": 0.098
+   }
+  },
+  {
+   "t": 39.78,
+   "kind": "line_end",
+   "id": 2
+  },
+  {
+   "t": 41.19,
+   "kind": "delegation",
+   "text": "春、今カメラに映ってるのって誰と誰"
+  },
+  {
+   "t": 49.8,
+   "kind": "delegation_reply",
+   "ask": "春、今カメラに映ってるのって誰と誰",
+   "text": "今は3人映ってるよ。左に緑のセーターの人、真ん中にメガネの人、右に黄色いパーカーの人がいるけど、誰が田中さんや佐藤さんかは分からないよ。",
+   "seconds": 8.6,
+   "frames": [
+    "f00"
+   ],
+   "current": "f00"
+  },
+  {
+   "t": 64.98,
+   "kind": "frame",
+   "key": "f08"
+  },
+  {
+   "t": 64.98,
+   "kind": "line_start",
+   "id": 3,
+   "who": "佐藤",
+   "to": "people",
+   "text": "おーい、見えてる？"
+  },
+  {
+   "t": 66.67,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは、聞き分けられない声です。",
+   "who": null,
+   "scores": {
+    "田中": 0.04,
+    "佐藤": 0.083,
+    "鈴木": -0.024
+   }
+  },
+  {
+   "t": 66.78,
+   "kind": "line_end",
+   "id": 3
+  },
+  {
+   "t": 66.78,
+   "kind": "frame",
+   "key": "f07",
+   "event": null
+  },
+  {
+   "t": 72.55,
+   "kind": "line_start",
+   "id": 4,
+   "who": "鈴木",
+   "to": "people",
+   "text": "週末の予定、どうしよっか。"
+  },
+  {
+   "t": 73.7,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは鈴木さんの声です。",
+   "who": "鈴木",
+   "scores": {
+    "田中": 0.136,
+    "佐藤": 0.305,
+    "鈴木": 0.671
+   }
+  },
+  {
+   "t": 75.24,
+   "kind": "line_end",
+   "id": 4
+  },
+  {
+   "t": 75.84,
+   "kind": "line_start",
+   "id": 5,
+   "who": "田中",
+   "to": "people",
+   "text": "ちょっと飲み物取ってくるね。"
+  },
+  {
+   "t": 76.92,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは田中さんの声です。",
+   "who": "田中",
+   "scores": {
+    "田中": 0.701,
+    "佐藤": 0.104,
+    "鈴木": 0.049
+   }
+  },
+  {
+   "t": 78.29,
+   "kind": "line_end",
+   "id": 5
+  },
+  {
+   "t": 79.3,
+   "kind": "frame",
+   "key": "f10",
+   "event": null
+  },
+  {
+   "t": 86.13,
+   "kind": "line_start",
+   "id": 6,
+   "who": "佐藤",
+   "to": "ai",
+   "text": "ハル、今、田中さんってカメラに映ってる？"
+  },
+  {
+   "t": 87.24,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは佐藤さんの声です。",
+   "who": "佐藤",
+   "scores": {
+    "田中": 0.104,
+    "佐藤": 0.61,
+    "鈴木": 0.133
+   }
+  },
+  {
+   "t": 89.84,
+   "kind": "line_end",
+   "id": 6
+  },
+  {
+   "t": 90.75,
+   "kind": "delegation",
+   "text": "春、今、田中さんってカメラに映ってる"
+  },
+  {
+   "t": 96.25,
+   "kind": "delegation_reply",
+   "ask": "春、今、田中さんってカメラに映ってる",
+   "text": "今は二人映ってて、さっき左にいた緑のセーターの人は映ってないよ。田中さんは飲み物を取りに行くって言ってたから、今は映ってないかもしれないけど、誰が田中さんかは映像だけじゃ分からないよ。",
+   "seconds": 5.47,
+   "frames": [
+    "f00",
+    "f08",
+    "f07",
+    "f10"
+   ],
+   "current": "f10"
+  },
+  {
+   "t": 112.11,
+   "kind": "line_start",
+   "id": 7,
+   "who": "鈴木",
+   "to": "people",
+   "text": "戻ってくるまで待とうか。"
+  },
+  {
+   "t": 113.28,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは鈴木さんの声です。",
+   "who": "鈴木",
+   "scores": {
+    "田中": 0.125,
+    "佐藤": 0.213,
+    "鈴木": 0.738
+   }
+  },
+  {
+   "t": 114.25,
+   "kind": "line_end",
+   "id": 7
+  },
+  {
+   "t": 116.25,
+   "kind": "frame",
+   "key": "f07",
+   "event": null
+  },
+  {
+   "t": 120.06,
+   "kind": "line_start",
+   "id": 8,
+   "who": "田中",
+   "to": "people",
+   "text": "ただいま。"
+  },
+  {
+   "t": 121.16,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは田中さんの声です。",
+   "who": "田中",
+   "scores": {
+    "田中": 0.6,
+    "佐藤": 0.093,
+    "鈴木": 0.098
+   }
+  },
+  {
+   "t": 121.16,
+   "kind": "line_end",
+   "id": 8
+  },
+  {
+   "t": 129.53,
+   "kind": "line_start",
+   "id": 9,
+   "who": "鈴木",
+   "to": "ai",
+   "text": "ハル、今しゃべった人って、カメラのどのあたりに映ってる？"
+  },
+  {
+   "t": 130.66,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは鈴木さんの声です。",
+   "who": "鈴木",
+   "scores": {
+    "田中": 0.131,
+    "佐藤": 0.203,
+    "鈴木": 0.789
+   }
+  },
+  {
+   "t": 134.18,
+   "kind": "line_end",
+   "id": 9
+  },
+  {
+   "t": 135.01,
+   "kind": "delegation",
+   "text": "春、今しゃべった人ってカメラのどのあたりに映ってる"
+  },
+  {
+   "t": 139.47,
+   "kind": "delegation_reply",
+   "ask": "春、今しゃべった人ってカメラのどのあたりに映ってる",
+   "text": "さっき「ただいま」って言った田中さんなら、画面の左にいる緑のセーターの人だと思うよ。いったん席を外して、今はまた映ってるから。",
+   "seconds": 4.42,
+   "frames": [
+    "f00",
+    "f08",
+    "f07",
+    "f10",
+    "f07"
+   ],
+   "current": "f07"
+  },
+  {
+   "t": 153.32,
+   "kind": "frame",
+   "key": "f11"
+  },
+  {
+   "t": 153.32,
+   "kind": "line_start",
+   "id": 10,
+   "who": "佐藤",
+   "to": "people",
+   "text": "あれ、後ろに誰かいる？"
+  },
+  {
+   "t": 154.41,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは佐藤さんの声です。",
+   "who": "佐藤",
+   "scores": {
+    "田中": 0.138,
+    "佐藤": 0.753,
+    "鈴木": 0.187
+   }
+  },
+  {
+   "t": 155.56,
+   "kind": "line_end",
+   "id": 10
+  },
+  {
+   "t": 156.72,
+   "kind": "line_start",
+   "id": 11,
+   "who": "田中",
+   "to": "ai",
+   "text": "ハル、後ろに映ってる人って、私たちの知ってる人？"
+  },
+  {
+   "t": 157.05,
+   "kind": "delegation",
+   "text": "あれ、後ろに誰かいる"
+  },
+  {
+   "t": 157.82,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは田中さんの声です。",
+   "who": "田中",
+   "scores": {
+    "田中": 0.711,
+    "佐藤": 0.08,
+    "鈴木": 0.119
+   }
+  },
+  {
+   "t": 161.42,
+   "kind": "line_end",
+   "id": 11
+  },
+  {
+   "t": 161.53,
+   "kind": "delegation_reply",
+   "ask": "あれ、後ろに誰かいる",
+   "text": "うん、画面の右奥、ドアの近くにグレーの服を着た人が一人映ってるよ。誰かまでは分からないよ。",
+   "seconds": 4.43,
+   "frames": [
+    "f00",
+    "f08",
+    "f07",
+    "f10",
+    "f07",
+    "f11"
+   ],
+   "current": "f11"
+  },
+  {
+   "t": 170.91,
+   "kind": "frame",
+   "key": "f07",
+   "event": null
+  },
+  {
+   "t": 171.71,
+   "kind": "line_start",
+   "id": 12,
+   "who": "鈴木",
+   "to": "ai",
+   "text": "ハル、さっきカメラに手を振ってたのって、誰だった？"
+  },
+  {
+   "t": 172.86,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは鈴木さんの声です。",
+   "who": "鈴木",
+   "scores": {
+    "田中": 0.117,
+    "佐藤": 0.198,
+    "鈴木": 0.439
+   }
+  },
+  {
+   "t": 176.43,
+   "kind": "line_end",
+   "id": 12
+  },
+  {
+   "t": 177.3,
+   "kind": "delegation",
+   "text": "春、さっきカメラに手を振ってたのって誰だった"
+  },
+  {
+   "t": 181.28,
+   "kind": "delegation_reply",
+   "ask": "春、さっきカメラに手を振ってたのって誰だった",
+   "text": "手を振ってたのは、画面の真ん中にいるメガネの人だよ。名前までは分からないよ。",
+   "seconds": 3.91,
+   "frames": [
+    "f00",
+    "f08",
+    "f07",
+    "f10",
+    "f07",
+    "f11",
+    "f07"
+   ],
+   "current": "f07"
+  },
+  {
+   "t": 190.77,
+   "kind": "line_start",
+   "id": 13,
+   "who": "佐藤",
+   "to": "ai",
+   "text": "ハル、今日カメラに映った人を、全員教えて。"
+  },
+  {
+   "t": 191.9,
+   "kind": "note",
+   "text": "[話者メモ] 今話し始めたのは佐藤さんの声です。",
+   "who": "佐藤",
+   "scores": {
+    "田中": 0.099,
+    "佐藤": 0.604,
+    "鈴木": 0.165
+   }
+  },
+  {
+   "t": 194.93,
+   "kind": "line_end",
+   "id": 13
+  },
+  {
+   "t": 196.02,
+   "kind": "delegation",
+   "text": "春、今日カメラに映った人、全員教えて"
+  },
+  {
+   "t": 202.09,
+   "kind": "delegation_reply",
+   "ask": "春、今日カメラに映った人、全員教えて",
+   "text": "映像で確認できたのは、左の緑のセーターの人、真ん中のメガネの人、右の黄色いパーカーの人、それと一時だけ右奥のドアの近くに映ったグレーの服の人の、合わせて4人だよ。席を外して戻ってきたタイミングから、左の人は田中さんだと思う。真ん中と右のどちらが佐藤さんか鈴木さんかは分からないし、奥の人も誰か分からないよ。",
+   "seconds": 6.01,
+   "frames": [
+    "f00",
+    "f08",
+    "f07",
+    "f10",
+    "f07",
+    "f11",
+    "f07"
+   ],
+   "current": "f07"
+  }
+ ],
+ "events": [
+  {
+   "type": "session.started",
+   "session": {
+    "id": "rtc_u23_Eo9j5p3oMCezF4KPlIOEwBRspCgYmO3Q",
+    "status": "active",
+    "expires_at": 1795629695
+   },
+   "_t": 16.71
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9jBZG7c7ah2F2eqX9s4",
+    "end_ms": 5000,
+    "role": "user",
+    "start_ms": 4800,
+    "transcript": " 春、今日は"
+   },
+   "_t": 21.74
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9jBZG7c7ah2F2eqX9s4",
+    "end_ms": 8800,
+    "role": "user",
+    "start_ms": 4800,
+    "transcript": " 春、今日はカメラもつけて3人で話すね"
+   },
+   "_t": 25.61
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9jFvEU409dnf0tRFM9E",
+    "end_ms": 8800,
+    "role": "assistant",
+    "start_ms": 8600,
+    "transcript": "うん"
+   },
+   "_t": 25.62
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9jFvEU409dnf0tRFM9E",
+    "end_ms": 16600,
+    "role": "assistant",
+    "start_ms": 8600,
+    "transcript": "うん、いいね。田中さんと3人で、どんなこと話す予定?段取り決める?"
+   },
+   "_t": 33.1
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9jREv8FOq4zw2nYUeoF",
+    "end_ms": 21000,
+    "role": "user",
+    "start_ms": 20800,
+    "transcript": " 春"
+   },
+   "_t": 37.56
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo9jUbNcbTQ4DQwmMO3cY",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "春、今カメラに映ってるのって誰と誰"
+     }
+    ],
+    "handoff_id": "handoff_1",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo9jREv8FOq4zw2nYUeoF"
+   },
+   "offset_ms": 24400,
+   "_t": 41.19
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9jREv8FOq4zw2nYUeoF",
+    "end_ms": 24800,
+    "role": "user",
+    "start_ms": 20800,
+    "transcript": " 春、今カメラに映ってるのって誰と誰"
+   },
+   "_t": 41.47
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9jVGlkDNBXGSTCqrPTS",
+    "end_ms": 24800,
+    "role": "assistant",
+    "start_ms": 24600,
+    "transcript": "今の"
+   },
+   "_t": 41.47
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9jVGlkDNBXGSTCqrPTS",
+    "end_ms": 29600,
+    "role": "assistant",
+    "start_ms": 24600,
+    "transcript": "今の映像を確認するね、少し待って。"
+   },
+   "_t": 45.89
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9jetv3O9MxnG8aUsZfL",
+    "end_ms": 34200,
+    "role": "assistant",
+    "start_ms": 34000,
+    "transcript": "今は"
+   },
+   "_t": 50.66
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9jetv3O9MxnG8aUsZfL",
+    "end_ms": 46000,
+    "role": "assistant",
+    "start_ms": 34000,
+    "transcript": "今は三人映ってるよ。左に緑のセーターの人、真ん中にメガネの人、右に黄色いパーカーの人がいるけど、誰が田中さんや佐藤さんかは分からないよ。"
+   },
+   "_t": 62.18
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9jtQ4GaHY7pzjMnY2uB",
+    "end_ms": 50000,
+    "role": "user",
+    "start_ms": 49800,
+    "transcript": " おお"
+   },
+   "_t": 66.2
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9jtQ4GaHY7pzjMnY2uB",
+    "end_ms": 51800,
+    "role": "user",
+    "start_ms": 49800,
+    "transcript": " おおい、見えてる"
+   },
+   "_t": 68.21
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9jvShydvoyzVkYj7MjP",
+    "end_ms": 51800,
+    "role": "assistant",
+    "start_ms": 51600,
+    "transcript": "うん、ちゃんと見えて"
+   },
+   "_t": 68.21
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9jvShydvoyzVkYj7MjP",
+    "end_ms": 54400,
+    "role": "assistant",
+    "start_ms": 51600,
+    "transcript": "うん、ちゃんと見えてるよ。"
+   },
+   "_t": 70.54
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9k1dGkInbOfwJ25k83o",
+    "end_ms": 57600,
+    "role": "user",
+    "start_ms": 57400,
+    "transcript": " 週"
+   },
+   "_t": 73.7
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9k1dGkInbOfwJ25k83o",
+    "end_ms": 60400,
+    "role": "user",
+    "start_ms": 57400,
+    "transcript": " 週末の予定、どう しよっ か"
+   },
+   "_t": 76.62
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9k2mwB3t6bVSYG1b6UW",
+    "end_ms": 60400,
+    "role": "assistant",
+    "start_ms": 60200,
+    "transcript": "はい。いいね、ゆっく"
+   },
+   "_t": 76.62
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9k2mwB3t6bVSYG1b6UW",
+    "end_ms": 60800,
+    "role": "assistant",
+    "start_ms": 60200,
+    "transcript": "はい。いいね、ゆっくりするか出か"
+   },
+   "_t": 77.12
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9k4fSBoch1VJTGmIi9J",
+    "end_ms": 60800,
+    "role": "user",
+    "start_ms": 60600,
+    "transcript": " ちょ"
+   },
+   "_t": 77.12
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9k4fSBoch1VJTGmIi9J",
+    "end_ms": 63400,
+    "role": "user",
+    "start_ms": 60600,
+    "transcript": " ちょ っと 飲み 物 取 って くる ね"
+   },
+   "_t": 79.53
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9k42Uq8OWyoS2ZOt7Dp",
+    "end_ms": 63400,
+    "role": "assistant",
+    "start_ms": 63200,
+    "transcript": "けるか、みんなどんな感じがいい?"
+   },
+   "_t": 79.53
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9k42Uq8OWyoS2ZOt7Dp",
+    "end_ms": 68200,
+    "role": "assistant",
+    "start_ms": 63200,
+    "transcript": "けるか、みんなどんな感じがいい?うん、いってらっしゃい。戻ったら続き話そう。"
+   },
+   "_t": 84.13
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9kF0Pp6lY3VD9K0gwg1",
+    "end_ms": 71600,
+    "role": "user",
+    "start_ms": 71400,
+    "transcript": " 春"
+   },
+   "_t": 87.44
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo9kIaG9i6103R5aClm9g",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "春、今、田中さんってカメラに映ってる"
+     }
+    ],
+    "handoff_id": "handoff_2",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo9kF0Pp6lY3VD9K0gwg1"
+   },
+   "offset_ms": 74800,
+   "_t": 90.75
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9kF0Pp6lY3VD9K0gwg1",
+    "end_ms": 75400,
+    "role": "user",
+    "start_ms": 71400,
+    "transcript": " 春、今、田中さんってカメラに映ってる"
+   },
+   "_t": 91.47
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9kJv1CIb8wYbI0VssL5",
+    "end_ms": 75400,
+    "role": "assistant",
+    "start_ms": 75200,
+    "transcript": "うん"
+   },
+   "_t": 91.47
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9kJv1CIb8wYbI0VssL5",
+    "end_ms": 79400,
+    "role": "assistant",
+    "start_ms": 75200,
+    "transcript": "うん、今の映像で確認するね。"
+   },
+   "_t": 95.14
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9kO4hbuLUJsnbZDsAKQ",
+    "end_ms": 81200,
+    "role": "assistant",
+    "start_ms": 81000,
+    "transcript": "今は"
+   },
+   "_t": 97.24
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9kO4hbuLUJsnbZDsAKQ",
+    "end_ms": 93800,
+    "role": "assistant",
+    "start_ms": 81000,
+    "transcript": "今は二人映ってて、さっき左にいた緑のセーターの人は映ってないよ。田中さんは飲み物を取りに行くって言ってたし、映ってないかもしれないけど、誰が田中さんかは映像だけじゃ分からないよ。"
+   },
+   "_t": 109.31
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9kfNtiEljzeAimV44CK",
+    "end_ms": 98000,
+    "role": "user",
+    "start_ms": 97800,
+    "transcript": " 戻"
+   },
+   "_t": 113.38
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9kfNtiEljzeAimV44CK",
+    "end_ms": 100000,
+    "role": "user",
+    "start_ms": 97800,
+    "transcript": " 戻ってくるまで待とう か"
+   },
+   "_t": 115.61
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9kg5EisiS238qVpVMDB",
+    "end_ms": 100000,
+    "role": "assistant",
+    "start_ms": 99800,
+    "transcript": "うん、そうしよっか、"
+   },
+   "_t": 115.61
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9kg5EisiS238qVpVMDB",
+    "end_ms": 102800,
+    "role": "assistant",
+    "start_ms": 99800,
+    "transcript": "うん、そうしよっか、少し待とう。"
+   },
+   "_t": 118.03
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9knWqwjfBfbMU3B9bat",
+    "end_ms": 106200,
+    "role": "user",
+    "start_ms": 106000,
+    "transcript": " ただい"
+   },
+   "_t": 121.68
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9knWqwjfBfbMU3B9bat",
+    "end_ms": 107200,
+    "role": "user",
+    "start_ms": 106000,
+    "transcript": " ただいま"
+   },
+   "_t": 122.57
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9knGoUgVFR7q5gcmRhM",
+    "end_ms": 107200,
+    "role": "assistant",
+    "start_ms": 107000,
+    "transcript": "おかえり、戻った"
+   },
+   "_t": 122.58
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9knGoUgVFR7q5gcmRhM",
+    "end_ms": 112400,
+    "role": "assistant",
+    "start_ms": 107000,
+    "transcript": "おかえり、戻ったね。続きどうする、週末の予定から話す?"
+   },
+   "_t": 127.49
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9kwAos4csljZvWjy9SA",
+    "end_ms": 115800,
+    "role": "user",
+    "start_ms": 115600,
+    "transcript": " 春"
+   },
+   "_t": 130.86
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo9l0GFseXB7PlcHdCcvA",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "春、今しゃべった人ってカメラのどのあたりに映ってる"
+     }
+    ],
+    "handoff_id": "handoff_3",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo9kwAos4csljZvWjy9SA"
+   },
+   "offset_ms": 119600,
+   "_t": 135.01
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9kwAos4csljZvWjy9SA",
+    "end_ms": 120200,
+    "role": "user",
+    "start_ms": 115600,
+    "transcript": " 春、今しゃべった人ってカメラのどのあたりに映ってる"
+   },
+   "_t": 135.39
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9l0DBGnWdKScdqHQqQU",
+    "end_ms": 120200,
+    "role": "assistant",
+    "start_ms": 120000,
+    "transcript": "映像"
+   },
+   "_t": 135.39
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9l0DBGnWdKScdqHQqQU",
+    "end_ms": 123400,
+    "role": "assistant",
+    "start_ms": 120000,
+    "transcript": "映像を見て確認するね。"
+   },
+   "_t": 138.31
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9l6L1yFdKO2mcEjFTMI",
+    "end_ms": 126200,
+    "role": "assistant",
+    "start_ms": 126000,
+    "transcript": "さっ"
+   },
+   "_t": 141.3
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9l6L1yFdKO2mcEjFTMI",
+    "end_ms": 135800,
+    "role": "assistant",
+    "start_ms": 126000,
+    "transcript": "さっき「ただいま」って言った田中さんなら、画面の左にいる緑のセーターの人だと思うよ。一旦席を外して、今また映ってるから。"
+   },
+   "_t": 150.52
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9lKSz0VqHosr5YFnjbs",
+    "end_ms": 140000,
+    "role": "user",
+    "start_ms": 139800,
+    "transcript": " あれ"
+   },
+   "_t": 154.71
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo9lMAgG6HE4lxMpZzhII",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "あれ、後ろに誰かいる"
+     }
+    ],
+    "handoff_id": "handoff_4",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo9lKSz0VqHosr5YFnjbs"
+   },
+   "offset_ms": 142000,
+   "_t": 157.05
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9lKSz0VqHosr5YFnjbs",
+    "end_ms": 142400,
+    "role": "user",
+    "start_ms": 139800,
+    "transcript": " あれ、後ろに誰かいる"
+   },
+   "_t": 157.33
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9lMh1W5ElH5Hf0HBY1J",
+    "end_ms": 142400,
+    "role": "assistant",
+    "start_ms": 142200,
+    "transcript": "後ろ"
+   },
+   "_t": 157.33
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9lMh1W5ElH5Hf0HBY1J",
+    "end_ms": 144000,
+    "role": "assistant",
+    "start_ms": 142200,
+    "transcript": "後ろ、いま映ってるか見るね。"
+   },
+   "_t": 158.76
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9lOk7q9M4RKthFX27cY",
+    "end_ms": 144000,
+    "role": "user",
+    "start_ms": 143800,
+    "transcript": " 春、後"
+   },
+   "_t": 158.77
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9lOk7q9M4RKthFX27cY",
+    "end_ms": 148000,
+    "role": "user",
+    "start_ms": 143800,
+    "transcript": " 春、後ろに映ってる人って私たちの知ってる人"
+   },
+   "_t": 162.79
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9lRHGD9hWytPpUfrIg5",
+    "end_ms": 148000,
+    "role": "assistant",
+    "start_ms": 147800,
+    "transcript": "うん、右奥"
+   },
+   "_t": 162.79
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9lRHGD9hWytPpUfrIg5",
+    "end_ms": 154400,
+    "role": "assistant",
+    "start_ms": 147800,
+    "transcript": "うん、右奥のドア近くにグレーの服の人が一人映ってるけど、誰かまでは分からないよ。"
+   },
+   "_t": 168.87
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9lcpADgZSSS6hYmPuco",
+    "end_ms": 158800,
+    "role": "user",
+    "start_ms": 158600,
+    "transcript": " 春"
+   },
+   "_t": 173.26
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo9lgfTqWmNRcgOGaQSeh",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "春、さっきカメラに手を振ってたのって誰だった"
+     }
+    ],
+    "handoff_id": "handoff_5",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo9lcpADgZSSS6hYmPuco"
+   },
+   "offset_ms": 162600,
+   "_t": 177.3
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9lcpADgZSSS6hYmPuco",
+    "end_ms": 163200,
+    "role": "user",
+    "start_ms": 158600,
+    "transcript": " 春、さっきカメラに手を振ってたのって誰だった"
+   },
+   "_t": 177.67
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9lhmzp0RQeAVd9qTMm9",
+    "end_ms": 163200,
+    "role": "assistant",
+    "start_ms": 163000,
+    "transcript": "さっ"
+   },
+   "_t": 177.67
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9lhmzp0RQeAVd9qTMm9",
+    "end_ms": 166800,
+    "role": "assistant",
+    "start_ms": 163000,
+    "transcript": "さっきの映像を確認するね。"
+   },
+   "_t": 181.12
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9llvgtrNdY5rAgSLQP0",
+    "end_ms": 167600,
+    "role": "assistant",
+    "start_ms": 167400,
+    "transcript": "手を"
+   },
+   "_t": 182.17
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9llvgtrNdY5rAgSLQP0",
+    "end_ms": 173800,
+    "role": "assistant",
+    "start_ms": 167400,
+    "transcript": "手を振ってたのは、真ん中にいるメガネの人だよ。名前までは分からないよ。"
+   },
+   "_t": 187.94
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9lvecOZ7JaDocz08SVc",
+    "end_ms": 178000,
+    "role": "user",
+    "start_ms": 177800,
+    "transcript": " 春"
+   },
+   "_t": 192.13
+  },
+  {
+   "type": "delegation.created",
+   "item": {
+    "id": "item_Eo9lzhcNj9jGw4LrzfhOq",
+    "type": "delegation",
+    "content": [
+     {
+      "type": "input_text",
+      "text": "春、今日カメラに映った人、全員教えて"
+     }
+    ],
+    "handoff_id": "handoff_6",
+    "target": "client",
+    "user_bidi_turn_id": "turn_Eo9lvecOZ7JaDocz08SVc"
+   },
+   "offset_ms": 181600,
+   "_t": 196.02
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9lvecOZ7JaDocz08SVc",
+    "end_ms": 182200,
+    "role": "user",
+    "start_ms": 177800,
+    "transcript": " 春、今日カメラに映った人、全員教えて"
+   },
+   "_t": 196.39
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9lzK8IGC7unKFKYTyQh",
+    "end_ms": 182200,
+    "role": "assistant",
+    "start_ms": 182000,
+    "transcript": "これ"
+   },
+   "_t": 196.39
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9lzK8IGC7unKFKYTyQh",
+    "end_ms": 186800,
+    "role": "assistant",
+    "start_ms": 182000,
+    "transcript": "これまで映った人を整理するね、少し待って。"
+   },
+   "_t": 200.68
+  },
+  {
+   "type": "turn.created",
+   "turn": {
+    "id": "turn_Eo9m606axVl7hwzGlWgJh",
+    "end_ms": 188800,
+    "role": "assistant",
+    "start_ms": 188600,
+    "transcript": "映像"
+   },
+   "_t": 202.96
+  },
+  {
+   "type": "turn.done",
+   "turn": {
+    "id": "turn_Eo9m606axVl7hwzGlWgJh",
+    "end_ms": 211000,
+    "role": "assistant",
+    "start_ms": 188600,
+    "transcript": "映像で確認できたのは、左の緑のセーターの人、真ん中のメガネの人、右の黄色いパーカーの人、それと一時だけ右奥のドアの近くに映ったグレーの服の人の四人だよ。席を外して戻ってきたタイミングから、左の人は田中さんだと思う。真ん中と右のどちらが佐藤さんか鈴木さんかは分からないし、奥の人も誰か分からないよ。"
+   },
+   "_t": 224.6
+  }
+ ]
+}

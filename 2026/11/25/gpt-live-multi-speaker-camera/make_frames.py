@@ -1,6 +1,6 @@
 """Draw the camera frames with codex (built-in image generation, ChatGPT login). base first, then each frame from base with -i.
 
-usage: python make_frames.py base | frames [key ...]   (-j 3 in parallel)
+usage: python make_frames.py base | frames [key ...] | portraits [key ...]   (3 in parallel)
 Writes work/frames/<key>.png and frames/<key>.jpg (1280x720) and frames/<key>.json (prompt and codex's report).
 """
 import concurrent.futures as cf, json, shutil, subprocess, sys, tempfile
@@ -17,6 +17,9 @@ def prompt(key):
             '横長 16:9（1536x864 前後）、ファイル名は out.png。git は使わない。プログラムで画像を加工しない。\n\n')
     if key == 'base':
         body = '場面: ' + SPEC['base']
+    elif key in SPEC.get('portraits', {}):
+        body = ('添付の画像（基準の画像）に写っている人物の、顔の登録用の写真を作ってください。顔立ち・髪型・服装は基準の画像の人物とまったく同じにし、別人にしないこと。\n\n'
+                '写真: ' + SPEC['portraits'][key])
     else:
         body = ('添付の画像（基準の画像）と同じ部屋・同じカメラの画角・同じ3人（顔・髪型・服装をそのまま）で、次のように変えた瞬間の画像を作ってください。'
                 '人物の顔と服、家具、カメラの位置は基準の画像から変えないこと。\n\n変えること: ' + SPEC['frames'][key])
@@ -50,7 +53,7 @@ if __name__ == '__main__':
     if sys.argv[1] == 'base':
         print(draw('base'))
     else:
-        keys = sys.argv[2:] or list(SPEC['frames'])
+        keys = sys.argv[2:] or list(SPEC['portraits' if sys.argv[1] == 'portraits' else 'frames'])
         with cf.ThreadPoolExecutor(3) as ex:
             for k, st in ex.map(draw, keys):
                 print(k, st, flush=True)
