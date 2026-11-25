@@ -55,9 +55,10 @@ class Tape:
         self.clock, self.x, self.cur = clock, np.zeros(SR * 600, np.float32), {}
 
     def add(self, name, x):
+        now = int(self.clock() * SR)
         at = self.cur.get(name)
-        if at is None:
-            at = int(self.clock() * SR)
+        if at is None or at < now - SR // 5:  # a source that paused restarts at the current time
+            at = now
         end = at + len(x)
         if end > len(self.x):
             self.x = np.concatenate([self.x, np.zeros(end - len(self.x) + SR * 60, np.float32)])
@@ -160,10 +161,16 @@ class Spirit:
 
 class Group:
     """relay: None | 'audio' (voice into the other Spirits' microphone + a speaker note on `note_channel`)
+                | 'floor' (like 'audio', but one Spirit at a time: a Spirit's speech is queued while another
+                  Spirit holds the floor and released after it, to the device and to the other Spirits)
                 | 'text-commentary' / 'text-developer' (transcript as a note on that channel)
                 | 'text-turn' (transcript as a user turn)"""
+    VOICE_RMS, HANGOVER = 0.01, 0.5
+
     def __init__(self, spirits, relay=None, note_channel='developer'):
         self.note_channel = note_channel
+        self.last_voice = 0.0  # group clock of the last Spirit audio chunk with voice (as generated)
+        self.queue, self.voiced_at, self.holder = {}, {}, None
         self.t0 = time.monotonic()
         self.relay, self.timeline = relay, []
         self.device = Tape(self.now)
@@ -183,12 +190,48 @@ class Group:
         self.spirits = [Spirit(self, n, v, p) for n, v, p in self.spec]
         await asyncio.gather(*[s.start() for s in self.spirits])
         self.by_name = {s.name: s for s in self.spirits}
+        if self.relay == 'floor':
+            self.floor_task = asyncio.ensure_future(self._floor())
         return self
+
+    async def _floor(self):
+        """Release queued Spirit speech in real time, one Spirit at a time (first come, first served)."""
+        t0, n = time.monotonic(), 0
+        while True:
+            n += 1
+            await asyncio.sleep(max(0, t0 + n * 0.02 - time.monotonic()))
+            if self.holder is None:
+                waiting = [(q[0][0], name) for name, q in self.queue.items() if q]
+                if not waiting:
+                    continue
+                self.holder = min(waiting)[1]
+                sp = self.by_name[self.holder]
+                self.log('floor', spirit=self.holder, waited=round(self.now() - min(waiting)[0], 2))
+                for o in self.others(sp):
+                    o.note(f'[話者メモ] 今話し始めたのは{sp.name}の声です。', self.note_channel)
+            q = self.queue[self.holder]
+            if not q:
+                self.holder = None
+                continue
+            _, x = q.pop(0)
+            sp = self.by_name[self.holder]
+            self.device.add('floor', x)
+            for o in self.others(sp):
+                o.track.push(sp.name, x)
 
     def others(self, sp):
         return [s for s in self.spirits if s is not sp]
 
     def on_audio(self, sp, x):
+        voiced = float(np.sqrt(np.mean(x ** 2))) > self.VOICE_RMS
+        if voiced:
+            self.last_voice = self.now()
+            self.voiced_at[sp.name] = self.now()
+        if self.relay == 'floor':
+            # Queue speech (and a short hangover after it); drop the silence in between utterances.
+            if voiced or self.now() - self.voiced_at.get(sp.name, -9) < self.HANGOVER:
+                self.queue.setdefault(sp.name, []).append((self.now(), x))
+            return
         self.device.add(sp.name, x)
         if self.relay == 'audio':
             for o in self.others(sp):
@@ -212,6 +255,18 @@ class Group:
     def anyone_speaking(self):
         return any(s.speaking_since is not None for s in self.spirits)
 
+    def floor_busy(self):
+        return self.holder is not None or any(self.queue.values())
+
+    async def quiet_audio(self, settle=2.0, limit=40.0):
+        """Wait until no Spirit voice has been generated or is still queued for `settle` seconds."""
+        end = time.monotonic() + limit
+        while time.monotonic() < end:
+            if not self.floor_busy() and self.now() - self.last_voice >= settle and not self.anyone_speaking():
+                return True
+            await asyncio.sleep(.05)
+        return False
+
     async def quiet(self, settle=2.0, limit=30.0):
         """Wait until nobody has spoken for `settle` seconds (or `limit`)."""
         end = time.monotonic() + limit
@@ -223,6 +278,8 @@ class Group:
         return False
 
     async def stop(self, label):
+        if self.relay == 'floor':
+            self.floor_task.cancel()
         await asyncio.gather(*[s.stop() for s in self.spirits])
         await self.server.close()
         (HERE / 'work').mkdir(exist_ok=True)

@@ -63,4 +63,5 @@ async def main():
         if e['kind'] in ('said', 'heard', 'dc_error', 'delegation', 'opening'):
             print(e['t'], e['kind'], e.get('spirit', ''), e.get('text', e.get('event', '')))
 
-asyncio.run(main())
+if __name__ == '__main__':
+    asyncio.run(main())

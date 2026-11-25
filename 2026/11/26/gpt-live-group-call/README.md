@@ -31,6 +31,12 @@ Spirits Garden のグループ通話の技術検証（2026-11-26）。想定す�
   - 「ハル」を「春見さん」という人の名前と聞き違えた（話者メモに「ハル」と書いていても）
   - 3 体では、ほかの Spirit の台詞まで自分で演じ始めた（ソラ：「僕ハルだけど、…ミオはどう? 私はキャンプ派かな」）
   - 最初の回は、人（田中さん）に聞こうと 2 体で譲り合い続けた。呼びかけに「私には聞かずに決めて」と足すと決まった
+- **人の声も音声で送る形（C）では、「呼ばれた Spirit だけが答える」が崩れた。** 人 2 人と Spirit 3 体で、人の発言 9 行（Spirit 宛ては 4 行・のべ 6 体）を流した
+  - Spirit の声を互いに音声で流すと、「うんうん」の相づちが連鎖し（1 本で 24 回）、人どうしの会話にも口をはさみ、宛ての Spirit が答えたのは 6 体中 1 体だった
+  - 1 体ずつ順番に流す（発言権）と、待ちが最大 44 秒まで伸び、Spirit どうしで「いい整理だね」と言い合い続けた（210 秒）
+  - Spirit の声を流さず、発言を `developer` の文字で渡すと、相づちは 2 回、人どうしの会話への口出しは 0 になり、宛ての Spirit は 6 体とも答えた。
+    ただし宛てでない Spirit も 5 回答え（「ルカ、…？」に 3 体とも答える）、ほかの Spirit の発言を一字一句言い直すことがあった
+  - 名前「ハル」は「春」と聞かれ、3 体とも季節の話として答えた（最初の 2 本）。以降はルカ・ミオ・ノエルにした
 - **文字で Spirit の発言を渡すと、止まらなくなった。** `commentary` で互いの発言を渡した回は、5 分以上 3 体が相手の言葉を言い直し続けた（`a-router-commentary-1`）
 
 ### A: 人の発言を文字で渡す（Spirit 3 体、人の発言 9 行、宛ての Spirit を正しく知っている振り分け）
@@ -54,6 +60,20 @@ Spirits Garden のグループ通話の技術検証（2026-11-26）。想定す�
 
 声は `work/<label>-device.wav`（端末で鳴る音。git に入れない）。
 
+### C: 人 2 人・Spirit 3 体、人の声も音声で
+
+| 回 | 名前 | Spirit の声の渡し方 | 宛ての Spirit が答えた | 宛てでないのに答えた | 人どうしの行に口をはさんだ | 相づち | 長さ |
+|---|---|---|---|---|---|---|---|
+| `c-voice-1` | ハル・ミオ・ソラ | 音声（そのまま） | 2/6 | 3 | 1 | 8 | 50 s |
+| `c-voice-2` | ハル・ミオ・ソラ | 音声（そのまま） | 2/6 | 2 | 2 | 6 | 45 s |
+| `c-audio-1` | ルカ・ミオ・ノエル | 音声（そのまま） | 1/6 | 1 | 3 | 24 | 109 s |
+| `c-floor-1` | ルカ・ミオ・ノエル | 音声（1 体ずつ） | 3/6 | 5 | 2 | 15 | 210 s |
+| `c-text-1` | ルカ・ミオ・ノエル | 文字（`developer`） | 6/6 | 5 | 0 | 2 | 109 s |
+
+`python summarize_c.py results/c-*.json` で数えた。「答えた」は相づち（うん・おー）を除いて 8 字を超える発言があった Spirit。
+`c-voice-*` は、Spirit がまだ話している最中に次の人の行を流していた（`exp_c.py` の最初の版。発言の終わりを `turn.done` で見ていた）。
+以降は、Spirit の声が実際に止まってから次の行を流す。
+
 ## 方法
 
 - `group.py` — 1 つの `codex app-server`（0.172.0、ChatGPT のログイン、既定の `gpt-live-1.1-codex`）の中で Spirit ごとに thread と通話（aiortc）を張る。
@@ -64,6 +84,9 @@ Spirits Garden のグループ通話の技術検証（2026-11-26）。想定す�
 - `probe_burst.py` — 独立した通話で、ほかの Spirit 宛ての問いを含む 3 行を入れたときに勝手に話すか（間隔 1 秒・6 秒、チャネルと書き方の 4 通り × 2 回）
 - `exp_a.py` — 人 2 人と Spirit 3 体の 9 行の会話（`scenario.json`）を文字で渡す。人の発言は文字起こしの遅れなしで 1 秒おきに渡す
 - `exp_b.py` — 人の声（macOS の `say`、Kyoko）で 1 回だけ話題を出し、あとは Spirit の声だけを互いへ流す。話者メモは `commentary` で、話し始め（`turn.created`）に送る。90 秒
+- `exp_c.py` — `scenario_c.json`（`scenario.json` の名前をルカ・ミオ・ノエルにしたもの）の人の行を `say`（田中＝Kyoko、佐藤＝Rocko）で全 Spirit の音声入力へ流し、
+  話者メモを `commentary` で添える。Spirit の声の渡し方は `audio`（そのまま）・`floor`（1 体ずつ。重なった分は待たせて後で流す）・`text`（流さず、発言を `developer` の文字で）。
+  人の行は Spirit の声が 1 秒（Spirit 宛ての行の後は 2 秒）止まってから流す
 
 ```bash
 uv venv .venv && uv pip install --python .venv aiortc==1.16.0 numpy   # av 19.0.2, numpy 2.5.5
@@ -73,13 +96,16 @@ uv venv .venv && uv pip install --python .venv aiortc==1.16.0 numpy   # av 19.0.
 .venv/bin/python probe_burst.py burst-variants-1 1 commentary-plain commentary-framed developer-plain developer-framed
 .venv/bin/python exp_a.py a-router-mixed-1 router-mixed      # router-commentary | router-developer | router-mixed
 .venv/bin/python exp_b.py b-audio-3-1 3 90                   # 2 | 3 体
+.venv/bin/python exp_c.py c-text-1 text                      # audio | floor | text
+.venv/bin/python summarize_c.py results/c-*.json
 ```
 
 `a-router-commentary-1` は、`exp_a.py` の最初の版（`router` という名前、Spirit の発言を `commentary` で渡す）で流した。今の `router-commentary` と同じ組み方。
 
 ## 確かめていないこと
 
-- 人の声を音声のまま送る形（前の lab の形）を、Spirit 3 体と Spirit どうしの音声と組み合わせたとき
-- 話し始めの衝突を減らす仕組み（話している Spirit がいる間はほかの Spirit への音を止める、順番を決める進行役など）
+- 誰が答えるかを外で決める仕組み（人の発言の文字起こしから宛て先を決め、宛てでない Spirit の声は流さない・捨てるなど）。
+  gpt-live に話させないことはできないので、捨てた発言を本人にどう知らせるかも含めて
+- 各条件 1〜2 回しか流していない
 - 端末のスピーカーから出た Spirit の声をマイクが拾う問題（エコー除去）。この lab ではマイクを使っていない
 - 4 体以上、90 秒を超える会話
