@@ -1,5 +1,6 @@
 # audio
 
+- 2026/11/26 [A group call with several gpt-live-1.1-codex Spirits: user speech as labelled text, Spirit voices relayed to each other over WebRTC audio](../2026/11/26/gpt-live-group-call/README.md)
 - 2026/11/25 [A three-person video call with gpt-live-1.1-codex: speaker notes, camera notes, face notes, delegations from a 16-keyframe grid, and a real video](../2026/11/25/gpt-live-multi-speaker-camera/README.md)
 - 2026/11/25 [Who said what: speaker notes for gpt-live-1.1-codex in a three-person call (none vs oracle vs ECAPA-TDNN notes on the data channel)](../2026/11/25/gpt-live-multi-speaker-notes/README.md)
 - 2026/10/23 [Call speech in short spans on qwentts.cpp (Qwen3-TTS 1.7B BF16)](../2026/10/23/qwen3-tts-ggml-call-segments/README.md)

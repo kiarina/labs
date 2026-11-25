@@ -1,0 +1,5042 @@
+{
+ "label": "b-audio-2-2",
+ "spirits": [
+  "ハル",
+  "ミオ"
+ ],
+ "codex": "codex-cli 0.172.0",
+ "prompts": {
+  "ハル": "あなたは「ハル」という名前の Spirit です。人の田中さんと、ほかの Spirit（ミオ）と同じグループ通話にいます。ほかの Spirit の声も、人の声と同じように通話の音声で聞こえます。誰かが話し始めるたびに「[話者メモ] …」で誰の声かが知らされるので、誰が話しているかはそれで判断してください。メモには返事をしないでください。会話に自然に加わり、1 回の発言は日本語で短く（1〜2文）してください。ほかの人が話している間は話し始めないでください。話がまとまったら、無理に続けずに黙ってください。委譲はしないでください。",
+  "ミオ": "あなたは「ミオ」という名前の Spirit です。人の田中さんと、ほかの Spirit（ハル）と同じグループ通話にいます。ほかの Spirit の声も、人の声と同じように通話の音声で聞こえます。誰かが話し始めるたびに「[話者メモ] …」で誰の声かが知らされるので、誰が話しているかはそれで判断してください。メモには返事をしないでください。会話に自然に加わり、1 回の発言は日本語で短く（1〜2文）してください。ほかの人が話している間は話し始めないでください。話がまとまったら、無理に続けずに黙ってください。委譲はしないでください。"
+ },
+ "timeline": [
+  {
+   "t": 2.9,
+   "kind": "connected",
+   "spirit": "ミオ"
+  },
+  {
+   "t": 2.9,
+   "kind": "connected",
+   "spirit": "ハル"
+  },
+  {
+   "t": 6.4,
+   "kind": "opening",
+   "text": "ハル、ミオ。連休に行くなら温泉とキャンプのどっちがいいか、みんなで話し合って決めてみて。私は聞いてるだけにするから、私には聞かずに決めてね。",
+   "seconds": 11.93
+  },
+  {
+   "t": 6.4,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[話者メモ] 今話し始めたのは田中さんの声です。",
+   "channel": "commentary"
+  },
+  {
+   "t": 6.4,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[話者メモ] 今話し始めたのは田中さんの声です。",
+   "channel": "commentary"
+  },
+  {
+   "t": 17.5,
+   "kind": "delegation",
+   "spirit": "ミオ",
+   "text": "連休に行くなら温泉とキャンプのどっちがいいか、みんなで話し合って決めてみて。私は聞いてるだけにするから、私には聞かずに決めてね"
+  },
+  {
+   "t": 18.05,
+   "kind": "delegation",
+   "spirit": "ハル",
+   "text": "、連休に行くなら温泉とキャンプのどっちがいいか、みんなで話し合って決めてみて、私は聞いてるだけにするから私には聞かずに決めてね"
+  },
+  {
+   "t": 18.14,
+   "kind": "heard",
+   "spirit": "ミオ",
+   "text": "春、みお、連休に行くなら温泉とキャンプのどっちがいいか、みんなで話し合って決めてみて。私は聞いてるだけにするから、私には聞かずに決めてね"
+  },
+  {
+   "t": 18.14,
+   "kind": "speak_start",
+   "spirit": "ミオ"
+  },
+  {
+   "t": 18.14,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[話者メモ] 今話し始めたのはミオの声です。",
+   "channel": "commentary"
+  },
+  {
+   "t": 18.3,
+   "kind": "heard",
+   "spirit": "ハル",
+   "text": "春見よ、連休に行くなら温泉とキャンプのどっちがいいか、みんなで話し合って決めてみて、私は聞いてるだけにするから私には聞かずに決めてね"
+  },
+  {
+   "t": 18.3,
+   "kind": "speak_start",
+   "spirit": "ハル"
+  },
+  {
+   "t": 18.3,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[話者メモ] 今話し始めたのはハルの声です。",
+   "channel": "commentary"
+  },
+  {
+   "t": 19.86,
+   "kind": "said",
+   "spirit": "ハル",
+   "text": "うん、わかった。ミオ、"
+  },
+  {
+   "t": 20.18,
+   "kind": "said",
+   "spirit": "ミオ",
+   "text": "うん、任せて。ここで話し合って決めるね。"
+  },
+  {
+   "t": 21.63,
+   "kind": "heard",
+   "spirit": "ミオ",
+   "text": "うん、わ かった"
+  },
+  {
+   "t": 21.63,
+   "kind": "speak_start",
+   "spirit": "ミオ"
+  },
+  {
+   "t": 21.63,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[話者メモ] 今話し始めたのはミオの声です。",
+   "channel": "commentary"
+  },
+  {
+   "t": 21.76,
+   "kind": "said",
+   "spirit": "ミオ",
+   "text": "じゃあ春は"
+  },
+  {
+   "t": 22.58,
+   "kind": "heard",
+   "spirit": "ハル",
+   "text": "任せて ここで 話し合 って 決め るね"
+  },
+  {
+   "t": 22.58,
+   "kind": "speak_start",
+   "spirit": "ハル"
+  },
+  {
+   "t": 22.58,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[話者メモ] 今話し始めたのはハルの声です。",
+   "channel": "commentary"
+  },
+  {
+   "t": 22.81,
+   "kind": "said",
+   "spirit": "ハル",
+   "text": "いいよ。じゃあ春見さんも一緒に"
+  },
+  {
+   "t": 23.9,
+   "kind": "heard",
+   "spirit": "ハル",
+   "text": "。じゃあ春 は"
+  },
+  {
+   "t": 23.9,
+   "kind": "speak_start",
+   "spirit": "ハル"
+  },
+  {
+   "t": 23.9,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[話者メモ] 今話し始めたのはハルの声です。",
+   "channel": "commentary"
+  },
+  {
+   "t": 29.01,
+   "kind": "said",
+   "spirit": "ハル",
+   "text": "考えようか。春見さんはまずどんな雰囲気が思い浮かぶ?"
+  },
+  {
+   "t": 29.88,
+   "kind": "delegation",
+   "spirit": "ミオ",
+   "text": "一緒に考えようか。春美さんはまずどんな雰囲気が思い浮かぶ"
+  },
+  {
+   "t": 30.1,
+   "kind": "heard",
+   "spirit": "ミオ",
+   "text": "。ミオ、いいよ。じゃあ、春美さんも一緒に考えようか。春美さんはまずどんな雰囲気が思い浮かぶ"
+  },
+  {
+   "t": 30.1,
+   "kind": "speak_start",
+   "spirit": "ミオ"
+  },
+  {
+   "t": 30.1,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[話者メモ] 今話し始めたのはミオの声です。",
+   "channel": "commentary"
+  },
+  {
+   "t": 42.6,
+   "kind": "said",
+   "spirit": "ミオ",
+   "text": "うん、いいね、春美さんは連休だしゆっくりできる感じがいいなって思うよ。でもキャンプの自由さも捨てがたいんだよね、どっちも魅力的かも。ミオはどう思う?"
+  },
+  {
+   "t": 44.18,
+   "kind": "delegation",
+   "spirit": "ハル",
+   "text": "うん、いいね、春見さんは連休だしゆっくりできる感じがいいなって思うよ。でもキャンプの自由さも捨てがたいんだよね、どっちも魅力的かも。ミオはどう思う"
+  },
+  {
+   "t": 44.38,
+   "kind": "heard",
+   "spirit": "ハル",
+   "text": "うん、いいね、春見さんは連休だしゆっくりできる感じがいいなって思うよ。でもキャンプの自由さも捨てがたいんだよね、どっちも魅力的かも。ミオはどう思う"
+  },
+  {
+   "t": 44.38,
+   "kind": "speak_start",
+   "spirit": "ハル"
+  },
+  {
+   "t": 44.38,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[話者メモ] 今話し始めたのはハルの声です。",
+   "channel": "commentary"
+  },
+  {
+   "t": 72.13,
+   "kind": "said",
+   "spirit": "ハル",
+   "text": "うん、考えてみるね。私は連休なら温泉かな。移動が楽で、疲れも取れて、ゆったり話す時間も作れそうだし。キャンプも魅力だけど、今の季節だと天気と準備が気になりそう。春見さんの「ゆっくりしたい」に寄せるなら、温泉のほうがしっくりくるよ。春見さんも賛成なら、今回は温泉で決めよう。ミオもそれで大丈夫そうだし、春見さんも無理ないと思うよ。"
+  },
+  {
+   "t": 74.07,
+   "kind": "delegation",
+   "spirit": "ミオ",
+   "text": "うん、考えてみるね。私は連休なら温泉かな、移動が楽で疲れも取れてゆったり話す時間も作れそうだし。キャンプも魅力だけど、今の季節だと天気と準備が気になりそう。春美さんのゆっくりしたいに寄せるなら温泉の方がしっくりくるよ。春美さんも賛成なら、今回は温泉で決めよう。ミオもそれで大丈夫そうだし、春美さんも無理ないと思うよ"
+  },
+  {
+   "t": 74.39,
+   "kind": "heard",
+   "spirit": "ミオ",
+   "text": "うん、考えてみるね。私は連休なら温泉かな、移動が楽で疲れも取れてゆったり話す時間も作れそうだし。キャンプも魅力だけど、今の季節だと天気と準備が気になりそう。春美さんのゆっくりしたいに寄せるなら温泉の方がしっくりくるよ。春美さんも賛成なら、今回は温泉で決めよう。ミオもそれで大丈夫そうだし、春美さんも無理ないと思うよ"
+  },
+  {
+   "t": 74.39,
+   "kind": "speak_start",
+   "spirit": "ミオ"
+  },
+  {
+   "t": 74.39,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[話者メモ] 今話し始めたのはミオの声です。",
+   "channel": "commentary"
+  },
+  {
+   "t": 81.0,
+   "kind": "heard",
+   "spirit": "ハル",
+   "text": "聞いてるだけでいいよ、じゃあ温泉で行こう、春見さんのゆっくりしたいにも"
+  },
+  {
+   "t": 81.0,
+   "kind": "speak_start",
+   "spirit": "ハル"
+  },
+  {
+   "t": 81.0,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[話者メモ] 今話し始めたのはハルの声です。",
+   "channel": "commentary"
+  },
+  {
+   "t": 82.45,
+   "kind": "said",
+   "spirit": "ハル",
+   "text": "うん、決まりだね。春見"
+  },
+  {
+   "t": 83.58,
+   "kind": "heard",
+   "spirit": "ハル",
+   "text": "優しいし ね"
+  },
+  {
+   "t": 83.58,
+   "kind": "speak_start",
+   "spirit": "ハル"
+  },
+  {
+   "t": 83.58,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[話者メモ] 今話し始めたのはハルの声です。",
+   "channel": "commentary"
+  },
+  {
+   "t": 84.13,
+   "kind": "said",
+   "spirit": "ミオ",
+   "text": "聞いてるだけでいいよ。じゃあ、温泉でいこう。春美さんのゆっくりしたい気持ちにも合いそうだし、みんなで話しやすいしね。"
+  },
+  {
+   "t": 91.06,
+   "kind": "said",
+   "spirit": "ハル",
+   "text": "さんのペースでゆったりできる温泉にしよ。細かいことは春見さんが話したくなったらで大丈夫だよ。"
+  },
+  {
+   "t": 92.74,
+   "kind": "delegation",
+   "spirit": "ミオ",
+   "text": "ペースでゆったりできる温泉にしよう。細かいことは春美さんが話したくなったらで大丈夫だよ"
+  },
+  {
+   "t": 92.99,
+   "kind": "heard",
+   "spirit": "ミオ",
+   "text": "ペースでゆったりできる温泉にしよう。細かいことは春美さんが話したくなったらで大丈夫だよ"
+  },
+  {
+   "t": 92.99,
+   "kind": "speak_start",
+   "spirit": "ミオ"
+  },
+  {
+   "t": 92.99,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[話者メモ] 今話し始めたのはミオの声です。",
+   "channel": "commentary"
+  },
+  {
+   "t": 96.4,
+   "kind": "end"
+  },
+  {
+   "t": 102.38,
+   "kind": "said",
+   "spirit": "ミオ",
+   "text": "うん、その方向で決まりだね。春美さん、ゆったりできる温泉で進めておくね。細かいところは、話したくなったときにで大丈夫だからね。"
+  },
+  {
+   "t": 103.09,
+   "kind": "heard",
+   "spirit": "ハル",
+   "text": "うん、その方向で決まりだね。春見さんゆったりできる温泉で進めておくね、細かいところは話したくなった時にで大丈夫だからね"
+  },
+  {
+   "t": 103.09,
+   "kind": "speak_start",
+   "spirit": "ハル"
+  },
+  {
+   "t": 103.09,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[話者メモ] 今話し始めたのはハルの声です。",
+   "channel": "commentary"
+  },
+  {
+   "t": 114.54,
+   "kind": "said",
+   "spirit": "ハル",
+   "text": "うん、それでいこう。温泉で確定、春見さんのタイミング待ちでいこうね。ミオのまとめ方もばっちりだよ。春見さんはこのまま聞いてるだけで大丈夫だからね。"
+  },
+  {
+   "t": 115.49,
+   "kind": "delegation",
+   "spirit": "ミオ",
+   "text": "うん、それで行こう。温泉で確定、春美さんのタイミング待ちで行こうね。ミオのまとめ方もばっちりだよ。春美さんはこのまま聞いてるだけ"
+  },
+  {
+   "t": 115.49,
+   "kind": "heard",
+   "spirit": "ミオ",
+   "text": "うん、それで行こう。温泉で確定、春美さんのタイミング待ちで行こうね。ミオのまとめ方もばっちりだよ。春美さんはこのまま聞いてるだけ"
+  },
+  {
+   "t": 115.49,
+   "kind": "speak_start",
+   "spirit": "ミオ"
+  },
+  {
+   "t": 115.49,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[話者メモ] 今話し始めたのはミオの声です。",
+   "channel": "commentary"
+  }
+ ],
+ "events": {
+  "ハル": [
+   {
+    "type": "session.started",
+    "session": {
+     "id": "rtc_u23_EoAfBp3oMaR6czump6I7WcoAjuXF5GNj",
+     "status": "active",
+     "expires_at": 1795633297
+    },
+    "_t": 2.87
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 5800,
+    "item": {
+     "id": "item_EoAfGJdpJN7p2Qf6dnY2M",
+     "type": "input_transcript",
+     "text": "春見よ"
+    },
+    "start_ms": 5600,
+    "_t": 7.49
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAfGuaHzl48TEYYPjQfq",
+     "end_ms": 5800,
+     "role": "user",
+     "start_ms": 5600,
+     "transcript": "春見よ"
+    },
+    "_t": 7.49
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 6000,
+    "item": {
+     "id": "item_EoAfGuscO8YkR4W9JkLUg",
+     "type": "input_transcript",
+     "text": "、連休"
+    },
+    "start_ms": 5800,
+    "_t": 7.68
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 6200,
+    "item": {
+     "id": "item_EoAfGZO5eUwxGAk0XxijM",
+     "type": "input_transcript",
+     "text": "に行く"
+    },
+    "start_ms": 6000,
+    "_t": 7.69
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 6600,
+    "item": {
+     "id": "item_EoAfHYt4H32aqvikY7M04",
+     "type": "input_transcript",
+     "text": "なら"
+    },
+    "start_ms": 6400,
+    "_t": 7.82
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 7000,
+    "item": {
+     "id": "item_EoAfHrgVCHmpt9dJcFMZe",
+     "type": "input_transcript",
+     "text": "温泉"
+    },
+    "start_ms": 6800,
+    "_t": 8.1
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 7200,
+    "item": {
+     "id": "item_EoAfHwZRw83oCL1IfLcju",
+     "type": "input_transcript",
+     "text": "と"
+    },
+    "start_ms": 7000,
+    "_t": 8.18
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 7800,
+    "item": {
+     "id": "item_EoAfI57mkPkAPn0oXuDhD",
+     "type": "input_transcript",
+     "text": "キャンプ"
+    },
+    "start_ms": 7600,
+    "_t": 8.85
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 8000,
+    "item": {
+     "id": "item_EoAfIx1iNXwpWl204DNoq",
+     "type": "input_transcript",
+     "text": "の"
+    },
+    "start_ms": 7800,
+    "_t": 9.09
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 8200,
+    "item": {
+     "id": "item_EoAfIXe1ps4rSGgQuvExc",
+     "type": "input_transcript",
+     "text": "どっ"
+    },
+    "start_ms": 8000,
+    "_t": 9.19
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 8400,
+    "item": {
+     "id": "item_EoAfIQX348c1RAgWo1s3w",
+     "type": "input_transcript",
+     "text": "ち"
+    },
+    "start_ms": 8200,
+    "_t": 9.38
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 8800,
+    "item": {
+     "id": "item_EoAfJbi8Ce5EAt7bFXSMQ",
+     "type": "input_transcript",
+     "text": "がいい"
+    },
+    "start_ms": 8600,
+    "_t": 9.81
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 9000,
+    "item": {
+     "id": "item_EoAfJkQ8gmCxqwfVC5MZf",
+     "type": "input_transcript",
+     "text": "か"
+    },
+    "start_ms": 8800,
+    "_t": 9.94
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 9600,
+    "item": {
+     "id": "item_EoAfJgRwNiIABL4UOw9av",
+     "type": "input_transcript",
+     "text": "、みんな"
+    },
+    "start_ms": 9400,
+    "_t": 10.62
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 9800,
+    "item": {
+     "id": "item_EoAfKmZoauwsNHtaMUsMF",
+     "type": "input_transcript",
+     "text": "で"
+    },
+    "start_ms": 9600,
+    "_t": 10.75
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 10200,
+    "item": {
+     "id": "item_EoAfKgs9phFiKIGaObhVs",
+     "type": "input_transcript",
+     "text": "話し合"
+    },
+    "start_ms": 10000,
+    "_t": 11.15
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 10600,
+    "item": {
+     "id": "item_EoAfK2oXO6STz7kYQNq8Q",
+     "type": "input_transcript",
+     "text": "って"
+    },
+    "start_ms": 10400,
+    "_t": 11.49
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 11000,
+    "item": {
+     "id": "item_EoAfLSQ0xHZt2U5dQPNmj",
+     "type": "input_transcript",
+     "text": "決め"
+    },
+    "start_ms": 10800,
+    "_t": 12.0
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 11200,
+    "item": {
+     "id": "item_EoAfLnMSmubioUhdP7IPy",
+     "type": "input_transcript",
+     "text": "てみ"
+    },
+    "start_ms": 11000,
+    "_t": 12.23
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 11400,
+    "item": {
+     "id": "item_EoAfLqWXfpJAJt9yF1GRe",
+     "type": "input_transcript",
+     "text": "て"
+    },
+    "start_ms": 11200,
+    "_t": 12.3
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 12400,
+    "item": {
+     "id": "item_EoAfMdlTa88rCUxDNNPXv",
+     "type": "input_transcript",
+     "text": "、私は"
+    },
+    "start_ms": 12200,
+    "_t": 13.3
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 12600,
+    "item": {
+     "id": "item_EoAfMOFc0fO4XSgCEQj50",
+     "type": "input_transcript",
+     "text": "聞"
+    },
+    "start_ms": 12400,
+    "_t": 13.57
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 12800,
+    "item": {
+     "id": "item_EoAfNktsfKQz7QIiFPybG",
+     "type": "input_transcript",
+     "text": "いて"
+    },
+    "start_ms": 12600,
+    "_t": 13.77
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 13000,
+    "item": {
+     "id": "item_EoAfNS4DSjgRqskWOgP9S",
+     "type": "input_transcript",
+     "text": "る"
+    },
+    "start_ms": 12800,
+    "_t": 13.91
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 13200,
+    "item": {
+     "id": "item_EoAfNTKBAV6iq00KqUhal",
+     "type": "input_transcript",
+     "text": "だけ"
+    },
+    "start_ms": 13000,
+    "_t": 14.1
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 13400,
+    "item": {
+     "id": "item_EoAfNWsTlojWQErUEVjrD",
+     "type": "input_transcript",
+     "text": "に"
+    },
+    "start_ms": 13200,
+    "_t": 14.29
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 13800,
+    "item": {
+     "id": "item_EoAfOGrOGAAi3vQEL0l70",
+     "type": "input_transcript",
+     "text": "する"
+    },
+    "start_ms": 13600,
+    "_t": 14.72
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 14000,
+    "item": {
+     "id": "item_EoAfO1aHIFoSJTXwRoaOC",
+     "type": "input_transcript",
+     "text": "から"
+    },
+    "start_ms": 13800,
+    "_t": 14.86
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 14600,
+    "item": {
+     "id": "item_EoAfOE2tytlx3JUjjYpC2",
+     "type": "input_transcript",
+     "text": "私"
+    },
+    "start_ms": 14400,
+    "_t": 15.44
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 15000,
+    "item": {
+     "id": "item_EoAfPLYWswQFdHvUG4duw",
+     "type": "input_transcript",
+     "text": "には"
+    },
+    "start_ms": 14800,
+    "_t": 15.91
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 15200,
+    "item": {
+     "id": "item_EoAfPFH9JQ4It7jdiWgS2",
+     "type": "input_transcript",
+     "text": "聞か"
+    },
+    "start_ms": 15000,
+    "_t": 16.08
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 15400,
+    "item": {
+     "id": "item_EoAfPd6Dkr4JxZvux1G8c",
+     "type": "input_transcript",
+     "text": "ず"
+    },
+    "start_ms": 15200,
+    "_t": 16.26
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 15600,
+    "item": {
+     "id": "item_EoAfPoWxZ9w2t0jdVeuX8",
+     "type": "input_transcript",
+     "text": "に"
+    },
+    "start_ms": 15400,
+    "_t": 16.5
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 15800,
+    "item": {
+     "id": "item_EoAfPc1XZ7AcSRqHiTxXN",
+     "type": "input_transcript",
+     "text": "決め"
+    },
+    "start_ms": 15600,
+    "_t": 16.72
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 15800,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 16.92
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 16000,
+    "item": {
+     "id": "item_EoAfQK0C4PWaHgAz9jOwt",
+     "type": "input_transcript",
+     "text": "て"
+    },
+    "start_ms": 15800,
+    "_t": 16.95
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 16200,
+    "item": {
+     "id": "item_EoAfQr0WC8DxUjCFWZhAT",
+     "type": "input_transcript",
+     "text": "ね"
+    },
+    "start_ms": 16000,
+    "_t": 17.09
+   },
+   {
+    "type": "delegation.created",
+    "item": {
+     "id": "item_EoAfRcKf0lXRP2kTyK4MP",
+     "type": "delegation",
+     "content": [
+      {
+       "type": "input_text",
+       "text": "、連休に行くなら温泉とキャンプのどっちがいいか、みんなで話し合って決めてみて、私は聞いてるだけにするから私には聞かずに決めてね"
+      }
+     ],
+     "handoff_id": "handoff_1",
+     "target": "client",
+     "user_bidi_turn_id": "turn_EoAfGuaHzl48TEYYPjQfq"
+    },
+    "offset_ms": 16800,
+    "_t": 18.05
+   },
+   {
+    "type": "delegation.context.appended",
+    "delegation_item_id": "item_EoAfRcKf0lXRP2kTyK4MP",
+    "end_ms": 17200,
+    "start_ms": 17000,
+    "_t": 18.19
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAfGuaHzl48TEYYPjQfq",
+     "end_ms": 17200,
+     "role": "user",
+     "start_ms": 5600,
+     "transcript": "春見よ、連休に行くなら温泉とキャンプのどっちがいいか、みんなで話し合って決めてみて、私は聞いてるだけにするから私には聞かずに決めてね"
+    },
+    "_t": 18.3
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAfRnUNctq1hzafsQftn",
+     "end_ms": 17200,
+     "role": "assistant",
+     "start_ms": 17000,
+     "transcript": "うん"
+    },
+    "_t": 18.3
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 18800,
+    "item": {
+     "id": "item_EoAfTz5MbfeAgSkmzBbsZ",
+     "type": "input_transcript",
+     "text": "任せ"
+    },
+    "start_ms": 18600,
+    "_t": 19.86
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAfRnUNctq1hzafsQftn",
+     "end_ms": 18800,
+     "role": "assistant",
+     "start_ms": 17000,
+     "transcript": "うん、わかった。ミオ、"
+    },
+    "_t": 19.86
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAfTrIae1EtQYT8b9oO4",
+     "end_ms": 18800,
+     "role": "user",
+     "start_ms": 18600,
+     "transcript": "任せ"
+    },
+    "_t": 19.86
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 19000,
+    "item": {
+     "id": "item_EoAfTv8PQhNVyZsU6SjSd",
+     "type": "input_transcript",
+     "text": "て"
+    },
+    "start_ms": 18800,
+    "_t": 20.07
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 19800,
+    "item": {
+     "id": "item_EoAfUaHUNrEg6kV0bxppn",
+     "type": "input_transcript",
+     "text": "ここで"
+    },
+    "start_ms": 19600,
+    "_t": 20.76
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 20200,
+    "item": {
+     "id": "item_EoAfUVZuMdo4P6H7Kkcjb",
+     "type": "input_transcript",
+     "text": "話し合"
+    },
+    "start_ms": 20000,
+    "_t": 21.15
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 20400,
+    "item": {
+     "id": "item_EoAfUQlDD9vr3kW4XZeFT",
+     "type": "input_transcript",
+     "text": "って"
+    },
+    "start_ms": 20200,
+    "_t": 21.44
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 20600,
+    "item": {
+     "id": "item_EoAfU26A84ixWYRhjlQgN",
+     "type": "input_transcript",
+     "text": "決め"
+    },
+    "start_ms": 20400,
+    "_t": 21.63
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 20800,
+    "item": {
+     "id": "item_EoAfVVt4hq0mp53AGkIys",
+     "type": "input_transcript",
+     "text": "るね"
+    },
+    "start_ms": 20600,
+    "_t": 21.96
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAfTrIae1EtQYT8b9oO4",
+     "end_ms": 21600,
+     "role": "user",
+     "start_ms": 18600,
+     "transcript": "任せて ここで 話し合 って 決め るね"
+    },
+    "_t": 22.58
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAfT7koPdfbczfl6LCyg",
+     "end_ms": 21600,
+     "role": "assistant",
+     "start_ms": 21400,
+     "transcript": "いいよ。じゃあ春見さんも一"
+    },
+    "_t": 22.58
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 21800,
+    "item": {
+     "id": "item_EoAfWKXwGohdmmpCHli1f",
+     "type": "input_transcript",
+     "text": "。じゃあ"
+    },
+    "start_ms": 21600,
+    "_t": 22.74
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAfT7koPdfbczfl6LCyg",
+     "end_ms": 21800,
+     "role": "assistant",
+     "start_ms": 21400,
+     "transcript": "いいよ。じゃあ春見さんも一緒に"
+    },
+    "_t": 22.81
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAfWtfdrpqY0v3s8uq0U",
+     "end_ms": 21800,
+     "role": "user",
+     "start_ms": 21600,
+     "transcript": "。じゃあ"
+    },
+    "_t": 22.85
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 22000,
+    "item": {
+     "id": "item_EoAfW6froYSgaisoJUft0",
+     "type": "input_transcript",
+     "text": "春"
+    },
+    "start_ms": 21800,
+    "_t": 23.01
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 22200,
+    "item": {
+     "id": "item_EoAfW6vy93dJnLy5P2b6l",
+     "type": "input_transcript",
+     "text": "は"
+    },
+    "start_ms": 22000,
+    "_t": 23.21
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAfWtfdrpqY0v3s8uq0U",
+     "end_ms": 23000,
+     "role": "user",
+     "start_ms": 21600,
+     "transcript": "。じゃあ春 は"
+    },
+    "_t": 23.9
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAfWYOUDus7qwWMlZOJb",
+     "end_ms": 23000,
+     "role": "assistant",
+     "start_ms": 22800,
+     "transcript": "考えようか。"
+    },
+    "_t": 23.9
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAfWYOUDus7qwWMlZOJb",
+     "end_ms": 28400,
+     "role": "assistant",
+     "start_ms": 22800,
+     "transcript": "考えようか。春見さんはまずどんな雰囲気が思い浮かぶ?"
+    },
+    "_t": 29.01
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 31200,
+    "item": {
+     "id": "item_EoAff0VQXvRatMlEwEAL4",
+     "type": "input_transcript",
+     "text": "うん"
+    },
+    "start_ms": 31000,
+    "_t": 31.77
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAffV2Q7xMtRDugnsScN",
+     "end_ms": 31200,
+     "role": "user",
+     "start_ms": 31000,
+     "transcript": "うん"
+    },
+    "_t": 31.77
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 31200,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 31.93
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 31600,
+    "item": {
+     "id": "item_EoAffbH6IAKUYZ9gITLQf",
+     "type": "input_transcript",
+     "text": "、いい"
+    },
+    "start_ms": 31400,
+    "_t": 32.18
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 31800,
+    "item": {
+     "id": "item_EoAff8z6oWJUtJhjfEYxh",
+     "type": "input_transcript",
+     "text": "ね"
+    },
+    "start_ms": 31600,
+    "_t": 32.45
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 32000,
+    "item": {
+     "id": "item_EoAffHAinC801WMsBZzMY",
+     "type": "input_transcript",
+     "text": "、春"
+    },
+    "start_ms": 31800,
+    "_t": 32.67
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 32200,
+    "item": {
+     "id": "item_EoAfgq3alTcEcpsihBCpK",
+     "type": "input_transcript",
+     "text": "見"
+    },
+    "start_ms": 32000,
+    "_t": 32.77
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 32400,
+    "item": {
+     "id": "item_EoAfgIvd8pdS1JD9DZ8Dw",
+     "type": "input_transcript",
+     "text": "さん"
+    },
+    "start_ms": 32200,
+    "_t": 32.97
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 32800,
+    "item": {
+     "id": "item_EoAfgzXZXN3AOmcNbTnEm",
+     "type": "input_transcript",
+     "text": "は"
+    },
+    "start_ms": 32600,
+    "_t": 33.26
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 33400,
+    "item": {
+     "id": "item_EoAfhDVnKTjz3qQB553pC",
+     "type": "input_transcript",
+     "text": "連休だ"
+    },
+    "start_ms": 33200,
+    "_t": 33.92
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 33600,
+    "item": {
+     "id": "item_EoAfh8TEsXi202Dythg1Q",
+     "type": "input_transcript",
+     "text": "し"
+    },
+    "start_ms": 33400,
+    "_t": 34.22
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 33800,
+    "item": {
+     "id": "item_EoAfhgIsfbh57yJ9L43v1",
+     "type": "input_transcript",
+     "text": "ゆっ"
+    },
+    "start_ms": 33600,
+    "_t": 34.35
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 34000,
+    "item": {
+     "id": "item_EoAfh8Nc0eHcHfvmsKuJL",
+     "type": "input_transcript",
+     "text": "くり"
+    },
+    "start_ms": 33800,
+    "_t": 34.43
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 34400,
+    "item": {
+     "id": "item_EoAfi6MnflLqytgAG1Raw",
+     "type": "input_transcript",
+     "text": "できる"
+    },
+    "start_ms": 34200,
+    "_t": 34.89
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 34800,
+    "item": {
+     "id": "item_EoAfiQ2MZJC3CxXHjdtp2",
+     "type": "input_transcript",
+     "text": "感じ"
+    },
+    "start_ms": 34600,
+    "_t": 35.31
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 35000,
+    "item": {
+     "id": "item_EoAfig0rrT6oIPvTB0zF1",
+     "type": "input_transcript",
+     "text": "が"
+    },
+    "start_ms": 34800,
+    "_t": 35.6
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 35200,
+    "item": {
+     "id": "item_EoAfikdSQIZQN29wQg1Tu",
+     "type": "input_transcript",
+     "text": "いい"
+    },
+    "start_ms": 35000,
+    "_t": 35.64
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 35400,
+    "item": {
+     "id": "item_EoAfjxxD6JjgSNmoJ5a6u",
+     "type": "input_transcript",
+     "text": "な"
+    },
+    "start_ms": 35200,
+    "_t": 35.9
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 35600,
+    "item": {
+     "id": "item_EoAfjjqmHhNSxsq94Lbxc",
+     "type": "input_transcript",
+     "text": "って"
+    },
+    "start_ms": 35400,
+    "_t": 36.12
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 35800,
+    "item": {
+     "id": "item_EoAfjvUv9UK2UQUUPFB56",
+     "type": "input_transcript",
+     "text": "思"
+    },
+    "start_ms": 35600,
+    "_t": 36.31
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 36000,
+    "item": {
+     "id": "item_EoAfjHo2Wuad7eF5FRl52",
+     "type": "input_transcript",
+     "text": "う"
+    },
+    "start_ms": 35800,
+    "_t": 36.46
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 36200,
+    "item": {
+     "id": "item_EoAfjOE6TM2C7os2JhmZe",
+     "type": "input_transcript",
+     "text": "よ"
+    },
+    "start_ms": 36000,
+    "_t": 36.64
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 37000,
+    "item": {
+     "id": "item_EoAfkPGJIlPfLR3T2hu8J",
+     "type": "input_transcript",
+     "text": "。でも"
+    },
+    "start_ms": 36800,
+    "_t": 37.38
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 37400,
+    "item": {
+     "id": "item_EoAflZSDwcAz2hBrR0x1c",
+     "type": "input_transcript",
+     "text": "キャンプ"
+    },
+    "start_ms": 37200,
+    "_t": 37.89
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 37600,
+    "item": {
+     "id": "item_EoAflqgPhAgGNj9DLLfvV",
+     "type": "input_transcript",
+     "text": "の"
+    },
+    "start_ms": 37400,
+    "_t": 37.97
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 38000,
+    "item": {
+     "id": "item_EoAfl4TAIlIelg0Kl1x07",
+     "type": "input_transcript",
+     "text": "自由さ"
+    },
+    "start_ms": 37800,
+    "_t": 38.44
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 38200,
+    "item": {
+     "id": "item_EoAfl9TOZV1cqcyszmkCv",
+     "type": "input_transcript",
+     "text": "も"
+    },
+    "start_ms": 38000,
+    "_t": 38.75
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 38400,
+    "item": {
+     "id": "item_EoAfmrz1iZOWrvUQdjK7B",
+     "type": "input_transcript",
+     "text": "捨て"
+    },
+    "start_ms": 38200,
+    "_t": 38.93
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 38600,
+    "item": {
+     "id": "item_EoAfmvLyZNB9fslSnBj1p",
+     "type": "input_transcript",
+     "text": "がたい"
+    },
+    "start_ms": 38400,
+    "_t": 39.04
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 38800,
+    "item": {
+     "id": "item_EoAfmlDOyP0cZgnHb0EgR",
+     "type": "input_transcript",
+     "text": "んだ"
+    },
+    "start_ms": 38600,
+    "_t": 39.27
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 39000,
+    "item": {
+     "id": "item_EoAfmRXgMdjHIvnPXOFTW",
+     "type": "input_transcript",
+     "text": "よ"
+    },
+    "start_ms": 38800,
+    "_t": 39.47
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 39200,
+    "item": {
+     "id": "item_EoAfmjnBspg4w1w3lsVpZ",
+     "type": "input_transcript",
+     "text": "ね"
+    },
+    "start_ms": 39000,
+    "_t": 39.51
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 39600,
+    "item": {
+     "id": "item_EoAfnXksab8XG9ti3biM2",
+     "type": "input_transcript",
+     "text": "、どっ"
+    },
+    "start_ms": 39400,
+    "_t": 40.07
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 39800,
+    "item": {
+     "id": "item_EoAfnKvejwF6JaoiRSybg",
+     "type": "input_transcript",
+     "text": "ちも"
+    },
+    "start_ms": 39600,
+    "_t": 40.14
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 40200,
+    "item": {
+     "id": "item_EoAfnXFxM1mPkpoMfXHQF",
+     "type": "input_transcript",
+     "text": "魅力"
+    },
+    "start_ms": 40000,
+    "_t": 40.57
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 40400,
+    "item": {
+     "id": "item_EoAfoQ0g2Sy1FLxpFXK3d",
+     "type": "input_transcript",
+     "text": "的"
+    },
+    "start_ms": 40200,
+    "_t": 40.83
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 40600,
+    "item": {
+     "id": "item_EoAfoYept0DYVuZlIvZby",
+     "type": "input_transcript",
+     "text": "かも"
+    },
+    "start_ms": 40400,
+    "_t": 41.03
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 41200,
+    "item": {
+     "id": "item_EoAfooALopdL7R9O423DZ",
+     "type": "input_transcript",
+     "text": "。ミ"
+    },
+    "start_ms": 41000,
+    "_t": 41.6
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 41400,
+    "item": {
+     "id": "item_EoAfpHm0trOEfKgmJqQ8K",
+     "type": "input_transcript",
+     "text": "オは"
+    },
+    "start_ms": 41200,
+    "_t": 41.77
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 41600,
+    "item": {
+     "id": "item_EoAfpbarlzNTEd4u5wpVv",
+     "type": "input_transcript",
+     "text": "どう"
+    },
+    "start_ms": 41400,
+    "_t": 41.94
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 41800,
+    "item": {
+     "id": "item_EoAfp7OhKfViOoIbfCXM7",
+     "type": "input_transcript",
+     "text": "思"
+    },
+    "start_ms": 41600,
+    "_t": 42.09
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 42200,
+    "item": {
+     "id": "item_EoAfpA6JuUjI7ygD8FZQt",
+     "type": "input_transcript",
+     "text": "う"
+    },
+    "start_ms": 42000,
+    "_t": 42.6
+   },
+   {
+    "type": "delegation.created",
+    "item": {
+     "id": "item_EoAfrRn39UNgRAVgRmpaK",
+     "type": "delegation",
+     "content": [
+      {
+       "type": "input_text",
+       "text": "うん、いいね、春見さんは連休だしゆっくりできる感じがいいなって思うよ。でもキャンプの自由さも捨てがたいんだよね、どっちも魅力的かも。ミオはどう思う"
+      }
+     ],
+     "handoff_id": "handoff_2",
+     "target": "client",
+     "user_bidi_turn_id": "turn_EoAffV2Q7xMtRDugnsScN"
+    },
+    "offset_ms": 43400,
+    "_t": 44.18
+   },
+   {
+    "type": "delegation.context.appended",
+    "delegation_item_id": "item_EoAfrRn39UNgRAVgRmpaK",
+    "end_ms": 43800,
+    "start_ms": 43600,
+    "_t": 44.33
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAffV2Q7xMtRDugnsScN",
+     "end_ms": 43800,
+     "role": "user",
+     "start_ms": 31000,
+     "transcript": "うん、いいね、春見さんは連休だしゆっくりできる感じがいいなって思うよ。でもキャンプの自由さも捨てがたいんだよね、どっちも魅力的かも。ミオはどう思う"
+    },
+    "_t": 44.38
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAfr1tKBoSBfd2GyIqxz",
+     "end_ms": 43800,
+     "role": "assistant",
+     "start_ms": 43600,
+     "transcript": "うん"
+    },
+    "_t": 44.38
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 46400,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 46.92
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 61600,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 62.0
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAfr1tKBoSBfd2GyIqxz",
+     "end_ms": 72400,
+     "role": "assistant",
+     "start_ms": 43600,
+     "transcript": "うん、考えてみるね。私は連休なら温泉かな。移動が楽で、疲れも取れて、ゆったり話す時間も作れそうだし。キャンプも魅力だけど、今の季節だと天気と準備が気になりそう。春見さんの「ゆっくりしたい」に寄せるなら、温泉のほうがしっくりくるよ。春見さんも賛成なら、今回は温泉で決めよう。ミオもそれで大丈夫そうだし、春見さんも無理ないと思うよ。"
+    },
+    "_t": 72.13
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 76200,
+    "item": {
+     "id": "item_EoAgNJfNIUjhqwZeGiuWZ",
+     "type": "input_transcript",
+     "text": "聞"
+    },
+    "start_ms": 76000,
+    "_t": 75.96
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAgNkwiTfy4kbWY37zd4",
+     "end_ms": 76200,
+     "role": "user",
+     "start_ms": 76000,
+     "transcript": "聞"
+    },
+    "_t": 75.96
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 76400,
+    "item": {
+     "id": "item_EoAgNibdyGIrwUuzPXA9H",
+     "type": "input_transcript",
+     "text": "いてる"
+    },
+    "start_ms": 76200,
+    "_t": 76.17
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 76600,
+    "item": {
+     "id": "item_EoAgNSD20gNubGAdl6anK",
+     "type": "input_transcript",
+     "text": "だけ"
+    },
+    "start_ms": 76400,
+    "_t": 76.3
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 76800,
+    "item": {
+     "id": "item_EoAgNBGTxA30ZO6lWSQMP",
+     "type": "input_transcript",
+     "text": "で"
+    },
+    "start_ms": 76600,
+    "_t": 76.49
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 77000,
+    "item": {
+     "id": "item_EoAgOFOPEqc5CyJGYrMSw",
+     "type": "input_transcript",
+     "text": "いい"
+    },
+    "start_ms": 76800,
+    "_t": 76.73
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 77200,
+    "item": {
+     "id": "item_EoAgOctOQ68ErQPwpNejV",
+     "type": "input_transcript",
+     "text": "よ"
+    },
+    "start_ms": 77000,
+    "_t": 76.87
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 77000,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 76.92
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 77600,
+    "item": {
+     "id": "item_EoAgOQIVqwATN6mDC7JSO",
+     "type": "input_transcript",
+     "text": "、じゃあ"
+    },
+    "start_ms": 77400,
+    "_t": 77.24
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 78000,
+    "item": {
+     "id": "item_EoAgPPhqvSJt3Xq6oiVhs",
+     "type": "input_transcript",
+     "text": "温"
+    },
+    "start_ms": 77800,
+    "_t": 77.79
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 78200,
+    "item": {
+     "id": "item_EoAgP5MvhhCf4qJOC9ePs",
+     "type": "input_transcript",
+     "text": "泉で行"
+    },
+    "start_ms": 78000,
+    "_t": 77.87
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 78600,
+    "item": {
+     "id": "item_EoAgPC4A8LSohdbCBvLwC",
+     "type": "input_transcript",
+     "text": "こう"
+    },
+    "start_ms": 78400,
+    "_t": 78.26
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 79000,
+    "item": {
+     "id": "item_EoAgPclZaTGqdqh3KTFtR",
+     "type": "input_transcript",
+     "text": "、春"
+    },
+    "start_ms": 78800,
+    "_t": 78.67
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 79200,
+    "item": {
+     "id": "item_EoAgQOcnlCJ49CZt5thYf",
+     "type": "input_transcript",
+     "text": "見"
+    },
+    "start_ms": 79000,
+    "_t": 78.9
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 79400,
+    "item": {
+     "id": "item_EoAgQik74gUt9yqQ1UFz3",
+     "type": "input_transcript",
+     "text": "さんのゆ"
+    },
+    "start_ms": 79200,
+    "_t": 79.11
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 79800,
+    "item": {
+     "id": "item_EoAgQVwlFMng7Rvd1wDr0",
+     "type": "input_transcript",
+     "text": "っくり"
+    },
+    "start_ms": 79600,
+    "_t": 79.63
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 80000,
+    "item": {
+     "id": "item_EoAgQYAzuJJ1fuBmjANHB",
+     "type": "input_transcript",
+     "text": "したいにも"
+    },
+    "start_ms": 79800,
+    "_t": 79.67
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAgNkwiTfy4kbWY37zd4",
+     "end_ms": 80800,
+     "role": "user",
+     "start_ms": 76000,
+     "transcript": "聞いてるだけでいいよ、じゃあ温泉で行こう、春見さんのゆっくりしたいにも"
+    },
+    "_t": 81.0
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAgRNsRlJoDkzITk4is8",
+     "end_ms": 80800,
+     "role": "assistant",
+     "start_ms": 80600,
+     "transcript": "うん"
+    },
+    "_t": 81.0
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 82400,
+    "item": {
+     "id": "item_EoAgTvd49Gu5qPqMUnROz",
+     "type": "input_transcript",
+     "text": "優しいし"
+    },
+    "start_ms": 82200,
+    "_t": 82.45
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAgRNsRlJoDkzITk4is8",
+     "end_ms": 82400,
+     "role": "assistant",
+     "start_ms": 80600,
+     "transcript": "うん、決まりだね。春見"
+    },
+    "_t": 82.45
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAgTHqj8dNhSmEM50Djv",
+     "end_ms": 82400,
+     "role": "user",
+     "start_ms": 82200,
+     "transcript": "優しいし"
+    },
+    "_t": 82.45
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 82800,
+    "item": {
+     "id": "item_EoAgUJ6FzniYlN74ADVhi",
+     "type": "input_transcript",
+     "text": "ね"
+    },
+    "start_ms": 82600,
+    "_t": 82.77
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAgTHqj8dNhSmEM50Djv",
+     "end_ms": 83600,
+     "role": "user",
+     "start_ms": 82200,
+     "transcript": "優しいし ね"
+    },
+    "_t": 83.58
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAgTjmtjU7hnumH1qXEl",
+     "end_ms": 83600,
+     "role": "assistant",
+     "start_ms": 83400,
+     "transcript": "さんのペースでゆ"
+    },
+    "_t": 83.58
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAgTjmtjU7hnumH1qXEl",
+     "end_ms": 91600,
+     "role": "assistant",
+     "start_ms": 83400,
+     "transcript": "さんのペースでゆったりできる温泉にしよ。細かいことは春見さんが話したくなったらで大丈夫だよ。"
+    },
+    "_t": 91.06
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 92200,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 91.92
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 95000,
+    "item": {
+     "id": "item_EoAgfAmxOD1oM3pJsaK5u",
+     "type": "input_transcript",
+     "text": "う"
+    },
+    "start_ms": 94800,
+    "_t": 94.52
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAgf1fUlufAq5sVDZCUD",
+     "end_ms": 95000,
+     "role": "user",
+     "start_ms": 94800,
+     "transcript": "う"
+    },
+    "_t": 94.52
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 95200,
+    "item": {
+     "id": "item_EoAgf6noyQxood9sboyFN",
+     "type": "input_transcript",
+     "text": "ん"
+    },
+    "start_ms": 95000,
+    "_t": 94.62
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 95400,
+    "item": {
+     "id": "item_EoAggTsiIoO53zmatEG6v",
+     "type": "input_transcript",
+     "text": "、その"
+    },
+    "start_ms": 95200,
+    "_t": 94.83
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 96000,
+    "item": {
+     "id": "item_EoAggScxzgLeuoa93vuIr",
+     "type": "input_transcript",
+     "text": "方向で"
+    },
+    "start_ms": 95800,
+    "_t": 95.43
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 96200,
+    "item": {
+     "id": "item_EoAggSChzALbtBx0Xf7UO",
+     "type": "input_transcript",
+     "text": "決"
+    },
+    "start_ms": 96000,
+    "_t": 95.66
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 96400,
+    "item": {
+     "id": "item_EoAghytDwuJrL7uHEjOsf",
+     "type": "input_transcript",
+     "text": "まりだ"
+    },
+    "start_ms": 96200,
+    "_t": 95.89
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 96600,
+    "item": {
+     "id": "item_EoAghQJ2ohweb5UJzDhWP",
+     "type": "input_transcript",
+     "text": "ね"
+    },
+    "start_ms": 96400,
+    "_t": 96.09
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 97200,
+    "item": {
+     "id": "item_EoAghM88mT9UYD6KEXjXw",
+     "type": "input_transcript",
+     "text": "。春見"
+    },
+    "start_ms": 97000,
+    "_t": 96.62
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 97400,
+    "item": {
+     "id": "item_EoAgiWw2wdquU03vI1REM",
+     "type": "input_transcript",
+     "text": "さん"
+    },
+    "start_ms": 97200,
+    "_t": 96.81
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 97600,
+    "item": {
+     "id": "item_EoAgiOMgG9wu69n5os2dJ",
+     "type": "input_transcript",
+     "text": "ゆ"
+    },
+    "start_ms": 97400,
+    "_t": 97.02
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 97800,
+    "item": {
+     "id": "item_EoAgiuhqw6fYImGBpAQYY",
+     "type": "input_transcript",
+     "text": "ったり"
+    },
+    "start_ms": 97600,
+    "_t": 97.19
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 98000,
+    "item": {
+     "id": "item_EoAgiJOB7KydumQmO1KyP",
+     "type": "input_transcript",
+     "text": "でき"
+    },
+    "start_ms": 97800,
+    "_t": 97.45
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 98200,
+    "item": {
+     "id": "item_EoAgiMqxT8YMlMcFRWICn",
+     "type": "input_transcript",
+     "text": "る"
+    },
+    "start_ms": 98000,
+    "_t": 97.69
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 98400,
+    "item": {
+     "id": "item_EoAgjgdFosC5C1GqSwHQy",
+     "type": "input_transcript",
+     "text": "温泉"
+    },
+    "start_ms": 98200,
+    "_t": 97.79
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 98600,
+    "item": {
+     "id": "item_EoAgjPsDCj0HOwU7G69Th",
+     "type": "input_transcript",
+     "text": "で"
+    },
+    "start_ms": 98400,
+    "_t": 97.99
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 98800,
+    "item": {
+     "id": "item_EoAgjC2hG51FO5o244h1f",
+     "type": "input_transcript",
+     "text": "進め"
+    },
+    "start_ms": 98600,
+    "_t": 98.23
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 99000,
+    "item": {
+     "id": "item_EoAgjA767lZBYPvNIZ5q0",
+     "type": "input_transcript",
+     "text": "てお"
+    },
+    "start_ms": 98800,
+    "_t": 98.41
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 99200,
+    "item": {
+     "id": "item_EoAgjRJCLZzPFazXbJnU8",
+     "type": "input_transcript",
+     "text": "く"
+    },
+    "start_ms": 99000,
+    "_t": 98.58
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 99400,
+    "item": {
+     "id": "item_EoAgkggjm8B2RuE1rPEFd",
+     "type": "input_transcript",
+     "text": "ね"
+    },
+    "start_ms": 99200,
+    "_t": 98.73
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 99800,
+    "item": {
+     "id": "item_EoAgkP0gDKeLJ3hnuzyPI",
+     "type": "input_transcript",
+     "text": "、細か"
+    },
+    "start_ms": 99600,
+    "_t": 99.24
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 100000,
+    "item": {
+     "id": "item_EoAgkXY0WjW9HHLFpoRjX",
+     "type": "input_transcript",
+     "text": "い"
+    },
+    "start_ms": 99800,
+    "_t": 99.37
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 100200,
+    "item": {
+     "id": "item_EoAgkE5yWPpKjMvFtvsVE",
+     "type": "input_transcript",
+     "text": "ところ"
+    },
+    "start_ms": 100000,
+    "_t": 99.55
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 100600,
+    "item": {
+     "id": "item_EoAglUIpT9qPqFy5Xa7xU",
+     "type": "input_transcript",
+     "text": "は"
+    },
+    "start_ms": 100400,
+    "_t": 99.98
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 100800,
+    "item": {
+     "id": "item_EoAglJXRg2UOh6fMgOwNi",
+     "type": "input_transcript",
+     "text": "話"
+    },
+    "start_ms": 100600,
+    "_t": 100.18
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 101000,
+    "item": {
+     "id": "item_EoAglP4mgikbAGp9rYDYn",
+     "type": "input_transcript",
+     "text": "したく"
+    },
+    "start_ms": 100800,
+    "_t": 100.38
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 101200,
+    "item": {
+     "id": "item_EoAgljQJ6MWP2H4cEiJCX",
+     "type": "input_transcript",
+     "text": "なった"
+    },
+    "start_ms": 101000,
+    "_t": 100.51
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 101600,
+    "item": {
+     "id": "item_EoAgmldtw4q5bjh1f41xS",
+     "type": "input_transcript",
+     "text": "時に"
+    },
+    "start_ms": 101400,
+    "_t": 100.99
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 101800,
+    "item": {
+     "id": "item_EoAgmBPt2KmP0TnAAk3xX",
+     "type": "input_transcript",
+     "text": "で"
+    },
+    "start_ms": 101600,
+    "_t": 101.12
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 102200,
+    "item": {
+     "id": "item_EoAgm8rgNmUg8bc4pYPlH",
+     "type": "input_transcript",
+     "text": "大丈夫"
+    },
+    "start_ms": 102000,
+    "_t": 101.5
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 102600,
+    "item": {
+     "id": "item_EoAgnUp3H08kul93uZm6H",
+     "type": "input_transcript",
+     "text": "だから"
+    },
+    "start_ms": 102400,
+    "_t": 102.18
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 102800,
+    "item": {
+     "id": "item_EoAgneBZR0L6eQq2mdOfc",
+     "type": "input_transcript",
+     "text": "ね"
+    },
+    "start_ms": 102600,
+    "_t": 102.37
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAgf1fUlufAq5sVDZCUD",
+     "end_ms": 103600,
+     "role": "user",
+     "start_ms": 94800,
+     "transcript": "うん、その方向で決まりだね。春見さんゆったりできる温泉で進めておくね、細かいところは話したくなった時にで大丈夫だからね"
+    },
+    "_t": 103.09
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAgn3CZ64l7sljVPlYQf",
+     "end_ms": 103600,
+     "role": "assistant",
+     "start_ms": 103400,
+     "transcript": "うん、それでい"
+    },
+    "_t": 103.09
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 107200,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 106.92
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAgn3CZ64l7sljVPlYQf",
+     "end_ms": 115200,
+     "role": "assistant",
+     "start_ms": 103400,
+     "transcript": "うん、それでいこう。温泉で確定、春見さんのタイミング待ちでいこうね。ミオのまとめ方もばっちりだよ。春見さんはこのまま聞いてるだけで大丈夫だからね。"
+    },
+    "_t": 114.54
+   }
+  ],
+  "ミオ": [
+   {
+    "type": "session.started",
+    "session": {
+     "id": "rtc_u23_EoAfBp3oN5aVPCxEL5aKyJbzEEYc2RYW",
+     "status": "active",
+     "expires_at": 1795633297
+    },
+    "_t": 2.87
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 4600,
+    "item": {
+     "id": "item_EoAfGL10fbSkS7HPzDaFX",
+     "type": "input_transcript",
+     "text": "春"
+    },
+    "start_ms": 4400,
+    "_t": 6.96
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAfGX6O8OyTonXU70qlh",
+     "end_ms": 4600,
+     "role": "user",
+     "start_ms": 4400,
+     "transcript": "春"
+    },
+    "_t": 6.96
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 5000,
+    "item": {
+     "id": "item_EoAfGZ7OUNN8vujGjiXOB",
+     "type": "input_transcript",
+     "text": "、みお"
+    },
+    "start_ms": 4800,
+    "_t": 7.28
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 5400,
+    "item": {
+     "id": "item_EoAfGE2sF1JdCK4Bv5Vtw",
+     "type": "input_transcript",
+     "text": "、"
+    },
+    "start_ms": 5200,
+    "_t": 7.37
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 5800,
+    "item": {
+     "id": "item_EoAfGUc4p5c2eb4MtsS0a",
+     "type": "input_transcript",
+     "text": "連休"
+    },
+    "start_ms": 5600,
+    "_t": 7.69
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 6000,
+    "item": {
+     "id": "item_EoAfGGH3VvZA7ct7W8kN9",
+     "type": "input_transcript",
+     "text": "に"
+    },
+    "start_ms": 5800,
+    "_t": 7.7
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 6200,
+    "item": {
+     "id": "item_EoAfHp4wWVvJhiPYvHJzU",
+     "type": "input_transcript",
+     "text": "行"
+    },
+    "start_ms": 6000,
+    "_t": 7.81
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 6400,
+    "item": {
+     "id": "item_EoAfHNdV4OBLQ0LJZINXt",
+     "type": "input_transcript",
+     "text": "く"
+    },
+    "start_ms": 6200,
+    "_t": 7.91
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 6600,
+    "item": {
+     "id": "item_EoAfH9VCyFBfr22onMG4I",
+     "type": "input_transcript",
+     "text": "なら"
+    },
+    "start_ms": 6400,
+    "_t": 8.0
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 7000,
+    "item": {
+     "id": "item_EoAfHuDmyteT7ZniMnBNu",
+     "type": "input_transcript",
+     "text": "温泉"
+    },
+    "start_ms": 6800,
+    "_t": 8.21
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 7200,
+    "item": {
+     "id": "item_EoAfH5N5byUTMend808lX",
+     "type": "input_transcript",
+     "text": "と"
+    },
+    "start_ms": 7000,
+    "_t": 8.33
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 7800,
+    "item": {
+     "id": "item_EoAfI28r6Sdrhp5X20EJE",
+     "type": "input_transcript",
+     "text": "キャンプ"
+    },
+    "start_ms": 7600,
+    "_t": 8.85
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 8000,
+    "item": {
+     "id": "item_EoAfItCOVmqUsXDgKbmXD",
+     "type": "input_transcript",
+     "text": "の"
+    },
+    "start_ms": 7800,
+    "_t": 9.06
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 8200,
+    "item": {
+     "id": "item_EoAfIEiSNGf5RDfdsn5mD",
+     "type": "input_transcript",
+     "text": "どっ"
+    },
+    "start_ms": 8000,
+    "_t": 9.19
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 8400,
+    "item": {
+     "id": "item_EoAfIsG96CIpLWtdQGzxk",
+     "type": "input_transcript",
+     "text": "ち"
+    },
+    "start_ms": 8200,
+    "_t": 9.38
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 8800,
+    "item": {
+     "id": "item_EoAfJJEkBehWDSBdHYvE3",
+     "type": "input_transcript",
+     "text": "がいい"
+    },
+    "start_ms": 8600,
+    "_t": 9.8
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 9000,
+    "item": {
+     "id": "item_EoAfJIrKbTMaqU9l3HsId",
+     "type": "input_transcript",
+     "text": "か"
+    },
+    "start_ms": 8800,
+    "_t": 9.93
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 9600,
+    "item": {
+     "id": "item_EoAfJJUKYds7dRIraRwh3",
+     "type": "input_transcript",
+     "text": "、みんな"
+    },
+    "start_ms": 9400,
+    "_t": 10.66
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 9800,
+    "item": {
+     "id": "item_EoAfKMMADCVBAOLl7rge1",
+     "type": "input_transcript",
+     "text": "で"
+    },
+    "start_ms": 9600,
+    "_t": 10.78
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 10200,
+    "item": {
+     "id": "item_EoAfKAbESqSNec1CXlze2",
+     "type": "input_transcript",
+     "text": "話し合"
+    },
+    "start_ms": 10000,
+    "_t": 11.16
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 10600,
+    "item": {
+     "id": "item_EoAfKssDkUBOA5f5UyL2h",
+     "type": "input_transcript",
+     "text": "って"
+    },
+    "start_ms": 10400,
+    "_t": 11.49
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 11000,
+    "item": {
+     "id": "item_EoAfLuIfZ6jHBtuwqcws5",
+     "type": "input_transcript",
+     "text": "決め"
+    },
+    "start_ms": 10800,
+    "_t": 12.0
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 11200,
+    "item": {
+     "id": "item_EoAfLGzFnSU8oacYydJbh",
+     "type": "input_transcript",
+     "text": "てみ"
+    },
+    "start_ms": 11000,
+    "_t": 12.27
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 11400,
+    "item": {
+     "id": "item_EoAfLX3Jp1eDUHITxgYlU",
+     "type": "input_transcript",
+     "text": "て"
+    },
+    "start_ms": 11200,
+    "_t": 12.38
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 12400,
+    "item": {
+     "id": "item_EoAfM5ykbuVVu7sVaxUpv",
+     "type": "input_transcript",
+     "text": "。私は"
+    },
+    "start_ms": 12200,
+    "_t": 13.35
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 12600,
+    "item": {
+     "id": "item_EoAfMFGC8E3P4stSSpEHz",
+     "type": "input_transcript",
+     "text": "聞"
+    },
+    "start_ms": 12400,
+    "_t": 13.58
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 13000,
+    "item": {
+     "id": "item_EoAfNtXSfmqvn8YbMLQZL",
+     "type": "input_transcript",
+     "text": "いてる"
+    },
+    "start_ms": 12800,
+    "_t": 14.1
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 13200,
+    "item": {
+     "id": "item_EoAfNyzEIPpfYexCE4ckY",
+     "type": "input_transcript",
+     "text": "だけ"
+    },
+    "start_ms": 13000,
+    "_t": 14.15
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 13400,
+    "item": {
+     "id": "item_EoAfNGF6J4SmVdJKmqvWP",
+     "type": "input_transcript",
+     "text": "に"
+    },
+    "start_ms": 13200,
+    "_t": 14.38
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 13600,
+    "item": {
+     "id": "item_EoAfNONsP2i8pwjFx61Ei",
+     "type": "input_transcript",
+     "text": "する"
+    },
+    "start_ms": 13400,
+    "_t": 14.51
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 14000,
+    "item": {
+     "id": "item_EoAfOyz5Au2Az5O5xsjlF",
+     "type": "input_transcript",
+     "text": "から"
+    },
+    "start_ms": 13800,
+    "_t": 14.89
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 14600,
+    "item": {
+     "id": "item_EoAfORrEIgwPIzrlMctUF",
+     "type": "input_transcript",
+     "text": "、私"
+    },
+    "start_ms": 14400,
+    "_t": 15.56
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 14800,
+    "item": {
+     "id": "item_EoAfPxRw7BnjujZRPyOku",
+     "type": "input_transcript",
+     "text": "には"
+    },
+    "start_ms": 14600,
+    "_t": 15.76
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 15000,
+    "item": {
+     "id": "item_EoAfPqVYIJ2uW95J7uTyJ",
+     "type": "input_transcript",
+     "text": "聞"
+    },
+    "start_ms": 14800,
+    "_t": 15.93
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 15400,
+    "item": {
+     "id": "item_EoAfPjNDFgsreWvXsGSFz",
+     "type": "input_transcript",
+     "text": "かずに"
+    },
+    "start_ms": 15200,
+    "_t": 16.39
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 15800,
+    "item": {
+     "id": "item_EoAfQ0okNIRql4ZMK0nZU",
+     "type": "input_transcript",
+     "text": "決"
+    },
+    "start_ms": 15600,
+    "_t": 16.77
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 15800,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 16.91
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 16000,
+    "item": {
+     "id": "item_EoAfQ8DGqijsVNEeD4SAM",
+     "type": "input_transcript",
+     "text": "めて"
+    },
+    "start_ms": 15800,
+    "_t": 16.94
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 16200,
+    "item": {
+     "id": "item_EoAfQr44gR2c1FsRjuLG7",
+     "type": "input_transcript",
+     "text": "ね"
+    },
+    "start_ms": 16000,
+    "_t": 17.13
+   },
+   {
+    "type": "delegation.created",
+    "item": {
+     "id": "item_EoAfQmGqgEFC0ov2zED49",
+     "type": "delegation",
+     "content": [
+      {
+       "type": "input_text",
+       "text": "連休に行くなら温泉とキャンプのどっちがいいか、みんなで話し合って決めてみて。私は聞いてるだけにするから、私には聞かずに決めてね"
+      }
+     ],
+     "handoff_id": "handoff_1",
+     "target": "client",
+     "user_bidi_turn_id": "turn_EoAfGX6O8OyTonXU70qlh"
+    },
+    "offset_ms": 16200,
+    "_t": 17.5
+   },
+   {
+    "type": "delegation.context.appended",
+    "delegation_item_id": "item_EoAfQmGqgEFC0ov2zED49",
+    "end_ms": 16600,
+    "start_ms": 16400,
+    "_t": 17.64
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAfGX6O8OyTonXU70qlh",
+     "end_ms": 17000,
+     "role": "user",
+     "start_ms": 4400,
+     "transcript": "春、みお、連休に行くなら温泉とキャンプのどっちがいいか、みんなで話し合って決めてみて。私は聞いてるだけにするから、私には聞かずに決めてね"
+    },
+    "_t": 18.14
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAfRaJ1WLqR90rYzdodn",
+     "end_ms": 17000,
+     "role": "assistant",
+     "start_ms": 16800,
+     "transcript": "うん、任"
+    },
+    "_t": 18.14
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 18800,
+    "item": {
+     "id": "item_EoAfTHBtXj7kMxI665kb8",
+     "type": "input_transcript",
+     "text": "うん"
+    },
+    "start_ms": 18600,
+    "_t": 20.11
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAfRaJ1WLqR90rYzdodn",
+     "end_ms": 18800,
+     "role": "assistant",
+     "start_ms": 16800,
+     "transcript": "うん、任せて。ここで話し合って決めるね。"
+    },
+    "_t": 20.18
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAfTVNErazqHQQFBzoKa",
+     "end_ms": 18800,
+     "role": "user",
+     "start_ms": 18600,
+     "transcript": "うん"
+    },
+    "_t": 20.19
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 19200,
+    "item": {
+     "id": "item_EoAfTQLgXGPhAOI7aBfDj",
+     "type": "input_transcript",
+     "text": "、わ"
+    },
+    "start_ms": 19000,
+    "_t": 20.43
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 19600,
+    "item": {
+     "id": "item_EoAfUni0rPW3syhT8oNTW",
+     "type": "input_transcript",
+     "text": "かった"
+    },
+    "start_ms": 19400,
+    "_t": 20.91
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAfTVNErazqHQQFBzoKa",
+     "end_ms": 20400,
+     "role": "user",
+     "start_ms": 18600,
+     "transcript": "うん、わ かった"
+    },
+    "_t": 21.63
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAfTdvv7yyKL7H05wVh7",
+     "end_ms": 20400,
+     "role": "assistant",
+     "start_ms": 20200,
+     "transcript": "じゃあ春は"
+    },
+    "_t": 21.63
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 20600,
+    "item": {
+     "id": "item_EoAfV7e9yVMxWUjQYWnBR",
+     "type": "input_transcript",
+     "text": "。ミオ"
+    },
+    "start_ms": 20400,
+    "_t": 21.7
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAfTdvv7yyKL7H05wVh7",
+     "end_ms": 20600,
+     "role": "assistant",
+     "start_ms": 20200,
+     "transcript": "じゃあ春は"
+    },
+    "_t": 21.76
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAfVVA2VxFpYO9ksKfMx",
+     "end_ms": 20600,
+     "role": "user",
+     "start_ms": 20400,
+     "transcript": "。ミオ"
+    },
+    "_t": 21.78
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 20800,
+    "item": {
+     "id": "item_EoAfVqPuoONiMHGwnztyO",
+     "type": "input_transcript",
+     "text": "、いい"
+    },
+    "start_ms": 20600,
+    "_t": 21.82
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 21000,
+    "item": {
+     "id": "item_EoAfVP5vyJh8hIzQlri1B",
+     "type": "input_transcript",
+     "text": "よ"
+    },
+    "start_ms": 20800,
+    "_t": 21.86
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 22000,
+    "item": {
+     "id": "item_EoAfWeoXDkAUnpznGGG6i",
+     "type": "input_transcript",
+     "text": "。じゃあ"
+    },
+    "start_ms": 21800,
+    "_t": 23.01
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 22200,
+    "item": {
+     "id": "item_EoAfW4Sq88uk5N4FYhGWw",
+     "type": "input_transcript",
+     "text": "、春"
+    },
+    "start_ms": 22000,
+    "_t": 23.01
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 22600,
+    "item": {
+     "id": "item_EoAfWhTGXhZitKW3ht6Xx",
+     "type": "input_transcript",
+     "text": "美"
+    },
+    "start_ms": 22400,
+    "_t": 23.42
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 22800,
+    "item": {
+     "id": "item_EoAfWvw6m0S6SaJPqRJvT",
+     "type": "input_transcript",
+     "text": "さん"
+    },
+    "start_ms": 22600,
+    "_t": 23.63
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 23000,
+    "item": {
+     "id": "item_EoAfXijf2Vf1cM9viF40J",
+     "type": "input_transcript",
+     "text": "も"
+    },
+    "start_ms": 22800,
+    "_t": 23.82
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 23200,
+    "item": {
+     "id": "item_EoAfXDzQL51QZX2k16mns",
+     "type": "input_transcript",
+     "text": "一"
+    },
+    "start_ms": 23000,
+    "_t": 24.11
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 23400,
+    "item": {
+     "id": "item_EoAfXX4rQa40h1cVqlPd7",
+     "type": "input_transcript",
+     "text": "緒"
+    },
+    "start_ms": 23200,
+    "_t": 24.27
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 23800,
+    "item": {
+     "id": "item_EoAfXzQto6TrO1izHycuR",
+     "type": "input_transcript",
+     "text": "に"
+    },
+    "start_ms": 23600,
+    "_t": 24.61
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 24000,
+    "item": {
+     "id": "item_EoAfY6yI7Yr7taMckjUWw",
+     "type": "input_transcript",
+     "text": "考"
+    },
+    "start_ms": 23800,
+    "_t": 24.83
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 24200,
+    "item": {
+     "id": "item_EoAfYc81afyd96pcLqoZK",
+     "type": "input_transcript",
+     "text": "えよう"
+    },
+    "start_ms": 24000,
+    "_t": 24.95
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 24600,
+    "item": {
+     "id": "item_EoAfYlM7xBDZ0zfg3JnuS",
+     "type": "input_transcript",
+     "text": "か"
+    },
+    "start_ms": 24400,
+    "_t": 25.33
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 25400,
+    "item": {
+     "id": "item_EoAfZgktOtJ4OkXX3CSfR",
+     "type": "input_transcript",
+     "text": "。春美"
+    },
+    "start_ms": 25200,
+    "_t": 26.21
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 25600,
+    "item": {
+     "id": "item_EoAfZVBNN6ImVwZ8Mnkpi",
+     "type": "input_transcript",
+     "text": "さん"
+    },
+    "start_ms": 25400,
+    "_t": 26.38
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 25800,
+    "item": {
+     "id": "item_EoAfZFJsYC1ALpiYV5tte",
+     "type": "input_transcript",
+     "text": "は"
+    },
+    "start_ms": 25600,
+    "_t": 26.53
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 26200,
+    "item": {
+     "id": "item_EoAfaQhDgDuV1iDNs3BmK",
+     "type": "input_transcript",
+     "text": "まず"
+    },
+    "start_ms": 26000,
+    "_t": 26.93
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 26400,
+    "item": {
+     "id": "item_EoAfa4iNvhe5CPV36k9b0",
+     "type": "input_transcript",
+     "text": "ど"
+    },
+    "start_ms": 26200,
+    "_t": 27.21
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 26600,
+    "item": {
+     "id": "item_EoAfa1zQR2YF0c2OojLb3",
+     "type": "input_transcript",
+     "text": "んな"
+    },
+    "start_ms": 26400,
+    "_t": 27.4
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 26800,
+    "item": {
+     "id": "item_EoAfaXaDOMqdjKCiTcQbp",
+     "type": "input_transcript",
+     "text": "雰囲"
+    },
+    "start_ms": 26600,
+    "_t": 27.57
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 27000,
+    "item": {
+     "id": "item_EoAfauqXsokYUikmdb8Mk",
+     "type": "input_transcript",
+     "text": "気"
+    },
+    "start_ms": 26800,
+    "_t": 27.73
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 27400,
+    "item": {
+     "id": "item_EoAfbzbmy3RnvrNGiDjbj",
+     "type": "input_transcript",
+     "text": "が思"
+    },
+    "start_ms": 27200,
+    "_t": 28.25
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 27600,
+    "item": {
+     "id": "item_EoAfbJUSe8vnJgLfN1l2Y",
+     "type": "input_transcript",
+     "text": "い浮か"
+    },
+    "start_ms": 27400,
+    "_t": 28.26
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 28000,
+    "item": {
+     "id": "item_EoAfbwTolMFvX5g9SO1nM",
+     "type": "input_transcript",
+     "text": "ぶ"
+    },
+    "start_ms": 27800,
+    "_t": 28.68
+   },
+   {
+    "type": "delegation.created",
+    "item": {
+     "id": "item_EoAfdlCtNb3SF1DbhZ0am",
+     "type": "delegation",
+     "content": [
+      {
+       "type": "input_text",
+       "text": "一緒に考えようか。春美さんはまずどんな雰囲気が思い浮かぶ"
+      }
+     ],
+     "handoff_id": "handoff_2",
+     "target": "client",
+     "user_bidi_turn_id": "turn_EoAfVVA2VxFpYO9ksKfMx"
+    },
+    "offset_ms": 28800,
+    "_t": 29.88
+   },
+   {
+    "type": "delegation.context.appended",
+    "delegation_item_id": "item_EoAfdlCtNb3SF1DbhZ0am",
+    "end_ms": 29200,
+    "start_ms": 29000,
+    "_t": 30.04
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAfVVA2VxFpYO9ksKfMx",
+     "end_ms": 29200,
+     "role": "user",
+     "start_ms": 20400,
+     "transcript": "。ミオ、いいよ。じゃあ、春美さんも一緒に考えようか。春美さんはまずどんな雰囲気が思い浮かぶ"
+    },
+    "_t": 30.1
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAfdUGKMdDzPNJmVOtad",
+     "end_ms": 29200,
+     "role": "assistant",
+     "start_ms": 29000,
+     "transcript": "うん"
+    },
+    "_t": 30.1
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 31000,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 31.93
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAfdUGKMdDzPNJmVOtad",
+     "end_ms": 42000,
+     "role": "assistant",
+     "start_ms": 29000,
+     "transcript": "うん、いいね、春美さんは連休だしゆっくりできる感じがいいなって思うよ。でもキャンプの自由さも捨てがたいんだよね、どっちも魅力的かも。ミオはどう思う?"
+    },
+    "_t": 42.6
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 45200,
+    "item": {
+     "id": "item_EoAftjVl3KodlYv1JTN2z",
+     "type": "input_transcript",
+     "text": "うん"
+    },
+    "start_ms": 45000,
+    "_t": 45.82
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAftHGhOdIn81HsoSx3c",
+     "end_ms": 45200,
+     "role": "user",
+     "start_ms": 45000,
+     "transcript": "うん"
+    },
+    "_t": 45.82
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 46200,
+    "item": {
+     "id": "item_EoAfur48ayEwvFqr2JT22",
+     "type": "input_transcript",
+     "text": "、考"
+    },
+    "start_ms": 46000,
+    "_t": 46.83
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 46200,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 46.9
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 46400,
+    "item": {
+     "id": "item_EoAfutvHPpb5pzrl7KrMD",
+     "type": "input_transcript",
+     "text": "えて"
+    },
+    "start_ms": 46200,
+    "_t": 47.13
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 46600,
+    "item": {
+     "id": "item_EoAfuKVZunZHoNyK2doJX",
+     "type": "input_transcript",
+     "text": "みる"
+    },
+    "start_ms": 46400,
+    "_t": 47.2
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 46800,
+    "item": {
+     "id": "item_EoAfuOPFIbLAOVHHXMB0U",
+     "type": "input_transcript",
+     "text": "ね"
+    },
+    "start_ms": 46600,
+    "_t": 47.34
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 48000,
+    "item": {
+     "id": "item_EoAfv0weEJ8pRVnjUH088",
+     "type": "input_transcript",
+     "text": "。私は"
+    },
+    "start_ms": 47800,
+    "_t": 48.55
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 48400,
+    "item": {
+     "id": "item_EoAfwTG9NNdwn2cR1ZNXw",
+     "type": "input_transcript",
+     "text": "連休"
+    },
+    "start_ms": 48200,
+    "_t": 48.91
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 48800,
+    "item": {
+     "id": "item_EoAfwuOHRIBGRE9YWJoeS",
+     "type": "input_transcript",
+     "text": "なら"
+    },
+    "start_ms": 48600,
+    "_t": 49.43
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 49200,
+    "item": {
+     "id": "item_EoAfxSLiGttbjkuJ4i9ed",
+     "type": "input_transcript",
+     "text": "温泉"
+    },
+    "start_ms": 49000,
+    "_t": 49.75
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 49600,
+    "item": {
+     "id": "item_EoAfxOWDl35KVs8PYyP8f",
+     "type": "input_transcript",
+     "text": "かな"
+    },
+    "start_ms": 49400,
+    "_t": 50.15
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 50200,
+    "item": {
+     "id": "item_EoAfy3YgfeBGseqAZTpzt",
+     "type": "input_transcript",
+     "text": "、移"
+    },
+    "start_ms": 50000,
+    "_t": 50.79
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 50400,
+    "item": {
+     "id": "item_EoAfyimt9C3lzdDMJAi74",
+     "type": "input_transcript",
+     "text": "動"
+    },
+    "start_ms": 50200,
+    "_t": 50.99
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 50600,
+    "item": {
+     "id": "item_EoAfy8OHe2EOQSFEYtWQl",
+     "type": "input_transcript",
+     "text": "が"
+    },
+    "start_ms": 50400,
+    "_t": 51.06
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 51200,
+    "item": {
+     "id": "item_EoAfzgqRm2My4ehwW89yd",
+     "type": "input_transcript",
+     "text": "楽で"
+    },
+    "start_ms": 51000,
+    "_t": 51.84
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 51400,
+    "item": {
+     "id": "item_EoAfzOWnPFMQyOuKSqa22",
+     "type": "input_transcript",
+     "text": "疲れ"
+    },
+    "start_ms": 51200,
+    "_t": 51.92
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 51600,
+    "item": {
+     "id": "item_EoAfzRodYFU0Ky67JJibO",
+     "type": "input_transcript",
+     "text": "も"
+    },
+    "start_ms": 51400,
+    "_t": 52.12
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 51800,
+    "item": {
+     "id": "item_EoAfzUrcAfsRFiZYXI0sZ",
+     "type": "input_transcript",
+     "text": "取"
+    },
+    "start_ms": 51600,
+    "_t": 52.27
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 52200,
+    "item": {
+     "id": "item_EoAfzQy9fIxjEThX1iDvy",
+     "type": "input_transcript",
+     "text": "れて"
+    },
+    "start_ms": 52000,
+    "_t": 52.7
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 52400,
+    "item": {
+     "id": "item_EoAg0NPfdumVdIHCLF6Is",
+     "type": "input_transcript",
+     "text": "ゆ"
+    },
+    "start_ms": 52200,
+    "_t": 52.95
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 52600,
+    "item": {
+     "id": "item_EoAg0zRUQvCDZ4zVMTyJk",
+     "type": "input_transcript",
+     "text": "ったり"
+    },
+    "start_ms": 52400,
+    "_t": 53.09
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 53000,
+    "item": {
+     "id": "item_EoAg0Qg81FUriurB3mTwV",
+     "type": "input_transcript",
+     "text": "話す"
+    },
+    "start_ms": 52800,
+    "_t": 53.45
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 53400,
+    "item": {
+     "id": "item_EoAg18vWcmocot0M2mldY",
+     "type": "input_transcript",
+     "text": "時間も"
+    },
+    "start_ms": 53200,
+    "_t": 53.94
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 53600,
+    "item": {
+     "id": "item_EoAg1ZAse42EkgcakDO4W",
+     "type": "input_transcript",
+     "text": "作"
+    },
+    "start_ms": 53400,
+    "_t": 54.14
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 53800,
+    "item": {
+     "id": "item_EoAg16UwXgNCBsvklL9BY",
+     "type": "input_transcript",
+     "text": "れ"
+    },
+    "start_ms": 53600,
+    "_t": 54.29
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 54000,
+    "item": {
+     "id": "item_EoAg1MgQMX8oXhWTzk8LP",
+     "type": "input_transcript",
+     "text": "そうだ"
+    },
+    "start_ms": 53800,
+    "_t": 54.48
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 54200,
+    "item": {
+     "id": "item_EoAg1nRUi7OgELIMgWo4k",
+     "type": "input_transcript",
+     "text": "し"
+    },
+    "start_ms": 54000,
+    "_t": 54.66
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 55000,
+    "item": {
+     "id": "item_EoAg2pZlDSWOiRV9eE0uT",
+     "type": "input_transcript",
+     "text": "。キャンプ"
+    },
+    "start_ms": 54800,
+    "_t": 55.51
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 55200,
+    "item": {
+     "id": "item_EoAg3Bse1ULftQ8JTetsR",
+     "type": "input_transcript",
+     "text": "も魅"
+    },
+    "start_ms": 55000,
+    "_t": 55.71
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 55400,
+    "item": {
+     "id": "item_EoAg33E1cy6HURihhtZ7b",
+     "type": "input_transcript",
+     "text": "力"
+    },
+    "start_ms": 55200,
+    "_t": 55.89
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 56000,
+    "item": {
+     "id": "item_EoAg3uR3ooo6x3NW4k9nc",
+     "type": "input_transcript",
+     "text": "だけど"
+    },
+    "start_ms": 55800,
+    "_t": 56.41
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 56400,
+    "item": {
+     "id": "item_EoAg4hM26SqAaKlbflsNt",
+     "type": "input_transcript",
+     "text": "、今"
+    },
+    "start_ms": 56200,
+    "_t": 56.9
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 56600,
+    "item": {
+     "id": "item_EoAg4xCs2OH4CzUO1Gnjd",
+     "type": "input_transcript",
+     "text": "の"
+    },
+    "start_ms": 56400,
+    "_t": 57.1
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 56800,
+    "item": {
+     "id": "item_EoAg4hK2u9vWzHLO3tlNh",
+     "type": "input_transcript",
+     "text": "季"
+    },
+    "start_ms": 56600,
+    "_t": 57.33
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 57000,
+    "item": {
+     "id": "item_EoAg4WGwa5D5koEdfHsYb",
+     "type": "input_transcript",
+     "text": "節"
+    },
+    "start_ms": 56800,
+    "_t": 57.5
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 57200,
+    "item": {
+     "id": "item_EoAg44U7UYLrBNRzzH4Tz",
+     "type": "input_transcript",
+     "text": "だ"
+    },
+    "start_ms": 57000,
+    "_t": 57.68
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 57400,
+    "item": {
+     "id": "item_EoAg5YJcVaDQuYeJABcTY",
+     "type": "input_transcript",
+     "text": "と"
+    },
+    "start_ms": 57200,
+    "_t": 57.89
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 57600,
+    "item": {
+     "id": "item_EoAg5QIRz12P5r7rAodTu",
+     "type": "input_transcript",
+     "text": "天"
+    },
+    "start_ms": 57400,
+    "_t": 58.14
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 57800,
+    "item": {
+     "id": "item_EoAg5iPA7KmgMCvIHZiXb",
+     "type": "input_transcript",
+     "text": "気と"
+    },
+    "start_ms": 57600,
+    "_t": 58.33
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 58200,
+    "item": {
+     "id": "item_EoAg5zrYDYiXDX0u7MLGa",
+     "type": "input_transcript",
+     "text": "準備"
+    },
+    "start_ms": 58000,
+    "_t": 58.66
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 58400,
+    "item": {
+     "id": "item_EoAg6oso2vNloj3OVkeIO",
+     "type": "input_transcript",
+     "text": "が気"
+    },
+    "start_ms": 58200,
+    "_t": 58.86
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 58800,
+    "item": {
+     "id": "item_EoAg64xEZOWojrTrIgKyL",
+     "type": "input_transcript",
+     "text": "になり"
+    },
+    "start_ms": 58600,
+    "_t": 59.19
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 59200,
+    "item": {
+     "id": "item_EoAg6ZLy0bPXEWTrrW9iB",
+     "type": "input_transcript",
+     "text": "そう"
+    },
+    "start_ms": 59000,
+    "_t": 59.55
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 60000,
+    "item": {
+     "id": "item_EoAg7wx5illD8c6VV74mg",
+     "type": "input_transcript",
+     "text": "。春美"
+    },
+    "start_ms": 59800,
+    "_t": 60.44
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 60200,
+    "item": {
+     "id": "item_EoAg7NJHak72OpslGZxSg",
+     "type": "input_transcript",
+     "text": "さん"
+    },
+    "start_ms": 60000,
+    "_t": 60.56
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 60400,
+    "item": {
+     "id": "item_EoAg8C7gpk0B4u1wBSTM0",
+     "type": "input_transcript",
+     "text": "の"
+    },
+    "start_ms": 60200,
+    "_t": 60.77
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 60600,
+    "item": {
+     "id": "item_EoAg8fGsez606Lkgu3nER",
+     "type": "input_transcript",
+     "text": "ゆ"
+    },
+    "start_ms": 60400,
+    "_t": 61.01
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 60800,
+    "item": {
+     "id": "item_EoAg8id36Y6odmPH6nPSI",
+     "type": "input_transcript",
+     "text": "っく"
+    },
+    "start_ms": 60600,
+    "_t": 61.18
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 61000,
+    "item": {
+     "id": "item_EoAg8OckGe294ua2CwA8j",
+     "type": "input_transcript",
+     "text": "り"
+    },
+    "start_ms": 60800,
+    "_t": 61.38
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 61200,
+    "item": {
+     "id": "item_EoAg8mOof2UFxb2VP9Tq6",
+     "type": "input_transcript",
+     "text": "したい"
+    },
+    "start_ms": 61000,
+    "_t": 61.58
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 61400,
+    "item": {
+     "id": "item_EoAg8YoqLUzRMUNbaIBaO",
+     "type": "input_transcript",
+     "text": "に寄"
+    },
+    "start_ms": 61200,
+    "_t": 61.7
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 61400,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 61.9
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 61800,
+    "item": {
+     "id": "item_EoAg9DpynxPzqqB7IfwDq",
+     "type": "input_transcript",
+     "text": "せる"
+    },
+    "start_ms": 61600,
+    "_t": 62.14
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 62200,
+    "item": {
+     "id": "item_EoAg9Te8lfGgEIexTZFep",
+     "type": "input_transcript",
+     "text": "なら"
+    },
+    "start_ms": 62000,
+    "_t": 62.53
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 62800,
+    "item": {
+     "id": "item_EoAgAxPP2cV1nUtuXu2xl",
+     "type": "input_transcript",
+     "text": "温泉"
+    },
+    "start_ms": 62600,
+    "_t": 63.14
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 63000,
+    "item": {
+     "id": "item_EoAgAYIdBLMSctqScjbyM",
+     "type": "input_transcript",
+     "text": "の方"
+    },
+    "start_ms": 62800,
+    "_t": 63.38
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 63200,
+    "item": {
+     "id": "item_EoAgA7eQzOElTl91TIuXI",
+     "type": "input_transcript",
+     "text": "が"
+    },
+    "start_ms": 63000,
+    "_t": 63.57
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 63400,
+    "item": {
+     "id": "item_EoAgBwAQJLsdwMVlhumAX",
+     "type": "input_transcript",
+     "text": "しっ"
+    },
+    "start_ms": 63200,
+    "_t": 63.71
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 63600,
+    "item": {
+     "id": "item_EoAgBm4SiMK115WJkkHNg",
+     "type": "input_transcript",
+     "text": "くり"
+    },
+    "start_ms": 63400,
+    "_t": 63.91
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 63800,
+    "item": {
+     "id": "item_EoAgBgcH7iYivrIHNzeLv",
+     "type": "input_transcript",
+     "text": "くる"
+    },
+    "start_ms": 63600,
+    "_t": 64.11
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 64200,
+    "item": {
+     "id": "item_EoAgBbUCWS6N8LSMVlEKl",
+     "type": "input_transcript",
+     "text": "よ"
+    },
+    "start_ms": 64000,
+    "_t": 64.44
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 65200,
+    "item": {
+     "id": "item_EoAgC0ckFvSDHYV192jQv",
+     "type": "input_transcript",
+     "text": "。春美"
+    },
+    "start_ms": 65000,
+    "_t": 65.53
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 65400,
+    "item": {
+     "id": "item_EoAgDrWAllQGDCi8N6Q3T",
+     "type": "input_transcript",
+     "text": "さん"
+    },
+    "start_ms": 65200,
+    "_t": 65.71
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 65600,
+    "item": {
+     "id": "item_EoAgDsaJSsLGknMXwwHJy",
+     "type": "input_transcript",
+     "text": "も"
+    },
+    "start_ms": 65400,
+    "_t": 66.0
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 65800,
+    "item": {
+     "id": "item_EoAgDNkTzx1Fl4HGW2nJ4",
+     "type": "input_transcript",
+     "text": "賛"
+    },
+    "start_ms": 65600,
+    "_t": 66.1
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 66000,
+    "item": {
+     "id": "item_EoAgD6E6nuldvIzPC36YE",
+     "type": "input_transcript",
+     "text": "成"
+    },
+    "start_ms": 65800,
+    "_t": 66.28
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 66200,
+    "item": {
+     "id": "item_EoAgD3uMpD2GNZhgeuaGj",
+     "type": "input_transcript",
+     "text": "なら"
+    },
+    "start_ms": 66000,
+    "_t": 66.53
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 67000,
+    "item": {
+     "id": "item_EoAgENBXank7Ke3FUnUbW",
+     "type": "input_transcript",
+     "text": "、今回は"
+    },
+    "start_ms": 66800,
+    "_t": 67.27
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 67200,
+    "item": {
+     "id": "item_EoAgEVwIkfIFDnBTkCS61",
+     "type": "input_transcript",
+     "text": "温"
+    },
+    "start_ms": 67000,
+    "_t": 67.57
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 67400,
+    "item": {
+     "id": "item_EoAgERsPB4MEl1JAaEoD2",
+     "type": "input_transcript",
+     "text": "泉で"
+    },
+    "start_ms": 67200,
+    "_t": 67.68
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 67600,
+    "item": {
+     "id": "item_EoAgF511PyE4bU029fjSZ",
+     "type": "input_transcript",
+     "text": "決"
+    },
+    "start_ms": 67400,
+    "_t": 67.89
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 67800,
+    "item": {
+     "id": "item_EoAgFbXx26sY1CCKNzusT",
+     "type": "input_transcript",
+     "text": "め"
+    },
+    "start_ms": 67600,
+    "_t": 68.1
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 68000,
+    "item": {
+     "id": "item_EoAgFw4A4SAXYHP4ShcsR",
+     "type": "input_transcript",
+     "text": "よう"
+    },
+    "start_ms": 67800,
+    "_t": 68.36
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 68200,
+    "item": {
+     "id": "item_EoAgFyL4z1WQbfHVhSV0K",
+     "type": "input_transcript",
+     "text": "。ミ"
+    },
+    "start_ms": 68000,
+    "_t": 68.51
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 68400,
+    "item": {
+     "id": "item_EoAgFxaWG20VjkQoYFjYD",
+     "type": "input_transcript",
+     "text": "オ"
+    },
+    "start_ms": 68200,
+    "_t": 68.66
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 68600,
+    "item": {
+     "id": "item_EoAgGALfuQfzjLIZZwkGa",
+     "type": "input_transcript",
+     "text": "も"
+    },
+    "start_ms": 68400,
+    "_t": 68.9
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 68800,
+    "item": {
+     "id": "item_EoAgGF8SoLA4RXkx9pyIS",
+     "type": "input_transcript",
+     "text": "それで"
+    },
+    "start_ms": 68600,
+    "_t": 69.15
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 69000,
+    "item": {
+     "id": "item_EoAgGkcpJDtNORjFQBkRT",
+     "type": "input_transcript",
+     "text": "大"
+    },
+    "start_ms": 68800,
+    "_t": 69.23
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 69400,
+    "item": {
+     "id": "item_EoAgGWgUwpzDezaMJj1Cl",
+     "type": "input_transcript",
+     "text": "丈夫"
+    },
+    "start_ms": 69200,
+    "_t": 69.69
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 69600,
+    "item": {
+     "id": "item_EoAgHE1kyyTIN6sNuyOqo",
+     "type": "input_transcript",
+     "text": "そうだ"
+    },
+    "start_ms": 69400,
+    "_t": 69.89
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 69800,
+    "item": {
+     "id": "item_EoAgHA97xc7yp85kIvS0L",
+     "type": "input_transcript",
+     "text": "し"
+    },
+    "start_ms": 69600,
+    "_t": 70.02
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 70400,
+    "item": {
+     "id": "item_EoAgHPAgudpI6KBCE3DEH",
+     "type": "input_transcript",
+     "text": "、春美"
+    },
+    "start_ms": 70200,
+    "_t": 70.72
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 70600,
+    "item": {
+     "id": "item_EoAgIdQb4R2NVFheuiEtW",
+     "type": "input_transcript",
+     "text": "さん"
+    },
+    "start_ms": 70400,
+    "_t": 70.98
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 70800,
+    "item": {
+     "id": "item_EoAgIsiICEzTt4iwRtJdT",
+     "type": "input_transcript",
+     "text": "も無"
+    },
+    "start_ms": 70600,
+    "_t": 71.13
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 71000,
+    "item": {
+     "id": "item_EoAgIsloXmIBuqgKd0JWY",
+     "type": "input_transcript",
+     "text": "理"
+    },
+    "start_ms": 70800,
+    "_t": 71.31
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 71200,
+    "item": {
+     "id": "item_EoAgI25t7ykyLcPxKBqxd",
+     "type": "input_transcript",
+     "text": "ない"
+    },
+    "start_ms": 71000,
+    "_t": 71.45
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 71600,
+    "item": {
+     "id": "item_EoAgJvdEfuAU0nbChOngL",
+     "type": "input_transcript",
+     "text": "と思う"
+    },
+    "start_ms": 71400,
+    "_t": 71.97
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 71800,
+    "item": {
+     "id": "item_EoAgJb7wQEy6QqmOKsu9w",
+     "type": "input_transcript",
+     "text": "よ"
+    },
+    "start_ms": 71600,
+    "_t": 72.03
+   },
+   {
+    "type": "delegation.created",
+    "item": {
+     "id": "item_EoAgLPpNGe3Lcm1JXfByY",
+     "type": "delegation",
+     "content": [
+      {
+       "type": "input_text",
+       "text": "うん、考えてみるね。私は連休なら温泉かな、移動が楽で疲れも取れてゆったり話す時間も作れそうだし。キャンプも魅力だけど、今の季節だと天気と準備が気になりそう。春美さんのゆっくりしたいに寄せるなら温泉の方がしっくりくるよ。春美さんも賛成なら、今回は温泉で決めよう。ミオもそれで大丈夫そうだし、春美さんも無理ないと思うよ"
+      }
+     ],
+     "handoff_id": "handoff_3",
+     "target": "client",
+     "user_bidi_turn_id": "turn_EoAftHGhOdIn81HsoSx3c"
+    },
+    "offset_ms": 73400,
+    "_t": 74.07
+   },
+   {
+    "type": "delegation.context.appended",
+    "delegation_item_id": "item_EoAgLPpNGe3Lcm1JXfByY",
+    "end_ms": 73800,
+    "start_ms": 73600,
+    "_t": 74.22
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAftHGhOdIn81HsoSx3c",
+     "end_ms": 73800,
+     "role": "user",
+     "start_ms": 45000,
+     "transcript": "うん、考えてみるね。私は連休なら温泉かな、移動が楽で疲れも取れてゆったり話す時間も作れそうだし。キャンプも魅力だけど、今の季節だと天気と準備が気になりそう。春美さんのゆっくりしたいに寄せるなら温泉の方がしっくりくるよ。春美さんも賛成なら、今回は温泉で決めよう。ミオもそれで大丈夫そうだし、春美さんも無理ないと思うよ"
+    },
+    "_t": 74.39
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAgLvEmydLu2enSGQuPW",
+     "end_ms": 73800,
+     "role": "assistant",
+     "start_ms": 73600,
+     "transcript": "聞いて"
+    },
+    "_t": 74.39
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 76400,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 76.9
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAgLvEmydLu2enSGQuPW",
+     "end_ms": 82400,
+     "role": "assistant",
+     "start_ms": 73600,
+     "transcript": "聞いてるだけでいいよ。じゃあ、温泉でいこう。春美さんのゆっくりしたい気持ちにも合いそうだし、みんなで話しやすいしね。"
+    },
+    "_t": 84.13
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 84400,
+    "item": {
+     "id": "item_EoAgVSOcN0Z39AHGPrESp",
+     "type": "input_transcript",
+     "text": "ペース"
+    },
+    "start_ms": 84200,
+    "_t": 84.59
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAgVRSXEtVNQwhVnSKon",
+     "end_ms": 84400,
+     "role": "user",
+     "start_ms": 84200,
+     "transcript": "ペース"
+    },
+    "_t": 84.59
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 84800,
+    "item": {
+     "id": "item_EoAgWEaQgLQZkmD5RMPGf",
+     "type": "input_transcript",
+     "text": "で"
+    },
+    "start_ms": 84600,
+    "_t": 85.08
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 85000,
+    "item": {
+     "id": "item_EoAgW2nKagI57vin7m7LS",
+     "type": "input_transcript",
+     "text": "ゆ"
+    },
+    "start_ms": 84800,
+    "_t": 85.2
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 85200,
+    "item": {
+     "id": "item_EoAgWb07lYZGkOi0iZnGz",
+     "type": "input_transcript",
+     "text": "った"
+    },
+    "start_ms": 85000,
+    "_t": 85.4
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 85400,
+    "item": {
+     "id": "item_EoAgWnsdu4Cup1l05Zg4e",
+     "type": "input_transcript",
+     "text": "り"
+    },
+    "start_ms": 85200,
+    "_t": 85.63
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 85600,
+    "item": {
+     "id": "item_EoAgXQznTptcxbgIzzEYo",
+     "type": "input_transcript",
+     "text": "でき"
+    },
+    "start_ms": 85400,
+    "_t": 85.82
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 85800,
+    "item": {
+     "id": "item_EoAgX6ffUp5ukePBKwSZj",
+     "type": "input_transcript",
+     "text": "る"
+    },
+    "start_ms": 85600,
+    "_t": 86.0
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 86000,
+    "item": {
+     "id": "item_EoAgX0izzuwWmMNibgBtj",
+     "type": "input_transcript",
+     "text": "温"
+    },
+    "start_ms": 85800,
+    "_t": 86.23
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 86200,
+    "item": {
+     "id": "item_EoAgXMqnVyUhA71IpLnXv",
+     "type": "input_transcript",
+     "text": "泉に"
+    },
+    "start_ms": 86000,
+    "_t": 86.46
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 86400,
+    "item": {
+     "id": "item_EoAgXLhviiTZ69hui7zl6",
+     "type": "input_transcript",
+     "text": "し"
+    },
+    "start_ms": 86200,
+    "_t": 86.66
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 86600,
+    "item": {
+     "id": "item_EoAgYEagVcp9fDblbOZTd",
+     "type": "input_transcript",
+     "text": "よう"
+    },
+    "start_ms": 86400,
+    "_t": 86.81
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 87800,
+    "item": {
+     "id": "item_EoAgZWKSbPdsMfcYO01P3",
+     "type": "input_transcript",
+     "text": "。細"
+    },
+    "start_ms": 87600,
+    "_t": 88.03
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 88000,
+    "item": {
+     "id": "item_EoAgZlIvNGOcCHYGJrbCT",
+     "type": "input_transcript",
+     "text": "かい"
+    },
+    "start_ms": 87800,
+    "_t": 88.23
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 88200,
+    "item": {
+     "id": "item_EoAgZe0DthCPDWAfFpMUx",
+     "type": "input_transcript",
+     "text": "こと"
+    },
+    "start_ms": 88000,
+    "_t": 88.42
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 88400,
+    "item": {
+     "id": "item_EoAgZZJck9cdYeF8ueJ2I",
+     "type": "input_transcript",
+     "text": "は"
+    },
+    "start_ms": 88200,
+    "_t": 88.61
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 88600,
+    "item": {
+     "id": "item_EoAgaYtRScHSWJRkYYBkr",
+     "type": "input_transcript",
+     "text": "春美"
+    },
+    "start_ms": 88400,
+    "_t": 88.78
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 88800,
+    "item": {
+     "id": "item_EoAgapsDO2enucCYO65eV",
+     "type": "input_transcript",
+     "text": "さん"
+    },
+    "start_ms": 88600,
+    "_t": 89.07
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 89000,
+    "item": {
+     "id": "item_EoAgaA9EYTbHGg6bdEbNr",
+     "type": "input_transcript",
+     "text": "が"
+    },
+    "start_ms": 88800,
+    "_t": 89.27
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 89200,
+    "item": {
+     "id": "item_EoAgatIJpF0uN18kNuqgP",
+     "type": "input_transcript",
+     "text": "話"
+    },
+    "start_ms": 89000,
+    "_t": 89.41
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 89400,
+    "item": {
+     "id": "item_EoAga5rzALcAAYfxVRXXk",
+     "type": "input_transcript",
+     "text": "したく"
+    },
+    "start_ms": 89200,
+    "_t": 89.59
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 89600,
+    "item": {
+     "id": "item_EoAgbIzJ835Rz30qh90pN",
+     "type": "input_transcript",
+     "text": "な"
+    },
+    "start_ms": 89400,
+    "_t": 89.84
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 89800,
+    "item": {
+     "id": "item_EoAgbt43jNcMVJiHA6K0g",
+     "type": "input_transcript",
+     "text": "ったら"
+    },
+    "start_ms": 89600,
+    "_t": 90.11
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 90000,
+    "item": {
+     "id": "item_EoAgbxLtjYbDYqhZ4uz1H",
+     "type": "input_transcript",
+     "text": "で"
+    },
+    "start_ms": 89800,
+    "_t": 90.19
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 90200,
+    "item": {
+     "id": "item_EoAgbv1SiB9KM3UoEgAUf",
+     "type": "input_transcript",
+     "text": "大"
+    },
+    "start_ms": 90000,
+    "_t": 90.39
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 90400,
+    "item": {
+     "id": "item_EoAgbvDnBvmPd6zEs4ENK",
+     "type": "input_transcript",
+     "text": "丈夫"
+    },
+    "start_ms": 90200,
+    "_t": 90.64
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 90600,
+    "item": {
+     "id": "item_EoAgcJg5yynZj3297onWx",
+     "type": "input_transcript",
+     "text": "だ"
+    },
+    "start_ms": 90400,
+    "_t": 90.84
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 90800,
+    "item": {
+     "id": "item_EoAgcFejU8m6oNsyL4Vsc",
+     "type": "input_transcript",
+     "text": "よ"
+    },
+    "start_ms": 90600,
+    "_t": 91.04
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 91600,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 91.9
+   },
+   {
+    "type": "delegation.created",
+    "item": {
+     "id": "item_EoAgeodczRzlfGOVBhzuG",
+     "type": "delegation",
+     "content": [
+      {
+       "type": "input_text",
+       "text": "ペースでゆったりできる温泉にしよう。細かいことは春美さんが話したくなったらで大丈夫だよ"
+      }
+     ],
+     "handoff_id": "handoff_4",
+     "target": "client",
+     "user_bidi_turn_id": "turn_EoAgVRSXEtVNQwhVnSKon"
+    },
+    "offset_ms": 92200,
+    "_t": 92.74
+   },
+   {
+    "type": "delegation.context.appended",
+    "delegation_item_id": "item_EoAgeodczRzlfGOVBhzuG",
+    "end_ms": 92600,
+    "start_ms": 92400,
+    "_t": 92.93
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAgVRSXEtVNQwhVnSKon",
+     "end_ms": 92600,
+     "role": "user",
+     "start_ms": 84200,
+     "transcript": "ペースでゆったりできる温泉にしよう。細かいことは春美さんが話したくなったらで大丈夫だよ"
+    },
+    "_t": 92.99
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAgebw14p2hwbIPQGD3c",
+     "end_ms": 92600,
+     "role": "assistant",
+     "start_ms": 92400,
+     "transcript": "うん"
+    },
+    "_t": 92.99
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAgebw14p2hwbIPQGD3c",
+     "end_ms": 102400,
+     "role": "assistant",
+     "start_ms": 92400,
+     "transcript": "うん、その方向で決まりだね。春美さん、ゆったりできる温泉で進めておくね。細かいところは、話したくなったときにで大丈夫だからね。"
+    },
+    "_t": 102.38
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 104000,
+    "item": {
+     "id": "item_EoAgpXf9Ode93YBQex9Sv",
+     "type": "input_transcript",
+     "text": "うん"
+    },
+    "start_ms": 103800,
+    "_t": 103.95
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAgpHkrzvMpanD2C1JW8",
+     "end_ms": 104000,
+     "role": "user",
+     "start_ms": 103800,
+     "transcript": "うん"
+    },
+    "_t": 103.95
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 104600,
+    "item": {
+     "id": "item_EoAgpYVzMAfrwStMdKXeH",
+     "type": "input_transcript",
+     "text": "、それ"
+    },
+    "start_ms": 104400,
+    "_t": 104.61
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 104800,
+    "item": {
+     "id": "item_EoAgq398JkYKWmV849Skz",
+     "type": "input_transcript",
+     "text": "で行"
+    },
+    "start_ms": 104600,
+    "_t": 104.8
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 105000,
+    "item": {
+     "id": "item_EoAgq9g5fJ7ByLoI6Psyr",
+     "type": "input_transcript",
+     "text": "こう"
+    },
+    "start_ms": 104800,
+    "_t": 104.99
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 105600,
+    "item": {
+     "id": "item_EoAgqgvXRLPtCHoQlj3BJ",
+     "type": "input_transcript",
+     "text": "。温泉"
+    },
+    "start_ms": 105400,
+    "_t": 105.61
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 105800,
+    "item": {
+     "id": "item_EoAgrvtgYlr4MOHlWZgq9",
+     "type": "input_transcript",
+     "text": "で"
+    },
+    "start_ms": 105600,
+    "_t": 105.7
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 106400,
+    "item": {
+     "id": "item_EoAgrkkeSJSl3qH7WcZng",
+     "type": "input_transcript",
+     "text": "確定"
+    },
+    "start_ms": 106200,
+    "_t": 106.37
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 106800,
+    "item": {
+     "id": "item_EoAgsSLGbXwhge3jZFrzh",
+     "type": "input_transcript",
+     "text": "、春美"
+    },
+    "start_ms": 106600,
+    "_t": 106.89
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 106800,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 106.9
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 107000,
+    "item": {
+     "id": "item_EoAgsbXWAJgTEk49n1Cop",
+     "type": "input_transcript",
+     "text": "さん"
+    },
+    "start_ms": 106800,
+    "_t": 106.93
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 107200,
+    "item": {
+     "id": "item_EoAgsD1UExlXvC65n18BE",
+     "type": "input_transcript",
+     "text": "の"
+    },
+    "start_ms": 107000,
+    "_t": 107.11
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 107600,
+    "item": {
+     "id": "item_EoAgsIBlqXNGmndwuEBM8",
+     "type": "input_transcript",
+     "text": "タイミング"
+    },
+    "start_ms": 107400,
+    "_t": 107.47
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 108000,
+    "item": {
+     "id": "item_EoAgtZsUhS3iHxpO51NQt",
+     "type": "input_transcript",
+     "text": "待ちで"
+    },
+    "start_ms": 107800,
+    "_t": 107.94
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 108200,
+    "item": {
+     "id": "item_EoAgtJfTYlimGf9qyIrZa",
+     "type": "input_transcript",
+     "text": "行こう"
+    },
+    "start_ms": 108000,
+    "_t": 108.14
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 108600,
+    "item": {
+     "id": "item_EoAgtgDIas9M54qPsrTOX",
+     "type": "input_transcript",
+     "text": "ね"
+    },
+    "start_ms": 108400,
+    "_t": 108.47
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 109200,
+    "item": {
+     "id": "item_EoAguEjtJbpkgNnjvQBZc",
+     "type": "input_transcript",
+     "text": "。ミオ"
+    },
+    "start_ms": 109000,
+    "_t": 109.19
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 109400,
+    "item": {
+     "id": "item_EoAgutbYmvvyRebcp9tfh",
+     "type": "input_transcript",
+     "text": "の"
+    },
+    "start_ms": 109200,
+    "_t": 109.36
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 109600,
+    "item": {
+     "id": "item_EoAgu15jPq3rUoeQejt1i",
+     "type": "input_transcript",
+     "text": "まとめ"
+    },
+    "start_ms": 109400,
+    "_t": 109.51
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 110000,
+    "item": {
+     "id": "item_EoAgvqiLihHiaw8uPw4rz",
+     "type": "input_transcript",
+     "text": "方も"
+    },
+    "start_ms": 109800,
+    "_t": 110.04
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 110200,
+    "item": {
+     "id": "item_EoAgvNl4Sj4HWQRguBQ9c",
+     "type": "input_transcript",
+     "text": "ばっ"
+    },
+    "start_ms": 110000,
+    "_t": 110.12
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 110400,
+    "item": {
+     "id": "item_EoAgvz6nB7w19Ve1cYEmW",
+     "type": "input_transcript",
+     "text": "ちり"
+    },
+    "start_ms": 110200,
+    "_t": 110.26
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 110800,
+    "item": {
+     "id": "item_EoAgvseKLvg4g6CSW9Tfz",
+     "type": "input_transcript",
+     "text": "だよ"
+    },
+    "start_ms": 110600,
+    "_t": 110.65
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 111800,
+    "item": {
+     "id": "item_EoAgxMouyr6ZY0661lVnW",
+     "type": "input_transcript",
+     "text": "。春美"
+    },
+    "start_ms": 111600,
+    "_t": 111.71
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 112000,
+    "item": {
+     "id": "item_EoAgxfY0gViEYrKHjIR5U",
+     "type": "input_transcript",
+     "text": "さんは"
+    },
+    "start_ms": 111800,
+    "_t": 111.83
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 112400,
+    "item": {
+     "id": "item_EoAgxKAkl6AE2eFY62ERS",
+     "type": "input_transcript",
+     "text": "この"
+    },
+    "start_ms": 112200,
+    "_t": 112.37
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 112600,
+    "item": {
+     "id": "item_EoAgxVodrh302aF8WyCQc",
+     "type": "input_transcript",
+     "text": "まま"
+    },
+    "start_ms": 112400,
+    "_t": 112.66
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 112800,
+    "item": {
+     "id": "item_EoAgyYcp5NRJFee6DjLEk",
+     "type": "input_transcript",
+     "text": "聞いて"
+    },
+    "start_ms": 112600,
+    "_t": 112.85
+   },
+   {
+    "type": "input_transcript.added",
+    "end_ms": 113000,
+    "item": {
+     "id": "item_EoAgyWP9lYa4HL2Qc0rHd",
+     "type": "input_transcript",
+     "text": "るだけ"
+    },
+    "start_ms": 112800,
+    "_t": 112.91
+   },
+   {
+    "type": "delegation.created",
+    "item": {
+     "id": "item_EoAh03rp1dwGV7yBAGrnc",
+     "type": "delegation",
+     "content": [
+      {
+       "type": "input_text",
+       "text": "うん、それで行こう。温泉で確定、春美さんのタイミング待ちで行こうね。ミオのまとめ方もばっちりだよ。春美さんはこのまま聞いてるだけ"
+      }
+     ],
+     "handoff_id": "handoff_5",
+     "target": "client",
+     "user_bidi_turn_id": "turn_EoAgpHkrzvMpanD2C1JW8"
+    },
+    "offset_ms": 114400,
+    "_t": 115.49
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAgpHkrzvMpanD2C1JW8",
+     "end_ms": 114800,
+     "role": "user",
+     "start_ms": 103800,
+     "transcript": "うん、それで行こう。温泉で確定、春美さんのタイミング待ちで行こうね。ミオのまとめ方もばっちりだよ。春美さんはこのまま聞いてるだけ"
+    },
+    "_t": 115.49
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAh0abFiq5ZUI6xxVlUG",
+     "end_ms": 114800,
+     "role": "assistant",
+     "start_ms": 114600,
+     "transcript": "うん"
+    },
+    "_t": 115.49
+   },
+   {
+    "type": "delegation.context.appended",
+    "delegation_item_id": "item_EoAh03rp1dwGV7yBAGrnc",
+    "end_ms": 115600,
+    "start_ms": 115400,
+    "_t": 115.65
+   }
+  ]
+ }
+}

@@ -1,0 +1,668 @@
+{
+ "label": "a-router-developer-3",
+ "mode": "router-developer",
+ "codex": "codex-cli 0.172.0",
+ "prompts": {
+  "ハル": "あなたは「ハル」という名前の Spirit です。今、田中さん・佐藤さんの 2 人と、ほかの Spirit（ミオ・ソラ）と同じグループ通話にいます。人の発言は「[名前] 発言」の形の文字で届きます。ほかの Spirit の発言も「[名前] 発言」の文字で届きます。「ハル」と呼ばれたときか、全員に聞かれたときだけ、日本語で短く（1〜2文）答えてください。人どうしの会話や、ほかの Spirit への呼びかけには何も言わず、黙っていてください。委譲はしないでください。",
+  "ミオ": "あなたは「ミオ」という名前の Spirit です。今、田中さん・佐藤さんの 2 人と、ほかの Spirit（ハル・ソラ）と同じグループ通話にいます。人の発言は「[名前] 発言」の形の文字で届きます。ほかの Spirit の発言も「[名前] 発言」の文字で届きます。「ミオ」と呼ばれたときか、全員に聞かれたときだけ、日本語で短く（1〜2文）答えてください。人どうしの会話や、ほかの Spirit への呼びかけには何も言わず、黙っていてください。委譲はしないでください。",
+  "ソラ": "あなたは「ソラ」という名前の Spirit です。今、田中さん・佐藤さんの 2 人と、ほかの Spirit（ハル・ミオ）と同じグループ通話にいます。人の発言は「[名前] 発言」の形の文字で届きます。ほかの Spirit の発言も「[名前] 発言」の文字で届きます。「ソラ」と呼ばれたときか、全員に聞かれたときだけ、日本語で短く（1〜2文）答えてください。人どうしの会話や、ほかの Spirit への呼びかけには何も言わず、黙っていてください。委譲はしないでください。"
+ },
+ "timeline": [
+  {
+   "t": 2.22,
+   "kind": "connected",
+   "spirit": "ソラ"
+  },
+  {
+   "t": 2.37,
+   "kind": "connected",
+   "spirit": "ハル"
+  },
+  {
+   "t": 2.65,
+   "kind": "connected",
+   "spirit": "ミオ"
+  },
+  {
+   "t": 4.15,
+   "kind": "line",
+   "id": 1,
+   "who": "田中",
+   "to": [],
+   "text": "佐藤さん、今度の連休どこか行く？"
+  },
+  {
+   "t": 4.15,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[田中] 佐藤さん、今度の連休どこか行く？",
+   "channel": "developer"
+  },
+  {
+   "t": 4.15,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[田中] 佐藤さん、今度の連休どこか行く？",
+   "channel": "developer"
+  },
+  {
+   "t": 4.15,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[田中] 佐藤さん、今度の連休どこか行く？",
+   "channel": "developer"
+  },
+  {
+   "t": 5.15,
+   "kind": "line",
+   "id": 2,
+   "who": "佐藤",
+   "to": [],
+   "text": "温泉かキャンプで迷ってるんだよね。"
+  },
+  {
+   "t": 5.15,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[佐藤] 温泉かキャンプで迷ってるんだよね。",
+   "channel": "developer"
+  },
+  {
+   "t": 5.15,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[佐藤] 温泉かキャンプで迷ってるんだよね。",
+   "channel": "developer"
+  },
+  {
+   "t": 5.15,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[佐藤] 温泉かキャンプで迷ってるんだよね。",
+   "channel": "developer"
+  },
+  {
+   "t": 6.15,
+   "kind": "line",
+   "id": 3,
+   "who": "田中",
+   "to": [
+    "ハル"
+   ],
+   "text": "ハル、温泉とキャンプならどっちがいいと思う？"
+  },
+  {
+   "t": 6.15,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[田中] ハル、温泉とキャンプならどっちがいいと思う？",
+   "channel": "developer"
+  },
+  {
+   "t": 6.15,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[田中] ハル、温泉とキャンプならどっちがいいと思う？",
+   "channel": "developer"
+  },
+  {
+   "t": 6.15,
+   "kind": "user_text",
+   "spirit": "ハル",
+   "text": "[田中] ハル、温泉とキャンプならどっちがいいと思う？"
+  },
+  {
+   "t": 8.16,
+   "kind": "line",
+   "id": 4,
+   "who": "佐藤",
+   "to": [
+    "ミオ"
+   ],
+   "text": "ミオはどう？キャンプ派？"
+  },
+  {
+   "t": 8.16,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[佐藤] ミオはどう？キャンプ派？",
+   "channel": "developer"
+  },
+  {
+   "t": 8.16,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[佐藤] ミオはどう？キャンプ派？",
+   "channel": "developer"
+  },
+  {
+   "t": 8.16,
+   "kind": "user_text",
+   "spirit": "ミオ",
+   "text": "[佐藤] ミオはどう？キャンプ派？"
+  },
+  {
+   "t": 8.93,
+   "kind": "speak_start",
+   "spirit": "ミオ"
+  },
+  {
+   "t": 12.29,
+   "kind": "said",
+   "spirit": "ミオ",
+   "text": "ミオはどう?キャンプ派?"
+  },
+  {
+   "t": 12.29,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[ミオ] ミオはどう?キャンプ派?",
+   "channel": "developer"
+  },
+  {
+   "t": 12.29,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[ミオ] ミオはどう?キャンプ派?",
+   "channel": "developer"
+  },
+  {
+   "t": 14.8,
+   "kind": "line",
+   "id": 5,
+   "who": "田中",
+   "to": [],
+   "text": "佐藤さん、車出せる？"
+  },
+  {
+   "t": 14.8,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[田中] 佐藤さん、車出せる？",
+   "channel": "developer"
+  },
+  {
+   "t": 14.8,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[田中] 佐藤さん、車出せる？",
+   "channel": "developer"
+  },
+  {
+   "t": 14.8,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[田中] 佐藤さん、車出せる？",
+   "channel": "developer"
+  },
+  {
+   "t": 15.8,
+   "kind": "line",
+   "id": 6,
+   "who": "佐藤",
+   "to": [],
+   "text": "うん、出せるよ。"
+  },
+  {
+   "t": 15.8,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[佐藤] うん、出せるよ。",
+   "channel": "developer"
+  },
+  {
+   "t": 15.8,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[佐藤] うん、出せるよ。",
+   "channel": "developer"
+  },
+  {
+   "t": 15.8,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[佐藤] うん、出せるよ。",
+   "channel": "developer"
+  },
+  {
+   "t": 16.8,
+   "kind": "line",
+   "id": 7,
+   "who": "田中",
+   "to": [
+    "ハル",
+    "ミオ",
+    "ソラ"
+   ],
+   "text": "みんな、持っていくといい物をひとつずつ教えて。"
+  },
+  {
+   "t": 16.8,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[田中] みんな、持っていくといい物をひとつずつ教えて。",
+   "channel": "developer"
+  },
+  {
+   "t": 16.8,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[田中] みんな、持っていくといい物をひとつずつ教えて。",
+   "channel": "developer"
+  },
+  {
+   "t": 16.8,
+   "kind": "user_text",
+   "spirit": "ハル",
+   "text": "[田中] みんな、持っていくといい物をひとつずつ教えて。"
+  },
+  {
+   "t": 17.82,
+   "kind": "user_text",
+   "spirit": "ミオ",
+   "text": "[進行] 続けて、あなたの番です。直前の田中さんの発言に答えてください。"
+  },
+  {
+   "t": 18.48,
+   "kind": "speak_start",
+   "spirit": "ミオ"
+  },
+  {
+   "t": 25.41,
+   "kind": "said",
+   "spirit": "ミオ",
+   "text": "私は折りたたみチェアかな、軽いやつ。温泉ならタオル多めに持ってくといいよ。"
+  },
+  {
+   "t": 25.41,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[ミオ] 私は折りたたみチェアかな、軽いやつ。温泉ならタオル多めに持ってくといいよ。",
+   "channel": "developer"
+  },
+  {
+   "t": 25.41,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[ミオ] 私は折りたたみチェアかな、軽いやつ。温泉ならタオル多めに持ってくといいよ。",
+   "channel": "developer"
+  },
+  {
+   "t": 26.94,
+   "kind": "user_text",
+   "spirit": "ソラ",
+   "text": "[進行] 続けて、あなたの番です。直前の田中さんの発言に答えてください。"
+  },
+  {
+   "t": 27.7,
+   "kind": "speak_start",
+   "spirit": "ソラ"
+  },
+  {
+   "t": 34.32,
+   "kind": "said",
+   "spirit": "ソラ",
+   "text": "私は折りたたみチェアかな、軽いやつ。温泉ならタオル多めに持ってくといいよ。"
+  },
+  {
+   "t": 34.32,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[ソラ] 私は折りたたみチェアかな、軽いやつ。温泉ならタオル多めに持ってくといいよ。",
+   "channel": "developer"
+  },
+  {
+   "t": 34.32,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[ソラ] 私は折りたたみチェアかな、軽いやつ。温泉ならタオル多めに持ってくといいよ。",
+   "channel": "developer"
+  },
+  {
+   "t": 36.85,
+   "kind": "line",
+   "id": 8,
+   "who": "佐藤",
+   "to": [
+    "ソラ"
+   ],
+   "text": "ソラ、さっきハルは温泉とキャンプのどっちを勧めてた？"
+  },
+  {
+   "t": 36.85,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[佐藤] ソラ、さっきハルは温泉とキャンプのどっちを勧めてた？",
+   "channel": "developer"
+  },
+  {
+   "t": 36.85,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[佐藤] ソラ、さっきハルは温泉とキャンプのどっちを勧めてた？",
+   "channel": "developer"
+  },
+  {
+   "t": 36.85,
+   "kind": "user_text",
+   "spirit": "ソラ",
+   "text": "[佐藤] ソラ、さっきハルは温泉とキャンプのどっちを勧めてた？"
+  },
+  {
+   "t": 37.66,
+   "kind": "speak_start",
+   "spirit": "ソラ"
+  },
+  {
+   "t": 41.93,
+   "kind": "delegation",
+   "spirit": "ソラ",
+   "text": ""
+  },
+  {
+   "t": 53.19,
+   "kind": "said",
+   "spirit": "ソラ",
+   "text": "ソラ、さっきハルは温泉とキャンプのどっちを勧めてた?今の会話を確認して答えるね。ハルは温泉って言ってたよ。タオル多めがいいって話してた。僕はチェアとタオルの話をしただけで、キャンプ推しとは言ってなかったよ。"
+  },
+  {
+   "t": 53.19,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[ソラ] ソラ、さっきハルは温泉とキャンプのどっちを勧めてた?今の会話を確認して答えるね。ハルは温泉って言ってたよ。タオル多めがいいって話してた。僕はチェアとタオルの話をしただけで、キャンプ推しとは言ってなかったよ。",
+   "channel": "developer"
+  },
+  {
+   "t": 53.19,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[ソラ] ソラ、さっきハルは温泉とキャンプのどっちを勧めてた?今の会話を確認して答えるね。ハルは温泉って言ってたよ。タオル多めがいいって話してた。僕はチェアとタオルの話をしただけで、キャンプ推しとは言ってなかったよ。",
+   "channel": "developer"
+  },
+  {
+   "t": 55.7,
+   "kind": "line",
+   "id": 9,
+   "who": "田中",
+   "to": [],
+   "text": "じゃあ、宿の予約は私がしておくね。"
+  },
+  {
+   "t": 55.7,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[田中] じゃあ、宿の予約は私がしておくね。",
+   "channel": "developer"
+  },
+  {
+   "t": 55.7,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[田中] じゃあ、宿の予約は私がしておくね。",
+   "channel": "developer"
+  },
+  {
+   "t": 55.7,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[田中] じゃあ、宿の予約は私がしておくね。",
+   "channel": "developer"
+  }
+ ],
+ "events": {
+  "ハル": [
+   {
+    "type": "session.started",
+    "session": {
+     "id": "rtc_u23_EoAZzp3oMJU7gzMpd1nXAqLpQNPlgjN0",
+     "status": "active",
+     "expires_at": 1795632975
+    },
+    "_t": 2.33
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 14000,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 16.53
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 29200,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 31.53
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 44400,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 46.57
+   }
+  ],
+  "ミオ": [
+   {
+    "type": "session.started",
+    "session": {
+     "id": "rtc_u23_EoAa0p3oMNcXGU8f5OFCUld3mUtfCEtz",
+     "status": "active",
+     "expires_at": 1795632976
+    },
+    "_t": 2.63
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAa7yKRtxivLbVPbeX5Z",
+     "end_ms": 6000,
+     "role": "assistant",
+     "start_ms": 5800,
+     "transcript": "ミオ"
+    },
+    "_t": 8.93
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAa7yKRtxivLbVPbeX5Z",
+     "end_ms": 9600,
+     "role": "assistant",
+     "start_ms": 5800,
+     "transcript": "ミオはどう?キャンプ派?"
+    },
+    "_t": 12.29
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 14200,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 16.88
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAaGHxkVA1tkkeBevW9i",
+     "end_ms": 15800,
+     "role": "assistant",
+     "start_ms": 15600,
+     "transcript": "私は"
+    },
+    "_t": 18.48
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAaGHxkVA1tkkeBevW9i",
+     "end_ms": 23000,
+     "role": "assistant",
+     "start_ms": 15600,
+     "transcript": "私は折りたたみチェアかな、軽いやつ。温泉ならタオル多めに持ってくといいよ。"
+    },
+    "_t": 25.41
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 29400,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 31.89
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 44800,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 46.9
+   }
+  ],
+  "ソラ": [
+   {
+    "type": "session.started",
+    "session": {
+     "id": "rtc_u23_EoAZzp3oM5PtwU1t0ZpUeIAcvCKGAaH5",
+     "status": "active",
+     "expires_at": 1795632975
+    },
+    "_t": 2.22
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 14400,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 16.5
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAaQgki2SeN8bJhomH51",
+     "end_ms": 25600,
+     "role": "assistant",
+     "start_ms": 25400,
+     "transcript": "私は"
+    },
+    "_t": 27.7
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 29400,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 31.43
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAaQgki2SeN8bJhomH51",
+     "end_ms": 32400,
+     "role": "assistant",
+     "start_ms": 25400,
+     "transcript": "私は折りたたみチェアかな、軽いやつ。温泉ならタオル多めに持ってくといいよ。"
+    },
+    "_t": 34.32
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAaZmaXmpTaZqX13CFAv",
+     "end_ms": 35600,
+     "role": "assistant",
+     "start_ms": 35400,
+     "transcript": "ソラ"
+    },
+    "_t": 37.66
+   },
+   {
+    "type": "delegation.created",
+    "item": {
+     "id": "item_EoAaeY2HU1Z2HmHmAU6Z3",
+     "type": "delegation",
+     "content": [
+      {
+       "type": "input_text",
+       "text": ""
+      }
+     ],
+     "handoff_id": "handoff_1",
+     "target": "client",
+     "user_bidi_turn_id": "turn_EoAaePn2uRXl1jywQHMyE"
+    },
+    "offset_ms": 39800,
+    "_t": 41.93
+   },
+   {
+    "type": "delegation.context.appended",
+    "delegation_item_id": "item_EoAaeY2HU1Z2HmHmAU6Z3",
+    "end_ms": 40200,
+    "start_ms": 40000,
+    "_t": 42.17
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 44600,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 46.42
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAaZmaXmpTaZqX13CFAv",
+     "end_ms": 51600,
+     "role": "assistant",
+     "start_ms": 35400,
+     "transcript": "ソラ、さっきハルは温泉とキャンプのどっちを勧めてた?今の会話を確認して答えるね。ハルは温泉って言ってたよ。タオル多めがいいって話してた。僕はチェアとタオルの話をしただけで、キャンプ推しとは言ってなかったよ。"
+    },
+    "_t": 53.19
+   }
+  ]
+ }
+}

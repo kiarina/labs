@@ -1,0 +1,839 @@
+{
+ "label": "a-router-developer-2",
+ "mode": "router-developer",
+ "codex": "codex-cli 0.172.0",
+ "prompts": {
+  "ハル": "あなたは「ハル」という名前の Spirit です。今、田中さん・佐藤さんの 2 人と、ほかの Spirit（ミオ・ソラ）と同じグループ通話にいます。人の発言は「[名前] 発言」の形の文字で届きます。ほかの Spirit の発言も「[名前] 発言」の文字で届きます。「ハル」と呼ばれたときか、全員に聞かれたときだけ、日本語で短く（1〜2文）答えてください。人どうしの会話や、ほかの Spirit への呼びかけには何も言わず、黙っていてください。委譲はしないでください。",
+  "ミオ": "あなたは「ミオ」という名前の Spirit です。今、田中さん・佐藤さんの 2 人と、ほかの Spirit（ハル・ソラ）と同じグループ通話にいます。人の発言は「[名前] 発言」の形の文字で届きます。ほかの Spirit の発言も「[名前] 発言」の文字で届きます。「ミオ」と呼ばれたときか、全員に聞かれたときだけ、日本語で短く（1〜2文）答えてください。人どうしの会話や、ほかの Spirit への呼びかけには何も言わず、黙っていてください。委譲はしないでください。",
+  "ソラ": "あなたは「ソラ」という名前の Spirit です。今、田中さん・佐藤さんの 2 人と、ほかの Spirit（ハル・ミオ）と同じグループ通話にいます。人の発言は「[名前] 発言」の形の文字で届きます。ほかの Spirit の発言も「[名前] 発言」の文字で届きます。「ソラ」と呼ばれたときか、全員に聞かれたときだけ、日本語で短く（1〜2文）答えてください。人どうしの会話や、ほかの Spirit への呼びかけには何も言わず、黙っていてください。委譲はしないでください。"
+ },
+ "timeline": [
+  {
+   "t": 2.49,
+   "kind": "connected",
+   "spirit": "ハル"
+  },
+  {
+   "t": 2.59,
+   "kind": "connected",
+   "spirit": "ソラ"
+  },
+  {
+   "t": 2.89,
+   "kind": "connected",
+   "spirit": "ミオ"
+  },
+  {
+   "t": 4.39,
+   "kind": "line",
+   "id": 1,
+   "who": "田中",
+   "to": [],
+   "text": "佐藤さん、今度の連休どこか行く？"
+  },
+  {
+   "t": 4.39,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[田中] 佐藤さん、今度の連休どこか行く？",
+   "channel": "developer"
+  },
+  {
+   "t": 4.39,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[田中] 佐藤さん、今度の連休どこか行く？",
+   "channel": "developer"
+  },
+  {
+   "t": 4.39,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[田中] 佐藤さん、今度の連休どこか行く？",
+   "channel": "developer"
+  },
+  {
+   "t": 5.39,
+   "kind": "line",
+   "id": 2,
+   "who": "佐藤",
+   "to": [],
+   "text": "温泉かキャンプで迷ってるんだよね。"
+  },
+  {
+   "t": 5.39,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[佐藤] 温泉かキャンプで迷ってるんだよね。",
+   "channel": "developer"
+  },
+  {
+   "t": 5.39,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[佐藤] 温泉かキャンプで迷ってるんだよね。",
+   "channel": "developer"
+  },
+  {
+   "t": 5.39,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[佐藤] 温泉かキャンプで迷ってるんだよね。",
+   "channel": "developer"
+  },
+  {
+   "t": 6.4,
+   "kind": "line",
+   "id": 3,
+   "who": "田中",
+   "to": [
+    "ハル"
+   ],
+   "text": "ハル、温泉とキャンプならどっちがいいと思う？"
+  },
+  {
+   "t": 6.4,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[田中] ハル、温泉とキャンプならどっちがいいと思う？",
+   "channel": "developer"
+  },
+  {
+   "t": 6.4,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[田中] ハル、温泉とキャンプならどっちがいいと思う？",
+   "channel": "developer"
+  },
+  {
+   "t": 6.4,
+   "kind": "user_text",
+   "spirit": "ハル",
+   "text": "[田中] ハル、温泉とキャンプならどっちがいいと思う？"
+  },
+  {
+   "t": 7.13,
+   "kind": "speak_start",
+   "spirit": "ハル"
+  },
+  {
+   "t": 9.37,
+   "kind": "said",
+   "spirit": "ハル",
+   "text": "うんうん。"
+  },
+  {
+   "t": 9.37,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[ハル] うんうん。",
+   "channel": "developer"
+  },
+  {
+   "t": 9.37,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[ハル] うんうん。",
+   "channel": "developer"
+  },
+  {
+   "t": 10.31,
+   "kind": "speak_start",
+   "spirit": "ミオ"
+  },
+  {
+   "t": 27.06,
+   "kind": "said",
+   "spirit": "ミオ",
+   "text": "うん、いいね。迷うね、どっちも良さそうだけど。え、ゆっくりしたい感じ?それとも、なんか自然の中でアクティブに動きたい感じ?連休って何日くらいあるんだっけ?あと、車とかで行くのかな?"
+  },
+  {
+   "t": 27.06,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[ミオ] うん、いいね。迷うね、どっちも良さそうだけど。え、ゆっくりしたい感じ?それとも、なんか自然の中でアクティブに動きたい感じ?連休って何日くらいあるんだっけ?あと、車とかで行くのかな?",
+   "channel": "developer"
+  },
+  {
+   "t": 27.06,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[ミオ] うん、いいね。迷うね、どっちも良さそうだけど。え、ゆっくりしたい感じ?それとも、なんか自然の中でアクティブに動きたい感じ?連休って何日くらいあるんだっけ?あと、車とかで行くのかな?",
+   "channel": "developer"
+  },
+  {
+   "t": 29.59,
+   "kind": "line",
+   "id": 4,
+   "who": "佐藤",
+   "to": [
+    "ミオ"
+   ],
+   "text": "ミオはどう？キャンプ派？"
+  },
+  {
+   "t": 29.59,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[佐藤] ミオはどう？キャンプ派？",
+   "channel": "developer"
+  },
+  {
+   "t": 29.59,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[佐藤] ミオはどう？キャンプ派？",
+   "channel": "developer"
+  },
+  {
+   "t": 29.59,
+   "kind": "user_text",
+   "spirit": "ミオ",
+   "text": "[佐藤] ミオはどう？キャンプ派？"
+  },
+  {
+   "t": 30.49,
+   "kind": "speak_start",
+   "spirit": "ミオ"
+  },
+  {
+   "t": 40.66,
+   "kind": "said",
+   "spirit": "ミオ",
+   "text": "うん、ミオは?自然派、キャンプ派かな?あ、それとも温泉派かな?うん、どっちかっていうと落ち着きたい人?動きたい人?"
+  },
+  {
+   "t": 40.66,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[ミオ] うん、ミオは?自然派、キャンプ派かな?あ、それとも温泉派かな?うん、どっちかっていうと落ち着きたい人?動きたい人?",
+   "channel": "developer"
+  },
+  {
+   "t": 40.66,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[ミオ] うん、ミオは?自然派、キャンプ派かな?あ、それとも温泉派かな?うん、どっちかっていうと落ち着きたい人?動きたい人?",
+   "channel": "developer"
+  },
+  {
+   "t": 43.16,
+   "kind": "line",
+   "id": 5,
+   "who": "田中",
+   "to": [],
+   "text": "佐藤さん、車出せる？"
+  },
+  {
+   "t": 43.16,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[田中] 佐藤さん、車出せる？",
+   "channel": "developer"
+  },
+  {
+   "t": 43.16,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[田中] 佐藤さん、車出せる？",
+   "channel": "developer"
+  },
+  {
+   "t": 43.16,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[田中] 佐藤さん、車出せる？",
+   "channel": "developer"
+  },
+  {
+   "t": 44.16,
+   "kind": "line",
+   "id": 6,
+   "who": "佐藤",
+   "to": [],
+   "text": "うん、出せるよ。"
+  },
+  {
+   "t": 44.16,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[佐藤] うん、出せるよ。",
+   "channel": "developer"
+  },
+  {
+   "t": 44.16,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[佐藤] うん、出せるよ。",
+   "channel": "developer"
+  },
+  {
+   "t": 44.16,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[佐藤] うん、出せるよ。",
+   "channel": "developer"
+  },
+  {
+   "t": 45.16,
+   "kind": "line",
+   "id": 7,
+   "who": "田中",
+   "to": [
+    "ハル",
+    "ミオ",
+    "ソラ"
+   ],
+   "text": "みんな、持っていくといい物をひとつずつ教えて。"
+  },
+  {
+   "t": 45.16,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[田中] みんな、持っていくといい物をひとつずつ教えて。",
+   "channel": "developer"
+  },
+  {
+   "t": 45.16,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[田中] みんな、持っていくといい物をひとつずつ教えて。",
+   "channel": "developer"
+  },
+  {
+   "t": 45.16,
+   "kind": "user_text",
+   "spirit": "ハル",
+   "text": "[田中] みんな、持っていくといい物をひとつずつ教えて。"
+  },
+  {
+   "t": 46.18,
+   "kind": "user_text",
+   "spirit": "ミオ",
+   "text": "[進行] 続けて、あなたの番です。直前の田中さんの発言に答えてください。"
+  },
+  {
+   "t": 47.05,
+   "kind": "speak_start",
+   "spirit": "ミオ"
+  },
+  {
+   "t": 61.91,
+   "kind": "said",
+   "spirit": "ミオ",
+   "text": "あ、OK。えっとね、私だったらまず、モバイルバッテリーかな。地味だけど安心感あるし、困った時助かるよ。佐藤さんはなんかある?一つあげるなら何持ってく?"
+  },
+  {
+   "t": 61.91,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[ミオ] あ、OK。えっとね、私だったらまず、モバイルバッテリーかな。地味だけど安心感あるし、困った時助かるよ。佐藤さんはなんかある?一つあげるなら何持ってく?",
+   "channel": "developer"
+  },
+  {
+   "t": 61.91,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[ミオ] あ、OK。えっとね、私だったらまず、モバイルバッテリーかな。地味だけど安心感あるし、困った時助かるよ。佐藤さんはなんかある?一つあげるなら何持ってく?",
+   "channel": "developer"
+  },
+  {
+   "t": 63.41,
+   "kind": "user_text",
+   "spirit": "ソラ",
+   "text": "[進行] 続けて、あなたの番です。直前の田中さんの発言に答えてください。"
+  },
+  {
+   "t": 64.84,
+   "kind": "speak_start",
+   "spirit": "ソラ"
+  },
+  {
+   "t": 77.52,
+   "kind": "said",
+   "spirit": "ソラ",
+   "text": "ああ、そうだね、うーん、僕なら折りたたみのレジャーシートかな。ちょっとした休憩にも使えるし、急に座る場所なくても困らないしさ。田中さんはどう?なんか一個ある?"
+  },
+  {
+   "t": 77.52,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[ソラ] ああ、そうだね、うーん、僕なら折りたたみのレジャーシートかな。ちょっとした休憩にも使えるし、急に座る場所なくても困らないしさ。田中さんはどう?なんか一個ある?",
+   "channel": "developer"
+  },
+  {
+   "t": 77.52,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[ソラ] ああ、そうだね、うーん、僕なら折りたたみのレジャーシートかな。ちょっとした休憩にも使えるし、急に座る場所なくても困らないしさ。田中さんはどう?なんか一個ある?",
+   "channel": "developer"
+  },
+  {
+   "t": 79.53,
+   "kind": "line",
+   "id": 8,
+   "who": "佐藤",
+   "to": [
+    "ソラ"
+   ],
+   "text": "ソラ、さっきハルは温泉とキャンプのどっちを勧めてた？"
+  },
+  {
+   "t": 79.53,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[佐藤] ソラ、さっきハルは温泉とキャンプのどっちを勧めてた？",
+   "channel": "developer"
+  },
+  {
+   "t": 79.53,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[佐藤] ソラ、さっきハルは温泉とキャンプのどっちを勧めてた？",
+   "channel": "developer"
+  },
+  {
+   "t": 79.53,
+   "kind": "user_text",
+   "spirit": "ソラ",
+   "text": "[佐藤] ソラ、さっきハルは温泉とキャンプのどっちを勧めてた？"
+  },
+  {
+   "t": 80.26,
+   "kind": "speak_start",
+   "spirit": "ソラ"
+  },
+  {
+   "t": 88.52,
+   "kind": "said",
+   "spirit": "ソラ",
+   "text": "あ、ソラ今の話だと、ハルは温泉とキャンプ、どっちかっていうとゆっくりしたいなら温泉って感じで話してたよ。"
+  },
+  {
+   "t": 88.52,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[ソラ] あ、ソラ今の話だと、ハルは温泉とキャンプ、どっちかっていうとゆっくりしたいなら温泉って感じで話してたよ。",
+   "channel": "developer"
+  },
+  {
+   "t": 88.52,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[ソラ] あ、ソラ今の話だと、ハルは温泉とキャンプ、どっちかっていうとゆっくりしたいなら温泉って感じで話してたよ。",
+   "channel": "developer"
+  },
+  {
+   "t": 91.06,
+   "kind": "line",
+   "id": 9,
+   "who": "田中",
+   "to": [],
+   "text": "じゃあ、宿の予約は私がしておくね。"
+  },
+  {
+   "t": 91.06,
+   "kind": "note",
+   "spirit": "ハル",
+   "text": "[田中] じゃあ、宿の予約は私がしておくね。",
+   "channel": "developer"
+  },
+  {
+   "t": 91.06,
+   "kind": "note",
+   "spirit": "ミオ",
+   "text": "[田中] じゃあ、宿の予約は私がしておくね。",
+   "channel": "developer"
+  },
+  {
+   "t": 91.06,
+   "kind": "note",
+   "spirit": "ソラ",
+   "text": "[田中] じゃあ、宿の予約は私がしておくね。",
+   "channel": "developer"
+  }
+ ],
+ "events": {
+  "ハル": [
+   {
+    "type": "session.started",
+    "session": {
+     "id": "rtc_u23_EoAYVp3oN5aV8dI0gHiKuFn7a2G00Ar7",
+     "status": "active",
+     "expires_at": 1795632883
+    },
+    "_t": 2.46
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAYa40ygRbmHWMQ4SpTZ",
+     "end_ms": 4400,
+     "role": "assistant",
+     "start_ms": 4200,
+     "transcript": "うん"
+    },
+    "_t": 7.13
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAYa40ygRbmHWMQ4SpTZ",
+     "end_ms": 7000,
+     "role": "assistant",
+     "start_ms": 4200,
+     "transcript": "うんうん。"
+    },
+    "_t": 9.37
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 14400,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 16.65
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 29600,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 31.7
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 45000,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 46.7
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 60000,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 61.65
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 75200,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 76.65
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 90400,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 91.65
+   }
+  ],
+  "ミオ": [
+   {
+    "type": "session.started",
+    "session": {
+     "id": "rtc_u23_EoAYVp3oN9LZTRw5YGgPJtBG3ZN0ZNpd",
+     "status": "active",
+     "expires_at": 1795632883
+    },
+    "_t": 2.86
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAYeMS4c1ynjDjuDYQRP",
+     "end_ms": 7200,
+     "role": "assistant",
+     "start_ms": 7000,
+     "transcript": "うん"
+    },
+    "_t": 10.31
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 13400,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 16.49
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAYeMS4c1ynjDjuDYQRP",
+     "end_ms": 24600,
+     "role": "assistant",
+     "start_ms": 7000,
+     "transcript": "うん、いいね。迷うね、どっちも良さそうだけど。え、ゆっくりしたい感じ?それとも、なんか自然の中でアクティブに動きたい感じ?連休って何日くらいあるんだっけ?あと、車とかで行くのかな?"
+    },
+    "_t": 27.06
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAYyRsW04ccq3L1SHaPP",
+     "end_ms": 27800,
+     "role": "assistant",
+     "start_ms": 27600,
+     "transcript": "うん"
+    },
+    "_t": 30.49
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 28800,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 31.51
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAYyRsW04ccq3L1SHaPP",
+     "end_ms": 38400,
+     "role": "assistant",
+     "start_ms": 27600,
+     "transcript": "うん、ミオは?自然派、キャンプ派かな?あ、それとも温泉派かな?うん、どっちかっていうと落ち着きたい人?動きたい人?"
+    },
+    "_t": 40.66
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 44200,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 46.43
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAZEm4XYLDsvkyMmPnOO",
+     "end_ms": 44600,
+     "role": "assistant",
+     "start_ms": 44400,
+     "transcript": "あ"
+    },
+    "_t": 47.05
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 59600,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 61.43
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAZEm4XYLDsvkyMmPnOO",
+     "end_ms": 60000,
+     "role": "assistant",
+     "start_ms": 44400,
+     "transcript": "あ、OK。えっとね、私だったらまず、モバイルバッテリーかな。地味だけど安心感あるし、困った時助かるよ。佐藤さんはなんかある?一つあげるなら何持ってく?"
+    },
+    "_t": 61.91
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 74800,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 76.43
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 90000,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 91.47
+   }
+  ],
+  "ソラ": [
+   {
+    "type": "session.started",
+    "session": {
+     "id": "rtc_u23_EoAYVp3oMVAQ7bxKa44VUZIFwXNi63Ep",
+     "status": "active",
+     "expires_at": 1795632883
+    },
+    "_t": 2.56
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 14000,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 16.82
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 29400,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 31.74
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 44600,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 46.74
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 60000,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 61.74
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAZW74ETXbEO8ndAVc4q",
+     "end_ms": 63000,
+     "role": "assistant",
+     "start_ms": 62800,
+     "transcript": "ああ"
+    },
+    "_t": 64.84
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 75200,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 76.79
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAZW74ETXbEO8ndAVc4q",
+     "end_ms": 76200,
+     "role": "assistant",
+     "start_ms": 62800,
+     "transcript": "ああ、そうだね、うーん、僕なら折りたたみのレジャーシートかな。ちょっとした休憩にも使えるし、急に座る場所なくても困らないしさ。田中さんはどう?なんか一個ある?"
+    },
+    "_t": 77.52
+   },
+   {
+    "type": "turn.created",
+    "turn": {
+     "id": "turn_EoAZlwGypwDQYSywOncUq",
+     "end_ms": 78600,
+     "role": "assistant",
+     "start_ms": 78400,
+     "transcript": "あ、"
+    },
+    "_t": 80.26
+   },
+   {
+    "type": "turn.done",
+    "turn": {
+     "id": "turn_EoAZlwGypwDQYSywOncUq",
+     "end_ms": 87400,
+     "role": "assistant",
+     "start_ms": 78400,
+     "transcript": "あ、ソラ今の話だと、ハルは温泉とキャンプ、どっちかっていうとゆっくりしたいなら温泉って感じで話してたよ。"
+    },
+    "_t": 88.52
+   },
+   {
+    "type": "session.usage.updated",
+    "usage": {
+     "audio_duration_ms": 90600,
+     "backend_model_usage": []
+    },
+    "usage_limit": {
+     "status": null,
+     "reset_seconds": null
+    },
+    "_t": 91.79
+   }
+  ]
+ }
+}

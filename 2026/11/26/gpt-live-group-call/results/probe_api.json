@@ -1,0 +1,114 @@
+{
+ "codex": "codex-cli 0.172.0",
+ "timeline": [
+  {
+   "t": 2.54,
+   "kind": "connected",
+   "spirit": "ハル"
+  },
+  {
+   "t": 4.05,
+   "kind": "step",
+   "name": "user-not-addressed"
+  },
+  {
+   "t": 4.05,
+   "kind": "user_text",
+   "spirit": "ハル",
+   "text": "[田中] 佐藤さん、昨日の試合見た？"
+  },
+  {
+   "t": 4.64,
+   "kind": "speak_start",
+   "spirit": "ハル"
+  },
+  {
+   "t": 6.83,
+   "kind": "said",
+   "spirit": "ハル",
+   "text": "You know?"
+  },
+  {
+   "t": 10.05,
+   "kind": "step",
+   "name": "user-addressed"
+  },
+  {
+   "t": 10.05,
+   "kind": "user_text",
+   "spirit": "ハル",
+   "text": "[田中] ハル、明日の天気ってどう思う？ひとことで。"
+  },
+  {
+   "t": 10.85,
+   "kind": "speak_start",
+   "spirit": "ハル"
+  },
+  {
+   "t": 16.38,
+   "kind": "said",
+   "spirit": "ハル",
+   "text": "うん、どこの明日の天気かな? 場所を教えて。"
+  },
+  {
+   "t": 18.41,
+   "kind": "step",
+   "name": "ctx-speakable"
+  },
+  {
+   "t": 19.13,
+   "kind": "speak_start",
+   "spirit": "ハル"
+  },
+  {
+   "t": 21.31,
+   "kind": "said",
+   "spirit": "ハル",
+   "text": "みかん。"
+  },
+  {
+   "t": 24.41,
+   "kind": "step",
+   "name": "ctx-user"
+  },
+  {
+   "t": 24.52,
+   "kind": "dc_error",
+   "spirit": "ハル",
+   "event": {
+    "type": "error",
+    "event_id": "event_EoAMSjlzbiEMhfLE3k7g4",
+    "error": {
+     "type": "invalid_request_error",
+     "code": "invalid_value",
+     "message": "Invalid value: 'user'. Supported values are: 'speakable', 'commentary', and 'developer'.",
+     "param": "channel",
+     "event_id": null
+    },
+    "_t": 24.52
+   }
+  },
+  {
+   "t": 30.41,
+   "kind": "step",
+   "name": "response.create"
+  },
+  {
+   "t": 30.53,
+   "kind": "dc_error",
+   "spirit": "ハル",
+   "event": {
+    "type": "error",
+    "event_id": "event_EoAMY7f5AdeuVJrNwERJo",
+    "error": {
+     "type": "invalid_request_error",
+     "code": "invalid_request_error",
+     "message": "response.create requires a session with Responses delegation.",
+     "param": "type",
+     "event_id": null
+    },
+    "_t": 30.53
+   }
+  }
+ ]
+}
