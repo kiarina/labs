@@ -19,6 +19,7 @@ git sparse-checkout set .gitignore .mise/tasks Makefile mise.toml YYYY/MM/DD/{sl
 ## Labs
 
 - 2026/11
+  - [Concurrent Codex app-server realtime calls on gpt-live-1.1-codex (1, 2, 4 calls; separate processes vs threads in one process)](2026/11/26/codex-gpt-live-concurrent-calls/README.md) - [codex](tags/codex.md), [realtime](tags/realtime.md), [webrtc](tags/webrtc.md), [aiortc](tags/aiortc.md), [gpt-live](tags/gpt-live.md)
   - [Starting a Codex app-server realtime call with gpt-live-1.1-codex (Codex 0.170.0 model override vs 0.172.0 default)](2026/11/25/codex-gpt-live-1-1/README.md) - [codex](tags/codex.md), [realtime](tags/realtime.md), [webrtc](tags/webrtc.md), [aiortc](tags/aiortc.md)
   - [A three-person video call with gpt-live-1.1-codex: speaker notes, camera notes, face notes, delegations from a 16-keyframe grid, and a real video](2026/11/25/gpt-live-multi-speaker-camera/README.md) - [codex](tags/codex.md), [realtime](tags/realtime.md), [webrtc](tags/webrtc.md), [aiortc](tags/aiortc.md), [speaker-identification](tags/speaker-identification.md), [vision](tags/vision.md), [audio](tags/audio.md), [face-recognition](tags/face-recognition.md)
   - [Who said what: speaker notes for gpt-live-1.1-codex in a three-person call (none vs oracle vs ECAPA-TDNN notes on the data channel)](2026/11/25/gpt-live-multi-speaker-notes/README.md) - [codex](tags/codex.md), [realtime](tags/realtime.md), [webrtc](tags/webrtc.md), [aiortc](tags/aiortc.md), [speaker-identification](tags/speaker-identification.md), [audio](tags/audio.md)

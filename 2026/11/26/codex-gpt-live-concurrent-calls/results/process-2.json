@@ -1,0 +1,60 @@
+{
+ "label": "process-2",
+ "codex": "codex-cli 0.172.0",
+ "mode": "process",
+ "calls_requested": 2,
+ "calls_connected": 2,
+ "calls_answered_all_rounds_with_own_word": 2,
+ "calls": [
+  {
+   "call": 0,
+   "word": "りんご",
+   "rounds": [
+    {
+     "reply": "りんご。",
+     "reply_s": 2.96,
+     "matches_word": true
+    },
+    {
+     "reply": "りんご。",
+     "reply_s": 3.28,
+     "matches_word": true
+    }
+   ],
+   "connected_s": 1.84,
+   "dc_event_types": [
+    "output_transcript.added",
+    "session.context.appended",
+    "session.started",
+    "turn.created",
+    "turn.delta",
+    "turn.done"
+   ]
+  },
+  {
+   "call": 1,
+   "word": "みかん",
+   "rounds": [
+    {
+     "reply": "みかん",
+     "reply_s": 2.9,
+     "matches_word": true
+    },
+    {
+     "reply": "みかん",
+     "reply_s": 2.84,
+     "matches_word": true
+    }
+   ],
+   "connected_s": 2.96,
+   "dc_event_types": [
+    "output_transcript.added",
+    "session.context.appended",
+    "session.started",
+    "turn.created",
+    "turn.delta",
+    "turn.done"
+   ]
+  }
+ ]
+}

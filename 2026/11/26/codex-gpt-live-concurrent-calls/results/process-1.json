@@ -1,0 +1,35 @@
+{
+ "label": "process-1",
+ "codex": "codex-cli 0.172.0",
+ "mode": "process",
+ "calls_requested": 1,
+ "calls_connected": 1,
+ "calls_answered_all_rounds_with_own_word": 1,
+ "calls": [
+  {
+   "call": 0,
+   "word": "りんご",
+   "rounds": [
+    {
+     "reply": "りんご、です。",
+     "reply_s": 3.7,
+     "matches_word": true
+    },
+    {
+     "reply": "りんご。",
+     "reply_s": 3.03,
+     "matches_word": true
+    }
+   ],
+   "connected_s": 2.7,
+   "dc_event_types": [
+    "output_transcript.added",
+    "session.context.appended",
+    "session.started",
+    "turn.created",
+    "turn.delta",
+    "turn.done"
+   ]
+  }
+ ]
+}
