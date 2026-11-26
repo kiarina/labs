@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 # Sends the app's source, the media, the VRM and the scenes to the Windows PC
-# (HOST, default kiarina@g-gear-2022) under %USERPROFILE%\work\sc.
+# (HOST, an ssh destination with Windows' tar) under %USERPROFILE%\work\sc.
 set -euo pipefail
 lab="$(cd "$(dirname "$0")/../.." && pwd)"
-host="${HOST:-kiarina@g-gear-2022}"
+host="${HOST:?set HOST to the Windows ssh destination}"
 media="$(cd "$lab/../../../../tests/assets" && pwd)"
-dest='C:/Users/kiarina/work/sc'
-ssh "$host" "if not exist C:\\Users\\kiarina\\work\\sc\\media mkdir C:\\Users\\kiarina\\work\\sc\\media C:\\Users\\kiarina\\work\\sc\\scenes C:\\Users\\kiarina\\work\\sc\\saved C:\\Users\\kiarina\\work\\sc\\logs C:\\Users\\kiarina\\work\\sc\\tools"
+# The ssh session starts in the user's home: paths are relative to it.
+dest='work/sc'
+ssh "$host" "if not exist work\\sc\\media mkdir work\\sc\\media work\\sc\\scenes work\\sc\\saved work\\sc\\logs work\\sc\\tools"
 export COPYFILE_DISABLE=1
 tar -C "$lab" -czf - --exclude app/build --exclude app/.dart_tool --exclude app/ios --exclude app/android \
   --exclude app/macos --exclude 'app/windows/flutter/ephemeral' --exclude app/flutter_scene_generated app tools \

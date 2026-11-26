@@ -406,7 +406,7 @@ Android・iOS・Windows は未対応。Android は同じく公開の口（`Andro
 
 ## Part 8: Windows で確かめる
 
-G-GEAR-2022 相当の Windows 11（Core i9-12900K・RTX 3080 Ti、Flutter 3.47.2）で、`tools/windows/` の手順で動かした（`send.sh` でソースと素材を送り、
+Windows 11 の開発機（Core i9-12900K・RTX 3080 Ti、Flutter 3.47.2）で、`tools/windows/` の手順で動かした（`send.sh` でソースと素材を送り、
 `build.cmd`・`run.cmd` を対話のスケジュールタスクで走らせ、制御のポートは ssh のトンネルで Mac へ）。Windows では Codex が動くので、spirit 込みでも確かめた。
 
 ### Windows のための変更
@@ -478,7 +478,7 @@ python3 2026/11/26/spirit-canvas/drive.py s2 event press <button id>
 curl -s -XPOST "localhost:8813/tool?name=canvas_state" --data-binary '{"set":{"n":1}}'
 ```
 
-Windows: `tools/windows/send.sh` で送り、G-GEAR で `build.cmd` と `run.cmd` を対話のスケジュールタスクとして走らせる（手順は `docs/playbooks/multi-machine-agent-orchestration.md` と同じ型。手元にはない）。
+Windows: `HOST=<ssh の宛先> tools/windows/send.sh` で送り、Windows の機で `build.cmd` と `run.cmd` を対話のスケジュールタスク（`schtasks /create ... /it`）として走らせる（ssh のセッションからはプラグインのリンクをたどれず、GUI も出ないため）。
 制御のポートは `ssh -N -L 8816:127.0.0.1:8816 <host>` で手元へ。
 
 iOS・Android: `DEVICE=<udid> mise -C 2026/11/26/spirit-canvas run run-ios`・`DEVICE=<adb serial> mise -C 2026/11/26/spirit-canvas run run-android`（spirit はつながらない。
