@@ -1,4 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:vector_math/vector_math.dart' as vm;
 
 /// A setting from the environment the lab's `run` task starts the app with
 /// (macOS), else from `--dart-define` (iOS and Android, where `flutter run`
@@ -123,5 +127,103 @@ class MediaLibrary {
         : src;
     final f = File(path);
     return path.isNotEmpty && f.existsSync() ? f : null;
+  }
+
+  /// For each model: its size in metres in a world (w across, h up, d
+  /// deep, at scale 1), where its bottom is relative to its origin, and the
+  /// names of its animations. Read from the glTF's own description.
+  Map<String, Object> modelInfo() => {
+    for (final name in list()['model'] ?? const <String>[])
+      if (resolve(name)?.file case final f?) name: _glbInfo(f),
+  };
+
+  static Object _glbInfo(File f) {
+    try {
+      final b = f.readAsBytesSync();
+      final d = ByteData.sublistView(b);
+      final n = d.getUint32(12, Endian.little);
+      final j = jsonDecode(
+        utf8.decode(b.sublist(20, 20 + n)),
+      ) as Map<String, dynamic>;
+      final nodes = (j['nodes'] as List?) ?? const [];
+      final meshes = (j['meshes'] as List?) ?? const [];
+      final accessors = (j['accessors'] as List?) ?? const [];
+      final lo = vm.Vector3.all(double.infinity);
+      final hi = vm.Vector3.all(double.negativeInfinity);
+      vm.Vector3 v3(List l) => vm.Vector3(
+        (l[0] as num).toDouble(),
+        (l[1] as num).toDouble(),
+        (l[2] as num).toDouble(),
+      );
+      void visit(int i, vm.Matrix4 parent) {
+        final node = nodes[i] as Map<String, dynamic>;
+        final vm.Matrix4 local;
+        if (node['matrix'] case final List m) {
+          local = vm.Matrix4.fromList([
+            for (final x in m) (x as num).toDouble(),
+          ]);
+        } else {
+          final t = node['translation'] as List?;
+          final r = node['rotation'] as List?;
+          final s = node['scale'] as List?;
+          local = vm.Matrix4.compose(
+            t == null ? vm.Vector3.zero() : v3(t),
+            r == null
+                ? vm.Quaternion.identity()
+                : vm.Quaternion(
+                    (r[0] as num).toDouble(),
+                    (r[1] as num).toDouble(),
+                    (r[2] as num).toDouble(),
+                    (r[3] as num).toDouble(),
+                  ),
+            s == null ? vm.Vector3.all(1) : v3(s),
+          );
+        }
+        final m = parent * local;
+        if (node['mesh'] case final int mi) {
+          for (final p in (meshes[mi]['primitives'] as List)) {
+            final a = accessors[p['attributes']['POSITION'] as int];
+            final mn = v3(a['min'] as List), mx = v3(a['max'] as List);
+            for (var c = 0; c < 8; c++) {
+              final corner = vm.Vector3(
+                c & 1 == 0 ? mn.x : mx.x,
+                c & 2 == 0 ? mn.y : mx.y,
+                c & 4 == 0 ? mn.z : mx.z,
+              );
+              final w = m.transformed3(corner);
+              lo.setValues(
+                w.x < lo.x ? w.x : lo.x,
+                w.y < lo.y ? w.y : lo.y,
+                w.z < lo.z ? w.z : lo.z,
+              );
+              hi.setValues(
+                w.x > hi.x ? w.x : hi.x,
+                w.y > hi.y ? w.y : hi.y,
+                w.z > hi.z ? w.z : hi.z,
+              );
+            }
+          }
+        }
+        for (final c in (node['children'] as List?) ?? const []) {
+          visit(c as int, m);
+        }
+      }
+
+      final scene = (j['scenes'] as List)[(j['scene'] as int?) ?? 0];
+      for (final r in scene['nodes'] as List) {
+        visit(r as int, vm.Matrix4.identity());
+      }
+      double r2(double x) => double.parse(x.toStringAsFixed(2));
+      return {
+        'size_m': [r2(hi.x - lo.x), r2(hi.y - lo.y), r2(hi.z - lo.z)],
+        'bottom_m': r2(lo.y),
+        'animations': [
+          for (final a in (j['animations'] as List?) ?? const []) a['name'],
+        ],
+        'textured': ((j['images'] as List?) ?? const []).isNotEmpty,
+      };
+    } catch (e) {
+      return {'error': '$e'};
+    }
   }
 }

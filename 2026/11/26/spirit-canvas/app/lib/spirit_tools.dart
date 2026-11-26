@@ -405,8 +405,10 @@ final List<Map<String, dynamic>> kCanvasTools = [
   {
     'name': 'canvas_media',
     'description':
-        'List the media files you can show (image, video, audio, vrm, vrma). '
-        'Use these names as src.',
+        'List the media files you can show (image, video, audio, vrm, vrma, '
+        'model). Use these names as src. model_info tells each 3D model\'s '
+        'size in metres (w across, h up, d deep), its animations, and whether '
+        'it has pictures on it.',
     'inputSchema': {
       'type': 'object',
       'properties': {},

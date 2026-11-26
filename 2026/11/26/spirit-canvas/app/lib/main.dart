@@ -482,7 +482,12 @@ class HomePageState extends State<HomePage> {
           await WebHost.instance.eval(a['id'] as String, a['js'] as String),
         );
       case 'canvas_media':
-        return ToolOutcome(jsonEncode(MediaLibrary.instance.list()));
+        return ToolOutcome(
+          jsonEncode({
+            ...MediaLibrary.instance.list(),
+            'model_info': MediaLibrary.instance.modelInfo(),
+          }),
+        );
     }
     return ToolOutcome('unknown tool $name', ok: false);
   }

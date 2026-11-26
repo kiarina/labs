@@ -76,7 +76,7 @@ def box(name, mat, size, loc, rot=(0, 0, 0)):
     bpy.ops.mesh.primitive_cube_add(size=1, location=loc, rotation=rot)
     o = bpy.context.object
     o.scale = size
-    bpy.ops.object.transform_apply(scale=True)
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
     return add(o, mat, name)
 
 
