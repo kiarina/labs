@@ -14,6 +14,7 @@ import 'canvas/web_host.dart';
 import 'control_server.dart';
 import 'demo_scene.dart';
 import 'media.dart';
+import 'self_test.dart';
 import 'spirit.dart';
 import 'spirit_tools.dart';
 
@@ -136,6 +137,7 @@ class HomePageState extends State<HomePage> {
     }
     final port = int.tryParse(env('CONTROL_PORT')) ?? 0;
     if (port > 0) _control = await ControlServer.start(port, this);
+    if (env('SELF_TEST') == '1') unawaited(runSelfTest(this));
   }
 
   @override

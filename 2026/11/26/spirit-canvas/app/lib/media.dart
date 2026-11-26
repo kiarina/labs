@@ -5,9 +5,22 @@ import 'dart:io';
 /// starts the app).
 String env(String name, [String fallback = '']) {
   final v = Platform.environment[name];
-  if (v != null && v.isNotEmpty) return v;
+  if (v != null && v.isNotEmpty) return _inApp(v);
   final d = _defines[name];
-  return d == null || d.isEmpty ? fallback : d;
+  return d == null || d.isEmpty ? fallback : _inApp(d);
+}
+
+/// `@app/...` is a path in the app's own folder (the parent of its temporary
+/// folder: the container on iOS, `/data/user/0/<package>` on Android), for
+/// settings given at build time before that folder's path is known. Paths
+/// separated by `:` each get it.
+String _inApp(String v) {
+  if (!v.contains('@app/')) return v;
+  final root = Directory.systemTemp.parent.path;
+  return v
+      .split(':')
+      .map((p) => p.startsWith('@app/') ? '$root/${p.substring(5)}' : p)
+      .join(':');
 }
 
 const _defines = {
@@ -22,6 +35,7 @@ const _defines = {
   'CONTROL_PORT': String.fromEnvironment('CONTROL_PORT'),
   'START_MODE': String.fromEnvironment('START_MODE'),
   'ABBREVIATE_VIEW': String.fromEnvironment('ABBREVIATE_VIEW'),
+  'SELF_TEST': String.fromEnvironment('SELF_TEST'),
 };
 
 /// The media the spirit may show: files under MEDIA_DIR (the labs shared

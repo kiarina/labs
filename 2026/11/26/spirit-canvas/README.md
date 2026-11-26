@@ -404,6 +404,28 @@ Android・iOS・Windows は未対応。Android は同じく公開の口（`Andro
 
 - スマートフォンでは spirit がいない（`no spirit`）。製品では、別のマシンの spirit から端末のキャンバスを動かす形になる（この lab の範囲外）
 
+### iPad の実機
+
+iPad Air（第 4 世代、Wi-Fi でつながった実機）で、release の版に入れた自己試験（`lib/self_test.dart`。`check_device.py` と同じ手順をアプリが自分で流し、
+結果と画像を自分の Documents に書く）を `tools/ios/device-selftest.sh` で動かした。素材は `devicectl device copy to` でアプリの Documents へ写し、
+設定のパスは `@app/…`（アプリのフォルダからのパス）で渡した。Wi-Fi の実機には Mac から端末のポートへつなげないため、制御のポートは使っていない。
+
+| 確かめたこと | iPad Air 4（実機） |
+| --- | --- |
+| 見本（VRM の MToon・写真・動画・SVG・選択肢・入力欄・音声） | 実機の GPU で描けた（Simulator と見た目が同じ） |
+| 大きさ・`%`・`anchor` | 820x997（縦）で置き方どおり |
+| スクリプト・状態・タイムライン・`on`・効果音・BGM | 動いた（スクリプトの時計は地方時） |
+| WebView: `asset://`・イベント・状態・中の音・撮影 | 動いた（`played ok`、撮影も重なった） |
+| 作り置きの呼び出し | 4 ms〜 |
+
+| | | |
+| --- | --- | --- |
+| ![iPad の見本](results/ipad-1-demo.jpg) | ![iPad の動き](results/ipad-3-behaviors.jpg) | ![iPad の画面](results/ipad-screen.jpg) |
+| 自己試験の撮影（見本） | 時計・回数・スライド | 実機の画面（`devicectl` の撮影） |
+
+- Wi-Fi の実機は Appium から見えず（`Unknown device or simulator UDID`）、画面の実際のタップは道具からは試していない
+- 自己試験の `behaviors` の `state` に、後の段の状態が入っていた（状態の表そのものを結果に入れていた）。写しを入れるように直した
+
 ## Part 8: Windows で確かめる
 
 Windows 11 の開発機（Core i9-12900K・RTX 3080 Ti、Flutter 3.47.2）で、`tools/windows/` の手順で動かした（`send.sh` でソースと素材を送り、

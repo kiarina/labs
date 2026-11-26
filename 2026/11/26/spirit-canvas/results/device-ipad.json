@@ -1,0 +1,155 @@
+{
+ "demo": {
+  "ok": true,
+  "result": {
+   "canvas": {
+    "width": 1280,
+    "height": 800,
+    "orientation": "landscape",
+    "design": true,
+    "screen": {
+     "width": 820,
+     "height": 997
+    },
+    "background": "#1B2233"
+   },
+   "elements": 11,
+   "picture": "/private/var/mobile/Containers/Data/Application/D3A049BD-222F-4610-89AE-0A4B8EF01330/Documents/lab/logs/1-demo.png"
+  },
+  "seconds": 4.22
+ },
+ "layout": {
+  "ok": true,
+  "result": {
+   "canvas": {
+    "width": 820,
+    "height": 997,
+    "orientation": "portrait",
+    "background": "#1B2233"
+   },
+   "at": {
+    "title": {
+     "x": 41.0,
+     "y": 24.0,
+     "w": 738.0,
+     "h": 60.0
+    },
+    "card": {
+     "x": 82.0,
+     "y": 299.1,
+     "w": 656.0,
+     "h": 398.8
+    },
+    "ok": {
+     "x": 664.0,
+     "y": 929.0,
+     "w": 140.0,
+     "h": 52.0
+    }
+   },
+   "picture": "/private/var/mobile/Containers/Data/Application/D3A049BD-222F-4610-89AE-0A4B8EF01330/Documents/lab/logs/2-layout.png"
+  },
+  "seconds": 1.107
+ },
+ "behaviors": {
+  "ok": true,
+  "result": {
+   "script": "ok: running",
+   "state": {
+    "scheduleTitle": "今日の予定",
+    "scheduleTasks": [
+     {
+      "time": "朝",
+      "name": "ランニング"
+     },
+     {
+      "time": "10:00",
+      "name": "打ち合わせ"
+     },
+     {
+      "time": "夕方",
+      "name": "買い物"
+     }
+    ]
+   },
+   "device_time": "15:25:29",
+   "picture": "/private/var/mobile/Containers/Data/Application/D3A049BD-222F-4610-89AE-0A4B8EF01330/Documents/lab/logs/3-behaviors.png"
+  },
+  "seconds": 2.322
+ },
+ "web": {
+  "ok": true,
+  "result": {
+   "first_load_s": 1.021,
+   "images": "[[\"miineko1_1254x1254_159kb.jpg\",1254]]",
+   "css_bg": "url(\"http://127.0.0.1:60102/asset/jpg/street_scene_1774x887_",
+   "images_after_clicks": "[[\"miineko1_1254x1254_159kb.jpg\",1254],[\"objects_1536x1024_358kb.jpg\",1536],[\"objects_1536x1024_358kb.jpg\",1536]]",
+   "audio": "played ok",
+   "state_seen": {
+    "page": {
+     "state": {
+      "count": 2
+     },
+     "text": "Web ブロックの試験\n\n\n押した回数: 2\n\n押す"
+    }
+   },
+   "notices": [
+    "<canvas_event event=\"press\" id=\"btn\" handled=\"on the canvas\" at=\"15:25:27\"/>",
+    "<canvas_event event=\"press\" id=\"btn\" handled=\"on the canvas\" at=\"15:25:27\"/>",
+    "<canvas_event event=\"press\" id=\"btn\" handled=\"on the canvas\" at=\"15:25:27\"/>",
+    "<canvas_event event=\"web\" id=\"page\" value=\"{&quot;name&quot;:&quot;pressed&quot;,&quot;data&quot;:{&quot;count&quot;:1}}\" handled=\"the page asked to tell you later\" at=\"15:25:31\"/>",
+    "<canvas_event event=\"web\" id=\"page\" value=\"{&quot;name&quot;:&quot;pressed&quot;,&quot;data&quot;:{&quot;count&quot;:2}}\" handled=\"the page asked to tell you later\" at=\"15:25:31\"/>"
+   ],
+   "picture": "/private/var/mobile/Containers/Data/Application/D3A049BD-222F-4610-89AE-0A4B8EF01330/Documents/lab/logs/4-web.png"
+  },
+  "seconds": 5.408
+ },
+ "scenes": {
+  "ok": true,
+  "result": {
+   "space-station-escape": {
+    "load": "ok: loaded \"space-station-escape\" in 4ms (40 elements)",
+    "canvas": {
+     "width": 1280,
+     "height": 800,
+     "orientation": "landscape",
+     "design": true,
+     "screen": {
+      "width": 820,
+      "height": 997
+     },
+     "background": "#080D1B"
+    },
+    "picture": "/private/var/mobile/Containers/Data/Application/D3A049BD-222F-4610-89AE-0A4B8EF01330/Documents/lab/logs/5-space-station-escape.png"
+   },
+   "mole-garden": {
+    "load": "ok: loaded \"mole-garden\" in 3ms (1 elements)",
+    "canvas": {
+     "width": 1280,
+     "height": 800,
+     "orientation": "landscape",
+     "design": true,
+     "screen": {
+      "width": 820,
+      "height": 997
+     },
+     "background": "#F7F3E7"
+    },
+    "picture": "/private/var/mobile/Containers/Data/Application/D3A049BD-222F-4610-89AE-0A4B8EF01330/Documents/lab/logs/5-mole-garden.png"
+   },
+   "today-planner": {
+    "load": "ok: loaded \"today-planner\" in 1ms (1 elements)",
+    "canvas": {
+     "width": 820,
+     "height": 997,
+     "orientation": "portrait",
+     "background": "#F8F7F2"
+    },
+    "picture": "/private/var/mobile/Containers/Data/Application/D3A049BD-222F-4610-89AE-0A4B8EF01330/Documents/lab/logs/5-today-planner.png"
+   },
+   "tick": "{\"done\":1,\"total\":3,\"checks\":[true,false,false]}",
+   "picture_after_tick": "/private/var/mobile/Containers/Data/Application/D3A049BD-222F-4610-89AE-0A4B8EF01330/Documents/lab/logs/5-today-planner-ticked.png"
+  },
+  "seconds": 9.452
+ }
+}
