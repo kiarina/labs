@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/scheduler.dart';
+
 import 'canvas/canvas_model.dart';
 import 'demo_scene.dart';
 import 'main.dart';
@@ -15,6 +17,10 @@ class ControlServer {
 
   static Future<ControlServer> start(int port, HomePageState app) async {
     final server = await HttpServer.bind(InternetAddress.loopbackIPv4, port);
+    // Frame times since the last `/frames?reset=1`, for how heavy a screen is.
+    final frames = <FrameTiming>[];
+    var since = DateTime.now();
+    SchedulerBinding.instance.addTimingsCallback(frames.addAll);
     server.listen((req) async {
       final q = req.uri.queryParameters;
       Object? out;
@@ -81,6 +87,31 @@ class ControlServer {
               (args as Map).cast<String, dynamic>(),
             );
             out = {'ok': r.ok, 'text': r.text, 'images': r.images.length};
+          case '/frames':
+            // Frames drawn, and their build and raster times (ms).
+            final secs = DateTime.now().difference(since).inMilliseconds / 1000;
+            List<double> ms(Duration Function(FrameTiming) f) =>
+                [for (final t in frames) f(t).inMicroseconds / 1000]..sort();
+            Map<String, double> stats(List<double> v) => v.isEmpty
+                ? const {}
+                : {
+                    'avg': double.parse(
+                      (v.reduce((a, b) => a + b) / v.length).toStringAsFixed(2),
+                    ),
+                    'p90': v[(v.length * 0.9).floor().clamp(0, v.length - 1)],
+                    'max': v.last,
+                  };
+            out = {
+              'seconds': secs,
+              'frames': frames.length,
+              'fps': secs == 0 ? 0 : (frames.length / secs).toStringAsFixed(1),
+              'build_ms': stats(ms((t) => t.buildDuration)),
+              'raster_ms': stats(ms((t) => t.rasterDuration)),
+            };
+            if (q['reset'] == '1') {
+              frames.clear();
+              since = DateTime.now();
+            }
           case '/clear':
             app.canvas.clear();
             out = {'ok': true};

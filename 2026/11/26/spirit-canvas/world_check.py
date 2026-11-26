@@ -63,6 +63,11 @@ def tool(name, args):
     return r
 
 
+def get_frames(reset=False):
+    with urllib.request.urlopen(B + "/frames" + ("?reset=1" if reset else ""), timeout=30) as r:
+        return json.loads(r.read())
+
+
 def snap(label):
     r = post("/snapshot?" + urllib.parse.urlencode({"name": label, "inline": "1"}), {})
     path = os.path.join(OUT, f"world-{label}.png")
@@ -100,6 +105,24 @@ def main():
     snap("5-orbit")
     tool("canvas_update", {"id": W, "props": {"camera_mode": "fixed"}})
     print("seconds", round(time.time() - t0, 1))
+    # The touchable room with its HUD (scenes/world-room.json): the schedule
+    # tapped (the camera moves up), then frame times while going round.
+    tool("canvas_load", {"name": "world-room"})
+    time.sleep(4)
+    snap("6-world-room")
+    post("/event?" + urllib.parse.urlencode({"kind": "tap", "id": "poster"}), {})
+    time.sleep(2.0)
+    snap("7-schedule")
+    post("/event?" + urllib.parse.urlencode({"kind": "press", "id": "back"}), {})
+    time.sleep(1.8)
+    get_frames(reset=True)
+    post("/event?" + urllib.parse.urlencode({"kind": "press", "id": "around"}), {})
+    time.sleep(6)
+    frames = get_frames(reset=True)
+    snap("8-around")
+    print("frames while going round", json.dumps(frames))
+    with open(os.path.join(OUT, "world-frames.json"), "w") as f:
+        json.dump(frames, f, indent=1)
 
 
 if __name__ == "__main__":

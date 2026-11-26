@@ -291,8 +291,19 @@ class _WorldViewState extends State<WorldView> {
           f * (dist * math.cos(pitch)) +
           vm.Vector3(0, dist * math.sin(pitch), 0);
     }
+    // `fov` is the vertical angle on a landscape (16:10) screen. A narrower
+    // screen keeps that width in view and shows more above and below, so a
+    // phone held upright does not cut the sides off.
+    var fov = v['fov']!.clamp(10, 120) * math.pi / 180;
+    final aspect = _size.isEmpty ? 1.6 : _size.width / _size.height;
+    if (aspect < 1.6) {
+      fov = math.min(
+        2 * math.atan(math.tan(fov / 2) * 1.6 / aspect),
+        150 * math.pi / 180,
+      );
+    }
     _camera
-      ..fovRadiansY = (v['fov']!.clamp(10, 120)) * math.pi / 180
+      ..fovRadiansY = fov
       ..position = look + offset
       ..target = look;
   }

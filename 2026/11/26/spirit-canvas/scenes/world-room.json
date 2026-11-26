@@ -2,6 +2,7 @@
  "name": "world-room",
  "description": "3D の部屋（形・板・精霊の体）と、その上の HUD。壁の予定を触るとカメラが寄り、HUD の戻るで戻る。絵・ランプ・ボール・精霊も触ると反応し、HUD の明かり・ひと回りで部屋が変わる。モデルなしで動く。",
  "params": {},
+ "design": null,
  "background": "#202020",
  "elements": [
   {
@@ -305,7 +306,7 @@
    "anchor": "top-left",
    "x": 16,
    "y": 16,
-   "w": 460,
+   "w": "92%",
    "h": 44,
    "text": "予定・絵・ランプ・ボール・精霊を触ってみて",
    "size": 18,
@@ -317,9 +318,9 @@
   {
    "id": "back",
    "type": "button",
-   "anchor": "bottom-left",
+   "anchor": "top-left",
    "x": 16,
-   "y": -16,
+   "y": 72,
    "w": 140,
    "h": 52,
    "label": "戻る",
@@ -363,7 +364,7 @@
    "anchor": "bottom-right",
    "x": -16,
    "y": -16,
-   "w": 190,
+   "w": 170,
    "h": 52,
    "label": "明かり",
    "on": {
@@ -379,9 +380,9 @@
    "id": "around",
    "type": "button",
    "anchor": "bottom-right",
-   "x": -222,
+   "x": -196,
    "y": -16,
-   "w": 160,
+   "w": 130,
    "h": 52,
    "label": "ひと回り",
    "on": {
@@ -400,6 +401,6 @@
  },
  "timelines": {},
  "scripts": {
-  "room-actions": "var PICTURES = [\"jpg/street_scene_1774x887_287kb.jpg\", \"jpg/objects_1536x1024_358kb.jpg\", \"jpg/miineko1_1254x1254_159kb.jpg\"];\nvar picture = 0;\n\n// The picture on the wall: the next one.\nsg.on('tap', 'picture', function () {\n  picture = (picture + 1) % PICTURES.length;\n  sg.update('picture', { src: PICTURES[picture] });\n  sg.update('hint', { text: '絵を替えました（' + (picture + 1) + ' / ' + PICTURES.length + '）' });\n});\n\n// The lamp (touched, or the HUD's button): on and off, with the room.\nfunction lamp() {\n  var on = (sg.get('lamp_toggles') || 0) % 2 === 0;\n  sg.update('lamp', { glow: on, color: on ? '#FFD98A' : '#8A8170' });\n  sg.update('room', { light: on ? 3 : 0.8, sky: on ? '#CFE3F2' : '#2A3550' });\n  sg.update('light', { label: on ? '明かり' : '明かりをつける' });\n}\n\n// Once round, back where it was.\nvar turning = false;\nfunction around() {\n  if (turning || !sg.get('turns')) return;\n  turning = true;\n  sg.update('room', { camera_mode: 'orbit', orbit_speed: 40 });\n  sg.update('hint', { text: 'ぐるっと見回しています' });\n  sg.after(9000, function () {\n    sg.update('room', { camera_mode: 'fixed' });\n    sg.update('hint', { text: '予定・絵・ランプ・ボール・精霊を触ってみて' });\n    turning = false;\n  });\n}\nvar lastLamp = -1, lastTurns = 0;\nsg.every(100, function () {\n  var l = sg.get('lamp_toggles') || 0;\n  if (l !== lastLamp) { lastLamp = l; lamp(); }\n  var t = sg.get('turns') || 0;\n  if (t !== lastTurns) { lastTurns = t; around(); }\n});\n\n// The body: by the part touched.\nsg.on('tap', 'me', function (e) {\n  var part = (e.value && e.value.part) || '';\n  if (part === 'head') {\n    sg.update('me', { pose: 'nod', expression: 'happy' });\n    sg.speak('えへへ、なでてくれるの？', { vrm: 'me', interrupt: true });\n  } else {\n    sg.update('me', { pose: 'wave', expression: 'happy' });\n    sg.speak('なあに？', { vrm: 'me', interrupt: true });\n  }\n  var names = { head: '頭', neck: '首', chest: '胸', upperChest: '胸', spine: 'おなか', hips: '腰' };\n  var name = names[part] || (part.indexOf('Arm') >= 0 || part.indexOf('Hand') >= 0 ? '腕' :\n      part.indexOf('Leg') >= 0 || part.indexOf('Foot') >= 0 ? '足' : '体');\n  sg.update('hint', { text: '精霊の' + name + 'に触れました' });\n  sg.after(2500, function () { sg.update('me', { pose: 'idle', expression: 'neutral' }); });\n});\n"
+  "room-actions": "var PICTURES = [\"jpg/street_scene_1774x887_287kb.jpg\", \"jpg/objects_1536x1024_358kb.jpg\", \"jpg/miineko1_1254x1254_159kb.jpg\"];\nvar HOME = {\"cam_x\": 0, \"cam_y\": 1.7, \"cam_z\": -4.2, \"look_x\": 0, \"look_y\": 1.1, \"look_z\": 0.5, \"fov\": 50};\nvar picture = 0;\n\n// The picture on the wall: the next one.\nsg.on('tap', 'picture', function () {\n  picture = (picture + 1) % PICTURES.length;\n  sg.update('picture', { src: PICTURES[picture] });\n  sg.update('hint', { text: '絵を替えました（' + (picture + 1) + ' / ' + PICTURES.length + '）' });\n});\n\n// The lamp (touched, or the HUD's button): on and off, with the room.\nfunction lamp() {\n  var on = (sg.get('lamp_toggles') || 0) % 2 === 0;\n  sg.update('lamp', { glow: on, color: on ? '#FFD98A' : '#8A8170' });\n  sg.update('room', { light: on ? 3 : 0.8, sky: on ? '#CFE3F2' : '#2A3550' });\n  sg.update('light', { label: on ? '明かり' : '明かりをつける' });\n}\n\n// Once round, back where it was.\nvar turning = false;\nfunction around() {\n  if (turning || !sg.get('turns')) return;\n  turning = true;\n  // From inside the room (going round from the usual place would pass the\n  // walls), then back.\n  sg.update('room', { cam_x: 0, cam_y: 1.5, cam_z: -0.4, look_x: 0, look_y: 1.1, look_z: 1.2 }, 800);\n  sg.update('room', { camera_mode: 'orbit', orbit_speed: 40 });\n  sg.update('hint', { text: 'ぐるっと見回しています' });\n  sg.after(9000, function () {\n    sg.update('room', { camera_mode: 'fixed' });\n    sg.update('room', HOME, 1000);\n    sg.update('hint', { text: '予定・絵・ランプ・ボール・精霊を触ってみて' });\n    turning = false;\n  });\n}\nvar lastLamp = -1, lastTurns = 0;\nsg.every(100, function () {\n  var l = sg.get('lamp_toggles') || 0;\n  if (l !== lastLamp) { lastLamp = l; lamp(); }\n  var t = sg.get('turns') || 0;\n  if (t !== lastTurns) { lastTurns = t; around(); }\n});\n\n// The body: by the part touched.\nsg.on('tap', 'me', function (e) {\n  var part = (e.value && e.value.part) || '';\n  if (part === 'head') {\n    sg.update('me', { pose: 'nod', expression: 'happy' });\n    sg.speak('えへへ、なでてくれるの？', { vrm: 'me', interrupt: true });\n  } else {\n    sg.update('me', { pose: 'wave', expression: 'happy' });\n    sg.speak('なあに？', { vrm: 'me', interrupt: true });\n  }\n  var names = { head: '頭', neck: '首', chest: '胸', upperChest: '胸', spine: 'おなか', hips: '腰' };\n  var name = names[part] || (part.indexOf('Arm') >= 0 || part.indexOf('Hand') >= 0 ? '腕' :\n      part.indexOf('Leg') >= 0 || part.indexOf('Foot') >= 0 ? '足' : '体');\n  sg.update('hint', { text: '精霊の' + name + 'に触れました' });\n  sg.after(2500, function () { sg.update('me', { pose: 'idle', expression: 'neutral' }); });\n});\n"
  }
 }

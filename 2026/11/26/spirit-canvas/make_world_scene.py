@@ -53,24 +53,25 @@ elements += [
     {"id": "picture", "type": "image", "in": W, "x": 2.0, "y": 1.4, "z": 2.9, "w": 480, "h": 300, "size_m": 0.56,
      "src": PICTURES[0], "fit": "cover", "tappable": True},
     # The HUD: 2D elements over the world.
-    {"id": "hint", "type": "text", "anchor": "top-left", "x": 16, "y": 16, "w": 460, "h": 44,
+    {"id": "hint", "type": "text", "anchor": "top-left", "x": 16, "y": 16, "w": "92%", "h": 44,
      "text": "予定・絵・ランプ・ボール・精霊を触ってみて", "size": 18, "color": "#FFFFFF", "background": "#00000088",
      "radius": 12, "align": "center"},
-    {"id": "back", "type": "button", "anchor": "bottom-left", "x": 16, "y": -16, "w": 140, "h": 52,
+    {"id": "back", "type": "button", "anchor": "top-left", "x": 16, "y": 72, "w": 140, "h": 52,
      "label": "戻る", "visible": False,
      "on": {"press": [
          {"do": "update", "id": W, "transition_ms": 1200, "props": HOME},
          {"do": "update", "id": "back", "props": {"visible": False}},
          {"do": "update", "id": "hint", "props": {"text": "予定・絵・ランプ・ボール・精霊を触ってみて"}},
      ]}},
-    {"id": "light", "type": "button", "anchor": "bottom-right", "x": -16, "y": -16, "w": 190, "h": 52,
+    {"id": "light", "type": "button", "anchor": "bottom-right", "x": -16, "y": -16, "w": 170, "h": 52,
      "label": "明かり", "on": {"press": [{"do": "add", "key": "lamp_toggles"}]}},
-    {"id": "around", "type": "button", "anchor": "bottom-right", "x": -222, "y": -16, "w": 160, "h": 52,
+    {"id": "around", "type": "button", "anchor": "bottom-right", "x": -196, "y": -16, "w": 130, "h": 52,
      "label": "ひと回り", "on": {"press": [{"do": "add", "key": "turns"}]}},
 ]
 
 SCRIPT = r"""
 var PICTURES = %s;
+var HOME = %s;
 var picture = 0;
 
 // The picture on the wall: the next one.
@@ -93,10 +94,14 @@ var turning = false;
 function around() {
   if (turning || !sg.get('turns')) return;
   turning = true;
+  // From inside the room (going round from the usual place would pass the
+  // walls), then back.
+  sg.update('room', { cam_x: 0, cam_y: 1.5, cam_z: -0.4, look_x: 0, look_y: 1.1, look_z: 1.2 }, 800);
   sg.update('room', { camera_mode: 'orbit', orbit_speed: 40 });
   sg.update('hint', { text: 'ぐるっと見回しています' });
   sg.after(9000, function () {
     sg.update('room', { camera_mode: 'fixed' });
+    sg.update('room', HOME, 1000);
     sg.update('hint', { text: '予定・絵・ランプ・ボール・精霊を触ってみて' });
     turning = false;
   });
@@ -125,12 +130,14 @@ sg.on('tap', 'me', function (e) {
   sg.update('hint', { text: '精霊の' + name + 'に触れました' });
   sg.after(2500, function () { sg.update('me', { pose: 'idle', expression: 'neutral' }); });
 });
-""" % json.dumps(PICTURES)
+""" % (json.dumps(PICTURES), json.dumps(HOME))
 
 scene = {
     "name": "world-room",
     "description": "3D の部屋（形・板・精霊の体）と、その上の HUD。壁の予定を触るとカメラが寄り、HUD の戻るで戻る。絵・ランプ・ボール・精霊も触ると反応し、HUD の明かり・ひと回りで部屋が変わる。モデルなしで動く。",
     "params": {},
+    # Fills the screen (a scene without `design` is kept at 1280x800).
+    "design": None,
     "background": "#202020",
     "elements": elements,
     "state": {"lamp_toggles": 0, "turns": 0},

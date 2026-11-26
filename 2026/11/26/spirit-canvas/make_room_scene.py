@@ -174,6 +174,8 @@ scene = {
     "name": "spirit-room",
     "description": "部屋の背景（Web）の上で、精霊の体（VRM）が歩き回り、机で仕事をし、ベッドのそばでうたた寝する。体に触ると反応する（頭をなでる・寝ているのを起こす・何度もつつくと怒る）。モデルなしで動き、触ったことは後で精霊に伝わる。",
     "params": {},
+    # Fills the screen (a scene without `design` is kept at 1280x800).
+    "design": None,
     "background": "#e6d6bd",
     "elements": [
         {"id": "room", "type": "web", "x": 0, "y": 0, "w": "100%", "h": "100%", "html": ROOM},
