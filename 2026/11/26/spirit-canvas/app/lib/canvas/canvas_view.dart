@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
@@ -9,10 +10,13 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:video_player/video_player.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 import '../media.dart';
 import 'canvas_model.dart';
 import 'vrm_element.dart';
+import 'web_host.dart';
 
 /// Parses `#RGB`, `#RRGGBB`, `#RRGGBBAA` and a few names.
 Color? parseColor(Object? v) {
@@ -275,6 +279,8 @@ class _ElementBody extends StatelessWidget {
         return _ChoicesElement(element: e, controller: controller);
       case 'input':
         return _InputElement(element: e, controller: controller);
+      case 'web':
+        return _WebElement(element: e);
     }
     return _missing('unknown type ${e.type}');
   }
@@ -722,4 +728,82 @@ Future<String?> captureCanvas(GlobalKey key, {double pixelRatio = 0.75}) async {
   image.dispose();
   if (bytes == null) return null;
   return base64Encode(bytes.buffer.asUint8List());
+}
+
+/// A `web` element: a web view showing the element's `html`, served by
+/// [WebHost] (so `asset://` works and the page has the `sg` object).
+class _WebElement extends StatefulWidget {
+  const _WebElement({required this.element});
+
+  final CanvasElement element;
+
+  @override
+  State<_WebElement> createState() => _WebElementState();
+}
+
+class _WebElementState extends State<_WebElement> {
+  late final WebViewController _web;
+  String? _html;
+  int _version = 0;
+
+  WebHost get host => WebHost.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    final id = widget.element.id;
+    // Pages may play sound without a click first (WebKit asks for one by
+    // default: NotSupportedError from Audio.play()).
+    _web = WebViewController.fromPlatformCreationParams(
+      Platform.isMacOS || Platform.isIOS
+          ? WebKitWebViewControllerCreationParams(
+              mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
+            )
+          : const PlatformWebViewControllerCreationParams(),
+    )..setJavaScriptMode(JavaScriptMode.unrestricted);
+    // A transparent background is not implemented for macOS's web view
+    // (UnimplementedError: opaque); the page paints its own.
+    if (!Platform.isMacOS) _web.setBackgroundColor(const Color(0x00000000));
+    _web.addJavaScriptChannel(
+      'SGHost',
+      onMessageReceived: (m) => host.receive(id, m.message),
+    );
+    host.controllers[id] = _web;
+    _load();
+  }
+
+  @override
+  void didUpdateWidget(covariant _WebElement oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    host.controllers[widget.element.id] = _web;
+    if (widget.element.str('html') != _html) _load();
+  }
+
+  void _load() {
+    final e = widget.element;
+    _html = e.str('html');
+    final url = e.str('url');
+    if (_html != null) {
+      host.setPage(e.id, _html!);
+      _web.loadRequest(Uri.parse(host.pageUrl(e.id, ++_version)));
+    } else if (url != null && url.startsWith('https://')) {
+      _web.loadRequest(Uri.parse(url));
+    }
+  }
+
+  @override
+  void dispose() {
+    if (identical(host.controllers[widget.element.id], _web)) {
+      host.controllers.remove(widget.element.id);
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(widget.element.num_('radius', 0)),
+      child: WebViewWidget(controller: _web),
+    );
+  }
 }

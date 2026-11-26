@@ -18,6 +18,7 @@ const kElementTypes = [
   'button',
   'choices',
   'input',
+  'web',
 ];
 
 /// The numeric properties an animation or a transition can move.
@@ -153,6 +154,8 @@ double _bounce(double t) {
 Map<String, dynamic> _abbreviated(CanvasElement e) => {
   if (e.props['markup'] case final String m when m.length > 300)
     'markup': '(svg, ${m.length} chars, omitted)',
+  if (e.props['html'] case final String h when h.length > 300)
+    'html': '(html, ${h.length} chars, omitted)',
   if (e.props['frames'] case final List f)
     'frames': '(${f.length} svg frames, omitted)',
 };

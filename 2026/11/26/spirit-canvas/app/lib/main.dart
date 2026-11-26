@@ -9,6 +9,7 @@ import 'canvas/canvas_model.dart';
 import 'canvas/canvas_view.dart';
 import 'canvas/scenes.dart';
 import 'canvas/sound.dart';
+import 'canvas/web_host.dart';
 import 'control_server.dart';
 import 'demo_scene.dart';
 import 'media.dart';
@@ -110,6 +111,8 @@ class HomePageState extends State<HomePage> {
   }
 
   Future<void> _start() async {
+    await WebHost.instance.start();
+    WebHost.instance.onMessage = _onWebMessage;
     final model = env('MODEL');
     final effort = env('EFFORT');
     try {
@@ -158,14 +161,40 @@ class HomePageState extends State<HomePage> {
     await _send([text], role: 'user');
   }
 
-  void _onCanvasEvent(CanvasEvent e) {
+  /// A message from a `web` element's page (`sg.emit`, `sg.setState`,
+  /// errors).
+  void _onWebMessage(String id, Map<String, dynamic> m) {
+    switch (m['type']) {
+      case 'event':
+        _onCanvasEvent(
+          CanvasEvent('web', id, {'name': m['name'], 'data': m['data']}),
+          wake: m['wake'] as bool?,
+          laterReason: 'the page asked to tell you later',
+        );
+      case 'error':
+        behaviors.notice(
+          '<canvas_notice from="web:${_attr(id)}" error="${_attr('${m['text']}')}"/>',
+        );
+      case 'log':
+        debugPrint('[web:$id] ${m['text']}');
+    }
+  }
+
+  void _onCanvasEvent(CanvasEvent e, {bool? wake, String? laterReason}) {
     hideCaption();
     // The element's own actions and the scripts' handlers run here, at once.
-    switch (behaviors.handleEvent(e)) {
+    final decided = behaviors.handleEvent(e);
+    switch (wake == null ? decided : (wake ? 'now' : 'later')) {
       case 'none':
         return;
       case 'later':
-        behaviors.notice(_eventLine(e, handled: true));
+        behaviors.notice(
+          _eventLine(
+            e,
+            handled: true,
+            reason: wake == false ? laterReason : null,
+          ),
+        );
         return;
     }
     _pendingEvents.add(e);
@@ -181,10 +210,10 @@ class HomePageState extends State<HomePage> {
     _send(lines, role: 'event');
   }
 
-  String _eventLine(CanvasEvent e, {bool handled = false}) =>
+  String _eventLine(CanvasEvent e, {bool handled = false, String? reason}) =>
       '<canvas_event event="${e.kind}" id="${_attr(e.id)}"'
       '${e.value != null ? ' value="${_attr(e.value is String ? e.value as String : jsonEncode(e.value))}"' : ''}'
-      '${handled ? ' handled="on the canvas" at="${e.at.toIso8601String().substring(11, 19)}"' : ''}/>';
+      '${handled ? ' handled="${reason ?? 'on the canvas'}" at="${e.at.toIso8601String().substring(11, 19)}"' : ''}/>';
 
   String _attr(String s) => s
       .replaceAll('&', '&amp;')
@@ -207,6 +236,18 @@ class HomePageState extends State<HomePage> {
           },
           'elements': elements,
           ...behaviors.describe(),
+          if (WebHost.instance.controllers.isNotEmpty)
+            'web': {
+              for (final id in WebHost.instance.controllers.keys)
+                id: {
+                  'state': WebHost.instance.states[id],
+                  // The picture does not show web views: their text instead.
+                  'text': await WebHost.instance.eval(
+                    id,
+                    "document.body ? document.body.innerText.slice(0, 800) : ''",
+                  ),
+                },
+            },
         });
         final images = <String>[];
         if (a['image'] as bool? ?? true) {
@@ -328,6 +369,10 @@ class HomePageState extends State<HomePage> {
         return _saveScene(a);
       case 'canvas_load':
         return _loadScene(a);
+      case 'canvas_web_eval':
+        return ToolOutcome(
+          await WebHost.instance.eval(a['id'] as String, a['js'] as String),
+        );
       case 'canvas_media':
         return ToolOutcome(jsonEncode(MediaLibrary.instance.list()));
     }

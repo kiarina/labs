@@ -203,7 +203,7 @@ final List<Map<String, dynamic>> kCanvasTools = [
         'or DOM. Same id replaces the old one. The API:\n'
         'sg.every(ms, fn) / sg.after(ms, fn) -> handle; sg.cancel(handle); '
         'sg.now() (ms)\n'
-        'sg.on(kind, elementId or "*", fn(event)) for press|choose|submit|'
+        'sg.on(kind, elementId or "*", fn(event)) for press|choose|submit|web|'
         'tap|ended (event: {event, id, value}); sg.on("state", fn(state)) '
         '(after any state change: canvas_state, actions, and sg.set, which '
         'is told once the current handler returns)\n'
@@ -335,6 +335,25 @@ final List<Map<String, dynamic>> kCanvasTools = [
     },
   },
   {
+    'name': 'canvas_web_eval',
+    'description':
+        'Run JavaScript in a web element\'s page and get the result (JSON). '
+        'Read its state or DOM, or call its functions to change part of it.',
+    'inputSchema': {
+      'type': 'object',
+      'properties': {
+        'id': {'type': 'string'},
+        'js': {
+          'type': 'string',
+          'description':
+              'An expression or statements; the last value is returned.',
+        },
+      },
+      'required': ['id', 'js'],
+      'additionalProperties': false,
+    },
+  },
+  {
     'name': 'canvas_media',
     'description':
         'List the media files you can show (image, video, audio, vrm, vrma). '
@@ -401,6 +420,17 @@ final Map<String, dynamic> _elementSchema = {
       'comes with the value (a list when multiple).\n'
       'input: placeholder, multiline, submit_label, value, size. A `submit` '
       'event comes with the text.\n'
+      'web: a web page in a box. html (a whole document or a fragment; '
+      'script and style allowed; no network except https), or url (https). '
+      'Refer to media as asset://<media name> (also from JavaScript and CSS). '
+      'The page has `sg`: sg.emit(name, data, {wake}) sends you an event '
+      '(event "web", value {name, data}; wake true wakes you now, false '
+      'tells you later, default: now unless `on`/a script handled it), '
+      'sg.setState(obj) keeps state you can read in canvas_view, '
+      'sg.asset(name) gives a URL. Pages are not in canvas_view\'s picture; '
+      'their text and state are in its `web` field. Use web for what the '
+      'other types cannot do (rich layouts, games on <canvas>, CSS '
+      'animation).\n'
       'Colors are #RRGGBB or #RRGGBBAA. In text, button labels and the '
       'choices label, {{name}} shows the state value `name` and follows it.\n'
       'on: what the app does by itself, at once, when the user acts on this '

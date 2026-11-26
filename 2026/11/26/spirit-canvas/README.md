@@ -1,4 +1,4 @@
-# A canvas mode for a spirit's chat: gpt-6.2-sol lays out text, SVG, a VRM body, media and buttons with tools; actions, timelines and spirit-written JavaScript run without the model; screens are saved and reused with new values
+# A canvas mode for a spirit's chat: gpt-6.2-sol lays out text, SVG, a VRM body, media, buttons and web views with tools; actions, timelines and spirit-written JavaScript run without the model; screens are saved and reused with new values
 
 チャットの画面に「キャンバス」のモードを足し、spirit（Codex の thread）が道具でキャンバスに好きなものを置けるかを確かめます。
 入力欄はそのままです。上の履歴の代わりに、spirit が文字・絵・3D の自分の姿・写真・動画・音声・ボタン・選択肢・入力欄を座標を決めて置き、
@@ -27,6 +27,8 @@
   Sol は 4 つのシナリオをすべて自分で書いたスクリプトで作り、タイマーの終わりにはスクリプトから spirit を起こした（[Part 2](#part-2-spirit-を通さずにアプリだけで動かす)）
 - **Part 3: 画面を丸ごと JSON 1 つに保存し、値を差し替えて呼び出せるようにした。** 数学の脱出ゲームをゼロから作ると 276 秒、別の会話で英語版を頼むと、作り置きを呼び出して 39 秒（出力 11,577 → 1,415 トークン）。
   効果音と、クロスフェードする BGM も足した（[Part 3](#part-3-作り置きの画面と音)）
+- **Part 4: WebView の要素で、`asset://` の差し込み、ページの JS のイベントを spirit へ、spirit が外からページの状態を読む、の 3 つができた。** Sol が web で作ったもぐらたたきは、10 秒で spirit を起こして応援させ、終わりに結果を話させた。
+  spirit に見せる撮影には WebView が写らない（[Part 4](#part-4-web-要素webview)）
 
 | | |
 | --- | --- |
@@ -217,6 +219,62 @@ spirit が書いたスクリプトは `results/scripts/`（46〜61 行）。
   道具の説明もそこをはっきり書いていなかった。スクリプトの `sg.set` の後も、ハンドラが返ってから状態のハンドラを呼ぶように直した（1 回の流れで 3 回まで）。直した後、同じ `values` で呼び出し、不正解→ヒント、正解→ロック 1/5 まで画面と音が動いた。
   c1 の中で Sol が試した呼び出しは、spirit 側から `canvas_state` で状態を動かして確かめていたので、この不具合に当たらなかった
 
+## Part 4: web 要素（WebView）
+
+オーナーの問い: WebView の中の画像や素材を `asset://` で指定して差し込めるか、中の JS のイベントを外で受けて spirit に届けられるか、途中の状態を spirit が外から取れるか。Windows・Mac・Android・iOS に対応しているか。
+
+### 作り
+
+| | どうしたか |
+| --- | --- |
+| WebView | `webview_flutter` 4.14（公式。macOS・iOS は WKWebView、Android は Android WebView）。要素の型 `web` に `html`（または https の `url`） |
+| `asset://` | アプリの中に、ループバックだけの小さな HTTP サーバーを立てる。ページはそこから配り、HTML の `asset://<名前>` を `http://127.0.0.1:<port>/asset/<名前>` に書き換える。ページが後から足す要素（`src`・`href`・`poster`・`style`・`<style>`・`fetch`・`new Audio`）は、先頭に差し込む小さな JS が書き換える。WebView の独自スキームの仕組みに頼らないので、WebView の種類を選ばない |
+| JS → 外 | ページの `sg.emit(name, data, {wake})` が JavaScript channel（`SGHost`）でアプリに届き、`event="web"` のイベントとして spirit へ。`wake` で、すぐ起こすか次にまとめて渡すかをページが決める。`on`・スクリプトの `sg.on("web")` でも受けられる |
+| 外から状態 | ページの `sg.setState(obj)` をアプリが持ち、`canvas_view` の `web` に入れる（JS を走らせずに読める）。加えて `canvas_web_eval(id, js)` でページの中の JS を走らせて値を受け取る。`canvas_view` はページの本文（`innerText` の先頭 800 文字）も返す |
+
+### モデルなしの確認
+
+1 つのページ（[`results/web-test-page.json`](results/web-test-page.json) を `/tool?name=canvas_put` に渡した）で:
+
+- **`asset://` の差し込み:** `<img src="asset://…">` は 1254 px で読めた。CSS の `url(asset://…)` は `url("http://127.0.0.1:…/asset/…")` になった。押すたびに JS が `img.src = 'asset://…'` で足した画像も 1536 px で読めた
+- **JS → 外:** ページのボタンを 2 回押すと、`sg.emit('pressed', {count}, {wake: false})` が 2 件、次に spirit へ渡す通知として積まれた
+- **外から状態:** `canvas_web_eval` で `window.secret()` が「inner 2」を返した。`canvas_view` の `web` に `{"state": {"count": 2}, "text": "…押した回数: 2…"}` が入った
+- **ページの中の音:** 最初は `new Audio('asset://…').play()` が `NotSupportedError` で失敗した。WebKit が利用者の操作なしの再生を止める設定を外しても同じだった。原因は配信の側で、WebKit は音声・動画を部分取得（HTTP の Range）で読む。サーバーが 206 で返すようにすると鳴った（`played ok`）
+
+### gpt-6.2-sol に流した結果
+
+w1「web ブロックで、20秒のもぐらたたきゲームを作って。手元の効果音とBGMを使って。途中で様子を見て応援してくれて、終わったら結果について話しかけてね」
+
+| | 時間 (s) | 道具 | 入力 | うちキャッシュ | 出力 |
+| --- | ---: | --- | ---: | ---: | ---: |
+| 作る（新しい thread） | 308 | 22（うち `canvas_web_eval` 11） | 550,072 | 486,272 | 13,462 |
+| 10 秒の時点でページが起こした | 4 | 0 | 29,960 | 29,568 | 117 |
+| 終わってページが起こした | 2 | 0 | 30,208 | 29,056 | 45 |
+
+![もぐらたたきの終わり。spirit の字幕は結果への声かけ](results/w1-finished.jpg)
+
+- Sol は 20,130 文字の HTML を 1 つの `web` 要素に書き、`asset://sounds/…` で BGM と効果音を鳴らした。10 秒と 20 秒に `sg.emit(…, {wake: true})` を置き、`sg.setState` で得点などを外に出した
+- **Sol は `canvas_web_eval` でページの中に試験用の仕組みを差し込み、10 秒の応援と 20 秒の終わりまで自分で通しの試験をした。** そのうえで、ゲームの秒数を状態に出して `mole-garden` として保存した（[`scenes/mole-garden.json`](scenes/mole-garden.json)）
+- 遊んだとき: スタートと、もぐらを叩く操作は、こちらが `canvas_web_eval` でページのボタンを押した（窓が後ろにあるとき、コンピューター操作のクリックが WebView の中に届かなかった）。10 秒の時点で spirit が起きて 4 秒後に「折り返しで16匹、ここまで全部命中！ あと10秒、その調子！」、終わりで 2 秒後に「20秒で32匹！ 出てきた33匹のうち、逃したのはたった1匹。…最後までいいペースだったね！」と言った（32 匹は JS で叩いた数）
+
+### 分かった制約
+
+- **spirit に見せる撮影（`RepaintBoundary`）に WebView は写らない。** プラットフォームのビューなので。代わりに `canvas_view` は本文と `sg.setState` の状態を返す。Sol は `getBoundingClientRect` などを `canvas_web_eval` で読んで配置を確かめていた
+- macOS の WebView は透明な背景に対応していない（`setBackgroundColor` が `UnimplementedError: opaque`）。ページが自分の背景を塗る
+- WebView の中は、キャンバスの縮みに合わせた実際の画素の大きさで組まれる。ほかの要素は 1280x800 の座標なので、同じ窓の上で文字の大きさの感覚がずれる
+- 背景の窓へのクリック（コンピューター操作）が WebView に届かなかった。手で前面の窓を操作するときは届く（オーナーの試用では問題がなかった）
+
+### 対応する OS
+
+| OS | WebView | この lab での状態 |
+| --- | --- | --- |
+| macOS | `webview_flutter`（WKWebView） | 確かめた |
+| iOS | 同じ（WKWebView） | 未確認。同じ実装で動く見込み |
+| Android | 同じ（Android WebView） | 未確認。自動再生の扱いは別の設定が要る可能性 |
+| Windows | `webview_flutter` は非対応。API 互換の `webview_all`（2026-11 の版、WebView2）か、2024 年で止まっている `webview_windows` | 未確認 |
+
+使っているのは、ページの読み込み・JavaScript channel・JS を走らせて結果を受け取る、の 3 つだけ。`asset://` は WebView の独自スキームではなくループバックのサーバーで解くので、Windows でも WebView の差し替えで済む見込み（解釈。動かしていない）。
+
 ## 結論が成り立つ範囲と、まだ見ていないこと
 
 - macOS だけ。iOS・Android・Windows では動かしていない。スマートフォンの縦の画面では 1280x800 の固定は小さすぎる
@@ -230,15 +288,16 @@ spirit が書いたスクリプトは `results/scripts/`（46〜61 行）。
 
 ## 次の一手（この lab の結果から）
 
-Part 1 で挙げた「押したときの結果を宣言する」「時間の並び」「spirit が書くスクリプト」「通知の区別」は Part 2、「作り置きの保存・呼び出し・差し替え」と音は Part 3 で作った。残り:
+Part 1 で挙げた「押したときの結果を宣言する」「時間の並び」「spirit が書くスクリプト」「通知の区別」は Part 2、「作り置きの保存・呼び出し・差し替え」と音は Part 3、WebView は Part 4 で作った。残り:
 
-1. **端末の実際の大きさに合わせる。** 使える大きさ（縦横・安全領域）を `canvas_view` と `<ui>` で渡し、回転やリサイズは `resize` のイベントで知らせる。割合や寄せの指定で、組み直さずに追従させる
-2. **spirit がモードを切り替える道具。** チャットのまま頼まれた絵を、そのまま見せられるように。ユーザーが自分でチャットに戻した直後に戻さないよう、提案を出して押されたら切り替える形などを選ぶ
-3. **スクリプトを製品の形で動かす。** 別の isolate かプロセス、実行時間の上限、スクリプトどうしの順序
-4. **作り置きの置き場所と共有。** spirit ごと・家族ごと、版、アセット（画像・音）を含めた受け渡し。製品ではアセットノードの `asset://` で参照する形が合いそう（未検討）
-5. **音の素材。** 合成の素材は仮。作り置きの BGM・効果音を揃えるか、音楽の生成を道具にする。spirit の声（TTS）と重なったときに BGM を下げる
-6. **`notify: "none"` の扱い。** spirit が自分で聞かないことにした操作も、画面を読めば分かった。ただ、聞かれるまで知らない。会話の記憶に残すかどうかを決める
-7. 大きな SVG を書く遅さ（出力 8,000〜11,000 トークン）は、作り置きで避けられる場面が多い。ゼロから描く場面のために、画像の生成の道具を足して比べる
+1. **web 要素を他の OS で動かす。** iOS・Android は同じ実装、Windows は `webview_all`（WebView2）への差し替えから。WebView の画面を spirit に見せる撮影（各 WebView のスナップショット）も
+2. **端末の実際の大きさに合わせる。** 使える大きさ（縦横・安全領域）を `canvas_view` と `<ui>` で渡し、回転やリサイズは `resize` のイベントで知らせる。割合や寄せの指定で、組み直さずに追従させる
+3. **spirit がモードを切り替える道具。** チャットのまま頼まれた絵を、そのまま見せられるように。ユーザーが自分でチャットに戻した直後に戻さないよう、提案を出して押されたら切り替える形などを選ぶ
+4. **スクリプトを製品の形で動かす。** 別の isolate かプロセス、実行時間の上限、スクリプトどうしの順序
+5. **作り置きの置き場所と共有。** spirit ごと・家族ごと、版、アセット（画像・音）を含めた受け渡し。製品ではアセットノードの `asset://` で参照する形が合いそう（未検討）
+6. **音の素材。** 合成の素材は仮。作り置きの BGM・効果音を揃えるか、音楽の生成を道具にする。spirit の声（TTS）と重なったときに BGM を下げる
+7. **`notify: "none"` の扱い。** spirit が自分で聞かないことにした操作も、画面を読めば分かった。ただ、聞かれるまで知らない。会話の記憶に残すかどうかを決める
+8. 大きな SVG を書く遅さ（出力 8,000〜11,000 トークン）は、作り置きで避けられる場面が多い。ゼロから描く場面のために、画像の生成の道具を足して比べる
 
 ## Run
 
@@ -265,4 +324,4 @@ curl -s -XPOST "localhost:8813/tool?name=canvas_state" --data-binary '{"set":{"n
 ## Dependencies
 
 `app/pubspec.lock` が解決した版。flutter_vrm は commit `6cdf97d`、flutter_scene はその lab と同じ upstream の commit `0e263be`（`dependency_overrides`）。
-flutter_svg 2.5、video_player 2.14、audioplayers 6.8、flutter_js 0.8.7（Part 2）。
+flutter_svg 2.5、video_player 2.14、audioplayers 6.8、flutter_js 0.8.7（Part 2）、webview_flutter 4.14.1・webview_flutter_wkwebview 3.27.2（Part 4）。
