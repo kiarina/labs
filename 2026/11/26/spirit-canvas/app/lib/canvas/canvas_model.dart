@@ -306,6 +306,20 @@ class CanvasController extends ChangeNotifier {
   /// The stage's color (`#RRGGBB`); null for the default dark one.
   String? background;
 
+  /// VRM elements speaking now: the voice's loudness per 40 ms from [start],
+  /// for their mouths.
+  final mouths = <String, ({List<double> levels, DateTime start})>{};
+
+  /// How open a VRM's mouth should be now (0..1), or null when it is not
+  /// speaking.
+  double? mouthLevel(String id) {
+    final m = mouths[id];
+    if (m == null) return null;
+    final i = DateTime.now().difference(m.start).inMilliseconds ~/ 40;
+    if (i < 0 || i >= m.levels.length) return 0;
+    return m.levels[i];
+  }
+
   /// Shared values that texts show (`{{name}}`), set by the spirit
   /// (`canvas_state`), actions (`set`, `add`) and scripts (`sg.set`).
   final state = <String, dynamic>{};

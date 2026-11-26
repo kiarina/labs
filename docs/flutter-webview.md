@@ -13,7 +13,7 @@ WebView はプラットフォームのビューで、ネイティブのビュー
 
 - WebView だけを縮める枠の外に出し、窓の上の実際の位置と大きさ（舞台の座標 × 縮みの割合）で `Positioned` に置く
 - ページの中の座標を舞台に合わせたいなら、同じ割合の CSS `zoom` を `document.documentElement` にかける
-- その結果、WebView はほかの Flutter の要素より常に手前に出る。`Opacity`・回転・拡大も WebView には効かせられない
+- その結果、WebView は舞台の Flutter の要素より手前に出る。上に重ねたいもの（字幕・VRM の体など）は、下の「WebView の上に重ねる」のとおり WebView より後ろに別の層として置く。`Opacity`・回転・拡大は WebView には効かせられない
 - macOS の WebView は透明な背景に対応していない（`setBackgroundColor` が `UnimplementedError: opaque`）。ページが自分の背景を塗る
 - `RepaintBoundary.toImage` の撮影に WebView は写らない。各 WebView に自分を撮らせて重ねる（下の「撮影」）。撮れない OS では、ページの本文や状態を JS で取って渡す
 - 窓をしまうと Flutter はフレームを描かない。`WidgetsBinding.instance.endOfFrame` を待つ処理は返らなくなるので、時間の上限を付ける。しまったまま足した WebView は、窓を戻すまで作られない
@@ -56,6 +56,15 @@ Android は `AndroidWebViewController.webViewIdentifier` を、アプリの Kotl
 - **効果音は Web Audio で、先に `fetch` と `decodeAudioData` で展開しておく。** 鳴り始めは出力の遅れだけ（WKWebView で `outputLatency` 16 ms）。
   `<audio>` を使い回すと、`src` を差し替えるたびに読み直しになり、鳴り始めまで 56〜171 ms かかった。`<audio>` の出力の経路そのものの遅れは、ページの中からは測れない
 - BGM のように長く鳴らし続ける音は `<audio>` でよい
+
+## WebView の上に重ねる
+
+スライドのページの上に VRM の体や字幕を重ねる（spirit-canvas の Part 9）。macOS・iOS（Simulator）・Android（Pixel 6）・Windows で、実際の画面で重なった。
+
+- `Stack` で WebView より後ろ（手前に描かれる側）に、舞台と同じ位置・同じ縮み方の層をもう 1 枚置き、重ねたい要素だけをそこへ描く。プラットフォームのビューの上にも Flutter は描ける
+- クリックを下のページへ通したい要素は `IgnorePointer` で包む。Android では、体・字幕の上の実際のタップ（`adb shell input tap`）がページの `pointerdown` に届いた。ほかの OS の実際のクリックは未確認
+- `RepaintBoundary.toImage` の撮影は、その層を別に撮り、WebView の絵の上に重ねる
+- 同じ id・同じ HTML の WebView を消してすぐ置き直すと、ウィジェットが使い回されて前のページの状態が残った。置き直した（新しい要素の）ときは読み込み直す
 
 ## iOS と Android で違うところ
 

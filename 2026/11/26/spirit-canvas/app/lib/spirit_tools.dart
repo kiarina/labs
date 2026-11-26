@@ -231,6 +231,10 @@ final List<Map<String, dynamic>> kCanvasTools = [
         'at most every 5 s, so wake only when you must act)\n'
         'sg.sound(src, volume?) (a one-shot effect); sg.bgm(src or null, '
         '{volume, fade_ms}) (background music, crossfading)\n'
+        'sg.speak(text, {vrm, id, caption, rate, interrupt}); '
+        'sg.stopSpeaking(); sg.web(id, js) runs JavaScript in a web '
+        'element\'s page (no result back); sg.on("spoken", id or "*", fn(event)) when a line '
+        'ends\n'
         'sg.log(...); sg.width, sg.height\n'
         'Errors in handlers come back to you as notices.',
     'inputSchema': {
@@ -287,6 +291,34 @@ final List<Map<String, dynamic>> kCanvasTools = [
           'additionalProperties': false,
         },
       },
+      'additionalProperties': false,
+    },
+  },
+  {
+    'name': 'canvas_speak',
+    'description':
+        'Say a line out loud with the device\'s voice (Japanese by default). '
+        'Lines queue one after another. vrm: a vrm element whose mouth '
+        'follows the voice. caption: a text element that shows the line. '
+        'When a line ends, a `spoken` event comes with its id (told to you '
+        'later, not waking you; scripts can sg.on("spoken", id, fn) to go '
+        'on, e.g. to the next slide). For a talk, prefer a script that '
+        'speaks line by line and moves on at each `spoken`, over calling '
+        'this tool for every line.',
+    'inputSchema': {
+      'type': 'object',
+      'properties': {
+        'text': {'type': 'string'},
+        'vrm': {'type': 'string'},
+        'id': {'type': 'string'},
+        'caption': {'type': 'string'},
+        'rate': {'type': 'number', 'description': '1 is normal speed'},
+        'interrupt': {
+          'type': 'boolean',
+          'description': 'Stop what is being said and the queue first.',
+        },
+      },
+      'required': ['text'],
       'additionalProperties': false,
     },
   },
@@ -392,6 +424,8 @@ const _actionsSchema = {
       'put {elements} | remove {ids} | '
       'set {key, value} | add {key, by} (state) | '
       'timeline {id} (start) | stop_timeline {id} | '
+      'speak {text, vrm?, id?, caption?, rate?, interrupt?} | stop_speaking | '
+      'web {id, js} (run JavaScript in a web element\'s page) | '
       'sound {src, volume?} (a one-shot effect) | '
       'bgm {src, volume?, fade_ms?} or {stop: true} (background music; '
       'crossfades) | '
@@ -413,7 +447,10 @@ final Map<String, dynamic> _elementSchema = {
       'where x, y are measured from, on the canvas and on the element: '
       'anchor "center" with x 0, y 0 centers it; "bottom-right" with x -16, '
       'y -16 keeps it 16 px in from that corner), z (stacking, higher on '
-      'top), opacity '
+      'top), layer ("front" draws it over web elements too: web elements '
+      'are otherwise above everything; only buttons, choices, inputs and '
+      'tappable elements in front catch clicks, the rest let them through '
+      'to the page below), opacity '
       '(0..1), scale, rotation (degrees), visible, tappable (taps come back '
       'as events).\n'
       'text: text, size, color, weight (normal|bold|light), align '
@@ -496,6 +533,8 @@ Make the canvas respond by itself where you can. Every round trip through you ta
 - canvas_script: anything with logic or that keeps going (a clock, a countdown, a game, a quiz that checks answers).
 - canvas_state with {{name}} in texts: change a part of a running screen without rebuilding it.
 - Sound: effects on actions (`sound`) and background music that changes with the scene (`bgm`, crossfading). Use the sounds from canvas_media.
+
+To present something (slides, a guide, a story), you can talk like a presenter: slides in a web element, your vrm body in the front layer (`layer: "front"`) beside or over them, and a script that, slide by slide, shows the slide and says its lines (sg.speak with your vrm, so your mouth moves), going on at each `spoken`. Add a caption element if words on screen help.
 
 Screens can be saved and reused. Before building something, look at canvas_scenes: if a saved screen fits, canvas_load it with new values instead of building it again. When you make a screen worth reusing (a quiz, a timer, a game, a presentation), keep the parts that may change (questions, titles, durations) in the state, read them from there, and canvas_save it with those keys as params.
 Keep yourself for what needs you: understanding the user, deciding what comes next, making new things.

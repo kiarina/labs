@@ -10,6 +10,7 @@ import 'canvas/canvas_model.dart';
 import 'canvas/canvas_view.dart';
 import 'canvas/scenes.dart';
 import 'canvas/sound.dart';
+import 'canvas/speech.dart';
 import 'canvas/web_host.dart';
 import 'control_server.dart';
 import 'demo_scene.dart';
@@ -59,16 +60,25 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   final canvas = CanvasController();
   final sounds = SoundBoard();
-  late final behaviors = CanvasBehaviors(
+  late final SpeechPlayer speech = SpeechPlayer(canvas)
+    ..onSpoken = (id, text) {
+      canvas.emit(CanvasEvent('spoken', id, {'text': text}));
+    }
+    ..onProblem = (p) {
+      behaviors.notice('<canvas_notice from="speech" problem="${_attr(p)}"/>');
+    };
+  late final CanvasBehaviors behaviors = CanvasBehaviors(
     canvas,
     wake: (lines) => _send(lines, role: 'event'),
     sounds: sounds,
+    speech: speech,
   );
   final scenes = SceneStore(
     builtinDir: env('SCENES_DIR'),
     savedDir: env('SAVED_SCENES_DIR'),
   );
   final canvasKey = GlobalKey();
+  final canvasFrontKey = GlobalKey();
   final _input = TextEditingController();
   final _scroll = ScrollController();
   late final Spirit spirit;
@@ -144,6 +154,7 @@ class HomePageState extends State<HomePage> {
   void dispose() {
     _control?.close();
     behaviors.dispose();
+    speech.dispose();
     sounds.dispose();
     spirit.dispose();
     super.dispose();
@@ -229,7 +240,12 @@ class HomePageState extends State<HomePage> {
   void _onCanvasEvent(CanvasEvent e, {bool? wake, String? laterReason}) {
     hideCaption();
     // The element's own actions and the scripts' handlers run here, at once.
-    final decided = behaviors.handleEvent(e);
+    var decided = behaviors.handleEvent(e);
+    // A line said to its end is news, not a call: told later unless
+    // something asked otherwise.
+    if (e.kind == 'spoken' && decided == 'now' && wake == null) {
+      decided = 'later';
+    }
     switch (wake == null ? decided : (wake ? 'now' : 'later')) {
       case 'none':
         return;
@@ -308,7 +324,11 @@ class HomePageState extends State<HomePage> {
         if (a['image'] as bool? ?? true) {
           // Let a just-changed canvas draw first.
           await nextFrame();
-          final shot = await captureCanvasWithWeb(canvasKey, canvas);
+          final shot = await captureCanvasWithWeb(
+            canvasKey,
+            canvas,
+            frontKey: canvasFrontKey,
+          );
           if (shot.png != null) images.add(shot.png!);
           if (shot.missing.isNotEmpty) {
             note =
@@ -366,6 +386,7 @@ class HomePageState extends State<HomePage> {
         );
       case 'canvas_clear':
         unawaited(sounds.stopAll());
+        speech.stop();
         behaviors.reset();
         canvas.state.clear();
         canvas.clear(background: a['background'] as String?);
@@ -424,6 +445,14 @@ class HomePageState extends State<HomePage> {
           behaviors.stopScript(a['id'] as String)
               ? 'ok'
               : 'no script "${a['id']}"',
+        );
+      case 'canvas_speak':
+        final problems = behaviors.runActions([
+          {'do': 'speak', ...a},
+        ], from: 'spirit');
+        return ToolOutcome(
+          problems.isEmpty ? 'ok: queued' : problems.join('; '),
+          ok: problems.isEmpty,
         );
       case 'canvas_audio':
         final actions = [
@@ -594,6 +623,7 @@ class HomePageState extends State<HomePage> {
       canvasKey,
       canvas,
       pixelRatio: 1,
+      frontKey: canvasFrontKey,
     )).png;
     if (png == null) return null;
     final f = File('$dir/$name.png');
@@ -626,6 +656,7 @@ class HomePageState extends State<HomePage> {
                         child: CanvasView(
                           controller: canvas,
                           boundaryKey: canvasKey,
+                          frontKey: canvasFrontKey,
                         ),
                       ),
                     ),

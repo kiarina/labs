@@ -54,10 +54,14 @@ class CanvasView extends StatefulWidget {
     super.key,
     required this.controller,
     required this.boundaryKey,
+    this.frontKey,
   });
 
   final CanvasController controller;
   final GlobalKey boundaryKey;
+
+  /// The front layer's boundary (`layer: "front"`), for the picture.
+  final GlobalKey? frontKey;
 
   @override
   State<CanvasView> createState() => _CanvasViewState();
@@ -147,7 +151,7 @@ class _CanvasViewState extends State<CanvasView>
                         clipBehavior: Clip.hardEdge,
                         children: [
                           for (final e in ordered)
-                            if (e.type != 'web') _positioned(e),
+                            if (e.type != 'web' && !_isFront(e)) _positioned(e),
                         ],
                       ),
                     ),
@@ -158,11 +162,45 @@ class _CanvasViewState extends State<CanvasView>
             // Web views over the stage (always above its other elements).
             for (final e in ordered)
               if (e.type == 'web') _webPositioned(e, s, ox, oy),
+            // The front layer (`layer: "front"`): over the web views too,
+            // say a VRM presenting slides. Transparent; only what takes
+            // input (buttons, choices, inputs, `tappable`) catches clicks,
+            // the rest lets them through to the page below.
+            if (ordered.any(_isFront))
+              Positioned(
+                left: ox,
+                top: oy,
+                width: stage.width * s,
+                height: stage.height * s,
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: RepaintBoundary(
+                    key: widget.frontKey,
+                    child: SizedBox(
+                      width: stage.width,
+                      height: stage.height,
+                      child: Stack(
+                        clipBehavior: Clip.hardEdge,
+                        children: [
+                          for (final e in ordered)
+                            if (e.type != 'web' && _isFront(e))
+                              _positioned(e, ignorePointer: !_takesInput(e)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
           ],
         );
       },
     );
   }
+
+  static bool _isFront(CanvasElement e) => e.str('layer') == 'front';
+  static bool _takesInput(CanvasElement e) =>
+      const {'button', 'choices', 'input'}.contains(e.type) ||
+      e.flag('tappable', false);
 
   Widget _webPositioned(CanvasElement e, double s, double ox, double oy) {
     final v = c.currentValues(e);
@@ -182,7 +220,7 @@ class _CanvasViewState extends State<CanvasView>
     );
   }
 
-  Widget _positioned(CanvasElement e) {
+  Widget _positioned(CanvasElement e, {bool ignorePointer = false}) {
     final v = c.currentValues(e);
     Widget child = _ElementBody(
       key: ValueKey('${e.id}:${e.type}'),
@@ -207,11 +245,14 @@ class _CanvasViewState extends State<CanvasView>
       top: v['y'],
       width: math.max(0, v['w']!),
       height: math.max(0, v['h']!),
-      child: Opacity(
-        opacity: v['opacity']!.clamp(0, 1),
-        child: Transform.rotate(
-          angle: v['rotation']! * math.pi / 180,
-          child: Transform.scale(scale: v['scale']!, child: child),
+      child: IgnorePointer(
+        ignoring: ignorePointer,
+        child: Opacity(
+          opacity: v['opacity']!.clamp(0, 1),
+          child: Transform.rotate(
+            angle: v['rotation']! * math.pi / 180,
+            child: Transform.scale(scale: v['scale']!, child: child),
+          ),
         ),
       ),
     );
@@ -327,7 +368,7 @@ class _ElementBody extends StatelessWidget {
       case 'audio':
         return _AudioElement(element: e, controller: controller);
       case 'vrm':
-        return VrmElementView(element: e);
+        return VrmElementView(element: e, controller: controller);
       case 'button':
         return _ButtonElement(element: e, controller: controller);
       case 'choices':
@@ -782,6 +823,7 @@ Future<({String? png, Map<String, String> missing})> captureCanvasWithWeb(
   GlobalKey key,
   CanvasController c, {
   double? pixelRatio,
+  GlobalKey? frontKey,
 }) async {
   final boundary = key.currentContext?.findRenderObject();
   if (boundary is! RenderRepaintBoundary) {
@@ -801,7 +843,9 @@ Future<({String? png, Map<String, String> missing})> captureCanvasWithWeb(
       if (e.type == 'web' && e.flag('visible', true)) e,
   ];
   final missing = <String, String>{};
-  if (webs.isEmpty) {
+  final frontBoundary = frontKey?.currentContext?.findRenderObject();
+  final hasFront = frontBoundary is RenderRepaintBoundary;
+  if (webs.isEmpty && !hasFront) {
     final bytes = await stage.toByteData(format: ui.ImageByteFormat.png);
     stage.dispose();
     return (
@@ -847,6 +891,16 @@ Future<({String? png, Map<String, String> missing})> captureCanvasWithWeb(
       Paint()..filterQuality = FilterQuality.medium,
     );
     frame.image.dispose();
+  }
+  // The front layer last, over the pages.
+  if (frontBoundary is RenderRepaintBoundary) {
+    try {
+      final front = await frontBoundary.toImage(pixelRatio: r);
+      canvas.drawImage(front, Offset.zero, Paint());
+      front.dispose();
+    } on Object catch (e) {
+      missing['front layer'] = 'not drawn now: $e';
+    }
   }
   final composed = await recorder.endRecording().toImage(
     stage.width,
@@ -911,7 +965,10 @@ class _WebElementState extends State<_WebElement> {
   void didUpdateWidget(covariant _WebElement oldWidget) {
     super.didUpdateWidget(oldWidget);
     host.pages[widget.element.id] = _web;
-    if (widget.element.str('html') != _html) {
+    // Put again (a new element, e.g. after a clear, or a scene loaded
+    // again): a fresh page, even with the same html.
+    if (!identical(oldWidget.element, widget.element) ||
+        widget.element.str('html') != _html) {
       _load();
     } else if (oldWidget.zoom != widget.zoom) {
       _web.run('window.sg && sg.setZoom(${widget.zoom})');

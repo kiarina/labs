@@ -483,6 +483,65 @@ Windows 11 の開発機（Core i9-12900K・RTX 3080 Ti、Flutter 3.47.2）で、
 - **画面の実際のクリックが WebView に届くことは、オーナーが Windows の機で手で触って確かめた**（2026-11-26、「OK だった」）
 - 最初の `build.cmd` は、置き場所の解釈を 1 段まちがえて `tools\` で `flutter` を走らせて失敗した（直した）
 
+## Part 9: WebView のスライドの上に体を重ねて、声で解説する
+
+WebView でスライドを作り、その上に spirit の体（VRM）を VTuber のように重ねて、声で解説させられるかを確かめた。
+
+### 作り
+
+- **前面の層（`layer: "front"`）:** WebView は Flutter の要素より常に手前に出る（Part 4）。そこで WebView のさらに上にもう 1 枚、舞台と同じ大きさの層を置き、
+  `layer: "front"` の要素だけをそこに描く。ボタン・選択肢・入力欄・`tappable` 以外は `IgnorePointer` にして、クリックを下のページへ通す。
+  spirit に見せる撮影は、舞台 → WebView の絵 → 前面の層の順に重ねる
+- **読み上げ（`canvas_speak`、アクション `speak`・`stop_speaking`、スクリプトの `sg.speak`・`sg.stopSpeaking`）:** OS の声を [tts_pcm](https://pub.dev/packages/tts_pcm) 0.2.0 で PCM にし、
+  WAV にして audioplayers で鳴らす。並べた順に 1 文ずつ話し、話し終わると `spoken` の出来事（id 付き）が来る。spirit へは起こさずに後で伝える（`later`）
+- **声に合わせた口:** PCM の 40 ms ごとの大きさ（RMS、大きいほうから 5% の値を 1 にそろえる）を、鳴らし始めの時刻から読んで VRM の `aa` に入れる。
+  `caption` を渡すと、その文字の要素に話している文を出す
+- **スクリプトからページを動かす（アクション `web`、`sg.web(id, js)`）:** 「話し終わったら次のスライドへ」をモデルなしで回すために足した。結果は返らない
+- **細い枠でも体が収まる:** VRM は枠の高さに合わせて映していたので、縦長の画面で細い枠にすると肩から先が切れた。
+  枠の縦横比が足りない（胸から上で 0.9、全身で 0.55 より細い）ときは、その分カメラを引く
+- **同じ id でページを置き直したら読み込み直す:** `canvas_clear` の直後に同じ id・同じ HTML の web 要素を置くと、前のページ（3 枚目まで進んだ状態）が残っていた。
+  置き直した要素は新しいページとして読み込む
+
+### 確かめたこと
+
+モデルなしの確認は `present_check.py`（3 枚のスライドの web 要素、右下に前面の VRM、下に前面の字幕を置き、スクリプトが 1 文ずつ `sg.speak` して、
+3 枚目まで `sg.web` で送る）。
+
+| | macOS | iOS（Simulator） | Android（Pixel 6） | Windows |
+| --- | --- | --- | --- | --- |
+| 3 枚を読み上げて送り切る（5 文） | 28.3 秒 | 24.4 秒 | 25.7 秒 | 28.8 秒 |
+| 実際の画面で WebView の上に体と字幕が出る | 出た | 出た（端末の画面を撮った） | 出た（`screencap`） | 出た（デスクトップを撮った） |
+| 体・字幕の上のクリックが下のページに届く | 未確認（下） | 未確認 | 届いた（`adb shell input tap` の 2 回とも、ページの `pointerdown` が受けた） | 未確認 |
+
+- 口は声に合わせて開いた（話している間に続けて撮った 5 枚のうち、声の大きいところで開いている）
+- 撮影（spirit に見せる画像）にも前面の層が重なった
+- macOS の実際のクリックは、画面のロック中に試せず、その後は裏からのクリックが WebView に安定して届かなかった（前面の層と関係なく座標がずれた）。人が触って確かめる
+
+| | | |
+| --- | --- | --- |
+| ![macOS の撮影](results/present-macos.jpg) | ![iOS の画面](results/present-ios.jpg) | ![Android の画面](results/present-android.jpg) |
+| macOS: 撮影に前面の層が重なる | iOS: 細い枠でも体が収まる | Android: 実際のタップがページに届いた |
+| ![Windows の画面](results/present-windows.jpg) | ![口](results/present-mouth.jpg) | |
+| Windows: WebView2 の上に重なる | 話している間の口（右 2 枚で開く） | |
+
+### gpt-6.2-sol に流した結果
+
+「キャンバスで、Spirits Garden を紹介するスライドを 3 枚作って、あなたの体をスライドの上に出して、声で解説して。1 枚ずつ読み終わったら次へ進めて。」（macOS）
+
+- 195 秒、道具 14 回、出力 6,026 トークン。スライドは web 要素 1 つ（字幕もページの中）、体は `layer: "front"` の VRM、スクリプトが文ごとに `sg.speak` し、
+  `spoken` で次の文・次のスライドへ進めた。最後に「もう一度聞く」を出し、`spirits-garden-intro` として保存した（[results/present-sol-scene.json](results/present-sol-scene.json)）
+- spirit は最後まで読み上げを見届けてから返事をした（スクリプトを 1 回書き直した）
+- 後で窓を広げたとき、resize の通知で起き、字幕を体と重ならない左下へ動かした
+
+![Sol が作ったスライド](results/present-sol.jpg)
+
+### 分かった制約
+
+- 前面の層の要素も、WebView の上ではプラットフォームのビューの上に Flutter が描く形になる。macOS・iOS・Android・Windows で重なったが、Android の `screencap` 以外で
+  実際のタップの通り抜けは確かめていない
+- 声は OS のもの。tts_pcm の lab の計測では、Apple の Kyoko は全部できてから届く（0.75〜1 秒）ので、話し始めに間が空きうる（ここでは測っていない）。spirit の本番の声（クローン TTS）にするなら、PCM を受けて同じ形で口を動かせる
+- 口は `aa` だけ（母音の形は見ていない）
+
 ## 結論が成り立つ範囲と、まだ見ていないこと
 
 - spirit（モデル）込みで動かしたのは macOS と Windows。iOS（Simulator）と Android（Pixel 6）は、画面の側をモデルなしで確かめた（Part 7）。iOS の実機は動かしていない
@@ -533,9 +592,12 @@ iOS・Android: `DEVICE=<udid> mise -C 2026/11/26/spirit-canvas run run-ios`・`D
 画面の右上の「見本」は、モデルを使わずに `demo_scene.dart` を置きます。
 作り置きは `scenes/`、spirit が保存した画面は `work/scenes/` に入ります。
 
+スライドの解説（Part 9）のモデルなしの確認: `python3 2026/11/26/spirit-canvas/present_check.py <名前> <ポート>`（画像は `work/logs/<名前>/`）。
+Windows のデスクトップを撮るには `tools/windows/screen.vbs` を対話のタスクで走らせる（コンソールの窓を出さずに `logs\screen.png` へ）。
+
 `mise -C 2026/11/26/spirit-canvas run`（既定）は解析とキャンバスのモデルのテストだけを行います。
 
 ## Dependencies
 
 `app/pubspec.lock` が解決した版。flutter_vrm は commit `6cdf97d`、flutter_scene はその lab と同じ upstream の commit `0e263be`（`dependency_overrides`）。
-flutter_svg 2.5、video_player 2.14、audioplayers 6.8、flutter_js 0.8.7（Part 2）、webview_flutter 4.14.1・webview_flutter_wkwebview 3.27.2（Part 4）、webview_flutter_android（Part 7）、webview_all_windows 1.5.2・webview_platform_interface 1.5.2・video_player_win 3.3.2（Part 8）。
+flutter_svg 2.5、video_player 2.14、audioplayers 6.8、flutter_js 0.8.7（Part 2）、webview_flutter 4.14.1・webview_flutter_wkwebview 3.27.2（Part 4）、webview_flutter_android（Part 7）、webview_all_windows 1.5.2・webview_platform_interface 1.5.2・video_player_win 3.3.2（Part 8）、tts_pcm 0.2.0（Part 9）。

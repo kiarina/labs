@@ -8,6 +8,8 @@ import 'package:flutter_js/flutter_js.dart';
 
 import 'canvas_model.dart';
 import 'sound.dart';
+import 'speech.dart';
+import 'web_host.dart';
 
 /// Something for the spirit that does not wake it: delivered with the next
 /// message that goes to it (the user's, an event's, or a wake).
@@ -24,7 +26,7 @@ class CanvasNotice {
 /// [wake] sends lines to the spirit now (a new turn, or steered into the
 /// running one). Everything else waits in [notices] for the next message.
 class CanvasBehaviors {
-  CanvasBehaviors(this.canvas, {required this.wake, this.sounds}) {
+  CanvasBehaviors(this.canvas, {required this.wake, this.sounds, this.speech}) {
     _ticker = Timer.periodic(const Duration(milliseconds: 50), (_) => _tick());
   }
 
@@ -33,6 +35,9 @@ class CanvasBehaviors {
 
   /// Effects and music; null in tests.
   final SoundBoard? sounds;
+
+  /// The OS voice saying lines; null in tests.
+  final SpeechPlayer? speech;
 
   /// What defined the running timelines and scripts, for saving a scene.
   final timelineDefs = <String, Map<String, dynamic>>{};
@@ -235,6 +240,42 @@ class CanvasBehaviors {
                 );
               }
             });
+        return null;
+      case 'speak':
+        final text = a['text'] as String?;
+        if (text == null || text.isEmpty) return 'speak without text';
+        if (speech == null) return 'no speech here';
+        speech!.say(
+          SpeechLine(
+            text: text,
+            id: a['id'] as String?,
+            vrm: a['vrm'] as String?,
+            caption: a['caption'] as String?,
+            rate: (a['rate'] as num?)?.toDouble() ?? 1.0,
+            language: a['language'] as String? ?? 'ja-JP',
+          ),
+          interrupt: a['interrupt'] == true,
+        );
+        return null;
+      case 'stop_speaking':
+        speech?.stop();
+        return null;
+      case 'web':
+        // Run JavaScript in a web element's page (e.g. go to a slide).
+        final id = a['id'] as String?;
+        final js = a['js'] as String?;
+        if (id == null || js == null) return 'web needs id and js';
+        if (canvas.elements[id]?.type != 'web') return 'no web element "$id"';
+        unawaited(
+          WebHost.instance
+              .eval(id, js)
+              .then<void>(
+                (_) {},
+                onError: (Object e) => notice(
+                  '<canvas_notice from="${_attr(from)}" problem="${_attr('web "$id": $e')}"/>',
+                ),
+              ),
+        );
         return null;
       case 'notify':
         final line =
@@ -591,6 +632,13 @@ var __sg = (function () {
         },
         action: function (a) { return call(['action', a]); },
         sound: function (src, volume) { return call(['action', { do: 'sound', src: src, volume: volume }]); },
+        speak: function (text, opts) {
+          var a = { do: 'speak', text: String(text) };
+          for (var k in (opts || {})) a[k] = opts[k];
+          return call(['action', a]);
+        },
+        stopSpeaking: function () { return call(['action', { do: 'stop_speaking' }]); },
+        web: function (elementId, js) { return call(['action', { do: 'web', id: elementId, js: String(js) }]); },
         bgm: function (src, opts) {
           var a = { do: 'bgm', src: src };
           for (var k in (opts || {})) a[k] = opts[k];

@@ -33,9 +33,12 @@ final _relaxedArms = {
 /// `animation` (a .vrma; `default` for the lab's), `framing` (`bust` or
 /// `full`), `look_at_viewer`, `talking` (moves the mouth).
 class VrmElementView extends StatefulWidget {
-  const VrmElementView({super.key, required this.element});
+  const VrmElementView({super.key, required this.element, this.controller});
 
   final CanvasElement element;
+
+  /// For the mouth while the element speaks (`speak` with its id).
+  final CanvasController? controller;
 
   @override
   State<VrmElementView> createState() => _VrmElementViewState();
@@ -56,6 +59,10 @@ class _VrmElementViewState extends State<VrmElementView> {
   vm.Vector3 _eye = vm.Vector3(0, 1.3, 2.5);
   vm.Vector3 _target = vm.Vector3(0, 1.3, 0);
   String? _framedFor;
+
+  /// The box's width / height: a narrow box pulls the camera back so the
+  /// body still fits across.
+  double _aspect = 1;
 
   CanvasElement get e => widget.element;
 
@@ -127,8 +134,9 @@ class _VrmElementViewState extends State<VrmElementView> {
 
   void _frame(VrmAvatar a) {
     final framing = e.str('framing') ?? 'bust';
-    if (_framedFor == framing) return;
-    _framedFor = framing;
+    final key = '$framing@${_aspect.toStringAsFixed(2)}';
+    if (_framedFor == key) return;
+    _framedFor = key;
     // The bust framing knows which way the avatar faces; the full one
     // looks from the same side.
     final f = VrmPortrait.bust(a, fovYRadians: _camera.fovRadiansY);
@@ -144,6 +152,12 @@ class _VrmElementViewState extends State<VrmElementView> {
     } else {
       _target = f.target;
       _eye = f.position;
+    }
+    // Framed by height; the body needs about this width / height to fit
+    // across (shoulders for the bust, arms for the full body).
+    final needs = framing == 'full' ? 0.55 : 0.9;
+    if (_aspect < needs) {
+      _eye = _target + (_eye - _target) * (needs / _aspect);
     }
   }
 
@@ -229,7 +243,14 @@ class _VrmElementViewState extends State<VrmElementView> {
         e.num_('expression_weight', 1).clamp(0, 1),
       );
     }
-    if (e.flag('talking', false)) {
+    final voice = widget.controller?.mouthLevel(e.id);
+    if (voice != null) {
+      // Speaking: the mouth follows the voice's loudness.
+      a.expressions.setPreset(
+        VrmExpressionPreset.aa,
+        (voice * 0.9).clamp(0, 1),
+      );
+    } else if (e.flag('talking', false)) {
       final open =
           (math.sin(t * 2 * math.pi * 4) * 0.5 + 0.5) *
           (0.6 + 0.4 * math.sin(t * 2 * math.pi * 1.3).abs());
@@ -257,6 +278,13 @@ class _VrmElementViewState extends State<VrmElementView> {
         ),
       );
     }
-    return SceneView(scene, camera: _camera, onTick: _onTick);
+    return LayoutBuilder(
+      builder: (context, box) {
+        if (box.maxWidth.isFinite && box.maxHeight > 0) {
+          _aspect = box.maxWidth / box.maxHeight;
+        }
+        return SceneView(scene, camera: _camera, onTick: _onTick);
+      },
+    );
   }
 }
