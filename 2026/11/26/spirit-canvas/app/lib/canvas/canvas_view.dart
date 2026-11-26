@@ -13,6 +13,7 @@ import 'package:video_player/video_player.dart';
 import '../media.dart';
 import 'canvas_model.dart';
 import 'vrm_element.dart';
+import 'world_view.dart';
 import 'web_host.dart';
 import 'web_page.dart';
 
@@ -127,9 +128,10 @@ class _CanvasViewState extends State<CanvasView>
             : math.min(area.width / stage.width, area.height / stage.height);
         final ox = (area.width - stage.width * s) / 2;
         final oy = (area.height - stage.height * s) / 2;
+        // Things in a world are drawn by that world, not on the stage.
         final ordered = [
           for (final e in c.ordered)
-            if (e.flag('visible', true)) e,
+            if (e.flag('visible', true) && !e.in3d) e,
         ];
         return Stack(
           children: [
@@ -372,6 +374,18 @@ class _ElementBody extends StatelessWidget {
         return _AudioElement(element: e, controller: controller);
       case 'vrm':
         return VrmElementView(element: e, controller: controller);
+      case 'world':
+        return WorldView(
+          key: ValueKey('${e.id}:world'),
+          world: e,
+          controller: controller,
+          panel: (p) => _ElementBody(
+            key: ValueKey('${p.id}:${p.type}:panel'),
+            element: p,
+            controller: controller,
+            now: controller.now,
+          ),
+        );
       case 'button':
         return _ButtonElement(element: e, controller: controller);
       case 'choices':

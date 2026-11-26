@@ -50,10 +50,65 @@ const kElementTypes = [
   'choices',
   'input',
   'web',
+  // A 3D world (Part 11), and the shapes that go in one (`in: <world id>`).
+  'world',
+  ...k3dShapes,
 ];
 
+/// Shapes that live only in a world (sizes w, h, d in metres).
+const k3dShapes = [
+  'box',
+  'sphere',
+  'cylinder',
+  'cone',
+  'plane',
+  'torus',
+  'capsule',
+];
+
+/// A world's camera, numbers a transition or an animation can move.
+const kCameraKeys = [
+  'cam_x',
+  'cam_y',
+  'cam_z',
+  'look_x',
+  'look_y',
+  'look_z',
+  'fov',
+];
+
+/// What places a thing in a world: position (m), turn (degrees about each
+/// axis), size (m).
+const k3dKeys = ['x', 'y', 'z', 'rx', 'ry', 'rz', 'w', 'h', 'd'];
+
 /// The numeric properties an animation or a transition can move.
-const kAnimatable = ['x', 'y', 'w', 'h', 'opacity', 'scale', 'rotation'];
+const kAnimatable = [
+  'x',
+  'y',
+  'w',
+  'h',
+  'opacity',
+  'scale',
+  'rotation',
+  'z',
+  'rx',
+  'ry',
+  'rz',
+  'd',
+  ...kCameraKeys,
+];
+
+/// Where a world's camera starts: 1.6 m high, 4 m in front (z grows away
+/// from the viewer, x to the right, y up), looking at the middle at 1.2 m.
+const kCameraDefaults = {
+  'cam_x': 0.0,
+  'cam_y': 1.6,
+  'cam_z': -4.0,
+  'look_x': 0.0,
+  'look_y': 1.2,
+  'look_z': 0.0,
+  'fov': 45.0,
+};
 
 /// One thing on the canvas: a type, an id and its properties as the spirit
 /// gave them (JSON). Unknown properties are kept and ignored.
@@ -73,7 +128,11 @@ class CanvasElement {
   String? str(String key) => props[key]?.toString();
   bool flag(String key, bool fallback) => props[key] as bool? ?? fallback;
 
-  double get z => num_('z', 0);
+  double get z => in3d ? 0 : num_('z', 0);
+
+  /// The world it is in (`in`), for a thing placed in a 3D world.
+  String? get world => str('in');
+  bool get in3d => world != null;
 
   /// Placed by plain numbers from the top-left: an animation's last values
   /// can be written back as its new place.
@@ -369,6 +428,14 @@ class CanvasController extends ChangeNotifier {
         problems.add('$id: unknown type "$type" (use one of $kElementTypes)');
         continue;
       }
+      if (k3dShapes.contains(type) && item['in'] == null) {
+        problems.add('$id: a $type goes in a world: give `in` (a world id)');
+        continue;
+      }
+      if (item['in'] != null && const {'web', 'world'}.contains(type)) {
+        problems.add('$id: a $type cannot go in a world');
+        continue;
+      }
       final props = {...item}
         ..remove('id')
         ..remove('type');
@@ -393,7 +460,14 @@ class CanvasController extends ChangeNotifier {
     final target = resolve({...e.props, ...props});
     final placeKeys = {'x', 'y', 'w', 'h', 'anchor'};
     final moving = <String, double>{
-      if (props.keys.any(placeKeys.contains)) ...{
+      // In a world, every number moves as it is.
+      if (e.in3d)
+        for (final p in kAnimatable)
+          if (props[p] is num) p: (props[p] as num).toDouble(),
+      if (e.type == 'world')
+        for (final p in kCameraKeys)
+          if (props[p] is num) p: (props[p] as num).toDouble(),
+      if (!e.in3d && props.keys.any(placeKeys.contains)) ...{
         'x': target.left,
         'y': target.top,
         'w': target.width,
@@ -469,6 +543,16 @@ class CanvasController extends ChangeNotifier {
   }
 
   Map<String, double> baseValues(CanvasElement e) {
+    if (e.in3d) {
+      // In a world: metres and degrees, as given.
+      final shape = k3dShapes.contains(e.type) || e.type == 'vrm';
+      return {
+        for (final k in k3dKeys)
+          k: e.num_(k, shape && const {'w', 'h', 'd'}.contains(k) ? 1 : 0),
+        'opacity': e.num_('opacity', 1),
+        'scale': e.num_('scale', 1),
+      };
+    }
     final r = resolve(e.props);
     return {
       'x': r.left,
@@ -478,6 +562,8 @@ class CanvasController extends ChangeNotifier {
       'opacity': e.num_('opacity', 1),
       'scale': e.num_('scale', 1),
       'rotation': e.num_('rotation', 0),
+      if (e.type == 'world')
+        for (final k in kCameraKeys) k: e.num_(k, kCameraDefaults[k]!),
     };
   }
 

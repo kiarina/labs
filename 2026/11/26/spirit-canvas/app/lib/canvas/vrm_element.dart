@@ -177,122 +177,6 @@ class _VrmElementViewState extends State<VrmElementView> {
     }
   }
 
-  void _pose(VrmAvatar a, double t) {
-    final h = a.humanoid;
-    h.resetPose();
-    final pose = e.str('pose') ?? 'idle';
-    if (pose == 'rest') return;
-    _relaxedArms.forEach(h.setNormalizedRotation);
-    final breathe = math.sin(t * 2 * math.pi / 4) * 0.02;
-    h.setNormalizedRotation(
-      VrmHumanBone.spine,
-      vm.Quaternion.axisAngle(vm.Vector3(1, 0, 0), breathe),
-    );
-    switch (pose) {
-      case 'wave':
-        // The right arm up, the forearm swinging.
-        h.setNormalizedRotation(
-          VrmHumanBone.rightUpperArm,
-          _about(0, 0, 1, -10),
-        );
-        h.setNormalizedRotation(
-          VrmHumanBone.rightLowerArm,
-          _about(0, 0, 1, -70 + math.sin(t * 2 * math.pi * 1.5) * 25),
-        );
-      case 'nod':
-        h.setNormalizedRotation(
-          VrmHumanBone.head,
-          _about(1, 0, 0, 12 * (0.5 + 0.5 * math.sin(t * 2 * math.pi * 1.2))),
-        );
-      case 'bow':
-        h.setNormalizedRotation(VrmHumanBone.spine, _about(1, 0, 0, 25));
-        h.setNormalizedRotation(VrmHumanBone.chest, _about(1, 0, 0, 10));
-      case 'cheer':
-        final bounce = math.sin(t * 2 * math.pi * 2) * 8;
-        h.setNormalizedRotation(
-          VrmHumanBone.leftUpperArm,
-          _about(0, 0, 1, 40 + bounce),
-        );
-        h.setNormalizedRotation(
-          VrmHumanBone.rightUpperArm,
-          _about(0, 0, 1, -40 - bounce),
-        );
-        h.setNormalizedRotation(VrmHumanBone.leftLowerArm, _about(0, 0, 1, 20));
-        h.setNormalizedRotation(
-          VrmHumanBone.rightLowerArm,
-          _about(0, 0, 1, -20),
-        );
-      case 'walk':
-        // Legs and arms swinging, two steps a second.
-        final swing = math.sin(t * 2 * math.pi * 1.0);
-        h.setNormalizedRotation(
-          VrmHumanBone.leftUpperLeg,
-          _about(1, 0, 0, 28 * swing),
-        );
-        h.setNormalizedRotation(
-          VrmHumanBone.rightUpperLeg,
-          _about(1, 0, 0, -28 * swing),
-        );
-        h.setNormalizedRotation(
-          VrmHumanBone.leftLowerLeg,
-          _about(1, 0, 0, -30 * math.max(0, swing)),
-        );
-        h.setNormalizedRotation(
-          VrmHumanBone.rightLowerLeg,
-          _about(1, 0, 0, -30 * math.max(0, -swing)),
-        );
-        h.setNormalizedRotation(
-          VrmHumanBone.leftUpperArm,
-          _about(1, 0, 0, -20 * swing) * _about(0, 0, 1, -72),
-        );
-        h.setNormalizedRotation(
-          VrmHumanBone.rightUpperArm,
-          _about(1, 0, 0, 20 * swing) * _about(0, 0, 1, 72),
-        );
-      case 'sleep':
-        // Dozing: the head down and to the side, breathing slowly.
-        final slow = math.sin(t * 2 * math.pi / 5);
-        h.setNormalizedRotation(
-          VrmHumanBone.head,
-          _about(1, 0, 0, 22 + 3 * slow) * _about(0, 0, 1, 12),
-        );
-        h.setNormalizedRotation(VrmHumanBone.spine, _about(1, 0, 0, 8));
-      case 'work':
-        // At a desk: forearms forward, the hands tapping, eyes down.
-        final tap = math.sin(t * 2 * math.pi * 3);
-        h.setNormalizedRotation(
-          VrmHumanBone.leftUpperArm,
-          _about(0, 1, 0, -30) * _about(0, 0, 1, -65),
-        );
-        h.setNormalizedRotation(
-          VrmHumanBone.rightUpperArm,
-          _about(0, 1, 0, 30) * _about(0, 0, 1, 65),
-        );
-        h.setNormalizedRotation(
-          VrmHumanBone.leftLowerArm,
-          _about(0, 1, 0, -75 - 4 * tap),
-        );
-        h.setNormalizedRotation(
-          VrmHumanBone.rightLowerArm,
-          _about(0, 1, 0, 75 + 4 * tap),
-        );
-        h.setNormalizedRotation(VrmHumanBone.head, _about(1, 0, 0, 14));
-      case 'think':
-        h.setNormalizedRotation(
-          VrmHumanBone.rightUpperArm,
-          _about(0, 1, 0, 50) * _about(0, 0, 1, 60),
-        );
-        h.setNormalizedRotation(
-          VrmHumanBone.rightLowerArm,
-          _about(0, 1, 0, 120),
-        );
-        h.setNormalizedRotation(
-          VrmHumanBone.head,
-          _about(0, 0, 1, 8) * _about(1, 0, 0, 5),
-        );
-    }
-  }
-
   void _onTick(Duration elapsed, double dt) {
     final a = _avatar;
     if (a == null) return;
@@ -301,36 +185,9 @@ class _VrmElementViewState extends State<VrmElementView> {
     if (player != null) {
       player.update(dt);
     } else {
-      _pose(a, t);
+      poseVrm(a, e, t);
     }
-    a.expressions.resetValues();
-    final name = e.str('expression') ?? 'neutral';
-    final preset = VrmExpressionPreset.values
-        .where((p) => p.name == name)
-        .firstOrNull;
-    if (preset != null && preset != VrmExpressionPreset.neutral) {
-      a.expressions.setPreset(
-        preset,
-        e.num_('expression_weight', 1).clamp(0, 1),
-      );
-    }
-    // Asleep: eyes shut (the automatic blink would open them again).
-    final asleep = e.str('pose') == 'sleep';
-    a.autoBlink.enabled = !asleep;
-    if (asleep) a.expressions.setPreset(VrmExpressionPreset.blink, 1);
-    final voice = widget.controller?.mouthLevel(e.id);
-    if (voice != null) {
-      // Speaking: the mouth follows the voice's loudness.
-      a.expressions.setPreset(
-        VrmExpressionPreset.aa,
-        (voice * 0.9).clamp(0, 1),
-      );
-    } else if (e.flag('talking', false)) {
-      final open =
-          (math.sin(t * 2 * math.pi * 4) * 0.5 + 0.5) *
-          (0.6 + 0.4 * math.sin(t * 2 * math.pi * 1.3).abs());
-      a.expressions.setPreset(VrmExpressionPreset.aa, open);
-    }
+    expressVrm(a, e, t, widget.controller?.mouthLevel(e.id));
     a.update(dt, camera: _camera);
     _frame(a);
     // Turning: the camera goes around the avatar the other way (the
@@ -369,5 +226,139 @@ class _VrmElementViewState extends State<VrmElementView> {
         return SceneView(scene, camera: _camera, onTick: _onTick);
       },
     );
+  }
+}
+
+/// Sets the body for the element's `pose` at time [t] (seconds).
+void poseVrm(VrmAvatar a, CanvasElement e, double t) {
+  final h = a.humanoid;
+  h.resetPose();
+  final pose = e.str('pose') ?? 'idle';
+  if (pose == 'rest') return;
+  _relaxedArms.forEach(h.setNormalizedRotation);
+  final breathe = math.sin(t * 2 * math.pi / 4) * 0.02;
+  h.setNormalizedRotation(
+    VrmHumanBone.spine,
+    vm.Quaternion.axisAngle(vm.Vector3(1, 0, 0), breathe),
+  );
+  switch (pose) {
+    case 'wave':
+      // The right arm up, the forearm swinging.
+      h.setNormalizedRotation(VrmHumanBone.rightUpperArm, _about(0, 0, 1, -10));
+      h.setNormalizedRotation(
+        VrmHumanBone.rightLowerArm,
+        _about(0, 0, 1, -70 + math.sin(t * 2 * math.pi * 1.5) * 25),
+      );
+    case 'nod':
+      h.setNormalizedRotation(
+        VrmHumanBone.head,
+        _about(1, 0, 0, 12 * (0.5 + 0.5 * math.sin(t * 2 * math.pi * 1.2))),
+      );
+    case 'bow':
+      h.setNormalizedRotation(VrmHumanBone.spine, _about(1, 0, 0, 25));
+      h.setNormalizedRotation(VrmHumanBone.chest, _about(1, 0, 0, 10));
+    case 'cheer':
+      final bounce = math.sin(t * 2 * math.pi * 2) * 8;
+      h.setNormalizedRotation(
+        VrmHumanBone.leftUpperArm,
+        _about(0, 0, 1, 40 + bounce),
+      );
+      h.setNormalizedRotation(
+        VrmHumanBone.rightUpperArm,
+        _about(0, 0, 1, -40 - bounce),
+      );
+      h.setNormalizedRotation(VrmHumanBone.leftLowerArm, _about(0, 0, 1, 20));
+      h.setNormalizedRotation(VrmHumanBone.rightLowerArm, _about(0, 0, 1, -20));
+    case 'walk':
+      // Legs and arms swinging, two steps a second.
+      final swing = math.sin(t * 2 * math.pi * 1.0);
+      h.setNormalizedRotation(
+        VrmHumanBone.leftUpperLeg,
+        _about(1, 0, 0, 28 * swing),
+      );
+      h.setNormalizedRotation(
+        VrmHumanBone.rightUpperLeg,
+        _about(1, 0, 0, -28 * swing),
+      );
+      h.setNormalizedRotation(
+        VrmHumanBone.leftLowerLeg,
+        _about(1, 0, 0, -30 * math.max(0, swing)),
+      );
+      h.setNormalizedRotation(
+        VrmHumanBone.rightLowerLeg,
+        _about(1, 0, 0, -30 * math.max(0, -swing)),
+      );
+      h.setNormalizedRotation(
+        VrmHumanBone.leftUpperArm,
+        _about(1, 0, 0, -20 * swing) * _about(0, 0, 1, -72),
+      );
+      h.setNormalizedRotation(
+        VrmHumanBone.rightUpperArm,
+        _about(1, 0, 0, 20 * swing) * _about(0, 0, 1, 72),
+      );
+    case 'sleep':
+      // Dozing: the head down and to the side, breathing slowly.
+      final slow = math.sin(t * 2 * math.pi / 5);
+      h.setNormalizedRotation(
+        VrmHumanBone.head,
+        _about(1, 0, 0, 22 + 3 * slow) * _about(0, 0, 1, 12),
+      );
+      h.setNormalizedRotation(VrmHumanBone.spine, _about(1, 0, 0, 8));
+    case 'work':
+      // At a desk: forearms forward, the hands tapping, eyes down.
+      final tap = math.sin(t * 2 * math.pi * 3);
+      h.setNormalizedRotation(
+        VrmHumanBone.leftUpperArm,
+        _about(0, 1, 0, -30) * _about(0, 0, 1, -65),
+      );
+      h.setNormalizedRotation(
+        VrmHumanBone.rightUpperArm,
+        _about(0, 1, 0, 30) * _about(0, 0, 1, 65),
+      );
+      h.setNormalizedRotation(
+        VrmHumanBone.leftLowerArm,
+        _about(0, 1, 0, -75 - 4 * tap),
+      );
+      h.setNormalizedRotation(
+        VrmHumanBone.rightLowerArm,
+        _about(0, 1, 0, 75 + 4 * tap),
+      );
+      h.setNormalizedRotation(VrmHumanBone.head, _about(1, 0, 0, 14));
+    case 'think':
+      h.setNormalizedRotation(
+        VrmHumanBone.rightUpperArm,
+        _about(0, 1, 0, 50) * _about(0, 0, 1, 60),
+      );
+      h.setNormalizedRotation(VrmHumanBone.rightLowerArm, _about(0, 1, 0, 120));
+      h.setNormalizedRotation(
+        VrmHumanBone.head,
+        _about(0, 0, 1, 8) * _about(1, 0, 0, 5),
+      );
+  }
+}
+
+/// Sets the face: `expression`, the mouth from [voice] (0..1 while it
+/// speaks) or `talking`, eyes shut when asleep.
+void expressVrm(VrmAvatar a, CanvasElement e, double t, double? voice) {
+  a.expressions.resetValues();
+  final name = e.str('expression') ?? 'neutral';
+  final preset = VrmExpressionPreset.values
+      .where((p) => p.name == name)
+      .firstOrNull;
+  if (preset != null && preset != VrmExpressionPreset.neutral) {
+    a.expressions.setPreset(preset, e.num_('expression_weight', 1).clamp(0, 1));
+  }
+  // Asleep: eyes shut (the automatic blink would open them again).
+  final asleep = e.str('pose') == 'sleep';
+  a.autoBlink.enabled = !asleep;
+  if (asleep) a.expressions.setPreset(VrmExpressionPreset.blink, 1);
+  if (voice != null) {
+    // Speaking: the mouth follows the voice's loudness.
+    a.expressions.setPreset(VrmExpressionPreset.aa, (voice * 0.9).clamp(0, 1));
+  } else if (e.flag('talking', false)) {
+    final open =
+        (math.sin(t * 2 * math.pi * 4) * 0.5 + 0.5) *
+        (0.6 + 0.4 * math.sin(t * 2 * math.pi * 1.3).abs());
+    a.expressions.setPreset(VrmExpressionPreset.aa, open);
   }
 }
