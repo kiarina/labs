@@ -31,6 +31,7 @@ const _defines = {
   'MEDIA_DIR': String.fromEnvironment('MEDIA_DIR'),
   'VRM_PATH': String.fromEnvironment('VRM_PATH'),
   'VRM_DIR': String.fromEnvironment('VRM_DIR'),
+  'VRMA_DIR': String.fromEnvironment('VRMA_DIR'),
   'VRMA_PATH': String.fromEnvironment('VRMA_PATH'),
   'SCENES_DIR': String.fromEnvironment('SCENES_DIR'),
   'SAVED_SCENES_DIR': String.fromEnvironment('SAVED_SCENES_DIR'),
@@ -96,7 +97,7 @@ class MediaLibrary {
     return {
       ...out,
       'vrm': [if (vrmPath.isNotEmpty) 'default', ..._vrmNames().keys],
-      'vrma': [if (vrmaPath.isNotEmpty) 'default'],
+      'vrma': [if (vrmaPath.isNotEmpty) 'default', ..._vrmaNames().keys],
     };
   }
 
@@ -118,13 +119,25 @@ class MediaLibrary {
   }
 
   /// The .vrm files in VRM_DIR, by file name.
-  Map<String, String> _vrmNames() => {
-    for (final d in env('VRM_DIR').split(':'))
+  Map<String, String> _vrmNames() => _filesIn(env('VRM_DIR'), '.vrm');
+
+  /// The .vrma motions in VRMA_DIR (and in MEDIA_DIR), by file name
+  /// without the extension (Part 16).
+  Map<String, String> _vrmaNames() => {
+    for (final MapEntry(:key, :value) in _filesIn(
+      [env('VRMA_DIR'), ...dirs].join(':'),
+      '.vrma',
+    ).entries)
+      key.substring(0, key.length - 5): value,
+  };
+
+  static Map<String, String> _filesIn(String folders, String ext) => {
+    for (final d in folders.split(':'))
       if (d.isNotEmpty && Directory(d).existsSync())
         for (final f
             in Directory(d).listSync().whereType<File>().toList()
               ..sort((a, b) => a.path.compareTo(b.path)))
-          if (f.path.toLowerCase().endsWith('.vrm'))
+          if (f.path.toLowerCase().endsWith(ext))
             f.uri.pathSegments.last: f.path,
   };
 
@@ -139,7 +152,9 @@ class MediaLibrary {
   File? vrmaFile(String? src) {
     final path = src == null || src.isEmpty || src == 'default'
         ? vrmaPath
-        : src;
+        : (_vrmaNames()[src] ??
+              _vrmaNames()[src.replaceAll('.vrma', '')] ??
+              src);
     final f = File(path);
     return path.isNotEmpty && f.existsSync() ? f : null;
   }

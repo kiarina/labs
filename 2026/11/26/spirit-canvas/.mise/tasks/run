@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#MISE description="Run the built canvas app (MODEL, EFFORT, CONTROL_PORT, START_MODE, VRM_PATH, VRM_DIR optional)"
+#MISE description="Run the built canvas app (MODEL, EFFORT, CONTROL_PORT, START_MODE, VRM_PATH, VRM_DIR, VRMA_DIR optional)"
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 lab="$(pwd)"
@@ -11,6 +11,7 @@ SCENES_DIR="$lab/scenes" \
 SAVED_SCENES_DIR="$lab/work/scenes" \
 VRM_PATH="${VRM_PATH:-$lab/work/assets/Seed-san.vrm}" \
 VRM_DIR="${VRM_DIR:-}" \
+VRMA_DIR="${VRMA_DIR:-$lab/work/assets/vrma}" \
 VRMA_PATH="${VRMA_PATH:-$lab/work/assets/test.vrma}" \
 LOG_DIR="$lab/work/logs" \
 MODEL="${MODEL:-gpt-6.2-sol}" \

@@ -7,6 +7,7 @@ import 'package:vector_math/vector_math.dart' as vm;
 
 import '../media.dart';
 import 'canvas_model.dart';
+import 'vrma_driver.dart';
 
 const kVrmPoses = [
   'rest',
@@ -60,9 +61,8 @@ class VrmElementView extends StatefulWidget {
 class _VrmElementViewState extends State<VrmElementView> {
   Scene? _scene;
   VrmAvatar? _avatar;
-  VrmAnimationPlayer? _player;
+  VrmaDriver? _motion;
   String? _loadedSrc;
-  String? _loadedAnimation;
   String _status = 'loading';
   final _camera = PerspectiveCamera(
     fovRadiansY: 25 * vm.degrees2Radians,
@@ -92,7 +92,6 @@ class _VrmElementViewState extends State<VrmElementView> {
   void didUpdateWidget(covariant VrmElementView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (e.str('src') != _loadedSrc) _load();
-    if (e.str('animation') != _loadedAnimation) _loadAnimation();
   }
 
   Future<void> _load() async {
@@ -121,30 +120,9 @@ class _VrmElementViewState extends State<VrmElementView> {
         _framedFor = null;
         _status = 'ready';
       });
-      _loadAnimation();
+      _motion = null;
     } on Object catch (err) {
       if (mounted) setState(() => _status = 'failed: $err');
-    }
-  }
-
-  Future<void> _loadAnimation() async {
-    final name = e.str('animation');
-    _loadedAnimation = name;
-    final avatar = _avatar;
-    if (avatar == null) return;
-    if (name == null || name.isEmpty || name == 'none') {
-      setState(() => _player = null);
-      avatar.humanoid.resetPose();
-      return;
-    }
-    final file = MediaLibrary.instance.vrmaFile(name);
-    if (file == null) return;
-    try {
-      final anim = VrmAnimation.fromGlb(await file.readAsBytes());
-      if (!mounted) return;
-      setState(() => _player = VrmAnimationPlayer(avatar, anim));
-    } on Object catch (err) {
-      if (mounted) setState(() => _status = 'animation failed: $err');
     }
   }
 
@@ -181,12 +159,8 @@ class _VrmElementViewState extends State<VrmElementView> {
     final a = _avatar;
     if (a == null) return;
     final t = elapsed.inMicroseconds / 1e6;
-    final player = _player;
-    if (player != null) {
-      player.update(dt);
-    } else {
-      poseVrm(a, e, t);
-    }
+    poseVrm(a, e, t);
+    (_motion ??= VrmaDriver(a)).update(e, dt);
     expressVrm(a, e, t, widget.controller?.mouthLevel(e.id));
     a.update(dt, camera: _camera);
     _frame(a);

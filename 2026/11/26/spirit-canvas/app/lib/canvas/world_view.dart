@@ -10,6 +10,7 @@ import 'package:vector_math/vector_math.dart' as vm;
 import '../media.dart';
 import 'canvas_model.dart';
 import 'vrm_element.dart';
+import 'vrma_driver.dart';
 import 'world_fx.dart';
 
 /// A 3D world on the canvas (`type: world`), drawn with flutter_scene.
@@ -72,6 +73,7 @@ class _Thing {
   final Node node;
   final String signature;
   VrmAvatar? avatar;
+  VrmaDriver? vrma;
   PhysicallyBasedMaterial? material;
   PointLight? light;
   Particles? particles;
@@ -382,7 +384,9 @@ class _WorldViewState extends State<WorldView> {
     _animateModel(e, thing);
     final a = thing.avatar;
     if (a != null) {
+      // A .vrma motion, else the pose (blended when one hands to the other).
       poseVrm(a, e, t);
+      (thing.vrma ??= VrmaDriver(a)).update(e, dt);
       expressVrm(a, e, t, c.mouthLevel(e.id));
       final target = _lookTarget(e);
       _turnHead(a, thing, target, dt);
