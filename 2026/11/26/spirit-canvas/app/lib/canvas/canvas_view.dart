@@ -105,25 +105,75 @@ class _CanvasViewState extends State<CanvasView>
   @override
   Widget build(BuildContext context) {
     final background = parseColor(c.background) ?? const Color(0xFF15171C);
-    return FittedBox(
-      fit: BoxFit.contain,
-      child: RepaintBoundary(
-        key: widget.boundaryKey,
-        child: ClipRect(
-          child: Container(
-            width: kCanvasWidth,
-            height: kCanvasHeight,
-            color: background,
-            child: Stack(
-              clipBehavior: Clip.hardEdge,
-              children: [
-                for (final e in c.ordered)
-                  if (e.flag('visible', true)) _positioned(e),
-              ],
+    return LayoutBuilder(
+      builder: (context, box) {
+        // The stage is 1280x800, scaled to fit. Web views are platform
+        // views: scaled with the stage they are drawn smaller, but their
+        // native views keep the unscaled size and take clicks at unscaled
+        // positions (a click on a button landed elsewhere in the page). So
+        // they are laid out over the stage at their scaled place and size,
+        // and their pages are zoomed by the same factor instead.
+        final s = math.min(
+          box.maxWidth / kCanvasWidth,
+          box.maxHeight / kCanvasHeight,
+        );
+        final ox = (box.maxWidth - kCanvasWidth * s) / 2;
+        final oy = (box.maxHeight - kCanvasHeight * s) / 2;
+        final ordered = [
+          for (final e in c.ordered)
+            if (e.flag('visible', true)) e,
+        ];
+        return Stack(
+          children: [
+            Positioned(
+              left: ox,
+              top: oy,
+              width: kCanvasWidth * s,
+              height: kCanvasHeight * s,
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: RepaintBoundary(
+                  key: widget.boundaryKey,
+                  child: ClipRect(
+                    child: Container(
+                      width: kCanvasWidth,
+                      height: kCanvasHeight,
+                      color: background,
+                      child: Stack(
+                        clipBehavior: Clip.hardEdge,
+                        children: [
+                          for (final e in ordered)
+                            if (e.type != 'web') _positioned(e),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
+            // Web views over the stage (always above its other elements).
+            for (final e in ordered)
+              if (e.type == 'web') _webPositioned(e, s, ox, oy),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _webPositioned(CanvasElement e, double s, double ox, double oy) {
+    final v = c.currentValues(e);
+    // Kept inside the stage's box.
+    final left = v['x']!.clamp(0.0, kCanvasWidth);
+    final top = v['y']!.clamp(0.0, kCanvasHeight);
+    final w = math.max(0.0, math.min(v['w']!, kCanvasWidth - left));
+    final h = math.max(0.0, math.min(v['h']!, kCanvasHeight - top));
+    return Positioned(
+      key: ValueKey('${e.id}:web'),
+      left: ox + left * s,
+      top: oy + top * s,
+      width: w * s,
+      height: h * s,
+      child: _WebElement(element: e, zoom: s),
     );
   }
 
@@ -280,7 +330,8 @@ class _ElementBody extends StatelessWidget {
       case 'input':
         return _InputElement(element: e, controller: controller);
       case 'web':
-        return _WebElement(element: e);
+        // Laid out over the stage instead ([_CanvasViewState._webPositioned]).
+        return const SizedBox();
     }
     return _missing('unknown type ${e.type}');
   }
@@ -733,9 +784,13 @@ Future<String?> captureCanvas(GlobalKey key, {double pixelRatio = 0.75}) async {
 /// A `web` element: a web view showing the element's `html`, served by
 /// [WebHost] (so `asset://` works and the page has the `sg` object).
 class _WebElement extends StatefulWidget {
-  const _WebElement({required this.element});
+  const _WebElement({required this.element, required this.zoom});
 
   final CanvasElement element;
+
+  /// The stage's scale: the page is zoomed by it, so its CSS pixels stay
+  /// the canvas's.
+  final double zoom;
 
   @override
   State<_WebElement> createState() => _WebElementState();
@@ -776,7 +831,11 @@ class _WebElementState extends State<_WebElement> {
   void didUpdateWidget(covariant _WebElement oldWidget) {
     super.didUpdateWidget(oldWidget);
     host.controllers[widget.element.id] = _web;
-    if (widget.element.str('html') != _html) _load();
+    if (widget.element.str('html') != _html) {
+      _load();
+    } else if (oldWidget.zoom != widget.zoom) {
+      _web.runJavaScript('window.sg && sg.setZoom(${widget.zoom})');
+    }
   }
 
   void _load() {
@@ -785,7 +844,9 @@ class _WebElementState extends State<_WebElement> {
     final url = e.str('url');
     if (_html != null) {
       host.setPage(e.id, _html!);
-      _web.loadRequest(Uri.parse(host.pageUrl(e.id, ++_version)));
+      _web.loadRequest(
+        Uri.parse('${host.pageUrl(e.id, ++_version)}&zoom=${widget.zoom}'),
+      );
     } else if (url != null && url.startsWith('https://')) {
       _web.loadRequest(Uri.parse(url));
     }

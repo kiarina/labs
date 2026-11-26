@@ -203,8 +203,14 @@ const _shim = r'''
   function post(m) {
     try { SGHost.postMessage(JSON.stringify(m)); } catch (e) { console.log('SGHost missing', e); }
   }
+  // The app lays the web view out at the canvas's scale: zoom the page by
+  // it, so the page's CSS pixels are the canvas's (1280x800 for a full one).
+  function setZoom(z) { document.documentElement.style.zoom = String(z); }
+  var z0 = new URLSearchParams(location.search).get('zoom');
+  if (z0) setZoom(z0);
   window.sg = {
     id: id,
+    setZoom: setZoom,
     asset: function (name) { return base + name; },
     emit: function (name, data, opts) {
       post({ type: 'event', name: String(name), data: data === undefined ? null : data, wake: opts && opts.wake });
