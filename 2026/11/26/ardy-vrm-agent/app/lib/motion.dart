@@ -215,17 +215,11 @@ class MotionDirector extends ChangeNotifier {
     for (var k = 0; k < bones.length && k < a.rotations.length; k++) {
       humanoid.setNormalizedRotation(bones[k], _slerp(a.rotations[k], b.rotations[k], t));
     }
-    // Like ARDY Mini's viewer: the hips keep only their height; the
-    // horizontal travel moves the whole avatar. Moving the hips far from the model's origin left skinned
-    // meshes (the hair) behind their rest-pose bounds and they were culled.
-    final hips = a.hips + (b.hips - a.hips) * t;
-    final rest = humanoid.restModelPosition(VrmHumanBone.hips)!;
-    final travel = Vector3(hips.x - rest.x, 0, hips.z - rest.z);
-    humanoid.setHipsPosition(Vector3(rest.x, hips.y, rest.z));
-    final model = avatar.modelRoot.globalTransform;
-    final worldTravel =
-        model.transform3(travel.clone()) - model.transform3(Vector3.zero());
-    avatar.root.localTransform = Matrix4.translation(worldTravel);
+    // The hips take ARDY's root motion as is. With flutter_vrm 6cdf97d the
+    // skinned meshes (the hair) were culled once the hips traveled, so the
+    // root node carried the travel instead; flutter_vrm 1569bdb fits their
+    // bounds to the posed skeleton.
+    humanoid.setHipsPosition(a.hips + (b.hips - a.hips) * t);
   }
 
   static Quaternion _slerp(Quaternion a, Quaternion b, double t) {

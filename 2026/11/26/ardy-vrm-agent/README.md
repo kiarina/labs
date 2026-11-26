@@ -27,8 +27,9 @@ Flutter（macOS）のアプリで、LLM エージェント（Codex の thread）
 - **窓が隠れていると止まる。** 窓が他の窓の後ろにあった回は、読み込みが 231 秒、生成が 1.4〜4 秒に遅くなり、Flutter のフレームが進まず再生もほぼ止まった（[run5-hidden-window.jpg](results/run5-hidden-window.jpg)。T ポーズや同じ絵が並ぶ）。
   再生をフレームの刻みで進めているため。常に見せておく使い方が前提
 - **落とし穴: 歩く動きで hips を原点から遠くへ動かすと、髪が消えた。** スキンメッシュの描画の範囲が休みの姿勢の場所のままになり、カリングされたとみられる（[walk-hips-only-hair-culled.jpg](results/walk-hips-only-hair-culled.jpg) の右端）。
-  ARDY Mini 自身のビューアと同じく、水平の移動は VRM の根のノードを動かし、hips には高さだけを渡すと消えなくなった（[walk-root-motion.jpg](results/walk-root-motion.jpg)）
-  原因は flutter_scene が skinned mesh のカリングの範囲を休止姿勢と glTF のアニメーションから焼くことで、flutter_vrm `1569bdb` で骨の位置から毎フレーム作り直すように直した（この lab の固定先 `6cdf97d` には入っていない）
+  flutter_vrm `6cdf97d` では、ARDY Mini 自身のビューアと同じく水平の移動を VRM の根のノードに持たせて避けた（[walk-root-motion.jpg](results/walk-root-motion.jpg)）。
+  原因は flutter_scene が skinned mesh のカリングの範囲を休止姿勢と glTF のアニメーションから焼くことで、flutter_vrm `1569bdb` で直した。
+  **今の版は flutter_vrm `1569bdb` で、回避を外して hips に移動をそのまま渡しても髪は消えない**（[下の「flutter_vrm を上げた」](#flutter_vrm-を上げた2026-11-27)）
 
 ## 計測（MacBook Pro M1 Max 64GB、macOS 27.2.1、窓が見えている回）
 
@@ -48,6 +49,26 @@ Flutter（macOS）のアプリで、LLM エージェント（Codex の thread）
 - モデルの読み込み（キャッシュ済み）: 76 秒（run 2）、119 秒（run 4）、231 秒（run 5、窓が隠れていた）。初回のダウンロードを含む回は測っていない
 
 ![手を振る（直接の指示）](results/direct-wave.jpg)
+
+## flutter_vrm を上げた（2026-11-27）
+
+**この lab は、labs の「依存はバイト一致を示せるときだけ上げる」の例外です。** 作った翌日の続きとして、オーナーの指示で同じ lab のまま flutter_vrm を `6cdf97d` → `1569bdb`（skinned mesh のカリングの範囲を姿勢に合わせる修正）に上げました。
+上の「計測」までの数字と画像は `6cdf97d` のときのもので、ここから下が `1569bdb` で取り直したものです。
+
+- 根のノードに移動を持たせる回避を外し、ARDY の hips の位置をそのまま `setHipsPosition` に渡した。円を描いて歩かせ（約 20 秒）、髪も体も消えなかった（[walk-hips-1569bdb.jpg](results/walk-hips-1569bdb.jpg)）
+- 同じ 5 つの発言（`drive.py`、run 7）。動きが画面に出てから 0.75 秒おきに 4 枚撮った（[run7-turns.jpg](results/run7-turns.jpg)、1 行が 1 ターン）
+
+| 発言 | エージェントが選んだ動き | ターン | `move` まで | 生成 | 指示 → 画面に出る |
+| --- | --- | ---: | ---: | ---: | ---: |
+| こんにちは！ちょっと手を振ってみて | A person waves with the right hand. | 5.1 s | 2.9 s | 0.77 s | 0.96 s |
+| 今日はいいことがあったんだ。一緒に喜んで！ | A person jumps with both arms raised. | 4.0 s | 2.1 s | 0.73 s | 0.97 s |
+| ちょっと向こうまで歩いてきて | A person walks forward slowly. | 4.9 s | 2.6 s | 0.71 s | 0.92 s |
+| 疲れたでしょ、座って休んでいいよ | A person sits down and rests. | 4.3 s | 2.0 s | 0.79 s | 0.81 s |
+| 最後にダンスを見せて | A person dances energetically, swinging both arms and stepping side to side. | 5.4 s | 3.0 s | 0.75 s | 0.89 s |
+
+- 再生が生成を待った回数: 0。モデルの読み込み（キャッシュ済み）は 53〜55 秒（run 6・7）
+- 撮った絵では、手を振る・腕を上げて跳ぶ・こちらへ歩く・しゃがんで座り込む、が出た。**ダンスは座った姿勢から始まったので、撮った 3 秒の間は立ち上がって体を揺らすまでで、腕を振って左右に踏むところは写っていない**（続きは見ていない）
+- `drive.py` の撮影が、デバッグ build の `RepaintBoundary.toImage` の assert（`!debugNeedsPaint`）で時々 500 になった。フレームの終わりを待ってから撮り、失敗したら撮り直すようにした
 
 ## How it works
 
@@ -95,7 +116,7 @@ python3 drive.py 18795 work/frames/   # 別の端末で。会話を流して撮�
 ## 環境
 
 - MacBook Pro M1 Max 64GB、macOS 27.2.1、Xcode 27.2
-- Flutter 3.47.2、`webview_flutter` 4.14.x（WKWebView）、flutter_vrm `6cdf97d`、flutter_scene `0e263beb`
+- Flutter 3.47.2、`webview_flutter` 4.14.x（WKWebView）、flutter_vrm `1569bdb`（「計測」までは `6cdf97d`）、flutter_scene `0e263beb`
 - Node 22、onnxruntime-web 1.27.0、@huggingface/tokenizers 0.1.3、vite 8.1.5
 - ARDY Mini のソース `intsuc/ardy-mini@5e9ce2da`、モデル `intsuc/Llama-3-ARDY-Mini-Core40-Browser@1c21362e`
 - Codex CLI 0.172.0、gpt-6.1-terra（effort low）
@@ -104,9 +125,8 @@ python3 drive.py 18795 work/frames/   # 別の端末で。会話を流して撮�
 
 - macOS（WKWebView）の 1 台だけ。iOS・Android・Windows の WebView で WebGPU と `shader-f16` が使えるかは見ていない
 - エージェントのモデルは 1 つ、会話は 1 本（5 ターン）。英文の質で動きがどれだけ変わるかは比べていない
-- 動きの質は目で大筋を見ただけ。足の滑り・接地・つなぎ目の不自然さは評価していない。指の骨は親指の付け根だけ動き、ほかの指は休みの姿勢のまま
+- 動きの質は目で大筋を見ただけ（ダンスは座った姿勢からのつなぎしか撮れていない）。足の滑り・接地・つなぎ目の不自然さは評価していない。指の骨は親指の付け根だけ動き、ほかの指は休みの姿勢のまま
 - 読み込みの時間の内訳（キャッシュの検証・セッション作成）は分けて測っていない
-- `drive.py` の 4 枚ずつの撮影は、窓が隠れていた回（run 5）しか取れていない
 
 ## ライセンス
 

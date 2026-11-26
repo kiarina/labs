@@ -363,7 +363,20 @@ class _HomePageState extends State<HomePage>
   Future<List<int>> _screenshot() async {
     final boundary =
         _sceneKey.currentContext!.findRenderObject()! as RenderRepaintBoundary;
-    final image = await boundary.toImage(pixelRatio: 1);
+    // The scene repaints every frame; read it right after a frame is drawn,
+    // or debug builds assert that the boundary still needs painting.
+    ui.Image? image;
+    for (var attempt = 0; image == null; attempt++) {
+      await WidgetsBinding.instance.endOfFrame.timeout(
+        const Duration(seconds: 1),
+        onTimeout: () {},
+      );
+      try {
+        image = await boundary.toImage(pixelRatio: 1);
+      } on AssertionError {
+        if (attempt >= 10) rethrow;
+      }
+    }
     final data = await image.toByteData(format: ui.ImageByteFormat.png);
     return data!.buffer.asUint8List();
   }
