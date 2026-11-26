@@ -1,11 +1,42 @@
 import 'dart:math' as math;
 
+import 'dart:ui' show Rect, Size;
+
 import 'package:flutter/foundation.dart';
 
-/// The canvas's fixed logical size. The view scales it to fit the window, so
-/// the spirit always places things in the same coordinates.
-const double kCanvasWidth = 1280;
-const double kCanvasHeight = 800;
+/// The design size of screens made before the canvas followed the screen
+/// (saved scenes without a `design` are shown at it, scaled to fit).
+const kLegacyDesign = Size(1280, 800);
+
+/// Where (x, y) are measured from, on the canvas and on the element alike:
+/// `bottom-right` with x -16, y -16 keeps the element's bottom-right corner
+/// 16 px in from the canvas's.
+const kAnchors = {
+  'top-left': (0.0, 0.0),
+  'top': (0.5, 0.0),
+  'top-right': (1.0, 0.0),
+  'left': (0.0, 0.5),
+  'center': (0.5, 0.5),
+  'right': (1.0, 0.5),
+  'bottom-left': (0.0, 1.0),
+  'bottom': (0.5, 1.0),
+  'bottom-right': (1.0, 1.0),
+};
+
+/// A length: a number (px) or "N%" of [total].
+double resolveLength(Object? v, double total, double fallback) {
+  if (v is num) return v.toDouble();
+  if (v is String) {
+    final t = v.trim();
+    if (t.endsWith('%')) {
+      final n = double.tryParse(t.substring(0, t.length - 1));
+      if (n != null) return total * n / 100;
+    }
+    final n = double.tryParse(t.replaceAll('px', ''));
+    if (n != null) return n;
+  }
+  return fallback;
+}
 
 const kElementTypes = [
   'text',
@@ -42,11 +73,13 @@ class CanvasElement {
   String? str(String key) => props[key]?.toString();
   bool flag(String key, bool fallback) => props[key] as bool? ?? fallback;
 
-  double get x => num_('x', 0);
-  double get y => num_('y', 0);
-  double get w => num_('w', 200);
-  double get h => num_('h', 80);
   double get z => num_('z', 0);
+
+  /// Placed by plain numbers from the top-left: an animation's last values
+  /// can be written back as its new place.
+  bool get plainPlacement =>
+      props['anchor'] == null &&
+      ['x', 'y', 'w', 'h'].every((k) => props[k] == null || props[k] is num);
 
   Map<String, dynamic> toJson() => {'id': id, 'type': type, ...props};
 }
@@ -61,7 +94,13 @@ class CanvasAnimation {
     required this.alternate,
     required this.easing,
     required this.startedAt,
+    this.writeBackPlace = true,
   });
+
+  /// At the end, write the last x, y, w, h back to the element (false when
+  /// the element is placed by % or anchor, or a transition already set its
+  /// props: it goes back to following its layout).
+  final bool writeBackPlace;
 
   final List<Map<String, dynamic>> keyframes;
   final double durationMs;
@@ -185,6 +224,77 @@ class CanvasController extends ChangeNotifier {
   final elements = <String, CanvasElement>{};
   final animations = <String, CanvasAnimation>{};
 
+  /// The canvas's size in logical pixels: the screen area it has, or
+  /// [design] when the canvas is drawn at a fixed size scaled to fit.
+  Size size = kLegacyDesign;
+
+  /// A fixed design size, letterboxed and scaled to the screen; null fills
+  /// the screen at its own size.
+  Size? design;
+
+  /// The area the canvas has on the screen (logical pixels).
+  Size screen = kLegacyDesign;
+
+  /// How much the canvas is scaled on the screen (1 unless [design]).
+  double get scale => design == null
+      ? 1
+      : math.min(screen.width / design!.width, screen.height / design!.height);
+
+  /// Called when [size] changes (the window, the device turning, a design).
+  void Function(Size from, Size to)? onResize;
+
+  /// The view's area; called after layout.
+  void layout(Size screenSize) {
+    if (screenSize.isEmpty) return;
+    if (!_laidOut) {
+      // The first layout gives the real size: not a change anyone saw.
+      _laidOut = true;
+      screen = screenSize;
+      size = design ?? screenSize;
+      notifyListeners();
+      return;
+    }
+    final scaleBefore = scale;
+    screen = screenSize;
+    _setSize(design ?? screenSize, scaleChanged: scale != scaleBefore);
+  }
+
+  bool _laidOut = false;
+
+  void setDesign(Size? d) {
+    design = d;
+    _setSize(d ?? screen, scaleChanged: true);
+  }
+
+  void _setSize(Size next, {bool scaleChanged = false}) {
+    if (next != size) {
+      final from = size;
+      size = next;
+      onResize?.call(from, next);
+      notifyListeners();
+    } else if (scaleChanged) {
+      notifyListeners();
+    }
+  }
+
+  String get orientation =>
+      size.width >= size.height ? 'landscape' : 'portrait';
+
+  /// The element's box on the canvas from [props] (px, %, anchor).
+  Rect resolve(Map<String, dynamic> props) {
+    final w = resolveLength(props['w'], size.width, 200);
+    final h = resolveLength(props['h'], size.height, 80);
+    final x0 = resolveLength(props['x'], size.width, 0);
+    final y0 = resolveLength(props['y'], size.height, 0);
+    final (ax, ay) = kAnchors[props['anchor']] ?? (0.0, 0.0);
+    return Rect.fromLTWH(
+      ax * size.width + x0 - ax * w,
+      ay * size.height + y0 - ay * h,
+      w,
+      h,
+    );
+  }
+
   /// The stage's color (`#RRGGBB`); null for the default dark one.
   String? background;
 
@@ -257,8 +367,17 @@ class CanvasController extends ChangeNotifier {
   }) {
     final e = elements[id];
     if (e == null) return 'no element "$id"';
-    final moving = {
-      for (final p in kAnimatable)
+    // Where it is going, in canvas pixels (x, y, w, h may be % or anchored).
+    final target = resolve({...e.props, ...props});
+    final placeKeys = {'x', 'y', 'w', 'h', 'anchor'};
+    final moving = <String, double>{
+      if (props.keys.any(placeKeys.contains)) ...{
+        'x': target.left,
+        'y': target.top,
+        'w': target.width,
+        'h': target.height,
+      },
+      for (final p in ['opacity', 'scale', 'rotation'])
         if (props[p] is num) p: (props[p] as num).toDouble(),
     };
     if (transitionMs != null && transitionMs > 0 && moving.isNotEmpty) {
@@ -273,6 +392,8 @@ class CanvasController extends ChangeNotifier {
         alternate: false,
         easing: easing,
         startedAt: now,
+        // The props below already say where it ends up.
+        writeBackPlace: false,
       );
     } else {
       animations.remove(id);
@@ -309,7 +430,8 @@ class CanvasController extends ChangeNotifier {
     bool alternate = false,
     String easing = 'ease_in_out',
   }) {
-    if (!elements.containsKey(id)) return 'no element "$id"';
+    final e = elements[id];
+    if (e == null) return 'no element "$id"';
     if (keyframes.isEmpty) return 'no keyframes';
     animations[id] = CanvasAnimation(
       keyframes: keyframes,
@@ -318,20 +440,24 @@ class CanvasController extends ChangeNotifier {
       alternate: alternate,
       easing: easing,
       startedAt: now,
+      writeBackPlace: e.plainPlacement,
     );
     notifyListeners();
     return null;
   }
 
-  Map<String, double> baseValues(CanvasElement e) => {
-    'x': e.x,
-    'y': e.y,
-    'w': e.w,
-    'h': e.h,
-    'opacity': e.num_('opacity', 1),
-    'scale': e.num_('scale', 1),
-    'rotation': e.num_('rotation', 0),
-  };
+  Map<String, double> baseValues(CanvasElement e) {
+    final r = resolve(e.props);
+    return {
+      'x': r.left,
+      'y': r.top,
+      'w': r.width,
+      'h': r.height,
+      'opacity': e.num_('opacity', 1),
+      'scale': e.num_('scale', 1),
+      'rotation': e.num_('rotation', 0),
+    };
+  }
 
   /// The element's values now, with its animation applied.
   Map<String, double> currentValues(CanvasElement e) {
@@ -351,7 +477,14 @@ class CanvasController extends ChangeNotifier {
     for (final id in done) {
       final e = elements[id];
       final a = animations.remove(id)!;
-      if (e != null) e.props.addAll(a.valuesAt(now, baseValues(e)));
+      if (e == null) continue;
+      final last = a.valuesAt(now, baseValues(e));
+      if (!a.writeBackPlace) {
+        for (final k in ['x', 'y', 'w', 'h']) {
+          last.remove(k);
+        }
+      }
+      e.props.addAll(last);
     }
     return done.isNotEmpty;
   }
@@ -364,6 +497,17 @@ class CanvasController extends ChangeNotifier {
       {
         ...e.toJson(),
         if (abbreviate) ..._abbreviated(e),
+        // Where it is, when its props do not say it in pixels.
+        if (!e.plainPlacement)
+          'at': {
+            for (final MapEntry(:key, :value) in {
+              'x': resolve(e.props).left,
+              'y': resolve(e.props).top,
+              'w': resolve(e.props).width,
+              'h': resolve(e.props).height,
+            }.entries)
+              key: double.parse(value.toStringAsFixed(1)),
+          },
         if (animations[e.id] case final a?)
           'animating': {
             'duration_ms': a.durationMs,

@@ -107,18 +107,24 @@ class _CanvasViewState extends State<CanvasView>
     final background = parseColor(c.background) ?? const Color(0xFF15171C);
     return LayoutBuilder(
       builder: (context, box) {
-        // The stage is 1280x800, scaled to fit. Web views are platform
+        // The stage is drawn at the canvas size; with a design size it is
+        // scaled to fit (letterboxed). Web views are platform
         // views: scaled with the stage they are drawn smaller, but their
         // native views keep the unscaled size and take clicks at unscaled
         // positions (a click on a button landed elsewhere in the page). So
         // they are laid out over the stage at their scaled place and size,
         // and their pages are zoomed by the same factor instead.
-        final s = math.min(
-          box.maxWidth / kCanvasWidth,
-          box.maxHeight / kCanvasHeight,
-        );
-        final ox = (box.maxWidth - kCanvasWidth * s) / 2;
-        final oy = (box.maxHeight - kCanvasHeight * s) / 2;
+        // The canvas is the area it has (or a fixed design, scaled to fit).
+        final area = Size(box.maxWidth, box.maxHeight);
+        if (area != c.screen) {
+          WidgetsBinding.instance.addPostFrameCallback((_) => c.layout(area));
+        }
+        final stage = c.size;
+        final s = c.design == null
+            ? 1.0
+            : math.min(area.width / stage.width, area.height / stage.height);
+        final ox = (area.width - stage.width * s) / 2;
+        final oy = (area.height - stage.height * s) / 2;
         final ordered = [
           for (final e in c.ordered)
             if (e.flag('visible', true)) e,
@@ -128,16 +134,16 @@ class _CanvasViewState extends State<CanvasView>
             Positioned(
               left: ox,
               top: oy,
-              width: kCanvasWidth * s,
-              height: kCanvasHeight * s,
+              width: stage.width * s,
+              height: stage.height * s,
               child: FittedBox(
                 fit: BoxFit.contain,
                 child: RepaintBoundary(
                   key: widget.boundaryKey,
                   child: ClipRect(
                     child: Container(
-                      width: kCanvasWidth,
-                      height: kCanvasHeight,
+                      width: stage.width,
+                      height: stage.height,
                       color: background,
                       child: Stack(
                         clipBehavior: Clip.hardEdge,
@@ -163,10 +169,11 @@ class _CanvasViewState extends State<CanvasView>
   Widget _webPositioned(CanvasElement e, double s, double ox, double oy) {
     final v = c.currentValues(e);
     // Kept inside the stage's box.
-    final left = v['x']!.clamp(0.0, kCanvasWidth);
-    final top = v['y']!.clamp(0.0, kCanvasHeight);
-    final w = math.max(0.0, math.min(v['w']!, kCanvasWidth - left));
-    final h = math.max(0.0, math.min(v['h']!, kCanvasHeight - top));
+    final stage = c.size;
+    final left = v['x']!.clamp(0.0, stage.width);
+    final top = v['y']!.clamp(0.0, stage.height);
+    final w = math.max(0.0, math.min(v['w']!, stage.width - left));
+    final h = math.max(0.0, math.min(v['h']!, stage.height - top));
     return Positioned(
       key: ValueKey('${e.id}:web'),
       left: ox + left * s,
@@ -771,9 +778,12 @@ class _AudioElementState extends State<_AudioElement> {
 
 /// A PNG of the canvas as it is drawn now (base64), at [pixelRatio] of the
 /// 1280x800 stage.
-Future<String?> captureCanvas(GlobalKey key, {double pixelRatio = 0.75}) async {
+Future<String?> captureCanvas(GlobalKey key, {double? pixelRatio}) async {
   final boundary = key.currentContext?.findRenderObject();
   if (boundary is! RenderRepaintBoundary) return null;
+  // The longer side at most 960 px (the canvas's own size when smaller).
+  final longest = math.max(boundary.size.width, boundary.size.height);
+  pixelRatio ??= longest <= 0 ? 1.0 : math.min(1.0, 960 / longest);
   final ui.Image image = await boundary.toImage(pixelRatio: pixelRatio);
   final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
   image.dispose();

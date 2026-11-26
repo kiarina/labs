@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
@@ -107,6 +108,7 @@ class HomePageState extends State<HomePage> {
     )..onSpiritText = _showCaption;
     spirit.addListener(_spiritChanged);
     canvas.onEvent = _onCanvasEvent;
+    canvas.onResize = _onResize;
     _start();
   }
 
@@ -149,7 +151,8 @@ class HomePageState extends State<HomePage> {
   /// for the next message.
   Future<void> _send(List<String> lines, {required String role}) {
     final text = [
-      '<ui mode="$mode"/>',
+      '<ui mode="$mode" canvas="${canvas.size.width.round()}x${canvas.size.height.round()}" '
+          'orientation="${canvas.orientation}"${canvas.design != null ? ' design="fixed, scaled to the screen"' : ''}/>',
       ...behaviors.takeNotices(),
       ...lines,
     ].join('\n');
@@ -159,6 +162,37 @@ class HomePageState extends State<HomePage> {
   Future<void> sendUser(String text) async {
     if (text.trim().isEmpty) return;
     await _send([text], role: 'user');
+  }
+
+  Size? _resizeFrom;
+  Timer? _resizeTimer;
+
+  /// The canvas changed size: scripts hear at once; the spirit, once the
+  /// size settles (a window being dragged fires many), now if the
+  /// orientation flipped or the area changed by a quarter or more, else
+  /// with the next message.
+  void _onResize(Size from, Size to) {
+    behaviors.resized(to);
+    _resizeFrom ??= from;
+    _resizeTimer?.cancel();
+    _resizeTimer = Timer(const Duration(milliseconds: 700), () {
+      final a = _resizeFrom!;
+      final b = canvas.size;
+      _resizeFrom = null;
+      if (a == b) return;
+      final flipped = (a.width >= a.height) != (b.width >= b.height);
+      final ratio = (b.width * b.height) / math.max(1, a.width * a.height);
+      final big = ratio > 1.25 || ratio < 0.75;
+      final line =
+          '<canvas_event event="resize" id="canvas" value="${b.width.round()}x${b.height.round()}" '
+          'from="${a.width.round()}x${a.height.round()}" orientation="${canvas.orientation}"/>';
+      if (canvas.elements.isEmpty) return;
+      if (flipped || big) {
+        _send([line], role: 'event');
+      } else {
+        behaviors.notice(line);
+      }
+    });
   }
 
   /// A message from a `web` element's page (`sg.emit`, `sg.setState`,
@@ -230,8 +264,16 @@ class HomePageState extends State<HomePage> {
         final text = jsonEncode({
           'mode': mode,
           'canvas': {
-            'width': kCanvasWidth,
-            'height': kCanvasHeight,
+            'width': canvas.size.width.round(),
+            'height': canvas.size.height.round(),
+            'orientation': canvas.orientation,
+            if (canvas.design != null) ...{
+              'design': true,
+              'screen': {
+                'width': canvas.screen.width.round(),
+                'height': canvas.screen.height.round(),
+              },
+            },
             'background': canvas.background,
           },
           'elements': elements,
@@ -302,7 +344,19 @@ class HomePageState extends State<HomePage> {
         behaviors.reset();
         canvas.state.clear();
         canvas.clear(background: a['background'] as String?);
-        return ToolOutcome('ok');
+        final design = a['design'] as Map?;
+        canvas.setDesign(
+          design == null
+              ? null
+              : Size(
+                  (design['width'] as num).toDouble(),
+                  (design['height'] as num).toDouble(),
+                ),
+        );
+        return ToolOutcome(
+          'ok: the canvas is ${canvas.size.width.round()}x${canvas.size.height.round()}'
+          '${canvas.design != null ? ' (fixed, scaled to the screen)' : ' (the screen)'}',
+        );
       case 'canvas_state':
         final set = (a['set'] as Map? ?? const {}).cast<String, dynamic>();
         for (final k in (a['delete'] as List? ?? const [])) {
@@ -396,6 +450,11 @@ class HomePageState extends State<HomePage> {
       'description': a['description'],
       'params': params,
       'background': canvas.background,
+      // null: made to follow the screen's size.
+      'design': switch (canvas.design) {
+        final d? => {'width': d.width, 'height': d.height},
+        null => null,
+      },
       'elements': [for (final e in canvas.ordered) e.toJson()],
       'state': {
         for (final MapEntry(:key, :value) in canvas.state.entries)
@@ -432,6 +491,18 @@ class HomePageState extends State<HomePage> {
     behaviors.reset();
     canvas.state.clear();
     canvas.clear(background: scene['background'] as String?);
+    // Scenes saved before the canvas followed the screen were made at
+    // 1280x800: keep them at it, scaled to fit.
+    final design = scene.containsKey('design')
+        ? switch (scene['design']) {
+            final Map d => Size(
+              (d['width'] as num).toDouble(),
+              (d['height'] as num).toDouble(),
+            ),
+            _ => null,
+          }
+        : kLegacyDesign;
+    canvas.setDesign(design);
     canvas.setState({
       ...(scene['state'] as Map? ?? const {}).cast<String, dynamic>(),
       for (final MapEntry(:key, :value) in params.entries)

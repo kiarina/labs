@@ -2,7 +2,14 @@
 /// tool handler as the spirit's calls (no model). The 見本 button and the
 /// control port's /demo load it.
 const List<(String, Map<String, dynamic>)> kDemoScene = [
-  ('canvas_clear', {'background': '#1B2233'}),
+  (
+    'canvas_clear',
+    {
+      'background': '#1B2233',
+      // Drawn for this size; scaled to the screen.
+      'design': {'width': 1280, 'height': 800},
+    },
+  ),
   (
     'canvas_put',
     {

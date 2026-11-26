@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math' as math;
+import 'dart:ui' show Size;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_js/flutter_js.dart';
@@ -349,6 +350,10 @@ class CanvasBehaviors {
 
   void stateChangedBySpirit() => _scripts.pushState();
 
+  /// The canvas changed size: scripts see sg.width / sg.height change and get
+  /// a `resize` event.
+  void resized(Size size) => _scripts.resized(size);
+
   Map<String, dynamic> describe() => {
     'state': canvas.state,
     'timelines': {
@@ -415,6 +420,7 @@ class _ScriptHost {
     final r = rt.evaluate(_prelude);
     if (r.isError) debugPrint('[script] prelude failed: ${r.stringResult}');
     _js = rt;
+    resized(owner.canvas.size);
     pushState();
     return rt;
   }
@@ -452,6 +458,20 @@ class _ScriptHost {
     if (ids.isEmpty) return false;
     final r = js.evaluate('__sg.event(${jsonEncode(e.toJson())})');
     return r.stringResult == 'true';
+  }
+
+  void resized(Size size) {
+    if (_js == null) return;
+    js.evaluate('__sg.width = ${size.width}; __sg.height = ${size.height}');
+    if (ids.isNotEmpty) {
+      js.evaluate(
+        '__sg.event(${jsonEncode({
+          'event': 'resize',
+          'id': 'canvas',
+          'value': {'width': size.width, 'height': size.height},
+        })})',
+      );
+    }
   }
 
   void pushState() {
@@ -519,6 +539,8 @@ const _prelude = r'''
 var __sg = (function () {
   var scripts = {};
   var api = {
+    width: 1280,
+    height: 800,
     state: {},
     dirty: false,
     now: 0,
@@ -527,7 +549,8 @@ var __sg = (function () {
       scripts[id] = s;
       var call = function (args) { return sendMessage('sg', JSON.stringify([id].concat(args))); };
       var sg = {
-        width: 1280, height: 800,
+        get width() { return api.width; },
+        get height() { return api.height; },
         get state() { return api.state; },
         get: function (k) { return api.state[k]; },
         set: function (k, v) {

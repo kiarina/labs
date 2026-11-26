@@ -25,9 +25,13 @@ final List<Map<String, dynamic>> kCanvasTools = [
     'name': 'canvas_put',
     'description':
         'Put elements on the canvas (an element with an existing id is '
-        'replaced). The canvas is $kCanvasWidth x $kCanvasHeight logical '
-        'pixels, origin top-left; x, y, w, h place each element\'s box. '
-        'Put several elements in one call.',
+        'replaced). The canvas is the user\'s screen area in logical '
+        'pixels (its size is in every <ui canvas="WxH"> tag and in '
+        'canvas_view), origin top-left; x, y, w, h place each element\'s '
+        'box, in px or as "N%" of the canvas width (x, w) or height (y, h); '
+        'anchor measures x, y from another point. Prefer % and anchor so '
+        'the screen still fits when the size changes. Put several elements '
+        'in one call.',
     'inputSchema': {
       'type': 'object',
       'properties': {
@@ -119,11 +123,23 @@ final List<Map<String, dynamic>> kCanvasTools = [
     'name': 'canvas_clear',
     'description':
         'Remove everything (elements, state, timelines, scripts), optionally '
-        'setting the background color.',
+        'setting the background color. The canvas then follows the '
+        'screen\'s size; with design {width, height} it is drawn at that '
+        'fixed size instead, scaled to fit the screen with bars around '
+        '(for something made for one shape, like a board game).',
     'inputSchema': {
       'type': 'object',
       'properties': {
         'background': {'type': 'string', 'description': '#RRGGBB'},
+        'design': {
+          'type': 'object',
+          'properties': {
+            'width': {'type': 'number'},
+            'height': {'type': 'number'},
+          },
+          'required': ['width', 'height'],
+          'additionalProperties': false,
+        },
       },
       'additionalProperties': false,
     },
@@ -392,7 +408,12 @@ const _easing = {
 final Map<String, dynamic> _elementSchema = {
   'type': 'object',
   'description':
-      'Common: id, type, x, y, w, h, z (stacking, higher on top), opacity '
+      'Common: id, type, x, y, w, h (px, or "N%" of the canvas width for x '
+      'and w, height for y and h), anchor (${kAnchors.keys.join('|')}; '
+      'where x, y are measured from, on the canvas and on the element: '
+      'anchor "center" with x 0, y 0 centers it; "bottom-right" with x -16, '
+      'y -16 keeps it 16 px in from that corner), z (stacking, higher on '
+      'top), opacity '
       '(0..1), scale, rotation (degrees), visible, tappable (taps come back '
       'as events).\n'
       'text: text, size, color, weight (normal|bold|light), align '
@@ -448,10 +469,11 @@ final Map<String, dynamic> _elementSchema = {
   'properties': {
     'id': {'type': 'string'},
     'type': {'type': 'string', 'enum': kElementTypes},
-    'x': {'type': 'number'},
-    'y': {'type': 'number'},
-    'w': {'type': 'number'},
-    'h': {'type': 'number'},
+    'x': {'description': 'px (number) or "N%" of the canvas width'},
+    'y': {'description': 'px (number) or "N%" of the canvas height'},
+    'w': {'description': 'px (number) or "N%" of the canvas width'},
+    'h': {'description': 'px (number) or "N%" of the canvas height'},
+    'anchor': {'type': 'string', 'enum': kAnchors.keys.toList()},
   },
   'required': ['id', 'type', 'x', 'y', 'w', 'h'],
   'additionalProperties': true,
@@ -465,6 +487,8 @@ The app has two modes, and every user message starts with a <ui mode="..."/> tag
 - canvas: instead of the history, the user sees a canvas you draw on with the canvas_* tools. Your plain reply text still appears, as a short caption over the canvas, so keep it to a sentence or two and let the canvas carry the rest.
 
 In canvas mode, use the canvas to show, not just tell: lay out text, pictures, your 3D body (vrm), videos, sounds, simple drawings (svg), and interactive parts (buttons, choices, inputs) when they help. Build a whole screen in one canvas_put call when you can. Things you put keep moving on their own (animations, poses, video), so do not call tools per frame. Check what you made with canvas_view when the layout matters, and fix overlaps or text that does not fit.
+
+The canvas is the user's screen, whatever it is: a wide window, or a phone held upright (portrait, around 390 px wide). Every message's <ui> tag says its size and orientation. Lay out for that size, and make layouts that hold when it changes: % and anchor for places and sizes, text sizes that fit the width. When the size changes a lot or the orientation flips, a <canvas_event event="resize"> wakes you: fix what no longer fits. Scripts see sg.width / sg.height and sg.on("resize", "canvas", fn) at once and can re-lay out by themselves. A web page lays itself out with CSS, so let it use the width it gets.
 
 Make the canvas respond by itself where you can. Every round trip through you takes seconds, so anything you can decide in advance should run on the canvas:
 - `on` on an element: what happens at once when it is pressed, chosen, submitted, tapped or ends (show the next picture, reveal an answer, count up a score).

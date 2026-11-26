@@ -1,4 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
+
+import 'dart:ui';
+
 import 'package:spirit_canvas/canvas/canvas_model.dart';
 
 void main() {
@@ -79,7 +82,8 @@ void main() {
     final until = DateTime.now().add(const Duration(milliseconds: 20));
     while (DateTime.now().isBefore(until)) {}
     expect(c.settle(), isTrue);
-    expect(c.elements['a']!.x, 300);
+    expect(c.elements['a']!.props['x'], 300);
+    expect(c.baseValues(c.elements['a']!)['x'], 300);
   });
 
   test('unknown types and missing ids are reported, not put', () {
@@ -90,5 +94,85 @@ void main() {
     ]);
     expect(problems, hasLength(2));
     expect(c.elements, isEmpty);
+  });
+
+  test('% and anchors place by the canvas size, and follow it', () {
+    final c = CanvasController()..layout(const Size(400, 800));
+    c.put([
+      {
+        'id': 'center',
+        'type': 'shape',
+        'anchor': 'center',
+        'x': 0,
+        'y': 0,
+        'w': '50%',
+        'h': 100,
+      },
+      {
+        'id': 'corner',
+        'type': 'shape',
+        'anchor': 'bottom-right',
+        'x': -16,
+        'y': -16,
+        'w': 40,
+        'h': 40,
+      },
+    ]);
+    expect(
+      c.resolve(c.elements['center']!.props),
+      const Rect.fromLTWH(100, 350, 200, 100),
+    );
+    expect(
+      c.resolve(c.elements['corner']!.props),
+      const Rect.fromLTWH(344, 744, 40, 40),
+    );
+    final sizes = <Size>[];
+    c.onResize = (from, to) => sizes.add(to);
+    c.layout(const Size(1000, 600));
+    expect(sizes, [const Size(1000, 600)]);
+    expect(c.orientation, 'landscape');
+    expect(
+      c.resolve(c.elements['center']!.props),
+      const Rect.fromLTWH(250, 250, 500, 100),
+    );
+  });
+
+  test('a design size keeps the canvas fixed and scales it', () {
+    final c = CanvasController()..layout(const Size(390, 700));
+    c.setDesign(const Size(1280, 800));
+    expect(c.size, const Size(1280, 800));
+    expect(c.scale, closeTo(390 / 1280, 1e-9));
+    c.layout(const Size(800, 700));
+    expect(c.size, const Size(1280, 800));
+    c.setDesign(null);
+    expect(c.size, const Size(800, 700));
+  });
+
+  test('an anchored element returns to its layout after an animation', () {
+    final c = CanvasController()..layout(const Size(400, 400));
+    c.put([
+      {
+        'id': 'a',
+        'type': 'shape',
+        'anchor': 'center',
+        'x': 0,
+        'y': 0,
+        'w': 100,
+        'h': 100,
+      },
+    ]);
+    c.animate(
+      'a',
+      keyframes: [
+        {'x': 0},
+        {'x': 10},
+      ],
+      durationMs: 16,
+    );
+    final until = DateTime.now().add(const Duration(milliseconds: 30));
+    while (DateTime.now().isBefore(until)) {}
+    c.settle();
+    expect(c.elements['a']!.props['x'], 0);
+    expect(c.baseValues(c.elements['a']!)['x'], 150);
   });
 }
