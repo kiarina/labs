@@ -1,4 +1,4 @@
-# A canvas mode for a spirit's chat: gpt-6.2-sol lays out text, SVG, a VRM body, media, buttons and web views with tools; actions, timelines and spirit-written JavaScript run without the model; screens are saved and reused with new values; a body that speaks over web slides, and a touchable 3D world of shapes, panels and the body with a moving camera
+# A canvas mode for a spirit's chat: gpt-6.2-sol lays out text, SVG, a VRM body, media, buttons and web views with tools; actions, timelines and spirit-written JavaScript run without the model; screens are saved and reused with new values; a body that speaks over web slides, and a touchable 3D world of shapes, panels, Blender models and several bodies that look at things and play VRMA motions, with a moving camera
 
 チャットの画面に「キャンバス」のモードを足し、spirit（Codex の thread）が道具でキャンバスに好きなものを置けるかを確かめます。
 入力欄はそのままです。上の履歴の代わりに、spirit が文字・絵・3D の自分の姿・写真・動画・音声・ボタン・選択肢・入力欄を座標を決めて置き、
@@ -762,7 +762,7 @@ macOS の実際のクリックで、予定 → 寄る → 「戻る」で戻る�
 - **実際のクリックで触れた。** 塔をクリックすると `on.tap` が走り、羽が 4 倍速になった（spirit は起こさない）。骨の無いモデルは、今の当たり判定のままで物の id が取れる
 - 寄った画面の 4 秒で 61.1 fps（build 平均 13.0 / 90% 38.2 ms、macOS のデバッグ）。浮島だけのときより遅いが、何が効いているかは分けていない
 
-まだ見ていないこと: 骨で動くモデル（キャラクター）の当たり判定（VRM と同じく、骨入りの形は今の判定から外している）、画像の貼られたモデル、大きなモデルの読み込み時間、iOS・Android・Windows。
+まだ見ていないこと: 骨で動くモデル（キャラクター）の当たり判定（VRM と同じく、骨入りの形は今の判定から外している）、大きなモデルの読み込み時間、iOS・Android・Windows（画像を貼ったモデルは Part 14）。
 
 ## Part 14: 画像を貼ったモデルと、spirit にモデルで場面を作らせる
 
@@ -859,15 +859,16 @@ macOS の実際のクリックで、予定 → 寄る → 「戻る」で戻る�
 - spirit（モデル）込みで動かしたのは macOS と Windows。iOS（Simulator・iPad Air 4 の実機）と Android（Pixel 6）は、画面の側をモデルなしで確かめた（Part 7）。iPhone の実機は動かしていない。3D の世界（Part 11）は iPad の実機でも見ていない
 - Claude（Opus）では流していない。各シナリオ 1 回で、ばらつきは見ていない
 - 選択肢・ボタンは画面で実際にクリックした（s2、s4）。入力欄の `submit`、`tap`、動画・音声の `ended` は、モデルにつないだ状態では確かめていない（見本で描けることだけ）
-- 動画・音声は、手元の素材（labs の `tests/assets`）か https の URL だけ。spirit が新しく画像・音声を作る道具は無い
+- 動画・音声は、手元の素材（labs の `tests/assets`）か https の URL だけ。3D のモデル・VRM・VRMA は、起動時に渡したフォルダの中だけ。spirit が新しく画像・音声・モデル・モーションを作る道具は無い
 - 撮影は 960x600（`pixelRatio` 0.75）で spirit に渡している。小さい文字が読めるかは見ていない
 - Part 2 は Sol だけ、各 1 回。`on`・タイムライン・状態を spirit が使う場面は観測できていない（道具としてはモデルなしで動く）。指示文を変えた比べもしていない
 - スクリプトの安全は lab の範囲（無限ループで固まる）。複数のスクリプトが同じ要素を書き換えるときの順序も決めていない
+- 3D の世界（Part 11〜16）は、Part 11 の部屋だけが 4 つの OS で、Part 12〜16（物理の空・粒子・モデル・5 体・モーション）は macOS のデバッグビルドだけ。spirit に作らせたのは灯台と岬の各 1 回
 - Part 3 は c1・c2 の各 1 回。保存するのは、保存した時点の画面と状態そのもの（遊んだ途中の値も入る）。作り置きの版の管理、spirit ごと・家族ごとの置き場所は決めていない
 
 ## 次の一手（この lab の結果から）
 
-Part 1 で挙げた「押したときの結果を宣言する」「時間の並び」「spirit が書くスクリプト」「通知の区別」は Part 2、「作り置きの保存・呼び出し・差し替え」と音は Part 3、WebView は Part 4、画面の大きさに合わせるのは Part 5、WebView の撮影は Part 6、声と体の重ね合わせは Part 9、3D の世界は Part 11・12 で作った。残り:
+Part 1 で挙げた「押したときの結果を宣言する」「時間の並び」「spirit が書くスクリプト」「通知の区別」は Part 2、「作り置きの保存・呼び出し・差し替え」と音は Part 3、WebView は Part 4、画面の大きさに合わせるのは Part 5、WebView の撮影は Part 6、声と体の重ね合わせは Part 9、3D の世界は Part 11・12、Blender のモデルは Part 13・14、物を見る体と 5 体は Part 15、体ごとのモーションは Part 16 で作った。残り:
 
 1. **スマートフォンで spirit を動かす**（別のマシンの spirit から端末のキャンバスを動かす形。この lab の範囲外）
 2. **安全領域（ノッチ・ホームバー）を渡す。** 大きさと向きは Part 5 で渡すようにした。スマートフォンでは、隠れる部分を避けるための余白も要る
@@ -877,6 +878,9 @@ Part 1 で挙げた「押したときの結果を宣言する」「時間の並�
 6. **音の素材。** 合成の素材は仮。作り置きの BGM・効果音を揃えるか、音楽の生成を道具にする。spirit の声（TTS）と重なったときに BGM を下げる
 7. **`notify: "none"` の扱い。** spirit が自分で聞かないことにした操作も、画面を読めば分かった。ただ、聞かれるまで知らない。会話の記憶に残すかどうかを決める
 8. 大きな SVG を書く遅さ（出力 8,000〜11,000 トークン）は、作り置きで避けられる場面が多い。ゼロから描く場面のために、画像の生成の道具を足して比べる
+9. **3D をスマートフォンで。** 物理の空・粒子・モデルの重さと、VRM 5 体（約 1.4 GB）のメモリを、iPhone・Android の実機で確かめる。Part 12 の「5 fps へ落ちて戻らない」は、窓の位置（Part 15）で起きるかを確かめて閉じる
+10. **体とモーションを spirit に使わせる。** 5 体の配役・見る先・モーションの選び方を spirit に任せた場面を作らせる。配布の VRMA（表情・視線のトラック付き）を足して比べる
+11. **骨で動くモデル・手の形・母音の口。** 骨入りの glTF の当たり判定、指のポーズ、`ih`・`ou`・`ee`・`oh` の口（Part 16 の前にまとめた「VRM でできる表現」の残り）
 
 ## Run
 

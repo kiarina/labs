@@ -42,7 +42,8 @@ final _relaxedArms = {
 
 /// A VRM on the canvas: the spirit's own body. Props: `src` (default: the
 /// lab's VRM), `expression`, `expression_weight`, `pose` ([kVrmPoses]),
-/// `animation` (a .vrma; `default` for the lab's), `framing` (`bust` or
+/// `animation` (a .vrma by name, played by [VrmaDriver]: any number of them,
+/// from VRMA_DIR; `animation_speed`, `animation_loop`), `framing` (`bust` or
 /// `full`), `look_at_viewer`, `talking` (moves the mouth), `turn` (degrees
 /// the body turns from facing the viewer: 90 faces right, -90 left; it
 /// turns there smoothly).

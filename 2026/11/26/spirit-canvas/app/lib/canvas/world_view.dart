@@ -18,9 +18,11 @@ import 'world_fx.dart';
 /// Things in it are canvas elements with `in: <world id>`:
 /// - shapes (`box`, `sphere`, `cylinder`, `cone`, `plane`, `torus`,
 ///   `capsule`): `w`, `h`, `d` in metres, `color`, `roughness`, `metallic`,
-///   `glow` (lit by itself), `opacity`
-/// - a `vrm`: the spirit's body, with `pose`, `expression` and the voice's
-///   mouth as on the 2D canvas
+///   `glow` (a strength: 1 lit by itself, above 1 blooms), `opacity`
+/// - `vrm`s: bodies (any of VRM_DIR's by `src`, several at once), with
+///   `pose`, `expression`, `animation` (a .vrma) and the voice's mouth as on
+///   the 2D canvas, and `look_at` (the eyes, neck and head turn to it)
+/// - a `model`: a glTF binary (from Blender, say), its animations by name
 /// - any 2D element (text, image, svg, shape, button, choices, input):
 ///   drawn on a panel, `w`/`h` its size in pixels, `size_m` its height in
 ///   metres (default h / 400), `face_camera` to keep it turned to the
