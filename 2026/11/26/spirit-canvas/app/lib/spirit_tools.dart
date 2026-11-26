@@ -514,7 +514,7 @@ final Map<String, dynamic> _elementSchema = {
       'pressed as usual. The world: sky (a colour behind; none: '
       'transparent, e.g. over a web page), cam_x/cam_y/cam_z where the '
       'camera is and look_x/look_y/look_z what it looks at (default from '
-      '(0, 1.6, -4) to (0, 1.2, 0)), fov (degrees); move them with '
+      '(0, 1.6, -4) to (0, 1.2, 0)), fov (degrees, upright, on a landscape screen; a narrower screen keeps that width in view); move them with '
       'canvas_update and transition_ms for a camera move. camera_mode '
       'fixed | orbit (going around, orbit_speed degrees/s) | follow '
       '(follow: a thing\'s id), user_camera (the user drags to look '
