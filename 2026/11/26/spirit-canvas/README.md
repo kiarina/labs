@@ -436,6 +436,22 @@ Windows 11 の開発機（Core i9-12900K・RTX 3080 Ti、Flutter 3.47.2）で、
 | ![Windows の見本](results/windows-1-demo.jpg) | ![Windows の WebView の撮影](results/windows-4-web.jpg) | ![Windows で spirit が作った画面](results/windows-win-spirit.jpg) |
 | VRM と動画も描けた | WebView2 の撮影 | 時計とメモ（web 要素 1 つ） |
 
+- **窓が前面でないとき・最小化のときの撮影**（`tools/windows/window.ps1` を対話のタスクで走らせて窓を最小化・復元し、その間にページの中でチェックを入れて撮った）:
+
+| 窓 | WebView2 の撮影 | spirit に見せる画像 |
+| --- | --- | --- |
+| 前面でない（ほかのアプリが前） | 撮れた（0.3 秒、今の 1/3） | 今の絵 |
+| 最小化 | 返らない（3 秒で打ち切り） | 前に撮れた絵（1/3。今は 2/3）を描き、「最小化のため撮れず、15:13:09 の絵で古いかもしれない」と添える |
+| 復元した後 | 撮れた（今の 3/3） | 今の絵 |
+
+  最初の版は最小化のとき WebView の部分が空になったので、最後に撮れた絵とその時刻を残し、撮れないときはそれを描いて古いことを伝えるようにした（macOS・iOS・Android でも同じ）。
+  ページの状態と本文は、最小化の間も `canvas_view` で読めた。復元（`ShowWindow` の 9）は窓を前面に出した
+
+| | | |
+| --- | --- | --- |
+| ![前面でない](results/windows-window-A-as-is.jpg) | ![最小化](results/windows-window-B-minimized.jpg) | ![復元](results/windows-window-C-restored.jpg) |
+| 前面でない: 1/3 | 最小化: 古い絵（1/3、今は 2/3） | 復元: 3/3 |
+
 - **画面の実際のクリックが WebView に届くかは、Windows では確かめていない**（離れた PC の窓を操作しなかった）。WebView2 の版はテクスチャなので、macOS で直したような位置のずれは起きない作りのはず（解釈）
 - 最初の `build.cmd` は、置き場所の解釈を 1 段まちがえて `tools\` で `flutter` を走らせて失敗した（直した）
 

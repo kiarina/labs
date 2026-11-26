@@ -42,15 +42,24 @@ class WebHost {
       // Windows: WebView2 takes it itself. Elsewhere: the app's native
       // channel (WKWebView takeSnapshot, Android WebView.draw).
       final own = await page.screenshot().timeout(const Duration(seconds: 3));
-      if (own != null) return own;
+      if (own != null) {
+        lastGood[id] = (png: own, at: DateTime.now());
+        return own;
+      }
       final nativeId = page.nativeId;
       if (nativeId == null) {
         lastSnapshotError = 'no way to take a picture of web views here';
         return null;
       }
-      return await _native
+      final png = await _native
           .invokeMethod<Uint8List>('snapshot', {'id': nativeId})
           .timeout(const Duration(seconds: 3));
+      if (png != null) lastGood[id] = (png: png, at: DateTime.now());
+      return png;
+    } on TimeoutException {
+      lastSnapshotError =
+          'the web view did not give a picture (the window may be minimized)';
+      return null;
     } on Object catch (e) {
       lastSnapshotError = '$e';
       return null;
@@ -58,6 +67,10 @@ class WebHost {
   }
 
   String? lastSnapshotError;
+
+  /// The last picture each page gave, and when: drawn when a new one cannot
+  /// be taken (a minimized window on Windows), marked as old.
+  final lastGood = <String, ({Uint8List png, DateTime at})>{};
 
   /// The latest `sg.setState` of each page.
   final states = <String, Object?>{};
@@ -82,6 +95,7 @@ class WebHost {
   void remove(String id) {
     _pages.remove(id);
     pages.remove(id);
+    lastGood.remove(id);
     states.remove(id);
   }
 

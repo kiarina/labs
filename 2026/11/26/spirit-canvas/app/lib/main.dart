@@ -310,7 +310,7 @@ class HomePageState extends State<HomePage> {
           if (shot.png != null) images.add(shot.png!);
           if (shot.missing.isNotEmpty) {
             note =
-                '\n(web elements not in the picture: ${jsonEncode(shot.missing)})';
+                '\n(web elements whose picture is missing or old: ${jsonEncode(shot.missing)})';
           }
           // Android draws a web view's last frame: with the app in the
           // background, page changes since then are not in the picture.

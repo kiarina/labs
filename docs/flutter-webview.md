@@ -73,7 +73,7 @@ Android は `AndroidWebViewController.webViewIdentifier` を、アプリの Kotl
 両方を小さな型の裏に隠すのが楽だった（spirit-canvas の `lib/canvas/web_page.dart`）。必要な口（読み込み・JavaScript channel・JS の実行）はどちらにもある。
 
 - WebView2 の版は Flutter のテクスチャとして描く（プラットフォームのビューではない）ので、縮めた枠の中のクリックのずれは起きない作りのはず（未確認）
-- 撮影は `WindowsWebViewController.takeScreenshot()` が PNG を返す（ネイティブのコードは要らない）
+- 撮影は `WindowsWebViewController.takeScreenshot()` が PNG を返す（ネイティブのコードは要らない）。窓が前面でなくても撮れたが、**最小化の間は返らない**（打ち切りが要る）。最後に撮れた絵と時刻を残しておき、古いと断って使うとよい
 - ループバックの HTTP、`asset://` の書き換え、ページの中の音（`mediaPlaybackPolicy: allowWithoutUserGesture`）はそのまま動いた
 
 ## 対応する OS

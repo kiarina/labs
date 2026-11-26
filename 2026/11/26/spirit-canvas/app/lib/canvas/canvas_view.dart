@@ -813,10 +813,18 @@ Future<({String? png, Map<String, String> missing})> captureCanvasWithWeb(
   final canvas = Canvas(recorder);
   canvas.drawImage(stage, Offset.zero, Paint());
   for (final e in webs) {
-    final png = await WebHost.instance.snapshot(e.id);
+    var png = await WebHost.instance.snapshot(e.id);
     if (png == null) {
-      missing[e.id] = WebHost.instance.lastSnapshotError ?? 'no picture';
-      continue;
+      final why = WebHost.instance.lastSnapshotError ?? 'no picture';
+      final old = WebHost.instance.lastGood[e.id];
+      if (old == null) {
+        missing[e.id] = why;
+        continue;
+      }
+      // The last picture it gave, said to be old.
+      png = old.png;
+      missing[e.id] =
+          '$why; drew its picture from ${old.at.toIso8601String().substring(11, 19)}, which may be out of date';
     }
     final codec = await ui.instantiateImageCodec(png);
     final frame = await codec.getNextFrame();
