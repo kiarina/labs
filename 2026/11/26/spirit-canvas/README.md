@@ -612,6 +612,20 @@ macOS で、仕事・うたた寝・触って起こすまでを撮った（触�
 
 ![Sol が作った部屋と、予定表へ寄るカメラ](results/world-sol.jpg)
 
+### 触って動かす・HUD を重ねる
+
+作り置き `scenes/world-room.json`（`make_world_scene.py` が書く）: 上の部屋を触れるようにし、2D の要素を HUD として上に重ねた。モデルは使わない。
+
+- 3D の物にも 2D と同じ `on` が効く。壁の予定の `on.tap` で、世界のカメラを `transition_ms` 付きで予定の前へ動かし、HUD の「戻る」を出し、案内の文字を変える
+- HUD は `in` を付けない今までの文字とボタン（`world` より後ろに置くと上に重なる）。「戻る」の `on.press` でカメラを元の位置へ戻し、自分を隠す
+- スクリプトで: 壁の絵（画像の板）を触ると次の絵へ、ランプか HUD の「明かり」で明かりと空の色を切り替え（夜になる）、HUD の「ひと回り」で 9 秒回り込んで戻る、
+  体は触った部位で反応を変える（頭ならうなずく、ほかは手を振る。声で話す）。ボールは `on.tap` の `animate` で跳ねる
+
+macOS の実際のクリックで、予定 → 寄る → 「戻る」で戻る、明かり、絵の差し替え（2 / 3）、ボールが跳ねる、頭（`head`）と胸、ひと回り → 元の固定のカメラ、をすべて確かめた。
+`visible: false` の「戻る」は、隠れている間クリックを止めなかった（描かれないため）。
+
+![予定に寄る・戻る・明かりを消す・ひと回り](results/world-touch.jpg)
+
 ### 分かった制約・まだ見ていないこと
 
 - 確かめたのは macOS だけ。iOS・Android・Windows では動かしていない（Windows は新しいシェーダーの組の初回描画で止まる既知の問題がある）
@@ -670,7 +684,7 @@ iOS・Android: `DEVICE=<udid> mise -C 2026/11/26/spirit-canvas run run-ios`・`D
 画面の右上の「見本」は、モデルを使わずに `demo_scene.dart` を置きます。
 作り置きは `scenes/`、spirit が保存した画面は `work/scenes/` に入ります。
 
-3D の世界（Part 11）のモデルなしの確認: `python3 2026/11/26/spirit-canvas/world_check.py <名前> <ポート>`。
+3D の世界（Part 11）のモデルなしの確認: `python3 2026/11/26/spirit-canvas/world_check.py <名前> <ポート>`。触れる部屋と HUD の作り置きは `make_world_scene.py` が書く（`canvas_load` で `world-room`）。
 部屋で spirit がうろちょろする作り置き（Part 10）は `python3 2026/11/26/spirit-canvas/make_room_scene.py` で書き直せる。
 スライドの解説（Part 9）のモデルなしの確認: `python3 2026/11/26/spirit-canvas/present_check.py <名前> <ポート>`（画像は `work/logs/<名前>/`）。
 Windows のデスクトップを撮るには `tools/windows/screen.vbs` を対話のタスクで走らせる（コンソールの窓を出さずに `logs\screen.png` へ）。
