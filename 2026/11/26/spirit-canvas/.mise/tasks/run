@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#MISE description="Run the built canvas app (MODEL, EFFORT, CONTROL_PORT, START_MODE, VRM_PATH optional)"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+lab="$(pwd)"
+app="$lab/app/build/macos/Build/Products/Debug/spirit_canvas.app/Contents/MacOS/spirit_canvas"
+[ -x "$app" ] || mise run build
+mkdir -p "$lab/work/logs"
+MEDIA_DIR="$(cd ../../../../tests/assets && pwd)" \
+VRM_PATH="${VRM_PATH:-$lab/work/assets/Seed-san.vrm}" \
+VRMA_PATH="${VRMA_PATH:-$lab/work/assets/test.vrma}" \
+LOG_DIR="$lab/work/logs" \
+MODEL="${MODEL:-gpt-6.2-sol}" \
+EFFORT="${EFFORT:-}" \
+CONTROL_PORT="${CONTROL_PORT:-0}" \
+ABBREVIATE_VIEW="${ABBREVIATE_VIEW:-1}" \
+START_MODE="${START_MODE:-canvas}" \
+  exec "$app"

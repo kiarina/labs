@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#MISE description="Fetch the shared test assets, the Seed-san VRM and a VRMA"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+mise run //:test-assets:download
+mkdir -p work/assets
+if [ ! -f work/assets/Seed-san.vrm ]; then
+  # Seed-san by VirtualCast, Inc. (VRM Public License 1.0), from the VRM consortium's samples.
+  curl -fsSL -o work/assets/Seed-san.vrm \
+    https://github.com/vrm-c/vrm-specification/raw/master/samples/Seed-san/vrm/Seed-san.vrm
+fi
+if [ ! -f work/assets/test.vrma ]; then
+  curl -fsSL -o work/assets/test.vrma \
+    https://github.com/kiarina/flutter_vrm/raw/6cdf97d/example/assets/samples/test.vrma
+fi
+ls -l work/assets

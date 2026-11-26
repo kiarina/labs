@@ -1,5 +1,6 @@
 # codex-app-server
 
+- 2026/11/26 [A canvas mode for a spirit's chat: gpt-6.2-sol lays out text, SVG drawings, a VRM body, photos, video, audio and buttons with tools, and the user's presses come back as messages](../2026/11/26/spirit-canvas/README.md)
 - 2026/10/19 [Codex app-server audio, realtime transport and transcription boundaries](../2026/10/19/codex-app-server-audio/README.md)
 - 2026/10/09 [Connecting N orchestrator apps over WebRTC: one brain drives workers on many bodies, every console shows the same state](../2026/10/09/flutter-agent-orchestrator-mesh/README.md)
 - 2026/10/09 [Several orchestrators on one network: a signaling server with a roster and body ownership](../2026/10/09/flutter-agent-orchestrator-multi-brain/README.md)

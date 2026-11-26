@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Build the macOS app from clean (Xcode's incremental build reports a target cycle here)"
+set -euo pipefail
+cd "$(dirname "$0")/../../app"
+flutter clean >/dev/null
+flutter pub get >/dev/null
+flutter build macos --debug

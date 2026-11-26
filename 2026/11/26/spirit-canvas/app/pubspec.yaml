@@ -1,0 +1,44 @@
+name: spirit_canvas
+description: "A chat screen whose history can switch to a canvas the spirit draws on with tools."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_svg: ^2.5.1
+  video_player: ^2.14.1
+  audioplayers: ^6.8.1
+  vector_math: ^2.4.4
+  hooks: ^2.2.0
+  # VRM 1.0 on flutter_scene (Flutter GPU). Pinned to a commit: not on pub.dev yet.
+  flutter_vrm:
+    git:
+      url: https://github.com/kiarina/flutter_vrm
+      ref: 6cdf97d
+  flutter_scene: ">=0.23.0 <0.25.0"
+
+# flutter_vrm develops on this upstream master commit; both packages of the
+# repository come from the same commit.
+dependency_overrides:
+  flutter_scene:
+    git:
+      url: https://github.com/bdero/flutter_scene
+      path: packages/flutter_scene
+      ref: 0e263beb019bdde2ab3dbe18b2589fbbb838c905
+  scene:
+    git:
+      url: https://github.com/bdero/flutter_scene
+      path: packages/scene
+      ref: 0e263beb019bdde2ab3dbe18b2589fbbb838c905
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

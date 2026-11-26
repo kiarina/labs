@@ -1,0 +1,165 @@
+{
+ "name": "s2-press",
+ "entries": [
+  {
+   "role": "event",
+   "text": "<ui mode=\"canvas\"/>\n<canvas_event event=\"press\" id=\"intro-wave\"/>",
+   "at": "2026-11-26T11:43:58.867267"
+  },
+  {
+   "role": "spirit",
+   "text": "手を振り返してくれた！",
+   "at": "2026-11-26T11:44:00.310899"
+  },
+  {
+   "role": "tool",
+   "tool": "canvas_update",
+   "text": "{\"id\":\"intro-avatar\",\"props\":{\"pose\":\"cheer\",\"expression\":\"happy\",\"expression_weight\":0.9}}\n→ ok",
+   "at": "2026-11-26T11:44:02.051106"
+  },
+  {
+   "role": "tool",
+   "tool": "canvas_animate",
+   "text": "{\"id\":\"intro-stars\",\"duration_ms\":1000,\"easing\":\"ease_in_out\",\"keyframes\":[{\"scale\":1,\"opacity\":1},{\"scale\":1.08,\"opacity\":0.72},{\"scale\":1,\"opacity\":1}]}\n→ ok",
+   "at": "2026-11-26T11:44:05.338499"
+  },
+  {
+   "role": "spirit",
+   "text": "ふふ、これでごあいさつできたね。これからよろしく！✨",
+   "at": "2026-11-26T11:44:08.037837"
+  }
+ ],
+ "timing": {
+  "started": "2026-11-26T11:43:58.867307",
+  "tools": [
+   "canvas_update",
+   "canvas_animate"
+  ],
+  "first_tool": "2026-11-26T11:44:02.051076",
+  "usage": {
+   "total": {
+    "totalTokens": 192628,
+    "inputTokens": 190816,
+    "cachedInputTokens": 159104,
+    "cacheWriteInputTokens": 0,
+    "outputTokens": 1812,
+    "reasoningOutputTokens": 324
+   },
+   "last": {
+    "totalTokens": 17173,
+    "inputTokens": 17116,
+    "cachedInputTokens": 16896,
+    "cacheWriteInputTokens": 0,
+    "outputTokens": 57,
+    "reasoningOutputTokens": 32
+   },
+   "modelContextWindow": 828400
+  },
+  "ended": "2026-11-26T11:44:08.802546",
+  "status": "completed"
+ },
+ "canvas": [
+  {
+   "id": "intro-card",
+   "type": "shape",
+   "shape": "rect",
+   "x": 54,
+   "y": 79,
+   "w": 596,
+   "h": 641,
+   "radius": 36,
+   "fill": "#25223D",
+   "stroke": "#413857",
+   "stroke_width": 1
+  },
+  {
+   "id": "intro-ornament",
+   "type": "svg",
+   "x": 103,
+   "y": 132,
+   "w": 65,
+   "h": 49,
+   "markup": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 65 49\"><path d=\"M24 2c2.4 13.7 7.1 18.4 21 21-13.9 2.6-18.6 7.3-21 21C21.4 30.3 16.8 25.6 3 23 16.8 20.4 21.4 15.7 24 2Z\" fill=\"#F4C897\"/><path d=\"M53 30c1 5.2 3.2 7.4 8.5 8.5-5.3 1.1-7.5 3.3-8.5 8.5-1.1-5.2-3.3-7.4-8.5-8.5 5.2-1.1 7.4-3.3 8.5-8.5Z\" fill=\"#BEA8EF\"/></svg>"
+  },
+  {
+   "id": "intro-greeting",
+   "type": "text",
+   "x": 102,
+   "y": 202,
+   "w": 500,
+   "h": 42,
+   "text": "はじめまして！",
+   "size": 27,
+   "weight": "bold",
+   "color": "#F4C897",
+   "align": "left",
+   "padding": 0
+  },
+  {
+   "id": "intro-title",
+   "type": "text",
+   "x": 100,
+   "y": 252,
+   "w": 510,
+   "h": 154,
+   "text": "きみのアプリに\n住む精霊だよ。",
+   "size": 57,
+   "weight": "bold",
+   "color": "#FFF4F1",
+   "align": "left",
+   "padding": 0
+  },
+  {
+   "id": "intro-description",
+   "type": "text",
+   "x": 104,
+   "y": 443,
+   "w": 510,
+   "h": 96,
+   "text": "今日あったことを聞いたり、一緒に考えたり。\n言葉で話したり、絵で伝えたりもできるよ。",
+   "size": 23,
+   "color": "#E3D9F2",
+   "align": "left",
+   "padding": 0
+  },
+  {
+   "id": "intro-wave",
+   "type": "button",
+   "x": 104,
+   "y": 591,
+   "w": 194,
+   "h": 60,
+   "label": "手を振り返す",
+   "size": 21,
+   "color": "#F4C897",
+   "text_color": "#302139",
+   "radius": 30
+  },
+  {
+   "id": "intro-avatar",
+   "type": "vrm",
+   "x": 655,
+   "y": 93,
+   "w": 590,
+   "h": 621,
+   "expression": "happy",
+   "expression_weight": 0.9,
+   "pose": "cheer",
+   "framing": "full",
+   "look_at_viewer": true,
+   "src": "default"
+  },
+  {
+   "id": "intro-stars",
+   "type": "svg",
+   "x": 677,
+   "y": 90,
+   "w": 545,
+   "h": 617,
+   "z": 2,
+   "markup": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 545 617\"><g fill=\"none\" stroke=\"#635378\" stroke-width=\"1.4\"><path d=\"M55 455A249 249 0 0 1 129 113\"/><path d=\"M382 94a249 249 0 0 1 106 341\"/><path d=\"M469 474a249 249 0 0 1-108 85\"/><path d=\"M88 500a249 249 0 0 0 86 58\"/></g><g fill=\"#F4C897\"><path d=\"M455 119c2 13 6 17 19 19-13 2-17 6-19 19-2-13-6-17-19-19 13-2 17-6 19-19Z\"/><circle cx=\"74\" cy=\"478\" r=\"4\"/><circle cx=\"494\" cy=\"443\" r=\"4\"/></g><g fill=\"#B5A1DC\"><path d=\"M81 161c1 8 4 11 12 12-8 1-11 4-12 12-1-8-4-11-12-12 8-1 11-4 12-12Z\"/><path d=\"M429 530c1 7 3 9 10 10-7 1-9 3-10 10-1-7-3-9-10-10 7-1 9-3 10-10Z\"/><circle cx=\"147\" cy=\"98\" r=\"3\"/><circle cx=\"507\" cy=\"206\" r=\"3\"/><circle cx=\"47\" cy=\"410\" r=\"3\"/></g></svg>",
+   "opacity": 1.0,
+   "scale": 1.0
+  }
+ ]
+}

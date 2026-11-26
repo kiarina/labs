@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Analyze the app and run the canvas model tests"
+set -euo pipefail
+cd "$(dirname "$0")/../../app"
+flutter pub get >/dev/null
+flutter analyze
+flutter test

@@ -1,5 +1,6 @@
 # dart
 
+- 2026/11/26 [A canvas mode for a spirit's chat: gpt-6.2-sol lays out text, SVG drawings, a VRM body, photos, video, audio and buttons with tools, and the user's presses come back as messages](../2026/11/26/spirit-canvas/README.md)
 - 2026/11/06 [WebRTC data channels from a Flutter-free Dart CLI: webrtc_dart vs libdatachannel over FFI, against libwebrtc (Chrome) and aiortc, on macOS and in a Linux container](../2026/11/06/dart-cli-webrtc-datachannel/README.md)
 - 2026/10/21 [Streaming MeanVC2 voice conversion exported to ONNX: parity with upstream PyTorch and real-time speed in Flutter on macOS, Windows, Android and iOS](../2026/10/21/meanvc2-onnx-streaming/README.md)
 - 2026/10/19 [Apple SpeechAnalyzer vs Whisper on finalized SCD segments with speaker binding](../2026/10/19/apple-speech-scd-asr/README.md)

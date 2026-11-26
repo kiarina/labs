@@ -1,0 +1,307 @@
+{
+ "name": "s6-chat",
+ "cmd": [
+  "send",
+  "ところで、明日の朝ごはん何にしようか迷ってる。軽めのおすすめある？"
+ ],
+ "waited_s": 6.1,
+ "timing": {
+  "started": "2026-11-26T11:51:50.111922",
+  "tools": [],
+  "usage": {
+   "total": {
+    "totalTokens": 1415374,
+    "inputTokens": 1396148,
+    "cachedInputTokens": 1304960,
+    "cacheWriteInputTokens": 0,
+    "outputTokens": 19226,
+    "reasoningOutputTokens": 4452
+   },
+   "last": {
+    "totalTokens": 59173,
+    "inputTokens": 59007,
+    "cachedInputTokens": 58624,
+    "cacheWriteInputTokens": 0,
+    "outputTokens": 166,
+    "reasoningOutputTokens": 88
+   },
+   "modelContextWindow": 828400
+  },
+  "ended": "2026-11-26T11:51:56.153655",
+  "status": "completed"
+ },
+ "entries": [
+  {
+   "role": "user",
+   "text": "<ui mode=\"chat\"/>\nところで、明日の朝ごはん何にしようか迷ってる。軽めのおすすめある？",
+   "at": "2026-11-26T11:51:50.111875"
+  },
+  {
+   "role": "spirit",
+   "text": "軽めなら、バナナ半分とヨーグルトがおすすめ。オートミールを大さじ1足すと、少し腹持ちもよくなるよ。\n\n温かいものが食べたい朝なら、小さめの梅おにぎりと豆腐のお味噌汁もいいね。",
+   "at": "2026-11-26T11:51:54.404315"
+  }
+ ],
+ "canvas": [
+  {
+   "id": "city-accent",
+   "type": "shape",
+   "shape": "rect",
+   "x": 65,
+   "y": 48,
+   "w": 48,
+   "h": 5,
+   "fill": "#B75231",
+   "radius": 2
+  },
+  {
+   "id": "city-title",
+   "type": "text",
+   "x": 61,
+   "y": 64,
+   "w": 616,
+   "h": 104,
+   "text": "街の一日",
+   "size": 78,
+   "weight": "bold",
+   "color": "#1D3029",
+   "align": "left",
+   "padding": 0
+  },
+  {
+   "id": "city-intro",
+   "type": "text",
+   "x": 754,
+   "y": 83,
+   "w": 462,
+   "h": 70,
+   "text": "朝の玄関から、夜の語らいまで。\n写真と映像、音声で街をひとめぐり。",
+   "size": 23,
+   "color": "#43554B",
+   "align": "left",
+   "padding": 0
+  },
+  {
+   "id": "city-rule",
+   "type": "shape",
+   "shape": "rect",
+   "x": 64,
+   "y": 177,
+   "w": 1152,
+   "h": 1,
+   "fill": "#B4B7A9"
+  },
+  {
+   "id": "city-street",
+   "type": "image",
+   "x": 64,
+   "y": 202,
+   "w": 662,
+   "h": 331,
+   "src": "jpg/street_scene_1774x887_287kb.jpg",
+   "fit": "contain",
+   "radius": 7
+  },
+  {
+   "id": "city-photo-time",
+   "type": "text",
+   "x": 64,
+   "y": 546,
+   "w": 43,
+   "h": 48,
+   "text": "昼",
+   "size": 22,
+   "weight": "bold",
+   "color": "#9B4329",
+   "align": "left",
+   "padding": 0
+  },
+  {
+   "id": "city-photo-title",
+   "type": "text",
+   "x": 111,
+   "y": 546,
+   "w": 595,
+   "h": 48,
+   "text": "並木通りを歩く",
+   "size": 35,
+   "weight": "bold",
+   "color": "#1D3029",
+   "align": "left",
+   "padding": 0
+  },
+  {
+   "id": "city-photo-caption",
+   "type": "text",
+   "x": 65,
+   "y": 599,
+   "w": 658,
+   "h": 36,
+   "text": "並木のそばを人が歩き、車や自転車が通りを行き交う。",
+   "size": 20,
+   "color": "#45544B",
+   "align": "left",
+   "padding": 0
+  },
+  {
+   "id": "city-film-panel",
+   "type": "shape",
+   "shape": "rect",
+   "x": 754,
+   "y": 202,
+   "w": 462,
+   "h": 432,
+   "fill": "#23362D",
+   "radius": 8
+  },
+  {
+   "id": "city-film-title",
+   "type": "text",
+   "x": 775,
+   "y": 500,
+   "w": 310,
+   "h": 49,
+   "text": "玄関の扉が開く",
+   "size": 29,
+   "weight": "bold",
+   "color": "#F6F1E6",
+   "align": "left",
+   "padding": 0
+  },
+  {
+   "id": "city-film-rule",
+   "type": "shape",
+   "shape": "rect",
+   "x": 775,
+   "y": 558,
+   "w": 420,
+   "h": 1,
+   "fill": "#62766B"
+  },
+  {
+   "id": "city-audio-panel",
+   "type": "shape",
+   "shape": "rect",
+   "x": 64,
+   "y": 660,
+   "w": 1152,
+   "h": 90,
+   "fill": "#23362D",
+   "radius": 8
+  },
+  {
+   "id": "city-audio-title",
+   "type": "text",
+   "x": 88,
+   "y": 670,
+   "w": 434,
+   "h": 42,
+   "text": "ふたりの会話",
+   "size": 27,
+   "weight": "bold",
+   "color": "#F6F1E6",
+   "align": "left",
+   "padding": 0
+  },
+  {
+   "id": "city-audio-length",
+   "type": "text",
+   "x": 89,
+   "y": 713,
+   "w": 220,
+   "h": 23,
+   "text": "音声 · 約14秒",
+   "size": 16,
+   "color": "#CED9CB",
+   "align": "left",
+   "padding": 0
+  },
+  {
+   "id": "city-reel",
+   "type": "video",
+   "x": 754,
+   "y": 202,
+   "w": 462,
+   "h": 288,
+   "z": 1,
+   "src": "mp4/door_open_768x512_24fps_8s_302kb.mp4",
+   "autoplay": false,
+   "playing": false,
+   "muted": false,
+   "volume": 0.7,
+   "fit": "cover",
+   "radius": 7
+  },
+  {
+   "id": "city-video-play",
+   "type": "button",
+   "x": 1073,
+   "y": 504,
+   "w": 122,
+   "h": 39,
+   "z": 2,
+   "label": "再生",
+   "size": 17,
+   "color": "#F3C5A4",
+   "text_color": "#322A27",
+   "radius": 9
+  },
+  {
+   "id": "city-film-morning",
+   "type": "button",
+   "x": 775,
+   "y": 574,
+   "w": 134,
+   "h": 42,
+   "z": 2,
+   "label": "朝",
+   "size": 19,
+   "color": "#E4EBD7",
+   "text_color": "#25382E",
+   "radius": 9
+  },
+  {
+   "id": "city-film-afternoon",
+   "type": "button",
+   "x": 918,
+   "y": 574,
+   "w": 134,
+   "h": 42,
+   "z": 2,
+   "label": "午後",
+   "size": 19,
+   "color": "#3B5147",
+   "text_color": "#F5F2E8",
+   "radius": 9
+  },
+  {
+   "id": "city-film-night",
+   "type": "button",
+   "x": 1061,
+   "y": 574,
+   "w": 134,
+   "h": 42,
+   "z": 2,
+   "label": "夜",
+   "size": 19,
+   "color": "#3B5147",
+   "text_color": "#F5F2E8",
+   "radius": 9
+  },
+  {
+   "id": "city-audio",
+   "type": "audio",
+   "x": 617,
+   "y": 679,
+   "w": 574,
+   "h": 51,
+   "z": 2,
+   "src": "mp3/conversation_2speaker_14s_16k.mp3",
+   "autoplay": false,
+   "playing": false,
+   "volume": 0.8,
+   "label": "会話を聴く"
+  }
+ ],
+ "snapshot": "work/logs/s6-chat.png"
+}
