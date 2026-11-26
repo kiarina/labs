@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_js/flutter_js.dart';
 
 import 'canvas_model.dart';
+import 'sound.dart';
 
 /// Something for the spirit that does not wake it: delivered with the next
 /// message that goes to it (the user's, an event's, or a wake).
@@ -22,12 +23,19 @@ class CanvasNotice {
 /// [wake] sends lines to the spirit now (a new turn, or steered into the
 /// running one). Everything else waits in [notices] for the next message.
 class CanvasBehaviors {
-  CanvasBehaviors(this.canvas, {required this.wake}) {
+  CanvasBehaviors(this.canvas, {required this.wake, this.sounds}) {
     _ticker = Timer.periodic(const Duration(milliseconds: 50), (_) => _tick());
   }
 
   final CanvasController canvas;
   final void Function(List<String> lines) wake;
+
+  /// Effects and music; null in tests.
+  final SoundBoard? sounds;
+
+  /// What defined the running timelines and scripts, for saving a scene.
+  final timelineDefs = <String, Map<String, dynamic>>{};
+  final scriptSources = <String, String>{};
 
   late final Timer _ticker;
   final notices = <CanvasNotice>[];
@@ -199,6 +207,34 @@ class CanvasBehaviors {
       case 'stop_timeline':
         stopTimeline('${a['id']}');
         return null;
+      case 'sound':
+        final src = a['src'] as String?;
+        if (src == null) return 'sound without src';
+        sounds?.play(src, volume: (a['volume'] as num?)?.toDouble() ?? 1).then((
+          err,
+        ) {
+          if (err != null) {
+            notice(
+              '<canvas_notice from="${_attr(from)}" problem="${_attr(err)}"/>',
+            );
+          }
+        });
+        return null;
+      case 'bgm':
+        sounds
+            ?.bgm(
+              a['stop'] == true ? null : a['src'] as String?,
+              volume: (a['volume'] as num?)?.toDouble() ?? 0.5,
+              fadeMs: (a['fade_ms'] as num?)?.toDouble() ?? 1000,
+            )
+            .then((err) {
+              if (err != null) {
+                notice(
+                  '<canvas_notice from="${_attr(from)}" problem="${_attr(err)}"/>',
+                );
+              }
+            });
+        return null;
       case 'notify':
         final line =
             '<canvas_notice from="${_attr(from)}">${_text('${a['text'] ?? ''}')}</canvas_notice>';
@@ -232,6 +268,12 @@ class CanvasBehaviors {
     final last = ((sorted.last['at_ms'] as num?) ?? 0).toDouble();
     // A cycle lasts until its last step, or cycle_ms if longer; at least 50 ms.
     final length = math.max(50.0, math.max(last, cycleMs ?? 0));
+    timelineDefs[id] = {
+      'steps': steps,
+      'repeat': repeat,
+      'cycle_ms': ?cycleMs,
+      'start': start,
+    };
     timelines[id] = _Timeline(sorted, repeat == 0 ? 1 : repeat, length);
     if (start) return startTimeline(id);
     return null;
@@ -246,6 +288,8 @@ class CanvasBehaviors {
   /// Stops and forgets every timeline and script (the canvas was cleared).
   void reset() {
     timelines.clear();
+    timelineDefs.clear();
+    scriptSources.clear();
     for (final id in scriptIds) {
       stopScript(id);
     }
@@ -290,8 +334,17 @@ class CanvasBehaviors {
   late final _scripts = _ScriptHost(this);
 
   /// Loads (or replaces) a script. Returns an error message, if it failed.
-  String? loadScript(String id, String code) => _scripts.load(id, code);
-  bool stopScript(String id) => _scripts.stop(id);
+  String? loadScript(String id, String code) {
+    final err = _scripts.load(id, code);
+    if (err == null) scriptSources[id] = code;
+    return err;
+  }
+
+  bool stopScript(String id) {
+    scriptSources.remove(id);
+    return _scripts.stop(id);
+  }
+
   List<String> get scriptIds => _scripts.ids.toList();
 
   void stateChangedBySpirit() => _scripts.pushState();
@@ -308,6 +361,7 @@ class CanvasBehaviors {
         },
     },
     'scripts': scriptIds,
+    'bgm': ?sounds?.bgmState,
     if (scriptErrors.isNotEmpty) 'script_errors': scriptErrors,
     'waiting_notices': notices.length,
   };
@@ -466,6 +520,7 @@ var __sg = (function () {
   var scripts = {};
   var api = {
     state: {},
+    dirty: false,
     now: 0,
     load: function (id, factory) {
       var s = { id: id, timers: [], handlers: [], stateHandlers: [], nextTimer: 1 };
@@ -479,6 +534,9 @@ var __sg = (function () {
           var o = {};
           if (typeof k === 'object') { o = k; } else { o[k] = v; }
           for (var key in o) api.state[key] = o[key];
+          // State handlers run after the current handler or timer returns
+          // (flush), not inside it.
+          api.dirty = true;
           call(['set', o]);
         },
         update: function (elementId, props, transitionMs) {
@@ -492,6 +550,12 @@ var __sg = (function () {
           return call(['action', a]);
         },
         action: function (a) { return call(['action', a]); },
+        sound: function (src, volume) { return call(['action', { do: 'sound', src: src, volume: volume }]); },
+        bgm: function (src, opts) {
+          var a = { do: 'bgm', src: src };
+          for (var k in (opts || {})) a[k] = opts[k];
+          return call(['action', a]);
+        },
         element: function (elementId) { return call(['element', elementId]); },
         notify: function (text, opts) { return call(['notify', String(text), opts || {}]); },
         log: function () { call(['log', Array.prototype.join.call(arguments, ' ')]); },
@@ -506,6 +570,7 @@ var __sg = (function () {
       };
       try {
         factory(sg);
+        flush();
         return 'ok';
       } catch (e) {
         delete scripts[id];
@@ -525,6 +590,7 @@ var __sg = (function () {
           if (!scripts[id]) break;
         }
       }
+      flush();
     },
     event: function (e) {
       var handled = false;
@@ -538,6 +604,7 @@ var __sg = (function () {
           }
         }
       }
+      flush();
       return handled;
     },
     onState: function () {
@@ -547,6 +614,15 @@ var __sg = (function () {
       }
     },
   };
+  // State changed by a script's sg.set: tell the state handlers, a few
+  // rounds at most (a handler that sets state again is told on the next
+  // tick instead of looping here).
+  function flush() {
+    for (var round = 0; round < 3 && api.dirty; round++) {
+      api.dirty = false;
+      api.onState();
+    }
+  }
   function addTimer(s, ms, fn, repeat) {
     ms = Math.max(50, Number(ms) || 0);
     var t = { id: s.nextTimer++, ms: ms, at: api.now + ms, fn: fn, repeat: repeat };

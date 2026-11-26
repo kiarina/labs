@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'canvas/behaviors.dart';
 import 'canvas/canvas_model.dart';
 import 'canvas/canvas_view.dart';
+import 'canvas/scenes.dart';
+import 'canvas/sound.dart';
 import 'control_server.dart';
 import 'demo_scene.dart';
 import 'media.dart';
@@ -46,9 +48,15 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   final canvas = CanvasController();
+  final sounds = SoundBoard();
   late final behaviors = CanvasBehaviors(
     canvas,
     wake: (lines) => _send(lines, role: 'event'),
+    sounds: sounds,
+  );
+  final scenes = SceneStore(
+    builtinDir: env('SCENES_DIR'),
+    savedDir: env('SAVED_SCENES_DIR'),
   );
   final canvasKey = GlobalKey();
   final _input = TextEditingController();
@@ -58,8 +66,31 @@ class HomePageState extends State<HomePage> {
   /// `chat` or `canvas`.
   String mode = env('START_MODE', 'canvas');
 
-  /// The spirit's latest words, shown over the canvas.
+  /// The spirit's latest words, shown over the canvas while they stream in
+  /// and for a while after ([_captionHold]); a touch on the canvas hides them.
   ChatEntry? caption;
+  bool captionShown = false;
+  Timer? _captionTimer;
+
+  void _showCaption(ChatEntry e) {
+    _captionTimer?.cancel();
+    setState(() {
+      caption = e;
+      captionShown = true;
+    });
+    if (e.done) {
+      // About 4 s plus the time to read it (Japanese: ~8 characters a second).
+      final hold = Duration(
+        milliseconds: 4000 + (e.text.length * 1000 / 8).round(),
+      );
+      _captionTimer = Timer(hold, hideCaption);
+    }
+  }
+
+  void hideCaption() {
+    _captionTimer?.cancel();
+    if (mounted && captionShown) setState(() => captionShown = false);
+  }
 
   final _pendingEvents = <CanvasEvent>[];
   Timer? _eventTimer;
@@ -72,7 +103,7 @@ class HomePageState extends State<HomePage> {
       instructions: kSpiritInstructions,
       tools: kCanvasTools,
       onTool: runTool,
-    )..onSpiritText = (e) => setState(() => caption = e);
+    )..onSpiritText = _showCaption;
     spirit.addListener(_spiritChanged);
     canvas.onEvent = _onCanvasEvent;
     _start();
@@ -98,6 +129,7 @@ class HomePageState extends State<HomePage> {
   void dispose() {
     _control?.close();
     behaviors.dispose();
+    sounds.dispose();
     spirit.dispose();
     super.dispose();
   }
@@ -127,6 +159,7 @@ class HomePageState extends State<HomePage> {
   }
 
   void _onCanvasEvent(CanvasEvent e) {
+    hideCaption();
     // The element's own actions and the scripts' handlers run here, at once.
     switch (behaviors.handleEvent(e)) {
       case 'none':
@@ -224,6 +257,7 @@ class HomePageState extends State<HomePage> {
           missing.isEmpty ? 'ok' : 'not found: ${missing.join(', ')}',
         );
       case 'canvas_clear':
+        unawaited(sounds.stopAll());
         behaviors.reset();
         canvas.state.clear();
         canvas.clear(background: a['background'] as String?);
@@ -271,10 +305,141 @@ class HomePageState extends State<HomePage> {
               ? 'ok'
               : 'no script "${a['id']}"',
         );
+      case 'canvas_audio':
+        final actions = [
+          if (a['sound'] case final Map m)
+            {'do': 'sound', ...m.cast<String, dynamic>()},
+          if (a.containsKey('bgm'))
+            {
+              'do': 'bgm',
+              if (a['bgm'] case final Map m) ...m.cast<String, dynamic>(),
+              if ((a['bgm'] as Map?)?['stop'] == true) 'src': null,
+            },
+        ];
+        if (actions.isEmpty) return ToolOutcome('nothing to play', ok: false);
+        final problems = behaviors.runActions(actions, from: 'spirit');
+        return ToolOutcome(
+          problems.isEmpty ? 'ok' : problems.join('; '),
+          ok: problems.isEmpty,
+        );
+      case 'canvas_scenes':
+        return ToolOutcome(jsonEncode({'scenes': scenes.list()}));
+      case 'canvas_save':
+        return _saveScene(a);
+      case 'canvas_load':
+        return _loadScene(a);
       case 'canvas_media':
         return ToolOutcome(jsonEncode(MediaLibrary.instance.list()));
     }
     return ToolOutcome('unknown tool $name', ok: false);
+  }
+
+  ToolOutcome _saveScene(Map<String, dynamic> a) {
+    final name = a['name'] as String;
+    final params = <String, dynamic>{
+      for (final MapEntry(:key, :value)
+          in (a['params'] as Map? ?? const {}).entries)
+        '$key': {
+          ...(value as Map? ?? const {}).cast<String, dynamic>(),
+          // A param without a default takes the value it has now.
+          if (value?['default'] == null && canvas.state.containsKey(key))
+            'default': canvas.state[key],
+        },
+    };
+    final scene = {
+      'name': name,
+      'description': a['description'],
+      'params': params,
+      'background': canvas.background,
+      'elements': [for (final e in canvas.ordered) e.toJson()],
+      'state': {
+        for (final MapEntry(:key, :value) in canvas.state.entries)
+          if (!params.containsKey(key)) key: value,
+      },
+      'timelines': behaviors.timelineDefs,
+      'scripts': behaviors.scriptSources,
+      'bgm': ?sounds.bgmState,
+      'saved_at': DateTime.now().toIso8601String(),
+    };
+    try {
+      final bytes = scenes.write(name, scene);
+      return ToolOutcome(
+        'ok: saved "$name" ($bytes bytes, ${canvas.elements.length} elements, '
+        '${behaviors.scriptSources.length} scripts, ${behaviors.timelineDefs.length} timelines)',
+      );
+    } on Object catch (e) {
+      return ToolOutcome('failed: $e', ok: false);
+    }
+  }
+
+  Future<ToolOutcome> _loadScene(Map<String, dynamic> a) async {
+    final watch = Stopwatch()..start();
+    final name = a['name'] as String;
+    final scene = scenes.read(name);
+    if (scene == null) return ToolOutcome('no scene "$name"', ok: false);
+    final values = (a['values'] as Map? ?? const {}).cast<String, dynamic>();
+    final params = (scene['params'] as Map? ?? const {})
+        .cast<String, dynamic>();
+    final problems = <String>[
+      for (final k in values.keys)
+        if (!params.containsKey(k)) 'unknown param "$k"',
+    ];
+    behaviors.reset();
+    canvas.state.clear();
+    canvas.clear(background: scene['background'] as String?);
+    canvas.setState({
+      ...(scene['state'] as Map? ?? const {}).cast<String, dynamic>(),
+      for (final MapEntry(:key, :value) in params.entries)
+        if ((value as Map?)?['default'] != null) key: value!['default'],
+      ...values,
+    });
+    behaviors.stateChangedBySpirit();
+    problems.addAll(
+      canvas.put([
+        for (final e in (scene['elements'] as List? ?? const []))
+          if (e is Map) e.cast<String, dynamic>(),
+      ]),
+    );
+    for (final MapEntry(:key, :value)
+        in (scene['timelines'] as Map? ?? const {})
+            .cast<String, dynamic>()
+            .entries) {
+      final t = (value as Map).cast<String, dynamic>();
+      final err = behaviors.defineTimeline(
+        key,
+        [
+          for (final st in (t['steps'] as List? ?? const []))
+            if (st is Map) st.cast<String, dynamic>(),
+        ],
+        repeat: (t['repeat'] as num?)?.toInt() ?? 1,
+        cycleMs: (t['cycle_ms'] as num?)?.toDouble(),
+        start: t['start'] as bool? ?? true,
+      );
+      if (err != null) problems.add('timeline $key: $err');
+    }
+    for (final MapEntry(:key, :value)
+        in (scene['scripts'] as Map? ?? const {})
+            .cast<String, dynamic>()
+            .entries) {
+      final err = behaviors.loadScript(key, '$value');
+      if (err != null) problems.add('script $key: $err');
+    }
+    final bgm = (scene['bgm'] as Map?)?.cast<String, dynamic>();
+    behaviors.runActions([
+      {
+        'do': 'bgm',
+        'src': bgm?['src'],
+        'volume': bgm?['volume'] ?? 0.5,
+        'fade_ms': 800,
+      },
+    ], from: 'scene:$name');
+    final ms = watch.elapsedMilliseconds;
+    await WidgetsBinding.instance.endOfFrame;
+    debugPrint('[scene] loaded $name in ${ms}ms');
+    return ToolOutcome(
+      'ok: loaded "$name" in ${ms}ms (${canvas.elements.length} elements)'
+      '${problems.isEmpty ? '' : '; problems: ${problems.join('; ')}'}',
+    );
   }
 
   /// Saves a PNG of the canvas (for the lab's records).
@@ -308,9 +473,13 @@ class HomePageState extends State<HomePage> {
                     child: Container(
                       color: Colors.black,
                       alignment: Alignment.center,
-                      child: CanvasView(
-                        controller: canvas,
-                        boundaryKey: canvasKey,
+                      // Any touch on the canvas hides the caption.
+                      child: Listener(
+                        onPointerDown: (_) => hideCaption(),
+                        child: CanvasView(
+                          controller: canvas,
+                          boundaryKey: canvasKey,
+                        ),
                       ),
                     ),
                   ),
@@ -321,7 +490,17 @@ class HomePageState extends State<HomePage> {
                       left: 16,
                       right: 16,
                       bottom: 12,
-                      child: _caption(caption!),
+                      child: IgnorePointer(
+                        ignoring: !captionShown,
+                        child: AnimatedOpacity(
+                          opacity: captionShown ? 1 : 0,
+                          duration: const Duration(milliseconds: 300),
+                          child: GestureDetector(
+                            onTap: hideCaption,
+                            child: _caption(caption!),
+                          ),
+                        ),
+                      ),
                     ),
                   if (mode == 'chat')
                     Positioned.fill(

@@ -10,7 +10,11 @@ String env(String name, [String fallback = '']) {
 /// test assets) and the VRM at VRM_PATH. Both come from the environment
 /// the lab's `run` task sets, so nothing here names a local path.
 class MediaLibrary {
-  MediaLibrary._(this.dir, this.vrmPath, this.vrmaPath);
+  MediaLibrary._(String dirs, this.vrmPath, this.vrmaPath)
+    : dirs = [
+        for (final d in dirs.split(':'))
+          if (d.isNotEmpty) d,
+      ];
 
   static MediaLibrary? _instance;
   static MediaLibrary get instance => _instance ??= MediaLibrary._(
@@ -19,7 +23,10 @@ class MediaLibrary {
     env('VRMA_PATH'),
   );
 
-  final String dir;
+  /// MEDIA_DIR: one folder, or several separated by `:` (the shared test
+  /// assets, and the lab's own generated sounds). Names are relative to
+  /// whichever folder holds them.
+  final List<String> dirs;
   final String vrmPath;
   final String vrmaPath;
 
@@ -32,8 +39,9 @@ class MediaLibrary {
   /// `{kind: [name, ...]}`; names are paths relative to MEDIA_DIR.
   Map<String, List<String>> list() {
     final out = {for (final k in _kinds.keys) k: <String>[]};
-    final root = Directory(dir);
-    if (dir.isNotEmpty && root.existsSync()) {
+    for (final dir in dirs) {
+      final root = Directory(dir);
+      if (!root.existsSync()) continue;
       for (final f in root.listSync(recursive: true).whereType<File>()) {
         final name = f.path.substring(root.path.length + 1);
         final lower = name.toLowerCase();
@@ -60,7 +68,7 @@ class MediaLibrary {
       return (url: src, file: null);
     }
     for (final candidate in [
-      if (dir.isNotEmpty) '$dir/$src',
+      for (final dir in dirs) '$dir/$src',
       if (src.startsWith('/')) src,
     ]) {
       final f = File(candidate);

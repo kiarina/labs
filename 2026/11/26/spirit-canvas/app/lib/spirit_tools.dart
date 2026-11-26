@@ -204,13 +204,17 @@ final List<Map<String, dynamic>> kCanvasTools = [
         'sg.every(ms, fn) / sg.after(ms, fn) -> handle; sg.cancel(handle); '
         'sg.now() (ms)\n'
         'sg.on(kind, elementId or "*", fn(event)) for press|choose|submit|'
-        'tap|ended (event: {event, id, value}); sg.on("state", fn(state))\n'
+        'tap|ended (event: {event, id, value}); sg.on("state", fn(state)) '
+        '(after any state change: canvas_state, actions, and sg.set, which '
+        'is told once the current handler returns)\n'
         'sg.state, sg.get(key), sg.set(key, value) or sg.set({...})\n'
         'sg.update(id, props, transitionMs?), sg.put(elements), '
         'sg.remove(ids), sg.animate(id, {keyframes, duration_ms, repeat, '
         'alternate, easing}), sg.action(action), sg.element(id)\n'
         'sg.notify(text, {wake: bool}): a note for you (wake: true wakes you; '
         'at most every 5 s, so wake only when you must act)\n'
+        'sg.sound(src, volume?) (a one-shot effect); sg.bgm(src or null, '
+        '{volume, fade_ms}) (background music, crossfading)\n'
         'sg.log(...); sg.width, sg.height\n'
         'Errors in handlers come back to you as notices.',
     'inputSchema': {
@@ -232,6 +236,101 @@ final List<Map<String, dynamic>> kCanvasTools = [
         'id': {'type': 'string'},
       },
       'required': ['id'],
+      'additionalProperties': false,
+    },
+  },
+  {
+    'name': 'canvas_audio',
+    'description':
+        'Play a one-shot sound effect and/or set the background music. '
+        'bgm: {src, volume (0..1, default 0.5), fade_ms (default 1000)} '
+        'crossfades to src (loops); the same src changes only the volume; '
+        'stop true fades the music out. For sounds on the user\'s actions or '
+        'over time, use the `sound` / `bgm` actions or sg.sound / sg.bgm '
+        'instead, so they play at once without you.',
+    'inputSchema': {
+      'type': 'object',
+      'properties': {
+        'sound': {
+          'type': 'object',
+          'properties': {
+            'src': {'type': 'string'},
+            'volume': {'type': 'number'},
+          },
+          'required': ['src'],
+          'additionalProperties': false,
+        },
+        'bgm': {
+          'type': 'object',
+          'properties': {
+            'src': {'type': 'string'},
+            'stop': {'type': 'boolean', 'description': 'Fade the music out.'},
+            'volume': {'type': 'number'},
+            'fade_ms': {'type': 'number'},
+          },
+          'additionalProperties': false,
+        },
+      },
+      'additionalProperties': false,
+    },
+  },
+  {
+    'name': 'canvas_scenes',
+    'description':
+        'List saved screens (ready-made ones and the ones you saved): name, '
+        'description and params (the values you can pass when loading).',
+    'inputSchema': {
+      'type': 'object',
+      'properties': {},
+      'additionalProperties': false,
+    },
+  },
+  {
+    'name': 'canvas_save',
+    'description':
+        'Save the whole canvas as a screen to reuse: elements, background, '
+        'state, timelines, scripts and the music. params names the state '
+        'keys a later load can replace (questions, a title, a duration...); '
+        'texts show them as {{key}} and scripts read sg.get(key), so build '
+        'screens that read what may change from the state. A param without '
+        'a default keeps its current value as the default. Same name '
+        'replaces your earlier save.',
+    'inputSchema': {
+      'type': 'object',
+      'properties': {
+        'name': {
+          'type': 'string',
+          'description': 'lowercase letters, digits, - and _',
+        },
+        'description': {'type': 'string'},
+        'params': {
+          'type': 'object',
+          'additionalProperties': {
+            'type': 'object',
+            'properties': {
+              'description': {'type': 'string'},
+              'default': {},
+            },
+          },
+        },
+      },
+      'required': ['name', 'description'],
+      'additionalProperties': false,
+    },
+  },
+  {
+    'name': 'canvas_load',
+    'description':
+        'Put a saved screen on the canvas at once (it replaces what is '
+        'there), with values for its params. Far faster than building it '
+        'again: check canvas_scenes before building something similar.',
+    'inputSchema': {
+      'type': 'object',
+      'properties': {
+        'name': {'type': 'string'},
+        'values': {'type': 'object', 'additionalProperties': true},
+      },
+      'required': ['name'],
       'additionalProperties': false,
     },
   },
@@ -258,6 +357,9 @@ const _actionsSchema = {
       'put {elements} | remove {ids} | '
       'set {key, value} | add {key, by} (state) | '
       'timeline {id} (start) | stop_timeline {id} | '
+      'sound {src, volume?} (a one-shot effect) | '
+      'bgm {src, volume?, fade_ms?} or {stop: true} (background music; '
+      'crossfades) | '
       'notify {text, wake?} (a note for you; wake true wakes you, at most '
       'every 5 s).',
   'items': {'type': 'object', 'additionalProperties': true},
@@ -335,6 +437,9 @@ Make the canvas respond by itself where you can. Every round trip through you ta
 - canvas_timeline: what happens at given times (a slideshow, a story told step by step).
 - canvas_script: anything with logic or that keeps going (a clock, a countdown, a game, a quiz that checks answers).
 - canvas_state with {{name}} in texts: change a part of a running screen without rebuilding it.
+- Sound: effects on actions (`sound`) and background music that changes with the scene (`bgm`, crossfading). Use the sounds from canvas_media.
+
+Screens can be saved and reused. Before building something, look at canvas_scenes: if a saved screen fits, canvas_load it with new values instead of building it again. When you make a screen worth reusing (a quiz, a timer, a game, a presentation), keep the parts that may change (questions, titles, durations) in the state, read them from there, and canvas_save it with those keys as params.
 Keep yourself for what needs you: understanding the user, deciding what comes next, making new things.
 
 What the user does on the canvas comes back to you as <canvas_event .../> tags (press, choose, submit, tap, ended). If nothing on the canvas handles it, it wakes you now. If `on` or a script handled it, it is delivered later, with the next message, marked handled. Notes from scripts and timelines come as <canvas_notice> tags. Answer like any other message: change the canvas and/or reply; for an event that was already handled, you need not say anything unless it is worth it.

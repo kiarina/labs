@@ -1,0 +1,705 @@
+{
+ "name": "c1-build",
+ "cmd": [
+  "send",
+  "中学1年の数学で、宇宙基地からの脱出ゲームを作って。5問で、BGMと正解・不正解の効果音つき。あとで別の教科でも使い回せるように保存しておいて"
+ ],
+ "waited_s": 275.9,
+ "timing": {
+  "started": "2026-11-26T12:37:34.574121",
+  "tools": [
+   "canvas_scenes",
+   "canvas_media",
+   "canvas_clear",
+   "canvas_state",
+   "canvas_put",
+   "canvas_script",
+   "canvas_view",
+   "canvas_state",
+   "canvas_view",
+   "canvas_state",
+   "canvas_view",
+   "canvas_update",
+   "canvas_state",
+   "canvas_remove",
+   "canvas_save",
+   "canvas_load",
+   "canvas_load"
+  ],
+  "first_tool": "2026-11-26T12:37:39.113871",
+  "usage": {
+   "total": {
+    "totalTokens": 466178,
+    "inputTokens": 454601,
+    "cachedInputTokens": 416000,
+    "cacheWriteInputTokens": 0,
+    "outputTokens": 11577,
+    "reasoningOutputTokens": 4072
+   },
+   "last": {
+    "totalTokens": 35864,
+    "inputTokens": 35411,
+    "cachedInputTokens": 35072,
+    "cacheWriteInputTokens": 0,
+    "outputTokens": 453,
+    "reasoningOutputTokens": 378
+   },
+   "modelContextWindow": 828400
+  },
+  "ended": "2026-11-26T12:42:10.312359",
+  "status": "completed"
+ },
+ "entries": [
+  {
+   "role": "user",
+   "text": "<ui mode=\"canvas\"/>\n中学1年の数学で、宇宙基地からの脱出ゲームを作って。5問で、BGMと正解・不正解の効果音つき。あとで別の教科でも使い回せるように保存しておいて",
+   "at": "2026-11-26T12:37:34.573958"
+  },
+  {
+   "role": "spirit",
+   "text": "5問を解いて宇宙基地のロックを解除するゲームを作るね。問題を差し替えて、別の教科でも遊べるように保存するよ。",
+   "at": "2026-11-26T12:37:37.965276"
+  },
+  {
+   "role": "tool",
+   "tool": "canvas_scenes",
+   "text": "{}\n→ {\"scenes\":[]}",
+   "at": "2026-11-26T12:37:39.113963"
+  },
+  {
+   "role": "tool",
+   "tool": "canvas_media",
+   "text": "{}\n→ {\"image\":[\"jpg/many_face_1280x720_275kb.jpg\",\"jpg/miineko1-1448x1086-221kb.jpg\",\"jpg/miineko1_1254x1254_159kb.jpg\",\"jpg/miineko2-1448x1086-314kb.jpg\",\"jpg/miineko2_1086x1448_219kb.jpg\",\"jpg/objects_1536x1024_358kb.jpg\",\"jpg/ocr_1448x1086_242kb.jpg\",\"jpg/removebg_1536x1024_141kb.jpg\",\"jpg/street_scene_1774x887_287kb.jpg\"],\"video\":[\"mp4/door_open_768x512_24fps_8s_302kb.mp4\",\"mp4/door_static_768x512_…",
+   "at": "2026-11-26T12:37:40.851448"
+  },
+  {
+   "role": "tool",
+   "tool": "canvas_clear",
+   "text": "{\"background\":\"#080D1B\"}\n→ ok",
+   "at": "2026-11-26T12:38:23.063332"
+  },
+  {
+   "role": "tool",
+   "tool": "canvas_state",
+   "text": "{\"set\":{\"gameTitle\":\"宇宙基地からの脱出\",\"subject\":\"中学1年・数学\",\"questions\":[{\"topic\":\"正負の数\",\"prompt\":\"冷却室の温度は −7 ℃。そこから 12 ℃ 上がると、\\n温度は何 ℃ になる？\",\"options\":[\"−19 ℃\",\"−5 ℃\",\"5 ℃\",\"19 ℃\"],\"answer\":2,\"hint\":\"まず、−7 ℃ から 0 ℃ まで何 ℃ 上がるか考えよう。\",\"explanation\":\"−7 + 12 = 5。0 ℃ まで 7 ℃、そこからさらに 5 ℃ 上がるよ。\"},{\"topic\":\"文字式\",\"p…\n→ {\"state\":{\"gameTitle\":\"宇宙基地からの脱出\",\"subject\":\"中学1年・数学\",\"questions\":[{\"topic\":\"正負の数\",\"prompt\":\"冷却室の温度は −7 ℃。そこから 12 ℃ 上がると、\\n温度は何 ℃ になる？\",\"options\":[\"−19 ℃\",\"−5 ℃\",\"5 ℃\",\"19 ℃\"],\"answer\":2,\"hint\":\"まず、−7 ℃ から 0 ℃ まで何 ℃ 上がるか考えよう。\",\"explanation\":\"−7 + 12 = 5。0 ℃ まで 7 ℃、そこからさらに 5 ℃ 上がるよ。\"},{\"topic\":\"文字式\",\"prompt\":\"箱が x 個あり、どの箱にも電池が 3 本入っている。\\n箱の外に予備が 2 本あるとき、電池の合計は？\",\"options\":[\"3(x + 2) 本\",\"3x + 2 本\",\"…",
+   "at": "2026-11-26T12:38:37.339714"
+  },
+  {
+   "role": "tool",
+   "tool": "canvas_put",
+   "text": "{\"elements\":[{\"id\":\"sky\",\"type\":\"svg\",\"x\":0,\"y\":0,\"w\":1280,\"h\":800,\"markup\":\"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1280 800'><defs><radialGradient id='sky' cx='86%' cy='12%' r='87%'><stop stop-color='#19264B'/><stop offset='.53' stop-color='#10172F'/><stop offset='1' stop-color='#080D…\n→ ok: put 35",
+   "at": "2026-11-26T12:39:56.075980"
+  },
+  {
+   "role": "tool",
+   "tool": "canvas_script",
+   "text": "{\"id\":\"escape-game\",\"code\":\"const tracks = {\\n  bgm: 'sounds/bgm/tense.wav',\\n  correct: 'sounds/sfx/correct.wav',\\n  wrong: 'sounds/sfx/wrong.wav',\\n  clear: 'sounds/sfx/fanfare.wav'\\n};\\nconst configuredQuestions = sg.get('questions');\\nconst valid = Array.isArray(configuredQuestions) && configure…\n→ ok: running",
+   "at": "2026-11-26T12:40:57.356368"
+  },
+  {
+   "role": "tool",
+   "tool": "canvas_view",
+   "text": "{\"image\":true}\n→ {\"mode\":\"canvas\",\"canvas\":{\"width\":1280.0,\"height\":800.0,\"background\":\"#080D1B\"},\"elements\":[{\"id\":\"sky\",\"type\":\"svg\",\"x\":0,\"y\":0,\"w\":1280,\"h\":800,\"markup\":\"(svg, 1310 chars, omitted)\"},{\"id\":\"top-rule\",\"type\":\"shape\",\"shape\":\"rect\",\"x\":64,\"y\":88,\"w\":1152,\"h\":1,\"fill\":\"#273652\",\"z\":1},{\"id\":\"terminal-card\",\"type\":\"shape\",\"shape\":\"rect\",\"x\":64,\"y\":248,\"w\":752,\"h\":475,\"z\":1,\"radius\":23,\"fill\":\"#0E17…",
+   "at": "2026-11-26T12:40:59.459538"
+  },
+  {
+   "role": "spirit",
+   "text": "正負の数から平面図形までの5問を入れたよ。まちがえたときはヒント、正解したときは解説が出るようにしたよ。保存前にプレイ画面の表示を確かめるね。",
+   "at": "2026-11-26T12:41:10.031909"
+  },
+  {
+   "role": "tool",
+   "tool": "canvas_state",
+   "text": "{\"set\":{\"mission\":{\"stage\":\"playing\",\"index\":4,\"mistakes\":[0],\"solved\":false,\"sound\":false}}}\n→ {\"state\":{\"gameTitle\":\"宇宙基地からの脱出\",\"subject\":\"中学1年・数学\",\"questions\":[{\"topic\":\"正負の数\",\"prompt\":\"冷却室の温度は −7 ℃。そこから 12 ℃ 上がると、\\n温度は何 ℃ になる？\",\"options\":[\"−19 ℃\",\"−5 ℃\",\"5 ℃\",\"19 ℃\"],\"answer\":2,\"hint\":\"まず、−7 ℃ から 0 ℃ まで何 ℃ 上がるか考えよう。\",\"explanation\":\"−7 + 12 = 5。0 ℃ まで 7 ℃、そこからさらに 5 ℃ 上がるよ。\"},{\"topic\":\"文字式\",\"prompt\":\"箱が x 個あり、どの箱にも電池が 3 本入っている。\\n箱の外に予備が 2 本あるとき、電池の合計は？\",\"options\":[\"3(x + 2) 本\",\"3x + 2 本\",\"…",
+   "at": "2026-11-26T12:41:11.826071"
+  },
+  {
+   "role": "tool",
+   "tool": "canvas_view",
+   "text": "{\"image\":true}\n→ {\"mode\":\"canvas\",\"canvas\":{\"width\":1280.0,\"height\":800.0,\"background\":\"#080D1B\"},\"elements\":[{\"id\":\"sky\",\"type\":\"svg\",\"x\":0,\"y\":0,\"w\":1280,\"h\":800,\"markup\":\"(svg, 1310 chars, omitted)\"},{\"id\":\"top-rule\",\"type\":\"shape\",\"shape\":\"rect\",\"x\":64,\"y\":88,\"w\":1152,\"h\":1,\"fill\":\"#273652\",\"z\":1},{\"id\":\"terminal-card\",\"type\":\"shape\",\"shape\":\"rect\",\"x\":64,\"y\":248,\"w\":752,\"h\":475,\"z\":1,\"radius\":23,\"fill\":\"#0E17…",
+   "at": "2026-11-26T12:41:13.557055"
+  },
+  {
+   "role": "tool",
+   "tool": "canvas_state",
+   "text": "{\"set\":{\"mission\":{\"stage\":\"playing\",\"index\":4,\"mistakes\":[0],\"solved\":true,\"sound\":false}}}\n→ {\"state\":{\"gameTitle\":\"宇宙基地からの脱出\",\"subject\":\"中学1年・数学\",\"questions\":[{\"topic\":\"正負の数\",\"prompt\":\"冷却室の温度は −7 ℃。そこから 12 ℃ 上がると、\\n温度は何 ℃ になる？\",\"options\":[\"−19 ℃\",\"−5 ℃\",\"5 ℃\",\"19 ℃\"],\"answer\":2,\"hint\":\"まず、−7 ℃ から 0 ℃ まで何 ℃ 上がるか考えよう。\",\"explanation\":\"−7 + 12 = 5。0 ℃ まで 7 ℃、そこからさらに 5 ℃ 上がるよ。\"},{\"topic\":\"文字式\",\"prompt\":\"箱が x 個あり、どの箱にも電池が 3 本入っている。\\n箱の外に予備が 2 本あるとき、電池の合計は？\",\"options\":[\"3(x + 2) 本\",\"3x + 2 本\",\"…",
+   "at": "2026-11-26T12:41:26.487142"
+  },
+  {
+   "role": "tool",
+   "tool": "canvas_view",
+   "text": "{\"image\":true}\n→ {\"mode\":\"canvas\",\"canvas\":{\"width\":1280.0,\"height\":800.0,\"background\":\"#080D1B\"},\"elements\":[{\"id\":\"sky\",\"type\":\"svg\",\"x\":0,\"y\":0,\"w\":1280,\"h\":800,\"markup\":\"(svg, 1310 chars, omitted)\"},{\"id\":\"top-rule\",\"type\":\"shape\",\"shape\":\"rect\",\"x\":64,\"y\":88,\"w\":1152,\"h\":1,\"fill\":\"#273652\",\"z\":1},{\"id\":\"terminal-card\",\"type\":\"shape\",\"shape\":\"rect\",\"x\":64,\"y\":248,\"w\":752,\"h\":475,\"z\":1,\"radius\":23,\"fill\":\"#0E17…",
+   "at": "2026-11-26T12:41:28.934764"
+  },
+  {
+   "role": "tool",
+   "tool": "canvas_update",
+   "text": "{\"id\":\"next\",\"props\":{\"x\":548,\"w\":226,\"h\":42}}\n→ ok",
+   "at": "2026-11-26T12:41:40.355021"
+  },
+  {
+   "role": "tool",
+   "tool": "canvas_state",
+   "text": "{\"set\":{\"mission\":{\"stage\":\"intro\",\"index\":0,\"mistakes\":[],\"solved\":false,\"sound\":true}}}\n→ {\"state\":{\"gameTitle\":\"宇宙基地からの脱出\",\"subject\":\"中学1年・数学\",\"questions\":[{\"topic\":\"正負の数\",\"prompt\":\"冷却室の温度は −7 ℃。そこから 12 ℃ 上がると、\\n温度は何 ℃ になる？\",\"options\":[\"−19 ℃\",\"−5 ℃\",\"5 ℃\",\"19 ℃\"],\"answer\":2,\"hint\":\"まず、−7 ℃ から 0 ℃ まで何 ℃ 上がるか考えよう。\",\"explanation\":\"−7 + 12 = 5。0 ℃ まで 7 ℃、そこからさらに 5 ℃ 上がるよ。\"},{\"topic\":\"文字式\",\"prompt\":\"箱が x 個あり、どの箱にも電池が 3 本入っている。\\n箱の外に予備が 2 本あるとき、電池の合計は？\",\"options\":[\"3(x + 2) 本\",\"3x + 2 本\",\"…",
+   "at": "2026-11-26T12:41:44.769947"
+  },
+  {
+   "role": "tool",
+   "tool": "canvas_remove",
+   "text": "{\"ids\":[\"lock-segment-0\",\"lock-segment-1\",\"lock-segment-2\",\"lock-segment-3\",\"lock-segment-4\"]}\n→ ok",
+   "at": "2026-11-26T12:41:47.243046"
+  },
+  {
+   "role": "tool",
+   "tool": "canvas_save",
+   "text": "{\"name\":\"space-station-escape\",\"description\":\"教科を差し替えられる選択式の宇宙基地脱出ゲーム。初期設定は中学1年の数学5問。正解でロックを解除し、不正解ではヒントを表示。BGM・効果音・音声切り替えつき。\",\"params\":{\"gameTitle\":{\"description\":\"開始画面に表示するゲーム名。\"},\"subject\":{\"description\":\"教科名や学年。例は「中学1年・理科」。\"},\"questions\":{\"description\":\"問題の配列。各問に prompt（問題文）、options（2〜4個の選択肢）、an…\n→ ok: saved \"space-station-escape\" (22238 bytes, 35 elements, 1 scripts, 0 timelines)",
+   "at": "2026-11-26T12:41:53.273563"
+  },
+  {
+   "role": "tool",
+   "tool": "canvas_load",
+   "text": "{\"name\":\"space-station-escape\",\"values\":{\"subject\":\"中学1年・理科\",\"questions\":[{\"topic\":\"物質のすがた\",\"prompt\":\"水を冷やして氷にすると、状態はどう変わる？\",\"options\":[\"液体から気体\",\"液体から固体\"],\"answer\":1,\"hint\":\"水は液体で、氷は固体だよ。\",\"explanation\":\"水が凍ると、液体から固体になる。\"}]}}\n→ ok: loaded \"space-station-escape\" in 15ms (36 elements)",
+   "at": "2026-11-26T12:41:56.928138"
+  },
+  {
+   "role": "tool",
+   "tool": "canvas_load",
+   "text": "{\"name\":\"space-station-escape\"}\n→ ok: loaded \"space-station-escape\" in 36ms (40 elements)",
+   "at": "2026-11-26T12:41:58.627027"
+  },
+  {
+   "role": "spirit",
+   "text": "「ミッションを開始」から、中学1年の数学5問で宇宙基地から脱出しよう。BGMと正解・不正解の効果音つきで、教科と問題を差し替えられるテンプレート `space-station-escape` に保存したよ。",
+   "at": "2026-11-26T12:42:08.527232"
+  }
+ ],
+ "canvas": [
+  {
+   "id": "sky",
+   "type": "svg",
+   "x": 0,
+   "y": 0,
+   "w": 1280,
+   "h": 800,
+   "markup": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1280 800'><defs><radialGradient id='sky' cx='86%' cy='12%' r='87%'><stop stop-color='#19264B'/><stop offset='.53' stop-color='#10172F'/><stop offset='1' stop-color='#080D1B'/></radialGradient><linearGradient id='orbit'><stop stop-color='#71C8FB' stop-opacity='0'/><stop offset='1' stop-color='#71C8FB' stop-opacity='.22'/></linearGradient></defs><path fill='url(#sky)' d='M0 0h1280v800H0z'/><g fill='none' stroke='url(#orbit)'><ellipse cx='1065' cy='-126' rx='476' ry='396'/><ellipse cx='1065' cy='-126' rx='431' ry='351'/><ellipse cx='1065' cy='-126' rx='373' ry='302'/></g><g fill='#9CD0FA' opacity='.48'><circle cx='29' cy='138' r='1'/><circle cx='93' cy='104' r='1'/><circle cx='464' cy='88' r='1.2'/><circle cx='638' cy='145' r='1'/><circle cx='718' cy='44' r='1.1'/><circle cx='751' cy='190' r='1'/><circle cx='898' cy='98' r='1.9'/><circle cx='1059' cy='209' r='1'/><circle cx='1227' cy='103' r='1.3'/><circle cx='1238' cy='187' r='1.5'/><circle cx='39' cy='578' r='1'/><circle cx='1245' cy='538' r='1'/><circle cx='1086' cy='757' r='1'/><circle cx='944' cy='775' r='1.2'/><circle cx='547' cy='754' r='1'/><circle cx='226' cy='778' r='1.4'/></g><path d='M1168 116v12m-6-6h12M786 103v8m-4-4h8' stroke='#9FDFFF' stroke-opacity='.48' fill='none'/></svg>"
+  },
+  {
+   "id": "top-rule",
+   "type": "shape",
+   "shape": "rect",
+   "x": 64,
+   "y": 88,
+   "w": 1152,
+   "h": 1,
+   "fill": "#273652",
+   "z": 1
+  },
+  {
+   "id": "terminal-card",
+   "type": "shape",
+   "shape": "rect",
+   "x": 64,
+   "y": 248,
+   "w": 752,
+   "h": 475,
+   "z": 1,
+   "radius": 23,
+   "fill": "#0E172B",
+   "stroke": "#304363",
+   "stroke_width": 1
+  },
+  {
+   "id": "hatch-card",
+   "type": "shape",
+   "shape": "rect",
+   "x": 840,
+   "y": 248,
+   "w": 376,
+   "h": 475,
+   "z": 1,
+   "radius": 23,
+   "fill": "#101A31",
+   "stroke": "#304363",
+   "stroke_width": 1
+  },
+  {
+   "id": "prompt",
+   "type": "text",
+   "x": 96,
+   "y": 342,
+   "w": 686,
+   "h": 78,
+   "z": 2,
+   "size": 25,
+   "weight": "bold",
+   "color": "#F0F6FF",
+   "visible": false,
+   "text": ""
+  },
+  {
+   "id": "title",
+   "type": "text",
+   "x": 62,
+   "y": 108,
+   "w": 1050,
+   "h": 76,
+   "z": 2,
+   "text": "{{gameTitle}}",
+   "size": 53,
+   "weight": "bold",
+   "color": "#F2F7FF"
+  },
+  {
+   "id": "subject-accent",
+   "type": "shape",
+   "shape": "rect",
+   "x": 64,
+   "y": 200,
+   "w": 18,
+   "h": 2,
+   "z": 2,
+   "fill": "#6BE8FA",
+   "radius": 1
+  },
+  {
+   "id": "subject",
+   "type": "text",
+   "x": 92,
+   "y": 187,
+   "w": 650,
+   "h": 29,
+   "z": 2,
+   "text": "{{subject}}",
+   "size": 18,
+   "weight": "bold",
+   "color": "#A5D5ED"
+  },
+  {
+   "id": "brand-icon",
+   "type": "svg",
+   "x": 64,
+   "y": 41,
+   "w": 30,
+   "h": 30,
+   "z": 2,
+   "markup": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><rect x='.5' y='.5' width='29' height='29' rx='8' fill='#112840' stroke='#2D6281'/><circle cx='15' cy='15' r='5' fill='#8CEEFF' fill-opacity='.2' stroke='#8CEEFF'/><ellipse cx='15' cy='15' rx='10' ry='3.5' transform='rotate(-32 15 15)' fill='none' stroke='#8CEEFF'/><circle cx='22' cy='10' r='1.65' fill='#8CEEFF'/></svg>"
+  },
+  {
+   "id": "brand",
+   "type": "text",
+   "x": 105,
+   "y": 42,
+   "w": 380,
+   "h": 28,
+   "z": 2,
+   "text": "軌道基地 オルビス",
+   "size": 17,
+   "weight": "bold",
+   "color": "#B8D6F0"
+  },
+  {
+   "id": "terminal-mark",
+   "type": "shape",
+   "shape": "rect",
+   "x": 96,
+   "y": 285,
+   "w": 24,
+   "h": 3,
+   "z": 2,
+   "fill": "#6DE5F5",
+   "radius": 1
+  },
+  {
+   "id": "terminal-label",
+   "type": "text",
+   "x": 96,
+   "y": 300,
+   "w": 672,
+   "h": 32,
+   "z": 2,
+   "text": "脱出手順",
+   "size": 18,
+   "weight": "bold",
+   "color": "#8BE8F4"
+  },
+  {
+   "id": "intro-body",
+   "type": "text",
+   "x": 97,
+   "y": 444,
+   "w": 679,
+   "h": 75,
+   "z": 2,
+   "text": "正解するたびに、ハッチのロックが1つ開く。\nまちがえても、何度でも挑戦できる。",
+   "size": 23,
+   "color": "#B2C4DF",
+   "visible": true
+  },
+  {
+   "id": "intro-title",
+   "type": "text",
+   "x": 96,
+   "y": 355,
+   "w": 680,
+   "h": 64,
+   "z": 2,
+   "text": "5つのロックを解除",
+   "size": 40,
+   "weight": "bold",
+   "color": "#F0F6FF",
+   "visible": true
+  },
+  {
+   "id": "hatch-art",
+   "type": "svg",
+   "x": 858,
+   "y": 324,
+   "w": 340,
+   "h": 279,
+   "z": 2,
+   "markup": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 340 279'><defs><radialGradient id='field'><stop stop-color='#243E62'/><stop offset='1' stop-color='#101A31' stop-opacity='0'/></radialGradient><linearGradient id='metal' x2='1' y2='1'><stop stop-color='#2D4C71'/><stop offset='.55' stop-color='#101…(2269 chars)"
+  },
+  {
+   "id": "feedback-panel",
+   "type": "shape",
+   "shape": "rect",
+   "x": 96,
+   "y": 576,
+   "w": 678,
+   "h": 76,
+   "z": 2,
+   "radius": 10,
+   "fill": "#332439",
+   "visible": false
+  },
+  {
+   "id": "progress",
+   "type": "text",
+   "x": 1068,
+   "y": 623,
+   "w": 120,
+   "h": 37,
+   "z": 2,
+   "text": "0 / 5",
+   "size": 23,
+   "weight": "bold",
+   "align": "right",
+   "color": "#E5F3FF"
+  },
+  {
+   "id": "hatch-title",
+   "type": "text",
+   "x": 867,
+   "y": 274,
+   "w": 160,
+   "h": 31,
+   "z": 2,
+   "text": "脱出ハッチ",
+   "size": 19,
+   "weight": "bold",
+   "color": "#E0EBFB"
+  },
+  {
+   "id": "hatch-status-bg",
+   "type": "shape",
+   "shape": "rect",
+   "x": 1084,
+   "y": 276,
+   "w": 104,
+   "h": 28,
+   "z": 2,
+   "fill": "#422D41",
+   "radius": 14
+  },
+  {
+   "id": "hatch-divider",
+   "type": "shape",
+   "shape": "rect",
+   "x": 867,
+   "y": 318,
+   "w": 322,
+   "h": 1,
+   "z": 2,
+   "fill": "#2B3F5D"
+  },
+  {
+   "id": "progress-divider",
+   "type": "shape",
+   "shape": "rect",
+   "x": 867,
+   "y": 606,
+   "w": 322,
+   "h": 1,
+   "z": 2,
+   "fill": "#2B3F5D"
+  },
+  {
+   "id": "progress-label",
+   "type": "text",
+   "x": 867,
+   "y": 627,
+   "w": 209,
+   "h": 29,
+   "z": 2,
+   "text": "解除したロック",
+   "size": 16,
+   "weight": "bold",
+   "color": "#A9BFE0"
+  },
+  {
+   "id": "lock-segment-4",
+   "type": "shape",
+   "shape": "rect",
+   "x": 1129.4,
+   "y": 675,
+   "w": 58.6,
+   "h": 8,
+   "z": 2,
+   "fill": "#293D5A",
+   "radius": 4
+  },
+  {
+   "id": "lock-segment-2",
+   "type": "shape",
+   "shape": "rect",
+   "x": 998.2,
+   "y": 675,
+   "w": 58.6,
+   "h": 8,
+   "z": 2,
+   "fill": "#293D5A",
+   "radius": 4
+  },
+  {
+   "id": "lock-segment-1",
+   "type": "shape",
+   "shape": "rect",
+   "x": 932.6,
+   "y": 675,
+   "w": 58.6,
+   "h": 8,
+   "z": 2,
+   "fill": "#293D5A",
+   "radius": 4
+  },
+  {
+   "id": "lock-segment-3",
+   "type": "shape",
+   "shape": "rect",
+   "x": 1063.8,
+   "y": 675,
+   "w": 58.6,
+   "h": 8,
+   "z": 2,
+   "fill": "#293D5A",
+   "radius": 4
+  },
+  {
+   "id": "lock-segment-0",
+   "type": "shape",
+   "shape": "rect",
+   "x": 867,
+   "y": 675,
+   "w": 58.6,
+   "h": 8,
+   "z": 2,
+   "fill": "#293D5A",
+   "radius": 4
+  },
+  {
+   "id": "feedback-title",
+   "type": "text",
+   "x": 111,
+   "y": 581,
+   "w": 649,
+   "h": 28,
+   "z": 3,
+   "size": 17,
+   "weight": "bold",
+   "color": "#FFB3C5",
+   "visible": false,
+   "text": "不正解　·　ヒント"
+  },
+  {
+   "id": "next",
+   "type": "button",
+   "x": 548,
+   "y": 665,
+   "w": 226,
+   "h": 42,
+   "z": 3,
+   "size": 17,
+   "radius": 9,
+   "color": "#83EBF7",
+   "text_color": "#0A2235",
+   "visible": false,
+   "notify": "none",
+   "label": "次のロックへ →"
+  },
+  {
+   "id": "replay",
+   "type": "button",
+   "x": 96,
+   "y": 599,
+   "w": 231,
+   "h": 58,
+   "z": 3,
+   "label": "もう一度プレイ",
+   "size": 21,
+   "radius": 12,
+   "color": "#83EBF7",
+   "text_color": "#0A2235",
+   "visible": false,
+   "notify": "none"
+  },
+  {
+   "id": "hatch-status",
+   "type": "text",
+   "x": 1084,
+   "y": 276,
+   "w": 104,
+   "h": 28,
+   "z": 3,
+   "text": "ロック中",
+   "size": 13,
+   "weight": "bold",
+   "align": "center",
+   "color": "#FFB9B9"
+  },
+  {
+   "id": "feedback-detail",
+   "type": "text",
+   "x": 111,
+   "y": 608,
+   "w": 649,
+   "h": 34,
+   "z": 3,
+   "size": 17,
+   "color": "#D5E0F2",
+   "visible": false,
+   "text": "まず、−7 ℃ から 0 ℃ まで何 ℃ 上がるか考えよう。"
+  },
+  {
+   "id": "hatch-lock",
+   "type": "svg",
+   "x": 994,
+   "y": 430,
+   "w": 68,
+   "h": 68,
+   "z": 3,
+   "markup": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 68 68'><circle cx='34' cy='34' r='32' fill='#193451' stroke='#3F6C92'/><rect x='22' y='31' width='24' height='19' rx='4' fill='#254664' stroke='#A3DBF0' stroke-width='2'/><path d='M26 31v-6a8 8 0 0 1 16 0v6m-8 8v4' fill='none' stroke='#A3DBF0' stroke-width='2.4' stroke-linecap='round'/></svg>",
+   "visible": true
+  },
+  {
+   "id": "hatch-open",
+   "type": "svg",
+   "x": 994,
+   "y": 430,
+   "w": 68,
+   "h": 68,
+   "z": 3,
+   "visible": false,
+   "markup": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 68 68'><circle cx='34' cy='34' r='32' fill='#154540' stroke='#519F9A'/><rect x='22' y='31' width='24' height='19' rx='4' fill='#21584E' stroke='#9AF2D2' stroke-width='2'/><path d='M26 31v-6a8 8 0 0 1 15-4m-7 18v4' fill='none' stroke='#9AF2D2' stroke-width='2.4' stroke-linecap='round'/></svg>"
+  },
+  {
+   "id": "answer-1",
+   "type": "button",
+   "x": 447,
+   "y": 435,
+   "w": 327,
+   "h": 53,
+   "z": 3,
+   "size": 20,
+   "radius": 10,
+   "color": "#1C2B49",
+   "text_color": "#E7F0FF",
+   "visible": false,
+   "notify": "none",
+   "disabled": false,
+   "label": "B　−5 ℃"
+  },
+  {
+   "id": "answer-3",
+   "type": "button",
+   "x": 447,
+   "y": 501,
+   "w": 327,
+   "h": 53,
+   "z": 3,
+   "size": 20,
+   "radius": 10,
+   "color": "#1C2B49",
+   "text_color": "#E7F0FF",
+   "visible": false,
+   "notify": "none",
+   "disabled": false,
+   "label": "D　19 ℃"
+  },
+  {
+   "id": "answer-0",
+   "type": "button",
+   "x": 96,
+   "y": 435,
+   "w": 327,
+   "h": 53,
+   "z": 3,
+   "size": 20,
+   "radius": 10,
+   "color": "#1C2B49",
+   "text_color": "#E7F0FF",
+   "visible": false,
+   "notify": "none",
+   "disabled": false,
+   "label": "A　−19 ℃"
+  },
+  {
+   "id": "begin",
+   "type": "button",
+   "x": 96,
+   "y": 599,
+   "w": 278,
+   "h": 58,
+   "z": 3,
+   "label": "ミッションを開始  →",
+   "size": 21,
+   "radius": 12,
+   "color": "#83EBF7",
+   "text_color": "#0A2235",
+   "notify": "none",
+   "visible": true
+  },
+  {
+   "id": "sound",
+   "type": "button",
+   "x": 1086,
+   "y": 36,
+   "w": 130,
+   "h": 40,
+   "z": 3,
+   "label": "音声 ON",
+   "size": 16,
+   "radius": 9,
+   "color": "#192A46",
+   "text_color": "#D3E8FA",
+   "notify": "none"
+  },
+  {
+   "id": "answer-2",
+   "type": "button",
+   "x": 96,
+   "y": 501,
+   "w": 327,
+   "h": 53,
+   "z": 3,
+   "size": 20,
+   "radius": 10,
+   "color": "#1C2B49",
+   "text_color": "#E7F0FF",
+   "visible": false,
+   "notify": "none",
+   "disabled": false,
+   "label": "C　5 ℃"
+  }
+ ],
+ "snapshot": "work/logs/c1-build.png"
+}

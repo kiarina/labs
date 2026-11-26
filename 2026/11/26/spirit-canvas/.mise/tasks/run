@@ -6,7 +6,9 @@ lab="$(pwd)"
 app="$lab/app/build/macos/Build/Products/Debug/spirit_canvas.app/Contents/MacOS/spirit_canvas"
 [ -x "$app" ] || mise run build
 mkdir -p "$lab/work/logs"
-MEDIA_DIR="$(cd ../../../../tests/assets && pwd)" \
+MEDIA_DIR="$(cd ../../../../tests/assets && pwd):$lab/work/assets/media" \
+SCENES_DIR="$lab/scenes" \
+SAVED_SCENES_DIR="$lab/work/scenes" \
 VRM_PATH="${VRM_PATH:-$lab/work/assets/Seed-san.vrm}" \
 VRMA_PATH="${VRMA_PATH:-$lab/work/assets/test.vrma}" \
 LOG_DIR="$lab/work/logs" \
