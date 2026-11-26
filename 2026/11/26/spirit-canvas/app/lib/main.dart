@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import 'canvas/behaviors.dart';
 import 'canvas/canvas_model.dart';
 import 'canvas/canvas_view.dart';
 import 'control_server.dart';
@@ -45,6 +46,10 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   final canvas = CanvasController();
+  late final behaviors = CanvasBehaviors(
+    canvas,
+    wake: (lines) => _send(lines, role: 'event'),
+  );
   final canvasKey = GlobalKey();
   final _input = TextEditingController();
   final _scroll = ScrollController();
@@ -92,6 +97,7 @@ class HomePageState extends State<HomePage> {
   @override
   void dispose() {
     _control?.close();
+    behaviors.dispose();
     spirit.dispose();
     super.dispose();
   }
@@ -104,14 +110,31 @@ class HomePageState extends State<HomePage> {
     });
   }
 
-  String _tagged(String text) => '<ui mode="$mode"/>\n$text';
+  /// Sends lines to the spirit with the mode tag and the notices that waited
+  /// for the next message.
+  Future<void> _send(List<String> lines, {required String role}) {
+    final text = [
+      '<ui mode="$mode"/>',
+      ...behaviors.takeNotices(),
+      ...lines,
+    ].join('\n');
+    return spirit.send(text, role: role, mode: mode);
+  }
 
   Future<void> sendUser(String text) async {
     if (text.trim().isEmpty) return;
-    await spirit.send(_tagged(text), role: 'user', mode: mode);
+    await _send([text], role: 'user');
   }
 
   void _onCanvasEvent(CanvasEvent e) {
+    // The element's own actions and the scripts' handlers run here, at once.
+    switch (behaviors.handleEvent(e)) {
+      case 'none':
+        return;
+      case 'later':
+        behaviors.notice(_eventLine(e, handled: true));
+        return;
+    }
     _pendingEvents.add(e);
     // Events that come together (a choice, then a submit) go as one message.
     _eventTimer?.cancel();
@@ -120,14 +143,15 @@ class HomePageState extends State<HomePage> {
 
   void _flushEvents() {
     if (_pendingEvents.isEmpty) return;
-    final lines = [
-      for (final e in _pendingEvents)
-        '<canvas_event event="${e.kind}" id="${_attr(e.id)}"'
-            '${e.value != null ? ' value="${_attr(e.value is String ? e.value as String : jsonEncode(e.value))}"' : ''}/>',
-    ];
+    final lines = [for (final e in _pendingEvents) _eventLine(e)];
     _pendingEvents.clear();
-    spirit.send(_tagged(lines.join('\n')), role: 'event', mode: mode);
+    _send(lines, role: 'event');
   }
+
+  String _eventLine(CanvasEvent e, {bool handled = false}) =>
+      '<canvas_event event="${e.kind}" id="${_attr(e.id)}"'
+      '${e.value != null ? ' value="${_attr(e.value is String ? e.value as String : jsonEncode(e.value))}"' : ''}'
+      '${handled ? ' handled="on the canvas" at="${e.at.toIso8601String().substring(11, 19)}"' : ''}/>';
 
   String _attr(String s) => s
       .replaceAll('&', '&amp;')
@@ -149,6 +173,7 @@ class HomePageState extends State<HomePage> {
             'background': canvas.background,
           },
           'elements': elements,
+          ...behaviors.describe(),
         });
         final images = <String>[];
         if (a['image'] as bool? ?? true) {
@@ -199,8 +224,53 @@ class HomePageState extends State<HomePage> {
           missing.isEmpty ? 'ok' : 'not found: ${missing.join(', ')}',
         );
       case 'canvas_clear':
+        behaviors.reset();
+        canvas.state.clear();
         canvas.clear(background: a['background'] as String?);
         return ToolOutcome('ok');
+      case 'canvas_state':
+        final set = (a['set'] as Map? ?? const {}).cast<String, dynamic>();
+        for (final k in (a['delete'] as List? ?? const [])) {
+          canvas.state.remove('$k');
+        }
+        canvas.setState(set);
+        behaviors.stateChangedBySpirit();
+        return ToolOutcome(jsonEncode({'state': canvas.state}));
+      case 'canvas_timeline':
+        final err = behaviors.defineTimeline(
+          a['id'] as String,
+          [
+            for (final st in (a['steps'] as List? ?? const []))
+              if (st is Map) st.cast<String, dynamic>(),
+          ],
+          repeat: (a['repeat'] as num?)?.toInt() ?? 1,
+          cycleMs: (a['cycle_ms'] as num?)?.toDouble(),
+          start: a['start'] as bool? ?? true,
+        );
+        return ToolOutcome(err ?? 'ok', ok: err == null);
+      case 'canvas_timeline_stop':
+        return ToolOutcome(
+          behaviors.stopTimeline(a['id'] as String)
+              ? 'ok'
+              : 'no timeline "${a['id']}"',
+        );
+      case 'canvas_script':
+        final err = behaviors.loadScript(
+          a['id'] as String,
+          a['code'] as String,
+        );
+        // Let the script's first changes draw before the spirit looks.
+        await WidgetsBinding.instance.endOfFrame;
+        return ToolOutcome(
+          err == null ? 'ok: running' : 'failed: $err',
+          ok: err == null,
+        );
+      case 'canvas_script_stop':
+        return ToolOutcome(
+          behaviors.stopScript(a['id'] as String)
+              ? 'ok'
+              : 'no script "${a['id']}"',
+        );
       case 'canvas_media':
         return ToolOutcome(jsonEncode(MediaLibrary.instance.list()));
     }

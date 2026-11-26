@@ -1,0 +1,182 @@
+{
+ "name": "b2-timer-wake",
+ "entries": [
+  {
+   "role": "event",
+   "text": "<ui mode=\"canvas\"/>\n<canvas_notice from=\"script:focus-timer\">集中タイムの1分が終了しました。ユーザーに終了を伝えてください。</canvas_notice>",
+   "at": "2026-11-26T12:16:47.531874"
+  },
+  {
+   "role": "spirit",
+   "text": "1分経ったよ。集中タイム終了、おつかれさま！",
+   "at": "2026-11-26T12:16:49.633296"
+  }
+ ],
+ "timing": {
+  "started": "2026-11-26T12:16:47.531909",
+  "tools": [],
+  "usage": {
+   "total": {
+    "totalTokens": 286889,
+    "inputTokens": 280774,
+    "cachedInputTokens": 239232,
+    "cacheWriteInputTokens": 0,
+    "outputTokens": 6115,
+    "reasoningOutputTokens": 1868
+   },
+   "last": {
+    "totalTokens": 23465,
+    "inputTokens": 23444,
+    "cachedInputTokens": 23040,
+    "cacheWriteInputTokens": 0,
+    "outputTokens": 21,
+    "reasoningOutputTokens": 0
+   },
+   "modelContextWindow": 828400
+  },
+  "ended": "2026-11-26T12:16:49.985431",
+  "status": "completed"
+ },
+ "canvas": [
+  {
+   "id": "focus-title",
+   "type": "text",
+   "x": 86,
+   "y": 61,
+   "w": 620,
+   "h": 69,
+   "text": "集中タイム",
+   "size": 48,
+   "weight": "bold",
+   "color": "#F3F6FA"
+  },
+  {
+   "id": "clock-card",
+   "type": "shape",
+   "shape": "rect",
+   "x": 910,
+   "y": 54,
+   "w": 284,
+   "h": 92,
+   "fill": "#162433",
+   "stroke": "#2D4052",
+   "stroke_width": 1,
+   "radius": 18
+  },
+  {
+   "id": "clock-label",
+   "type": "text",
+   "x": 933,
+   "y": 64,
+   "w": 236,
+   "h": 29,
+   "text": "今の時刻",
+   "size": 17,
+   "color": "#B6C6D6"
+  },
+  {
+   "id": "wall-clock",
+   "type": "text",
+   "x": 933,
+   "y": 88,
+   "w": 235,
+   "h": 48,
+   "text": "12:16:50",
+   "size": 32,
+   "weight": "bold",
+   "color": "#F3F6FA"
+  },
+  {
+   "id": "focus-card",
+   "type": "shape",
+   "shape": "rect",
+   "x": 246,
+   "y": 175,
+   "w": 788,
+   "h": 552,
+   "fill": "#162433",
+   "stroke": "#2D4052",
+   "stroke_width": 1,
+   "radius": 32
+  },
+  {
+   "id": "timer-label",
+   "type": "text",
+   "x": 350,
+   "y": 229,
+   "w": 580,
+   "h": 39,
+   "text": "残り時間",
+   "align": "center",
+   "size": 23,
+   "weight": "bold",
+   "color": "#B6C6D6"
+  },
+  {
+   "id": "timer-display",
+   "type": "text",
+   "x": 317,
+   "y": 271,
+   "w": 646,
+   "h": 177,
+   "text": "00:00",
+   "align": "center",
+   "size": 140,
+   "weight": "bold",
+   "color": "#F4CD79"
+  },
+  {
+   "id": "track",
+   "type": "shape",
+   "shape": "rect",
+   "x": 380,
+   "y": 479,
+   "w": 520,
+   "h": 9,
+   "fill": "#334659",
+   "radius": 5
+  },
+  {
+   "id": "track-fill",
+   "type": "shape",
+   "shape": "rect",
+   "x": 380,
+   "y": 479,
+   "w": 1,
+   "h": 9,
+   "fill": "#F4CD79",
+   "radius": 5,
+   "visible": false
+  },
+  {
+   "id": "focus-start",
+   "type": "button",
+   "x": 474,
+   "y": 551,
+   "w": 332,
+   "h": 72,
+   "label": "スタート",
+   "size": 29,
+   "color": "#F4CD79",
+   "text_color": "#202322",
+   "radius": 18,
+   "notify": "none",
+   "visible": false
+  },
+  {
+   "id": "focus-status",
+   "type": "text",
+   "x": 346,
+   "y": 551,
+   "w": 588,
+   "h": 72,
+   "text": "1分経ったよ。おつかれさま！",
+   "size": 31,
+   "weight": "bold",
+   "color": "#F4CD79",
+   "align": "center",
+   "visible": true
+  }
+ ],
+ "snapshot": "work/logs/b2-timer-wake.png"
+}

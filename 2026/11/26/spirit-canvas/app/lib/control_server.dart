@@ -42,6 +42,8 @@ class ControlServer {
                   },
               ],
               'canvas': app.canvas.describe(),
+              'behaviors': app.behaviors.describe(),
+              'notices': [for (final n in app.behaviors.notices) n.line],
             };
           case '/send':
             final text = await utf8.decodeStream(req);
@@ -65,6 +67,14 @@ class ControlServer {
               await app.runTool(call.$1, call.$2);
             }
             out = {'ok': true};
+          case '/tool':
+            // Runs one canvas tool as the spirit would (no model).
+            final args = jsonDecode(await utf8.decodeStream(req));
+            final r = await app.runTool(
+              q['name'] ?? '',
+              (args as Map).cast<String, dynamic>(),
+            );
+            out = {'ok': r.ok, 'text': r.text, 'images': r.images.length};
           case '/clear':
             app.canvas.clear();
             out = {'ok': true};

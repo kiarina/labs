@@ -185,6 +185,25 @@ class CanvasController extends ChangeNotifier {
   /// The stage's color (`#RRGGBB`); null for the default dark one.
   String? background;
 
+  /// Shared values that texts show (`{{name}}`), set by the spirit
+  /// (`canvas_state`), actions (`set`, `add`) and scripts (`sg.set`).
+  final state = <String, dynamic>{};
+
+  void setState(Map<String, dynamic> values) {
+    state.addAll(values);
+    notifyListeners();
+  }
+
+  static final _template = RegExp(r'\{\{\s*([\w.]+)\s*\}\}');
+
+  /// [text] with `{{name}}` replaced by the state's values.
+  String render(String text) => text.replaceAllMapped(_template, (m) {
+    final v = state[m[1]];
+    if (v == null) return '';
+    if (v is double && v == v.roundToDouble()) return v.toInt().toString();
+    return '$v';
+  });
+
   /// The clock animations run on (the view's ticker).
   final _clock = Stopwatch()..start();
   Duration get now => _clock.elapsed;

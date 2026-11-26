@@ -118,12 +118,120 @@ final List<Map<String, dynamic>> kCanvasTools = [
   {
     'name': 'canvas_clear',
     'description':
-        'Remove everything, optionally setting the background color.',
+        'Remove everything (elements, state, timelines, scripts), optionally '
+        'setting the background color.',
     'inputSchema': {
       'type': 'object',
       'properties': {
         'background': {'type': 'string', 'description': '#RRGGBB'},
       },
+      'additionalProperties': false,
+    },
+  },
+  {
+    'name': 'canvas_state',
+    'description':
+        'Set (or delete) shared state values. Texts with {{name}} show them '
+        'at once, and scripts see them (sg.state, sg.on("state", fn)). Use it '
+        'to change a part of a running screen without rebuilding it.',
+    'inputSchema': {
+      'type': 'object',
+      'properties': {
+        'set': {'type': 'object', 'additionalProperties': true},
+        'delete': {
+          'type': 'array',
+          'items': {'type': 'string'},
+        },
+      },
+      'additionalProperties': false,
+    },
+  },
+  {
+    'name': 'canvas_timeline',
+    'description':
+        'Run actions at times, by the app alone: steps at at_ms from the '
+        'start, cycle repeated `repeat` times (-1 forever). A cycle lasts '
+        'until its last step or cycle_ms if longer. Same id replaces.',
+    'inputSchema': {
+      'type': 'object',
+      'properties': {
+        'id': {'type': 'string'},
+        'steps': {
+          'type': 'array',
+          'items': {
+            'type': 'object',
+            'properties': {
+              'at_ms': {'type': 'number'},
+              'actions': _actionsSchema,
+            },
+            'required': ['at_ms', 'actions'],
+            'additionalProperties': false,
+          },
+        },
+        'repeat': {'type': 'integer'},
+        'cycle_ms': {'type': 'number'},
+        'start': {
+          'type': 'boolean',
+          'description':
+              'Start now (default true); else start it from an '
+              'action {do: "timeline", id}.',
+        },
+      },
+      'required': ['id', 'steps'],
+      'additionalProperties': false,
+    },
+  },
+  {
+    'name': 'canvas_timeline_stop',
+    'description': 'Stop a timeline.',
+    'inputSchema': {
+      'type': 'object',
+      'properties': {
+        'id': {'type': 'string'},
+      },
+      'required': ['id'],
+      'additionalProperties': false,
+    },
+  },
+  {
+    'name': 'canvas_script',
+    'description':
+        'Run a JavaScript program on the canvas, by the app alone, for '
+        'behavior that needs logic or keeps going: clocks, counters, '
+        'games, quizzes that check answers, things that change over time. '
+        'The code is the body of a function given `sg`; no network, files '
+        'or DOM. Same id replaces the old one. The API:\n'
+        'sg.every(ms, fn) / sg.after(ms, fn) -> handle; sg.cancel(handle); '
+        'sg.now() (ms)\n'
+        'sg.on(kind, elementId or "*", fn(event)) for press|choose|submit|'
+        'tap|ended (event: {event, id, value}); sg.on("state", fn(state))\n'
+        'sg.state, sg.get(key), sg.set(key, value) or sg.set({...})\n'
+        'sg.update(id, props, transitionMs?), sg.put(elements), '
+        'sg.remove(ids), sg.animate(id, {keyframes, duration_ms, repeat, '
+        'alternate, easing}), sg.action(action), sg.element(id)\n'
+        'sg.notify(text, {wake: bool}): a note for you (wake: true wakes you; '
+        'at most every 5 s, so wake only when you must act)\n'
+        'sg.log(...); sg.width, sg.height\n'
+        'Errors in handlers come back to you as notices.',
+    'inputSchema': {
+      'type': 'object',
+      'properties': {
+        'id': {'type': 'string'},
+        'code': {'type': 'string'},
+      },
+      'required': ['id', 'code'],
+      'additionalProperties': false,
+    },
+  },
+  {
+    'name': 'canvas_script_stop',
+    'description': 'Stop a script (its timers and handlers).',
+    'inputSchema': {
+      'type': 'object',
+      'properties': {
+        'id': {'type': 'string'},
+      },
+      'required': ['id'],
       'additionalProperties': false,
     },
   },
@@ -139,6 +247,21 @@ final List<Map<String, dynamic>> kCanvasTools = [
     },
   },
 ];
+
+/// Actions the app runs by itself (`on`, timelines, `sg.action`).
+const _actionsSchema = {
+  'type': 'array',
+  'description':
+      'Each action is an object with `do`: '
+      'update {id, props, transition_ms?, easing?} | '
+      'animate {id, keyframes, duration_ms, repeat?, alternate?, easing?} | '
+      'put {elements} | remove {ids} | '
+      'set {key, value} | add {key, by} (state) | '
+      'timeline {id} (start) | stop_timeline {id} | '
+      'notify {text, wake?} (a note for you; wake true wakes you, at most '
+      'every 5 s).',
+  'items': {'type': 'object', 'additionalProperties': true},
+};
 
 const _easing = {
   'type': 'string',
@@ -176,7 +299,16 @@ final Map<String, dynamic> _elementSchema = {
       'comes with the value (a list when multiple).\n'
       'input: placeholder, multiline, submit_label, value, size. A `submit` '
       'event comes with the text.\n'
-      'Colors are #RRGGBB or #RRGGBBAA.',
+      'Colors are #RRGGBB or #RRGGBBAA. In text, button labels and the '
+      'choices label, {{name}} shows the state value `name` and follows it.\n'
+      'on: what the app does by itself, at once, when the user acts on this '
+      'element: {"press": [actions], "submit": [...], "tap": [...], '
+      '"ended": [...], "choose": [...] or {"<value>": [...], "*": [...]}}. '
+      r'"$value" in an action is the event value. '
+      'notify: how you hear of the user\'s action: "now" (you are woken, the '
+      'default when nothing on the canvas handles it), "later" (delivered '
+      'with the next message; the default when `on` or a script handles it) '
+      'or "none".',
   'properties': {
     'id': {'type': 'string'},
     'type': {'type': 'string', 'enum': kElementTypes},
@@ -198,7 +330,14 @@ The app has two modes, and every user message starts with a <ui mode="..."/> tag
 
 In canvas mode, use the canvas to show, not just tell: lay out text, pictures, your 3D body (vrm), videos, sounds, simple drawings (svg), and interactive parts (buttons, choices, inputs) when they help. Build a whole screen in one canvas_put call when you can. Things you put keep moving on their own (animations, poses, video), so do not call tools per frame. Check what you made with canvas_view when the layout matters, and fix overlaps or text that does not fit.
 
-What the user does on the canvas comes back to you as a message with <canvas_event .../> tags (press, choose, submit, tap, ended). Answer them like any other message: change the canvas and/or reply.
+Make the canvas respond by itself where you can. Every round trip through you takes seconds, so anything you can decide in advance should run on the canvas:
+- `on` on an element: what happens at once when it is pressed, chosen, submitted, tapped or ends (show the next picture, reveal an answer, count up a score).
+- canvas_timeline: what happens at given times (a slideshow, a story told step by step).
+- canvas_script: anything with logic or that keeps going (a clock, a countdown, a game, a quiz that checks answers).
+- canvas_state with {{name}} in texts: change a part of a running screen without rebuilding it.
+Keep yourself for what needs you: understanding the user, deciding what comes next, making new things.
+
+What the user does on the canvas comes back to you as <canvas_event .../> tags (press, choose, submit, tap, ended). If nothing on the canvas handles it, it wakes you now. If `on` or a script handled it, it is delivered later, with the next message, marked handled. Notes from scripts and timelines come as <canvas_notice> tags. Answer like any other message: change the canvas and/or reply; for an event that was already handled, you need not say anything unless it is worth it.
 
 In chat mode the canvas is hidden; use it only if the user asks for something visual (it will be there when they switch).
 

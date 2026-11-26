@@ -200,7 +200,7 @@ class _ElementBody extends StatelessWidget {
             _ => Alignment.centerLeft,
           },
           child: Text(
-            e.str('text') ?? '',
+            controller.render(e.str('text') ?? ''),
             textAlign: switch (e.str('align')) {
               'center' => TextAlign.center,
               'right' => TextAlign.right,
@@ -315,7 +315,7 @@ class _ButtonElement extends StatelessWidget {
       onPressed: e.flag('disabled', false)
           ? null
           : () => controller.emit(CanvasEvent('press', e.id)),
-      child: Text(e.str('label') ?? e.id),
+      child: Text(controller.render(e.str('label') ?? e.id)),
     );
   }
 }
