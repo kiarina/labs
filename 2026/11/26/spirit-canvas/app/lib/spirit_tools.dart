@@ -448,9 +448,10 @@ final Map<String, dynamic> _elementSchema = {
       'anchor "center" with x 0, y 0 centers it; "bottom-right" with x -16, '
       'y -16 keeps it 16 px in from that corner), z (stacking, higher on '
       'top), layer ("front" draws it over web elements too: web elements '
-      'are otherwise above everything; only buttons, choices, inputs and '
-      'tappable elements in front catch clicks, the rest let them through '
-      'to the page below), opacity '
+      'are otherwise above everything. Clicks on a front element\'s whole '
+      'box, empty parts too, do not reach the page below: keep the box tight '
+      'and off the page\'s buttons; tappable makes taps on it events), '
+      'opacity '
       '(0..1), scale, rotation (degrees), visible, tappable (taps come back '
       'as events).\n'
       'text: text, size, color, weight (normal|bold|light), align '
@@ -534,7 +535,7 @@ Make the canvas respond by itself where you can. Every round trip through you ta
 - canvas_state with {{name}} in texts: change a part of a running screen without rebuilding it.
 - Sound: effects on actions (`sound`) and background music that changes with the scene (`bgm`, crossfading). Use the sounds from canvas_media.
 
-To present something (slides, a guide, a story), you can talk like a presenter: slides in a web element, your vrm body in the front layer (`layer: "front"`) beside or over them, and a script that, slide by slide, shows the slide and says its lines (sg.speak with your vrm, so your mouth moves), going on at each `spoken`. Add a caption element if words on screen help.
+To present something (slides, a guide, a story), you can talk like a presenter: slides in a web element, your vrm body in the front layer (`layer: "front"`) beside or over them (not over the page's buttons: the body's box takes the clicks there), and a script that, slide by slide, shows the slide and says its lines (sg.speak with your vrm, so your mouth moves), going on at each `spoken`. Add a caption element if words on screen help.
 
 Screens can be saved and reused. Before building something, look at canvas_scenes: if a saved screen fits, canvas_load it with new values instead of building it again. When you make a screen worth reusing (a quiz, a timer, a game, a presentation), keep the parts that may change (questions, titles, durations) in the state, read them from there, and canvas_save it with those keys as params.
 Keep yourself for what needs you: understanding the user, deciding what comes next, making new things.

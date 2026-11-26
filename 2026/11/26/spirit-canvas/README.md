@@ -490,8 +490,8 @@ WebView でスライドを作り、その上に spirit の体（VRM）を VTuber
 ### 作り
 
 - **前面の層（`layer: "front"`）:** WebView は Flutter の要素より常に手前に出る（Part 4）。そこで WebView のさらに上にもう 1 枚、舞台と同じ大きさの層を置き、
-  `layer: "front"` の要素だけをそこに描く。ボタン・選択肢・入力欄・`tappable` 以外は `IgnorePointer` にして、クリックを下のページへ通す。
-  spirit に見せる撮影は、舞台 → WebView の絵 → 前面の層の順に重ねる
+  `layer: "front"` の要素だけをそこに描く。前面の要素は、枠全体（透明なところも）でクリックを受け止め、下のページへは通さない（隠れているものは押せない）。
+  `tappable` を付ければ、体へのタッチが spirit への出来事になる。spirit に見せる撮影は、舞台 → WebView の絵 → 前面の層の順に重ねる
 - **読み上げ（`canvas_speak`、アクション `speak`・`stop_speaking`、スクリプトの `sg.speak`・`sg.stopSpeaking`）:** OS の声を [tts_pcm](https://pub.dev/packages/tts_pcm) 0.2.0 で PCM にし、
   WAV にして audioplayers で鳴らす。並べた順に 1 文ずつ話し、話し終わると `spoken` の出来事（id 付き）が来る。spirit へは起こさずに後で伝える（`later`）
 - **声に合わせた口:** PCM の 40 ms ごとの大きさ（RMS、大きいほうから 5% の値を 1 にそろえる）を、鳴らし始めの時刻から読んで VRM の `aa` に入れる。
@@ -511,16 +511,19 @@ WebView でスライドを作り、その上に spirit の体（VRM）を VTuber
 | --- | --- | --- | --- | --- |
 | 3 枚を読み上げて送り切る（5 文） | 28.3 秒 | 24.4 秒 | 25.7 秒 | 28.8 秒 |
 | 実際の画面で WebView の上に体と字幕が出る | 出た | 出た（端末の画面を撮った） | 出た（`screencap`） | 出た（デスクトップを撮った） |
-| 体・字幕の上のクリックが下のページに届く | 未確認（下） | 未確認 | 届いた（`adb shell input tap` の 2 回とも、ページの `pointerdown` が受けた） | 未確認 |
+| 体・字幕の上のクリック | 届かない（オーナーが触った） | 未確認 | 届かない（`adb shell input tap`。体の外のタップはページに届く） | 未確認 |
 
 - 口は声に合わせて開いた（話している間に続けて撮った 5 枚のうち、声の大きいところで開いている）
 - 撮影（spirit に見せる画像）にも前面の層が重なった
-- macOS の実際のクリックは、画面のロック中に試せず、その後は裏からのクリックが WebView に安定して届かなかった（前面の層と関係なく座標がずれた）。人が触って確かめる
+- 最初は前面の要素を `IgnorePointer` にしてクリックを下のページへ通そうとした。Android では通ったが、macOS ではオーナーが体の下の「次へ」を何度押しても届かなかった。
+  macOS では、Flutter が WebView の上に描いた部分のクリックを OS が Flutter へ渡し、Flutter はそれを WebView へ渡さない。JS で作り物のクリックを送り直す手もあるが、
+  座標の変換と、作り物のクリックで動かないページの問題がある。オーナーと相談し、「隠れているものは押せない」にどの OS も揃え、体へのタッチは spirit への出来事に使う形にした
+  （背景をページにして、その上で spirit が歩く・寝る・仕事をする場面で、触ると反応するのに使える）
 
 | | | |
 | --- | --- | --- |
 | ![macOS の撮影](results/present-macos.jpg) | ![iOS の画面](results/present-ios.jpg) | ![Android の画面](results/present-android.jpg) |
-| macOS: 撮影に前面の層が重なる | iOS: 細い枠でも体が収まる | Android: 実際のタップがページに届いた |
+| macOS: 撮影に前面の層が重なる | iOS: 細い枠でも体が収まる | Android: 重なった実際の画面 |
 | ![Windows の画面](results/present-windows.jpg) | ![口](results/present-mouth.jpg) | |
 | Windows: WebView2 の上に重なる | 話している間の口（右 2 枚で開く） | |
 
@@ -537,8 +540,7 @@ WebView でスライドを作り、その上に spirit の体（VRM）を VTuber
 
 ### 分かった制約
 
-- 前面の層の要素も、WebView の上ではプラットフォームのビューの上に Flutter が描く形になる。macOS・iOS・Android・Windows で重なったが、Android の `screencap` 以外で
-  実際のタップの通り抜けは確かめていない
+- 前面の要素の枠は四角い。体のまわりの透明なところもページを塞ぐので、枠は体に合わせて小さくし、ページのボタンの上に置かない（spirit への指示にも書いた）
 - 声は OS のもの。tts_pcm の lab の計測では、Apple の Kyoko は全部できてから届く（0.75〜1 秒）ので、話し始めに間が空きうる（ここでは測っていない）。spirit の本番の声（クローン TTS）にするなら、PCM を受けて同じ形で口を動かせる
 - 口は `aa` だけ（母音の形は見ていない）
 

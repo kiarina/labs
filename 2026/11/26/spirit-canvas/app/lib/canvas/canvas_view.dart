@@ -163,9 +163,10 @@ class _CanvasViewState extends State<CanvasView>
             for (final e in ordered)
               if (e.type == 'web') _webPositioned(e, s, ox, oy),
             // The front layer (`layer: "front"`): over the web views too,
-            // say a VRM presenting slides. Transparent; only what takes
-            // input (buttons, choices, inputs, `tappable`) catches clicks,
-            // the rest lets them through to the page below.
+            // say a VRM presenting slides. Each element's box takes the
+            // clicks there, on every OS: what is covered is not pressed
+            // (macOS cannot hand clicks over Flutter's drawing on to a web
+            // view, so letting them through would differ by OS).
             if (ordered.any(_isFront))
               Positioned(
                 left: ox,
@@ -184,7 +185,7 @@ class _CanvasViewState extends State<CanvasView>
                         children: [
                           for (final e in ordered)
                             if (e.type != 'web' && _isFront(e))
-                              _positioned(e, ignorePointer: !_takesInput(e)),
+                              _positioned(e, absorb: !_takesInput(e)),
                         ],
                       ),
                     ),
@@ -220,7 +221,9 @@ class _CanvasViewState extends State<CanvasView>
     );
   }
 
-  Widget _positioned(CanvasElement e, {bool ignorePointer = false}) {
+  /// [absorb]: the whole box takes clicks and does nothing with them (so
+  /// they do not reach a web view below).
+  Widget _positioned(CanvasElement e, {bool absorb = false}) {
     final v = c.currentValues(e);
     Widget child = _ElementBody(
       key: ValueKey('${e.id}:${e.type}'),
@@ -245,8 +248,8 @@ class _CanvasViewState extends State<CanvasView>
       top: v['y'],
       width: math.max(0, v['w']!),
       height: math.max(0, v['h']!),
-      child: IgnorePointer(
-        ignoring: ignorePointer,
+      child: AbsorbPointer(
+        absorbing: absorb,
         child: Opacity(
           opacity: v['opacity']!.clamp(0, 1),
           child: Transform.rotate(

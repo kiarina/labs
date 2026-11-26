@@ -62,7 +62,9 @@ Android は `AndroidWebViewController.webViewIdentifier` を、アプリの Kotl
 スライドのページの上に VRM の体や字幕を重ねる（spirit-canvas の Part 9）。macOS・iOS（Simulator）・Android（Pixel 6）・Windows で、実際の画面で重なった。
 
 - `Stack` で WebView より後ろ（手前に描かれる側）に、舞台と同じ位置・同じ縮み方の層をもう 1 枚置き、重ねたい要素だけをそこへ描く。プラットフォームのビューの上にも Flutter は描ける
-- クリックを下のページへ通したい要素は `IgnorePointer` で包む。Android では、体・字幕の上の実際のタップ（`adb shell input tap`）がページの `pointerdown` に届いた。ほかの OS の実際のクリックは未確認
+- **重ねた要素の下のページへクリックを通すことは、OS で揃わない。** `IgnorePointer` で包むと、Android では実際のタップがページに届いたが、macOS では届かなかった
+  （Flutter が WebView の上に描いた部分のクリックは Flutter に来て、Flutter は WebView へ渡さない）。spirit-canvas では、重ねた要素の枠全体でクリックを受け止め（`AbsorbPointer`）、
+  「隠れているものは押せない」にどの OS も揃えた。枠の透明なところも塞ぐので、枠は小さくする
 - `RepaintBoundary.toImage` の撮影は、その層を別に撮り、WebView の絵の上に重ねる
 - 同じ id・同じ HTML の WebView を消してすぐ置き直すと、ウィジェットが使い回されて前のページの状態が残った。置き直した（新しい要素の）ときは読み込み直す
 
