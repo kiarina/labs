@@ -1,5 +1,6 @@
 # android
 
+- 2026/11/26 [A canvas mode for a spirit's chat: gpt-6.2-sol lays out text, SVG, a VRM body, media, buttons and web views with tools; actions, timelines and spirit-written JavaScript run without the model; screens are saved and reused with new values](../2026/11/26/spirit-canvas/README.md)
 - 2026/10/21 [Streaming MeanVC2 voice conversion exported to ONNX: parity with upstream PyTorch and real-time speed in Flutter on macOS, Windows, Android and iOS](../2026/10/21/meanvc2-onnx-streaming/README.md)
 - 2026/10/20 [What record's echoCancel actually does on macOS, iOS, Android and Web: far-end echo and near-end speech](../2026/10/20/flutter-record-echo-cancel/README.md)
 - 2026/10/20 [OS text-to-speech as PCM in Flutter on macOS, iOS, Windows and Android](../2026/10/20/flutter-tts-pcm/README.md)
