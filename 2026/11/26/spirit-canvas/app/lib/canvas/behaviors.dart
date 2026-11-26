@@ -572,7 +572,17 @@ class _ScriptHost {
         debugPrint('[$from] ${list[2]}');
         return true;
       case 'element':
-        return canvas.elements['${list[2]}']?.toJson();
+        // Its props, and `now`: where it is this moment (mid-move too).
+        final e = canvas.elements['${list[2]}'];
+        if (e == null) return null;
+        return {
+          ...e.toJson(),
+          'now': {
+            for (final MapEntry(:key, :value)
+                in canvas.currentValues(e).entries)
+              key: double.parse(value.toStringAsFixed(1)),
+          },
+        };
     }
     return null;
   }

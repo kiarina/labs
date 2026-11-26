@@ -8,7 +8,18 @@ import 'package:vector_math/vector_math.dart' as vm;
 import '../media.dart';
 import 'canvas_model.dart';
 
-const kVrmPoses = ['rest', 'idle', 'wave', 'nod', 'bow', 'cheer', 'think'];
+const kVrmPoses = [
+  'rest',
+  'idle',
+  'wave',
+  'nod',
+  'bow',
+  'cheer',
+  'think',
+  'walk',
+  'sleep',
+  'work',
+];
 const kVrmExpressions = [
   'neutral',
   'happy',
@@ -31,7 +42,9 @@ final _relaxedArms = {
 /// A VRM on the canvas: the spirit's own body. Props: `src` (default: the
 /// lab's VRM), `expression`, `expression_weight`, `pose` ([kVrmPoses]),
 /// `animation` (a .vrma; `default` for the lab's), `framing` (`bust` or
-/// `full`), `look_at_viewer`, `talking` (moves the mouth).
+/// `full`), `look_at_viewer`, `talking` (moves the mouth), `turn` (degrees
+/// the body turns from facing the viewer: 90 faces right, -90 left; it
+/// turns there smoothly).
 class VrmElementView extends StatefulWidget {
   const VrmElementView({super.key, required this.element, this.controller});
 
@@ -59,6 +72,9 @@ class _VrmElementViewState extends State<VrmElementView> {
   vm.Vector3 _eye = vm.Vector3(0, 1.3, 2.5);
   vm.Vector3 _target = vm.Vector3(0, 1.3, 0);
   String? _framedFor;
+
+  /// The turn shown now (eases toward the `turn` prop).
+  double _turn = 0;
 
   /// The box's width / height: a narrow box pulls the camera back so the
   /// body still fits across.
@@ -206,6 +222,61 @@ class _VrmElementViewState extends State<VrmElementView> {
           VrmHumanBone.rightLowerArm,
           _about(0, 0, 1, -20),
         );
+      case 'walk':
+        // Legs and arms swinging, two steps a second.
+        final swing = math.sin(t * 2 * math.pi * 1.0);
+        h.setNormalizedRotation(
+          VrmHumanBone.leftUpperLeg,
+          _about(1, 0, 0, 28 * swing),
+        );
+        h.setNormalizedRotation(
+          VrmHumanBone.rightUpperLeg,
+          _about(1, 0, 0, -28 * swing),
+        );
+        h.setNormalizedRotation(
+          VrmHumanBone.leftLowerLeg,
+          _about(1, 0, 0, -30 * math.max(0, swing)),
+        );
+        h.setNormalizedRotation(
+          VrmHumanBone.rightLowerLeg,
+          _about(1, 0, 0, -30 * math.max(0, -swing)),
+        );
+        h.setNormalizedRotation(
+          VrmHumanBone.leftUpperArm,
+          _about(1, 0, 0, -20 * swing) * _about(0, 0, 1, -72),
+        );
+        h.setNormalizedRotation(
+          VrmHumanBone.rightUpperArm,
+          _about(1, 0, 0, 20 * swing) * _about(0, 0, 1, 72),
+        );
+      case 'sleep':
+        // Dozing: the head down and to the side, breathing slowly.
+        final slow = math.sin(t * 2 * math.pi / 5);
+        h.setNormalizedRotation(
+          VrmHumanBone.head,
+          _about(1, 0, 0, 22 + 3 * slow) * _about(0, 0, 1, 12),
+        );
+        h.setNormalizedRotation(VrmHumanBone.spine, _about(1, 0, 0, 8));
+      case 'work':
+        // At a desk: forearms forward, the hands tapping, eyes down.
+        final tap = math.sin(t * 2 * math.pi * 3);
+        h.setNormalizedRotation(
+          VrmHumanBone.leftUpperArm,
+          _about(0, 1, 0, -30) * _about(0, 0, 1, -65),
+        );
+        h.setNormalizedRotation(
+          VrmHumanBone.rightUpperArm,
+          _about(0, 1, 0, 30) * _about(0, 0, 1, 65),
+        );
+        h.setNormalizedRotation(
+          VrmHumanBone.leftLowerArm,
+          _about(0, 1, 0, -75 - 4 * tap),
+        );
+        h.setNormalizedRotation(
+          VrmHumanBone.rightLowerArm,
+          _about(0, 1, 0, 75 + 4 * tap),
+        );
+        h.setNormalizedRotation(VrmHumanBone.head, _about(1, 0, 0, 14));
       case 'think':
         h.setNormalizedRotation(
           VrmHumanBone.rightUpperArm,
@@ -243,6 +314,10 @@ class _VrmElementViewState extends State<VrmElementView> {
         e.num_('expression_weight', 1).clamp(0, 1),
       );
     }
+    // Asleep: eyes shut (the automatic blink would open them again).
+    final asleep = e.str('pose') == 'sleep';
+    a.autoBlink.enabled = !asleep;
+    if (asleep) a.expressions.setPreset(VrmExpressionPreset.blink, 1);
     final voice = widget.controller?.mouthLevel(e.id);
     if (voice != null) {
       // Speaking: the mouth follows the voice's loudness.
@@ -258,13 +333,21 @@ class _VrmElementViewState extends State<VrmElementView> {
     }
     a.update(dt, camera: _camera);
     _frame(a);
+    // Turning: the camera goes around the avatar the other way (the
+    // framing stays the one made facing the viewer).
+    final want = e.num_('turn', 0);
+    _turn += (want - _turn) * math.min(1, dt * 8);
+    final eye = _turn.abs() < 0.01
+        ? _eye
+        : _target +
+              (vm.Matrix3.rotationY(_turn * math.pi / 180) * (_eye - _target));
     _camera
-      ..position = _eye
+      ..position = eye
       ..target = _target;
     a.mtoonLighting.fromScene(_scene!);
     final look = e.flag('look_at_viewer', true);
     a.lookAt.enabled = look;
-    a.lookAt.target = look ? _eye : null;
+    a.lookAt.target = look ? eye : null;
   }
 
   @override
