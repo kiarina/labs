@@ -241,7 +241,7 @@ class CanvasController extends ChangeNotifier {
       : math.min(screen.width / design!.width, screen.height / design!.height);
 
   /// Called when [size] changes (the window, the device turning, a design).
-  void Function(Size from, Size to)? onResize;
+  void Function(Size from, Size to, {required bool byScreen})? onResize;
 
   /// The view's area; called after layout.
   void layout(Size screenSize) {
@@ -256,21 +256,29 @@ class CanvasController extends ChangeNotifier {
     }
     final scaleBefore = scale;
     screen = screenSize;
-    _setSize(design ?? screenSize, scaleChanged: scale != scaleBefore);
+    _setSize(
+      design ?? screenSize,
+      scaleChanged: scale != scaleBefore,
+      byScreen: true,
+    );
   }
 
   bool _laidOut = false;
 
   void setDesign(Size? d) {
     design = d;
-    _setSize(d ?? screen, scaleChanged: true);
+    _setSize(d ?? screen, scaleChanged: true, byScreen: false);
   }
 
-  void _setSize(Size next, {bool scaleChanged = false}) {
+  void _setSize(
+    Size next, {
+    bool scaleChanged = false,
+    required bool byScreen,
+  }) {
     if (next != size) {
       final from = size;
       size = next;
-      onResize?.call(from, next);
+      onResize?.call(from, next, byScreen: byScreen);
       notifyListeners();
     } else if (scaleChanged) {
       notifyListeners();

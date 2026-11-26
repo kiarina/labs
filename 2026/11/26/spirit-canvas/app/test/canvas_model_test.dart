@@ -127,7 +127,7 @@ void main() {
       const Rect.fromLTWH(344, 744, 40, 40),
     );
     final sizes = <Size>[];
-    c.onResize = (from, to) => sizes.add(to);
+    c.onResize = (from, to, {required byScreen}) => sizes.add(to);
     c.layout(const Size(1000, 600));
     expect(sizes, [const Size(1000, 600)]);
     expect(c.orientation, 'landscape');

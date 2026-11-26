@@ -17,6 +17,13 @@ import 'media.dart';
 import 'spirit.dart';
 import 'spirit_tools.dart';
 
+/// Waits for the next frame, at most [limit]: with the window minimized or
+/// hidden, Flutter draws no frames, and a plain wait never returns.
+Future<void> nextFrame({Duration limit = const Duration(milliseconds: 500)}) {
+  WidgetsBinding.instance.scheduleFrame();
+  return WidgetsBinding.instance.endOfFrame.timeout(limit, onTimeout: () {});
+}
+
 void main() {
   runApp(const SpiritCanvasApp());
 }
@@ -171,8 +178,10 @@ class HomePageState extends State<HomePage> {
   /// size settles (a window being dragged fires many), now if the
   /// orientation flipped or the area changed by a quarter or more, else
   /// with the next message.
-  void _onResize(Size from, Size to) {
+  void _onResize(Size from, Size to, {required bool byScreen}) {
     behaviors.resized(to);
+    // A design the spirit set (or a scene it loaded) is its own doing.
+    if (!byScreen) return;
     _resizeFrom ??= from;
     _resizeTimer?.cancel();
     _resizeTimer = Timer(const Duration(milliseconds: 700), () {
@@ -292,13 +301,18 @@ class HomePageState extends State<HomePage> {
             },
         });
         final images = <String>[];
+        var note = '';
         if (a['image'] as bool? ?? true) {
           // Let a just-changed canvas draw first.
-          await WidgetsBinding.instance.endOfFrame;
-          final png = await captureCanvas(canvasKey);
-          if (png != null) images.add(png);
+          await nextFrame();
+          final shot = await captureCanvasWithWeb(canvasKey, canvas);
+          if (shot.png != null) images.add(shot.png!);
+          if (shot.missing.isNotEmpty) {
+            note =
+                '\n(web elements not in the picture: ${jsonEncode(shot.missing)})';
+          }
         }
-        return ToolOutcome(text, images: images);
+        return ToolOutcome('$text$note', images: images);
       case 'canvas_put':
         final items = [
           for (final e in (a['elements'] as List? ?? const []))
@@ -389,7 +403,7 @@ class HomePageState extends State<HomePage> {
           a['code'] as String,
         );
         // Let the script's first changes draw before the spirit looks.
-        await WidgetsBinding.instance.endOfFrame;
+        await nextFrame();
         return ToolOutcome(
           err == null ? 'ok: running' : 'failed: $err',
           ok: err == null,
@@ -550,7 +564,7 @@ class HomePageState extends State<HomePage> {
       },
     ], from: 'scene:$name');
     final ms = watch.elapsedMilliseconds;
-    await WidgetsBinding.instance.endOfFrame;
+    await nextFrame();
     debugPrint('[scene] loaded $name in ${ms}ms');
     return ToolOutcome(
       'ok: loaded "$name" in ${ms}ms (${canvas.elements.length} elements)'
@@ -562,8 +576,12 @@ class HomePageState extends State<HomePage> {
   Future<String?> saveSnapshot(String name) async {
     final dir = env('LOG_DIR');
     if (dir.isEmpty) return null;
-    await WidgetsBinding.instance.endOfFrame;
-    final png = await captureCanvas(canvasKey, pixelRatio: 1);
+    await nextFrame();
+    final png = (await captureCanvasWithWeb(
+      canvasKey,
+      canvas,
+      pixelRatio: 1,
+    )).png;
     if (png == null) return null;
     final f = File('$dir/$name.png');
     await f.parent.create(recursive: true);

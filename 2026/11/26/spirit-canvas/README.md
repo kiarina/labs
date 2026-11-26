@@ -30,6 +30,7 @@
 - **Part 4: WebView の要素で、`asset://` の差し込み、ページの JS のイベントを spirit へ、spirit が外からページの状態を読む、の 3 つができた。** Sol が web で作ったもぐらたたきは、10 秒で spirit を起こして応援させ、終わりに結果を話させた。
   spirit に見せる撮影には WebView が写らない（[Part 4](#part-4-web-要素webview)）
 - **Part 5: キャンバスを端末の大きさにし、`%` と `anchor` で置けるようにした。** 窓を縦長・横長にすると要素が追従し、向きが変わると spirit が起きて確かめた（[Part 5](#part-5-画面の大きさに合わせる)）
+- **Part 6: WebView も spirit に見せる撮影に入るようにした（macOS）。** WKWebView の `takeSnapshot` を舞台の撮影に重ねる。窓をしまったままでも撮れた（[Part 6](#part-6-webview-も-spirit-に見せる撮影に入れる)）
 
 | | |
 | --- | --- |
@@ -260,7 +261,7 @@ w1「web ブロックで、20秒のもぐらたたきゲームを作って。手
 
 ### 分かった制約
 
-- **spirit に見せる撮影（`RepaintBoundary`）に WebView は写らない。** プラットフォームのビューなので。代わりに `canvas_view` は本文と `sg.setState` の状態を返す。Sol は `getBoundingClientRect` などを `canvas_web_eval` で読んで配置を確かめていた
+- **spirit に見せる撮影（`RepaintBoundary`）に WebView は写らない。** プラットフォームのビューなので。代わりに `canvas_view` は本文と `sg.setState` の状態を返す（macOS は Part 6 で、WebView の絵を重ねて撮るようにした）。Sol は `getBoundingClientRect` などを `canvas_web_eval` で読んで配置を確かめていた
 - macOS の WebView は透明な背景に対応していない（`setBackgroundColor` が `UnimplementedError: opaque`）。ページが自分の背景を塗る
 - **WebView は、キャンバスのほかの要素より常に上に出る。** 縮める枠の外に置いているため（下の不具合の直し）。`opacity`・`scale`・`rotation` も WebView には効かない（位置と大きさのアニメは効く）
 
@@ -336,6 +337,27 @@ Sol の自己試験や `canvas_web_eval` での操作は JS からボタンを�
 - 縦の窓で作った予定の画面の見た目は、こちらでは撮れなかった。後ろにある窓の WebView は描画が止まり、窓の撮影では黒く写った（アプリの中の撮影には WebView は写らない）。中身は `canvas_view` の本文で確かめた
 - その後、窓を横に変える操作（System Events）が窓を取れずに失敗し、横向きにしたときに spirit が予定の画面をどう直すかは見ていない
 
+## Part 6: WebView も spirit に見せる撮影に入れる
+
+Flutter の撮影（`RepaintBoundary.toImage`）にはプラットフォームのビューが写らないので、spirit には WebView の本文と状態だけを渡していた。
+各ページの絵を WebView 自身に撮らせ、舞台の撮影の同じ場所に重ねて 1 枚にした（macOS）。
+
+- `webview_flutter_wkwebview` の公開の口で、ページの裏の WKWebView を取り出す（Dart の `WebKitWebViewController.webViewIdentifier` と、Swift の `FWFWebViewFlutterWKWebViewExternalAPI.webView(forIdentifier:withPluginRegistry:)`）
+- アプリの Swift（`macos/Runner/MainFlutterWindow.swift`）に MethodChannel `spirit_canvas/webview` を足し、`WKWebView.takeSnapshot` の PNG を返す
+- Dart で、舞台の画像の上に、各 web 要素の位置（キャンバスの座標 × 撮影の倍率）へページの画像を描いて 1 枚にする。撮れなかったページは、理由を `canvas_view` の文に添える
+
+| | | |
+| --- | --- | --- |
+| ![予定の画面](results/shot-planner.jpg) | ![もぐらたたき](results/shot-mole.jpg) | ![窓をしまったまま](results/shot-minimized.jpg) |
+| 全面の WebView（525x777） | 固定の大きさ（1280x800）を縮めた WebView | 窓をしまったまま、ページの中で 1 件目にチェックを入れて撮った |
+
+- **窓が後ろにあっても、しまってあっても撮れた。** しまった窓で、ページの中の 1 件目にチェックを入れると、その後の状態（1/3、33%）が 0.6 秒で撮れた。窓の撮影（OS の機能）では、後ろの窓の WebView は黒く写ったが、`takeSnapshot` はページを描き直して撮る
+- **窓をしまうと、Flutter はフレームを描かない。** 呼び出しと撮影の中で「次のフレームを待つ」処理が終わらず、道具が返らなくなった。待ちを 500 ms までにした。しまったまま新しく置いた要素は、窓を戻すまで作られない（WebView も作られないので撮れない。その理由を返す）。舞台の画像は、描かれていない変更があると撮れないことがある（理由を返す）
+- **固定の大きさの画面を縦長の窓で見ると、WebView の中の CSS の `@media` は窓の幅で効く。** もぐらたたきは 1280x800 で作られているが、525 px の窓では縮めた WebView の幅が 525 px になり、ページの狭い画面向けの組み方に変わった。`zoom` ではページから見える幅は変わらない
+- spirit の操作（作り置きの呼び出しや `design` の指定）で大きさが変わったときは、spirit を起こさないようにした（起動直後に、作り置きを呼び出しただけで「大きさが変わった」と起こしていた）
+
+Android・iOS・Windows は未対応。Android は同じく公開の口（`AndroidWebViewController.webViewIdentifier` と `WebViewFlutterAndroidExternalApi`）で WebView を画像に描ける見込み、Windows の WebView2 には `CapturePreview` がある（どちらも未確認）。
+
 ## 結論が成り立つ範囲と、まだ見ていないこと
 
 - macOS だけ。iOS・Android・Windows では動かしていない。縦の画面は macOS の窓を縦長にして確かめただけ
@@ -351,7 +373,7 @@ Sol の自己試験や `canvas_web_eval` での操作は JS からボタンを�
 
 Part 1 で挙げた「押したときの結果を宣言する」「時間の並び」「spirit が書くスクリプト」「通知の区別」は Part 2、「作り置きの保存・呼び出し・差し替え」と音は Part 3、WebView は Part 4、画面の大きさに合わせるのは Part 5 で作った。残り:
 
-1. **web 要素を他の OS で動かす。** iOS・Android は同じ実装、Windows は `webview_all`（WebView2）への差し替えから。WebView の画面を spirit に見せる撮影（各 WebView のスナップショット）も
+1. **web 要素を他の OS で動かす。** iOS・Android は同じ実装、Windows は `webview_all`（WebView2）への差し替えから。WebView の撮影も各 OS の口で（macOS は Part 6）
 2. **安全領域（ノッチ・ホームバー）を渡す。** 大きさと向きは Part 5 で渡すようにした。スマートフォンでは、隠れる部分を避けるための余白も要る
 3. **spirit がモードを切り替える道具。** チャットのまま頼まれた絵を、そのまま見せられるように。ユーザーが自分でチャットに戻した直後に戻さないよう、提案を出して押されたら切り替える形などを選ぶ
 4. **スクリプトを製品の形で動かす。** 別の isolate かプロセス、実行時間の上限、スクリプトどうしの順序

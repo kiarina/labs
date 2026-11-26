@@ -15,7 +15,9 @@ WebView はプラットフォームのビューで、ネイティブのビュー
 - ページの中の座標を舞台に合わせたいなら、同じ割合の CSS `zoom` を `document.documentElement` にかける
 - その結果、WebView はほかの Flutter の要素より常に手前に出る。`Opacity`・回転・拡大も WebView には効かせられない
 - macOS の WebView は透明な背景に対応していない（`setBackgroundColor` が `UnimplementedError: opaque`）。ページが自分の背景を塗る
-- `RepaintBoundary.toImage` の撮影に WebView は写らない。画面を誰かに見せたいときは、ページの本文や状態を JS で取って渡す
+- `RepaintBoundary.toImage` の撮影に WebView は写らない。各 WebView に自分を撮らせて重ねる（下の「撮影」）。撮れない OS では、ページの本文や状態を JS で取って渡す
+- 窓をしまうと Flutter はフレームを描かない。`WidgetsBinding.instance.endOfFrame` を待つ処理は返らなくなるので、時間の上限を付ける。しまったまま足した WebView は、窓を戻すまで作られない
+- 決まった大きさの画面を縮めて見せるとき、ページの CSS の `@media` は縮めた WebView の実際の幅で効く（`zoom` ではページから見える幅は変わらない）
 
 ## 素材の渡し方: ループバックの HTTP サーバー
 
@@ -27,6 +29,14 @@ WebView はプラットフォームのビューで、ネイティブのビュー
 `Audio.play()` が `NotSupportedError: The operation is not supported.` で失敗する。`Accept-Ranges: bytes` と `Content-Range` を返す。
 WebKit の「利用者の操作なしの再生を止める」設定（`WebKitWebViewControllerCreationParams.mediaTypesRequiringUserAction`）を空にしても、この失敗は直らない。
 ページが操作なしで鳴らすなら、その設定も空にしておく。
+
+## 撮影
+
+`webview_flutter_wkwebview` は撮る口を持たないが、ページの裏の WKWebView を取り出す公開の口がある。
+Dart の `WebKitWebViewController.webViewIdentifier` を、アプリの Swift で `FWFWebViewFlutterWKWebViewExternalAPI.webView(forIdentifier:withPluginRegistry:)` に渡し、
+`WKWebView.takeSnapshot(with:)`（`afterScreenUpdates = true`）で PNG にして MethodChannel で返す。Flutter の撮影の上の同じ場所に描けば 1 枚になる。
+**窓が他の窓の後ろにあっても、しまってあっても撮れた**（ページの中の変更も反映された。0.6 秒）。OS の窓の撮影では、後ろの窓の WebView は黒く写る。
+Android は `AndroidWebViewController.webViewIdentifier` と `WebViewFlutterAndroidExternalApi` で同じ形にできる見込み（未確認）。
 
 ## ページとのやり取り
 

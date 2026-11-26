@@ -776,6 +776,85 @@ class _AudioElementState extends State<_AudioElement> {
   }
 }
 
+/// The canvas with its web views drawn in: Flutter's capture of the stage
+/// leaves platform views out, so each page's own picture
+/// ([WebHost.snapshot]) is drawn over its place. Returns the PNG (base64)
+/// and the pages that could not be drawn, with why.
+Future<({String? png, Map<String, String> missing})> captureCanvasWithWeb(
+  GlobalKey key,
+  CanvasController c, {
+  double? pixelRatio,
+}) async {
+  final boundary = key.currentContext?.findRenderObject();
+  if (boundary is! RenderRepaintBoundary) {
+    return (png: null, missing: <String, String>{});
+  }
+  final longest = math.max(boundary.size.width, boundary.size.height);
+  final r = pixelRatio ?? (longest <= 0 ? 1.0 : math.min(1.0, 960 / longest));
+  final ui.Image stage;
+  try {
+    stage = await boundary.toImage(pixelRatio: r);
+  } on Object catch (e) {
+    // Not painted since it changed (the window minimized or hidden).
+    return (png: null, missing: {'canvas': 'not drawn now: $e'});
+  }
+  final webs = [
+    for (final e in c.ordered)
+      if (e.type == 'web' && e.flag('visible', true)) e,
+  ];
+  final missing = <String, String>{};
+  if (webs.isEmpty) {
+    final bytes = await stage.toByteData(format: ui.ImageByteFormat.png);
+    stage.dispose();
+    return (
+      png: bytes == null ? null : base64Encode(bytes.buffer.asUint8List()),
+      missing: missing,
+    );
+  }
+  final recorder = ui.PictureRecorder();
+  final canvas = Canvas(recorder);
+  canvas.drawImage(stage, Offset.zero, Paint());
+  for (final e in webs) {
+    final png = await WebHost.instance.snapshot(e.id);
+    if (png == null) {
+      missing[e.id] = WebHost.instance.lastSnapshotError ?? 'no picture';
+      continue;
+    }
+    final codec = await ui.instantiateImageCodec(png);
+    final frame = await codec.getNextFrame();
+    final v = c.currentValues(e);
+    final dst = Rect.fromLTWH(
+      v['x']! * r,
+      v['y']! * r,
+      v['w']! * r,
+      v['h']! * r,
+    );
+    canvas.drawImageRect(
+      frame.image,
+      Rect.fromLTWH(
+        0,
+        0,
+        frame.image.width.toDouble(),
+        frame.image.height.toDouble(),
+      ),
+      dst,
+      Paint()..filterQuality = FilterQuality.medium,
+    );
+    frame.image.dispose();
+  }
+  final composed = await recorder.endRecording().toImage(
+    stage.width,
+    stage.height,
+  );
+  stage.dispose();
+  final bytes = await composed.toByteData(format: ui.ImageByteFormat.png);
+  composed.dispose();
+  return (
+    png: bytes == null ? null : base64Encode(bytes.buffer.asUint8List()),
+    missing: missing,
+  );
+}
+
 /// A PNG of the canvas as it is drawn now (base64), at [pixelRatio] of the
 /// 1280x800 stage.
 Future<String?> captureCanvas(GlobalKey key, {double? pixelRatio}) async {
@@ -834,6 +913,9 @@ class _WebElementState extends State<_WebElement> {
       onMessageReceived: (m) => host.receive(id, m.message),
     );
     host.controllers[id] = _web;
+    if (_web.platform case final WebKitWebViewController webkit) {
+      host.nativeIds[id] = webkit.webViewIdentifier;
+    }
     _load();
   }
 
@@ -866,6 +948,7 @@ class _WebElementState extends State<_WebElement> {
   void dispose() {
     if (identical(host.controllers[widget.element.id], _web)) {
       host.controllers.remove(widget.element.id);
+      host.nativeIds.remove(widget.element.id);
     }
     super.dispose();
   }

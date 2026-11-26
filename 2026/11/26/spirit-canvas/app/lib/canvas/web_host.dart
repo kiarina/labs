@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
+
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../media.dart';
@@ -27,6 +29,37 @@ class WebHost {
   final _pages = <String, String>{};
   final controllers = <String, WebViewController>{};
 
+  /// The native web view of each element (WKWebView on macOS and iOS), for
+  /// pictures of the page.
+  final nativeIds = <String, int>{};
+
+  static const _native = MethodChannel('spirit_canvas/webview');
+
+  /// A PNG of the page as it is drawn now, or null where this platform has
+  /// no way here (only macOS so far) or it failed ([lastSnapshotError]).
+  Future<Uint8List?> snapshot(String id) async {
+    if (!Platform.isMacOS) {
+      lastSnapshotError = 'pictures of web views are only taken on macOS so far';
+      return null;
+    }
+    final nativeId = nativeIds[id];
+    if (nativeId == null) {
+      lastSnapshotError =
+          'the page is not on the screen yet (the window may be minimized or hidden)';
+      return null;
+    }
+    try {
+      return await _native
+          .invokeMethod<Uint8List>('snapshot', {'id': nativeId})
+          .timeout(const Duration(seconds: 3));
+    } on Object catch (e) {
+      lastSnapshotError = '$e';
+      return null;
+    }
+  }
+
+  String? lastSnapshotError;
+
   /// The latest `sg.setState` of each page.
   final states = <String, Object?>{};
 
@@ -50,6 +83,7 @@ class WebHost {
   void remove(String id) {
     _pages.remove(id);
     controllers.remove(id);
+    nativeIds.remove(id);
     states.remove(id);
   }
 
