@@ -52,7 +52,7 @@ const kElementTypes = [
   'web',
   // A 3D world (Part 11), and the shapes that go in one (`in: <world id>`).
   'world',
-  ...k3dShapes,
+  ...k3dOnly,
 ];
 
 /// Shapes that live only in a world (sizes w, h, d in metres).
@@ -65,6 +65,28 @@ const k3dShapes = [
   'torus',
   'capsule',
 ];
+
+/// What goes only in a world: the shapes, and lights, particles, tubes
+/// along a curve, and many copies of a shape scattered at once.
+const k3dOnly = [...k3dShapes, 'light', 'particles', 'tube', 'scatter'];
+
+/// A world's look, numbers a transition or an animation can move: the sun
+/// (degrees above the horizon and round from +z), the light's strength,
+/// bloom, fog, exposure, warmth (-1 cool to 1 warm), saturation, god rays,
+/// focus (metres to the sharp plane; 0: all sharp), vignette.
+const kWorldLookDefaults = {
+  'sun_elevation': 35.0,
+  'sun_azimuth': 30.0,
+  'light': 3.0,
+  'bloom': 0.0,
+  'fog': 0.0,
+  'exposure': 1.0,
+  'warmth': 0.0,
+  'saturation': 1.0,
+  'god_rays': 0.0,
+  'focus': 0.0,
+  'vignette': 0.0,
+};
 
 /// A world's camera, numbers a transition or an animation can move.
 const kCameraKeys = [
@@ -82,7 +104,7 @@ const kCameraKeys = [
 const k3dKeys = ['x', 'y', 'z', 'rx', 'ry', 'rz', 'w', 'h', 'd'];
 
 /// The numeric properties an animation or a transition can move.
-const kAnimatable = [
+final kAnimatable = [
   'x',
   'y',
   'w',
@@ -95,7 +117,12 @@ const kAnimatable = [
   'ry',
   'rz',
   'd',
+  // A light's strength, a shape's glow, particles a second.
+  'intensity',
+  'glow',
+  'rate',
   ...kCameraKeys,
+  ...kWorldLookDefaults.keys,
 ];
 
 /// Where a world's camera starts: 1.6 m high, 4 m in front (z grows away
@@ -428,7 +455,7 @@ class CanvasController extends ChangeNotifier {
         problems.add('$id: unknown type "$type" (use one of $kElementTypes)');
         continue;
       }
-      if (k3dShapes.contains(type) && item['in'] == null) {
+      if (k3dOnly.contains(type) && item['in'] == null) {
         problems.add('$id: a $type goes in a world: give `in` (a world id)');
         continue;
       }
@@ -465,7 +492,7 @@ class CanvasController extends ChangeNotifier {
         for (final p in kAnimatable)
           if (props[p] is num) p: (props[p] as num).toDouble(),
       if (e.type == 'world')
-        for (final p in kCameraKeys)
+        for (final p in [...kCameraKeys, ...kWorldLookDefaults.keys])
           if (props[p] is num) p: (props[p] as num).toDouble(),
       if (!e.in3d && props.keys.any(placeKeys.contains)) ...{
         'x': target.left,
@@ -551,6 +578,14 @@ class CanvasController extends ChangeNotifier {
           k: e.num_(k, shape && const {'w', 'h', 'd'}.contains(k) ? 1 : 0),
         'opacity': e.num_('opacity', 1),
         'scale': e.num_('scale', 1),
+        'intensity': e.num_('intensity', 1),
+        // `glow: true` is 1.
+        'glow': switch (e.props['glow']) {
+          final num n => n.toDouble(),
+          true => 1.0,
+          _ => 0.0,
+        },
+        'rate': e.num_('rate', 0),
       };
     }
     final r = resolve(e.props);
@@ -562,8 +597,11 @@ class CanvasController extends ChangeNotifier {
       'opacity': e.num_('opacity', 1),
       'scale': e.num_('scale', 1),
       'rotation': e.num_('rotation', 0),
-      if (e.type == 'world')
+      if (e.type == 'world') ...{
         for (final k in kCameraKeys) k: e.num_(k, kCameraDefaults[k]!),
+        for (final MapEntry(:key, :value) in kWorldLookDefaults.entries)
+          key: e.num_(key, value),
+      },
     };
   }
 

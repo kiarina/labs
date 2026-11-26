@@ -61,7 +61,9 @@ class ControlServer {
           case '/event':
             final raw = q['value'];
             Object? value = raw;
-            if (raw != null && raw.startsWith('[')) value = jsonDecode(raw);
+            if (raw != null && (raw.startsWith('[') || raw.startsWith('{'))) {
+              value = jsonDecode(raw);
+            }
             app.canvas.emit(
               CanvasEvent(q['kind'] ?? 'press', q['id'] ?? '', value),
             );

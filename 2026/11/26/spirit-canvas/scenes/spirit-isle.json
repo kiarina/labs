@@ -1,0 +1,2514 @@
+{
+ "name": "spirit-isle",
+ "description": "空に浮かぶ精霊の庭（3D）。物理の空と太陽で夕暮れ・夜・朝が移り、池の映り込み・桜の花びら・灯籠の明かり・回る結晶と光の螺旋・星と月・ホタル。結晶・灯籠・池・精霊を触ると反応し、HUD で時間・寄る・ひと回り。モデルなしで動く。",
+ "params": {},
+ "design": null,
+ "background": "#000000",
+ "elements": [
+  {
+   "id": "isle",
+   "type": "world",
+   "x": 0,
+   "y": 0,
+   "w": "100%",
+   "h": "100%",
+   "sky": "physical",
+   "sun_elevation": 6,
+   "sun_azimuth": 28,
+   "light": 3,
+   "bloom": 0.12,
+   "bloom_threshold": 1.6,
+   "fog": 0.007,
+   "fog_color": "#E8B898",
+   "exposure": 1.05,
+   "warmth": 0.22,
+   "saturation": 1.1,
+   "vignette": 0.35,
+   "god_rays": 0.5,
+   "ao": true,
+   "reflections": true,
+   "cam_x": -1.2,
+   "cam_y": 2.3,
+   "cam_z": -7.2,
+   "look_x": 0.8,
+   "look_y": 1.0,
+   "look_z": 2.4,
+   "fov": 48
+  },
+  {
+   "id": "ground",
+   "type": "cylinder",
+   "in": "isle",
+   "y": -0.5,
+   "z": 2,
+   "w": 17,
+   "h": 0.5,
+   "d": 17,
+   "color": "#5D8A47",
+   "roughness": 0.95
+  },
+  {
+   "id": "ground-rim",
+   "type": "cylinder",
+   "in": "isle",
+   "y": -1.3,
+   "z": 2,
+   "w": 17.4,
+   "h": 0.8,
+   "d": 17.4,
+   "color": "#6E5240",
+   "roughness": 1
+  },
+  {
+   "id": "rock",
+   "type": "cone",
+   "in": "isle",
+   "y": -1.3,
+   "z": 2,
+   "rx": 180,
+   "w": 17,
+   "h": 8,
+   "d": 17,
+   "color": "#5C4636",
+   "roughness": 1
+  },
+  {
+   "id": "grass0",
+   "type": "scatter",
+   "in": "isle",
+   "shape": "cone",
+   "x": 0,
+   "z": 7.6,
+   "w": 15,
+   "d": 4.2,
+   "count": 1500,
+   "seed": 3,
+   "size": [
+    0.12,
+    0.34
+   ],
+   "stretch": [
+    0.16,
+    1,
+    0.16
+   ],
+   "colors": [
+    "#4F8A3A",
+    "#5E9C44",
+    "#6FAE4E",
+    "#3F7531",
+    "#7DB85A"
+   ],
+   "roughness": 0.9
+  },
+  {
+   "id": "grass1",
+   "type": "scatter",
+   "in": "isle",
+   "shape": "cone",
+   "x": 4.3,
+   "z": 1.3,
+   "w": 7,
+   "d": 8.4,
+   "count": 1500,
+   "seed": 4,
+   "size": [
+    0.12,
+    0.34
+   ],
+   "stretch": [
+    0.16,
+    1,
+    0.16
+   ],
+   "colors": [
+    "#4F8A3A",
+    "#5E9C44",
+    "#6FAE4E",
+    "#3F7531",
+    "#7DB85A"
+   ],
+   "roughness": 0.9
+  },
+  {
+   "id": "grass2",
+   "type": "scatter",
+   "in": "isle",
+   "shape": "cone",
+   "x": -3.6,
+   "z": -2.4,
+   "w": 7.8,
+   "d": 4.6,
+   "count": 1000,
+   "seed": 5,
+   "size": [
+    0.12,
+    0.34
+   ],
+   "stretch": [
+    0.16,
+    1,
+    0.16
+   ],
+   "colors": [
+    "#4F8A3A",
+    "#5E9C44",
+    "#6FAE4E",
+    "#3F7531",
+    "#7DB85A"
+   ],
+   "roughness": 0.9
+  },
+  {
+   "id": "flowers0",
+   "type": "scatter",
+   "in": "isle",
+   "shape": "sphere",
+   "x": 0,
+   "z": 7.6,
+   "w": 14,
+   "d": 4,
+   "count": 140,
+   "seed": 20,
+   "size": [
+    0.05,
+    0.09
+   ],
+   "colors": [
+    "#FFFFFF",
+    "#FFD3E2",
+    "#FFE27A",
+    "#C9A7FF"
+   ],
+   "roughness": 0.6
+  },
+  {
+   "id": "flowers1",
+   "type": "scatter",
+   "in": "isle",
+   "shape": "sphere",
+   "x": 4.3,
+   "z": 1.3,
+   "w": 6.6,
+   "d": 8,
+   "count": 140,
+   "seed": 21,
+   "size": [
+    0.05,
+    0.09
+   ],
+   "colors": [
+    "#FFFFFF",
+    "#FFD3E2",
+    "#FFE27A",
+    "#C9A7FF"
+   ],
+   "roughness": 0.6
+  },
+  {
+   "id": "flowers2",
+   "type": "scatter",
+   "in": "isle",
+   "shape": "sphere",
+   "x": -3.6,
+   "z": -2.4,
+   "w": 7.4,
+   "d": 4.2,
+   "count": 140,
+   "seed": 22,
+   "size": [
+    0.05,
+    0.09
+   ],
+   "colors": [
+    "#FFFFFF",
+    "#FFD3E2",
+    "#FFE27A",
+    "#C9A7FF"
+   ],
+   "roughness": 0.6
+  },
+  {
+   "id": "pebbles",
+   "type": "scatter",
+   "in": "isle",
+   "shape": "sphere",
+   "x": -3.4,
+   "z": 3.2,
+   "w": 6.2,
+   "d": 4.6,
+   "count": 90,
+   "seed": 7,
+   "size": [
+    0.06,
+    0.18
+   ],
+   "stretch": [
+    1.4,
+    0.5,
+    1
+   ],
+   "colors": [
+    "#8E8A84",
+    "#A39E96",
+    "#77736D"
+   ]
+  },
+  {
+   "id": "pond",
+   "type": "cylinder",
+   "in": "isle",
+   "x": -3.4,
+   "y": -0.02,
+   "z": 3.2,
+   "w": 4.6,
+   "h": 0.05,
+   "d": 3.4,
+   "color": "#16304A",
+   "roughness": 0.04,
+   "metallic": 0.4,
+   "tappable": true
+  },
+  {
+   "id": "rim0",
+   "type": "sphere",
+   "in": "isle",
+   "x": -0.95,
+   "z": 3.2,
+   "y": -0.08,
+   "w": 0.55,
+   "h": 0.3,
+   "d": 0.45,
+   "ry": 0,
+   "color": "#8F8A82",
+   "roughness": 0.95
+  },
+  {
+   "id": "rim1",
+   "type": "sphere",
+   "in": "isle",
+   "x": -1.19,
+   "z": 4.0,
+   "y": -0.08,
+   "w": 0.55,
+   "h": 0.3,
+   "d": 0.45,
+   "ry": 26,
+   "color": "#8F8A82",
+   "roughness": 0.95
+  },
+  {
+   "id": "rim2",
+   "type": "sphere",
+   "in": "isle",
+   "x": -1.87,
+   "z": 4.65,
+   "y": -0.08,
+   "w": 0.55,
+   "h": 0.3,
+   "d": 0.45,
+   "ry": 51,
+   "color": "#8F8A82",
+   "roughness": 0.95
+  },
+  {
+   "id": "rim3",
+   "type": "sphere",
+   "in": "isle",
+   "x": -2.85,
+   "z": 5.0,
+   "y": -0.08,
+   "w": 0.55,
+   "h": 0.3,
+   "d": 0.45,
+   "ry": 77,
+   "color": "#8F8A82",
+   "roughness": 0.95
+  },
+  {
+   "id": "rim4",
+   "type": "sphere",
+   "in": "isle",
+   "x": -3.95,
+   "z": 5.0,
+   "y": -0.08,
+   "w": 0.55,
+   "h": 0.3,
+   "d": 0.45,
+   "ry": 103,
+   "color": "#8F8A82",
+   "roughness": 0.95
+  },
+  {
+   "id": "rim5",
+   "type": "sphere",
+   "in": "isle",
+   "x": -4.93,
+   "z": 4.65,
+   "y": -0.08,
+   "w": 0.55,
+   "h": 0.3,
+   "d": 0.45,
+   "ry": 129,
+   "color": "#8F8A82",
+   "roughness": 0.95
+  },
+  {
+   "id": "rim6",
+   "type": "sphere",
+   "in": "isle",
+   "x": -5.61,
+   "z": 4.0,
+   "y": -0.08,
+   "w": 0.55,
+   "h": 0.3,
+   "d": 0.45,
+   "ry": 154,
+   "color": "#8F8A82",
+   "roughness": 0.95
+  },
+  {
+   "id": "rim7",
+   "type": "sphere",
+   "in": "isle",
+   "x": -5.85,
+   "z": 3.2,
+   "y": -0.08,
+   "w": 0.55,
+   "h": 0.3,
+   "d": 0.45,
+   "ry": 180,
+   "color": "#8F8A82",
+   "roughness": 0.95
+  },
+  {
+   "id": "rim8",
+   "type": "sphere",
+   "in": "isle",
+   "x": -5.61,
+   "z": 2.4,
+   "y": -0.08,
+   "w": 0.55,
+   "h": 0.3,
+   "d": 0.45,
+   "ry": 206,
+   "color": "#8F8A82",
+   "roughness": 0.95
+  },
+  {
+   "id": "rim9",
+   "type": "sphere",
+   "in": "isle",
+   "x": -4.93,
+   "z": 1.75,
+   "y": -0.08,
+   "w": 0.55,
+   "h": 0.3,
+   "d": 0.45,
+   "ry": 231,
+   "color": "#8F8A82",
+   "roughness": 0.95
+  },
+  {
+   "id": "rim10",
+   "type": "sphere",
+   "in": "isle",
+   "x": -3.95,
+   "z": 1.4,
+   "y": -0.08,
+   "w": 0.55,
+   "h": 0.3,
+   "d": 0.45,
+   "ry": 257,
+   "color": "#8F8A82",
+   "roughness": 0.95
+  },
+  {
+   "id": "rim11",
+   "type": "sphere",
+   "in": "isle",
+   "x": -2.85,
+   "z": 1.4,
+   "y": -0.08,
+   "w": 0.55,
+   "h": 0.3,
+   "d": 0.45,
+   "ry": 283,
+   "color": "#8F8A82",
+   "roughness": 0.95
+  },
+  {
+   "id": "rim12",
+   "type": "sphere",
+   "in": "isle",
+   "x": -1.87,
+   "z": 1.75,
+   "y": -0.08,
+   "w": 0.55,
+   "h": 0.3,
+   "d": 0.45,
+   "ry": 309,
+   "color": "#8F8A82",
+   "roughness": 0.95
+  },
+  {
+   "id": "rim13",
+   "type": "sphere",
+   "in": "isle",
+   "x": -1.19,
+   "z": 2.4,
+   "y": -0.08,
+   "w": 0.55,
+   "h": 0.3,
+   "d": 0.45,
+   "ry": 334,
+   "color": "#8F8A82",
+   "roughness": 0.95
+  },
+  {
+   "id": "step0",
+   "type": "cylinder",
+   "in": "isle",
+   "x": -0.18,
+   "y": 0,
+   "z": -1.2,
+   "w": 0.62,
+   "h": 0.06,
+   "d": 0.5,
+   "color": "#A8A39A",
+   "roughness": 0.9
+  },
+  {
+   "id": "step1",
+   "type": "cylinder",
+   "in": "isle",
+   "x": 0.18,
+   "y": 0,
+   "z": -0.25,
+   "w": 0.62,
+   "h": 0.06,
+   "d": 0.5,
+   "color": "#A8A39A",
+   "roughness": 0.9
+  },
+  {
+   "id": "step2",
+   "type": "cylinder",
+   "in": "isle",
+   "x": -0.18,
+   "y": 0,
+   "z": 0.7,
+   "w": 0.62,
+   "h": 0.06,
+   "d": 0.5,
+   "color": "#A8A39A",
+   "roughness": 0.9
+  },
+  {
+   "id": "step3",
+   "type": "cylinder",
+   "in": "isle",
+   "x": 0.18,
+   "y": 0,
+   "z": 1.65,
+   "w": 0.62,
+   "h": 0.06,
+   "d": 0.5,
+   "color": "#A8A39A",
+   "roughness": 0.9
+  },
+  {
+   "id": "step4",
+   "type": "cylinder",
+   "in": "isle",
+   "x": -0.18,
+   "y": 0,
+   "z": 2.6,
+   "w": 0.62,
+   "h": 0.06,
+   "d": 0.5,
+   "color": "#A8A39A",
+   "roughness": 0.9
+  },
+  {
+   "id": "step5",
+   "type": "cylinder",
+   "in": "isle",
+   "x": 0.18,
+   "y": 0,
+   "z": 3.55,
+   "w": 0.62,
+   "h": 0.06,
+   "d": 0.5,
+   "color": "#A8A39A",
+   "roughness": 0.9
+  },
+  {
+   "id": "step6",
+   "type": "cylinder",
+   "in": "isle",
+   "x": -0.18,
+   "y": 0,
+   "z": 4.5,
+   "w": 0.62,
+   "h": 0.06,
+   "d": 0.5,
+   "color": "#A8A39A",
+   "roughness": 0.9
+  },
+  {
+   "id": "step7",
+   "type": "cylinder",
+   "in": "isle",
+   "x": 0.18,
+   "y": 0,
+   "z": 5.45,
+   "w": 0.62,
+   "h": 0.06,
+   "d": 0.5,
+   "color": "#A8A39A",
+   "roughness": 0.9
+  },
+  {
+   "id": "step8",
+   "type": "cylinder",
+   "in": "isle",
+   "x": -0.18,
+   "y": 0,
+   "z": 6.4,
+   "w": 0.62,
+   "h": 0.06,
+   "d": 0.5,
+   "color": "#A8A39A",
+   "roughness": 0.9
+  },
+  {
+   "id": "pine0-trunk",
+   "type": "cylinder",
+   "in": "isle",
+   "x": 5.6,
+   "z": 6.6,
+   "w": 0.24200000000000002,
+   "h": 1.1,
+   "d": 0.24200000000000002,
+   "color": "#5B3D2A"
+  },
+  {
+   "id": "pine0-0",
+   "type": "cone",
+   "in": "isle",
+   "x": 5.6,
+   "z": 6.6,
+   "y": 0.77,
+   "w": 1.76,
+   "h": 1.43,
+   "d": 1.76,
+   "color": "#2F5E3A",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine0-1",
+   "type": "cone",
+   "in": "isle",
+   "x": 5.6,
+   "z": 6.6,
+   "y": 1.54,
+   "w": 1.38,
+   "h": 1.21,
+   "d": 1.38,
+   "color": "#356B41",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine0-2",
+   "type": "cone",
+   "in": "isle",
+   "x": 5.6,
+   "z": 6.6,
+   "y": 2.2,
+   "w": 0.94,
+   "h": 1.04,
+   "d": 0.94,
+   "color": "#3C7848",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine1-trunk",
+   "type": "cylinder",
+   "in": "isle",
+   "x": 6.8,
+   "z": 3.6,
+   "w": 0.198,
+   "h": 0.9,
+   "d": 0.198,
+   "color": "#5B3D2A"
+  },
+  {
+   "id": "pine1-0",
+   "type": "cone",
+   "in": "isle",
+   "x": 6.8,
+   "z": 3.6,
+   "y": 0.63,
+   "w": 1.44,
+   "h": 1.17,
+   "d": 1.44,
+   "color": "#2F5E3A",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine1-1",
+   "type": "cone",
+   "in": "isle",
+   "x": 6.8,
+   "z": 3.6,
+   "y": 1.26,
+   "w": 1.12,
+   "h": 0.99,
+   "d": 1.12,
+   "color": "#356B41",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine1-2",
+   "type": "cone",
+   "in": "isle",
+   "x": 6.8,
+   "z": 3.6,
+   "y": 1.8,
+   "w": 0.77,
+   "h": 0.85,
+   "d": 0.77,
+   "color": "#3C7848",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine2-trunk",
+   "type": "cylinder",
+   "in": "isle",
+   "x": 4.0,
+   "z": 8.3,
+   "w": 0.275,
+   "h": 1.25,
+   "d": 0.275,
+   "color": "#5B3D2A"
+  },
+  {
+   "id": "pine2-0",
+   "type": "cone",
+   "in": "isle",
+   "x": 4.0,
+   "z": 8.3,
+   "y": 0.88,
+   "w": 2.0,
+   "h": 1.62,
+   "d": 2.0,
+   "color": "#2F5E3A",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine2-1",
+   "type": "cone",
+   "in": "isle",
+   "x": 4.0,
+   "z": 8.3,
+   "y": 1.75,
+   "w": 1.56,
+   "h": 1.38,
+   "d": 1.56,
+   "color": "#356B41",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine2-2",
+   "type": "cone",
+   "in": "isle",
+   "x": 4.0,
+   "z": 8.3,
+   "y": 2.5,
+   "w": 1.06,
+   "h": 1.19,
+   "d": 1.06,
+   "color": "#3C7848",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine3-trunk",
+   "type": "cylinder",
+   "in": "isle",
+   "x": -1.8,
+   "z": 8.6,
+   "w": 0.22,
+   "h": 1.0,
+   "d": 0.22,
+   "color": "#5B3D2A"
+  },
+  {
+   "id": "pine3-0",
+   "type": "cone",
+   "in": "isle",
+   "x": -1.8,
+   "z": 8.6,
+   "y": 0.7,
+   "w": 1.6,
+   "h": 1.3,
+   "d": 1.6,
+   "color": "#2F5E3A",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine3-1",
+   "type": "cone",
+   "in": "isle",
+   "x": -1.8,
+   "z": 8.6,
+   "y": 1.4,
+   "w": 1.25,
+   "h": 1.1,
+   "d": 1.25,
+   "color": "#356B41",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine3-2",
+   "type": "cone",
+   "in": "isle",
+   "x": -1.8,
+   "z": 8.6,
+   "y": 2.0,
+   "w": 0.85,
+   "h": 0.95,
+   "d": 0.85,
+   "color": "#3C7848",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine4-trunk",
+   "type": "cylinder",
+   "in": "isle",
+   "x": -6.6,
+   "z": 0.4,
+   "w": 0.253,
+   "h": 1.15,
+   "d": 0.253,
+   "color": "#5B3D2A"
+  },
+  {
+   "id": "pine4-0",
+   "type": "cone",
+   "in": "isle",
+   "x": -6.6,
+   "z": 0.4,
+   "y": 0.8,
+   "w": 1.84,
+   "h": 1.49,
+   "d": 1.84,
+   "color": "#2F5E3A",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine4-1",
+   "type": "cone",
+   "in": "isle",
+   "x": -6.6,
+   "z": 0.4,
+   "y": 1.61,
+   "w": 1.44,
+   "h": 1.26,
+   "d": 1.44,
+   "color": "#356B41",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine4-2",
+   "type": "cone",
+   "in": "isle",
+   "x": -6.6,
+   "z": 0.4,
+   "y": 2.3,
+   "w": 0.98,
+   "h": 1.09,
+   "d": 0.98,
+   "color": "#3C7848",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine5-trunk",
+   "type": "cylinder",
+   "in": "isle",
+   "x": 7.2,
+   "z": 0.2,
+   "w": 0.187,
+   "h": 0.85,
+   "d": 0.187,
+   "color": "#5B3D2A"
+  },
+  {
+   "id": "pine5-0",
+   "type": "cone",
+   "in": "isle",
+   "x": 7.2,
+   "z": 0.2,
+   "y": 0.59,
+   "w": 1.36,
+   "h": 1.1,
+   "d": 1.36,
+   "color": "#2F5E3A",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine5-1",
+   "type": "cone",
+   "in": "isle",
+   "x": 7.2,
+   "z": 0.2,
+   "y": 1.19,
+   "w": 1.06,
+   "h": 0.94,
+   "d": 1.06,
+   "color": "#356B41",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine5-2",
+   "type": "cone",
+   "in": "isle",
+   "x": 7.2,
+   "z": 0.2,
+   "y": 1.7,
+   "w": 0.72,
+   "h": 0.81,
+   "d": 0.72,
+   "color": "#3C7848",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine6-trunk",
+   "type": "cylinder",
+   "in": "isle",
+   "x": -7.0,
+   "z": 5.8,
+   "w": 0.209,
+   "h": 0.95,
+   "d": 0.209,
+   "color": "#5B3D2A"
+  },
+  {
+   "id": "pine6-0",
+   "type": "cone",
+   "in": "isle",
+   "x": -7.0,
+   "z": 5.8,
+   "y": 0.66,
+   "w": 1.52,
+   "h": 1.23,
+   "d": 1.52,
+   "color": "#2F5E3A",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine6-1",
+   "type": "cone",
+   "in": "isle",
+   "x": -7.0,
+   "z": 5.8,
+   "y": 1.33,
+   "w": 1.19,
+   "h": 1.04,
+   "d": 1.19,
+   "color": "#356B41",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine6-2",
+   "type": "cone",
+   "in": "isle",
+   "x": -7.0,
+   "z": 5.8,
+   "y": 1.9,
+   "w": 0.81,
+   "h": 0.9,
+   "d": 0.81,
+   "color": "#3C7848",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine7-trunk",
+   "type": "cylinder",
+   "in": "isle",
+   "x": 6.2,
+   "z": -2.6,
+   "w": 0.22,
+   "h": 1.0,
+   "d": 0.22,
+   "color": "#5B3D2A"
+  },
+  {
+   "id": "pine7-0",
+   "type": "cone",
+   "in": "isle",
+   "x": 6.2,
+   "z": -2.6,
+   "y": 0.7,
+   "w": 1.6,
+   "h": 1.3,
+   "d": 1.6,
+   "color": "#2F5E3A",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine7-1",
+   "type": "cone",
+   "in": "isle",
+   "x": 6.2,
+   "z": -2.6,
+   "y": 1.4,
+   "w": 1.25,
+   "h": 1.1,
+   "d": 1.25,
+   "color": "#356B41",
+   "roughness": 0.85
+  },
+  {
+   "id": "pine7-2",
+   "type": "cone",
+   "in": "isle",
+   "x": 6.2,
+   "z": -2.6,
+   "y": 2.0,
+   "w": 0.85,
+   "h": 0.95,
+   "d": 0.85,
+   "color": "#3C7848",
+   "roughness": 0.85
+  },
+  {
+   "id": "cherry-trunk",
+   "type": "cylinder",
+   "in": "isle",
+   "x": -5.8,
+   "z": 4.8,
+   "rz": -8,
+   "w": 0.34,
+   "h": 2.3,
+   "d": 0.34,
+   "color": "#5A3A2A"
+  },
+  {
+   "id": "cherry0",
+   "type": "sphere",
+   "in": "isle",
+   "x": -5.6,
+   "y": 2.0,
+   "z": 4.8,
+   "w": 1.9,
+   "h": 1.52,
+   "d": 1.9,
+   "color": "#F6B6CB",
+   "roughness": 0.8
+  },
+  {
+   "id": "cherry1",
+   "type": "sphere",
+   "in": "isle",
+   "x": -6.3,
+   "y": 2.4,
+   "z": 5.2,
+   "w": 1.4,
+   "h": 1.12,
+   "d": 1.4,
+   "color": "#F9C7D7",
+   "roughness": 0.8
+  },
+  {
+   "id": "cherry2",
+   "type": "sphere",
+   "in": "isle",
+   "x": -4.8,
+   "y": 2.3,
+   "z": 4.5,
+   "w": 1.5,
+   "h": 1.2,
+   "d": 1.5,
+   "color": "#F2A6BF",
+   "roughness": 0.8
+  },
+  {
+   "id": "cherry3",
+   "type": "sphere",
+   "in": "isle",
+   "x": -5.4,
+   "y": 2.9,
+   "z": 5.0,
+   "w": 1.3,
+   "h": 1.04,
+   "d": 1.3,
+   "color": "#FBD3E0",
+   "roughness": 0.8
+  },
+  {
+   "id": "cherry4",
+   "type": "sphere",
+   "in": "isle",
+   "x": -5.9,
+   "y": 1.9,
+   "z": 4.1,
+   "w": 1.2,
+   "h": 0.96,
+   "d": 1.2,
+   "color": "#F4B0C6",
+   "roughness": 0.8
+  },
+  {
+   "id": "petals",
+   "type": "particles",
+   "in": "isle",
+   "preset": "petals",
+   "x": -5.2,
+   "y": 1.6,
+   "z": 4.6,
+   "w": 4,
+   "h": 2.2,
+   "d": 3.6,
+   "rate": 14
+  },
+  {
+   "id": "torii-post0",
+   "type": "cylinder",
+   "in": "isle",
+   "x": -1.15,
+   "z": 8.3,
+   "w": 0.24,
+   "h": 2.7,
+   "d": 0.24,
+   "color": "#C8372D",
+   "roughness": 0.5
+  },
+  {
+   "id": "torii-post1",
+   "type": "cylinder",
+   "in": "isle",
+   "x": 1.15,
+   "z": 8.3,
+   "w": 0.24,
+   "h": 2.7,
+   "d": 0.24,
+   "color": "#C8372D",
+   "roughness": 0.5
+  },
+  {
+   "id": "torii-top",
+   "type": "box",
+   "in": "isle",
+   "y": 2.62,
+   "z": 8.3,
+   "w": 3.4,
+   "h": 0.2,
+   "d": 0.34,
+   "color": "#2A2522",
+   "roughness": 0.6
+  },
+  {
+   "id": "torii-beam",
+   "type": "box",
+   "in": "isle",
+   "y": 2.15,
+   "z": 8.3,
+   "w": 2.7,
+   "h": 0.14,
+   "d": 0.22,
+   "color": "#C8372D",
+   "roughness": 0.5
+  },
+  {
+   "id": "sign",
+   "type": "text",
+   "in": "isle",
+   "y": 3.05,
+   "z": 8.2,
+   "w": 420,
+   "h": 120,
+   "size_m": 0.5,
+   "face_camera": true,
+   "text": "精霊の庭",
+   "size": 60,
+   "align": "center",
+   "color": "#FFF6E6",
+   "background": "#00000066",
+   "radius": 24
+  },
+  {
+   "id": "lamp0l-post",
+   "type": "cylinder",
+   "in": "isle",
+   "x": -1.05,
+   "z": 0.2,
+   "w": 0.18,
+   "h": 0.62,
+   "d": 0.18,
+   "color": "#8C877E",
+   "roughness": 0.95
+  },
+  {
+   "id": "lamp0l",
+   "type": "box",
+   "in": "isle",
+   "x": -1.05,
+   "y": 0.62,
+   "z": 0.2,
+   "w": 0.3,
+   "h": 0.28,
+   "d": 0.3,
+   "color": "#F2D2A0",
+   "glow": 0.3,
+   "glow_color": "#FFB45A",
+   "roughness": 0.7,
+   "tappable": true
+  },
+  {
+   "id": "lamp0l-cap",
+   "type": "cone",
+   "in": "isle",
+   "x": -1.05,
+   "y": 0.9,
+   "z": 0.2,
+   "w": 0.48,
+   "h": 0.26,
+   "d": 0.48,
+   "color": "#6E6A63",
+   "roughness": 0.95
+  },
+  {
+   "id": "lamp0l-light",
+   "type": "light",
+   "in": "isle",
+   "x": -1.05,
+   "y": 0.76,
+   "z": 0.2,
+   "color": "#FFB060",
+   "intensity": 0.4,
+   "range": 4.5,
+   "flicker": true
+  },
+  {
+   "id": "lamp0r-post",
+   "type": "cylinder",
+   "in": "isle",
+   "x": 1.05,
+   "z": 0.2,
+   "w": 0.18,
+   "h": 0.62,
+   "d": 0.18,
+   "color": "#8C877E",
+   "roughness": 0.95
+  },
+  {
+   "id": "lamp0r",
+   "type": "box",
+   "in": "isle",
+   "x": 1.05,
+   "y": 0.62,
+   "z": 0.2,
+   "w": 0.3,
+   "h": 0.28,
+   "d": 0.3,
+   "color": "#F2D2A0",
+   "glow": 0.3,
+   "glow_color": "#FFB45A",
+   "roughness": 0.7,
+   "tappable": true
+  },
+  {
+   "id": "lamp0r-cap",
+   "type": "cone",
+   "in": "isle",
+   "x": 1.05,
+   "y": 0.9,
+   "z": 0.2,
+   "w": 0.48,
+   "h": 0.26,
+   "d": 0.48,
+   "color": "#6E6A63",
+   "roughness": 0.95
+  },
+  {
+   "id": "lamp0r-light",
+   "type": "light",
+   "in": "isle",
+   "x": 1.05,
+   "y": 0.76,
+   "z": 0.2,
+   "color": "#FFB060",
+   "intensity": 0.4,
+   "range": 4.5,
+   "flicker": true
+  },
+  {
+   "id": "lamp1l-post",
+   "type": "cylinder",
+   "in": "isle",
+   "x": -1.05,
+   "z": 2.6,
+   "w": 0.18,
+   "h": 0.62,
+   "d": 0.18,
+   "color": "#8C877E",
+   "roughness": 0.95
+  },
+  {
+   "id": "lamp1l",
+   "type": "box",
+   "in": "isle",
+   "x": -1.05,
+   "y": 0.62,
+   "z": 2.6,
+   "w": 0.3,
+   "h": 0.28,
+   "d": 0.3,
+   "color": "#F2D2A0",
+   "glow": 0.3,
+   "glow_color": "#FFB45A",
+   "roughness": 0.7,
+   "tappable": true
+  },
+  {
+   "id": "lamp1l-cap",
+   "type": "cone",
+   "in": "isle",
+   "x": -1.05,
+   "y": 0.9,
+   "z": 2.6,
+   "w": 0.48,
+   "h": 0.26,
+   "d": 0.48,
+   "color": "#6E6A63",
+   "roughness": 0.95
+  },
+  {
+   "id": "lamp1l-light",
+   "type": "light",
+   "in": "isle",
+   "x": -1.05,
+   "y": 0.76,
+   "z": 2.6,
+   "color": "#FFB060",
+   "intensity": 0.4,
+   "range": 4.5,
+   "flicker": true
+  },
+  {
+   "id": "lamp1r-post",
+   "type": "cylinder",
+   "in": "isle",
+   "x": 1.05,
+   "z": 2.6,
+   "w": 0.18,
+   "h": 0.62,
+   "d": 0.18,
+   "color": "#8C877E",
+   "roughness": 0.95
+  },
+  {
+   "id": "lamp1r",
+   "type": "box",
+   "in": "isle",
+   "x": 1.05,
+   "y": 0.62,
+   "z": 2.6,
+   "w": 0.3,
+   "h": 0.28,
+   "d": 0.3,
+   "color": "#F2D2A0",
+   "glow": 0.3,
+   "glow_color": "#FFB45A",
+   "roughness": 0.7,
+   "tappable": true
+  },
+  {
+   "id": "lamp1r-cap",
+   "type": "cone",
+   "in": "isle",
+   "x": 1.05,
+   "y": 0.9,
+   "z": 2.6,
+   "w": 0.48,
+   "h": 0.26,
+   "d": 0.48,
+   "color": "#6E6A63",
+   "roughness": 0.95
+  },
+  {
+   "id": "lamp1r-light",
+   "type": "light",
+   "in": "isle",
+   "x": 1.05,
+   "y": 0.76,
+   "z": 2.6,
+   "color": "#FFB060",
+   "intensity": 0.4,
+   "range": 4.5,
+   "flicker": true
+  },
+  {
+   "id": "lamp2l-post",
+   "type": "cylinder",
+   "in": "isle",
+   "x": -1.05,
+   "z": 5.0,
+   "w": 0.18,
+   "h": 0.62,
+   "d": 0.18,
+   "color": "#8C877E",
+   "roughness": 0.95
+  },
+  {
+   "id": "lamp2l",
+   "type": "box",
+   "in": "isle",
+   "x": -1.05,
+   "y": 0.62,
+   "z": 5.0,
+   "w": 0.3,
+   "h": 0.28,
+   "d": 0.3,
+   "color": "#F2D2A0",
+   "glow": 0.3,
+   "glow_color": "#FFB45A",
+   "roughness": 0.7,
+   "tappable": true
+  },
+  {
+   "id": "lamp2l-cap",
+   "type": "cone",
+   "in": "isle",
+   "x": -1.05,
+   "y": 0.9,
+   "z": 5.0,
+   "w": 0.48,
+   "h": 0.26,
+   "d": 0.48,
+   "color": "#6E6A63",
+   "roughness": 0.95
+  },
+  {
+   "id": "lamp2l-light",
+   "type": "light",
+   "in": "isle",
+   "x": -1.05,
+   "y": 0.76,
+   "z": 5.0,
+   "color": "#FFB060",
+   "intensity": 0.4,
+   "range": 4.5,
+   "flicker": true
+  },
+  {
+   "id": "lamp2r-post",
+   "type": "cylinder",
+   "in": "isle",
+   "x": 1.05,
+   "z": 5.0,
+   "w": 0.18,
+   "h": 0.62,
+   "d": 0.18,
+   "color": "#8C877E",
+   "roughness": 0.95
+  },
+  {
+   "id": "lamp2r",
+   "type": "box",
+   "in": "isle",
+   "x": 1.05,
+   "y": 0.62,
+   "z": 5.0,
+   "w": 0.3,
+   "h": 0.28,
+   "d": 0.3,
+   "color": "#F2D2A0",
+   "glow": 0.3,
+   "glow_color": "#FFB45A",
+   "roughness": 0.7,
+   "tappable": true
+  },
+  {
+   "id": "lamp2r-cap",
+   "type": "cone",
+   "in": "isle",
+   "x": 1.05,
+   "y": 0.9,
+   "z": 5.0,
+   "w": 0.48,
+   "h": 0.26,
+   "d": 0.48,
+   "color": "#6E6A63",
+   "roughness": 0.95
+  },
+  {
+   "id": "lamp2r-light",
+   "type": "light",
+   "in": "isle",
+   "x": 1.05,
+   "y": 0.76,
+   "z": 5.0,
+   "color": "#FFB060",
+   "intensity": 0.4,
+   "range": 4.5,
+   "flicker": true
+  },
+  {
+   "id": "lamp3l-post",
+   "type": "cylinder",
+   "in": "isle",
+   "x": -1.05,
+   "z": 7.0,
+   "w": 0.18,
+   "h": 0.62,
+   "d": 0.18,
+   "color": "#8C877E",
+   "roughness": 0.95
+  },
+  {
+   "id": "lamp3l",
+   "type": "box",
+   "in": "isle",
+   "x": -1.05,
+   "y": 0.62,
+   "z": 7.0,
+   "w": 0.3,
+   "h": 0.28,
+   "d": 0.3,
+   "color": "#F2D2A0",
+   "glow": 0.3,
+   "glow_color": "#FFB45A",
+   "roughness": 0.7,
+   "tappable": true
+  },
+  {
+   "id": "lamp3l-cap",
+   "type": "cone",
+   "in": "isle",
+   "x": -1.05,
+   "y": 0.9,
+   "z": 7.0,
+   "w": 0.48,
+   "h": 0.26,
+   "d": 0.48,
+   "color": "#6E6A63",
+   "roughness": 0.95
+  },
+  {
+   "id": "lamp3l-light",
+   "type": "light",
+   "in": "isle",
+   "x": -1.05,
+   "y": 0.76,
+   "z": 7.0,
+   "color": "#FFB060",
+   "intensity": 0.4,
+   "range": 4.5,
+   "flicker": true
+  },
+  {
+   "id": "lamp3r-post",
+   "type": "cylinder",
+   "in": "isle",
+   "x": 1.05,
+   "z": 7.0,
+   "w": 0.18,
+   "h": 0.62,
+   "d": 0.18,
+   "color": "#8C877E",
+   "roughness": 0.95
+  },
+  {
+   "id": "lamp3r",
+   "type": "box",
+   "in": "isle",
+   "x": 1.05,
+   "y": 0.62,
+   "z": 7.0,
+   "w": 0.3,
+   "h": 0.28,
+   "d": 0.3,
+   "color": "#F2D2A0",
+   "glow": 0.3,
+   "glow_color": "#FFB45A",
+   "roughness": 0.7,
+   "tappable": true
+  },
+  {
+   "id": "lamp3r-cap",
+   "type": "cone",
+   "in": "isle",
+   "x": 1.05,
+   "y": 0.9,
+   "z": 7.0,
+   "w": 0.48,
+   "h": 0.26,
+   "d": 0.48,
+   "color": "#6E6A63",
+   "roughness": 0.95
+  },
+  {
+   "id": "lamp3r-light",
+   "type": "light",
+   "in": "isle",
+   "x": 1.05,
+   "y": 0.76,
+   "z": 7.0,
+   "color": "#FFB060",
+   "intensity": 0.4,
+   "range": 4.5,
+   "flicker": true
+  },
+  {
+   "id": "pedestal",
+   "type": "cylinder",
+   "in": "isle",
+   "x": 2.7,
+   "z": 2.4,
+   "w": 1.1,
+   "h": 0.35,
+   "d": 1.1,
+   "color": "#9C978F",
+   "roughness": 0.9
+  },
+  {
+   "id": "pedestal-top",
+   "type": "cylinder",
+   "in": "isle",
+   "x": 2.7,
+   "y": 0.35,
+   "z": 2.4,
+   "w": 0.8,
+   "h": 0.12,
+   "d": 0.8,
+   "color": "#B8B2A8",
+   "roughness": 0.8
+  },
+  {
+   "id": "crystal",
+   "type": "cone",
+   "in": "isle",
+   "x": 2.7,
+   "y": 1.45,
+   "z": 2.4,
+   "w": 0.62,
+   "h": 0.95,
+   "d": 0.62,
+   "color": "#7FE8FF",
+   "glow": 2.2,
+   "roughness": 0.1,
+   "metallic": 0.2,
+   "opacity": 0.92,
+   "tappable": true
+  },
+  {
+   "id": "crystal-low",
+   "type": "cone",
+   "in": "isle",
+   "x": 2.7,
+   "y": 1.45,
+   "z": 2.4,
+   "rx": 180,
+   "w": 0.62,
+   "h": 0.55,
+   "d": 0.62,
+   "color": "#7FE8FF",
+   "glow": 2.2,
+   "roughness": 0.1,
+   "metallic": 0.2,
+   "opacity": 0.92,
+   "tappable": true
+  },
+  {
+   "id": "ring-a",
+   "type": "tube",
+   "in": "isle",
+   "x": 2.7,
+   "y": 1.45,
+   "z": 2.4,
+   "rx": 12,
+   "points": [
+    [
+     0.75,
+     0,
+     0.0
+    ],
+    [
+     0.724,
+     0,
+     0.194
+    ],
+    [
+     0.65,
+     0,
+     0.375
+    ],
+    [
+     0.53,
+     0,
+     0.53
+    ],
+    [
+     0.375,
+     0,
+     0.65
+    ],
+    [
+     0.194,
+     0,
+     0.724
+    ],
+    [
+     0.0,
+     0,
+     0.75
+    ],
+    [
+     -0.194,
+     0,
+     0.724
+    ],
+    [
+     -0.375,
+     0,
+     0.65
+    ],
+    [
+     -0.53,
+     0,
+     0.53
+    ],
+    [
+     -0.65,
+     0,
+     0.375
+    ],
+    [
+     -0.724,
+     0,
+     0.194
+    ],
+    [
+     -0.75,
+     0,
+     0.0
+    ],
+    [
+     -0.724,
+     0,
+     -0.194
+    ],
+    [
+     -0.65,
+     0,
+     -0.375
+    ],
+    [
+     -0.53,
+     0,
+     -0.53
+    ],
+    [
+     -0.375,
+     0,
+     -0.65
+    ],
+    [
+     -0.194,
+     0,
+     -0.724
+    ],
+    [
+     -0.0,
+     0,
+     -0.75
+    ],
+    [
+     0.194,
+     0,
+     -0.724
+    ],
+    [
+     0.375,
+     0,
+     -0.65
+    ],
+    [
+     0.53,
+     0,
+     -0.53
+    ],
+    [
+     0.65,
+     0,
+     -0.375
+    ],
+    [
+     0.724,
+     0,
+     -0.194
+    ],
+    [
+     0.75,
+     0,
+     -0.0
+    ]
+   ],
+   "radius": 0.022,
+   "color": "#E7C35A",
+   "metallic": 1,
+   "roughness": 0.25
+  },
+  {
+   "id": "ring-b",
+   "type": "tube",
+   "in": "isle",
+   "x": 2.7,
+   "y": 1.45,
+   "z": 2.4,
+   "rx": -20,
+   "rz": 30,
+   "points": [
+    [
+     0.95,
+     0,
+     0.0
+    ],
+    [
+     0.918,
+     0,
+     0.246
+    ],
+    [
+     0.823,
+     0,
+     0.475
+    ],
+    [
+     0.672,
+     0,
+     0.672
+    ],
+    [
+     0.475,
+     0,
+     0.823
+    ],
+    [
+     0.246,
+     0,
+     0.918
+    ],
+    [
+     0.0,
+     0,
+     0.95
+    ],
+    [
+     -0.246,
+     0,
+     0.918
+    ],
+    [
+     -0.475,
+     0,
+     0.823
+    ],
+    [
+     -0.672,
+     0,
+     0.672
+    ],
+    [
+     -0.823,
+     0,
+     0.475
+    ],
+    [
+     -0.918,
+     0,
+     0.246
+    ],
+    [
+     -0.95,
+     0,
+     0.0
+    ],
+    [
+     -0.918,
+     0,
+     -0.246
+    ],
+    [
+     -0.823,
+     0,
+     -0.475
+    ],
+    [
+     -0.672,
+     0,
+     -0.672
+    ],
+    [
+     -0.475,
+     0,
+     -0.823
+    ],
+    [
+     -0.246,
+     0,
+     -0.918
+    ],
+    [
+     -0.0,
+     0,
+     -0.95
+    ],
+    [
+     0.246,
+     0,
+     -0.918
+    ],
+    [
+     0.475,
+     0,
+     -0.823
+    ],
+    [
+     0.672,
+     0,
+     -0.672
+    ],
+    [
+     0.823,
+     0,
+     -0.475
+    ],
+    [
+     0.918,
+     0,
+     -0.246
+    ],
+    [
+     0.95,
+     0,
+     -0.0
+    ]
+   ],
+   "radius": 0.016,
+   "color": "#E7C35A",
+   "metallic": 1,
+   "roughness": 0.25
+  },
+  {
+   "id": "spiral",
+   "type": "tube",
+   "in": "isle",
+   "x": 2.7,
+   "z": 2.4,
+   "points": [
+    [
+     0.95,
+     0.25,
+     0.0
+    ],
+    [
+     0.834,
+     0.34,
+     0.455
+    ],
+    [
+     0.513,
+     0.43,
+     0.799
+    ],
+    [
+     0.067,
+     0.52,
+     0.948
+    ],
+    [
+     -0.395,
+     0.61,
+     0.864
+    ],
+    [
+     -0.761,
+     0.7,
+     0.569
+    ],
+    [
+     -0.94,
+     0.79,
+     0.134
+    ],
+    [
+     -0.89,
+     0.88,
+     -0.333
+    ],
+    [
+     -0.621,
+     0.97,
+     -0.719
+    ],
+    [
+     -0.2,
+     1.06,
+     -0.929
+    ],
+    [
+     0.269,
+     1.15,
+     -0.911
+    ],
+    [
+     0.673,
+     1.24,
+     -0.67
+    ],
+    [
+     0.912,
+     1.33,
+     -0.265
+    ],
+    [
+     0.928,
+     1.42,
+     0.204
+    ],
+    [
+     0.716,
+     1.51,
+     0.624
+    ],
+    [
+     0.329,
+     1.6,
+     0.891
+    ],
+    [
+     -0.138,
+     1.69,
+     0.94
+    ],
+    [
+     -0.572,
+     1.78,
+     0.759
+    ],
+    [
+     -0.866,
+     1.87,
+     0.392
+    ],
+    [
+     -0.947,
+     1.96,
+     -0.071
+    ],
+    [
+     -0.797,
+     2.05,
+     -0.517
+    ],
+    [
+     -0.452,
+     2.14,
+     -0.836
+    ],
+    [
+     0.004,
+     2.23,
+     -0.95
+    ],
+    [
+     0.459,
+     2.32,
+     -0.832
+    ],
+    [
+     0.802,
+     2.41,
+     -0.51
+    ],
+    [
+     0.948,
+     2.5,
+     -0.063
+    ],
+    [
+     0.862,
+     2.59,
+     0.399
+    ],
+    [
+     0.565,
+     2.68,
+     0.764
+    ]
+   ],
+   "radius": 0.018,
+   "color": "#9FF3FF",
+   "glow": 4
+  },
+  {
+   "id": "crystal-light",
+   "type": "light",
+   "in": "isle",
+   "x": 2.7,
+   "y": 1.5,
+   "z": 2.4,
+   "color": "#7FE8FF",
+   "intensity": 2.5,
+   "range": 6
+  },
+  {
+   "id": "magic",
+   "type": "particles",
+   "in": "isle",
+   "preset": "magic",
+   "x": 2.7,
+   "y": 0.4,
+   "z": 2.4,
+   "w": 1.2,
+   "h": 0.4,
+   "d": 1.2,
+   "rate": 26
+  },
+  {
+   "id": "burst",
+   "type": "particles",
+   "in": "isle",
+   "preset": "sparkles",
+   "x": 2.7,
+   "y": 1.5,
+   "z": 2.4,
+   "burst": 160,
+   "size": 0.07,
+   "trigger": 0
+  },
+  {
+   "id": "ripple",
+   "type": "particles",
+   "in": "isle",
+   "preset": "sparkles",
+   "x": -3.4,
+   "y": 0.05,
+   "z": 3.2,
+   "burst": 40,
+   "size": 0.05,
+   "color": "#BFEFFF",
+   "trigger": 0
+  },
+  {
+   "id": "me",
+   "type": "vrm",
+   "in": "isle",
+   "x": 0.85,
+   "z": 1.6,
+   "ry": -25,
+   "pose": "idle",
+   "tappable": true
+  },
+  {
+   "id": "name",
+   "type": "text",
+   "in": "isle",
+   "x": 0.85,
+   "y": 1.78,
+   "z": 1.6,
+   "w": 240,
+   "h": 64,
+   "size_m": 0.16,
+   "face_camera": true,
+   "text": "精霊",
+   "size": 32,
+   "align": "center",
+   "color": "#FFFFFF",
+   "background": "#3B5B8CCC",
+   "radius": 28
+  },
+  {
+   "id": "islet0",
+   "type": "cone",
+   "in": "isle",
+   "x": -11,
+   "y": 2.5,
+   "z": 11,
+   "rx": 180,
+   "w": 3.08,
+   "h": 3.64,
+   "d": 3.08,
+   "color": "#5C4636",
+   "roughness": 1
+  },
+  {
+   "id": "islet0-top",
+   "type": "cylinder",
+   "in": "isle",
+   "x": -11,
+   "y": 2.5,
+   "z": 11,
+   "w": 3.22,
+   "h": 0.3,
+   "d": 3.22,
+   "color": "#5D8A47"
+  },
+  {
+   "id": "islet0-tree",
+   "type": "cone",
+   "in": "isle",
+   "x": -11,
+   "y": 2.8,
+   "z": 11,
+   "w": 1.12,
+   "h": 1.96,
+   "d": 1.12,
+   "color": "#356B41"
+  },
+  {
+   "id": "islet1",
+   "type": "cone",
+   "in": "isle",
+   "x": 11.5,
+   "y": 4.2,
+   "z": 13,
+   "rx": 180,
+   "w": 2.42,
+   "h": 2.86,
+   "d": 2.42,
+   "color": "#5C4636",
+   "roughness": 1
+  },
+  {
+   "id": "islet1-top",
+   "type": "cylinder",
+   "in": "isle",
+   "x": 11.5,
+   "y": 4.2,
+   "z": 13,
+   "w": 2.53,
+   "h": 0.3,
+   "d": 2.53,
+   "color": "#5D8A47"
+  },
+  {
+   "id": "islet1-tree",
+   "type": "cone",
+   "in": "isle",
+   "x": 11.5,
+   "y": 4.5,
+   "z": 13,
+   "w": 0.88,
+   "h": 1.54,
+   "d": 0.88,
+   "color": "#356B41"
+  },
+  {
+   "id": "islet2",
+   "type": "cone",
+   "in": "isle",
+   "x": -13,
+   "y": -0.5,
+   "z": -1,
+   "rx": 180,
+   "w": 2.2,
+   "h": 2.6,
+   "d": 2.2,
+   "color": "#5C4636",
+   "roughness": 1
+  },
+  {
+   "id": "islet2-top",
+   "type": "cylinder",
+   "in": "isle",
+   "x": -13,
+   "y": -0.5,
+   "z": -1,
+   "w": 2.3,
+   "h": 0.3,
+   "d": 2.3,
+   "color": "#5D8A47"
+  },
+  {
+   "id": "islet2-tree",
+   "type": "cone",
+   "in": "isle",
+   "x": -13,
+   "y": -0.2,
+   "z": -1,
+   "w": 0.8,
+   "h": 1.4,
+   "d": 0.8,
+   "color": "#356B41"
+  },
+  {
+   "id": "islet3",
+   "type": "cone",
+   "in": "isle",
+   "x": 13,
+   "y": 1.2,
+   "z": -3.5,
+   "rx": 180,
+   "w": 2.86,
+   "h": 3.38,
+   "d": 2.86,
+   "color": "#5C4636",
+   "roughness": 1
+  },
+  {
+   "id": "islet3-top",
+   "type": "cylinder",
+   "in": "isle",
+   "x": 13,
+   "y": 1.2,
+   "z": -3.5,
+   "w": 2.99,
+   "h": 0.3,
+   "d": 2.99,
+   "color": "#5D8A47"
+  },
+  {
+   "id": "islet3-tree",
+   "type": "cone",
+   "in": "isle",
+   "x": 13,
+   "y": 1.5,
+   "z": -3.5,
+   "w": 1.04,
+   "h": 1.82,
+   "d": 1.04,
+   "color": "#356B41"
+  },
+  {
+   "id": "clouds",
+   "type": "scatter",
+   "in": "isle",
+   "shape": "sphere",
+   "x": 0,
+   "y": -4,
+   "z": 2,
+   "dome": 70,
+   "count": 36,
+   "seed": 11,
+   "size": [
+    3,
+    6
+   ],
+   "stretch": [
+    2.6,
+    0.55,
+    1.6
+   ],
+   "colors": [
+    "#FFFFFF",
+    "#F4F1EC"
+   ],
+   "roughness": 1
+  },
+  {
+   "id": "stars",
+   "type": "scatter",
+   "in": "isle",
+   "shape": "sphere",
+   "x": 0,
+   "y": -2,
+   "z": 2,
+   "dome": 90,
+   "count": 900,
+   "seed": 5,
+   "size": [
+    0.08,
+    0.26
+   ],
+   "colors": [
+    "#FFFFFF",
+    "#CFE0FF",
+    "#FFF1C9"
+   ],
+   "glow": 6,
+   "color": "#E8F0FF",
+   "visible": false
+  },
+  {
+   "id": "moon",
+   "type": "sphere",
+   "in": "isle",
+   "x": -34,
+   "y": 26,
+   "z": 64,
+   "w": 5,
+   "h": 5,
+   "d": 5,
+   "color": "#F4F0E2",
+   "glow": 3,
+   "visible": false
+  },
+  {
+   "id": "fireflies",
+   "type": "particles",
+   "in": "isle",
+   "preset": "fireflies",
+   "x": -3.4,
+   "y": 0.15,
+   "z": 3.2,
+   "w": 6,
+   "h": 1.4,
+   "d": 5,
+   "rate": 0
+  },
+  {
+   "id": "dust",
+   "type": "particles",
+   "in": "isle",
+   "preset": "dust",
+   "x": 0,
+   "y": 0.2,
+   "z": 2,
+   "w": 12,
+   "h": 3,
+   "d": 12,
+   "rate": 12
+  },
+  {
+   "id": "hint",
+   "type": "text",
+   "anchor": "top-left",
+   "x": 16,
+   "y": 16,
+   "w": "92%",
+   "h": 44,
+   "text": "結晶・灯籠・池・精霊を触ってみて",
+   "size": 18,
+   "color": "#FFFFFF",
+   "background": "#00000077",
+   "radius": 12,
+   "align": "center"
+  },
+  {
+   "id": "back",
+   "type": "button",
+   "anchor": "top-left",
+   "x": 16,
+   "y": 72,
+   "w": 140,
+   "h": 52,
+   "label": "戻る",
+   "visible": false,
+   "on": {
+    "press": [
+     {
+      "do": "add",
+      "key": "backs"
+     }
+    ]
+   }
+  },
+  {
+   "id": "time-dusk",
+   "type": "button",
+   "anchor": "bottom-left",
+   "x": 16,
+   "y": -16,
+   "w": 128,
+   "h": 52,
+   "label": "夕暮れ",
+   "on": {
+    "press": [
+     {
+      "do": "set",
+      "key": "time",
+      "value": "dusk"
+     }
+    ]
+   }
+  },
+  {
+   "id": "time-night",
+   "type": "button",
+   "anchor": "bottom-left",
+   "x": 152,
+   "y": -16,
+   "w": 128,
+   "h": 52,
+   "label": "夜",
+   "on": {
+    "press": [
+     {
+      "do": "set",
+      "key": "time",
+      "value": "night"
+     }
+    ]
+   }
+  },
+  {
+   "id": "time-morning",
+   "type": "button",
+   "anchor": "bottom-left",
+   "x": 288,
+   "y": -16,
+   "w": 128,
+   "h": 52,
+   "label": "朝",
+   "on": {
+    "press": [
+     {
+      "do": "set",
+      "key": "time",
+      "value": "morning"
+     }
+    ]
+   }
+  },
+  {
+   "id": "closer",
+   "type": "button",
+   "anchor": "bottom-right",
+   "x": -16,
+   "y": -16,
+   "w": 110,
+   "h": 52,
+   "label": "寄る",
+   "on": {
+    "press": [
+     {
+      "do": "add",
+      "key": "closers"
+     }
+    ]
+   }
+  },
+  {
+   "id": "around",
+   "type": "button",
+   "anchor": "bottom-right",
+   "x": -134,
+   "y": -16,
+   "w": 140,
+   "h": 52,
+   "label": "ひと回り",
+   "on": {
+    "press": [
+     {
+      "do": "add",
+      "key": "turns"
+     }
+    ]
+   }
+  }
+ ],
+ "state": {
+  "time": "dusk",
+  "closers": 0,
+  "turns": 0,
+  "backs": 0
+ },
+ "timelines": {},
+ "scripts": {
+  "isle": "var HOME = {\"cam_x\": -1.2, \"cam_y\": 2.3, \"cam_z\": -7.2, \"look_x\": 0.8, \"look_y\": 1.0, \"look_z\": 2.4, \"fov\": 48};\nvar LAMPS = [\"lamp0l\", \"lamp0r\", \"lamp1l\", \"lamp1r\", \"lamp2l\", \"lamp2r\", \"lamp3l\", \"lamp3r\"];\nvar lit = {};\nvar FAR = { cam_x: 0, cam_y: 9, cam_z: -20, look_x: 0, look_y: 0, look_z: 3, fov: 40 };\n\n// Coming in from far away.\nsg.update('isle', FAR);\nsg.after(300, function () { sg.update('isle', HOME, 7000); });\n\n// The crystal turns and floats; the rings turn; the islets drift.\nfunction spin(id, base, extra, ms) {\n  var a = { at: 0 }, b = { at: 1 };\n  for (var k in base) { a[k] = base[k]; b[k] = base[k] + extra[k]; }\n  sg.animate(id, { keyframes: [a, b], duration_ms: ms, repeat: -1, easing: 'linear' });\n}\nspin('crystal', { ry: 0 }, { ry: 360 }, 9000);\nspin('crystal-low', { ry: 0 }, { ry: 360 }, 9000);\nspin('ring-a', { ry: 0 }, { ry: 360 }, 7000);\nspin('ring-b', { ry: 0 }, { ry: -360 }, 11000);\nspin('spiral', { ry: 0 }, { ry: 360 }, 6000);\n[['islet0', 2.5], ['islet1', 4.2], ['islet2', -0.5], ['islet3', 1.2]].forEach(function (p, i) {\n  ['', '-top', '-tree'].forEach(function (s) {\n    var y = p[1] + (s === '-top' ? 0 : s === '-tree' ? 0.3 : 0);\n    sg.animate(p[0] + s, { keyframes: [{ at: 0, y: y }, { at: 1, y: y + 0.45 }], duration_ms: 4200 + i * 700,\n      repeat: -1, alternate: true, easing: 'ease_in_out' });\n  });\n});\n\n// The time of day.\nfunction lamps(on, ms) {\n  LAMPS.forEach(function (n) {\n    lit[n] = on;\n    sg.update(n, { glow: on ? 5 : 0.3 }, ms);\n    sg.update(n + '-light', { intensity: on ? 4 : 0.4 }, ms);\n  });\n}\nvar TIMES = {\n  dusk: { sky: { sun_elevation: 6, sun_azimuth: 28, exposure: 1.05, warmth: 0.22, fog: 0.007, bloom: 0.12, god_rays: 0.5 },\n          fog_color: '#E8B898', night: false, lamps: false, text: '夕暮れ' },\n  night: { sky: { sun_elevation: -16, sun_azimuth: 40, exposure: 1.6, warmth: -0.15, fog: 0.008, bloom: 0.25, god_rays: 0 },\n           fog_color: '#1A2440', night: true, lamps: true, text: '夜。灯籠がともり、ホタルが飛ぶ' },\n  morning: { sky: { sun_elevation: 24, sun_azimuth: -45, exposure: 1.0, warmth: -0.05, fog: 0.004, bloom: 0.08, god_rays: 0.6 },\n             fog_color: '#CFE0F0', night: false, lamps: false, text: '朝' },\n};\nvar shown = 'dusk';\nfunction setTime(name) {\n  var t = TIMES[name];\n  if (!t || name === shown) return;\n  shown = name;\n  sg.update('isle', t.sky, 6000);\n  sg.update('isle', { fog_color: t.fog_color });\n  lamps(t.lamps, 4000);\n  sg.after(t.night ? 2500 : 0, function () {\n    sg.update('stars', { visible: t.night });\n    sg.update('moon', { visible: t.night });\n  });\n  sg.update('fireflies', { rate: t.night ? 10 : 0 }, 3000);\n  sg.update('dust', { rate: t.night ? 3 : 12 }, 3000);\n  sg.update('crystal-light', { intensity: t.night ? 5 : 2.5 }, 3000);\n  sg.update('me', { pose: t.night ? 'sleep' : 'idle' });\n  sg.update('hint', { text: t.text });\n}\n\n// Touching.\nvar flares = 0;\nfunction flare() {\n  flares += 1;\n  sg.update('burst', { trigger: flares });\n  ['crystal', 'crystal-low'].forEach(function (id) {\n    sg.update(id, { glow: 7 }, 150);\n    sg.after(250, function () { sg.update(id, { glow: 2.2 }, 1500); });\n  });\n  sg.update('crystal-light', { intensity: 14 }, 150);\n  sg.after(250, function () { sg.update('crystal-light', { intensity: shown === 'night' ? 5 : 2.5 }, 1500); });\n  sg.update('me', { pose: 'cheer', expression: 'happy' });\n  sg.speak('わあ、きらきら！', { vrm: 'me', interrupt: true });\n  sg.update('hint', { text: '結晶が光った' });\n  sg.after(2600, function () { sg.update('me', { pose: shown === 'night' ? 'sleep' : 'idle', expression: 'neutral' }); });\n}\nsg.on('tap', 'crystal', flare);\nsg.on('tap', 'crystal-low', flare);\n\nLAMPS.forEach(function (n) {\n  sg.on('tap', n, function () {\n    var on = !lit[n];\n    lit[n] = on;\n    sg.update(n, { glow: on ? 5 : 0.3 }, 400);\n    sg.update(n + '-light', { intensity: on ? 4 : 0.4 }, 400);\n    sg.update('hint', { text: on ? '灯籠をともした' : '灯籠を消した' });\n  });\n});\n\nvar ripples = 0;\nsg.on('tap', 'pond', function (e) {\n  ripples += 1;\n  var p = e.value || {};\n  sg.update('ripple', { x: p.x, y: (p.y || 0) + 0.05, z: p.z, trigger: ripples });\n  sg.update('hint', { text: '池にさわった' });\n});\n\nsg.on('tap', 'me', function (e) {\n  var part = (e.value && e.value.part) || '';\n  if (shown === 'night') {\n    sg.update('me', { pose: 'wave', expression: 'surprised' });\n    sg.speak('むにゃ…あ、夜だね。', { vrm: 'me', interrupt: true });\n  } else if (part === 'head') {\n    sg.update('me', { pose: 'nod', expression: 'happy' });\n    sg.speak('えへへ。', { vrm: 'me', interrupt: true });\n  } else {\n    sg.update('me', { pose: 'wave', expression: 'happy' });\n    sg.speak('ようこそ、わたしの庭へ。', { vrm: 'me', interrupt: true });\n  }\n  sg.after(2800, function () { sg.update('me', { pose: shown === 'night' ? 'sleep' : 'idle', expression: 'neutral' }); });\n});\n\n// The camera: up to the spirit (the rest blurs), and round the island.\nvar busy = false;\nfunction closer() {\n  if (busy) return;\n  sg.update('isle', { cam_x: 0.1, cam_y: 1.55, cam_z: -0.3, look_x: 0.85, look_y: 1.35, look_z: 1.6, fov: 38, focus: 2.0 }, 2200);\n  sg.update('back', { visible: true });\n  sg.update('hint', { text: '精霊に寄った' });\n}\nfunction back() {\n  sg.update('isle', { focus: 0 });\n  sg.update('isle', HOME, 1800);\n  sg.update('back', { visible: false });\n}\nfunction around() {\n  if (busy) return;\n  busy = true;\n  sg.update('isle', { cam_x: 0, cam_y: 4.5, cam_z: -9.5, look_x: 0, look_y: 0.8, look_z: 2.4, fov: 50, focus: 0 }, 1500);\n  sg.after(1500, function () { sg.update('isle', { camera_mode: 'orbit', orbit_speed: 30 }); });\n  sg.update('hint', { text: '島をひと回り' });\n  sg.after(13500, function () {\n    sg.update('isle', { camera_mode: 'fixed' });\n    sg.update('isle', HOME, 1500);\n    busy = false;\n  });\n}\nvar last = { time: 'dusk', closers: 0, turns: 0, backs: 0 };\nsg.every(100, function () {\n  var t = sg.get('time') || 'dusk';\n  if (t !== last.time) { last.time = t; setTime(t); }\n  ['closers', 'turns', 'backs'].forEach(function (k) {\n    var v = sg.get(k) || 0;\n    if (v !== last[k]) { last[k] = v; ({ closers: closer, turns: around, backs: back })[k](); }\n  });\n});\n"
+ }
+}

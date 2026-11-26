@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:vector_math/vector_math.dart' as vm;
 import '../media.dart';
 import 'canvas_model.dart';
 import 'vrm_element.dart';
+import 'world_fx.dart';
 
 /// A 3D world on the canvas (`type: world`), drawn with flutter_scene.
 ///
@@ -34,6 +36,16 @@ import 'vrm_element.dart';
 /// (strength, default 3), `shadows` (default true). A `tap` event comes
 /// for a tappable thing (or any thing, when the world is tappable) with
 /// the point it was touched (x, y, z).
+///
+/// The look (Part 12): `sky: "physical"` draws a sky from the sun
+/// (`sun_elevation`, `sun_azimuth` in degrees; below 0 is night) that also
+/// lights the world. `bloom` (strength; things with `glow` above 1 shine
+/// out), `fog` (density) and `fog_color`, `exposure`, `warmth`,
+/// `saturation`, `vignette`, `god_rays`, `focus` (metres; with `aperture`),
+/// `reflections` (true: shiny things reflect the world), `ao` (true: soft
+/// shade in corners). All numbers move with a transition.
+/// More things: `light` (a point light: `color`, `intensity`, `range`,
+/// `flicker`), `particles`, `scatter` and `tube` (see world_fx.dart).
 class WorldView extends StatefulWidget {
   const WorldView({
     super.key,
@@ -60,6 +72,8 @@ class _Thing {
   final String signature;
   VrmAvatar? avatar;
   PhysicallyBasedMaterial? material;
+  PointLight? light;
+  Particles? particles;
   bool faceCamera = false;
 }
 
@@ -73,6 +87,11 @@ class _WorldViewState extends State<WorldView> {
   double _dragYaw = 0;
   double _dragPitch = 0;
   DirectionalLight? _sun;
+  TextureSource? _dot;
+  PhysicalSkySource? _sky;
+  SunLight? _sunLight;
+  vm.Vector3? _bakedSun;
+  double _sinceBake = 0;
 
   CanvasController get c => widget.controller;
   CanvasElement get w => widget.world;
@@ -88,7 +107,13 @@ class _WorldViewState extends State<WorldView> {
         castsShadow: true,
       );
       _scene.directionalLight = _sun;
-      setState(() => _ready = true);
+      softDot().then((dot) {
+        if (!mounted) return;
+        setState(() {
+          _dot = dot;
+          _ready = true;
+        });
+      });
     });
   }
 
@@ -114,6 +139,17 @@ class _WorldViewState extends State<WorldView> {
   String _signature(CanvasElement e) => switch (e.type) {
     'vrm' => 'vrm:${e.str('src')}',
     _ when k3dShapes.contains(e.type) => 'shape:${e.type}',
+    'light' => 'light',
+    // Rebuilt when what they are made of changes (not when they move).
+    'particles' =>
+      'particles:${jsonEncode([
+        for (final k in const ['preset', 'w', 'h', 'd', 'color', 'size', 'glow', 'burst']) e.props[k],
+      ])}',
+    'tube' => 'tube:${jsonEncode([e.props['points'], e.props['radius']])}',
+    'scatter' =>
+      'scatter:${jsonEncode([
+        for (final k in const ['shape', 'count', 'seed', 'w', 'd', 'size', 'stretch', 'colors', 'color', 'dome', 'glow', 'roughness', 'metallic', 'spin']) e.props[k],
+      ])}',
     _ =>
       'panel:${e.type}:${e.num_('w', 400)}x${e.num_('h', 300)}:'
           '${e.props['size_m']}',
@@ -134,6 +170,20 @@ class _WorldViewState extends State<WorldView> {
     final thing = _Thing(node, _signature(e));
     if (e.type == 'vrm') {
       _loadVrm(e, thing);
+    } else if (e.type == 'light') {
+      final light = thing.light = PointLight();
+      node.addComponent(PointLightComponent(light));
+    } else if (e.type == 'particles') {
+      final p = thing.particles = Particles(e, _dot!);
+      node.add(p.node);
+    } else if (e.type == 'scatter') {
+      node.add(scatter(e, _geometry));
+    } else if (e.type == 'tube') {
+      final geometry = tube(e);
+      if (geometry != null) {
+        final material = thing.material = PhysicallyBasedMaterial();
+        node.add(Node(mesh: Mesh(geometry, material)));
+      }
     } else if (k3dShapes.contains(e.type)) {
       final material = PhysicallyBasedMaterial()..metallicFactor = 0;
       thing.material = material;
@@ -203,11 +253,7 @@ class _WorldViewState extends State<WorldView> {
       if (!seen.contains(id)) _remove(_things.remove(id)!);
     }
     _aim(dt);
-    final sun = _sun;
-    if (sun != null) {
-      sun.intensity = w.num_('light', 3);
-      sun.castsShadow = w.flag('shadows', true);
-    }
+    _look(dt);
     for (final thing in _things.values) {
       final a = thing.avatar;
       if (a == null) continue;
@@ -223,6 +269,7 @@ class _WorldViewState extends State<WorldView> {
     final size = isShape
         ? vm.Vector3(v['w']! * s, v['h']! * s, v['d']! * s)
         : vm.Vector3.all(s);
+    // Particles keep a turn-free box, scatter its own sizes.
     final pos = vm.Vector3(v['x']!, v['y']!, v['z']!);
     double deg(String k) => (v[k] ?? 0) * math.pi / 180;
     // A VRM and a panel face -z (the viewer) at ry 0.
@@ -244,11 +291,28 @@ class _WorldViewState extends State<WorldView> {
       m.baseColorFactor = color;
       m.roughnessFactor = e.num_('roughness', 0.7).clamp(0, 1);
       m.metallicFactor = e.num_('metallic', 0).clamp(0, 1);
-      m.emissiveFactor = e.flag('glow', false)
-          ? vm.Vector4(color.x, color.y, color.z, 1)
-          : vm.Vector4.zero();
+      // `glow` 1 is lit by itself; above 1 is brighter than lit (and blooms).
+      final glow = v['glow'] ?? 0;
+      final emissive = rgb(e.str('glow_color') ?? e.str('color')) * glow;
+      m.emissiveFactor = vm.Vector4(emissive.x, emissive.y, emissive.z, 1);
       m.alphaMode = color.w < 0.999 ? AlphaMode.blend : AlphaMode.opaque;
     }
+    final light = thing.light;
+    if (light != null) {
+      var strength = v['intensity'] ?? 1;
+      if (e.flag('flicker', false)) {
+        final p = (e.id.hashCode % 100) / 10;
+        strength *=
+            0.82 +
+            0.1 * math.sin(t * 7.1 + p) +
+            0.08 * math.sin(t * 13.7 + p * 2.3);
+      }
+      light
+        ..color = rgb(e.str('color'), '#FFD9A0')
+        ..intensity = strength * (e.flag('visible', true) ? 1 : 0)
+        ..range = e.num_('range', 0);
+    }
+    thing.particles?.update(e, v['rate'] ?? 0);
     final a = thing.avatar;
     if (a != null) {
       poseVrm(a, e, t);
@@ -308,6 +372,91 @@ class _WorldViewState extends State<WorldView> {
       ..target = look;
   }
 
+  /// The world's sky, sun, light and finish.
+  void _look(double dt) {
+    final v = c.currentValues(w);
+    final el = v['sun_elevation']! * math.pi / 180;
+    final az = v['sun_azimuth']! * math.pi / 180;
+    final toSun = vm.Vector3(
+      math.cos(el) * math.sin(az),
+      math.sin(el),
+      math.cos(el) * math.cos(az),
+    );
+    if (w.str('sky') == 'physical') {
+      var sky = _sky;
+      if (sky == null) {
+        sky = _sky = PhysicalSkySource();
+        _scene.skybox = Skybox(sky);
+        _scene.skyEnvironment = SkyEnvironment(sky, faceResolution: 64);
+        _scene.sunLight = _sunLight = SunLight(
+          sky,
+          shadowCascadeCount: 2,
+          shadowMaxDistance: 40,
+        );
+      }
+      sky.sunDirection = toSun;
+      _sunLight!
+        ..intensityScale = v['light']! / 3
+        ..castsShadow = w.flag('shadows', true);
+      // The soft light from the sky is baked again when the sun has moved
+      // (at most 4 times a second).
+      _sinceBake += dt;
+      final baked = _bakedSun;
+      if (baked == null ||
+          (_sinceBake > 0.25 && baked.angleTo(toSun) > 0.4 * math.pi / 180)) {
+        _scene.skyEnvironment?.invalidate();
+        _bakedSun = toSun.clone();
+        _sinceBake = 0;
+      }
+    } else {
+      if (_sky != null) {
+        _sky = null;
+        _scene.sunLight = null;
+        _scene.skyEnvironment = null;
+        _scene.skybox = null;
+        _scene.directionalLight = _sun;
+      }
+      final sun = _sun;
+      if (sun != null) {
+        sun.intensity = v['light']!;
+        sun.castsShadow = w.flag('shadows', true);
+        if (w.props.containsKey('sun_elevation')) {
+          sun.direction = -toSun;
+        }
+      }
+    }
+    final post = _scene.postProcess;
+    post.bloom
+      ..enabled = v['bloom']! > 0
+      ..intensity = v['bloom']!
+      ..threshold = w.num_('bloom_threshold', 1);
+    _scene.fog
+      ..enabled = v['fog']! > 0
+      ..density = v['fog']!
+      ..color = rgb(w.str('fog_color'), '#9FB4C8')
+      // Glow toward the sun, only while it is up.
+      ..sunInScatter = w.str('sky') == 'physical'
+          ? 0.3 * (v['sun_elevation']! / 10).clamp(0.0, 1.0)
+          : 0;
+    _scene.exposure = v['exposure']!;
+    post.colorGrading
+      ..enabled = v['warmth'] != 0 || v['saturation'] != 1
+      ..temperature = v['warmth']!.clamp(-1, 1)
+      ..saturation = v['saturation']!;
+    post.vignette
+      ..enabled = v['vignette']! > 0
+      ..intensity = v['vignette']!;
+    _scene.godRays
+      ..enabled = v['god_rays']! > 0
+      ..intensity = v['god_rays']!;
+    _scene.depthOfField
+      ..enabled = v['focus']! > 0
+      ..focusDistance = math.max(0.1, v['focus']!)
+      ..fStop = w.num_('aperture', 2.8);
+    _scene.screenSpaceReflections.enabled = w.flag('reflections', false);
+    _scene.ambientOcclusion.enabled = w.flag('ao', false);
+  }
+
   // --- touch -----------------------------------------------------------------------
 
   void _onTap(TapUpDetails d) {
@@ -357,7 +506,7 @@ class _WorldViewState extends State<WorldView> {
   @override
   Widget build(BuildContext context) {
     if (!_ready) return const SizedBox.expand();
-    final sky = w.str('sky');
+    final sky = w.str('sky') == 'physical' ? null : w.str('sky');
     Widget view = LayoutBuilder(
       builder: (context, box) {
         _size = Size(box.maxWidth, box.maxHeight);
