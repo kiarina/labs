@@ -39,6 +39,7 @@
 - **Part 11: 3D の世界（flutter_scene）を、今までと同じ要素の延長で置けた。** 形・文字や絵の板・VRM・カメラが `canvas_update` の遷移とスクリプトでそのまま動き、触った物と体の部位が出来事になる。
   2D の要素を HUD に重ね、予定に寄る・戻るを作った。Sol は 1 回で 44 個の部屋を破綻なく組んだ。4 つの OS で動いた（デバッグで Pixel 6 だけ 55 fps）（[Part 11](#part-11-3d-の世界flutter_sceneに文字絵形体を置きカメラを動かす)）
 - **Part 12: 3D の世界を、物理の空と太陽・点光源・ブルーム・霧・粒子・大量の配置まで広げた。** 浮島の庭（148 要素、草や星など 5,446 個）で、夕暮れから夜・朝が移り、灯籠・ホタル・回る結晶が動く。macOS のデバッグで 80〜113 fps。Sol に「夜の海辺の灯台」を頼むと、12 分・349 要素で、回る灯台の光・月の道・移ろう空・触る反応まで作って保存した。最初の数回だけ約 20 秒後に 5 fps へ落ちて戻らず、原因は分かっていない（[Part 12](#part-12-3d-の世界でどこまでリッチにできるか)）
+- **Part 13: Blender で作ったモデル（`.glb`）を、要素 `model` で 3D の世界に置けた。** Blender をスクリプトで動かして作った風車が、島の上で羽を回し、夜は窓が光り、実際のクリックで反応した（[Part 13](#part-13-blender-で作ったモデルを-3d-の世界に置く)）
 
 | | |
 | --- | --- |
@@ -737,6 +738,29 @@ macOS の実際のクリックで、予定 → 寄る → 「戻る」で戻る�
 - 点光源は影を落とさない設定のまま。粒子は光を受けない（自分で光る色だけ）
 - 落ちて戻らなかった原因が分からないので、長く動かす使い方では見張りが要る
 
+## Part 13: Blender で作ったモデルを 3D の世界に置く
+
+オーナーの問い: Blender で作ったモデルを置けるか。flutter_scene の `Node.fromGlbBytes` で、glTF の `.glb` を実行中に読み込めるので、要素 `model` を足した。
+
+- **`model`（`in` で世界に入れる）:** `src` は素材の `.glb`（`canvas_media` の `model` に並ぶ）。位置・向き・`scale`・`on`・`tappable`・保存は、ほかの 3D の物と同じ。
+  モデルの原点を x, y, z に置き、大きさはモデル自身のメートル × `scale`。`animation` でモデルの中のアニメーションを名前（複数、または `all`）で繰り返し再生し、`animation_speed` で速さを変える
+- **モデル:** `make_windmill_model.py` を Blender 5.1.2 で `blender --background --python` として流し、石の塔・屋根・扉・光る窓・4 枚の羽・旗の風車を組み、
+  羽が回る `spin` と旗が揺れる `flag` のアニメーションを付けて書き出した（48,676 バイト、18 メッシュ、材質 8。[results/windmill.glb](results/windmill.glb)）。
+  Blender の MCP は使っていない（このマシンにはアドオンが無く、スクリプトなら作り直しも同じ手順で済む）
+- `model_check.py`: 浮島の庭に風車を 1 つと、小島に小さな同じ風車を 2 つ置き、寄る・夜にする・速さを変える・旗だけにする
+
+![Blender のプレビュー・島に置いた風車・回る羽（0.5 秒差）・夜](results/model.jpg)
+
+上の段: Blender のレンダリングと、島に置いたところ。中の段: 0.5 秒あけた 2 枚（羽が回っている）。下の段: 夜（窓が光ってブルームであふれる）。
+
+- 読み込みは 3 つで 1.5 秒以内（`canvas_put` から絵になるまで）。アニメーションは名前のまま読めた（`[flag, spin]`）
+- Blender の正面（-Y）が、世界では手前（-z、見る側）を向いた。1 単位 = 1 m のまま、大きさも合った
+- 材質は Principled BSDF の色・粗さ・金属感がそのまま移り、窓の発光（Emission の強さ 6、`KHR_materials_emissive_strength`）は夜にブルームで光った
+- **実際のクリックで触れた。** 塔をクリックすると `on.tap` が走り、羽が 4 倍速になった（spirit は起こさない）。骨の無いモデルは、今の当たり判定のままで物の id が取れる
+- 寄った画面の 4 秒で 61.1 fps（build 平均 13.0 / 90% 38.2 ms、macOS のデバッグ）。浮島だけのときより遅いが、何が効いているかは分けていない
+
+まだ見ていないこと: 骨で動くモデル（キャラクター）の当たり判定（VRM と同じく、骨入りの形は今の判定から外している）、画像の貼られたモデル、大きなモデルの読み込み時間、iOS・Android・Windows。
+
 ## 結論が成り立つ範囲と、まだ見ていないこと
 
 - spirit（モデル）込みで動かしたのは macOS と Windows。iOS（Simulator・iPad Air 4 の実機）と Android（Pixel 6）は、画面の側をモデルなしで確かめた（Part 7）。iPhone の実機は動かしていない。3D の世界（Part 11）は iPad の実機でも見ていない
@@ -788,6 +812,8 @@ iOS・Android: `DEVICE=<udid> mise -C 2026/11/26/spirit-canvas run run-ios`・`D
 作り置きは `scenes/`、spirit が保存した画面は `work/scenes/` に入ります。
 
 3D の世界（Part 11）のモデルなしの確認: `python3 2026/11/26/spirit-canvas/world_check.py <名前> <ポート>`。触れる部屋と HUD の作り置きは `make_world_scene.py` が書く（`canvas_load` で `world-room`）。
+
+Blender のモデル（Part 13）: `blender --background --python 2026/11/26/spirit-canvas/make_windmill_model.py` が `work/assets/media/models/windmill.glb` を書き、`model_check.py <名前> <ポート>` が島に置いて撮る。
 
 浮島の庭（Part 12）: `python3 2026/11/26/spirit-canvas/make_isle_scene.py` が作り置きを書き（`canvas_load` で `spirit-isle`）、`isle_check.py <名前> <ポート>` が絵とフレームの時間を、`isle_check.py <名前> <ポート> film` が動きの撮影を `work/logs/<名前>/` に残す。
 部屋で spirit がうろちょろする作り置き（Part 10）は `python3 2026/11/26/spirit-canvas/make_room_scene.py` で書き直せる。

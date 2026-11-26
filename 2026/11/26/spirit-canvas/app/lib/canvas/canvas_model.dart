@@ -68,7 +68,14 @@ const k3dShapes = [
 
 /// What goes only in a world: the shapes, and lights, particles, tubes
 /// along a curve, and many copies of a shape scattered at once.
-const k3dOnly = [...k3dShapes, 'light', 'particles', 'tube', 'scatter'];
+const k3dOnly = [
+  ...k3dShapes,
+  'light',
+  'particles',
+  'tube',
+  'scatter',
+  'model',
+];
 
 /// A world's look, numbers a transition or an animation can move: the sun
 /// (degrees above the horizon and round from +z), the light's strength,

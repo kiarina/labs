@@ -66,6 +66,8 @@ class MediaLibrary {
     'image': ['.jpg', '.jpeg', '.png', '.gif', '.webp'],
     'video': ['.mp4', '.mov'],
     'audio': ['.mp3', '.wav', '.m4a'],
+    // 3D models (glTF binary), for a world's `model` (Part 13).
+    'model': ['.glb'],
   };
 
   /// `{kind: [name, ...]}`; names are paths relative to MEDIA_DIR.

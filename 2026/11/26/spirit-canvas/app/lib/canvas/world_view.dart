@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math' as math;
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_scene/scene.dart';
@@ -75,6 +76,11 @@ class _Thing {
   PointLight? light;
   Particles? particles;
   bool faceCamera = false;
+
+  /// A `model`: what it was loaded with, and its playing animations.
+  Node? model;
+  String? playing;
+  final clips = <AnimationClip>[];
 }
 
 class _WorldViewState extends State<WorldView> {
@@ -140,6 +146,7 @@ class _WorldViewState extends State<WorldView> {
     'vrm' => 'vrm:${e.str('src')}',
     _ when k3dShapes.contains(e.type) => 'shape:${e.type}',
     'light' => 'light',
+    'model' => 'model:${e.str('src')}',
     // Rebuilt when what they are made of changes (not when they move).
     'particles' =>
       'particles:${jsonEncode([
@@ -170,6 +177,8 @@ class _WorldViewState extends State<WorldView> {
     final thing = _Thing(node, _signature(e));
     if (e.type == 'vrm') {
       _loadVrm(e, thing);
+    } else if (e.type == 'model') {
+      _loadModel(e, thing);
     } else if (e.type == 'light') {
       final light = thing.light = PointLight();
       node.addComponent(PointLightComponent(light));
@@ -231,6 +240,59 @@ class _WorldViewState extends State<WorldView> {
     if (!mounted || !identical(_things[e.id], thing)) return;
     thing.node.add(avatar.root);
     thing.avatar = avatar;
+  }
+
+  /// A glTF binary (exported from Blender, for example) from the media.
+  Future<void> _loadModel(CanvasElement e, _Thing thing) async {
+    final file = MediaLibrary.instance.resolve(e.str('src'))?.file;
+    if (file == null) {
+      debugPrint('[world] no model "${e.str('src')}"');
+      return;
+    }
+    final Uint8List bytes = await file.readAsBytes();
+    final model = await Node.fromGlbBytes(bytes, maxTextureSize: 2048);
+    if (!mounted || !identical(_things[e.id], thing)) return;
+    thing.node.add(model);
+    thing.model = model;
+    debugPrint(
+      '[world] model ${e.str('src')}: animations '
+      '${[for (final a in model.parsedAnimations) a.name]}',
+    );
+  }
+
+  /// Plays the model's `animation` (a name, a list of names, or "all"),
+  /// looping, at `animation_speed`; none: still.
+  void _animateModel(CanvasElement e, _Thing thing) {
+    final model = thing.model;
+    if (model == null) return;
+    final want = e.props['animation'];
+    final key = jsonEncode(want);
+    if (key != thing.playing) {
+      for (final c in thing.clips) {
+        c.stop();
+        model.removeAnimationClip(c);
+      }
+      thing.clips.clear();
+      final names = switch (want) {
+        'all' => [for (final a in model.parsedAnimations) a.name],
+        final String n => [n],
+        final List<dynamic> l => [for (final n in l) '$n'],
+        _ => const <String>[],
+      };
+      for (final n in names) {
+        final a = model.findAnimationByName(n);
+        if (a == null) continue;
+        thing.clips.add(
+          model.createAnimationClip(a)
+            ..loop = true
+            ..play(),
+        );
+      }
+      thing.playing = key;
+    }
+    for (final c in thing.clips) {
+      c.playbackTimeScale = e.num_('animation_speed', 1);
+    }
   }
 
   void _remove(_Thing t) => _scene.remove(t.node);
@@ -313,6 +375,7 @@ class _WorldViewState extends State<WorldView> {
         ..range = e.num_('range', 0);
     }
     thing.particles?.update(e, v['rate'] ?? 0);
+    _animateModel(e, thing);
     final a = thing.avatar;
     if (a != null) {
       poseVrm(a, e, t);
