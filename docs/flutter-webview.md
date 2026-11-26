@@ -2,7 +2,7 @@
 
 Flutter のアプリの画面の一部に WebView を置き、ページへ素材を渡す・ページとやり取りする・操作を速く感じさせるときの手順と落とし穴。
 2026-11-26 の [spirit-canvas](../2026/11/26/spirit-canvas/README.md)（macOS、`webview_flutter` 4.14.1、WKWebView）で実際に確かめた内容で、
-iOS・Android・Windows で同じになるかは未検証。別の OS や WebView で反証が出たら、この文書を直す。
+iOS（Simulator）と Android（Pixel 6）は下の「iOS と Android で違うところ」で確かめた。Windows は未検証。別の OS や WebView で反証が出たら、この文書を直す。
 
 ## 置き方: 縮める枠の中に入れない
 
@@ -55,6 +55,16 @@ Android は `AndroidWebViewController.webViewIdentifier` と `WebViewFlutterAndr
 - **効果音は Web Audio で、先に `fetch` と `decodeAudioData` で展開しておく。** 鳴り始めは出力の遅れだけ（WKWebView で `outputLatency` 16 ms）。
   `<audio>` を使い回すと、`src` を差し替えるたびに読み直しになり、鳴り始めまで 56〜171 ms かかった。`<audio>` の出力の経路そのものの遅れは、ページの中からは測れない
 - BGM のように長く鳴らし続ける音は `<audio>` でよい
+
+## iOS と Android で違うところ
+
+2026-11-26 に iOS Simulator（iOS 27.2）と Pixel 6 で確かめた。
+
+- ループバックの HTTP を読ませるには、iOS は `Info.plist` の `NSAppTransportSecurity` に `NSAllowsLocalNetworking`、Android は `INTERNET` の許可と `android:usesCleartextTraffic="true"` が要る
+- Android WebView も、既定では利用者の操作なしの再生を止める。`AndroidWebViewController.setMediaPlaybackRequiresUserGesture(false)`
+- `runJavaScriptReturningResult` の文字列は、Android ではもう一段 JSON の引用符で包まれて返る（WKWebView は包まない）
+- iOS の WebKit では、JS の `label.click()` で中のチェックボックスが切り替わらなかった（`input.click()` と実際のタップは切り替わる）
+- 撮影: iOS は macOS と同じ Swift を AppDelegate（`FlutterImplicitEngineDelegate` の `didInitializeImplicitFlutterEngine` で、`pluginRegistry.registrar(forPlugin:)` から MethodChannel を作る）に置けば動いた。外部 API は `webView(forIdentifier:withPluginRegistrar:)`
 
 ## 対応する OS
 

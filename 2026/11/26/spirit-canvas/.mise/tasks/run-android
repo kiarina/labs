@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+#MISE description="Run on an Android device with flutter run (DEVICE=<adb serial>): copies the media, VRM and scenes into the app's internal storage (run-as), forwards CONTROL_PORT. The app must be installed once first (flutter run installs it; run this task again after the first install)"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+lab="$(pwd)"
+export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
+serial="${DEVICE:?set DEVICE to an adb serial}"
+port="${CONTROL_PORT:-8815}"
+pkg=dev.kiarina.labs.spirit_canvas
+dev="/data/user/0/$pkg/files/lab"
+media="$(cd ../../../../tests/assets && pwd)"
+if adb -s "$serial" shell pm list packages "$pkg" | grep -q "$pkg"; then
+  # Files the app can read: written as the app's own user (run-as). A folder
+  # adb makes under /sdcard/Android/data/<pkg> before the app does is not the
+  # app's, and the app cannot read it.
+  tmp="$(mktemp -d)"
+  mkdir -p "$tmp/media" "$tmp/scenes" "$tmp/saved" "$tmp/logs"
+  cp -R "$media/jpg" "$media/mp3" "$media/mp4" "$lab/work/assets/media/sounds" "$tmp/media/"
+  cp "$lab/work/assets/Seed-san.vrm" "$lab/work/assets/test.vrma" "$tmp/"
+  cp "$lab/scenes/"*.json "$tmp/scenes/"
+  cp "$lab/work/scenes/"*.json "$tmp/saved/" 2>/dev/null || true
+  tar -C "$tmp" -cf "$tmp.tar" .
+  adb -s "$serial" push "$tmp.tar" /data/local/tmp/spirit-canvas.tar >/dev/null
+  adb -s "$serial" shell "run-as $pkg sh -c 'mkdir -p $dev && cd $dev && tar xf -' < /data/local/tmp/spirit-canvas.tar"
+  adb -s "$serial" shell rm /data/local/tmp/spirit-canvas.tar
+  rm -rf "$tmp" "$tmp.tar"
+else
+  echo "$pkg is not installed yet: run this task again after flutter run has installed it" >&2
+fi
+adb -s "$serial" forward "tcp:$port" "tcp:$port"
+cd app
+# A rebuild fails Gradle 9's check that compileFlutterBuildDebug reads the
+# outputs of mergeDebugNativeDebugMetadata / mergeDebugAssets without
+# depending on them (a clean build passes). Start from no Android outputs.
+rm -rf build/app
+exec flutter run -d "$serial" \
+  --dart-define=MEDIA_DIR="$dev/media" \
+  --dart-define=SCENES_DIR="$dev/scenes" \
+  --dart-define=SAVED_SCENES_DIR="$dev/saved" \
+  --dart-define=VRM_PATH="$dev/Seed-san.vrm" \
+  --dart-define=VRMA_PATH="$dev/test.vrma" \
+  --dart-define=LOG_DIR="$dev/logs" \
+  --dart-define=CONTROL_PORT="$port" \
+  "$@"

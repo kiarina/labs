@@ -30,6 +30,7 @@
 - **Part 4: WebView の要素で、`asset://` の差し込み、ページの JS のイベントを spirit へ、spirit が外からページの状態を読む、の 3 つができた。** Sol が web で作ったもぐらたたきは、10 秒で spirit を起こして応援させ、終わりに結果を話させた。
   spirit に見せる撮影には WebView が写らない（[Part 4](#part-4-web-要素webview)）
 - **Part 5: キャンバスを端末の大きさにし、`%` と `anchor` で置けるようにした。** 窓を縦長・横長にすると要素が追従し、向きが変わると spirit が起きて確かめた（[Part 5](#part-5-画面の大きさに合わせる)）
+- **Part 7: iOS（Simulator）と Android（Pixel 6）で、画面の側がすべて動いた**（モデルなし）。WebView の撮影は iOS も重なり、Android は未対応（[Part 7](#part-7-ios-と-android-で確かめる)）
 - **Part 6: WebView も spirit に見せる撮影に入るようにした（macOS）。** WKWebView の `takeSnapshot` を舞台の撮影に重ねる。窓をしまったままでも撮れた（[Part 6](#part-6-webview-も-spirit-に見せる撮影に入れる)）
 
 | | |
@@ -358,9 +359,43 @@ Flutter の撮影（`RepaintBoundary.toImage`）にはプラットフォーム�
 
 Android・iOS・Windows は未対応。Android は同じく公開の口（`AndroidWebViewController.webViewIdentifier` と `WebViewFlutterAndroidExternalApi`）で WebView を画像に描ける見込み、Windows の WebView2 には `CapturePreview` がある（どちらも未確認）。
 
+## Part 7: iOS と Android で確かめる
+
+スマートフォンでは Codex を起動できないので、spirit はつながない。画面の側（描画・VRM・動画・音・スクリプト・WebView・撮影・画面の大きさ・作り置きの呼び出し）を、
+制御のポートから道具を直に呼んで確かめた（`check_device.py`。結果は `results/device-ios.json`・`results/device-android.json`）。
+
+- iOS: iPhone 18 Pro Max の Simulator（iOS 27.2）。`mise run run-ios`（`flutter run`。Simulator は Mac のファイルをそのまま読む）
+- Android: Pixel 6（実機、ワイヤレスデバッグ。表示密度は 460 に上書きされていた）。`mise run run-android`（素材をアプリの内側の保存先へ `run-as` で写し、ポートを `adb forward`）
+
+| 確かめたこと | iOS | Android |
+| --- | --- | --- |
+| 見本（VRM・写真・動画・SVG・選択肢・入力欄・音声）、1280x800 を縮めて | 描けた | 描けた |
+| キャンバスの大きさ・`%`・`anchor` | 440x734（縦）で置き方どおり | 376x640（縦）で置き方どおり |
+| スクリプト（JS）・状態と `{{}}`・タイムライン・`on`・効果音・BGM | 動いた（JavaScriptCore） | 動いた（QuickJS） |
+| WebView: `asset://`（HTML・CSS・後から足した画像）、イベント、状態、`canvas_web_eval` | 動いた | 動いた |
+| WebView の中の音（`new Audio('asset://…')`） | 鳴った | 鳴った（Android の「タップしてから再生」を外して） |
+| WebView の撮影を spirit に見せる画像へ重ねる | 重なった（`takeSnapshot`。Swift は AppDelegate） | 未対応（理由を返す） |
+| 作り置きの呼び出し（脱出ゲーム・もぐらたたき・予定） | 2〜19 ms | 6〜73 ms |
+| 画面の実際のタップが WebView に届く | 予定の 2 件目にチェック、もぐらたたきのスタート | 同じ（`adb shell input tap`） |
+
+| | | |
+| --- | --- | --- |
+| ![iOS の予定](results/ios-planner.jpg) | ![Android の予定](results/android-planner.jpg) | ![Android のもぐらたたき](results/android-mole.jpg) |
+| iOS Simulator | Pixel 6 | Pixel 6。1280x800 で作った画面は縦の画面では小さい |
+
+### 踏んだこと
+
+- **Android の WebView から返る値は、もう一段 JSON の引用符で包まれる。** ページの値を `JSON.stringify` して返すと、WKWebView はその文字列のまま、Android はさらに引用符付きで返した。文字列の包みを 2 回まで外すようにした
+- **iOS の WebKit では、JS の `label.click()` で中のチェックボックスが切り替わらなかった**（macOS と Android では切り替わった）。`input.click()` と、画面の実際のタップでは切り替わった。検証のスクリプトの書き方の問題で、アプリの不具合ではない
+- **Android では、`adb` が先に作った `/sdcard/Android/data/<pkg>` は、アプリのものにならない。** アプリから読めず（配信が 404）、書けなかった（`Permission denied`）。アプリの内側の保存先（`/data/user/0/<pkg>/files`）へ、`run-as` で tar を流し込んで写すようにした
+- **Android のビルド:** `flutter_js` 0.8.7 は Kotlin を JVM 1.8、Java を 11 で作り、Kotlin の Gradle プラグインが食い違いを拒んだ。`gradle.properties` の `kotlin.jvm.target.validation.mode=warning` で警告にとどめた。
+  また、作り直しのビルドで、Gradle 9 が「`compileFlutterBuildDebug` が `mergeDebugNativeDebugMetadata`・`mergeDebugAssets` の出力を依存なしに読む」と止めた（クリーンなビルドは通る）。原因は分かっていない。`run-android` は毎回 `build/app` を消してから作る
+- iOS は `NSAllowsLocalNetworking`、Android は `INTERNET` と `usesCleartextTraffic` がないと、WebView がループバックの HTTP（`asset://` の配信）を読めない
+- スマートフォンでは spirit がいない（`no spirit`）。製品では、別のマシンの spirit から端末のキャンバスを動かす形になる（この lab の範囲外）
+
 ## 結論が成り立つ範囲と、まだ見ていないこと
 
-- macOS だけ。iOS・Android・Windows では動かしていない。縦の画面は macOS の窓を縦長にして確かめただけ
+- spirit（モデル）込みで動かしたのは macOS だけ。iOS（Simulator）と Android（Pixel 6）は、画面の側をモデルなしで確かめた（Part 7）。iOS の実機と Windows は動かしていない
 - Claude（Opus）では流していない。各シナリオ 1 回で、ばらつきは見ていない
 - 選択肢・ボタンは画面で実際にクリックした（s2、s4）。入力欄の `submit`、`tap`、動画・音声の `ended` は、モデルにつないだ状態では確かめていない（見本で描けることだけ）
 - 動画・音声は、手元の素材（labs の `tests/assets`）か https の URL だけ。spirit が新しく画像・音声を作る道具は無い
@@ -373,7 +408,7 @@ Android・iOS・Windows は未対応。Android は同じく公開の口（`Andro
 
 Part 1 で挙げた「押したときの結果を宣言する」「時間の並び」「spirit が書くスクリプト」「通知の区別」は Part 2、「作り置きの保存・呼び出し・差し替え」と音は Part 3、WebView は Part 4、画面の大きさに合わせるのは Part 5 で作った。残り:
 
-1. **web 要素を他の OS で動かす。** iOS・Android は同じ実装、Windows は `webview_all`（WebView2）への差し替えから。WebView の撮影も各 OS の口で（macOS は Part 6）
+1. **Windows で動かす。** WebView は `webview_all`（WebView2）への差し替えから。Android の WebView の撮影（`AndroidWebViewController.webViewIdentifier` と `WebViewFlutterAndroidExternalApi`）も
 2. **安全領域（ノッチ・ホームバー）を渡す。** 大きさと向きは Part 5 で渡すようにした。スマートフォンでは、隠れる部分を避けるための余白も要る
 3. **spirit がモードを切り替える道具。** チャットのまま頼まれた絵を、そのまま見せられるように。ユーザーが自分でチャットに戻した直後に戻さないよう、提案を出して押されたら切り替える形などを選ぶ
 4. **スクリプトを製品の形で動かす。** 別の isolate かプロセス、実行時間の上限、スクリプトどうしの順序
@@ -396,6 +431,9 @@ python3 2026/11/26/spirit-canvas/drive.py s2 event press <button id>
 # 道具を直に呼ぶ（モデルなし）
 curl -s -XPOST "localhost:8813/tool?name=canvas_state" --data-binary '{"set":{"n":1}}'
 ```
+
+iOS・Android: `DEVICE=<udid> mise -C 2026/11/26/spirit-canvas run run-ios`・`DEVICE=<adb serial> mise -C 2026/11/26/spirit-canvas run run-android`（spirit はつながらない。
+`python3 2026/11/26/spirit-canvas/check_device.py ios 8814` などで確かめる。Android は初回の `flutter run` で入ったあと、もう一度実行すると素材が写る）。
 
 環境変数: `MODEL`（既定 `gpt-6.2-sol`）、`EFFORT`、`CONTROL_PORT`（既定 0 = 切る）、`START_MODE`（`canvas` / `chat`）、
 `VRM_PATH`・`VRMA_PATH`（既定は `work/assets`）、`ABBREVIATE_VIEW`（既定 `1`。`0` で SVG を全文返す、s1〜s7 の条件）。

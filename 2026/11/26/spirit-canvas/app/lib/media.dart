@@ -1,10 +1,28 @@
 import 'dart:io';
 
-/// A setting from the environment the lab's `run` task starts the app with.
+/// A setting from the environment the lab's `run` task starts the app with
+/// (macOS), else from `--dart-define` (iOS and Android, where `flutter run`
+/// starts the app).
 String env(String name, [String fallback = '']) {
   final v = Platform.environment[name];
-  return v == null || v.isEmpty ? fallback : v;
+  if (v != null && v.isNotEmpty) return v;
+  final d = _defines[name];
+  return d == null || d.isEmpty ? fallback : d;
 }
+
+const _defines = {
+  'MEDIA_DIR': String.fromEnvironment('MEDIA_DIR'),
+  'VRM_PATH': String.fromEnvironment('VRM_PATH'),
+  'VRMA_PATH': String.fromEnvironment('VRMA_PATH'),
+  'SCENES_DIR': String.fromEnvironment('SCENES_DIR'),
+  'SAVED_SCENES_DIR': String.fromEnvironment('SAVED_SCENES_DIR'),
+  'LOG_DIR': String.fromEnvironment('LOG_DIR'),
+  'MODEL': String.fromEnvironment('MODEL'),
+  'EFFORT': String.fromEnvironment('EFFORT'),
+  'CONTROL_PORT': String.fromEnvironment('CONTROL_PORT'),
+  'START_MODE': String.fromEnvironment('START_MODE'),
+  'ABBREVIATE_VIEW': String.fromEnvironment('ABBREVIATE_VIEW'),
+};
 
 /// The media the spirit may show: files under MEDIA_DIR (the labs shared
 /// test assets) and the VRM at VRM_PATH. Both come from the environment

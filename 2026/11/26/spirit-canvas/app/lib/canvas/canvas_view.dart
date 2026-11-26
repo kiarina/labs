@@ -11,6 +11,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:video_player/video_player.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 import '../media.dart';
@@ -908,6 +909,10 @@ class _WebElementState extends State<_WebElement> {
     // A transparent background is not implemented for macOS's web view
     // (UnimplementedError: opaque); the page paints its own.
     if (!Platform.isMacOS) _web.setBackgroundColor(const Color(0x00000000));
+    // Android WebView also asks for a tap before a page may play sound.
+    if (_web.platform case final AndroidWebViewController android) {
+      android.setMediaPlaybackRequiresUserGesture(false);
+    }
     _web.addJavaScriptChannel(
       'SGHost',
       onMessageReceived: (m) => host.receive(id, m.message),

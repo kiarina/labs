@@ -1,0 +1,147 @@
+{
+ "demo": {
+  "ok": true,
+  "result": {
+   "canvas": {
+    "width": 1280,
+    "height": 800,
+    "orientation": "landscape",
+    "design": true,
+    "screen": {
+     "width": 376,
+     "height": 640
+    },
+    "background": "#1B2233"
+   },
+   "elements": 11,
+   "picture": "1-demo.png"
+  },
+  "seconds": 4.46
+ },
+ "layout": {
+  "ok": true,
+  "result": {
+   "canvas": {
+    "width": 376,
+    "height": 640,
+    "orientation": "portrait",
+    "background": "#1B2233"
+   },
+   "at": {
+    "title": {
+     "x": 18.8,
+     "y": 24.0,
+     "w": 338.1,
+     "h": 60.0
+    },
+    "card": {
+     "x": 37.6,
+     "y": 192.1,
+     "w": 300.5,
+     "h": 256.1
+    },
+    "ok": {
+     "x": 219.7,
+     "y": 572.3,
+     "w": 140.0,
+     "h": 52.0
+    }
+   },
+   "picture": "2-layout.png"
+  },
+  "seconds": 1.19
+ },
+ "behaviors": {
+  "ok": true,
+  "result": {
+   "script": "ok: running",
+   "state": {
+    "time": "14:31:29",
+    "n": 3
+   },
+   "bgm": {
+    "src": "sounds/bgm/calm.wav",
+    "volume": 0.3
+   },
+   "notices": [
+    "<canvas_event event=\"press\" id=\"btn\" handled=\"on the canvas\" at=\"14:31:27\"/>",
+    "<canvas_event event=\"press\" id=\"btn\" handled=\"on the canvas\" at=\"14:31:27\"/>"
+   ],
+   "picture": "3-behaviors.png"
+  },
+  "seconds": 2.97
+ },
+ "web": {
+  "ok": true,
+  "result": {
+   "first_load_s": 0.9,
+   "images": "[[\"miineko1_1254x1254_159kb.jpg\",1254]]",
+   "css_bg": "\"url(\\\"http://127.0.0.1:35067/asset/jpg/street_scene_1774x887_\"",
+   "images_after_clicks": "[[\"miineko1_1254x1254_159kb.jpg\",1254],[\"objects_1536x1024_358kb.jpg\",1536],[\"objects_1536x1024_358kb.jpg\",1536]]",
+   "audio": "\"started\"",
+   "state_seen": {
+    "page": {
+     "state": {
+      "count": 2
+     },
+     "text": "\"Web ブロックの試験\\n\\n押した回数: 2\\n\\n押す\""
+    }
+   },
+   "events": [
+    "<canvas_event event=\"web\" id=\"page\" value=\"{&quot;name&quot;:&quot;pressed&quot;,&quot;data&quot;:{&quot;count&quot;:1}}\" handled=\"the page asked to tell you later\" at=\"14:31:32\"/>",
+    "<canvas_event event=\"web\" id=\"page\" value=\"{&quot;name&quot;:&quot;pressed&quot;,&quot;data&quot;:{&quot;count&quot;:2}}\" handled=\"the page asked to tell you later\" at=\"14:31:32\"/>"
+   ],
+   "viewport": "[375,640,2.875]",
+   "picture": "4-web.png"
+  },
+  "seconds": 5.04
+ },
+ "scenes": {
+  "ok": true,
+  "result": {
+   "space-station-escape": {
+    "load": "ok: loaded \"space-station-escape\" in 73ms (40 elements)",
+    "picture": "5-space-station-escape.png",
+    "canvas": {
+     "width": 1280,
+     "height": 800,
+     "orientation": "landscape",
+     "design": true,
+     "screen": {
+      "width": 376,
+      "height": 640
+     },
+     "background": "#080D1B"
+    }
+   },
+   "mole-garden": {
+    "load": "ok: loaded \"mole-garden\" in 29ms (1 elements)",
+    "picture": "5-mole-garden.png",
+    "canvas": {
+     "width": 1280,
+     "height": 800,
+     "orientation": "landscape",
+     "design": true,
+     "screen": {
+      "width": 376,
+      "height": 640
+     },
+     "background": "#F7F3E7"
+    }
+   },
+   "today-planner": {
+    "load": "ok: loaded \"today-planner\" in 6ms (1 elements)",
+    "picture": "5-today-planner.png",
+    "canvas": {
+     "width": 376,
+     "height": 640,
+     "orientation": "portrait",
+     "background": "#F8F7F2"
+    },
+    "tick": "\"{\\\"done\\\":1,\\\"total\\\":3,\\\"checks\\\":[true,false,false]}\"",
+    "picture_after_tick": "5-today-planner-ticked.png"
+   }
+  },
+  "seconds": 9.73
+ }
+}

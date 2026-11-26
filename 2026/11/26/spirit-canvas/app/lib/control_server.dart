@@ -61,7 +61,13 @@ class ControlServer {
             );
             out = {'ok': true};
           case '/snapshot':
-            out = {'path': await app.saveSnapshot(q['name'] ?? 'snapshot')};
+            final path = await app.saveSnapshot(q['name'] ?? 'snapshot');
+            out = {
+              'path': path,
+              // On a phone the file is inside the app; send it back too.
+              if (q['inline'] == '1' && path != null)
+                'png': base64Encode(await File(path).readAsBytes()),
+            };
           case '/demo':
             for (final call in kDemoScene) {
               await app.runTool(call.$1, call.$2);

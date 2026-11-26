@@ -130,8 +130,9 @@ class HomePageState extends State<HomePage> {
         effort: effort.isEmpty ? null : effort,
       );
     } catch (e) {
-      setState(() => spirit.status = 'failed: $e');
-      return;
+      // No Codex here (iOS, Android): the canvas still works, driven
+      // through the control port.
+      setState(() => spirit.status = 'no spirit: $e');
     }
     final port = int.tryParse(env('CONTROL_PORT')) ?? 0;
     if (port > 0) _control = await ControlServer.start(port, this);
@@ -574,8 +575,10 @@ class HomePageState extends State<HomePage> {
 
   /// Saves a PNG of the canvas (for the lab's records).
   Future<String?> saveSnapshot(String name) async {
-    final dir = env('LOG_DIR');
-    if (dir.isEmpty) return null;
+    final dir = env(
+      'LOG_DIR',
+      '${Directory.systemTemp.path}/spirit-canvas-logs',
+    );
     await nextFrame();
     final png = (await captureCanvasWithWeb(
       canvasKey,

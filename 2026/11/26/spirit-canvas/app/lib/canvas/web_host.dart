@@ -38,14 +38,14 @@ class WebHost {
   /// A PNG of the page as it is drawn now, or null where this platform has
   /// no way here (only macOS so far) or it failed ([lastSnapshotError]).
   Future<Uint8List?> snapshot(String id) async {
-    if (!Platform.isMacOS) {
-      lastSnapshotError = 'pictures of web views are only taken on macOS so far';
+    if (!Platform.isMacOS && !Platform.isIOS) {
+      lastSnapshotError =
+          'pictures of web views are only taken on macOS and iOS so far';
       return null;
     }
     final nativeId = nativeIds[id];
     if (nativeId == null) {
-      lastSnapshotError =
-          'the page is not on the screen yet (the window may be minimized or hidden)';
+      lastSnapshotError = 'the page is not on the screen yet (the window may be minimized or hidden)';
       return null;
     }
     try {
@@ -207,13 +207,19 @@ class WebHost {
       final r = await c
           .runJavaScriptReturningResult(wrapped)
           .timeout(const Duration(seconds: 5));
-      // WKWebView returns the string itself; others may quote it again.
-      final s = r is String ? r : '$r';
-      if (s.startsWith('"') && s.endsWith('"')) {
+      // The page returns JSON text. WKWebView hands it over as it is;
+      // Android WebView quotes it once more. A string result is itself
+      // quoted JSON: unwrap JSON strings, at most twice.
+      var s = r is String ? r : '$r';
+      for (
+        var i = 0;
+        i < 2 && s.length >= 2 && s.startsWith('"') && s.endsWith('"');
+        i++
+      ) {
         try {
-          return jsonDecode(s) as String;
+          s = jsonDecode(s) as String;
         } on Object {
-          return s;
+          break;
         }
       }
       return s;

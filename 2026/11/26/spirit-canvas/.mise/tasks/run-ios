@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#MISE description="Run on an iOS simulator with flutter run (DEVICE=<udid>; the simulator reads the Mac's files; no spirit, the canvas is driven through CONTROL_PORT)"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+lab="$(pwd)"
+mkdir -p "$lab/work/logs"
+cd app
+exec flutter run -d "${DEVICE:?set DEVICE to a simulator udid}" \
+  --dart-define=MEDIA_DIR="$(cd ../../../../../tests/assets && pwd):$lab/work/assets/media" \
+  --dart-define=SCENES_DIR="$lab/scenes" \
+  --dart-define=SAVED_SCENES_DIR="$lab/work/scenes" \
+  --dart-define=VRM_PATH="$lab/work/assets/Seed-san.vrm" \
+  --dart-define=VRMA_PATH="$lab/work/assets/test.vrma" \
+  --dart-define=LOG_DIR="$lab/work/logs/ios" \
+  --dart-define=CONTROL_PORT="${CONTROL_PORT:-8814}" \
+  "$@"
