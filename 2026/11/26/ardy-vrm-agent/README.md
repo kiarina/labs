@@ -28,6 +28,7 @@ Flutter（macOS）のアプリで、LLM エージェント（Codex の thread）
   再生をフレームの刻みで進めているため。常に見せておく使い方が前提
 - **落とし穴: 歩く動きで hips を原点から遠くへ動かすと、髪が消えた。** スキンメッシュの描画の範囲が休みの姿勢の場所のままになり、カリングされたとみられる（[walk-hips-only-hair-culled.jpg](results/walk-hips-only-hair-culled.jpg) の右端）。
   ARDY Mini 自身のビューアと同じく、水平の移動は VRM の根のノードを動かし、hips には高さだけを渡すと消えなくなった（[walk-root-motion.jpg](results/walk-root-motion.jpg)）
+  原因は flutter_scene が skinned mesh のカリングの範囲を休止姿勢と glTF のアニメーションから焼くことで、flutter_vrm `1569bdb` で骨の位置から毎フレーム作り直すように直した（この lab の固定先 `6cdf97d` には入っていない）
 
 ## 計測（MacBook Pro M1 Max 64GB、macOS 27.2.1、窓が見えている回）
 
