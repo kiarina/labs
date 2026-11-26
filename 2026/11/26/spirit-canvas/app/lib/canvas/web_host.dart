@@ -4,9 +4,8 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 
-import 'package:webview_flutter/webview_flutter.dart';
-
 import '../media.dart';
+import 'web_page.dart';
 
 /// Serves the `web` elements' pages and their assets on a loopback port,
 /// so pages refer to media as `asset://<name>` whatever the web view is:
@@ -27,27 +26,28 @@ class WebHost {
 
   HttpServer? _server;
   final _pages = <String, String>{};
-  final controllers = <String, WebViewController>{};
-
-  /// The native web view of each element (WKWebView on macOS and iOS), for
-  /// pictures of the page.
-  final nativeIds = <String, int>{};
+  final pages = <String, WebPage>{};
 
   static const _native = MethodChannel('spirit_canvas/webview');
 
   /// A PNG of the page as it is drawn now, or null where this platform has
   /// no way here (only macOS so far) or it failed ([lastSnapshotError]).
   Future<Uint8List?> snapshot(String id) async {
-    if (!Platform.isMacOS && !Platform.isIOS && !Platform.isAndroid) {
-      lastSnapshotError = 'pictures of web views are only taken on macOS, iOS and Android so far';
-      return null;
-    }
-    final nativeId = nativeIds[id];
-    if (nativeId == null) {
+    final page = pages[id];
+    if (page == null) {
       lastSnapshotError = 'the page is not on the screen yet (the window may be minimized or hidden)';
       return null;
     }
     try {
+      // Windows: WebView2 takes it itself. Elsewhere: the app's native
+      // channel (WKWebView takeSnapshot, Android WebView.draw).
+      final own = await page.screenshot().timeout(const Duration(seconds: 3));
+      if (own != null) return own;
+      final nativeId = page.nativeId;
+      if (nativeId == null) {
+        lastSnapshotError = 'no way to take a picture of web views here';
+        return null;
+      }
       return await _native
           .invokeMethod<Uint8List>('snapshot', {'id': nativeId})
           .timeout(const Duration(seconds: 3));
@@ -81,8 +81,7 @@ class WebHost {
 
   void remove(String id) {
     _pages.remove(id);
-    controllers.remove(id);
-    nativeIds.remove(id);
+    pages.remove(id);
     states.remove(id);
   }
 
@@ -196,16 +195,14 @@ class WebHost {
 
   /// Runs [js] in the page and returns its result as text (JSON when it can).
   Future<String> eval(String id, String js) async {
-    final c = controllers[id];
+    final c = pages[id];
     if (c == null) return 'error: no web element "$id" on the canvas';
     try {
       final wrapped =
           '(function(){ try { var __r = (function(){ return eval(${jsonEncode(js)}); })(); '
           'return JSON.stringify(__r === undefined ? null : __r); } '
           'catch (e) { return JSON.stringify({error: String(e)}); } })()';
-      final r = await c
-          .runJavaScriptReturningResult(wrapped)
-          .timeout(const Duration(seconds: 5));
+      final r = await c.evaluate(wrapped).timeout(const Duration(seconds: 5));
       // The page returns JSON text. WKWebView hands it over as it is;
       // Android WebView quotes it once more. A string result is itself
       // quoted JSON: unwrap JSON strings, at most twice.

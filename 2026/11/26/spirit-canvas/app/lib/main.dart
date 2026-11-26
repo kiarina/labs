@@ -288,9 +288,9 @@ class HomePageState extends State<HomePage> {
           },
           'elements': elements,
           ...behaviors.describe(),
-          if (WebHost.instance.controllers.isNotEmpty)
+          if (WebHost.instance.pages.isNotEmpty)
             'web': {
-              for (final id in WebHost.instance.controllers.keys)
+              for (final id in WebHost.instance.pages.keys)
                 id: {
                   'state': WebHost.instance.states[id],
                   // The picture does not show web views: their text instead.

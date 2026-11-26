@@ -417,6 +417,11 @@ class _ScriptHost {
     if (existing != null) return existing;
     final rt = getJavascriptRuntime(xhr: false);
     rt.onMessage('sg', _onMessage);
+    // QuickJS (Windows, Android) may not know the time zone and give UTC
+    // for local times: tell it the offset (minutes east of UTC).
+    rt.evaluate(
+      'var __SG_TZ_OFFSET_MIN = ${DateTime.now().timeZoneOffset.inMinutes};',
+    );
     final r = rt.evaluate(_prelude);
     if (r.isError) debugPrint('[script] prelude failed: ${r.stringResult}');
     _js = rt;
@@ -536,6 +541,18 @@ class _ScriptHost {
 
 /// The scripts' side: timers, event handlers and the `sg` API.
 const _prelude = r'''
+(function () {
+  // Local times in the host's zone, when the engine gives UTC.
+  var off = typeof __SG_TZ_OFFSET_MIN === 'number' ? __SG_TZ_OFFSET_MIN : null;
+  if (off === null || new Date().getTimezoneOffset() === -off) return;
+  var P = Date.prototype;
+  function shifted(d) { return new Date(d.getTime() + off * 60000); }
+  ['FullYear', 'Month', 'Date', 'Day', 'Hours', 'Minutes', 'Seconds', 'Milliseconds'].forEach(function (n) {
+    var utc = P['getUTC' + n];
+    P['get' + n] = function () { return utc.call(shifted(this)); };
+  });
+  P.getTimezoneOffset = function () { return -off; };
+})();
 var __sg = (function () {
   var scripts = {};
   var api = {

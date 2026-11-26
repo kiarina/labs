@@ -177,12 +177,20 @@ class RpcClient {
 Future<RpcClient> codexAppServer({List<String> extra = const []}) async {
   final env = Platform.environment;
   final explicit = env['CODEX_BIN'];
-  final home = env['HOME'] ?? '';
+  final home = env['HOME'] ?? env['USERPROFILE'] ?? '';
   final candidates = [
     if (explicit != null && explicit.isNotEmpty) explicit,
-    '/opt/homebrew/bin/codex',
-    '/usr/local/bin/codex',
-    '$home/.local/bin/codex',
+    if (Platform.isWindows) ...[
+      // The Codex app's CLIs (a folder per version, the newest first), then
+      // the separate CLI's install.
+      ..._codexAppBinaries(env['LOCALAPPDATA']),
+      '${env['LOCALAPPDATA']}\\Programs\\OpenAI\\Codex\\bin\\codex.exe',
+      '$home\\.local\\bin\\codex.exe',
+    ] else ...[
+      '/opt/homebrew/bin/codex',
+      '/usr/local/bin/codex',
+      '$home/.local/bin/codex',
+    ],
   ];
   for (final c in candidates) {
     if (await File(c).exists()) {
@@ -198,4 +206,18 @@ Future<RpcClient> codexAppServer({List<String> extra = const []}) async {
     executable: '/bin/zsh',
     arguments: ['-lc', r'exec codex "$@"', 'codex', 'app-server', ...extra],
   );
+}
+
+/// The Codex app's CLIs on Windows
+/// (`%LOCALAPPDATA%\\OpenAI\\Codex\\bin\\<id>\\codex.exe`), the most recently
+/// written first.
+List<String> _codexAppBinaries(String? localAppData) {
+  if (localAppData == null) return const [];
+  final dir = Directory('$localAppData\\OpenAI\\Codex\\bin');
+  if (!dir.existsSync()) return const [];
+  final found = [
+    for (final d in dir.listSync().whereType<Directory>())
+      if (File('${d.path}\\codex.exe') case final f when f.existsSync()) f,
+  ]..sort((a, b) => b.lastModifiedSync().compareTo(a.lastModifiedSync()));
+  return [for (final f in found) f.path];
 }

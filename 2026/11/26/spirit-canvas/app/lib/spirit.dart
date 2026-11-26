@@ -167,7 +167,10 @@ class Spirit extends ChangeNotifier {
 
   /// ~/.codex/models_cache.json with code mode off for every model.
   Future<String> _writeCatalog() async {
-    final home = Platform.environment['HOME'] ?? '';
+    final home =
+        Platform.environment['HOME'] ??
+        Platform.environment['USERPROFILE'] ??
+        '';
     final cache = File('$home/.codex/models_cache.json');
     if (!await cache.exists()) {
       throw StateError('Codex has no model list yet: run `codex` once');

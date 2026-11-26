@@ -2,7 +2,7 @@
 
 Flutter のアプリの画面の一部に WebView を置き、ページへ素材を渡す・ページとやり取りする・操作を速く感じさせるときの手順と落とし穴。
 2026-11-26 の [spirit-canvas](../2026/11/26/spirit-canvas/README.md)（macOS、`webview_flutter` 4.14.1、WKWebView）で実際に確かめた内容で、
-iOS（Simulator）と Android（Pixel 6）は下の「iOS と Android で違うところ」で確かめた。Windows は未検証。別の OS や WebView で反証が出たら、この文書を直す。
+iOS（Simulator）と Android（Pixel 6）は下の「iOS と Android で違うところ」で確かめた。Windows は下の「Windows」で確かめた。別の OS や WebView で反証が出たら、この文書を直す。
 
 ## 置き方: 縮める枠の中に入れない
 
@@ -67,8 +67,17 @@ Android は `AndroidWebViewController.webViewIdentifier` を、アプリの Kotl
 - iOS の WebKit では、JS の `label.click()` で中のチェックボックスが切り替わらなかった（`input.click()` と実際のタップは切り替わる）
 - 撮影: iOS は macOS と同じ Swift を AppDelegate（`FlutterImplicitEngineDelegate` の `didInitializeImplicitFlutterEngine` で、`pluginRegistry.registrar(forPlugin:)` から MethodChannel を作る）に置けば動いた。外部 API は `webView(forIdentifier:withPluginRegistrar:)`
 
+## Windows
+
+`webview_flutter` は Windows に対応していないので、Windows だけ `webview_all_windows`（WebView2。`webview_platform_interface` の API）を使い、
+両方を小さな型の裏に隠すのが楽だった（spirit-canvas の `lib/canvas/web_page.dart`）。必要な口（読み込み・JavaScript channel・JS の実行）はどちらにもある。
+
+- WebView2 の版は Flutter のテクスチャとして描く（プラットフォームのビューではない）ので、縮めた枠の中のクリックのずれは起きない作りのはず（未確認）
+- 撮影は `WindowsWebViewController.takeScreenshot()` が PNG を返す（ネイティブのコードは要らない）
+- ループバックの HTTP、`asset://` の書き換え、ページの中の音（`mediaPlaybackPolicy: allowWithoutUserGesture`）はそのまま動いた
+
 ## 対応する OS
 
 `webview_flutter`（公式）は Android・iOS・macOS だけで、Windows に対応していない（4.14.1、2026-11 時点）。
-Windows では、API 互換の `webview_all`（WebView2、2026-11 の版）か、2024 年で更新の止まった `webview_windows` を選ぶことになる。どちらもこの文書の時点では動かしていない。
+Windows では `webview_all_windows`（WebView2、2026-11 の版）で動いた（上の「Windows」）。2024 年で更新の止まった `webview_windows` は試していない。
 `flutter_inappwebview` は独自スキームなどの口が多いが、2024 年 10 月から更新が止まっている。

@@ -30,6 +30,8 @@
 - **Part 4: WebView の要素で、`asset://` の差し込み、ページの JS のイベントを spirit へ、spirit が外からページの状態を読む、の 3 つができた。** Sol が web で作ったもぐらたたきは、10 秒で spirit を起こして応援させ、終わりに結果を話させた。
   spirit に見せる撮影には WebView が写らない（[Part 4](#part-4-web-要素webview)）
 - **Part 5: キャンバスを端末の大きさにし、`%` と `anchor` で置けるようにした。** 窓を縦長・横長にすると要素が追従し、向きが変わると spirit が起きて確かめた（[Part 5](#part-5-画面の大きさに合わせる)）
+- **Part 8: Windows でも全部動き、spirit（gpt-6.2-sol）もつながった。** WebView は Windows だけ WebView2 の `webview_all_windows` に差し替え、動画は `video_player_win` を足し、
+  スクリプトの JS が UTC になるのを直した（[Part 8](#part-8-windows-で確かめる)）
 - **Part 7: iOS（Simulator）と Android（Pixel 6）で、画面の側がすべて動いた**（モデルなし）。WebView の撮影も両方で重なった。Android はアプリが裏にある間は古い絵になる（[Part 7](#part-7-ios-と-android-で確かめる)）
 - **Part 6: WebView も spirit に見せる撮影に入るようにした（macOS）。** WKWebView の `takeSnapshot` を舞台の撮影に重ねる。窓をしまったままでも撮れた（[Part 6](#part-6-webview-も-spirit-に見せる撮影に入れる)）
 
@@ -402,9 +404,44 @@ Android・iOS・Windows は未対応。Android は同じく公開の口（`Andro
 
 - スマートフォンでは spirit がいない（`no spirit`）。製品では、別のマシンの spirit から端末のキャンバスを動かす形になる（この lab の範囲外）
 
+## Part 8: Windows で確かめる
+
+G-GEAR-2022 相当の Windows 11（Core i9-12900K・RTX 3080 Ti、Flutter 3.47.2）で、`tools/windows/` の手順で動かした（`send.sh` でソースと素材を送り、
+`build.cmd`・`run.cmd` を対話のスケジュールタスクで走らせ、制御のポートは ssh のトンネルで Mac へ）。Windows では Codex が動くので、spirit 込みでも確かめた。
+
+### Windows のための変更
+
+- **WebView:** `webview_flutter` は Windows に対応していない。Windows だけ `webview_all_windows` 1.5.2（WebView2）を使う。両方を `WebPage`（`lib/canvas/web_page.dart`）の裏に隠した。
+  WebView2 の版は Flutter のテクスチャとして描かれ（プラットフォームのビューではない）、撮影の口（`takeScreenshot`）を自分で持つ
+- **動画:** `video_player` は Windows の実装を持たない（`UnimplementedError: init() has not been implemented`）。`video_player_win` 3.3.2 を足すと再生された
+- **スクリプトの時刻:** Windows のスクリプトの JS（QuickJS）は時間帯を知らず、`new Date().getHours()` が UTC になった（15 時が 6 時）。アプリが時差（分）を渡し、
+  JS の `Date` の地方時の読み出しを時差で直すようにした（書き込みの側と `toString` は直していない）。WebView の中の JS は時間帯を知っていた
+- Codex の場所: `%LOCALAPPDATA%\OpenAI\Codex\bin\<id>\codex.exe`（Codex のアプリが入れたもの、0.167.0-alpha.3.2）を探すようにした。ホームは `USERPROFILE`
+- Windows の runner で Flutter GPU を有効に（VRM）、`/utf-8` を足した
+
+### 結果
+
+| 確かめたこと | Windows |
+| --- | --- |
+| 見本（VRM・写真・動画・SVG・選択肢・入力欄・音声） | 描けた（動画は `video_player_win` を足してから） |
+| 大きさ・`%`・`anchor` | 1266x580（横）で置き方どおり |
+| スクリプト・状態・タイムライン・`on`・効果音・BGM | 動いた（時刻は直した後に地方時） |
+| WebView: `asset://`・イベント・状態・`canvas_web_eval`・ページの中の音 | 動いた（`played ok`） |
+| WebView の撮影を重ねる | 重なった（WebView2 の `takeScreenshot`） |
+| 作り置きの呼び出し | 11〜17 ms |
+| spirit（gpt-6.2-sol）「今の時刻と、今日やることを書き込めるメモの画面を作って」 | 64 秒、道具 6 回（`canvas_web_eval` で書き込みの保存を確かめ、`daily-clock-memo` として保存）、出力 2,542 トークン |
+
+| | | |
+| --- | --- | --- |
+| ![Windows の見本](results/windows-1-demo.jpg) | ![Windows の WebView の撮影](results/windows-4-web.jpg) | ![Windows で spirit が作った画面](results/windows-win-spirit.jpg) |
+| VRM と動画も描けた | WebView2 の撮影 | 時計とメモ（web 要素 1 つ） |
+
+- **画面の実際のクリックが WebView に届くかは、Windows では確かめていない**（離れた PC の窓を操作しなかった）。WebView2 の版はテクスチャなので、macOS で直したような位置のずれは起きない作りのはず（解釈）
+- 最初の `build.cmd` は、置き場所の解釈を 1 段まちがえて `tools\` で `flutter` を走らせて失敗した（直した）
+
 ## 結論が成り立つ範囲と、まだ見ていないこと
 
-- spirit（モデル）込みで動かしたのは macOS だけ。iOS（Simulator）と Android（Pixel 6）は、画面の側をモデルなしで確かめた（Part 7）。iOS の実機と Windows は動かしていない
+- spirit（モデル）込みで動かしたのは macOS と Windows。iOS（Simulator）と Android（Pixel 6）は、画面の側をモデルなしで確かめた（Part 7）。iOS の実機は動かしていない
 - Claude（Opus）では流していない。各シナリオ 1 回で、ばらつきは見ていない
 - 選択肢・ボタンは画面で実際にクリックした（s2、s4）。入力欄の `submit`、`tap`、動画・音声の `ended` は、モデルにつないだ状態では確かめていない（見本で描けることだけ）
 - 動画・音声は、手元の素材（labs の `tests/assets`）か https の URL だけ。spirit が新しく画像・音声を作る道具は無い
@@ -417,7 +454,7 @@ Android・iOS・Windows は未対応。Android は同じく公開の口（`Andro
 
 Part 1 で挙げた「押したときの結果を宣言する」「時間の並び」「spirit が書くスクリプト」「通知の区別」は Part 2、「作り置きの保存・呼び出し・差し替え」と音は Part 3、WebView は Part 4、画面の大きさに合わせるのは Part 5 で作った。残り:
 
-1. **Windows で動かす。** WebView は `webview_all`（WebView2）への差し替えから。撮影は WebView2 の `CapturePreview`
+1. **Windows で、画面の実際のクリックが WebView に届くかを人の手で確かめる**（Part 8 では道具からだけ確かめた）
 2. **安全領域（ノッチ・ホームバー）を渡す。** 大きさと向きは Part 5 で渡すようにした。スマートフォンでは、隠れる部分を避けるための余白も要る
 3. **spirit がモードを切り替える道具。** チャットのまま頼まれた絵を、そのまま見せられるように。ユーザーが自分でチャットに戻した直後に戻さないよう、提案を出して押されたら切り替える形などを選ぶ
 4. **スクリプトを製品の形で動かす。** 別の isolate かプロセス、実行時間の上限、スクリプトどうしの順序
@@ -441,6 +478,9 @@ python3 2026/11/26/spirit-canvas/drive.py s2 event press <button id>
 curl -s -XPOST "localhost:8813/tool?name=canvas_state" --data-binary '{"set":{"n":1}}'
 ```
 
+Windows: `tools/windows/send.sh` で送り、G-GEAR で `build.cmd` と `run.cmd` を対話のスケジュールタスクとして走らせる（手順は `docs/playbooks/multi-machine-agent-orchestration.md` と同じ型。手元にはない）。
+制御のポートは `ssh -N -L 8816:127.0.0.1:8816 <host>` で手元へ。
+
 iOS・Android: `DEVICE=<udid> mise -C 2026/11/26/spirit-canvas run run-ios`・`DEVICE=<adb serial> mise -C 2026/11/26/spirit-canvas run run-android`（spirit はつながらない。
 `python3 2026/11/26/spirit-canvas/check_device.py ios 8814` などで確かめる。Android は初回の `flutter run` で入ったあと、もう一度実行すると素材が写る）。
 
@@ -454,4 +494,4 @@ iOS・Android: `DEVICE=<udid> mise -C 2026/11/26/spirit-canvas run run-ios`・`D
 ## Dependencies
 
 `app/pubspec.lock` が解決した版。flutter_vrm は commit `6cdf97d`、flutter_scene はその lab と同じ upstream の commit `0e263be`（`dependency_overrides`）。
-flutter_svg 2.5、video_player 2.14、audioplayers 6.8、flutter_js 0.8.7（Part 2）、webview_flutter 4.14.1・webview_flutter_wkwebview 3.27.2（Part 4）。
+flutter_svg 2.5、video_player 2.14、audioplayers 6.8、flutter_js 0.8.7（Part 2）、webview_flutter 4.14.1・webview_flutter_wkwebview 3.27.2（Part 4）、webview_flutter_android（Part 7）、webview_all_windows 1.5.2・webview_platform_interface 1.5.2・video_player_win 3.3.2（Part 8）。

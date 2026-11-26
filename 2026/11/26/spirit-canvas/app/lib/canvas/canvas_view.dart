@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
@@ -10,14 +9,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:video_player/video_player.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_android/webview_flutter_android.dart';
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 import '../media.dart';
 import 'canvas_model.dart';
 import 'vrm_element.dart';
 import 'web_host.dart';
+import 'web_page.dart';
 
 /// Parses `#RGB`, `#RRGGBB`, `#RRGGBBAA` and a few names.
 Color? parseColor(Object? v) {
@@ -887,7 +884,7 @@ class _WebElement extends StatefulWidget {
 }
 
 class _WebElementState extends State<_WebElement> {
-  late final WebViewController _web;
+  late final WebPage _web;
   String? _html;
   int _version = 0;
 
@@ -897,42 +894,19 @@ class _WebElementState extends State<_WebElement> {
   void initState() {
     super.initState();
     final id = widget.element.id;
-    // Pages may play sound without a click first (WebKit asks for one by
-    // default: NotSupportedError from Audio.play()).
-    _web = WebViewController.fromPlatformCreationParams(
-      Platform.isMacOS || Platform.isIOS
-          ? WebKitWebViewControllerCreationParams(
-              mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
-            )
-          : const PlatformWebViewControllerCreationParams(),
-    )..setJavaScriptMode(JavaScriptMode.unrestricted);
-    // A transparent background is not implemented for macOS's web view
-    // (UnimplementedError: opaque); the page paints its own.
-    if (!Platform.isMacOS) _web.setBackgroundColor(const Color(0x00000000));
-    // Android WebView also asks for a tap before a page may play sound.
-    if (_web.platform case final AndroidWebViewController android) {
-      android.setMediaPlaybackRequiresUserGesture(false);
-      host.nativeIds[id] = android.webViewIdentifier;
-    }
-    _web.addJavaScriptChannel(
-      'SGHost',
-      onMessageReceived: (m) => host.receive(id, m.message),
-    );
-    host.controllers[id] = _web;
-    if (_web.platform case final WebKitWebViewController webkit) {
-      host.nativeIds[id] = webkit.webViewIdentifier;
-    }
+    _web = WebPage(onMessage: (m) => host.receive(id, m));
+    host.pages[id] = _web;
     _load();
   }
 
   @override
   void didUpdateWidget(covariant _WebElement oldWidget) {
     super.didUpdateWidget(oldWidget);
-    host.controllers[widget.element.id] = _web;
+    host.pages[widget.element.id] = _web;
     if (widget.element.str('html') != _html) {
       _load();
     } else if (oldWidget.zoom != widget.zoom) {
-      _web.runJavaScript('window.sg && sg.setZoom(${widget.zoom})');
+      _web.run('window.sg && sg.setZoom(${widget.zoom})');
     }
   }
 
@@ -942,20 +916,20 @@ class _WebElementState extends State<_WebElement> {
     final url = e.str('url');
     if (_html != null) {
       host.setPage(e.id, _html!);
-      _web.loadRequest(
+      _web.load(
         Uri.parse('${host.pageUrl(e.id, ++_version)}&zoom=${widget.zoom}'),
       );
     } else if (url != null && url.startsWith('https://')) {
-      _web.loadRequest(Uri.parse(url));
+      _web.load(Uri.parse(url));
     }
   }
 
   @override
   void dispose() {
-    if (identical(host.controllers[widget.element.id], _web)) {
-      host.controllers.remove(widget.element.id);
-      host.nativeIds.remove(widget.element.id);
+    if (identical(host.pages[widget.element.id], _web)) {
+      host.pages.remove(widget.element.id);
     }
+    _web.dispose();
     super.dispose();
   }
 
@@ -963,7 +937,7 @@ class _WebElementState extends State<_WebElement> {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(widget.element.num_('radius', 0)),
-      child: WebViewWidget(controller: _web),
+      child: _web.build(context),
     );
   }
 }
