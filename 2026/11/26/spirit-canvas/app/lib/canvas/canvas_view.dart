@@ -912,6 +912,7 @@ class _WebElementState extends State<_WebElement> {
     // Android WebView also asks for a tap before a page may play sound.
     if (_web.platform case final AndroidWebViewController android) {
       android.setMediaPlaybackRequiresUserGesture(false);
+      host.nativeIds[id] = android.webViewIdentifier;
     }
     _web.addJavaScriptChannel(
       'SGHost',

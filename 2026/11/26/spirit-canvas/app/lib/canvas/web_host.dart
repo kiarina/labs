@@ -38,9 +38,8 @@ class WebHost {
   /// A PNG of the page as it is drawn now, or null where this platform has
   /// no way here (only macOS so far) or it failed ([lastSnapshotError]).
   Future<Uint8List?> snapshot(String id) async {
-    if (!Platform.isMacOS && !Platform.isIOS) {
-      lastSnapshotError =
-          'pictures of web views are only taken on macOS and iOS so far';
+    if (!Platform.isMacOS && !Platform.isIOS && !Platform.isAndroid) {
+      lastSnapshotError = 'pictures of web views are only taken on macOS, iOS and Android so far';
       return null;
     }
     final nativeId = nativeIds[id];

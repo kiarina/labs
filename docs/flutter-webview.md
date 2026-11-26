@@ -36,7 +36,8 @@ WebKit の「利用者の操作なしの再生を止める」設定（`WebKitWeb
 Dart の `WebKitWebViewController.webViewIdentifier` を、アプリの Swift で `FWFWebViewFlutterWKWebViewExternalAPI.webView(forIdentifier:withPluginRegistry:)` に渡し、
 `WKWebView.takeSnapshot(with:)`（`afterScreenUpdates = true`）で PNG にして MethodChannel で返す。Flutter の撮影の上の同じ場所に描けば 1 枚になる。
 **窓が他の窓の後ろにあっても、しまってあっても撮れた**（ページの中の変更も反映された。0.6 秒）。OS の窓の撮影では、後ろの窓の WebView は黒く写る。
-Android は `AndroidWebViewController.webViewIdentifier` と `WebViewFlutterAndroidExternalApi` で同じ形にできる見込み（未確認）。
+Android は `AndroidWebViewController.webViewIdentifier` を、アプリの Kotlin（`MainActivity.configureFlutterEngine`）で `WebViewFlutterAndroidExternalApi.getWebView(flutterEngine, id)` に渡し、
+`webView.draw(Canvas(bitmap))` で PNG にする。**ただし Android の `draw` は最後に描いた絵を写す。** アプリが裏にある間のページの変化は写らず、前面に戻すと写った（Pixel 6）。
 
 ## ページとのやり取り
 

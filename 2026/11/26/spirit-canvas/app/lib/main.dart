@@ -312,6 +312,14 @@ class HomePageState extends State<HomePage> {
             note =
                 '\n(web elements not in the picture: ${jsonEncode(shot.missing)})';
           }
+          // Android draws a web view's last frame: with the app in the
+          // background, page changes since then are not in the picture.
+          if (Platform.isAndroid &&
+              WidgetsBinding.instance.lifecycleState !=
+                  AppLifecycleState.resumed &&
+              canvas.elements.values.any((e) => e.type == 'web')) {
+            note += '\n(the app is in the background: web pages in the picture may be out of date; read their state and text instead)';
+          }
         }
         return ToolOutcome('$text$note', images: images);
       case 'canvas_put':

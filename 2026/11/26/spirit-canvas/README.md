@@ -30,7 +30,7 @@
 - **Part 4: WebView の要素で、`asset://` の差し込み、ページの JS のイベントを spirit へ、spirit が外からページの状態を読む、の 3 つができた。** Sol が web で作ったもぐらたたきは、10 秒で spirit を起こして応援させ、終わりに結果を話させた。
   spirit に見せる撮影には WebView が写らない（[Part 4](#part-4-web-要素webview)）
 - **Part 5: キャンバスを端末の大きさにし、`%` と `anchor` で置けるようにした。** 窓を縦長・横長にすると要素が追従し、向きが変わると spirit が起きて確かめた（[Part 5](#part-5-画面の大きさに合わせる)）
-- **Part 7: iOS（Simulator）と Android（Pixel 6）で、画面の側がすべて動いた**（モデルなし）。WebView の撮影は iOS も重なり、Android は未対応（[Part 7](#part-7-ios-と-android-で確かめる)）
+- **Part 7: iOS（Simulator）と Android（Pixel 6）で、画面の側がすべて動いた**（モデルなし）。WebView の撮影も両方で重なった。Android はアプリが裏にある間は古い絵になる（[Part 7](#part-7-ios-と-android-で確かめる)）
 - **Part 6: WebView も spirit に見せる撮影に入るようにした（macOS）。** WKWebView の `takeSnapshot` を舞台の撮影に重ねる。窓をしまったままでも撮れた（[Part 6](#part-6-webview-も-spirit-に見せる撮影に入れる)）
 
 | | |
@@ -374,7 +374,7 @@ Android・iOS・Windows は未対応。Android は同じく公開の口（`Andro
 | スクリプト（JS）・状態と `{{}}`・タイムライン・`on`・効果音・BGM | 動いた（JavaScriptCore） | 動いた（QuickJS） |
 | WebView: `asset://`（HTML・CSS・後から足した画像）、イベント、状態、`canvas_web_eval` | 動いた | 動いた |
 | WebView の中の音（`new Audio('asset://…')`） | 鳴った | 鳴った（Android の「タップしてから再生」を外して） |
-| WebView の撮影を spirit に見せる画像へ重ねる | 重なった（`takeSnapshot`。Swift は AppDelegate） | 未対応（理由を返す） |
+| WebView の撮影を spirit に見せる画像へ重ねる | 重なった（`takeSnapshot`。Swift は AppDelegate） | 重なった（`WebView.draw` で Bitmap に。Kotlin は MainActivity）。アプリが裏にある間は古い絵になる |
 | 作り置きの呼び出し（脱出ゲーム・もぐらたたき・予定） | 2〜19 ms | 6〜73 ms |
 | 画面の実際のタップが WebView に届く | 予定の 2 件目にチェック、もぐらたたきのスタート | 同じ（`adb shell input tap`） |
 
@@ -391,6 +391,15 @@ Android・iOS・Windows は未対応。Android は同じく公開の口（`Andro
 - **Android のビルド:** `flutter_js` 0.8.7 は Kotlin を JVM 1.8、Java を 11 で作り、Kotlin の Gradle プラグインが食い違いを拒んだ。`gradle.properties` の `kotlin.jvm.target.validation.mode=warning` で警告にとどめた。
   また、作り直しのビルドで、Gradle 9 が「`compileFlutterBuildDebug` が `mergeDebugNativeDebugMetadata`・`mergeDebugAssets` の出力を依存なしに読む」と止めた（クリーンなビルドは通る）。原因は分かっていない。`run-android` は毎回 `build/app` を消してから作る
 - iOS は `NSAllowsLocalNetworking`、Android は `INTERNET` と `usesCleartextTraffic` がないと、WebView がループバックの HTTP（`asset://` の配信）を読めない
+- **Android の WebView の撮影は、アプリが裏にある間は古い。** `WebViewFlutterAndroidExternalApi.getWebView` で取り出した WebView を `draw(Canvas(bitmap))` で描くと、前面では今のページが写った。
+  アプリを裏に回してからページの中で 3 件目にチェックを入れて撮ると、裏に回す前の絵（2/3）が写り、前面に戻すと 3/3 が写った。`draw` は最後に描いたものを写すため（macOS・iOS の `takeSnapshot` はページを描き直すので、しまった窓でも今の絵）。
+  アプリが裏にある間の `canvas_view` には「絵が古いかもしれない。状態と本文を読んで」と添えるようにした
+
+| | | |
+| --- | --- | --- |
+| ![Android の撮影](results/android-web-picture.jpg) | ![裏にある間](results/android-background-stale.jpg) | ![前面に戻して](results/android-foreground-again.jpg) |
+| 試験のページ（`asset://` の画像 3 枚） | 裏に回して 3 件目にチェックした後の撮影（2/3 のまま） | 前面に戻した後（3/3） |
+
 - スマートフォンでは spirit がいない（`no spirit`）。製品では、別のマシンの spirit から端末のキャンバスを動かす形になる（この lab の範囲外）
 
 ## 結論が成り立つ範囲と、まだ見ていないこと
@@ -408,7 +417,7 @@ Android・iOS・Windows は未対応。Android は同じく公開の口（`Andro
 
 Part 1 で挙げた「押したときの結果を宣言する」「時間の並び」「spirit が書くスクリプト」「通知の区別」は Part 2、「作り置きの保存・呼び出し・差し替え」と音は Part 3、WebView は Part 4、画面の大きさに合わせるのは Part 5 で作った。残り:
 
-1. **Windows で動かす。** WebView は `webview_all`（WebView2）への差し替えから。Android の WebView の撮影（`AndroidWebViewController.webViewIdentifier` と `WebViewFlutterAndroidExternalApi`）も
+1. **Windows で動かす。** WebView は `webview_all`（WebView2）への差し替えから。撮影は WebView2 の `CapturePreview`
 2. **安全領域（ノッチ・ホームバー）を渡す。** 大きさと向きは Part 5 で渡すようにした。スマートフォンでは、隠れる部分を避けるための余白も要る
 3. **spirit がモードを切り替える道具。** チャットのまま頼まれた絵を、そのまま見せられるように。ユーザーが自分でチャットに戻した直後に戻さないよう、提案を出して押されたら切り替える形などを選ぶ
 4. **スクリプトを製品の形で動かす。** 別の isolate かプロセス、実行時間の上限、スクリプトどうしの順序
