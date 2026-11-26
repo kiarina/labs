@@ -1,6 +1,6 @@
 # macos
 
-- 2026/11/26 [A canvas mode for a spirit's chat: gpt-6.2-sol lays out text, SVG, a VRM body, media, buttons and web views with tools; actions, timelines and spirit-written JavaScript run without the model; screens are saved and reused with new values](../2026/11/26/spirit-canvas/README.md)
+- 2026/11/26 [A canvas mode for a spirit's chat: gpt-6.2-sol lays out text, SVG, a VRM body, media, buttons and web views with tools; actions, timelines and spirit-written JavaScript run without the model; screens are saved and reused with new values; a body that speaks over web slides, and a touchable 3D world of shapes, panels and the body with a moving camera](../2026/11/26/spirit-canvas/README.md)
 - 2026/11/06 [WebRTC data channels from a Flutter-free Dart CLI: webrtc_dart vs libdatachannel over FFI, against libwebrtc (Chrome) and aiortc, on macOS and in a Linux container](../2026/11/06/dart-cli-webrtc-datachannel/README.md)
 - 2026/10/21 [Official remote audio tap in the external-media fork: decoded remote PCM, silenced native playout, application playout with AEC on the played voice](../2026/10/21/flutter-remote-audio-tap-playout/README.md)
 - 2026/10/21 [Streaming MeanVC2 voice conversion exported to ONNX: parity with upstream PyTorch and real-time speed in Flutter on macOS, Windows, Android and iOS](../2026/10/21/meanvc2-onnx-streaming/README.md)

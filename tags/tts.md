@@ -1,5 +1,6 @@
 # tts
 
+- 2026/11/26 [A canvas mode for a spirit's chat: gpt-6.2-sol lays out text, SVG, a VRM body, media, buttons and web views with tools; actions, timelines and spirit-written JavaScript run without the model; screens are saved and reused with new values; a body that speaks over web slides, and a touchable 3D world of shapes, panels and the body with a moving camera](../2026/11/26/spirit-canvas/README.md)
 - 2026/10/23 [Call speech in short spans on qwentts.cpp (Qwen3-TTS 1.7B BF16)](../2026/10/23/qwen3-tts-ggml-call-segments/README.md)
 - 2026/10/23 [Qwen3-TTS on ggml (qwentts.cpp, llama.cpp) vs MLX bf16 and an ONNX Runtime port](../2026/10/23/qwen3-tts-ggml-compare/README.md)
 - 2026/10/23 [Qwen3-TTS ONNX Runtime ports vs MLX bf16 on Apple Silicon](../2026/10/23/qwen3-tts-onnx-runtime-compare/README.md)

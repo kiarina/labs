@@ -1,4 +1,4 @@
-# A canvas mode for a spirit's chat: gpt-6.2-sol lays out text, SVG, a VRM body, media, buttons and web views with tools; actions, timelines and spirit-written JavaScript run without the model; screens are saved and reused with new values
+# A canvas mode for a spirit's chat: gpt-6.2-sol lays out text, SVG, a VRM body, media, buttons and web views with tools; actions, timelines and spirit-written JavaScript run without the model; screens are saved and reused with new values; a body that speaks over web slides, and a touchable 3D world of shapes, panels and the body with a moving camera
 
 チャットの画面に「キャンバス」のモードを足し、spirit（Codex の thread）が道具でキャンバスに好きなものを置けるかを確かめます。
 入力欄はそのままです。上の履歴の代わりに、spirit が文字・絵・3D の自分の姿・写真・動画・音声・ボタン・選択肢・入力欄を座標を決めて置き、
@@ -30,10 +30,14 @@
 - **Part 4: WebView の要素で、`asset://` の差し込み、ページの JS のイベントを spirit へ、spirit が外からページの状態を読む、の 3 つができた。** Sol が web で作ったもぐらたたきは、10 秒で spirit を起こして応援させ、終わりに結果を話させた。
   spirit に見せる撮影には WebView が写らない（[Part 4](#part-4-web-要素webview)）
 - **Part 5: キャンバスを端末の大きさにし、`%` と `anchor` で置けるようにした。** 窓を縦長・横長にすると要素が追従し、向きが変わると spirit が起きて確かめた（[Part 5](#part-5-画面の大きさに合わせる)）
+- **Part 6: WebView も spirit に見せる撮影に入るようにした。** WebView 自身にページを撮らせ、舞台の撮影に重ねる。窓をしまったままでも撮れた（[Part 6](#part-6-webview-も-spirit-に見せる撮影に入れる)）
+- **Part 7: iOS（Simulator・iPad Air 4 の実機）と Android（Pixel 6）で、画面の側がすべて動いた**（モデルなし）。WebView の撮影も重なった。Android はアプリが裏にある間は古い絵になる（[Part 7](#part-7-ios-と-android-で確かめる)）
 - **Part 8: Windows でも全部動き、spirit（gpt-6.2-sol）もつながった。** WebView は Windows だけ WebView2 の `webview_all_windows` に差し替え、動画は `video_player_win` を足し、
   スクリプトの JS が UTC になるのを直した（[Part 8](#part-8-windows-で確かめる)）
-- **Part 7: iOS（Simulator）と Android（Pixel 6）で、画面の側がすべて動いた**（モデルなし）。WebView の撮影も両方で重なった。Android はアプリが裏にある間は古い絵になる（[Part 7](#part-7-ios-と-android-で確かめる)）
-- **Part 6: WebView も spirit に見せる撮影に入るようにした（macOS）。** WKWebView の `takeSnapshot` を舞台の撮影に重ねる。窓をしまったままでも撮れた（[Part 6](#part-6-webview-も-spirit-に見せる撮影に入れる)）
+- **Part 9: WebView のスライドの上に VRM を重ね、声で解説させられた。** 前面の層・OS の声の読み上げ・声に合わせた口・スクリプトからページを送る、を足した。前面の要素の下のページは、どの OS でも押せない（[Part 9](#part-9-webview-のスライドの上に体を重ねて声で解説する)）
+- **Part 10: ページの部屋の上で、体が歩く・仕事する・うたた寝し、触ると部位ごとに反応する作り置きを作った**（モデルなし。[Part 10](#part-10-部屋の背景の上で-spirit-がうろちょろし触ると反応する)）
+- **Part 11: 3D の世界（flutter_scene）を、今までと同じ要素の延長で置けた。** 形・文字や絵の板・VRM・カメラが `canvas_update` の遷移とスクリプトでそのまま動き、触った物と体の部位が出来事になる。
+  2D の要素を HUD に重ね、予定に寄る・戻るを作った。Sol は 1 回で 44 個の部屋を破綻なく組んだ。4 つの OS で動いた（デバッグで Pixel 6 だけ 55 fps）（[Part 11](#part-11-3d-の世界flutter_sceneに文字絵形体を置きカメラを動かす)）
 
 | | |
 | --- | --- |
@@ -264,7 +268,7 @@ w1「web ブロックで、20秒のもぐらたたきゲームを作って。手
 
 ### 分かった制約
 
-- **spirit に見せる撮影（`RepaintBoundary`）に WebView は写らない。** プラットフォームのビューなので。代わりに `canvas_view` は本文と `sg.setState` の状態を返す（macOS は Part 6 で、WebView の絵を重ねて撮るようにした）。Sol は `getBoundingClientRect` などを `canvas_web_eval` で読んで配置を確かめていた
+- **spirit に見せる撮影（`RepaintBoundary`）に WebView は写らない。** プラットフォームのビューなので。代わりに `canvas_view` は本文と `sg.setState` の状態を返す（Part 6〜8 で、どの OS でも WebView の絵を重ねて撮るようにした）。Sol は `getBoundingClientRect` などを `canvas_web_eval` で読んで配置を確かめていた
 - macOS の WebView は透明な背景に対応していない（`setBackgroundColor` が `UnimplementedError: opaque`）。ページが自分の背景を塗る
 - **WebView は、キャンバスのほかの要素より常に上に出る。** 縮める枠の外に置いているため（下の不具合の直し）。`opacity`・`scale`・`rotation` も WebView には効かない（位置と大きさのアニメは効く）
 
@@ -298,11 +302,11 @@ Sol の自己試験や `canvas_web_eval` での操作は JS からボタンを�
 | OS | WebView | この lab での状態 |
 | --- | --- | --- |
 | macOS | `webview_flutter`（WKWebView） | 確かめた |
-| iOS | 同じ（WKWebView） | 未確認。同じ実装で動く見込み |
-| Android | 同じ（Android WebView） | 未確認。自動再生の扱いは別の設定が要る可能性 |
-| Windows | `webview_flutter` は非対応。API 互換の `webview_all`（2026-11 の版、WebView2）か、2024 年で止まっている `webview_windows` | 未確認 |
+| iOS | 同じ（WKWebView） | 確かめた（[Part 7](#part-7-ios-と-android-で確かめる)） |
+| Android | 同じ（Android WebView） | 確かめた。中の音は「タップしてから再生」を外す（[Part 7](#part-7-ios-と-android-で確かめる)） |
+| Windows | `webview_flutter` は非対応。API 互換の `webview_all_windows`（WebView2）に差し替えた | 確かめた（[Part 8](#part-8-windows-で確かめる)） |
 
-使っているのは、ページの読み込み・JavaScript channel・JS を走らせて結果を受け取る、の 3 つだけ。`asset://` は WebView の独自スキームではなくループバックのサーバーで解くので、Windows でも WebView の差し替えで済む見込み（解釈。動かしていない）。
+使っているのは、ページの読み込み・JavaScript channel・JS を走らせて結果を受け取る、の 3 つだけ。`asset://` は WebView の独自スキームではなくループバックのサーバーで解くので、Windows も WebView の差し替えだけで済んだ。
 
 ## Part 5: 画面の大きさに合わせる
 
@@ -343,7 +347,7 @@ Sol の自己試験や `canvas_web_eval` での操作は JS からボタンを�
 ## Part 6: WebView も spirit に見せる撮影に入れる
 
 Flutter の撮影（`RepaintBoundary.toImage`）にはプラットフォームのビューが写らないので、spirit には WebView の本文と状態だけを渡していた。
-各ページの絵を WebView 自身に撮らせ、舞台の撮影の同じ場所に重ねて 1 枚にした（macOS）。
+各ページの絵を WebView 自身に撮らせ、舞台の撮影の同じ場所に重ねて 1 枚にした。ここでは macOS の作りを書く（iOS・Android は [Part 7](#part-7-ios-と-android-で確かめる)、Windows は [Part 8](#part-8-windows-で確かめる)）。
 
 - `webview_flutter_wkwebview` の公開の口で、ページの裏の WKWebView を取り出す（Dart の `WebKitWebViewController.webViewIdentifier` と、Swift の `FWFWebViewFlutterWKWebViewExternalAPI.webView(forIdentifier:withPluginRegistry:)`）
 - アプリの Swift（`macos/Runner/MainFlutterWindow.swift`）に MethodChannel `spirit_canvas/webview` を足し、`WKWebView.takeSnapshot` の PNG を返す
@@ -359,7 +363,7 @@ Flutter の撮影（`RepaintBoundary.toImage`）にはプラットフォーム�
 - **固定の大きさの画面を縦長の窓で見ると、WebView の中の CSS の `@media` は窓の幅で効く。** もぐらたたきは 1280x800 で作られているが、525 px の窓では縮めた WebView の幅が 525 px になり、ページの狭い画面向けの組み方に変わった。`zoom` ではページから見える幅は変わらない
 - spirit の操作（作り置きの呼び出しや `design` の指定）で大きさが変わったときは、spirit を起こさないようにした（起動直後に、作り置きを呼び出しただけで「大きさが変わった」と起こしていた）
 
-Android・iOS・Windows は未対応。Android は同じく公開の口（`AndroidWebViewController.webViewIdentifier` と `WebViewFlutterAndroidExternalApi`）で WebView を画像に描ける見込み、Windows の WebView2 には `CapturePreview` がある（どちらも未確認）。
+iOS は同じ `takeSnapshot`、Android は `WebViewFlutterAndroidExternalApi` で取り出した WebView の `draw`、Windows は WebView2 の `takeScreenshot` で撮る（それぞれ Part 7・Part 8）。
 
 ## Part 7: iOS と Android で確かめる
 
@@ -660,7 +664,7 @@ macOS の実際のクリックで、予定 → 寄る → 「戻る」で戻る�
 
 ## 結論が成り立つ範囲と、まだ見ていないこと
 
-- spirit（モデル）込みで動かしたのは macOS と Windows。iOS（Simulator）と Android（Pixel 6）は、画面の側をモデルなしで確かめた（Part 7）。iOS の実機は動かしていない
+- spirit（モデル）込みで動かしたのは macOS と Windows。iOS（Simulator・iPad Air 4 の実機）と Android（Pixel 6）は、画面の側をモデルなしで確かめた（Part 7）。iPhone の実機は動かしていない。3D の世界（Part 11）は iPad の実機でも見ていない
 - Claude（Opus）では流していない。各シナリオ 1 回で、ばらつきは見ていない
 - 選択肢・ボタンは画面で実際にクリックした（s2、s4）。入力欄の `submit`、`tap`、動画・音声の `ended` は、モデルにつないだ状態では確かめていない（見本で描けることだけ）
 - 動画・音声は、手元の素材（labs の `tests/assets`）か https の URL だけ。spirit が新しく画像・音声を作る道具は無い
@@ -671,7 +675,7 @@ macOS の実際のクリックで、予定 → 寄る → 「戻る」で戻る�
 
 ## 次の一手（この lab の結果から）
 
-Part 1 で挙げた「押したときの結果を宣言する」「時間の並び」「spirit が書くスクリプト」「通知の区別」は Part 2、「作り置きの保存・呼び出し・差し替え」と音は Part 3、WebView は Part 4、画面の大きさに合わせるのは Part 5 で作った。残り:
+Part 1 で挙げた「押したときの結果を宣言する」「時間の並び」「spirit が書くスクリプト」「通知の区別」は Part 2、「作り置きの保存・呼び出し・差し替え」と音は Part 3、WebView は Part 4、画面の大きさに合わせるのは Part 5、WebView の撮影は Part 6、声と体の重ね合わせは Part 9、3D の世界は Part 11 で作った。残り:
 
 1. **スマートフォンで spirit を動かす**（別のマシンの spirit から端末のキャンバスを動かす形。この lab の範囲外）
 2. **安全領域（ノッチ・ホームバー）を渡す。** 大きさと向きは Part 5 で渡すようにした。スマートフォンでは、隠れる部分を避けるための余白も要る
