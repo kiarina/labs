@@ -1,6 +1,6 @@
 # flutter
 
-- 2026/11/26 [A canvas mode for a spirit's chat: gpt-6.2-sol lays out text, SVG, a VRM body, media and buttons with tools; then actions, timelines and spirit-written JavaScript run on the canvas without the model](../2026/11/26/spirit-canvas/README.md)
+- 2026/11/26 [A canvas mode for a spirit's chat: gpt-6.2-sol lays out text, SVG, a VRM body, media and buttons with tools; actions, timelines and spirit-written JavaScript run without the model; screens are saved and reused with new values](../2026/11/26/spirit-canvas/README.md)
 - 2026/10/21 [Official remote audio tap in the external-media fork: decoded remote PCM, silenced native playout, application playout with AEC on the played voice](../2026/10/21/flutter-remote-audio-tap-playout/README.md)
 - 2026/10/21 [Streaming MeanVC2 voice conversion exported to ONNX: parity with upstream PyTorch and real-time speed in Flutter on macOS, Windows, Android and iOS](../2026/10/21/meanvc2-onnx-streaming/README.md)
 - 2026/10/20 [Physical camera and microphone AEC through the external-media fork and bridge](../2026/10/20/flutter-fork-external-media-aec/README.md)
