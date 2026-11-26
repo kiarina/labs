@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#MISE description="Run the app (VRM_PATH, MODEL, EFFORT, CONTROL_PORT, AGENT=0, FIRST_MOTION optional)"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+lab="$(pwd)"
+app="$lab/app/build/macos/Build/Products/Debug/ardy_vrm_agent.app/Contents/MacOS/ardy_vrm_agent"
+[ -x "$app" ] && [ -f "$lab/web/dist/index.html" ] || mise run build
+mkdir -p "$lab/work/logs"
+WEB_DIR="$lab/web/dist" \
+VRM_PATH="${VRM_PATH:-$lab/work/assets/Seed-san.vrm}" \
+LOG_DIR="$lab/work/logs" \
+MODEL="${MODEL:-gpt-6.1-terra}" \
+EFFORT="${EFFORT:-low}" \
+CONTROL_PORT="${CONTROL_PORT:-0}" \
+AGENT="${AGENT:-1}" \
+  exec "$app"

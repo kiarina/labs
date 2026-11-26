@@ -1,5 +1,6 @@
 # onnx
 
+- 2026/11/26 [An LLM agent moves a VRM body with ARDY Mini text-to-motion in a Flutter app](../2026/11/26/ardy-vrm-agent/README.md)
 - 2026/10/23 [Qwen3-TTS ONNX Runtime ports vs MLX bf16 on Apple Silicon](../2026/10/23/qwen3-tts-onnx-runtime-compare/README.md)
 - 2026/10/21 [Streaming MeanVC2 voice conversion exported to ONNX: parity with upstream PyTorch and real-time speed in Flutter on macOS, Windows, Android and iOS](../2026/10/21/meanvc2-onnx-streaming/README.md)
 - 2026/10/19 [Apple SpeechAnalyzer vs Whisper on finalized SCD segments with speaker binding](../2026/10/19/apple-speech-scd-asr/README.md)

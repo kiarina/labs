@@ -68,6 +68,16 @@ Android は `AndroidWebViewController.webViewIdentifier` を、アプリの Kotl
 - `RepaintBoundary.toImage` の撮影は、その層を別に撮り、WebView の絵の上に重ねる
 - 同じ id・同じ HTML の WebView を消してすぐ置き直すと、ウィジェットが使い回されて前のページの状態が残った。置き直した（新しい要素の）ときは読み込み直す
 
+## WebGPU（ページの中で ONNX のモデルを動かす）
+
+2026-11-26 の [ardy-vrm-agent](../2026/11/26/ardy-vrm-agent/README.md)（macOS 27.2.1、WKWebView）で確かめた。
+
+- **macOS の WKWebView でも `navigator.gpu` が使え、ワーカーの中の WebGPU で `shader-f16` も取れた**（M1 Max）。ONNX Runtime Web 1.27.0 の WebGPU で約 650 MB のモデルが動いた。
+  ページはループバックの `http://127.0.0.1` から配れば secure context になる。COOP・COEP は付けなくても動いた（ORT は 1 スレッドになる）
+- モデルのファイルはページの Cache Storage に残り、次の起動ではダウンロードしない
+- **窓が他の窓の後ろに隠れていると、ページの推論も遅くなる**（読み込み 76〜119 秒が 231 秒、生成が 2〜5 倍）。Flutter のフレームも進まなくなる。見せたまま使う前提にする
+- 推論だけのページでも WebView はウィジェットの木に置く（高さ 90 の小さな枠で動いた。枠の大きさによる差は比べていない）
+
 ## iOS と Android で違うところ
 
 2026-11-26 に iOS Simulator（iOS 27.2）と Pixel 6 で確かめた。

@@ -1,0 +1,46 @@
+name: ardy_vrm_agent
+description: "An LLM agent that moves a VRM body with ARDY Mini text-to-motion, running in a WebView."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  vector_math: ^2.4.4
+  hooks: ^2.2.0
+  # VRM 1.0 on flutter_scene (Flutter GPU). Pinned to a commit: not on pub.dev yet.
+  flutter_vrm:
+    git:
+      url: https://github.com/kiarina/flutter_vrm
+      ref: 6cdf97d
+  flutter_scene: ">=0.23.0 <0.25.0"
+  webview_flutter: ^4.14.1
+  webview_flutter_wkwebview: ^3.27.2
+
+# flutter_vrm develops on this upstream master commit; both packages of the
+# repository come from the same commit.
+dependency_overrides:
+  flutter_scene:
+    git:
+      url: https://github.com/bdero/flutter_scene
+      path: packages/flutter_scene
+      ref: 0e263beb019bdde2ab3dbe18b2589fbbb838c905
+  scene:
+    git:
+      url: https://github.com/bdero/flutter_scene
+      path: packages/scene
+      ref: 0e263beb019bdde2ab3dbe18b2589fbbb838c905
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  # SwiftPM made Xcode report a Runner <-> Flutter Assemble cycle on rebuilds.
+  config:
+    enable-swift-package-manager: false

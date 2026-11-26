@@ -1,5 +1,6 @@
 # codex
 
+- 2026/11/26 [An LLM agent moves a VRM body with ARDY Mini text-to-motion in a Flutter app](../2026/11/26/ardy-vrm-agent/README.md)
 - 2026/11/26 [Concurrent Codex app-server realtime calls on gpt-live-1.1-codex (1, 2, 4 calls; separate processes vs threads in one process)](../2026/11/26/codex-gpt-live-concurrent-calls/README.md)
 - 2026/11/26 [A group call with several gpt-live-1.1-codex Spirits: user speech as labelled text, Spirit voices relayed to each other over WebRTC audio](../2026/11/26/gpt-live-group-call/README.md)
 - 2026/11/26 [A canvas mode for a spirit's chat: gpt-6.2-sol lays out text, SVG, a VRM body, media, buttons and web views with tools; actions, timelines and spirit-written JavaScript run without the model; screens are saved and reused with new values; a body that speaks over web slides, and a touchable 3D world of shapes, panels, Blender models and several bodies that look at things and play VRMA motions, with a moving camera](../2026/11/26/spirit-canvas/README.md)

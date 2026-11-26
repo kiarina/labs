@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Build the ARDY bridge page (web/dist) and the macOS app"
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+(cd web && npm ci --no-audit --no-fund && npm run build)
+# Incremental macOS builds can fail with an Xcode dependency cycle (Xcode 27);
+# a clean build passes, so retry once after `flutter clean`.
+(cd app && { flutter build macos --debug || { flutter clean && flutter build macos --debug; }; })
