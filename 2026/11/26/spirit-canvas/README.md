@@ -423,7 +423,13 @@ iPad Air（第 4 世代、Wi-Fi でつながった実機）で、release の版�
 | ![iPad の見本](results/ipad-1-demo.jpg) | ![iPad の動き](results/ipad-3-behaviors.jpg) | ![iPad の画面](results/ipad-screen.jpg) |
 | 自己試験の撮影（見本） | 時計・回数・スライド | 実機の画面（`devicectl` の撮影） |
 
-- Wi-Fi の実機は Appium から見えず（`Unknown device or simulator UDID`）、画面の実際のタップは道具からは試していない
+- **画面の実際のタップも WebView に届いた。** Wi-Fi の実機は Appium から見えない（`Unknown device or simulator UDID`）ので、WebDriverAgent を `xcodebuild` で直接起動し（オーナーが iPad で UI Automation を承認）、
+  端末の 8100 番の `/wda/tap` で予定の 2 件目と 3 件目を押した。1/3 から 3/3 になった
+
+| | |
+| --- | --- |
+| ![タップの前](results/ipad-tap-before.jpg) | ![タップの後](results/ipad-tap-after.jpg) |
+| 自己試験の後（1/3） | `/wda/tap` を 2 回（3/3） |
 - 自己試験の `behaviors` の `state` に、後の段の状態が入っていた（状態の表そのものを結果に入れていた）。写しを入れるように直した
 
 ## Part 8: Windows で確かめる
@@ -492,7 +498,7 @@ Windows 11 の開発機（Core i9-12900K・RTX 3080 Ti、Flutter 3.47.2）で、
 
 Part 1 で挙げた「押したときの結果を宣言する」「時間の並び」「spirit が書くスクリプト」「通知の区別」は Part 2、「作り置きの保存・呼び出し・差し替え」と音は Part 3、WebView は Part 4、画面の大きさに合わせるのは Part 5 で作った。残り:
 
-1. **iOS の実機で確かめる**（Part 7 は Simulator。描画と GPU は実機で確かめるのが決まり）
+1. **スマートフォンで spirit を動かす**（別のマシンの spirit から端末のキャンバスを動かす形。この lab の範囲外）
 2. **安全領域（ノッチ・ホームバー）を渡す。** 大きさと向きは Part 5 で渡すようにした。スマートフォンでは、隠れる部分を避けるための余白も要る
 3. **spirit がモードを切り替える道具。** チャットのまま頼まれた絵を、そのまま見せられるように。ユーザーが自分でチャットに戻した直後に戻さないよう、提案を出して押されたら切り替える形などを選ぶ
 4. **スクリプトを製品の形で動かす。** 別の isolate かプロセス、実行時間の上限、スクリプトどうしの順序
