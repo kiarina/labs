@@ -81,6 +81,10 @@ class _Thing {
   Node? model;
   String? playing;
   final clips = <AnimationClip>[];
+
+  /// A body's head turn toward what it looks at (degrees, eased).
+  double headYaw = 0;
+  double headPitch = 0;
 }
 
 class _WorldViewState extends State<WorldView> {
@@ -380,9 +384,86 @@ class _WorldViewState extends State<WorldView> {
     if (a != null) {
       poseVrm(a, e, t);
       expressVrm(a, e, t, c.mouthLevel(e.id));
-      final look = e.flag('look_at_viewer', true);
-      a.lookAt.enabled = look;
-      a.lookAt.target = look ? _camera.position : null;
+      final target = _lookTarget(e);
+      _turnHead(a, thing, target, dt);
+      a.lookAt.enabled = target != null;
+      a.lookAt.target = target;
+    }
+  }
+
+  /// Where a body looks (`look_at`): "viewer" (the default: the camera),
+  /// another thing's id in this world (a body: its head; a shape: its
+  /// middle), [x, y, z] metres, or "none".
+  vm.Vector3? _lookTarget(CanvasElement e) {
+    final at = e.props['look_at'];
+    if (at == 'none' || at == false || !e.flag('look_at_viewer', true)) {
+      return null;
+    }
+    if (at is List && at.length == 3 && at.every((x) => x is num)) {
+      return vm.Vector3(
+        (at[0] as num).toDouble(),
+        (at[1] as num).toDouble(),
+        (at[2] as num).toDouble(),
+      );
+    }
+    if (at is String && at != 'viewer' && at != e.id) {
+      final other = c.elements[at];
+      final thing = _things[at];
+      if (other != null && thing != null && other.world == w.id) {
+        final head = thing.avatar?.humanoid.worldPosition(VrmHumanBone.head);
+        if (head != null) return head + vm.Vector3(0, 0.06, 0);
+        final v = c.currentValues(other);
+        final s = v['scale'] ?? 1;
+        final up = k3dShapes.contains(other.type)
+            ? v['h']! * s / 2
+            : other.type == 'model'
+            ? 0.5 * s
+            : other.num_('size_m', other.num_('h', 300) / 400) * s / 2;
+        return vm.Vector3(v['x']!, v['y']! + up, v['z']!);
+      }
+    }
+    return _camera.position.clone();
+  }
+
+  /// Turns the neck and head toward [target] (up to 70 degrees aside and 35
+  /// up or down, eased), on top of the pose; the eyes do the rest.
+  void _turnHead(VrmAvatar a, _Thing thing, vm.Vector3? target, double dt) {
+    var yaw = 0.0, pitch = 0.0;
+    final eye = a.lookAt.eyeWorldPosition();
+    if (target != null && eye != null) {
+      final inv = vm.Matrix4.inverted(a.modelRoot.globalTransform);
+      final d = inv.transformed3(target.clone()) - inv.transformed3(eye);
+      if (d.length2 > 1e-8) {
+        yaw = math.atan2(d.x, d.z) * 180 / math.pi;
+        pitch =
+            math.atan2(d.y, math.sqrt(d.x * d.x + d.z * d.z)) * 180 / math.pi;
+        // Behind it: face forward rather than wring the neck.
+        if (yaw.abs() > 120) yaw = 0;
+        yaw = yaw.clamp(-70, 70);
+        pitch = pitch.clamp(-35, 35);
+      }
+    }
+    final k = math.min(1.0, dt * 5);
+    thing.headYaw += (yaw - thing.headYaw) * k;
+    thing.headPitch += (pitch - thing.headPitch) * k;
+    final h = a.humanoid;
+    for (final (bone, share) in [
+      (VrmHumanBone.neck, 0.4),
+      (VrmHumanBone.head, 0.6),
+    ]) {
+      final turn =
+          vm.Quaternion.axisAngle(
+            vm.Vector3(0, 1, 0),
+            thing.headYaw * share * math.pi / 180,
+          ) *
+          vm.Quaternion.axisAngle(
+            vm.Vector3(1, 0, 0),
+            -thing.headPitch * share * math.pi / 180,
+          );
+      h.setNormalizedRotation(
+        bone,
+        (h.normalizedRotation(bone) ?? vm.Quaternion.identity()) * turn,
+      );
     }
   }
 

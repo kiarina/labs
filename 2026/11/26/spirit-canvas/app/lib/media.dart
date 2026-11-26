@@ -30,6 +30,7 @@ String _inApp(String v) {
 const _defines = {
   'MEDIA_DIR': String.fromEnvironment('MEDIA_DIR'),
   'VRM_PATH': String.fromEnvironment('VRM_PATH'),
+  'VRM_DIR': String.fromEnvironment('VRM_DIR'),
   'VRMA_PATH': String.fromEnvironment('VRMA_PATH'),
   'SCENES_DIR': String.fromEnvironment('SCENES_DIR'),
   'SAVED_SCENES_DIR': String.fromEnvironment('SAVED_SCENES_DIR'),
@@ -43,7 +44,8 @@ const _defines = {
 };
 
 /// The media the spirit may show: files under MEDIA_DIR (the labs shared
-/// test assets) and the VRM at VRM_PATH. Both come from the environment
+/// test assets), the VRM at VRM_PATH ("default") and the .vrm files in the
+/// folders of VRM_DIR (by file name, for several bodies; Part 15). Both come from the environment
 /// the lab's `run` task sets, so nothing here names a local path.
 class MediaLibrary {
   MediaLibrary._(String dirs, this.vrmPath, this.vrmaPath)
@@ -93,7 +95,7 @@ class MediaLibrary {
     }
     return {
       ...out,
-      'vrm': [if (vrmPath.isNotEmpty) 'default'],
+      'vrm': [if (vrmPath.isNotEmpty) 'default', ..._vrmNames().keys],
       'vrma': [if (vrmaPath.isNotEmpty) 'default'],
     };
   }
@@ -115,8 +117,21 @@ class MediaLibrary {
     return null;
   }
 
+  /// The .vrm files in VRM_DIR, by file name.
+  Map<String, String> _vrmNames() => {
+    for (final d in env('VRM_DIR').split(':'))
+      if (d.isNotEmpty && Directory(d).existsSync())
+        for (final f
+            in Directory(d).listSync().whereType<File>().toList()
+              ..sort((a, b) => a.path.compareTo(b.path)))
+          if (f.path.toLowerCase().endsWith('.vrm'))
+            f.uri.pathSegments.last: f.path,
+  };
+
   File? vrmFile(String? src) {
-    final path = src == null || src.isEmpty || src == 'default' ? vrmPath : src;
+    final path = src == null || src.isEmpty || src == 'default'
+        ? vrmPath
+        : (_vrmNames()[src] ?? src);
     final f = File(path);
     return path.isNotEmpty && f.existsSync() ? f : null;
   }
